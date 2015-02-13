@@ -1,0 +1,101 @@
+$icons-opacity: .4;
+
+/**
+ * Icons for sections
+ *
+ * add icon beside section titles
+ */
+// style icons present in the markup
+.accordion-section-title .dashicons {
+  opacity: $icons-opacity;
+}
+
+/**
+ * Icons for panels
+ *
+ * add icon beside panel titles
+ */
+@mixin k6-icon ( $icon_code ) {
+  content: "#{$icon_code}";
+  position: relative;
+  top: 4px;
+  left: -2px;
+  opacity: $icons-opacity;
+  font-size: 20px;
+  font-weight: normal;
+  font-family: 'dashicons';
+}
+
+// k6temp this would be nice, but gulp-sass doesn't compile it, and ruby-sass is broken atm
+// $panels-icons: (
+//   'k6-layout': '\f100',
+//   'k6-spacing': '\211',
+//   'k6-colors': '\f309',
+//   'k6-components': '\f180',
+//   'k6-typography': '\f119',
+//   'k6-content': '\f205',
+//   'k6-advanced': '\f308',
+//   'widgets': '\f116'
+// );
+// @each $panel-id, $icon in $panels-icons {
+//   #accordion-panel-#{$panel-id} > h3:before,
+//   #accordion-panel-#{$panel-id} .panel-title:before {
+//     @include k6-icon('\f100');
+//   }
+// }
+
+#accordion-panel {
+
+  &-k6-layout > h3:before, &-k6-layout .panel-title:before {
+    @include k6-icon('\f100');
+  }
+
+  &-k6-spacing > h3:before, &-k6-spacing .panel-title:before {
+    @include k6-icon('\f211'); // k6doubt f506 \\
+  }
+
+  &-k6-colors > h3:before, &-k6-colors .panel-title:before {
+    @include k6-icon('\f309');
+  }
+
+  &-k6-components > h3:before, &-k6-components .panel-title:before {
+    @include k6-icon('\f180');
+  }
+
+  &-k6-typography > h3:before, &-k6-typography .panel-title:before {
+    @include k6-icon('\f119');
+  }
+
+  &-k6-content > h3:before, &-k6-content .panel-title:before {
+    @include k6-icon('\f205');
+  }
+
+  &-k6-advanced > h3:before, &-k6-advanced .panel-title:before {
+    @include k6-icon('\f308'); // f111
+  }
+
+  // Widgets Customizer (plugin embedded in core)
+  &-widgets > h3:before, &-widgets .panel-title:before {
+    @include k6-icon('\f116');
+  }
+
+  // Menu Customizer Plugin (it will probably be embedded in core) // k6pluginsupport \\
+  &-menus > h3:before, &-menus .panel-title:before {
+    @include k6-icon('\f333');
+  }
+}
+
+
+/**
+ * Icons for sections
+ *
+ * add icon beside section titles
+ */
+#accordion-section {
+
+  // Customize Posts Plugin // k6pluginsupport \\
+  // https://wordpress.org/plugins/customize-posts/
+  &-posts > h3:before {
+    @include k6-icon('\f464');
+  }
+}

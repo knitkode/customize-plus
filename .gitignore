@@ -1,0 +1,46 @@
+# Framework ignores
+# ----------------------
+
+# Build for now
+build
+
+# Minified assets
+*.min.js
+*.min.css
+
+# Vendor
+vendor
+
+# PHP docs for now
+docs
+
+# PHP doc cache
+phpdoc-cache*
+
+
+### Generic
+# ----------------------
+
+# Generic front-end related folders
+node_modules
+bower_components
+.sass-cache
+.tmp
+
+# OS and other
+.DS_Store
+/.project
+*.scssc
+.fuse_hidden*
+
+# Logs and temporary files
+logs
+*.log
+*.tmp
+
+# GitEye
+/.project
+
+# Sublime
+*.sublime-project
+*.sublime-workspace

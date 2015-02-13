@@ -1,0 +1,51 @@
+/**
+ * Tabs
+ *
+ */
+.k6-tabs {
+  margin: 10px 0 0;
+
+  > ul {
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #dfdfdf;
+
+    > li {
+      border-color: transparent;
+      border-color: rgba(0, 0, 0, 0);
+      border-style: solid;
+      border-width: 1px 1px 0;
+      color: #999;
+      float: left;
+      margin: 0;
+      padding: 3px 8px;
+      outline: 0;
+
+      &.k6-tab {
+        cursor: pointer;
+      }
+
+      &.selected {
+        background: #fdfdfd;
+        border-color: #dfdfdf;
+        color: #777;
+        margin-bottom: -1px;
+        padding-bottom: 4px;
+      }
+    }
+  }
+
+  > div {
+    display: none;
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    padding-top: 12px;
+    font-size: 13px;
+
+    &.selected {
+      display: block;
+    }
+  }
+}

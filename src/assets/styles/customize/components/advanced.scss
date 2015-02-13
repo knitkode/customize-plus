@@ -1,0 +1,10 @@
+/**
+ * Advanced manager component
+ */
+.k6-control-advanced {
+  display: none !important;
+
+  .k6-advanced-enabled & {
+    display: block !important;
+  }
+}

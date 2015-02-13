@@ -1,0 +1,31 @@
+/**
+ * Control changes, class applied on `<li>`
+ * container of each of our custom controls
+ *
+ */
+.k6-control {
+  margin: 0; // k6wptight-css-override .customize-control {} \\
+  padding: $control--spacing-top $control--spacing-horizontal $control--spacing-bottom;
+  box-sizing: border-box;
+  transition: opacity .18s ease;
+
+  /**
+   * 'Highlight' hovered control fading out a bit all the others
+   *
+   */
+  // .control-section .accordion-section-content:hover & { // .k6-control-section
+  //   opacity: .4;
+  // }
+  // .control-section .accordion-section-content &:hover { // .k6-control-section
+  //   opacity: 1;
+  // }
+  // // on search active we have multple accordion-section visible
+  // // at the same time so we have to target the overall sidebar inner area
+  // // to trigger the hover higlight in the right way
+  // .k6-search-active #customize-theme-controls:hover & {
+  //   opacity: .4;
+  // }
+  // .k6-search-active #customize-theme-controls &:hover {
+  //   opacity: 1;
+  // }
+}

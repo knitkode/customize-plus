@@ -1,0 +1,28 @@
+/**
+ * Control Radio Image
+ *
+ */
+.customize-control-k6_radio_image {
+
+  label {
+    margin-right: 3px;
+  }
+
+  img {
+    opacity: .5;
+  }
+}
+
+input[type=radio].k6-radio-image {
+  display: none;
+
+  + label img {
+    border: 1px solid transparent;
+    opacity: .4;
+  }
+
+  &:checked + label img {
+    border-color: #aaa;
+    opacity: 1; // k6ie8 needs support for this \\
+  }
+}

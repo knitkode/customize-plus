@@ -1,0 +1,23 @@
+{
+  "extends": ".jshintrc-base",
+  "globalstrict": false,
+  "maxlen": 110,
+  "browser": true,
+  "devel": true,
+  "globals": {
+    "gulp": false
+  },
+  "predef": [
+    "jQuery",
+    "$",
+    "_",
+    "K6",
+    "wp",
+    "l10n",
+    "api",
+    "apiIsReady",
+    "$window",
+    "$document",
+    "body"
+  ]
+}

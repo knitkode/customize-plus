@@ -1,0 +1,54 @@
+/**
+ * Tools
+ *
+ */
+#k6-tools {
+  // toggle to enable tools panel
+  &-toggle {
+    left: $WPcustomize--btnback-width + $toggle--width + 3;
+
+    &:before {
+      content: "\f107"; // 'admin-tools' dashicon code
+    }
+    .k6-tools-active &:before {
+      @extend %k6-toggle-active;
+    }
+  }
+
+  &-menu {
+    display: none;
+    margin: 0;
+
+    .k6-tools-section {
+      display: block;
+    }
+  }
+}
+
+.k6-tools-section {
+  display: none;
+  clear: both;
+
+  .no-csstransforms & {
+    left: 0 !important;
+  }
+  .csstransforms & {
+    transform: translateX(0) !important;
+  }
+
+  /**
+   * For controls in tools which aren't contained in a collapsable section
+   */
+  &.k6-control {
+    background: #fff; // k6wptight-css from .accordion-section-content {} \\
+    border-bottom: 1px solid #dfdfdf; // k6wptight-css from .accordion-section {} \\
+  }
+}
+
+.k6-tools-active {
+  .in-sub-panel #customize-info {
+    left: 0;
+    transform: translateX(0);
+    transition: none;
+  }
+}

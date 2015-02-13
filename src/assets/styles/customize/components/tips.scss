@@ -1,0 +1,57 @@
+/**
+ * Tips guides and helpers
+ *
+ */
+.k6-tip-guide-trigger {
+  float: right;
+  padding: 2px 0;
+  opacity: .25;
+
+  &:hover {
+    opacity: .75;
+  }
+}
+
+.k6-has-tip-guide {
+  .k6-tip-guide-trigger + input {
+    margin-right: 5px;
+    display: inline-block;
+    width: 89%;
+  }
+  .k6-slider {
+    width: 89%;
+  }
+}
+
+
+/**
+ * Popover tweaks.
+ * Specifically related to tips guides and helpers.
+ *
+ */
+.wp-full-overlay-sidebar-content .webui-popover {
+  margin-top: -$WPcustomize--header-height !important;
+}
+// always position the tooltip just at the edge
+// of the customize sidebar, overriding the js positioning
+// k6wptight-css \\
+.wp-customizer .webui-popover {
+  // padding-left: 20px; // k6wptight-css \\ // k6doubt..what to do here for help and guides, we'll see \\
+  // left: 279px !important; // k6doubt..what to do here for help and guides, we'll see \\
+}
+
+// show spinner behind iframe in tip popover
+.webui-popover-content {
+  iframe {
+    position: relative;
+    z-index: 2;
+  }
+
+  .spinner {
+    z-index: 1;
+    display: block;
+    float: none;
+    margin: 0 auto -18px;
+    bottom: -67px;
+  }
+}

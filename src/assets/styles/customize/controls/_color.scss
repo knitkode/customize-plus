@@ -1,0 +1,270 @@
+/**
+ * Color Control
+ * with dynamic picker
+ *
+ */
+.k6-color {
+
+  &-control {
+    padding: 8px 7px 8px 6px;
+    border: 1px solid #dfdfdf; // k6wptight-css from .wp-picker-container .iris-picker {} \\
+    font-size: 13px;
+    margin: 6px 0 9px;
+
+    // behavior
+    display: none;
+    [data-k6-color-expanded="dynamic"] & {
+      display: block;
+    }
+
+    i {
+      display: block;
+      margin-bottom: 2px;
+      font-style: normal;
+      font-size: 11px; // k6wptight-css from .wp-color-result:after {} \\
+    }
+
+    select {
+      width: 100%;
+    }
+
+    input[type=number] {
+      width: 100%;
+      height: 28px; // k6wptight-css from .customize-control select {} \\
+      line-height: 28px; // k6wptight-css from .customize-control select {} \\
+      padding: 0 5px;
+    }
+  }
+
+  // input to change var name (`<option>` inside select)
+  &-varoption { // k6plugintight-selectize
+    border-left-width: 25px;
+    border-left-style: solid;
+    margin: 6px;
+  }
+
+  // input to change functionName
+  &-function {
+    display: inline-block;
+    margin-top: 8px;
+    padding-right: 10px;
+    min-width: 130px;
+  }
+
+  // input to change amount
+  &-amount {
+    display: inline-block;
+    margin-top: 8px;
+    max-width: 100px;
+  }
+
+  // input custom expression
+  &-expr {
+    display: block;
+    margin-top: 6px;
+  }
+
+  // text class for tiny messages
+  &-text {
+    margin-top: 3px;
+    color: #999;
+    font-size: 11px;
+  }
+
+  // message for Dynamic color
+  &-message-wrap {
+    // behavior
+    display: none;
+    [data-k6-color-mode="dynamic"] & {
+      display: block;
+    }
+  }
+
+  // button for Dynamic color
+  &-toggle {
+    // k6wptight-css from .wp-color-result:after {} \\
+    display: inline-block;
+    vertical-align: top;
+    padding: 0px 9px;
+    line-height: $WPcustomize--btn-height;
+    border-radius: 0;
+    border: 1px solid $WPcustomize--btn-border-color;
+    border-left: 0;
+    background: $WPcustomize--btn-bg;
+    box-shadow: $WPcustomize--btn-box-shadow;
+    color: $WPcustomize--btn-color;
+    font-size: 11px;
+    // k6wptight-css from .wp-color-result:focus, .wp-color-result:hover {} \\
+    &:hover,
+    &:focus {
+      background: $WPcustomize--btn-bg-hover;
+      border-color: $WPcustomize--btn-border-color-hover;
+      color: $WPcustomize--btn-color-hover;
+    }
+    // change a little the style when the color picker is open
+    [data-k6-color-expanded="custom"] & {
+      border-left: 1px solid $WPcustomize--btn-border-color;
+      border-radius: $WPcustomize--btn-border-radius 0 0 $WPcustomize--btn-border-radius;
+    }
+  }
+
+  // button for Transparent color
+  &-transparent {
+    border-radius: 0 $WPcustomize--btn-border-radius $WPcustomize--btn-border-radius 0;
+  }
+
+  // button for Custom color
+  .wp-color-result {
+    margin-right: 0;// k6wptight-css-@override \\
+    margin-bottom: 0; // k6wptight-css-@override \\
+    vertical-align: top; // k6wptight-css-@override \\
+    border-radius: $WPcustomize--btn-border-radius 0 0 $WPcustomize--btn-border-radius;
+    &:after {
+      border-radius: 0;
+    }
+  }
+
+  // different positionment of toggle, input and clear button
+  // to make more room for rgba values in input text field
+  // when wpColorPicker is open // k6tobecarfeul k6wptight-layout-css changes to default \\
+  .wp-color-result.wp-picker-open {
+    float: left;
+  }
+  .wp-picker-input-wrap {
+    display: block;
+    overflow: hidden;
+    // .button {
+    //   float: right;
+    //   margin: 0;
+    //   max-width: 33%;
+    //   left: -2px;
+    //   position: relative;
+    // }
+    input[type=text].wp-color-picker {
+      display: block;
+      width: auto;
+      max-width: 106px;
+    }
+  }
+
+  // remove iris border
+  .iris-border {
+    border: 0; // k6doubt override wp native style or not? \\
+  }
+
+}
+
+/**
+ * Style color preview next to `<li>` option element
+ * created by the select2 plugin
+ */
+.select2-results__option {
+  position: relative;
+  padding-left: 30px;
+  i {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    bottom: 5px;
+    width: 20px;
+  }
+}
+
+// states
+[data-k6-color-mode="custom"].k6-color .wp-color-result:after,
+[data-k6-color-mode="dynamic"] .k6-color-dynamic,
+[data-k6-transparent] .k6-color-transparent {
+  background: $WPcustomize--btn-bg-active;
+  color: $WPcustomize--btn-color-active;
+}
+// when is transparent highlight transparent toggle only despite
+// the current color mode (we use cascading here, see here just above) ...
+[data-k6-transparent].k6-color .wp-color-result:after,
+[data-k6-transparent] .k6-color-dynamic {
+  background: $WPcustomize--btn-bg;
+  color: $WPcustomize--btn-color;
+}
+// ... and hide color preview of the wpColorPicker
+[data-k6-transparent] .wp-color-result {
+  padding-left: 0;
+  border-left: 0;
+}
+[data-k6-color-expanded="custom"].k6-color .wp-color-result:after,
+[data-k6-color-expanded="dynamic"] .k6-color-dynamic {
+  background: $WPcustomize--btn-bg-activetoggle;
+  box-shadow: $WPcustomize--btn-box-shadow-activetoggle;
+}
+
+
+/**
+ * Alpha slider
+ *
+ * some help from:
+ * @link http://pluto.kiwi.nz/2014/07/how-to-add-a-color-control-with-alphaopacity-to-the-wordpress-theme-customizer/
+ */
+.k6-alpha {
+  display: none;
+  background: #fff;
+  padding: 2px 9px 10px;
+  margin-bottom: 12px;
+
+  // open together with wp color picker
+  .wp-picker-container .wp-picker-open ~ & {
+    display:block;
+  }
+
+  // slider style, use jquery ui
+  & .ui-slider {
+    &.ui-slider-horizontal {
+      position: relative;
+      // width: 88%;
+      width: 182.125px;
+      float: left;
+      height: 24px;
+      // width: 100%;
+      background-color: #fff;
+      background-image: url('images/transparency-grid.png');
+      box-shadow: 0 0 5px rgba(0,0,0,0.4) inset;
+      border-radius: $WPcustomize--btn-border-radius 0 0 $WPcustomize--btn-border-radius;
+      padding: 0;
+    }
+
+    .ui-slider-handle { // k6wptight-css copied from .iris-picker .iris-slider-offset {} \\
+      position: absolute;
+      background: 0;
+      margin: 0 0 0 -6px; // custom, to center the handle
+      top: -3px; // inverted comparing to the vertical slider in iris
+      bottom: -3px; // inverted comparing to the vertical slider in iris
+      border: 4px solid #aaa;
+      border-width: 3px 4px; // inverted comparing to the vertical slider in iris
+      width: 6px;
+      height: auto;
+      border-radius: 4px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      opacity: 0.9;
+      z-index: 5;
+      cursor: ew-resize; // inverted comparing to the vertical slider in iris
+      &:before {
+        content: " ";
+        position: absolute;
+        left: -3px; // inverted comparing to the vertical slider in iris
+        right: -3px; // inverted comparing to the vertical slider in iris
+        top: -2px; // inverted comparing to the vertical slider in iris
+        bottom: -2px; // inverted comparing to the vertical slider in iris
+        border: 2px solid #fff;
+        border-radius: $WPcustomize--btn-border-radius;
+      }
+    }
+  }
+
+  &-transparency {
+  }
+
+  // the number input
+  input[type=number] {
+    width: 52px;
+    margin: 0 0 0 -1px;
+    font-size: 13px;
+    text-align: center;
+  }
+}

@@ -1,0 +1,122 @@
+/**
+ * Search
+ *
+ * Instant search for controls
+ * in customize sidebar
+ */
+#k6-search {
+  // toggle to enable search
+  &-toggle {
+    left: $WPcustomize--btnback-width;
+
+    &:before {
+      content: "\f179"; // 'search' dashicon code
+    }
+    .k6-search-active &:before {
+      @extend %k6-toggle-active;
+    }
+  }
+
+  // indicate the amount of results
+  &-count {
+    background: #eee;
+    padding: 0 5px;
+    margin-right: 6px;
+  }
+
+  // reset input style to make it kind of seamless
+  &-input {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    padding: 0;
+  }
+}
+
+
+/**
+ * On search active
+ *
+ * // k6wptight-selectors-css all below here \\
+ */
+.k6-search-active {
+
+  // Mobile specific style
+  @media screen and (max-width: $WPcustomize--float-breakpoint) {
+    #customize-info {
+      display: block !important;
+      width: 100% !important;
+    }
+    .k6-search-input,
+    .accordion-sub-container.control-panel-content {
+      width: 100% !important;
+    }
+  }
+
+  .accordion-section-content {
+    overflow: auto;
+    position: static;
+    display: block;
+  }
+
+  .customize-control {
+    display: none !important;
+
+    &.k6-search-result {
+      display: block !important;
+    }
+  }
+
+  #customize-info {
+    .accordion-section-title {
+      cursor: default;
+      position: static;
+      display: block;
+      &:after { // hide the arrow next to search input, fake a 'not accordion' element
+        display: none;
+      }
+    }
+    .accordion-section-content {
+      display: none !important;  // hide always collapsable info (Customize WordPress explanation)
+    }
+  }
+
+  .k6-control-divider, // always hide dividers
+  .control-section .accordion-section-content.description { // always hide descriptions
+    display: none !important;
+  }
+  .control-section .accordion-section-content {
+    display: block !important;
+    height: auto !important;
+  }
+  .accordion-sub-container.control-panel-content {
+    position: static;
+    display: block !important;
+    margin-top: 0 !important;
+    border-top: 0;
+    transform: translateX(0);
+  }
+
+  .accordion-section-title,
+  .customize-section-description,
+  .accordion-section-content > li:first-child {
+    display: none;
+  }
+  .control-section .accordion-section-content {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  #customize-info,
+  .accordion-section {
+    transition: none !important;
+    .no-csstransforms & {
+      left: 0 !important;
+    }
+    .csstransforms & {
+      transform: translateX(0) !important;
+    }
+  }
+}

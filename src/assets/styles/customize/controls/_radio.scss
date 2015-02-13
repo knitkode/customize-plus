@@ -1,0 +1,27 @@
+/**
+ * Control Radio
+ *
+ */
+.customize-control-k6_radio {
+
+  & label {
+    position: relative;
+    display: block;
+    padding: 5px 0; // k6wptight-css based on .customize-control-radio { line-height } \\
+
+    &:hover {
+      .k6-tooltip {
+        display: block;
+      }
+    }
+  }
+
+  & small {
+    opacity: .8;
+    font-style: italic;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

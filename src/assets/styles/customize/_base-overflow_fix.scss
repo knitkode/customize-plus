@@ -1,0 +1,42 @@
+/**
+ * Overflow fix.
+ *
+ * This allow to use custom dropdowns or typeahead elements
+ * without having to attach them to the body (which is not a
+ * very common feature in those js libraries...).
+ *
+ * WordPress uses `overflow: hidden` on sections
+ * but this prevent us to use popovers, dropdowns or typeahead
+ * elements dynamically appended to the controls without having
+ * to attach them to the body (which is not a very common
+ * feature in those js libraries...). The following fix uses
+ * `box-sizing` and float left 100% technique to fix it.
+ */
+
+#customize-info,
+#customize-theme-controls > ul {
+  float: left;
+  width: 100%;
+}
+
+.control-section { // .k6-control-section
+  float: left;
+  width: 100%;
+  // box-sizing: border-box;
+  // z-index: 2;
+  //
+  .accordion-section-title {
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 2;
+  }
+
+ .accordion-section-content {
+    float: left;
+    width: 100%;
+    clear: both;
+    box-sizing: border-box;
+    overflow: visible; // @override
+  }
+}

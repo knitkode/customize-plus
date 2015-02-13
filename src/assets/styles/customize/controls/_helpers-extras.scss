@@ -1,0 +1,165 @@
+/**
+ * Extras menu for controls
+ *
+ */
+
+/**
+ * Control changes, class applied on wrapper div inside the `<li>`
+ * container (wrapper present only in case we have a control divider),
+ * and on the container itself (for controls without a divider)
+ * of each of our custom controls.
+ *
+ */
+.k6-control,
+.k6-control-wrap {
+  position: relative;
+}
+
+/**
+ * Overall area
+ * a wrapper, needed to bind the `mouseenter`, `mouseleave`
+ * events on only one DOM element.
+ */
+.k6-extras {
+}
+
+/**
+ * Toggle button
+ */
+.k6-extras-btn {
+  z-index: 3;
+  position: absolute;
+  top: $control--spacing-top;
+  left: 0;
+
+  // the button needs to slightly change the position
+  // if it inside the control-wrap (when we have dividers...)
+  .k6-control-wrap & {
+    top: 0;
+    left: -$control--spacing-horizontal;
+  }
+
+  width: $extras--btn-size;
+  height: $extras--btn-size;
+  line-height: $extras--btn-size + 1; // k6tofix weird bug \\
+  text-align: right; // k6tofix weird bug \\
+  font-size: 15px;
+  color: #aaa;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .18s ease, color .18s ease;
+
+  /**
+   * Open state
+   */
+  .k6-extras-open & {
+    color: #333;
+  }
+  .k6-extras-open &,
+  .k6-control:hover & {
+    opacity: 1;
+  }
+}
+
+/**
+ * List inside extras menu
+ *
+ */
+.k6-extras-list {
+  z-index: 11; // k6wptight-css we need to overtake .iris-picker .iris-square-handle { z-index: 10 } \\
+  display: none;
+  position: absolute;
+  top: $control--spacing-top + $extras--btn-size + 3px;
+  left: $control--spacing-horizontal;
+
+  // the button needs to slightly change the position
+  // if it inside the control-wrap (when we have dividers...)
+  .k6-control-wrap & {
+    top: $extras--btn-size + 3px;
+    left: 0;
+  }
+  width: $WPcustomize--sidebar-inner-width;
+
+  // the menus shrinks a bit when the scrollbar is visible
+  .k6-has-scrollbar & {
+    width: $WPcustomize--sidebar-inner-width - 16; // scrollbar width
+  }
+
+  margin: 0 0 $control--spacing-bottom;
+  padding: 6px;
+  background: $popover--bg;
+  border: 1px solid $popover--border-color-fallback;
+  border: 1px solid $popover--border-color;
+  box-shadow: $popover--box-shadow;
+  box-sizing: border-box;
+
+  .k6-extras-open & {
+    display: block;
+  }
+
+  li {
+    padding: 6px 9px;
+    margin: 0;
+    border-bottom: 1px solid #eee;
+    // color: #666;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    &:hover {
+      margin: 0 -6px;
+      padding: 6px 15px;
+      background: #f6f6f6;
+      cursor: pointer;
+    }
+
+    &.k6-disabled {
+      cursor: default;
+      opacity: .5;
+    }
+
+    &:before {
+      font-size: 14px;
+      font-weight: normal;
+      font-family: 'dashicons';
+      margin-right: 3px;
+    }
+  }
+}
+.k6-extras {
+  &-undo:before {
+    content: "\f171";
+  }
+  &-reset_last:before {
+    content: "\f321";
+  }
+  &-reset:before {
+    content: "\f308";
+  }
+  &-hide:before {
+    content: "\f177";
+  }
+}
+
+/**
+ * Undo action (with timer) after having hided a control
+ *
+ */
+.k6-hide-undo {
+  display: block;
+  padding: 6px 0;
+  text-align: center;
+  cursor: pointer;
+  &:before {
+    font-family: 'dashicons';
+    content: "\f171";
+    margin-right: 3px;
+  }
+}
+.k6-timer {
+  color: #888;
+  &:before {
+    content: "... ";
+  }
+}

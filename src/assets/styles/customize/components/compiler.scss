@@ -1,0 +1,58 @@
+/**
+ * Manual compile control
+ */
+#k6-compile-area {
+  display: none;
+  position: absolute;
+  bottom: $WPcustomize--footer-height;
+  left: 0;
+  right: 0;
+  height: $WPcustomize--footer-height; // k6wptight-css .wp-full-overlay-sidebar .wp-full-overlay-header { height: 45px; padding: 0 15px; line-height: 45px; } \\
+  padding: 0 $WPcustomize--footer-height / 3;
+  line-height: $WPcustomize--footer-height;
+  border-top: 1px solid #ddd;
+
+  [data-k6-live-compiling="manual"] & {
+    display: block;
+  }
+}
+
+#k6-automanual {
+  display: block;
+  width: 47.5%;
+  float: left;
+  margin-right: 2.5%;
+  margin-top: 9px; // k6wptight-css #customize-header-actions .button-primary { float: right; margin-top: 9px; } \\
+  text-align: center;
+
+  .k6-switch {
+    line-height: 26px;
+    height: 27px;
+  }
+}
+
+#k6-compile {
+  display: block;
+  width: 47.5%;
+  margin-left: 2.5%;
+  margin-top: 9px; // k6wptight-css #customize-header-actions .button-primary { float: right; margin-top: 9px; } \\
+  text-align: center;
+
+  // Button loader
+  .spinner { // k6wptight-selector \\
+    float: none;
+    margin: 4px 8px -4px 8px;
+    .k6-compiling & {
+      display: inline-block;
+    }
+  }
+}
+
+
+// Some space in the bottom of the sidebar for the
+// compiler controls
+[data-k6-live-compiling="manual"] {
+  .wp-full-overlay-sidebar .wp-full-overlay-sidebar-content {
+    bottom: $WPcustomize--footer-height * 2;
+  }
+}

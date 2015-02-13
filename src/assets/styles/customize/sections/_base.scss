@@ -1,0 +1,45 @@
+/**
+ * Common section style changes
+ *
+ */
+// k6todo this dhould be .k6-control-section to avoid conflicts \\
+.control-section {
+  padding: 0;
+
+  .accordion-section-content {
+    padding: 0;
+  }
+  .customize-section-description-container {
+    padding: $control--spacing-bottom $control--spacing-horizontal $control--spacing-bottom;
+    margin: 0;
+  }
+}
+
+
+/**
+ * Special bootstrap_import section
+ *
+ */
+#accordion-section-advanced--bootstrap_imports {
+
+  .customize-control-title {
+    margin: 0;
+    float: left;
+  }
+
+  .customize-control {
+    padding-bottom: $control--spacing-top; // to vertically center the controls
+    border-bottom: 1px solid #eee;
+    &:last-child {
+      border-bottom: 0;
+    }
+    &:hover {
+      background: #fafafa;
+    }
+  }
+
+  label {
+    float: right;
+    margin-left: 11px;
+  }
+}

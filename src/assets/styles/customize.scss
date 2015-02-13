@@ -1,0 +1,48 @@
+// generic
+@import "variables";
+@import "utils";
+
+// customize - vendors
+@import "vendor/spinner";
+@import "vendor/toggle-switch";
+@import "vendor/webui-popover";
+@import "vendor/jquery-ui.structure";
+@import "vendor/jquery-ui.theme";
+@import "vendor/jquery-ui.slider-pips";
+@import "vendor/jquery-ui.slider-custom";
+@import "vendor/atwho";
+@import "vendor/atwho-custom";
+@import "vendor/selectize";
+@import "vendor/selectize-custom";
+
+// customize - base
+@import "customize/base";
+@import "customize/base-icons";
+@import "customize/base-overflow_fix";
+
+// customize - components
+@import "customize/components/advanced";
+@import "customize/components/compiler";
+@import "customize/components/search";
+@import "customize/components/import";
+@import "customize/components/screenpreview";
+@import "customize/components/tips";
+@import "customize/components/tools";
+
+// customize - sections
+@import "customize/sections/base";
+
+// customize - controls
+@import "customize/controls/base";
+@import "customize/controls/font-family";
+@import "customize/controls/radio";
+@import "customize/controls/radio-image";
+@import "customize/controls/toggle";
+@import "customize/controls/multicheck";
+@import "customize/controls/color";
+@import "customize/controls/slider";
+@import "customize/controls/tabs";
+@import "customize/controls/size";
+@import "customize/controls/divider";
+@import "customize/controls/helpers-extras";
+@import "customize/controls/helpers-screenpicker";

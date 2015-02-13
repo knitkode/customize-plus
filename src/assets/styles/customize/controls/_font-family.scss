@@ -1,0 +1,29 @@
+/**
+ * Font Family Control
+ *
+ */
+
+.customize-control-k6_font_family {
+
+  .selectize-control { // k6plugintight-selectize
+    margin-top: 6px;
+  }
+
+  /**
+   * Highlight selectize area and make it more prominent
+   * when hovering its control wrapper area
+   */
+  .selectize-input { // k6plugintight-selectize
+    border-color: transparent;
+    box-shadow: none;
+  }
+  &:hover .selectize-input { // k6plugintight-selectize
+    border-color: $WP--select-border-color;
+    box-shadow: $WP--select-box-shadow;
+  }
+  &:hover .selectize-input.focus,
+  .selectize-input.focus { // k6plugintight-selectize
+    border-color: $WP--select-border-color-focus;
+    box-shadow: $WP--select-box-shadow-focus;
+  }
+}

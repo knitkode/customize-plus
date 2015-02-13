@@ -1,0 +1,26 @@
+/**
+ * Control Multicheck
+ *
+ */
+.customize-control-k6_multicheck {
+
+  .description {
+    margin-bottom: 9px;
+  }
+
+  label {
+    display: block;
+    margin: 3px 0 6px;
+    &:hover {
+      color: #333;
+
+      input[type=checkbox] {
+        border-color: #333;
+      }
+    }
+  }
+
+  input[type=checkbox] {
+    margin-right: 9px;
+  }
+}
