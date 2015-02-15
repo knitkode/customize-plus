@@ -13,6 +13,7 @@
 @import "vendor/selectize-custom";
 
 .k6cp-badge {
+<<<<<<< HEAD
   // animation: rotateBadge 20s linear infinite;
   // font: normal 150px/1 'dashicons' !important;
   // color: #f9f9f9;
@@ -24,6 +25,30 @@
   //   content: "\f132"; // or f111 (cog)
   //   text-shadow: 5px 5px 30px rgba(0,0,0,0.18);
   // }
+=======
+  animation: rotateBadge 20s linear infinite;
+  font: normal 150px/1 'dashicons' !important;
+  color: #f9f9f9;
+  display: inline-block;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    width: 40%;
+    height: 40%;
+    background-color: #eee;
+    border-radius: 100%;
+  }
+
+  &:after {
+    z-index: 1;
+    position: relative;
+    content: "\f111";
+    text-shadow: 5px 5px 30px rgba(0,0,0,0.18);
+  }
+>>>>>>> 19f9a531b7a059e7231598fe3e6215fd71b0a642
 
   .about-wrap & {
     position: absolute;
@@ -40,6 +65,7 @@
     transform: rotate(360deg);
   }
 }
+<<<<<<< HEAD
 
 /**
  * Features list in the Admin UI
@@ -133,3 +159,5 @@
     }
   }
 }
+=======
+>>>>>>> 19f9a531b7a059e7231598fe3e6215fd71b0a642
