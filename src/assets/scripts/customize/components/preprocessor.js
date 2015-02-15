@@ -25,12 +25,12 @@ var Preprocessor = (function () {
   // @public API
   return {
     // size related
-    varsSize: constants['VARS_NAMES_SIZE'],
-    varsSizeLookup: _getLookupObjFromArray(constants['VARS_NAMES_SIZE']),
+    varsSize: constants['COMPILER_VARIABLES_NAMES_COLOR'],
+    varsSizeLookup: _getLookupObjFromArray(constants['COMPILER_VARIABLES_NAMES_COLOR']),
     functionsSize: constants['PREPROCESSOR_MATH_FUNCTIONS'],
     // color related
-    varsColor: constants['VARS_NAMES_COLOR'],
-    varsColorLookup: _getLookupObjFromArray(constants['VARS_NAMES_COLOR']),
+    varsColor: constants['COMPILER_VARIABLES_NAMES_COLOR'],
+    varsColorLookup: _getLookupObjFromArray(constants['COMPILER_VARIABLES_NAMES_COLOR']),
     functionsColor: constants['PREPROCESSOR_COLOR_SIMPLE_FUNCTIONS']
   };
 })();

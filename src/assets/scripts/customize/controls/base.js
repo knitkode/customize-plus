@@ -333,7 +333,7 @@ var ControlBase = api.Control.extend({
      */
     var self = this;
     btnHide.onclick = function () {
-      var controlToHide = api.control('k6[hide-controls]'); // k6tobecareful this is tight to class-customize.php $setting_control_id = K6::$OPTIONToHideS_PREFIX . '[' . $field_key . ']'; \\
+      var controlToHide = api.control('k6[hide-controls]'); // k6tobecareful this is tight to class-customize.php $setting_control_id = K6CP::$OPTIONToHideS_PREFIX . '[' . $field_key . ']'; \\
       if (controlToHide) {
         controlToHide.setting.set(_.union(controlToHide.setting(), [self.id]));
         var secondsTimeout = 5;

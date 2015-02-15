@@ -47,7 +47,7 @@ class K6CP_Customize_Control_Color extends K6CP_Customize_Control_Base {
 		}
 
 		// check for a hex color string
-		$custom_color_hex = k6_sanitize_hex_color( $value );
+		$custom_color_hex = k6cp_sanitize_hex_color( $value );
 		if ( $custom_color_hex ) {
 			// hex color is valid, so we have a Custom Color
 			$this->json['valueCSS'] = $custom_color_hex;
@@ -55,7 +55,7 @@ class K6CP_Customize_Control_Color extends K6CP_Customize_Control_Base {
 		}
 
 		// check for a rgba color string
-		$custom_color_rgba = k6_sanitize_coloralpha( $value );
+		$custom_color_rgba = k6cp_sanitize_coloralpha( $value );
 		if ( $custom_color_rgba ) {
 			// hex color is valid, so we have a Custom Color
 			$this->json['valueCSS'] = $custom_color_rgba;
@@ -64,10 +64,10 @@ class K6CP_Customize_Control_Color extends K6CP_Customize_Control_Base {
 
 		// Dynamic Color
 		$this->json['mode'] = 'dynamic';
-		$this->json['valueCSS'] = k6_parse_value_with_preprocessor( $value, true );
+		$this->json['valueCSS'] = k6cp_parse_value_with_preprocessor( $value, true );
 
 		// check for a simple variable
-		$simple_variable = k6_sanitize_var( $value, true );
+		$simple_variable = k6cp_sanitize_var( $value, true );
 		if ( $simple_variable ) {
 			$this->json['varName'] = $simple_variable;
 			$this->json['expr'] = $simple_variable;
@@ -75,9 +75,9 @@ class K6CP_Customize_Control_Color extends K6CP_Customize_Control_Base {
 		}
 
 		// check for a simple function
-		$simple_function = k6_sanitize_var_with_function( $value, true );
+		$simple_function = k6cp_sanitize_var_with_function( $value, true );
 		if ( $simple_function ) {
-			$dynamic_args = k6_sanitize_var_with_function( $value, true );
+			$dynamic_args = k6cp_sanitize_var_with_function( $value, true );
 			$this->json['functionName'] = $simple_function[1];
 			$this->json['varName'] = $simple_function[2];
 			$this->json['amount'] = (float) $simple_function[3];
@@ -114,9 +114,6 @@ class K6CP_Customize_Control_Color extends K6CP_Customize_Control_Base {
 					<i><?php _e( 'Apply function:', 'pkgTextdomain' ) ?></i>
 					<select class="k6-color-function-select" name="function">
 						<option value="" <# if (data.functionName==='') { #>selected <# } #>><?php _e( 'None', 'pkgTextdomain' ) ?></option>
-						<?php foreach ( K6CP_Customize::$PREPROCESSOR_COLOR_SIMPLE_FUNCTIONS as $function_name ) { ?>
-							<option value="<?php echo esc_html( $function_name ); ?>"><?php echo esc_html( $function_name ); ?></option>
-						<?php } ?>
 					</select>
 				</label>
 				<label class="k6-color-amount">

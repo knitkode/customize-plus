@@ -429,6 +429,20 @@ var ControlColor = ControlBase.extend({
     });
 
     /**
+     * Dynamically create function `<select>` `<option>` tags
+     * @type {[type]}
+     */
+    // k6tocheck, untested...during transition, also it can be optimized through fragments... \\
+    var simpleFunctions = Preprocessor.functionsColor;
+    for (var i = 0; i < simpleFunctions.length; i++) {
+      var functionName = simpleFunctions[i];
+      var functionNameOption = document.createElement('option');
+      functionNameOption.innerHTML = functionName;
+      functionNameOption.value = functionName;
+      inputFunction.appendChild(functionNameOption);
+    }
+
+    /**
      * Apply current expression value
      * to 'simple dynamic' fields.
      *

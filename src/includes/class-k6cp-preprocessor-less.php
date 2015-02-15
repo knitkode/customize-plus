@@ -17,7 +17,8 @@
 
 // Load the compiler class
 if ( ! class_exists( 'lessc' ) ) {
-	require_once dirname( __FILE__ ) . '/vendor/oyejorge/less.php/lessc.inc.php';
+	// require_once dirname( __FILE__ ) . '/vendor/oyejorge/less.php/lessc.inc.php';
+	return;
 }
 
 if ( ! class_exists( 'K6CP_Preprocessor_Less' ) && class_exists( 'lessc' ) ):
@@ -374,7 +375,7 @@ if ( ! class_exists( 'K6CP_Preprocessor_Less' ) && class_exists( 'lessc' ) ):
 		 */
 		public function get_stylesheet( $stylesheet, $variables ) {
 			$this->stylesheet = $stylesheet;
-			$this->stylesheet->ver = K6::VERSION; // k6todo, do this in a nicer way \\
+			$this->stylesheet->ver = K6CP::VERSION; // k6todo, do this in a nicer way \\
 			$this->set_paths();
 			$this->set_signature( $variables );
 

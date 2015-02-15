@@ -72,7 +72,7 @@ gulp.task('_customize-modernizr', function() {
   // automatically look for tests to do, we just defined them here above
   return gulp.src(PATHS.src.assets + 'scripts/customize.js')
     .pipe($.if(rebuild, $.modernizr(modernizrOpts)))
-    .pipe($.if(rebuild, $.rename('customize-vendor--modernizr-custom.js')))
+    .pipe($.if(rebuild, $.rename('modernizr-custom.js')))
     .pipe($.if(rebuild, $.uglify({ preserveComments: function (node, comment) {
       // @link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/
       // just keep the comment with License
@@ -81,7 +81,7 @@ gulp.task('_customize-modernizr', function() {
         return true;
       }
     }})))
-    .pipe($.if(rebuild, gulp.dest(PATHS.src.assets + 'scripts')));
+    .pipe($.if(rebuild, gulp.dest(PATHS.src.assets + 'scripts/vendor')));
 });
 
 /**
@@ -93,7 +93,7 @@ gulp.task('_customize-scripts-admin', function() {
   var stream = streamqueue({ objectMode: true });
   stream.queue(gulp.src([
     PATHS.bower + 'polyfill-classList/classList.js', // k6ie9 k6ie8 \\
-    PATHS.src.assets + 'vendor/modernizr-custom.js', // include modernizr custom build
+    PATHS.src.assets + 'scripts/vendor/modernizr-custom.js', // include modernizr custom build
     PATHS.bower + 'lunr.js/lunr.min.js',
     PATHS.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.min.js',
     PATHS.bower + 'jquery-cookie/jquery.cookie.js',

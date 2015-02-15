@@ -48,7 +48,7 @@ module.exports = PLUGINS = {
  */
 module.exports = PATHS = {
   /** @type {String} */
-  bower: './bower_components/',
+  bower: './src/bower_components/',
   /** @type {Object} */
   src: {
     root: './src/',

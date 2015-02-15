@@ -190,6 +190,10 @@ if ( ! function_exists( 'k6cp_sanitize_var_with_function' ) ) :
 	 * @return [type] [description]
 	 */
 	function k6cp_sanitize_var_with_function ( $input, $return_args = false ) {
+		$containing_array_functions = array();
+		$containing_array_variables = array();
+		// $containing_array_functions = K6CP_Preprocessor::$PREPROCESSOR_COLOR_SIMPLE_FUNCTIONS; // k6todo \\
+		// $containing_array_variables = K6CP_Preprocessor::$COMPILER_VARIABLES_NAMES; // k6todo \\
 		$input_stripped = preg_replace( '/\s+/', '', $input );
 		// the following regex grab three groups from this kind of string: `darken(@link-color,10%)`
 		// see https://regex101.com/r/nZ2eB5/1 for tests
@@ -198,9 +202,9 @@ if ( ! function_exists( 'k6cp_sanitize_var_with_function' ) ) :
 		if (
 			$dynamic_args &&
 			// be sure that function name is allowed
-			in_array( $dynamic_args[1], K6CP_Customize::$PREPROCESSOR_COLOR_SIMPLE_FUNCTIONS ) &&
+			in_array( $dynamic_args[1], $containing_array_functions ) &&
 			// be sure that the variable name exists
-			in_array( $dynamic_args[2], K6CP_Customize::$PREPROCESSOR_VARIABLES_NAMES_COLOR ) &&
+			in_array( $dynamic_args[2], $containing_array_variables ) &&
 			// be sure that the amount is a number between 1 and 100
 			$dynamic_args[3] > 0 && $dynamic_args[3] < 101
 		) {
@@ -219,7 +223,8 @@ if ( ! function_exists( 'k6cp_sanitize_var' ) ) :
 	 */
 	function k6cp_sanitize_var( $input, $return_arg = false ) {
 		$input_stripped = preg_replace( '/\s+/', '', $input );
-		$containing_array = K6CP_Customize::$PREPROCESSOR_VARIABLES_NAMES_COLOR;
+		$containing_array = array();
+		// $containing_array = K6CP_Preprocessor::$COMPILER_VARIABLES_NAMES; // k6todo \\
 		// the following regex grab one group from this kind of string: `@link-color`
 		preg_match( '/^@([a-zA-Z-_0-9]+)$/', $input_stripped, $dynamic_args );
 		if (
@@ -344,25 +349,29 @@ if ( ! function_exists( 'k6cp_parse_value_with_preprocessor' ) ) :
 	 * @return [type]        [description]
 	 */
 	function k6cp_parse_value_with_preprocessor( $value, $return_arg = false ) {
-		try {
-			$parser = new Less_Parser();
+		if ( class_exists( 'Less_Parser' ) ) {
+			try {
+				$parser = new Less_Parser();
 
-			$less_input = k6cp_get_less_test_input( $value, $value, '' );
-			// K6CB::log( $less_input, 'k6cp_parse_value_with_preprocessor->$less_input' ); // k6debug \\
+				$less_input = k6cp_get_less_test_input( $value, $value, '' );
+				// K6CB::log( $less_input, 'k6cp_parse_value_with_preprocessor->$less_input' ); // k6debug \\
 
-			$parser->parse( $less_input );
-			$css_value_full = $parser->getCss();
+				$parser->parse( $less_input );
+				$css_value_full = $parser->getCss();
 
-			// grab the value from the compiled css (we have a predictable result,
-			// so it's safe to use the following regex).
-			preg_match( '/.v[\s\S]+\sv:\s*(.+);/', $css_value_full, $matches );
-			$css_value = $matches[1];
-			// K6CB::log( $css_value, 'k6cp_parse_value_with_preprocessor->$css_value' ); // k6debug \\
+				// grab the value from the compiled css (we have a predictable result,
+				// so it's safe to use the following regex).
+				preg_match( '/.v[\s\S]+\sv:\s*(.+);/', $css_value_full, $matches );
+				$css_value = $matches[1];
+				// K6CB::log( $css_value, 'k6cp_parse_value_with_preprocessor->$css_value' ); // k6debug \\
 
-			return $return_arg ? $css_value : $value;
-		} catch ( Exception $e ) {
-			$error_message = $e->getMessage();
-			return; // k6todo a default value in case of error? \\
+				return $return_arg ? $css_value : $value;
+			} catch ( Exception $e ) {
+				$error_message = $e->getMessage();
+				return; // k6todo a default value in case of error? \\
+			}
+		} else {
+			return;
 		}
 	}
 endif;
@@ -393,4 +402,3 @@ if ( ! function_exists( 'k6cp_get_less_test_input' ) ) :
 		}
 	}
 endif;
-

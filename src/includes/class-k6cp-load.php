@@ -87,8 +87,39 @@ if ( ! class_exists( 'K6CP' ) ):
 			// set theme constants
 			self::set_constants();
 
+			// $this->version = '2.2';
+			// $this->load_deprecated = ! apply_filters( 'bp_ignore_deprecated', BP_IGNORE_DEPRECATED );
+			// $this->filters = new stdClass(); // Used when adding/removing filters
+			// $this->file = K6CP_PLUGIN_DIR . 'customize-plus.php';
+			// $this->basename = basename( K6CP_PLUGIN_DIR ) . '/customize-plus.php';
+			// $this->plugin_dir = trailingslashit( K6CP_PLUGIN_DIR );
+			// $this->plugin_url = trailingslashit( K6CP_PLUGIN_URL );
+			// $this->lang_dir = $this->plugin_dir . 'languages';
+
 			// initial setup
-			// require_once( __DIR__ . '/class-k6-customize.php' );
+			if ( is_admin() ) {
+				require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-admin.php' );
+			}
+			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize.php' );
+
+			add_action( 'plugins_loaded', array( __CLASS__, 'init' ) );
+			// add_action( 'init', array( __CLASS__, 'register' ) );
+			// add_action( 'init', array( __CLASS__, 'update' ), 20 );
+			register_activation_hook( K6CP_PLUGIN_FILE, array( __CLASS__, 'activation' ) );
+			register_activation_hook( K6CP_PLUGIN_FILE, array( __CLASS__, 'deactivation' ) );
+		}
+
+		public static function init() {
+			// Make plugin available for translation
+			load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( K6CP_PLUGIN_FILE ) ) . '/languages/' );
+		}
+
+		public static function activation() {
+			do_action( 'k6cp/activation' );
+		}
+
+		public static function deactivation() {
+			do_action( 'k6cp/deactivation' );
 		}
 
 		/**
@@ -102,6 +133,8 @@ if ( ! class_exists( 'K6CP' ) ):
 			self::$_ASSETS = plugin_dir_url( __FILE__ ) . '/assets/';
 			self::$_IMAGES = plugin_dir_url( __FILE__ ) . 'assets/images/';
 			self::$_LANGUAGES = plugin_dir_url( __FILE__ ) .'/languages/';
+			// use this instead
+			// plugins_url( 'assets/js/chart.js', SU_PLUGIN_FILE )
 		}
 
 		/**
@@ -117,6 +150,26 @@ if ( ! class_exists( 'K6CP' ) ):
 				return K6CP_Customize::$DEFAULTS[ $opt_name ];
 			}
 		}
+
+		// k6todo \\
+		// public static function add_asset( ) {
+
+		// 	$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		// 	$settings_page_prefix = 'settings_page_k6cp-';
+		// 	$settings_pages = array(
+		// 		$settings_page_prefix . 'welcome',
+		// 		$settings_page_prefix . 'about',
+		// 		$settings_page_prefix . 'settings',
+		// 		$settings_page_prefix . 'addons',
+		// 	);
+		// 	if ( in_array( $hook, $settings_pages  ) ) {
+		// 		wp_enqueue_style( 'k6cp-admin-css', plugins_url( "assets/admin{$min}.css", K6CP_PLUGIN_FILE ), array( 'dashicons'), K6CP_PLUGIN_VERSION );
+		// 		// wp_style_add_data( 'k6cp-admin-css', 'rtl', true );
+		// 		if ( $min ) {
+		// 			wp_style_add_data( 'k6cp-admin-css', 'suffix', $min );
+		// 		}
+	 //    }
+		// }
 
 		/**
 		 * A simple logger

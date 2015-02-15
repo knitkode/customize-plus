@@ -17,8 +17,8 @@ class K6CP_Customize_Control_Layout_Columns extends K6CP_Customize_Control_Base 
 	 */
 	protected function add_to_json() {
 		$this->json['value'] = json_decode( $this->value() );
-		$this->json['mode'] = K6::get_option( 'sidebar' ); // k6tobecareful name tight to control ID \\
-		$this->json['columns'] = K6::get_option( 'grid-columns' ); // k6tobecareful name tight to control ID \\
+		$this->json['mode'] = K6CP::get_option( 'sidebar' ); // k6tobecareful name tight to control ID \\
+		$this->json['columns'] = K6CP::get_option( 'grid-columns' ); // k6tobecareful name tight to control ID \\
 	}
 
 	public function js_tpl() {
