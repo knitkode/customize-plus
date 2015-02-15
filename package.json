@@ -1,13 +1,13 @@
 {
-  "name": "k6-framework",
+  "name": "customize-plus",
   "version": "0.0.1",
-  "description": "A WordPress framework for perfectionists.",
+  "description": "Empower and extend the WordPress customize.",
   "config": {
-    "namePretty": "K6 Framework",
-    "nameShort": "k6th",
+    "namePretty": "Customize Plus",
+    "nameShort": "k6cp",
     "startYear": 2014
   },
-  "homepage": "http://framework.WPk6.com",
+  "homepage": "http://customize-plus.wpkuus.com",
   "author": {
     "name": "kuus",
     "email": "kunderikuus@gmail.com",
@@ -19,11 +19,9 @@
   },
   "private": true,
   "repository": {
-    "url": "https://gitlab.com/kunderikuus/WPk6-framework"
+    "url": "https://gitlab.com/wpkuus/customize-plus"
   },
-  "dependencies": {
-    "del": "~1.1.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-autoprefixer": "^0.0.6",

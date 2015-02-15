@@ -1,6 +1,6 @@
 <div class="wrap about-wrap">
 	<div class="k6cp-badge"></div>
-	<h1><?php printf( esc_html__( 'Welcome to pkgNamePretty %s', 'pkgTextDomain' ), self::display_version() ); ?></h1>
+	<h1><?php printf( esc_html__( 'Welcome to Customize Plus %s', 'pkgTextDomain' ), self::display_version() ); ?></h1>
 	<div class="about-text">
 		<?php if ( self::is_new_install() ) : ?>
 			<?php printf( __( 'Thank you for installing Customize Plus! Customize Plus %s do this and that.', 'pkgTextDomain' ), self::display_version() ); ?>

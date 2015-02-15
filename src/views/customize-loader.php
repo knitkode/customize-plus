@@ -6,7 +6,7 @@
         <h1 id="k6-title" class="k6-text"><?php _e( 'Import done', 'pkgTextdomain' ); ?></h1>
         <h3 id="k6-text" class="k6-text"><?php _e( 'All options have been succesfully imported and saved', 'pkgTextdomain' ); ?></h3>
       <?php else : ?>
-        <h1 id="k6-title" class="k6-text"><?php _e( 'Customize', 'pkgTextdomain' ); ?></h1>
+        <h1 id="k6-title" class="k6-text"><?php _e( 'Customize Plus', 'pkgTextdomain' ); ?></h1>
         <h3 id="k6-text" class="k6-text"><?php _e( 'Welcome to the customize tool', 'pkgTextdomain' ); ?></h3>
       <?php endif; ?>
       <div class="k6-text">

@@ -22,7 +22,7 @@ gulp.task('watch-base', function() {
   gulp.watch(PATHS.src.root + '*.*', ['_base-root']);
   gulp.watch(PATHS.src.images + '*.*', ['_base-images']);
   gulp.watch(PATHS.src.styles + '**/*.scss', ['_base-styles']);
-  gulp.watch(PATHS.src.includes + '**/*.php', ['_base-php']);
+  gulp.watch([PATHS.src.includes + '**/*.php', PATHS.src.views + '*.php'], ['_base-php']);
   gulp.watch(PATHS.src.vendor + '**/*.php', ['_base-vendor']);
 });
 
@@ -70,7 +70,7 @@ gulp.task('_base-styles', ['_base-images'], function() {
       extensions: ['svg'],
       debug: true
     })))
-    .pipe($.autoprefixer('last 2 version'))
+    .pipe($.autoprefixer(PLUGINS.autoprefixer))
     .pipe($.if(CONFIG.isDist, $.combineMediaQueries()))
     .pipe($.if(CONFIG.isDist, $.minifyCss()))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
@@ -85,7 +85,7 @@ gulp.task('_base-styles', ['_base-images'], function() {
  * @private
  */
 gulp.task('_base-php', function() {
-  return gulp.src(PATHS.src.includes + '*.php')
+  return gulp.src(PATHS.src.includes + '**/*.php')
     .pipe($.include())
     .pipe($.replace(/<\?php\s\/\/\s@partial/g, '')) // remove extra `<?php // @partial`
     .pipe(gulp.dest(PATHS.build.includes));

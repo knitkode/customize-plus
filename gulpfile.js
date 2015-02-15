@@ -39,7 +39,8 @@ module.exports = PLUGINS = {
     preserveComments: 'some',
     toplevel: true,
     mangle: true
-  }
+  },
+  autoprefixer: 'last 2 version'
 };
 
 /**
@@ -54,6 +55,7 @@ module.exports = PATHS = {
     root: './src/',
     vendor: './src/vendor/',
     includes: './src/includes/',
+    views: './src/views/',
     assets: './src/assets/',
     images: './src/assets/images/',
     scripts: './src/assets/scripts/',
@@ -82,16 +84,13 @@ gulp.task('default', ['build', 'watch']);
 // @public
 gulp.task('build', [
   'build-base',
-  'build-customize',
-  // 'build-welcome'
+  'build-customize'
 ]);
 
 // @public
 gulp.task('watch', [
   'watch-base',
-  'watch-customize',
-  // 'watch-welcome',
-  // 'watch-tools',
+  'watch-customize'
 ]);
 
 // @public

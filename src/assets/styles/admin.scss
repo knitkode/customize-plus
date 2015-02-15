@@ -13,28 +13,17 @@
 @import "vendor/selectize-custom";
 
 .k6cp-badge {
-  animation: rotateBadge 20s linear infinite;
-  font: normal 150px/1 'dashicons' !important;
-  color: #f9f9f9;
-  display: inline-block;
+  // animation: rotateBadge 20s linear infinite;
+  // font: normal 150px/1 'dashicons' !important;
+  // color: #f9f9f9;
+  // display: inline-block;
 
-  &:before {
-    content: "";
-    position: absolute;
-    top: 30%;
-    left: 30%;
-    width: 40%;
-    height: 40%;
-    background-color: #eee;
-    border-radius: 100%;
-  }
-
-  &:after {
-    z-index: 1;
-    position: relative;
-    content: "\f111";
-    text-shadow: 5px 5px 30px rgba(0,0,0,0.18);
-  }
+  // &:after {
+  //   z-index: 1;
+  //   position: relative;
+  //   content: "\f132"; // or f111 (cog)
+  //   text-shadow: 5px 5px 30px rgba(0,0,0,0.18);
+  // }
 
   .about-wrap & {
     position: absolute;
@@ -49,5 +38,98 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+/**
+ * Features list in the Admin UI
+ *
+ */
+.k6cp-features {
+  li {
+    position: relative;
+    padding: 10px 0 10px 40px;
+    margin: 0;
+
+    > i {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      width: 40px;
+      opacity: .4;
+      transition: font-size .18s ease;
+    }
+
+    &.k6cp-premium {
+      > i {
+        opacity: .8;
+        background: radial-gradient(#fff rgba(0,0,0,0));
+      }
+    }
+  }
+
+  &:hover {
+    li {
+      opacity: .8;
+      &:hover {
+        opacity: 1;
+
+        > i {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+
+  b {
+    font-size: 17px;
+    font-weight: normal;
+  }
+
+  em {
+    &:before {
+      font-family: 'dashicons';
+      font-style: normal;
+      content: "\f155";
+      margin-right: 3px;
+      color: #F9F25F;
+      text-shadow: -1px 1px 1px rgba(0,0,0,.3);
+    }
+  }
+
+  p {
+    a {
+      font-style: normal;
+    }
+  }
+}
+
+/**
+ * Responsive embedded videos
+ *
+ * {@link http://embedresponsively.com/}
+ */
+.k6cp {
+
+  &-video-container {
+    max-width: 500px;
+    margin-bottom: 30px;
+  }
+
+  &-video {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    background: #ccc;
+
+    > iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
   }
 }
