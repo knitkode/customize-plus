@@ -88,7 +88,7 @@ class K6CP_Customize_Control_Base extends WP_Customize_Control {
 	 * @since 0.0.1
 	 */
 	public function content_template() {
-		ob_start( 'k6_compress_html' );
+		ob_start( 'k6cp_compress_html' );
 		$this->js_tpl_divider();
 		 // this wrapper is needed to make the Extras menu play nice when divider is there, because of the absolute positioning
 		echo '<# if (data.div) { #><div class="k6-control-wrap"><# } #>';

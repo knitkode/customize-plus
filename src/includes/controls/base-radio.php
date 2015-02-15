@@ -48,7 +48,7 @@ class K6CP_Customize_Control_Base_Radio extends K6CP_Customize_Control_Base {
 								if (choice.tip) {
 									tipAttrs = ' data-tip=' + choice.tip;
 									if (choice.tip_title) tipAttrs += ' data-tip_title=' + choice.tip_title;
-									if (choice.tip_img) tipAttrs += ' data-tip_img=<?php echo esc_url( K6::$_IMAGES ); ?>' + choice.tip_img;
+									if (choice.tip_img) tipAttrs += ' data-tip_img=<?php echo esc_url( K6CP::$_IMAGES ); ?>' + choice.tip_img;
 									if (choice.tip_text) tipAttrs += ' data-tip_text=' + choice.tip_text;
 									if (choice.tip_video) tipAttrs += ' data-tip_video=' + choice.tip_video;
 								}

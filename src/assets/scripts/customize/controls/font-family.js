@@ -44,7 +44,7 @@ var ControlFontFamily = ControlBase.extend({
     this.input.selectize.destroy();
   },
   /**
-   * @see php `k6_sanitize_font_families`
+   * @see php `k6cp_sanitize_font_families`
    * @param  {string|array} value [description]
    * @return {string}       [description]
    */

@@ -144,7 +144,7 @@ var Import = (function () {
   /**
    * Get Option key
    * // k6tobecareful this is tight to class-customize.php
-   * $setting_control_id = K6::$OPTIONS_PREFIX . '[' . $field_key . ']'; \\
+   * $setting_control_id = K6CP::$OPTIONS_PREFIX . '[' . $field_key . ']'; \\
    *
    * @param  {string} key The key/option name.
    * @return {string} The full option key.

@@ -27,9 +27,24 @@
  * Domain Path:       /languages
  */
 
-define( 'K6CP_NAME', 'pkgNamePretty' );
-define( 'K6CP_REQUIRED_PHP_VERSION', '5.2.4' );
-define( 'K6CP_REQUIRED_WP_VERSION', '4.1' );
+define( 'K6CP_PLUGIN_FILE', __FILE__ );
+define( 'K6CP_PLUGIN_VERSION', '0.0.1' );
+
+if ( ! defined( 'K6CP_NAME' ) ) {
+	define( 'K6CP_NAME', 'pkgNamePretty' );
+}
+if ( ! defined( 'K6CP_REQUIRED_PHP_VERSION' ) ) {
+	define( 'K6CP_REQUIRED_PHP_VERSION', '5.2.4' );
+}
+if ( ! defined( 'K6CP_REQUIRED_WP_VERSION' ) ) {
+	define( 'K6CP_REQUIRED_WP_VERSION', '4.1' );
+}
+if ( ! defined( 'K6CP_PLUGIN_DIR' ) ) {
+	define( 'K6CP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+if ( ! defined( 'K6CP_PLUGIN_URL' ) ) {
+	define( 'K6CP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
 
 /**
  * Checks if the system requirements are met
@@ -61,7 +76,7 @@ function k6cp_requirements_met() {
 function k6cp_requirements_error() {
 	global $wp_version;
 
-	require_once( plugin_dir_path( __FILE__ ) . 'views/requirements-error.php' );
+	require_once( K6CP_PLUGIN_DIR . 'views/requirements-error.php' );
 }
 
 /**
@@ -73,12 +88,28 @@ function k6cp_requirements_error() {
  * @since  0.0.1
  */
 if ( k6cp_requirements_met() ) {
-	require_once( plugin_dir_path( __FILE__ ) . 'includes/class-k6cp.php' );
+	require_once( K6CP_PLUGIN_DIR . 'includes/k6cp-core-functions.php' );
+	require_once( K6CP_PLUGIN_DIR . 'includes/k6cp-actions.php' );
+	require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-load.php' );
 
 	if ( class_exists( 'K6CP' ) ) {
-		$GLOBALS['k6cp'] = K6CP::get_instance();
-		register_activation_hook( __FILE__, array( $GLOBALS['k6cp'], 'activate' ) );
-		register_deactivation_hook( __FILE__, array( $GLOBALS['k6cp'], 'deactivate' ) );
+
+		/**
+		 * The main function responsible for returning the one true BuddyPress Instance to functions everywhere.
+		 *
+		 * Use this function like you would a global variable, except without needing
+		 * to declare the global.
+		 *
+		 * Example: <?php $cp = customize_plus(); ?>
+		 *
+		 * @return BuddyPress The one true BuddyPress Instance.
+		 */
+		function customize_plus() {
+			return K6CP::get_instance();
+		}
+		// $GLOBALS['k6cp'] = K6CP::get_instance();
+		// register_activation_hook( __FILE__, array( $GLOBALS['k6cp'], 'activate' ) );
+		// register_deactivation_hook( __FILE__, array( $GLOBALS['k6cp'], 'deactivate' ) );
 	}
 } else {
 	add_action( 'admin_notices', 'k6cp_requirements_error' );

@@ -28,123 +28,6 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 */
 		public static $DEFAULTS; // these will be the 'theme_mods'
 
-
-		/**
-		 * Description for public
-		 * @var unknown
-		 */
-		public static $PREPROCESSOR_VARIABLES_NAMES;
-
-		/**
-		 * Description for public
-		 * @var unknown
-		 */
-		public static $PREPROCESSOR_VARIABLES_NAMES_SIZE;
-
-		/**
-		 * Description for public
-		 * @var unknown
-		 */
-		public static $PREPROCESSOR_VARIABLES_NAMES_COLOR;
-
-		/**
-		 * Less math functions
-		 *
-		 * The following functions must be supported by
-		 * oth the js and the php less parsers // k6tobecareful \\
-		 *
-		 * @see  http://lesscss.org/functions/#math-functions
-		 * @var array
-		 */
-		public static $LESS_MATH_FUNCTIONS = array(
-			'ceil',
-			'floor',
-			'integer',
-			'percentage',
-			'round',
-			'sqrt',
-			'abs',
-			'sin',
-			'asin',
-			'cos',
-			'acos',
-			'tan',
-			'atan',
-			'pi',
-			'pow',
-			'mod',
-			'min',
-			'max',
-		);
-
-		/**
-		 * Preprocessor color simple functions
-		 *
-		 * Functions with two arguments: `color`, `amount`.
-		 * Only these functions are controllable through the `dyanmic`
-		 * color `friendly` interface. All the others functions are
-		 * still available through the `expression` input text.
-		 *
-		 * @var array
-		 */
-		public static $PREPROCESSOR_COLOR_SIMPLE_FUNCTIONS = array(
-			'saturate',
-		  'desaturate',
-		  'lighten',
-		  'darken',
-		  'fadein',
-		  'fadeout',
-		  'fade',
-		  'spin',
-		  // 'mix',
-		  // 'greyscale',
-		  // 'contrast',
-		);
-
-		/**
-		 * Less color operation functions
-		 *
-		 * The following functions must be supported by
-		 * oth the js and the php less parsers // k6tobecareful \\
-		 *
-		 * @see  http://lesscss.org/functions/#color-operation
-		 * @var array
-		 */
-		public static $LESS_COLOR_OPERATION_FUNCTIONS = array(
-			'saturate',
-		  'desaturate',
-		  'lighten',
-		  'darken',
-		  'fadein',
-		  'fadeout',
-		  'fade',
-		  'spin',
-		  'mix',
-		  'greyscale',
-		  'contrast',
-		);
-
-		/**
-		 * Less color blending functions
-		 *
-		 * The following functions must be supported by
-		 * both the js and the php less parsers // k6tobecareful \\
-		 *
-		 * @see  http://lesscss.org/functions/#color-blending
-		 * @var array
-		 */
-		public static $LESS_COLOR_BLENDING_FUNCTIONS = [
-		  'multiply',
-		  'screen',
-		  'overlay',
-		  'softlight',
-		  'hardlight',
-		  'difference',
-		  'exclusion',
-		  'average',
-		  'negation'
-		];
-
 		/**
 		 * Font families
 		 *
@@ -228,37 +111,35 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 */
 		protected function __construct() {
 
-			require_once( __DIR__ . '/k6-functions-sanitize.php' );
-			require_once( __DIR__ . '/class-k6-preprocessor.php' );
+			require_once( __DIR__ . '/k6cp-functions-sanitize.php' );
+			require_once( __DIR__ . '/class-k6cp-customize-compiler.php' );
+			// require_once( __DIR__ . '/class-k6cp-preprocessor-less.php' );
 
-			self::set_options_prefix();
-			self::set_options();
-			self::setup_preprocessor();
+			self::init();
 
-			add_action( 'admin_menu', array( $this, 'clean_admin_menu' ) );
+			add_action( 'admin_menu', array( __CLASS__, 'clean_admin_menu' ) );
 
-			// k6tocheck add_action( 'start_previewing_theme', array( $this, 'on_start_preview' ) ); \\
-			add_action( 'admin_init', array( $this, 'compile_css_after_preview' ) );
-			// add_action( 'stop_previewing_theme', array( $this, 'compile_css_after_preview' ) ); // k6doubt \\
-
-			add_filter( 'style_loader_tag', array( $this, 'allow_enqueue_less_styles' ), 5, 2 );
-
-			add_action( 'admin_init', array( $this, 'maybe_create_default_css' ) );
-			add_action( 'customize_register', array( $this, 'add_custom_classes' ) );
+			add_action( 'customize_register', array( __CLASS__, 'add_custom_classes' ) );
 			// add_action( 'customize_register', array( $this, 'change_wp_defaults' ) ); TODO
-			add_action( 'customize_register', array( $this, 'add_panels' ) );
-			add_action( 'customize_controls_print_styles', array( $this, 'inject_css_admin' ) );
-			add_action( 'customize_controls_print_styles', array( $this, 'inject_js_shims' ) );
-			add_action( 'customize_controls_print_scripts', array( $this, 'print_templates' ) );
-			add_action( 'customize_controls_print_footer_scripts', array( $this, 'print_template_loader' ) );
-			add_action( 'customize_controls_print_footer_scripts' , array( $this, 'inject_js_admin' ) );
+			add_action( 'customize_register', array( __CLASS__, 'add_panels' ) );
+			add_action( 'customize_controls_print_styles', array( __CLASS__, 'inject_css_admin' ) );
+			add_action( 'customize_controls_print_styles', array( __CLASS__, 'inject_js_shim' ) );
+			add_action( 'customize_controls_print_scripts', array( __CLASS__, 'print_templates' ) );
+			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'print_template_loader' ) );
+			add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'inject_js_admin' ) );
 			add_action( 'customize_preview_init' , array( $this, 'inject_js_preview' ) );
-			add_action( 'customize_save_after', array( $this, 'maybe_create_default_css' ) );
 			// k6doubt add_action( 'customize_save_after', array( $this, 'compile_css' ) ); // use this or the less.js result sent through ajax \\
 
-			add_action( 'wp_ajax_k6_save_css', array( $this, 'save_css' ) );
+			add_action( 'wp_ajax_k6_save_css', array( $this, 'save_css' ) ); // this should loop through all saved stylesheets (also the one from the theme)
 			add_action( 'wp_ajax_k6_export', array( $this, 'export_settings' ) );
 			add_action( 'admin_post_k6_import', array( $this, 'import_settings' ) );
+		}
+
+		public static function init() {
+			self::set_options_prefix();
+			self::set_options();
+
+			do_action( 'k6cp/customize/init' );
 		}
 
 		/**
@@ -282,70 +163,13 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		}
 
 		/**
-		 * After action save on customize tool
-		 * we recompile the style also with the php compiler.
-		 * Since we dequeued the style to leave space to the js compilation
-		 * we need to add it to the global $wp_styles manually.
-		 * Pass true to force the recompilation and the new saved variables.
-		 *
-		 * @since  0.0.1
-		 */
-		public function compile_css() {
-			global $wp_styles;
-			$wp_styles = new WP_Styles();
-			$wp_styles->add( K6::SHORTNAME . '-theme', K6::$_ASSETS . 'styles/theme.less' );
-			$variables = K6::get_preprocessor_variables();
-			if ( class_exists( 'K6CP_Preprocessor_Less' ) ) {
-				K6CP_Preprocessor_Less::get_instance()->process_stylesheet( K6::SHORTNAME . '-theme', true, $variables );
-			}
-			// k6todo k6doubt
-			// // maybe here we need to clear the cache managed by some
-			// // plugins like w3totalcache (see here: http://wordpress.stackexchange.com/a/7122)
-			// $w3_plugin_totalcache->flush_all();
-			// // and maybe also clear the cache of twig / timber
-			// $loader = new TimberLoader();
-			// $loader->clear_cache_timber();
-			// $loader->clear_cache_twig();
-			// echo 'ciao timber cache';
-			// var_dump($loader); \\
-		}
-
-		/**
-		 * Compile CSS with php compiler after theme
-		 * preview.
-		 *
-		 * @since  0.0.1
-		 */ // k6doubt not sure if this needs to be done this way \\
-		public function compile_css_after_preview() {
-			if ( isset( $_GET['activated'] ) && isset( $_GET['previewed'] ) ) { // input var okay
-				self::compile_css();
-			}
-		}
-
-		/**
-		 * Returns the preprocessor configuration from the db,
-		 * populate the customization object with well formed var names and values
-		 *
-		 * @since  0.0.1
-		 */
-		private static function get_parsed_less_variables() {
-			$preprocessorCustomization = array();
-			$variables = self::get_preprocessor_variables();
-			foreach ( $variables as $key => $value ) {
-				$varName = '@' . $key;
-				$preprocessorCustomization[ $varName ] = K6::get_option( $key );
-			}
-			return $preprocessorCustomization;
-		}
-
-		/**
 		 * Outputs the custom css file
 		 * in the admin page of the customize
 		 *
 		 * @since  0.0.1
 		 */
-		public function inject_css_admin() {
-			wp_enqueue_style( 'k6-customize', K6::$_ASSETS . 'customize.min.css', array(), K6::VERSION ); // k6anticache \\ // k6trial wp_enqueue_script( 'k6-customize-preview', K6::$_ASSETS . 'jquery-velocity-patch.js?'.time().'='.mt_rand(), array( 'jquery' ), K6::VERSION ); // k6anticache k6temp \\
+		public static function inject_css_admin() {
+			wp_enqueue_style( 'k6cp-customize', plugins_url( 'assets/customize.min.css', K6CP_PLUGIN_FILE ), array( 'dashicons' ), K6CP::VERSION ); // k6anticache \\ // k6trial wp_enqueue_script( 'k6cp-customize-preview', K6CP::$_ASSETS . 'jquery-velocity-patch.js?'.time().'='.mt_rand(), array( 'jquery' ), K6CP::VERSION ); // k6anticache k6temp \\
 		}
 
 		/**
@@ -364,57 +188,62 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 *
 		 * @since  0.0.1
 		 */
-		public function inject_js_admin() {
-			wp_register_script( 'k6-customize', K6::$_ASSETS . 'customize.min.js', array( 'json2', 'underscore', 'jquery' ), K6::VERSION, false ); // k6anticache \\
-			wp_localize_script( 'k6-customize', 'K6', array(
-					'constants' => array(
-						'CUSTOMIZATION_ON_LOAD' => self::get_parsed_less_variables(),
-						'VARS_NAMES_SIZE' => self::$PREPROCESSOR_VARIABLES_NAMES_SIZE,
-						'VARS_NAMES_COLOR' => self::$PREPROCESSOR_VARIABLES_NAMES_COLOR,
-						'WORKER_URL' => K6::$_ASSETS . 'customize-worker.min.js',
-						'UNCOMPILED_STYLESHEET_URL' => K6::$_ASSETS . 'styles/',
-						'UNCOMPILED_STYLESHEET' => self::get_uncompiled_stylesheet_content(),
-						'PREPROCESSOR_URL' => K6::$_ASSETS . 'less.min.js',
-						'PREPROCESSOR_WORKER_URL' => K6::$_ASSETS . 'less-worker.min.js',
-						'PREPROCESSOR_MATH_FUNCTIONS' => self::$LESS_MATH_FUNCTIONS,
-						'PREPROCESSOR_COLOR_SIMPLE_FUNCTIONS' => self::$PREPROCESSOR_COLOR_SIMPLE_FUNCTIONS,
-						'FONT_FAMILIES' => k6_sanitize_font_families( self::$FONT_FAMILIES ),
-						'BREAKPOINTS' => array(
-							array( 'name' => 'xs', 'size' => 480 ), // k6todo, retrieve these from less options \\
-							array( 'name' => 'sm', 'size' => 768 ),
-							array( 'name' => 'md', 'size' => 992 ),
-							array( 'name' => 'lg', 'size' => 1200 ),
-						),
-					),
-					'options' => array(
-						'liveCompiling' => self::is_compiling_automatic(),
-						'advanced' => self::is_compiling_automatic(), // k6todo \\
-						'dev' => self::is_compiling_automatic(), // k6todo \\
-					),
-					'l10n' => array(
-						'compile' => __( 'Update CSS', 'pkgTextdomain' ),
-						'compiling' => __( 'Updating CSS ...', 'pkgTextdomain' ),
-						'compiled' => __( 'No CSS to update', 'pkgTextdomain' ),
-						'liveCSS' => __( 'Live CSS', 'pkgTextdomain' ),
-						'back' => __( 'Back', 'pkgTextdomain' ),
-						'searchPlaceholder' => __( 'Control name ...', 'pkgTextdomain' ),
-						'searchResultsFor' => __( 'Search for:', 'pkgTextdomain' ),
-						'tools' => __( 'Tools', 'pkgTextdomain' ),
-						'introTitle' => __( 'Customize', 'pkgTextdomain' ),
-						'introText' => __( 'Welcome to the customize tool', 'pkgTextdomain' ),
-						'exportUnsaved' => __( 'There are unsaved settings, they won\'t be exported. Proceed?', 'pkgTextdomain' ),
-						'importUnsaved' => __( 'There are unsaved settings, they will be lost. Proceed?', 'pkgTextdomain' ),
-						'failedLoadFile' => __( 'Failed to load file', 'pkgTextdomain' ),
-						'loadingPreview' => __( 'Loading preview ...', 'pkgTextdomain' ),
-						'resettingPreview' => __( 'Resetting preview ...', 'pkgTextdomain' ),
-						'resetting' => __( 'Resetting ...', 'pkgTextdomain' ),
-						'importResetted' => __( 'Import resetted', 'pkgTextdomain' ),
-						'importProcessing' => __( 'Processing import ...', 'pkgTextdomain' ),
-						'importUndo' => __( 'Undo Import', 'pkgTextdomain' ),
-						'customColor' => __( 'Custom', 'pkgTextdomain' ),
-					)
+		public static function inject_js_admin() {
+			wp_register_script( 'k6cp-customize', plugins_url( 'assets/customize.min.js', K6CP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery' ), K6CP::VERSION, false ); // k6anticache \\
+
+			wp_localize_script( 'k6cp-customize', 'K6', array(
+					'constants' => self::get_js_constants(),
+					'options' => self::get_js_options(),
+					'l10n' => self::get_js_l10n(),
 				) );
-			wp_enqueue_script( 'k6-customize' );
+			wp_enqueue_script( 'k6cp-customize' );
+		}
+
+		public static function get_js_constants() {
+			$required = array(
+				'FONT_FAMILIES' => k6cp_sanitize_font_families( self::$FONT_FAMILIES ),
+				'BREAKPOINTS' => array(
+					array( 'name' => 'xs', 'size' => 480 ), // k6todo, retrieve these from less options \\
+					array( 'name' => 'sm', 'size' => 768 ),
+					array( 'name' => 'md', 'size' => 992 ),
+					array( 'name' => 'lg', 'size' => 1200 ),
+				),
+			);
+			$additional = (array) apply_filters( 'k6cp/customize/js_constants', array() );
+			return array_merge( $required, $additional );
+		}
+
+		public static function get_js_options() {
+			$required = array(
+				'liveCompiling' => self::is_compiling_automatic(),
+				'advanced' => self::is_compiling_automatic(), // k6todo \\
+				'dev' => self::is_compiling_automatic(), // k6todo \\
+			);
+			$additional = (array) apply_filters( 'k6cp/customize/js_options', array() );
+			return array_merge( $required, $additional );
+		}
+
+		public static function get_js_l10n() {
+			$required = array(
+				'back' => __( 'Back', 'pkgTextdomain' ),
+				'searchPlaceholder' => __( 'Control name ...', 'pkgTextdomain' ),
+				'searchResultsFor' => __( 'Search for:', 'pkgTextdomain' ),
+				'tools' => __( 'Tools', 'pkgTextdomain' ),
+				'introTitle' => __( 'Customize', 'pkgTextdomain' ),
+				'introText' => __( 'Welcome to the customize tool', 'pkgTextdomain' ),
+				'exportUnsaved' => __( 'There are unsaved settings, they won\'t be exported. Proceed?', 'pkgTextdomain' ),
+				'importUnsaved' => __( 'There are unsaved settings, they will be lost. Proceed?', 'pkgTextdomain' ),
+				'failedLoadFile' => __( 'Failed to load file', 'pkgTextdomain' ),
+				'loadingPreview' => __( 'Loading preview ...', 'pkgTextdomain' ),
+				'resettingPreview' => __( 'Resetting preview ...', 'pkgTextdomain' ),
+				'resetting' => __( 'Resetting ...', 'pkgTextdomain' ),
+				'importResetted' => __( 'Import resetted', 'pkgTextdomain' ),
+				'importProcessing' => __( 'Processing import ...', 'pkgTextdomain' ),
+				'importUndo' => __( 'Undo Import', 'pkgTextdomain' ),
+				'customColor' => __( 'Custom', 'pkgTextdomain' ),
+			);
+			$additional = (array) apply_filters( 'k6cp/customize/js_l10n', array() );
+			return array_merge( $required, $additional );
 		}
 
 		/**
@@ -425,7 +254,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @return string The theme.less file as a string (we pass it to the web worker)
 		 */
 		public static function get_uncompiled_stylesheet_content() {
-			$response = wp_remote_get( K6::$_ASSETS . 'styles/theme.less' );
+			$response = wp_remote_get( K6CP::$_ASSETS . 'styles/theme.less' );
 			$less_string = wp_remote_retrieve_body( $response ); // k6doubt, keep it or not? // $less_string = preg_replace( '/(?:(?:(?<!\:|\\\|\')\/\/.*))/', '', $less_string ); // k6doubt, keep it or not? // $less_string = preg_replace( '/[ \t]+/', ' ', preg_replace( '/\s*$^\s*/m', "\n", $less_string ) ); \\
 			return $less_string;
 		}
@@ -439,7 +268,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @return  boolean Wether live compiling is automatic (true) or manual (false)
 		 */
 		public static function is_compiling_automatic() {
-			return (bool) apply_filters( 'k6_customize_is_compiling_automatic', K6::get_option( 'live-compiling' ) );
+			return (bool) apply_filters( 'k6_customize_is_compiling_automatic', K6CP::get_option( 'live-compiling' ) );
 		}
 
 		/**
@@ -449,60 +278,10 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public function inject_js_preview() {
-			add_action( 'wp_head', array( $this, 'enqueue_less_file' ) );
-			add_action( 'wp_enqueue_scripts', array( $this, 'remove_theme_css' ) );
-			wp_enqueue_script( 'k6-customize-preview', K6::$_ASSETS . 'customize-preview.min.js?'.time().'='.mt_rand(), array( 'jquery', 'customize-preview' ), K6::VERSION, true ); // k6anticache \\
-		}
 
-		/**
-		 * Remove the less file compiled to .css
-		 * which, if loaded, would interfere with
-		 * the live compiled less
-		 *
-		 * @since  0.0.1
-		 */
-		public function remove_theme_css() {
-			if ( self::is_compiling_automatic() ) {
-				wp_dequeue_style( 'k6-theme' );
-				wp_deregister_style( 'k6-theme' );
-			}
-		}
+			do_action( 'k6cp/customize/preview_init' );
 
-		/**
-		 * Enqueue the uncompiled less file
-		 *
-		 * @since  0.0.1
-		 */
-		public function enqueue_less_file() {
-			wp_enqueue_style( 'k6-theme-less', K6::$_ASSETS . 'styles/theme.less', array(), K6::VERSION ); // k6anticache \\
-		}
-
-		/**
-		 * Tweak WordPress style loader to accept
-		 * less files changing accordingly the attributes
-		 *
-		 * @link( http://wordpress.stackexchange.com/a/116768/25398, thanks to)
-		 * @global $wp_styles;
-		 * @param string $tag    The link tag for the enqueued style.
-		 * @param string $handle The style's registered handle.
-		 * @return string
-		 */
-		public function allow_enqueue_less_styles( $style_tag, $handle ) {
-			global $wp_styles;
-
-			$obj = $wp_styles->query( $handle );
-			if ( false === $obj ) {
-				return $style_tag;
-			}
-			if ( ! preg_match( '/\.less$/U', $obj->src ) ) {
-				return $style_tag;
-			}
-
-			// the current stylesheet is a LESS stylesheet, so make according changes
-			$rel = isset( $obj->extra['alt'] ) && $obj->extra['alt'] ? 'alternate stylesheet' : 'stylesheet';
-			$style_tag = str_replace( "rel='" . $rel . "'", "rel='stylesheet/less'", $style_tag );
-			$style_tag = str_replace( "id='" . $handle . "-css'", "id='" . $handle . "-less'", $style_tag );
-			return $style_tag;
+			wp_enqueue_script( 'k6cp-customize-preview', plugins_url( 'assets/customize-preview.min.js?'.time().'='.mt_rand(), K6CP_PLUGIN_FILE ), K6CP::VERSION, true ); // k6anticache \\
 		}
 
 
@@ -513,36 +292,23 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @return [type] [description]
 		 */
 		public static function print_template_loader() { // k6wptight-layout \\
-		?>
-			<div id="k6-loader" class="wp-full-overlay-main k6-full-overlay">
-				<div class="k6-u-midpoint-wrap">
-					<div class="k6-u-midpoint">
-						<img src="<?php echo includes_url( '/images/wlw/wp-watermark.png' ) ?>">
-						<?php if ( isset ( $_GET['k6_import'] ) ): // input var okay ?>
-							<h1 id="k6-title" class="k6-text"><?php _e( 'Import done', 'pkgTextdomain' ); ?></h1>
-							<h3 id="k6-text" class="k6-text"><?php _e( 'All options have been succesfully imported and saved', 'pkgTextdomain' ); ?></h3>
-						<?php else : ?>
-							<h1 id="k6-title" class="k6-text"><?php _e( 'Customize', 'pkgTextdomain' ); ?></h1>
-							<h3 id="k6-text" class="k6-text"><?php _e( 'Welcome to the customize tool', 'pkgTextdomain' ); ?></h3>
-						<?php endif; ?>
-						<div class="k6-text">
-							<span class="spinner"></span>
-							<?php _e( 'Loading ...', 'pkgTextdomain' ); ?>
-						</div>
-					</div>
-				</div>
-			</div>
+			?>
+			//= include '../views/customize-loader.php'
 			<?php
 		}
 
 		/**
-		 * [inject_js_shims description]
+		 * [inject_js_shim description]
 		 *
 		 * @since  0.0.1
 		 */
-		public static function inject_js_shims() {
-	?><!--[if lt IE 9]><script src="<?php echo esc_url( K6::$_ASSETS . 'es5-shim.min.js' ); ?>"></script><![endif]-->
-	<?php
+		public static function inject_js_shim() {
+			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+			// wp_enqueue_style( 'es5-shim', plugins_url( "assets/es5-shim{$min}.js", K6CP_PLUGIN_FILE ) );
+			// wp_style_add_data( 'es5-shim', 'conditional', 'if lt IE 9' );
+			?>
+			<!--[if lt IE 9]><script src="<?php echo esc_url( plugins_url( "assets/es5-shim{$min}.js", K6CP_PLUGIN_FILE ) ); ?>"></script><![endif]-->
+			<?php
 		}
 
 		/**
@@ -553,209 +319,8 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 */
 		public static function print_templates() { // k6wptight-layout \\
 			?>
-			<script id="k6-export-tpl" type="text/template">
-				<li id="k6-export" class="accordion-section control-section k6-tools-section">
-					<h3 class="accordion-section-title">
-						<i class="dashicons dashicons-download"></i> <?php _e( 'Export Settings', 'pkgTextdomain' ); ?>
-					</h3>
-					<ul class="accordion-section-content">
-						<li class="customize-control k6-control">
-							<p><?php _e( 'Export the theme settings for this site as a .json file. This allows you to easily import the configuration into another site.', 'pkgTextdomain' ); ?></p>
-							<label>
-								<span class="customize-control-title"><?php _e( 'Filename', 'pkgTextdomain' ); ?></span>
-								<input id="k6-export-name" type="text" name="export_filename" value="<?php echo self::get_base_export_filename(); ?>">
-							</label>
-							<p class="description customize-section-description"><?php _e( 'You can change the filename of the exported settings (a timestamp will be appended)', 'pkgTextdomain' ); ?></p>
-							<p>
-								<?php submit_button( __( 'Export & Download', 'pkgTextdomain' ), 'primary', 'submit', false, array( 'id' => 'k6-export-btn' ) ); ?>
-							</p>
-							<p><textarea id="k6-export-textarea" class="k6-textarea" name="export_textarea" rows="5" onclick="this.focus();this.select()" readonly="readonly"></textarea></p>
-							<p id="k6-export-copied"><?php _e( 'Copied', 'pkgTextdomain' ); ?></p>
-						</li>
-					</ul>
-				</li>
-			</script>
-			<script id="k6-import-tpl" type="text/template">
-				<li id="k6-import" class="accordion-section control-section k6-tools-section">
-					<h3 class="accordion-section-title">
-						<i class="dashicons dashicons-upload"></i> <?php _e( 'Import Settings', 'pkgTextdomain' ); ?>
-					</h3>
-					<ul class="accordion-section-content">
-						<li class="customize-control k6-control">
-							<p><?php _e( 'Import the theme settings from a .json file. This file can be obtained by exporting the settings on another site using the section above.', 'pkgTextdomain' ); ?></p>
-							<form id="k6-import-form" action="<?php echo admin_url( 'admin-post.php' ); ?>" method="POST" enctype="multipart/form-data">
-								<p><input id="k6-import-input" type="file" name="import"></p>
-								<label for="k6-import-textarea"><?php _e( 'Or paste the settings here:', 'pkgTextdomain' ); ?><label>
-								<p><textarea id="k6-import-textarea" class="k6-textarea" name="import_textarea" rows="5" placeholder="<?php _e( 'Paste here ...', 'pkgTextdomain' ); ?>" onclick="this.focus();this.select()"></textarea></p>
-								<div class="k6-if-filereader">
-									<button id="k6-import-preview" class="button button-primary "><?php _e( 'Unload preview', 'pkgTextdomain' ); ?></button>
-									<span class="spinner"></span>
-									<p id="k6-import-warning"><?php _e( 'To save just use the <b>Save & Publish</b> button above.', 'pkgTextdomain' ); ?> <strong><?php _e( 'Careful, it will overwrite all existing options values.', 'pkgTextdomain' ); ?></strong></p>
-								</div>
-								<div class="k6-if-no-filereader">
-									<p><strong><?php _e( 'WARNING! This will overwrite all existing options values, please proceed with caution!', 'pkgTextdomain' ); ?></strong></p>
-									<?php submit_button( __( 'Import', 'pkgTextdomain' ), 'primary', 'submit', false, array( 'id' => 'k6-import-save' ) ); ?>
-									<span class="spinner k6-show-on-loading"></span>
-									<?php wp_nonce_field( 'k6_import', 'k6_import_nonce' ); ?>
-									<input type="hidden" name="action" value="k6_import">
-								</div>
-							</form>
-						</li>
-					</ul>
-				</li>
-			</script>
-			<script id="k6-advanced-tpl" type="text/template">
-				<li id="k6-advanced" class="customize-control k6-control k6-tools-section">
-					<label>
-						<span class="customize-control-title"><?php _e( 'Advanced mode', 'pkgTextdomain' ); ?></span>
-						<input id="k6-advanced-input" type="checkbox" name="_customize-k6_advanced_controls" value="1" checked>
-						<?php _e( 'When advanced mode is enabled you will have a more granular control on every setting of the theme', 'pkgTextdomain' ); ?>
-					</label>
-				</li>
-			</script>
-			<script id="k6-support-tpl" type="text/template">
-				<?php $theme = wp_get_theme(); ?>
-				<li id="k6-support" class="accordion-section control-section k6-tools-section">
-					<h3 class="accordion-section-title">
-						<i class="dashicons dashicons-sos"></i> <?php _e( 'Support', 'pkgTextdomain' ); ?>
-					</h3>
-					<ul class="accordion-section-content">
-						<li class="customize-control k6-control">
-							<h3><?php _e( 'About', 'pkgTextdomain' ); ?></h3>
-							<p><?php _e( 'Theme', 'pkgTextdomain' ); ?>: <b><?php echo $theme->Name ?></b> | v<b><?php echo $theme->Version ?></b><br>
-							<?php _e( 'Author', 'pkgTextdomain' ); ?>: <b><a href="<?php echo $theme->{'Author URI'}; ?>" title="View the author's website" target="_blank">k6</a></b><br>
-							<?php _e( 'Released on', 'pkgTextdomain' ); ?>: <b>Mar 14, 2015</b></p> // k6todoTxt \\
-							<h3><?php _e( 'Contact and Social', 'pkgTextdomain' ); ?></h3>
-							<p><?php _e( 'Website', 'pkgTextdomain' ); ?>: <b><a href="<?php echo $theme->{'Author URI'}; ?>" target="_blank">kunderikuus.net</a></b><br>
-								<?php _e( 'Mail', 'pkgTextdomain' ); ?>: <b><a href="mailto:k6@kunderikuus.net" title="Contact the author" target="_blank">info@kunderikuus.net</a></b></p>
-						</li>
-					</ul>
-				</li>
-			</script>
+			//= include '../views/customize-templates.php'
 			<?php
-		}
-
-		/**
-		 * Get the path of the default CSS file
-		 * to enqueue on load and in case of problems // k6doubt which problems? think about it \\
-		 *
-		 * @since  0.0.1
-		 *
-		 * @return [string] The path of the default CSS file
-		 */
-		public static function get_css_default_path() {
-			return  ''; // self::$_ASSETS . 'theme-default.min.css';
-		}
-
-		/**
-		 * Create Default CSS on theme activate
-		 *
-		 * @since  0.0.1
-		 */
-		public function maybe_create_default_css() {
-			self::write_file( null, self::get_css_default_path() );
-		}
-
-		/**
-		 * [get_css_path description]
-		 * Regarding Multisite: wp_upload_dir() already return a site_id
-		 * specific upload directory, so there's no need to make the CSS
-		 * filename more specific.
-		 *
-		 * @since  0.0.1
-		 *
-		 * @param  [string] $dir_or_url  Wether to output the path as `dir` or `uri`
-		 * @param  [bool] $with_filename Wether to include the filename in the output
-		 * @return [string]              The path as `dir` or `uri`
-		 */
-		public static function get_css_path( $dir_or_url, $with_filename ) {
-			$theme_name = get_option( 'stylesheet' );
-			$upload = wp_upload_dir();
-			$upload = $dir_or_url == 'dir' ? $upload['basedir'] : $upload['baseurl'];
-			$css_folder = trailingslashit( $upload ) . 'theme-' . $theme_name;
-
-			if ( $with_filename ) {
-				return trailingslashit( $css_folder ) . 'theme.min.css';
-			} else {
-				return trailingslashit( $css_folder );
-			}
-		}
-
-		/**
-		 * Write File
-		 *
-		 * @link(WordPress Docs about Filesystem API, http://codex.wordpress.org/Filesystem_API)
-		 * @since  0.0.1
-		 *
-		 * @param  [string] $content      CSS as string
-		 * @param  [string] $content_path The path of the file where to extract content
-		 */
-		private static function write_file( $content, $content_path ) {
-			$url = wp_nonce_url( 'themes.php?page=example','example-theme-options' );
-			if ( false === ($creds = request_filesystem_credentials( $url, '', false, false, null ) ) ) {
-				return; // stop processing here
-			}
-			// now we have some credentials, try to get the wp_filesystem running
-			if ( ! WP_Filesystem( $creds ) ) {
-				request_filesystem_credentials( $url, '', true, false, null );
-				return;
-			}
-
-			global $wp_filesystem;
-
-			// get content directly or from path
-			$css_content = $content_path ? $wp_filesystem->get_contents( $content_path ) : $content;
-
-			$css_path_complete = self::get_css_path( 'dir', true );
-
-			// update the file
-			if ( $content ) {
-				// create folder and save default css if file doesn't exist yet
-				if ( ! $wp_filesystem->exists( $css_path_complete ) ) {
-					$wp_filesystem->mkdir( self::get_css_path( 'dir', false ) );
-				}
-				$wp_filesystem->put_contents( $css_path_complete, $content, FS_CHMOD_FILE );
-			}
-			// copy default file
-			else if ( $content_path ) {
-				// create folder and save default css if file doesn't exist yet
-				if ( ! $wp_filesystem->exists( $css_path_complete ) ) {
-					$wp_filesystem->put_contents( $css_path_complete, $wp_filesystem->get_contents( $content_path ), FS_CHMOD_FILE );
-				}
-			}
-		}
-
-		/**
-		 * Save the CSS compiled by less.js
-		 *
-		 * About the problem with magic quotes and the $_POST variable
-		 * see here: http://stackoverflow.com/questions/2496455/why-are-post-variables-getting-escaped-in-php
-		 *
-		 * @since  0.0.1
-		 */
-		public static function save_css() {
-			if ( empty( $_POST['style'] ) ) { // input var okay
-				wp_send_json_success( __( 'no CSS provided', 'pkgTextdomain' ) );
-			} else {
-				// $compiled_css = wp_filter_nohtml_kses( $_POST['style'] ); // k6todo think about how to do some kind of sanitization \\
-				// $compiled_css = stripslashes( wp_filter_nohtml_kses( stripslashes( $_POST['style'] ) ) );
-				// $compiled_css = wp_kses( stripslashes( $_POST['style'] ), array( '\\' => array(), '>' => array(), '\"' => array() ) );
-				$compiled_css = stripslashes( $_POST['style'] ); // input var okay
-				// $compiled_css = $_POST['style'];
-
-				// k6todo the problem is that css save doesn't work when previewing
-				// the theme and click on "save & activate"
-				// maybe here we should fall back to less.php
-				// try {
-				//   file_put_contents( self::get_css_path( 'dir', true ), $compiled_css );
-				// } catch (Exception $e) {
-				//   self::write_file( $compiled_css, null );
-				// } \\
-				self::write_file( $compiled_css, null );
-
-				wp_send_json_success( __( 'CSS saved', 'pkgTextdomain' ) );
-			}
-			die(); // this is required to terminate immediately and return a proper response
 		}
 
 		/**
@@ -833,7 +398,9 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 							// The option hasn't been added yet. We'll add it with $autoload set to 'no'.
 							add_option( $settings_options_prefix, $settings['options'], null, 'no' );
 						}
-						self::compile_css();
+
+						do_action('k6cp/customize/import');
+
 						wp_safe_redirect( admin_url( 'customize.php?k6_import=1' ) ); exit;
 					}
 				}
@@ -853,32 +420,32 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		public static function change_wp_defaults( $wp_customize ) {
 			$wp_customize->remove_section( 'static_front_page' );
 
-			// Move title_tagline section and change nmae
+			// Move title_tagline section and change name
 			$section_title_tagline = $wp_customize->get_section( 'title_tagline' );
 			$wp_customize->remove_section( 'title_tagline' );
 			$wp_customize->get_setting( 'blogname' )->transport = 'postMessage';
 			$wp_customize->get_setting( 'blogdescription' )->transport = 'postMessage';
 			$wp_customize->get_setting( 'header_textcolor' )->transport = 'postMessage';
-			$section_title_tagline->panel = K6::SHORTNAME . '-content'; // k6tobecareful \\
+			$section_title_tagline->panel = K6CP::SHORTNAME . '-content'; // k6tobecareful \\
 			$wp_customize->add_section( $section_title_tagline );
 
 			// Move nav section and change nmae
 			$section_nav = $wp_customize->get_section( 'nav' );
 			$wp_customize->remove_section( 'nav' );
 			$section_nav->title = __( 'Menu Navigation', 'pkgTextdomain' );
-			$section_nav->panel = K6::SHORTNAME . '-layout'; // k6tobecareful \\
+			$section_nav->panel = K6CP::SHORTNAME . '-layout'; // k6tobecareful \\
 			$wp_customize->add_section( $section_nav );
 
 			// Move background_image section
 			$section_custom_background = $wp_customize->get_section( 'background_image' );
 			$wp_customize->remove_section( 'background_image' );
-			$section_custom_background->panel = K6::SHORTNAME . '-layout'; // k6tobecareful \\
+			$section_custom_background->panel = K6CP::SHORTNAME . '-layout'; // k6tobecareful \\
 			$wp_customize->add_section( $section_custom_background );
 
 			// Move header_image section
 			$section_header_image = $wp_customize->get_section( 'header_image' );
 			$wp_customize->remove_section( 'header_image' );
-			$section_header_image->panel = K6::SHORTNAME . '-layout'; // k6tobecareful \\
+			$section_header_image->panel = K6CP::SHORTNAME . '-layout'; // k6tobecareful \\
 			$wp_customize->add_section( $section_header_image );
 
 			// Remove background color control and header color
@@ -895,7 +462,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 */
 		public static function add_custom_classes( $wp_customize ) {
 
-			require __DIR__ . '/customize-classes.php';
+			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize-classes.php' );
 
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Buttonset' );
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Color' );
@@ -930,7 +497,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 			$panels = self::get_options();
 
 			// Use a short prefix for the panels' id
-			$panel_prefix = K6::SHORTNAME;
+			$panel_prefix = K6CP::SHORTNAME;
 
 			// set priority to 0
 			$priority_panel = 0;
@@ -1009,8 +576,8 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 
 			foreach ( $section_fields as $option_id => $option_args ) {
 
-				$control_args = $option_args['c'];
-				$setting_args = isset( $option_args['s'] ) ? $option_args['s'] : null;
+				$control_args = $option_args['control'];
+				$setting_args = isset( $option_args['setting'] ) ? $option_args['setting'] : null;
 
 				if ( $setting_args ) {
 
@@ -1024,7 +591,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 
 					// add default callback function, if none is defined
 					if ( ! isset( $setting_args['sanitize_callback'] ) ) {
-						$setting_args['sanitize_callback'] = 'k6_sanitize_callback';
+						$setting_args['sanitize_callback'] = 'k6cp_sanitize_callback';
 					}
 					// Add setting to WordPress
 					$wp_customize->add_setting( $option_id, $setting_args );
@@ -1103,7 +670,8 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function get_options() {
-			return include apply_filters( 'k6_customize_get_options', __DIR__ . '/customize-options.php' );
+			$fixtures = require( K6CP_PLUGIN_DIR . 'includes/fixtures-options.php' ); // k6temp, also should be require_once \\
+			return apply_filters( 'k6cp/customize/get_options', $fixtures/*array()*/ );
 		}
 
 		/**
@@ -1114,7 +682,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @return [type] [description]
 		 */
 		public static function set_options_prefix() {
-			self::$OPTIONS_PREFIX = K6::SHORTNAME; // k6doubt 'theme_mods_' . get_option( 'stylesheet' ) . '_style'; \\
+			self::$OPTIONS_PREFIX = K6CP::SHORTNAME; // k6doubt 'theme_mods_' . get_option( 'stylesheet' ) . '_style'; \\
 		}
 
 		/**
@@ -1125,72 +693,38 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @return [type]              [description]
 		 */
 		public static function set_options() {
-			$DEFAULTS = array();
-			$PREPROCESSOR_VARIABLES_NAMES = array();
-			$PREPROCESSOR_VARIABLES_NAMES_SIZE = array();
-			$PREPROCESSOR_VARIABLES_NAMES_COLOR = array();
 			$options = self::get_options();
 
 			foreach ( $options as $panel_id => $panel_args ) {
 				foreach ( $panel_args['sections'] as $section_id => $section_args ) {
-					foreach ( $section_args['fields'] as $setting_id => $option_args ) {
+					foreach ( $section_args['fields'] as $option_id => $option_args ) {
 
-						if ( isset ( $option_args['s'] ) ) {
+						if ( isset ( $option_args['setting'] ) ) {
 
-							$setting_default = $option_args['s']['default'];
-							$transport = $option_args['s']['transport'];
-							$type = $option_args['c']['type'];
+							$setting = $option_args['setting'];
+							$control = $option_args['control'];
+
+							// this allow to use a different id for the setting than the default one
+							// (which is the same for the setting and its related control)
+							if ( ! isset ( $setting['id'] ) ) {
+								$setting['id'] = $option_id;
+							}
+							// this allow to use a different id for the control than the default one
+							// (which is the same for the setting and its related control)
+							if ( ! isset ( $control['id'] ) ) {
+								$control['id'] = $option_id;
+							}
 
 							// set default value on options defaults
-							$DEFAULTS[ $setting_id ] = $setting_default;
+							self::$DEFAULTS[ $setting['id'] ] = $setting['default'];
 
-							// if transport indicates that needs to recompile css push it on less variables names array
-							if ( 'recompile' == $transport || 'recompileAndPost' == $transport || 'recompileLater' == $transport || 'recompileRefresh' == $transport ) {
-								array_push( $PREPROCESSOR_VARIABLES_NAMES, $setting_id );
-
-								// if we have a size set it on sizes variables array
-								if ( 'k6_size' == $type || 'k6_slider' == $type || 'k6_number' == $type ) {
-									array_push( $PREPROCESSOR_VARIABLES_NAMES_SIZE, $setting_id );
-								}
-								// if we have a color set it on colors variables array
-								if ( 'color' == $type || 'k6_color' == $type ) {
-									array_push( $PREPROCESSOR_VARIABLES_NAMES_COLOR, $setting_id );
-								}
+							if ( $setting && $control ) {
+								do_action( 'k6cp/customize/each_option', $setting, $control );
 							}
 						}
 					}
 				}
 			}
-			self::$DEFAULTS = $DEFAULTS;
-			self::$PREPROCESSOR_VARIABLES_NAMES = $PREPROCESSOR_VARIABLES_NAMES;
-			self::$PREPROCESSOR_VARIABLES_NAMES_SIZE = $PREPROCESSOR_VARIABLES_NAMES_SIZE;
-			self::$PREPROCESSOR_VARIABLES_NAMES_COLOR = $PREPROCESSOR_VARIABLES_NAMES_COLOR;
-		}
-
-		/**
-		 * Setup CSS preprocessor compiler.
-		 * Manage integration between options and css compilation
-		 *
-		 * @since 0.0.1
-		 */
-		private static function setup_preprocessor() {
-			$preprocessor = K6CP_Preprocessor_Less::get_instance();
-			$preprocessor->set_upload_uri( self::get_css_path( 'uri', false ) );
-			$preprocessor->set_upload_dir( self::get_css_path( 'dir', false ) );
-			$preprocessor->set_variables( self::get_preprocessor_variables() );
-			$preprocessor->set_variable( 'lesscompiler', 'php' );
-			// $preprocessor->set_compilation_strategy( self::get_option( 'css-compilation-strategy' ) ); TODO
-		}
-
-		/**
-		 * [get_preprocessor_variables description]
-		 *
-		 * @since 0.0.1
-		 * @return [type] [description]
-		 */
-		public static function get_preprocessor_variables() {
-			$options = wp_parse_args( array(), self::$DEFAULTS ); // get_theme_mods
-			return array_intersect_key( $options, array_flip( self::$PREPROCESSOR_VARIABLES_NAMES ) );
 		}
 	}
 

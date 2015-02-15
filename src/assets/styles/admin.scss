@@ -11,3 +11,43 @@
 @import "vendor/jquery-ui.slider-custom";
 @import "vendor/selectize";
 @import "vendor/selectize-custom";
+
+.k6cp-badge {
+  animation: rotateBadge 20s linear infinite;
+  font: normal 150px/1 'dashicons' !important;
+  color: #f9f9f9;
+  display: inline-block;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    width: 40%;
+    height: 40%;
+    background-color: #eee;
+    border-radius: 100%;
+  }
+
+  &:after {
+    z-index: 1;
+    position: relative;
+    content: "\f111";
+    text-shadow: 5px 5px 30px rgba(0,0,0,0.18);
+  }
+
+  .about-wrap & {
+    position: absolute;
+    top: 0;
+    right: 20px;
+  }
+}
+
+@keyframes rotateBadge {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
