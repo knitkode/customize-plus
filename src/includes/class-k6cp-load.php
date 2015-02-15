@@ -130,15 +130,9 @@ if ( ! class_exists( 'K6CP' ) ):
 		 * @since  0.0.1
 		 */
 		private static function set_constants() {
-<<<<<<< HEAD:src/includes/class-k6cp-load.php
-			self::$_ASSETS = plugin_dir_url( K6CP_PLUGIN_FILE ) . '/assets/';
-			self::$_IMAGES = plugin_dir_url( K6CP_PLUGIN_FILE ) . 'assets/images/';
-			self::$_LANGUAGES = plugin_dir_url( K6CP_PLUGIN_FILE ) .'/languages/';
-=======
 			self::$_ASSETS = plugin_dir_url( __FILE__ ) . '/assets/';
 			self::$_IMAGES = plugin_dir_url( __FILE__ ) . 'assets/images/';
 			self::$_LANGUAGES = plugin_dir_url( __FILE__ ) .'/languages/';
->>>>>>> 19f9a531b7a059e7231598fe3e6215fd71b0a642:src/includes/class-k6cp-load.php
 			// use this instead
 			// plugins_url( 'assets/js/chart.js', SU_PLUGIN_FILE )
 		}
