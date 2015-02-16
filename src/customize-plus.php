@@ -15,7 +15,7 @@
  * @package           pkgName
  *
  * @wordpress-plugin
- * Plugin Name:       pkgNamePretty
+ * Plugin Name:       Customize Plus
  * Plugin URI:        pkgHomepage
  * Description:       pkgDescription
  * Version:           pkgVersion
