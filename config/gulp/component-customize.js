@@ -1,10 +1,12 @@
-/* global gulp, $, CONFIG, PATHS, PLUGINS */
+/* global gulp, $, PATHS */
 /* jshint node: true */
 
+var CONFIG = require('./wpkuus-config');
+var PLUGINS = require('./wpkuus-plugins');
 var streamqueue = require('streamqueue');
 var extend = require('util')._extend;
-// var swigHelpers = require('../util/swigHelpers');
-var pkg = require('../../../package.json');
+// var swigHelpers = require('./wpkuus-util-swig-helpers');
+var pkg = require('../../package.json');
 
 
 /**

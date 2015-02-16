@@ -1,3 +1,3 @@
-/* global gulp, $, CONFIG, PLUGINS */
+/* global gulp, $ */
 /* jshint node: true */
 'use strict';

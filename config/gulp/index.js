@@ -1,6 +1,6 @@
 var fs = require('fs');
-var onlyScripts = require('./util/scriptFilter');
-var tasks = fs.readdirSync('./config/gulp/tasks/').filter(onlyScripts);
+var onlyScriptsTasks = require('./wpkuus-util-script-filter');
+var tasks = fs.readdirSync('./config/gulp/').filter(onlyScriptsTasks);
 
 // These variables are intentionally global,
 // otherwise we had to redefine them in every single task
@@ -9,5 +9,5 @@ $ = require('gulp-load-plugins')();
 
 // require each .js file in the tasks folder
 tasks.forEach(function(task) {
-  require('./tasks/' + task);
+  require('./' + task);
 });

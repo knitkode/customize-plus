@@ -1,10 +1,12 @@
-/* global gulp, $, CONFIG, PATHS */
+/* global gulp, $, PATHS */
 /* jshint node: true */
 'use strict';
 
-var handleErrors = require('../util/handleErrors');
+var plugins = require('./wpkuus-plugins');
+var config = require('./wpkuus-config');
+var utilErrors = require('wpkuus-util-errors');
 var pngquant = require('imagemin-pngquant');
-var pkg = require('../../../package.json');
+var pkg = require('../../package.json');
 
 /**
  * Build
@@ -63,14 +65,14 @@ gulp.task('_base-images', function() {
 gulp.task('_base-styles', ['_base-images'], function() {
   return gulp.src(PATHS.src.styles + '*.scss')
     .pipe($.sass())
-    .on('error', handleErrors)
+    .on('error', utilErrors)
     .pipe($.rename({ suffix: '.min' }))
     .pipe($.if(CONFIG.isDist, $.base64({
       baseDir: PATHS.src.assets,
       extensions: ['svg'],
       debug: true
     })))
-    .pipe($.autoprefixer(PLUGINS.autoprefixer))
+    .pipe($.autoprefixer(plugins.autoprefixer))
     .pipe($.if(CONFIG.isDist, $.combineMediaQueries()))
     .pipe($.if(CONFIG.isDist, $.minifyCss()))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
@@ -85,7 +87,7 @@ gulp.task('_base-styles', ['_base-images'], function() {
  * @private
  */
 gulp.task('_base-php', function() {
-  return gulp.src(PATHS.src.includes + '**/*.php')
+  return gulp.src(PATHS.src.includes + '*.php')
     .pipe($.include())
     .pipe($.replace(/<\?php\s\/\/\s@partial/g, '')) // remove extra `<?php // @partial`
     .pipe(gulp.dest(PATHS.build.includes));

@@ -7,7 +7,7 @@
     "nameShort": "k6cp",
     "startYear": 2014
   },
-  "homepage": "http://customize-plus.wpkuus.com",
+  "homepage": "http://wpkuus.com/customize-plus",
   "author": {
     "name": "kuus",
     "email": "kunderikuus@gmail.com",
@@ -17,9 +17,9 @@
     "type": "Copyright (C) kunderi kuus, Inc - All Rights Reserved",
     "url": "http://themeforest.net/licenses/standard"
   },
-  "private": true,
+  "private": false,
   "repository": {
-    "url": "https://gitlab.com/wpkuus/customize-plus"
+    "url": "https://github.com/wpkuus/customize-plus"
   },
   "dependencies": {},
   "devDependencies": {

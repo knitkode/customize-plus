@@ -1,47 +1,4 @@
-/* global gulp, require, CONFIG, PLUGINS */
-
-/**
- * Config informations
- * @type {Object}
- */
-module.exports = CONFIG = {
-  credits: [
-    '/*!',
-    ' * <%= pkg.config.namePretty %> v<%= pkg.version %> (<%= pkg.homepage %>)',
-    ' * <%= pkg.description %>',
-    ' * Copyright <%= pkg.config.startYear %><% if (new Date().getFullYear() > pkg.config.startYear) { %>-<%= new Date().getFullYear() %><% } %> <%= pkg.author.name %> <<%= pkg.author.email %>> (<%= pkg.author.url %>)',
-    ' * <%= pkg.license.type %> (<%= pkg.license.url %>)',
-    ' */'
-  ].join('\n'),
-  argv: require('minimist')(process.argv.slice(2)),
-  isDist: !!require('minimist')(process.argv.slice(2)).dist, // read --dist arg (i.e. `gulp build --dist`)
-};
-
-/**
- * Gulp Plugins shared options
- * @type {Object}
- */
-module.exports = PLUGINS = {
-  // gulp-modernizr shared options
-  modernizr: {
-    'cache' : true,
-    'options': [ // Based on default settings on http://modernizr.com/download/
-      'setClasses',
-      'addTest',
-      'testProp',
-      'fnBind'
-    ],
-    'excludeTests': [],
-    'crawl' : false,
-    'customTests' : []
-  },
-  uglify: {
-    preserveComments: 'some',
-    toplevel: true,
-    mangle: true
-  },
-  autoprefixer: 'last 2 version'
-};
+/* jshint node: true */
 
 /**
  * Paths
@@ -49,7 +6,7 @@ module.exports = PLUGINS = {
  */
 module.exports = PATHS = {
   /** @type {String} */
-  bower: './src/bower_components/',
+  bower: './src/assets/bower_components/',
   /** @type {Object} */
   src: {
     root: './src/',

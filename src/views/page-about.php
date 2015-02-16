@@ -47,7 +47,7 @@
         <b><?php _e( 'Responsive screen Previews', 'pkgTextDomain' ); ?></b> <em class="description">(<?php _e( 'Premium', 'pkgTextDomain' ); ?>)</em>
         <p class="description"><?php _e( 'Preview and test your website responsiveness on different screen sizes.', 'pkgTextDomain' ); ?> | <a href="http://wpkuus.com/">Learn more</a></p>
       </li>
-      <li class="k6cp-premium"><i class="dashicons dashicons-search"></i>
+      <li class="k6cp-premium"><i class="dashicons dashicons-editor-bold"></i>
         <b><?php _e( 'Bootstrap Customizer', 'pkgTextDomain' ); ?></b> <em class="description">(<?php _e( 'Premium', 'pkgTextDomain' ); ?>)</em>
         <p class="description"><?php _e( 'Fully Customize the Bootstrap framework.', 'pkgTextDomain' ); ?> | <a href="http://wpkuus.com/">Learn more</a></p>
       </li>
