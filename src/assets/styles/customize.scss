@@ -10,8 +10,6 @@
 @import "vendor/jquery-ui.theme";
 @import "vendor/jquery-ui.slider-pips";
 @import "vendor/jquery-ui.slider-custom";
-@import "vendor/atwho";
-@import "vendor/atwho-custom";
 @import "vendor/selectize";
 @import "vendor/selectize-custom";
 
@@ -21,13 +19,8 @@
 @import "customize/base-overflow_fix";
 
 // customize - components
-@import "customize/components/advanced";
-@import "customize/components/compiler";
-@import "customize/components/search";
-@import "customize/components/import";
-@import "customize/components/screenpreview";
+@import "customize/components/tabs";
 @import "customize/components/tips";
-@import "customize/components/tools";
 
 // customize - sections
 @import "customize/sections/base";
@@ -39,10 +32,7 @@
 @import "customize/controls/radio-image";
 @import "customize/controls/toggle";
 @import "customize/controls/multicheck";
-@import "customize/controls/color";
+@import "customize/controls/color"; // k6todo, to simplify \\
 @import "customize/controls/slider";
-@import "customize/controls/tabs";
-@import "customize/controls/size";
 @import "customize/controls/divider";
 @import "customize/controls/helpers-extras";
-@import "customize/controls/helpers-screenpicker";

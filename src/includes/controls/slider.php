@@ -6,7 +6,7 @@
  */
 class K6CP_Customize_Control_Slider extends K6CP_Customize_Control_Base {
 
-	public $type = 'k6_slider';
+	public $type = 'k6cp_slider';
 	public $units = array( 'px' );
 
 	/**

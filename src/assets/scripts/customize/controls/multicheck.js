@@ -88,4 +88,4 @@ var ControlMulticheck = ControlBase.extend({
   }
 });
 
-api.controlConstructor['k6_multicheck'] = ControlMulticheck;
+api.controlConstructor['k6cp_multicheck'] = ControlMulticheck;

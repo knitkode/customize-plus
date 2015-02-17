@@ -846,4 +846,4 @@ var ControlColor = ControlBase.extend({
   }
 });
 
-api.controlConstructor['k6_color'] = ControlColor;
+api.controlConstructor['k6cp_color'] = ControlColor;

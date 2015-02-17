@@ -6,5 +6,5 @@
  */
 class K6CP_Customize_Control_Number extends K6CP_Customize_Control_Base_Input {
 
-	public $type = 'k6_number';
+	public $type = 'k6cp_number';
 }

@@ -6,7 +6,7 @@
  */
 class K6CP_Customize_Control_Font_Family extends K6CP_Customize_Control_Base {
 
-	public $type = 'k6_font_family';
+	public $type = 'k6cp_font_family';
 
 	/**
 	 * [enqueue description]

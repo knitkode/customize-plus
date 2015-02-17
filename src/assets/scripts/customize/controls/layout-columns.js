@@ -219,15 +219,17 @@ var ControlLayoutColumns = ControlBase.extend({
     this.setting.validate = this._validate.bind(this);
 
     api.bind('ready', function () {
-      // listen to 'sidebar mode' changes
-      api('sidebar').bind(function (value) { // k6tobecareful name tight to specific control ID \\
-        self._setMode(value);
-      });
+      // k6todo-temporary try catch \\
+      try {
+        api('sidebar').bind(function (value) { // k6tobecareful name tight to specific control ID \\
+          self._setMode(value);
+        });
 
-      // listen to 'columns number' changes
-      api('grid-columns').bind(function (value) { // k6tobecareful name tight to control ID \\
-        self._setColumns(value);
-      });
+        // listen to 'columns number' changes
+        api('grid-columns').bind(function (value) { // k6tobecareful name tight to control ID \\
+          self._setColumns(value);
+        });
+      } catch(e) {}
     });
   },
   /**
@@ -254,4 +256,4 @@ var ControlLayoutColumns = ControlBase.extend({
   }
 });
 
-api.controlConstructor['k6_layout_columns'] = ControlLayoutColumns;
+api.controlConstructor['k6cp_layout_columns'] = ControlLayoutColumns;

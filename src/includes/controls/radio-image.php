@@ -9,7 +9,7 @@
  */
 class K6CP_Customize_Control_Radio_Image extends K6CP_Customize_Control_Base_Radio {
 
-	public $type = 'k6_radio_image';
+	public $type = 'k6cp_radio_image';
 
 	/**
 	 * Render template for choice displayment.
@@ -18,7 +18,7 @@ class K6CP_Customize_Control_Radio_Image extends K6CP_Customize_Control_Base_Rad
 	 */
 	protected function js_tpl_choice() {
 		?>
-			<input id="{{ id }}" class="k6-radio-image" type="radio" value="{{ val }}" name="_customize-k6_radio_image-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
+			<input id="{{ id }}" class="k6-radio-image" type="radio" value="{{ val }}" name="_customize-k6cp_radio_image-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
 			<label for="{{ id }}"{{{ tipAttrs }}}>
 				<img class="k6-tip" src="<?php echo esc_url( K6CP::$_IMAGES ); ?>{{ data.id }}-{{ val }}.png" title="{{{ label }}}">
 			</label>

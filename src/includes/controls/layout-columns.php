@@ -7,7 +7,15 @@
  */
 class K6CP_Customize_Control_Layout_Columns extends K6CP_Customize_Control_Base {
 
-	public $type = 'k6_layout_columns';
+	public $type = 'k6cp_layout_columns';
+
+	/**
+	 * [enqueue description]
+	 * @return [type] [description]
+	 */
+	public function enqueue() {
+		wp_enqueue_script( 'jquery-ui-slider' );
+	}
 
 	/**
 	 * Decode the value (is a JSON)

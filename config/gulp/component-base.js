@@ -2,9 +2,9 @@
 /* jshint node: true */
 'use strict';
 
-var plugins = require('./wpkuus-plugins');
-var config = require('./wpkuus-config');
-var utilErrors = require('wpkuus-util-errors');
+var CONFIG = require('./wpkuus-config');
+var PLUGINS = require('./wpkuus-plugins');
+var utilErrors = require('./wpkuus-util-errors');
 var pngquant = require('imagemin-pngquant');
 var pkg = require('../../package.json');
 
@@ -72,7 +72,7 @@ gulp.task('_base-styles', ['_base-images'], function() {
       extensions: ['svg'],
       debug: true
     })))
-    .pipe($.autoprefixer(plugins.autoprefixer))
+    .pipe($.autoprefixer(PLUGINS.autoprefixer))
     .pipe($.if(CONFIG.isDist, $.combineMediaQueries()))
     .pipe($.if(CONFIG.isDist, $.minifyCss()))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))

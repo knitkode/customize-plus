@@ -101,4 +101,4 @@ var ControlFontFamily = ControlBase.extend({
   }
 });
 
-api.controlConstructor['k6_font_family'] = ControlFontFamily;
+api.controlConstructor['k6cp_font_family'] = ControlFontFamily;

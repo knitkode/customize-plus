@@ -45,4 +45,4 @@ var ControlToggle = ControlBase.extend({
     }
   }
 });
-api.controlConstructor['k6_toggle'] = ControlToggle;
+api.controlConstructor['k6cp_toggle'] = ControlToggle;

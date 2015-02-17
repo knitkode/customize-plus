@@ -6,7 +6,7 @@
  */
 class K6CP_Customize_Control_Color extends K6CP_Customize_Control_Base {
 
-	public $type = 'k6_color';
+	public $type = 'k6cp_color';
 
 	/**
 	 * Enqueue scripts/styles for the color picker.

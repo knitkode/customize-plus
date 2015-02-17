@@ -6,7 +6,7 @@
  */
 class K6CP_Customize_Control_Size extends K6CP_Customize_Control_Base {
 
-	public $type = 'k6_size';
+	public $type = 'k6cp_size';
 
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
@@ -41,10 +41,10 @@ class K6CP_Customize_Control_Size extends K6CP_Customize_Control_Base {
 	 */
 	protected function js_tpl() {
 			/*<div class="switch-toggle k6-switch switch-2">
-				<input id="k6_size-choice_{{ data.id }}" type="radio" value="custom" name="_customize-k6_size-custom-{{ data.id }}" <# if (data.value===data.isExpr) { #>checked<# } #>>
-				<label for="k6_size-custom-{{ data.id }}" onclick=""><?php _e( 'Custom', 'pkgtextdomain' ); ?></label>
-				<input id="k6_size-choice_{{ data.id }}" type="radio" value="expr" name="_customize-k6_size-expr-{{ data.id }}" <# if (data.value!==data.isExpr) { #>checked<# } #>>
-				<label for="k6_size-expression-{{ data.id }}" onclick=""><?php _e( 'Expression', 'pkgtextdomain' ); ?></label>
+				<input id="k6cp_size-choice_{{ data.id }}" type="radio" value="custom" name="_customize-k6cp_size-custom-{{ data.id }}" <# if (data.value===data.isExpr) { #>checked<# } #>>
+				<label for="k6cp_size-custom-{{ data.id }}" onclick=""><?php _e( 'Custom', 'pkgtextdomain' ); ?></label>
+				<input id="k6cp_size-choice_{{ data.id }}" type="radio" value="expr" name="_customize-k6cp_size-expr-{{ data.id }}" <# if (data.value!==data.isExpr) { #>checked<# } #>>
+				<label for="k6cp_size-expression-{{ data.id }}" onclick=""><?php _e( 'Expression', 'pkgtextdomain' ); ?></label>
 				<a></a>
 			</div>*/
 		?>

@@ -396,11 +396,11 @@ if ( ! class_exists( 'K6CP_Customize_Compiler' ) ):
 				array_push( self::$COMPILER_VARIABLES_NAMES, $setting['id'] );
 
 				// if we have a size set it on sizes variables array
-				if ( in_array( $control['type'], array( 'k6_size', 'k6_slider', 'k6_number' ) ) ) {
+				if ( in_array( $control['type'], array( 'k6cp_size', 'k6cp_slider', 'k6cp_number' ) ) ) {
 					array_push( self::$COMPILER_VARIABLES_NAMES_SIZE, $setting['id'] );
 				}
 				// if we have a color set it on colors variables array
-				if ( in_array( $control['type'], array( 'color', 'k6_color' ) ) ) {
+				if ( in_array( $control['type'], array( 'color', 'k6cp_color' ) ) ) {
 					array_push( self::$COMPILER_VARIABLES_NAMES_COLOR, $setting['id'] );
 				}
 			}

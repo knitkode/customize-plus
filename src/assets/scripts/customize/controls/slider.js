@@ -177,4 +177,4 @@ var ControlSlider = ControlBase.extend({
   }
 });
 
-api.controlConstructor['k6_slider'] = ControlSlider;
+api.controlConstructor['k6cp_slider'] = ControlSlider;

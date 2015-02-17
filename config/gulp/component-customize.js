@@ -1,5 +1,6 @@
 /* global gulp, $, PATHS */
 /* jshint node: true */
+'use strict';
 
 var CONFIG = require('./wpkuus-config');
 var PLUGINS = require('./wpkuus-plugins');
@@ -110,8 +111,10 @@ gulp.task('_customize-scripts-admin', function() {
     // .pipe($.if(argv.docs, $.jsdoc('./docs')))
   );
   return stream.done()
+    .pipe($.concat('customize.js', { newLine: '\n' }))
+    .pipe(gulp.dest(PATHS.build.assets))
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
-    .pipe($.concat('customize.min.js', { newLine: '\n' }))
+    .pipe($.rename({ suffix: '.min' }))
     .pipe($.if(CONFIG.isDist, $.stripDebug()))
     .pipe(gulp.dest(PATHS.build.assets));
 });
@@ -124,8 +127,10 @@ gulp.task('_customize-scripts-admin', function() {
 gulp.task('_customize-scripts-admin-worker', function() {
   return gulp.src(PATHS.src.assets + 'scripts/customize-worker.js')
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe($.concat('customize-worker.js', { newLine: '\n' }))
+    .pipe(gulp.dest(PATHS.build.assets))
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
-    .pipe($.concat('customize-worker.min.js', { newLine: '\n' }))
+    .pipe($.rename({ suffix: '.min' }))
     .pipe($.if(CONFIG.isDist, $.stripDebug()))
     .pipe(gulp.dest(PATHS.build.assets));
 });

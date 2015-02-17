@@ -39,27 +39,13 @@
   });
 
   //= include customize/components/wpdom.js
-  //= include customize/components/preprocessor.js
   //= include customize/components/regexes.js
   //= include customize/components/utils.js
-  //= include customize/components/advanced.js
-  //= include customize/components/compiler.js
-  //= include customize/components/previewer.js
-  //= include customize/components/export.js
-  //= include customize/components/import.js
-  //= include customize/components/screenpreview.js
-  //= include customize/components/search.js
   //= include customize/components/skeleton.js
-  //= include customize/components/support.js
   //= include customize/components/tabs.js
-  //= include customize/components/tools.js
   //= include customize/components/tooltips.js
 
   //= include customize/sections/base.js
-    // include customize/sections/search.js
-
-  //= include customize/controls/helper-expr.js
-  //= include customize/controls/helper-nets.js
 
   //= include customize/controls/base.js
     // include customize/controls/base-dummy' )
@@ -68,13 +54,11 @@
   //= include customize/controls/buttonset.js
   //= include customize/controls/color.js
   //= include customize/controls/font-family.js
-  //= include customize/controls/layout-columns.js
   //= include customize/controls/multicheck.js
   //= include customize/controls/number.js
   //= include customize/controls/radio.js
   //= include customize/controls/radio-image.js
   //= include customize/controls/select.js
-  //= include customize/controls/size.js
   //= include customize/controls/slider.js
   //= include customize/controls/text.js
   //= include customize/controls/toggle.js
@@ -89,16 +73,9 @@
    * the tool menu then all the controls inside of it).
    */
   Skeleton.init();
-  Compiler.init();
 
   $document.ready(function() {
     Tabs.init();
-    ScreenPreview.init();
-    Search.init();
-    Tools.init();
-    Export.init();
-    Import.init();
-    Support.init();
     Advanced.init();
     Tooltips.init();
     // console.log('customize.js took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\

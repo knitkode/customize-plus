@@ -6,7 +6,7 @@
  */
 class K6CP_Customize_Control_Select extends K6CP_Customize_Control_Base_Radio {
 
-	public $type = 'k6_select';
+	public $type = 'k6cp_select';
 
 	/**
 	 * Render template for choice displayment.
@@ -28,7 +28,7 @@ class K6CP_Customize_Control_Select extends K6CP_Customize_Control_Base_Radio {
 	 */
 	protected function js_tpl_above_choices () {
 		?>
-			<select name="_customize-k6_select-{{ data.id }}">
+			<select name="_customize-k6cp_select-{{ data.id }}">
 		<?php
 	}
 

@@ -616,43 +616,43 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 					case 'upload':
 						$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_buttonset':
+					case 'k6cp_buttonset':
 						$wp_customize->add_control( new K6CP_Customize_Control_Buttonset( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_color':
+					case 'k6cp_color':
 						$wp_customize->add_control( new K6CP_Customize_Control_Color( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_font_family':
+					case 'k6cp_font_family':
 						$wp_customize->add_control( new K6CP_Customize_Control_Font_Family( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_layout_columns':
+					case 'k6cp_layout_columns':
 						$wp_customize->add_control( new K6CP_Customize_Control_Layout_Columns( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_multicheck':
+					case 'k6cp_multicheck':
 						$wp_customize->add_control( new K6CP_Customize_Control_Multicheck( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_number':
+					case 'k6cp_number':
 						$wp_customize->add_control( new K6CP_Customize_Control_Number( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_radio':
+					case 'k6cp_tradio':
 						$wp_customize->add_control( new K6CP_Customize_Control_Radio( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_radio_image':
+					case 'k6cp_radio_image':
 						$wp_customize->add_control( new K6CP_Customize_Control_Radio_Image( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_select':
+					case 'k6cp_select':
 						$wp_customize->add_control( new K6CP_Customize_Control_Select( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_size':
+					case 'k6cp_size':
 						$wp_customize->add_control( new K6CP_Customize_Control_Size( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_slider':
+					case 'k6cp_slider':
 						$wp_customize->add_control( new K6CP_Customize_Control_Slider( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_text':
+					case 'k6cp_text':
 						$wp_customize->add_control( new K6CP_Customize_Control_Text( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6_toggle':
+					case 'k6cp_toggle':
 						$wp_customize->add_control( new K6CP_Customize_Control_Toggle( $wp_customize, $option_id, $control_args ) );
 						break;
 					default:
@@ -669,9 +669,26 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 *
 		 * @since  0.0.1
 		 */
+		public static function get_bootstrap_options() {
+			if ( class_exists( 'K6CPP_Bootstrap' ) ) {
+				$bootstrap_options = (array) K6CPP_Bootstrap::get_options();
+			} else {
+				$bootstrap_options = array();
+			}
+			return (array) apply_filters( 'k6cp/customize/get_bootstrap_options', $bootstrap_options );
+		}
+
+		/**
+		 * Declare theme customize options
+		 *
+		 * @k6hook `k6_customize_get_options`
+		 *
+		 * @since  0.0.1
+		 */
 		public static function get_options() {
-			$fixtures = require( K6CP_PLUGIN_DIR . 'includes/fixtures-options.php' ); // k6temp, also should be require_once \\
-			return apply_filters( 'k6cp/customize/get_options', $fixtures/*array()*/ );
+			$bootstrap_options = self::get_bootstrap_options();
+			$theme_options = (array) apply_filters( 'k6cp/customize/get_theme_options', array() );
+			return apply_filters( 'k6cp/customize/get_options', array_merge( $bootstrap_options, $theme_options ) );
 		}
 
 		/**
