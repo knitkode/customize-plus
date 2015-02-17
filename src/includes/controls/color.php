@@ -55,38 +55,12 @@ class K6CP_Customize_Control_Color extends K6CP_Customize_Control_Base {
 		}
 
 		// check for a rgba color string
-		$custom_color_rgba = k6cp_sanitize_coloralpha( $value );
+		$custom_color_rgba = k6cp_sanitize_alpha_color( $value );
 		if ( $custom_color_rgba ) {
 			// hex color is valid, so we have a Custom Color
 			$this->json['valueCSS'] = $custom_color_rgba;
 			return;
 		}
-
-		// Dynamic Color
-		$this->json['mode'] = 'dynamic';
-		$this->json['valueCSS'] = k6cp_parse_value_with_preprocessor( $value, true );
-
-		// check for a simple variable
-		$simple_variable = k6cp_sanitize_var( $value, true );
-		if ( $simple_variable ) {
-			$this->json['varName'] = $simple_variable;
-			$this->json['expr'] = $simple_variable;
-			return;
-		}
-
-		// check for a simple function
-		$simple_function = k6cp_sanitize_var_with_function( $value, true );
-		if ( $simple_function ) {
-			$dynamic_args = k6cp_sanitize_var_with_function( $value, true );
-			$this->json['functionName'] = $simple_function[1];
-			$this->json['varName'] = $simple_function[2];
-			$this->json['amount'] = (float) $simple_function[3];
-			$this->json['expr'] = $simple_function[1] . '(@' . $simple_function[2] . ', ' . $simple_function[3] . '%)';
-			return;
-		}
-
-		// otherwise is just a complicated custom expression
-		$this->json['expr'] = $value;
 	}
 
 	/**

@@ -147,8 +147,13 @@ if ( ! class_exists( 'K6CP' ) ):
 		public static function get_option( $opt_name ) {
 			if ( isset( get_option( K6CP_Customize::$OPTIONS_PREFIX )[ $opt_name ] ) ) {
 				return get_option( K6CP_Customize::$OPTIONS_PREFIX )[ $opt_name ];
-			} else {
+			}
+			// k6todo and think \\
+			else if ( isset( K6CP_Customize::$DEFAULTS[ $opt_name ] ) ) {
 				return K6CP_Customize::$DEFAULTS[ $opt_name ];
+			}
+			else {
+				return;
 			}
 		}
 

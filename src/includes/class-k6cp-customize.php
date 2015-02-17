@@ -115,19 +115,19 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 
 			add_action( 'admin_menu', array( __CLASS__, 'clean_admin_menu' ) );
 
+			add_action( 'after_setup_theme', array( __CLASS__, 'init_with_theme') );
+
 			// The priority here is very important, when adding custom classes to the customize
 			// you should use a priority in this range (11, 99)
 			add_action( 'k6cp/customize/register', array( __CLASS__, 'add_custom_classes' ), 10 );
 			add_action( 'k6cp/customize/register', array( __CLASS__, 'add_panels' ), 100 );
 
-
 			// add_action( 'customize_register', array( $this, 'change_wp_defaults' ) ); TODO
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'inject_css_admin' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'inject_js_shim' ) );
-			add_action( 'customize_controls_print_scripts', array( __CLASS__, 'print_templates' ) );
-			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'print_template_loader' ) );
 			add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'inject_js_admin' ) );
-			add_action( 'customize_preview_init' , array( $this, 'inject_js_preview' ) );
+			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_view_loader' ) );
+			add_action( 'customize_preview_init' , array( __CLASS__, 'inject_js_preview' ) );
 			// k6doubt add_action( 'customize_save_after', array( $this, 'compile_css' ) ); // use this or the less.js result sent through ajax \\
 
 			add_action( 'wp_ajax_k6_save_css', array( $this, 'save_css' ) ); // this should loop through all saved stylesheets (also the one from the theme)
@@ -140,6 +140,10 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 			self::set_options();
 
 			do_action( 'k6cp/customize/init' );
+		}
+
+		public static function init_with_theme() {
+			do_action( 'k6cp/customize/init_with_theme' );
 		}
 
 		/**
@@ -170,15 +174,6 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 */
 		public static function inject_css_admin() {
 			wp_enqueue_style( 'k6cp-customize', plugins_url( 'assets/customize.min.css', K6CP_PLUGIN_FILE ), array( 'dashicons' ), K6CP::VERSION ); // k6anticache \\ // k6trial wp_enqueue_script( 'k6cp-customize-preview', K6CP::$_ASSETS . 'jquery-velocity-patch.js?'.time().'='.mt_rand(), array( 'jquery' ), K6CP::VERSION ); // k6anticache k6temp \\
-		}
-
-		/**
-		 * Get filename of the exported settings .json file
-		 * A timestamp needs to be appended
-		 * @return [string] The default filename's beginning of the file with exported settings
-		 */
-		public static function get_base_export_filename() {
-			return get_bloginfo( 'name' ) . '--theme-' . get_option( 'stylesheet' ) . '-settings';
 		}
 
 		/**
@@ -263,21 +258,21 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 *
 		 * @since  0.0.1
 		 */
-		public function inject_js_preview() {
+		public static function inject_js_preview() {
 
 			do_action( 'k6cp/customize/preview_init' );
 
-			wp_enqueue_script( 'k6cp-customize-preview', plugins_url( 'assets/customize-preview.min.js?'.time().'='.mt_rand(), K6CP_PLUGIN_FILE ), K6CP::VERSION, true ); // k6anticache \\
+			wp_enqueue_script( 'k6cp-customize-preview', plugins_url( 'assets/customize-preview.min.js', K6CP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), K6CP::VERSION, true );
 		}
 
 
 		/**
-		 * [print_template_loader description]
+		 * [get_view_loader description]
 		 *
 		 * @since  0.0.1
 		 * @return [type] [description]
 		 */
-		public static function print_template_loader() { // k6wptight-layout \\
+		public static function get_view_loader() { // k6wptight-layout \\
 			?>
 			//= include '../views/customize-loader.php'
 			<?php
@@ -294,18 +289,6 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 			// wp_style_add_data( 'es5-shim', 'conditional', 'if lt IE 9' );
 			?>
 			<!--[if lt IE 9]><script src="<?php echo esc_url( plugins_url( "assets/es5-shim{$min}.js", K6CP_PLUGIN_FILE ) ); ?>"></script><![endif]-->
-			<?php
-		}
-
-		/**
-		 * [print_templates description]
-		 *
-		 * @since  0.0.1
-		 * @return [type] [description]
-		 */
-		public static function print_templates() { // k6wptight-layout \\
-			?>
-			//= include '../views/customize-templates.php'
 			<?php
 		}
 
