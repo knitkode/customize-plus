@@ -45,7 +45,22 @@
   //= include customize/components/tabs.js
   //= include customize/components/tooltips.js
 
+  /**
+   * Collect here sections prototypes
+   *
+   * @type {Object}
+   */
+  K6['sections'] = {};
+
   //= include customize/sections/base.js
+
+
+  /**
+   * Collect here controls prototypes
+   *
+   * @type {Object}
+   */
+  K6['controls'] = {};
 
   //= include customize/controls/base.js
     // include customize/controls/base-dummy' )
@@ -76,7 +91,6 @@
 
   $document.ready(function() {
     Tabs.init();
-    Advanced.init();
     Tooltips.init();
     // console.log('customize.js took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
   });

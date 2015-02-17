@@ -17,7 +17,7 @@
  */
 
 //= include sections/base.php
-	// include section-search.php
+
 //= include controls/base.php
 	// include 'control-base-dummy.php
 //= include controls/base-input.php
@@ -25,13 +25,13 @@
 //= include controls/buttonset.php
 //= include controls/color.php
 //= include controls/font-family.php
+// k6todo move it to theme probably \\
 //= include controls/layout-columns.php
 //= include controls/multicheck.php
 //= include controls/number.php
 //= include controls/radio.php
 //= include controls/radio-image.php
 //= include controls/select.php
-//= include controls/size.php
 //= include controls/slider.php
 //= include controls/text.php
 //= include controls/toggle.php

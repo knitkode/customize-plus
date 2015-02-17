@@ -1,5 +1,4 @@
 /* global Modernizr, WpDom */
-/* exported: Skeleton */
 
 /**
  * Skeleton element wrappers
@@ -70,3 +69,6 @@ var Skeleton = (function () {
     }
   };
 })();
+
+// export to public api
+K6['Skeleton'] = Skeleton;

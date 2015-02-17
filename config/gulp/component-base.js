@@ -76,7 +76,7 @@ gulp.task('_base-styles', ['_base-images'], function() {
     .pipe($.if(CONFIG.isDist, $.combineMediaQueries()))
     .pipe($.if(CONFIG.isDist, $.minifyCss()))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe(gulp.dest(PATHS.build.assets));
+    .pipe(gulp.dest(PATHS.build.styles));
 });
 
 /**

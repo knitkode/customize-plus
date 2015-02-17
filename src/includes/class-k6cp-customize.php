@@ -111,17 +111,17 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 */
 		protected function __construct() {
 
-			require_once( __DIR__ . '/k6cp-functions-sanitize.php' );
-			require_once( __DIR__ . '/class-k6cp-customize-compiler.php' );
-			// require_once( __DIR__ . '/class-k6cp-preprocessor-less.php' );
-
 			self::init();
 
 			add_action( 'admin_menu', array( __CLASS__, 'clean_admin_menu' ) );
 
-			add_action( 'customize_register', array( __CLASS__, 'add_custom_classes' ) );
+			// The priority here is very important, when adding custom classes to the customize
+			// you should use a priority in this range (11, 99)
+			add_action( 'k6cp/customize/register', array( __CLASS__, 'add_custom_classes' ), 10 );
+			add_action( 'k6cp/customize/register', array( __CLASS__, 'add_panels' ), 100 );
+
+
 			// add_action( 'customize_register', array( $this, 'change_wp_defaults' ) ); TODO
-			add_action( 'customize_register', array( __CLASS__, 'add_panels' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'inject_css_admin' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'inject_js_shim' ) );
 			add_action( 'customize_controls_print_scripts', array( __CLASS__, 'print_templates' ) );
@@ -215,9 +215,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 
 		public static function get_js_options() {
 			$required = array(
-				'liveCompiling' => self::is_compiling_automatic(),
-				'advanced' => self::is_compiling_automatic(), // k6todo \\
-				'dev' => self::is_compiling_automatic(), // k6todo \\
+				// nothing for now
 			);
 			$additional = (array) apply_filters( 'k6cp/customize/js_options', array() );
 			return array_merge( $required, $additional );
@@ -257,18 +255,6 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 			$response = wp_remote_get( K6CP::$_ASSETS . 'styles/theme.less' );
 			$less_string = wp_remote_retrieve_body( $response ); // k6doubt, keep it or not? // $less_string = preg_replace( '/(?:(?:(?<!\:|\\\|\')\/\/.*))/', '', $less_string ); // k6doubt, keep it or not? // $less_string = preg_replace( '/[ \t]+/', ' ', preg_replace( '/\s*$^\s*/m', "\n", $less_string ) ); \\
 			return $less_string;
-		}
-
-		/**
-		 * Is live compiling automatic
-		 *
-		 * @k6hook `k6_customize_is_compiling_automatic`
-		 *
-		 * @since  0.0.1
-		 * @return  boolean Wether live compiling is automatic (true) or manual (false)
-		 */
-		public static function is_compiling_automatic() {
-			return (bool) apply_filters( 'k6_customize_is_compiling_automatic', K6CP::get_option( 'live-compiling' ) );
 		}
 
 		/**
@@ -399,7 +385,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 							add_option( $settings_options_prefix, $settings['options'], null, 'no' );
 						}
 
-						do_action('k6cp/customize/import');
+						do_action( 'k6cp/customize/import' );
 
 						wp_safe_redirect( admin_url( 'customize.php?k6_import=1' ) ); exit;
 					}
@@ -459,21 +445,22 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * this way
 		 *
 		 * @since  0.0.1
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
-		public static function add_custom_classes( $wp_customize ) {
+		public static function add_custom_classes() {
+			global $wp_customize;
 
 			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize-classes.php' );
 
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Buttonset' );
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Color' );
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Font_Family' );
-			$wp_customize->register_control_type( 'K6CP_Customize_Control_Layout_Columns' );
+			$wp_customize->register_control_type( 'K6CP_Customize_Control_Layout_Columns' ); // k6todo probably move to theme \\
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Multicheck' );
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Number' );
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Radio' );
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Radio_Image' );
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Select' );
-			$wp_customize->register_control_type( 'K6CP_Customize_Control_Size' );
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Slider' );
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Text' );
 			$wp_customize->register_control_type( 'K6CP_Customize_Control_Toggle' );
@@ -484,15 +471,18 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 			// $wp_customize->add_setting( new K6CP_Customize_Setting_Dummy( $wp_customize, 'searchable' ) );
 			// $wp_customize->add_control('searchable', array( 'section' => 'k6_search' ));
 			// \\
+			do_action( 'k6cp/customize/custom_classes_loaded' );
 		}
 
 		/**
 		 * [add_panels description]
 		 *
 		 * @since  0.0.1
-		 * @param {WP_Customize_Manager} $wp_customize Theme Customizer object
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
-		public static function add_panels( $wp_customize ) {
+		public static function add_panels() {
+			global $wp_customize;
+
 			// Get all the fields using a helper function
 			$panels = self::get_options();
 
@@ -524,7 +514,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 				// Add panel to WordPress
 				$wp_customize->add_panel( $panel_id, $panel_args );
 
-				self::add_sections( $panel_id, $panel['sections'], $wp_customize );
+				self::add_sections( $panel_id, $panel['sections'] );
 			}
 		}
 
@@ -532,11 +522,13 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * [add_sections description]
 		 *
 		 * @since  0.0.1
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 * @param [type]  $panel_fields     [description]
 		 * @param [type]  $panel_id     [description]
-		 * @param {WP_Customize_Manager} $wp_customize Theme Customizer object
 		 */
-		private static function add_sections( $panel_id, $panel_fields, $wp_customize ) {
+		private static function add_sections( $panel_id, $panel_fields ) {
+			global $wp_customize;
+
 			// set priority to 0
 			$priority_section = 0;
 
@@ -560,7 +552,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 				$wp_customize->add_section( $section_id, $section_args );
 
 				// Loop through 'fields' array in each section and add settings and controls
-				self::add_controls( $section_id, $section['fields'], $wp_customize );
+				self::add_controls( $section_id, $section['fields'] );
 			}
 		}
 
@@ -568,11 +560,12 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * Add controls
 		 *
 		 * @since  0.0.1
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 * @param [type]  $section_fields [description]
 		 * @param [type]  $section_id    [description]
-		 * @param {WP_Customize_Manager} $wp_customize   Theme Customizer object
 		 */
-		private static function add_controls( $section_id, $section_fields, $wp_customize ) {
+		private static function add_controls( $section_id, $section_fields ) {
+			global $wp_customize;
 
 			foreach ( $section_fields as $option_id => $option_args ) {
 
@@ -622,6 +615,9 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 					case 'k6cp_color':
 						$wp_customize->add_control( new K6CP_Customize_Control_Color( $wp_customize, $option_id, $control_args ) );
 						break;
+					case 'k6cp_color_dynamic':
+						$wp_customize->add_control( new K6CP_Customize_Control_Color_Dynamic( $wp_customize, $option_id, $control_args ) );
+						break;
 					case 'k6cp_font_family':
 						$wp_customize->add_control( new K6CP_Customize_Control_Font_Family( $wp_customize, $option_id, $control_args ) );
 						break;
@@ -643,8 +639,8 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 					case 'k6cp_select':
 						$wp_customize->add_control( new K6CP_Customize_Control_Select( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6cp_size':
-						$wp_customize->add_control( new K6CP_Customize_Control_Size( $wp_customize, $option_id, $control_args ) );
+					case 'k6cp_size_dynamic':
+						$wp_customize->add_control( new K6CP_Customize_Control_Size_Dynamic( $wp_customize, $option_id, $control_args ) );
 						break;
 					case 'k6cp_slider':
 						$wp_customize->add_control( new K6CP_Customize_Control_Slider( $wp_customize, $option_id, $control_args ) );

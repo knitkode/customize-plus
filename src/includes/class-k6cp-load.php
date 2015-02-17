@@ -100,6 +100,7 @@ if ( ! class_exists( 'K6CP' ) ):
 			if ( is_admin() ) {
 				require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-admin.php' );
 			}
+			require_once( K6CP_PLUGIN_DIR . 'includes/k6cp-functions-sanitize.php' );
 			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize.php' );
 
 			add_action( 'plugins_loaded', array( __CLASS__, 'init' ) );
@@ -168,7 +169,7 @@ if ( ! class_exists( 'K6CP' ) ):
 		// 		if ( $min ) {
 		// 			wp_style_add_data( 'k6cp-admin-css', 'suffix', $min );
 		// 		}
-	 //    }
+		//	}
 		// }
 
 		/**

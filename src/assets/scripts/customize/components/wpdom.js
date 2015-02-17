@@ -1,5 +1,3 @@
-/* exported: WpDom */
-
 /**
  * WordPress DOM: reusable DOM elements;
  *
@@ -44,3 +42,6 @@ var WpDom = (function () {
     $wpBtnSave: $('#save')
   };
 })();
+
+// export to public api
+K6['WpDom'] = WpDom;

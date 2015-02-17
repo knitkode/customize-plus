@@ -1,4 +1,3 @@
-/* exported: Regexes */
 /* jshint maxlen: 1000 */
 
 /**
@@ -117,3 +116,6 @@ var Regexes = {
   colorRgbaAlpha_match: /^rgba\(\d+,\d+,\d+,(0?\.[0-9]*[1-9][0-9]*|[01])\)$/,
   colorRgba_test: /^rgba\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0?\.[0-9]*[1-9][0-9]*|[01])\s*\)$/
 };
+
+// export to public api
+K6['Regexes'] = Regexes;

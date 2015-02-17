@@ -1,4 +1,4 @@
-/* global Color, ControlBase, Regexes, Preprocessor, Utils, Expr, Nets, Search */
+/* global Color, ControlBase, Regexes */
 
 /**
  * Control Color class
@@ -7,7 +7,7 @@
  * @augments ControlBase
  * @augments wp.customize.Control
  * @augments wp.customize.Class
- * @requires Regexes, Preprocessor, Utils, Expr, Nets, Search
+ * @requires Regexes
  */
 var ControlColor = ControlBase.extend({
   /**
@@ -74,63 +74,25 @@ var ControlColor = ControlBase.extend({
       }
     }
 
-    // Custom mode
-    if (mode === 'custom') {
-      // reset var name object property
-      params.varName = '';
-    // Dynamic mode
-    } else if (mode === 'dynamic') {
-      if (isRendered) {
-        // update dynamic color message text
-        this.msg.innerHTML = params.varName;
-        // and bind link
-        this._bindInfoLink();
-      }
-    }
-
-    // manage nets always
-    this._manageNets();
+    // // Custom mode
+    // if (mode === 'custom') {
+    //   // reset var name object property
+    //   params.varName = '';
+    // // Dynamic mode
+    // } else if (mode === 'dynamic') {
+    //   if (isRendered) {
+    //     // update dynamic color message text
+    //     this.msg.innerHTML = params.varName;
+    //     // and bind link
+    //     this._bindInfoLink();
+    //   }
+    // }
     // set the mode property
     params.mode = mode;
 
     // update css thanks to this change on data attribute
     if (isRendered) {
       this.wrapper.setAttribute('data-k6-color-mode', mode);
-    }
-  },
-  /**
-   * Manage nets
-   *
-   * @private
-   */
-  _manageNets: function () {
-    var thisControlID = this.id;
-    var relatedControlID = this.params.varName;
-    Nets.clean(thisControlID);
-    if (relatedControlID) {
-      Nets.populateOn(thisControlID, relatedControlID);
-      Nets.populateOff(_.union(this.params.netOff, [thisControlID]), relatedControlID);
-    }
-  },
-  /**
-   * Bind the link to focus the control
-   * of the dependent variable name / control id
-   *
-   * @private
-   */
-  _bindInfoLink: function () {
-    var controlToFocus = api.control(this.params.varName);
-    // be sure there is the control and update dynamic color message text
-    if (controlToFocus) {
-      this.msg.onclick = function () {
-        controlToFocus.inflate(true);
-        // always deactivate search, it could be that
-        // we click on this link from a search result
-        try {
-          Search.deactivate();
-        } catch (e) {}
-        controlToFocus.focus(); // k6doubt focus or expand ? \\
-      };
     }
   },
   /**
@@ -261,7 +223,7 @@ var ControlColor = ControlBase.extend({
    * Validate
    *
    * It could be good here to do some validation but we can't use the
-   * function `Utils.compileTest` here because it's async, and this method
+   * function `Preprocessor.compileTest` here because it's async, and this method
    * because of the way the WordPress API is done must be synchronous
    * instead. So we just be sure that the value is a string.
    *
@@ -284,20 +246,6 @@ var ControlColor = ControlBase.extend({
     // the php Color Control class in the `add_to_json` method, but in
     // this way we save bytes on the huge `_wpCustomizeSettings` JSON
     params.exState = '';
-    params.netOn = [];
-    // in the netOff put the current control id, it can't be dynamic on itself...
-    params.netOff = [this.id];
-
-    // build nets immediately on intialization
-    api.bind('ready', function () {
-      // but we need to get the instance of the dependendant variable'
-      // control to bind the `focus()` action on the small link:
-      // 'This value depend on: @var' same for the nets, therefore we need
-      // to access control instances. Let's bind on api ready then.
-      if (params.mode === 'dynamic') {
-        this._manageNets();
-      }
-    }.bind(this));
 
     this.setting.validate = this._validate.bind(this);
 
@@ -311,19 +259,6 @@ var ControlColor = ControlBase.extend({
     }.bind(this));
   },
   /**
-   * On deflate
-   *
-   * Destroy `atwho` instances if any, and `selectize` instance.
-   *
-   * @override
-   */
-  onDeflate: function () {
-    if (this.params.expr) {
-      $(this.inputExpr).atwho('destroy');
-    }
-    this.inputVar.selectize.destroy();
-  },
-  /**
    * On ready
    *
    * @override
@@ -332,51 +267,8 @@ var ControlColor = ControlBase.extend({
     var self = this;
     var params = self.params;
     var container = self._container;
-    var btnDynamic = container.getElementsByClassName('k6-color-dynamic')[0];
     var btnTransparent = container.getElementsByClassName('k6-color-transparent')[0];
-    var inputVar = container.getElementsByClassName('k6-color-var-select')[0];
-    var inputFunction = container.getElementsByClassName('k6-color-function-select')[0];
-    var inputAmount = container.getElementsByClassName('k6-color-amount-input')[0];
-    var inputExpr = new Expr({
-      vars: Preprocessor.varsColor,
-      varsLookup: Preprocessor.varsColorLookup,
-      functions: Preprocessor.functionsColor,
-      value: self.setting(),
-      // When the expression value change on user input read the
-      // typed value and update accordingly the simple function fields.
-      onChange: function (input) {
-        self._updateUIsimpleDynamic(input.value);
-      },
-      // Bind the button to apply the current expression
-      onSet: function (value) {
-        self.params.expr = value;
-        self._apply(value, 'expr');
-      }
-    }, container);
 
-
-    /**
-     * [_getSimplifiedExpr description]
-     * @return {[type]} [description]
-     */
-    var _getSimplifiedExpr = function () {
-      if (params.functionName && params.amount && params.varName) {
-        return params.functionName + '(@' + params.varName + ', ' + params.amount + '%)';
-      } else if (params.varName) {
-        return '@' + params.varName;
-      } else {
-        return params.expr;
-      }
-    };
-
-    /**
-     * Prevent any clicks inside this widget from leaking
-     * to the top and closing it
-     *
-     */
-    self.container.on('click.k6.color', function (event) {
-      event.stopPropagation();
-    });
 
     /**
      * Set elements as control properties
@@ -384,18 +276,8 @@ var ControlColor = ControlBase.extend({
      */
     /** @type {HTMLelement} */
     self.wrapper = container.getElementsByClassName('k6-color')[0];
-    /** @type {HTMLelement} */
-    self.msg = container.getElementsByClassName('k6-color-message')[0];
     /** @type {jQuery} */
     self.$picker = self.container.find('.color-picker-hex');
-    /** @type {HTMLelement} */
-    self.inputExpr = inputExpr;
-    /** @type {HTMLelement} */
-    self.inputVar = inputVar;
-    /** @type {HTMLelement} */
-    self.inputFunction = inputFunction;
-    /** @type {HTMLelement} */
-    self.inputAmount = inputAmount;
 
     /**
      * Set mode immediately
@@ -403,104 +285,6 @@ var ControlColor = ControlBase.extend({
      */
     self._setMode(params.mode, params.transparent);
 
-    /**
-     * Init selectize on variable name `select`
-     *
-     */
-    var availableColorVars = _.difference(Preprocessor.varsColor, this.params.netOff); // k6wptight-dep_js underscore \\
-
-    $(inputVar).selectize({
-      labelField: 'id',
-      valueField: 'id',
-      sortField: 'id',
-      searchField: 'id',
-      options: availableColorVars.map(function (variableID) {
-        return { id: variableID };
-      }),
-      render: {
-        option: function (item, escape) {
-          var control = api.control(item.id);
-          if (control) {
-            return '<div class="k6-color-varoption" style="border-color:' + escape(control.params.valueCSS)+ '">' +
-              escape(control.params.label || item.id) + '</div>';
-          }
-        }
-      },
-    });
-
-    /**
-     * Dynamically create function `<select>` `<option>` tags
-     * @type {[type]}
-     */
-    // k6tocheck, untested...during transition, also it can be optimized through fragments... \\
-    var simpleFunctions = Preprocessor.functionsColor;
-    for (var i = 0; i < simpleFunctions.length; i++) {
-      var functionName = simpleFunctions[i];
-      var functionNameOption = document.createElement('option');
-      functionNameOption.innerHTML = functionName;
-      functionNameOption.value = functionName;
-      inputFunction.appendChild(functionNameOption);
-    }
-
-    /**
-     * Apply current expression value
-     * to 'simple dynamic' fields.
-     *
-     */
-    self._updateUIsimpleDynamic(_getSimplifiedExpr());
-
-    /**
-     * Bind on change of the variable select
-     *
-     */
-    inputVar.onchange = function () {
-      var varName = this.value;
-      self.params.varName = varName;
-      if (varName) {
-        self._apply(_getSimplifiedExpr(), 'dynamic');
-      // this `else` happens when `None` is selected
-      } else {
-        self._setMode('custom');
-      }
-    };
-
-    /**
-     * Bind on change of the function select
-     *
-     */
-    inputFunction.onchange = function () {
-      var functionName = this.value;
-      self.params.functionName = functionName;
-      self._apply(_getSimplifiedExpr(), 'dynamic');
-
-      // // make the first functionName `<select>` `<option>`
-      // // (with empty value and "None" text) look like a placeholder
-      // // a bit like selectize (but they do it with DOM manipulation)
-      // if (functionName) {
-      //   inputFunction.style.color = '#ccc';
-      // } else {
-      //   inputFunction.style.color = '';
-      // }
-    };
-
-    /**
-     * Bind on change of the amount select
-     *
-     */
-    var _onAmountChange = function () {
-      self.params.amount = this.value;
-      self._apply(_getSimplifiedExpr(), 'dynamic');
-    };
-    inputAmount.onchange = _onAmountChange;
-    inputAmount.onkeyup = _onAmountChange;
-
-    /**
-     * Bind Color Dynamic button
-     *
-     */
-    btnDynamic.onclick = function () {
-      self._setExState('dynamic');
-    };
 
     /**
      * Bind transparent button
@@ -541,9 +325,9 @@ var ControlColor = ControlBase.extend({
     // control to bind the `focus()` action on the small link:
     // 'This value depend on: @var' same for the nets, we need
     // to access control instances.
-    if (this.params.mode === 'dynamic') {
-      this._bindInfoLink();
-    }
+    // if (this.params.mode === 'dynamic') {
+    //   this._bindInfoLink();
+    // }
 
     /**
      * If we have a color expression (simple or complex doesn't matter)
@@ -551,11 +335,11 @@ var ControlColor = ControlBase.extend({
      * for instance.
      *
      */
-    if (this.params.expr) {
-      Utils.compileTest(this.setting(), this._initPicker.bind(this));
-    } else {
+    // if (this.params.expr) {
+    //   Preprocessor.compileTest(this.setting(), this._initPicker.bind(this));
+    // } else {
       this._initPicker(this.setting());
-    }
+    // }
   },
   /**
    * [_initPicker description]
@@ -626,111 +410,6 @@ var ControlColor = ControlBase.extend({
     this.$btnCustom = $(btnCustom);
   },
   /**
-   * [_updateUIsimpleDynamic description]
-   * When the expression value change on user input
-   * read the typed value and update accordingly the simple function fields.
-   * All happen on keyup so it needs to be fast.
-   *
-   * @param  {[type]} value [description]
-   */
-  _updateUIsimpleDynamic: function (value) {
-    if (!this.rendered) {
-      return;
-    }
-    var matches;
-    var inputFunction = this.inputFunction;
-    var inputVar = this.inputVar;
-    var inputAmount = this.inputAmount;
-    var inputVarOption;
-    var inputFunctionOption;
-
-    // if the expression is a simple color function enable and update
-    // the simple function fields according to the expression value.
-    if (Regexes.colorSimpleFunction_test.test(value)) {
-      matches = value.replace(Regexes.whitespaces, '').match(Regexes.colorSimpleFunction_match);
-
-      // update function name
-      inputFunction.value = matches[1];
-      inputFunctionOption = inputFunction.querySelector('option[value="' + matches[1] + '"]');
-      if (inputFunctionOption) {
-        inputFunctionOption.selected = true;
-      }
-
-      // update var name through selectize plugin
-      inputVar.selectize.setValue(matches[2], true); // k6plugintight-selectize \\
-
-      // update amount
-      inputAmount.value = matches[3];
-
-    // if the expression is a simple variable update the variable name
-    // simple field and disable all the rest.
-    } else if (Regexes.simpleVariable_test.test(value)) {
-      matches = value.replace(Regexes.whitespaces, '').match(Regexes.simpleVariable_match);
-
-      // update var name through selectize plugin
-      inputVar.selectize.setValue(matches[2], true); // k6plugintight-selectize \\
-
-    // if it's not a simple color function or a simple variable (could
-    // be nested functions or could be that the expression uses multiple
-    // variables), disable the 'simple function' input fields
-    } else {
-      // reset varName select
-      inputVar.selectize.setValue(false, true); // k6plugintight-selectize \\
-
-      // reset functionName select
-      inputFunction.value = false;
-       // select first option `None` (has empty value)
-      inputFunction.options[0].selected = true;
-
-      // reset amount input
-      inputAmount.value = false;
-    }
-  },
-  /**
-   * [_updateUIexpr description]
-   * @param  {[type]} value [description]
-   * @return {[type]}       [description]
-   */
-  _updateUIexpr: function (value) {
-    if (!this.rendered) {
-      return;
-    }
-    this.inputExpr.value = value;
-  },
-  /**
-   * Update the expression input constructing the string from
-   * the new selected values (read them on `params`)when the
-   * user is using the simplified dynamic color controls.`
-   *
-   * @param  {string|number} value     [description]
-   * @param  {string}              valueType [description]
-   */
-  _updateExpr: function (value) {
-    var params = this.params;
-    var matches;
-    var newExpr;
-    // if it is a simple function
-    if (Regexes.colorSimpleFunction_test.test(value)) {
-      matches = value.replace(Regexes.whitespaces, '').match(Regexes.colorSimpleFunction_match);
-      params.functionName = matches[1];
-      params.varName = matches[2];
-      params.amount = matches[3];
-      newExpr = matches[1] + '(@' + matches[2] + ', ' + matches[3] + '%)';
-    // if it is a simple variable
-    } else if (Regexes.simpleVariable_test.test(value)) {
-      matches = value.replace(Regexes.whitespaces, '').match(Regexes.simpleVariable_match);
-      params.varName = matches[1];
-      newExpr = '@' + matches[1];
-    // if it's not a simple function or a simple variable
-    } else {
-      newExpr = value;
-    }
-    // set on params
-    params.expr = newExpr;
-
-    return newExpr;
-  },
-  /**
    * [_applyToPicker description]
    * In a try catch because not always we have the wpColorPicker
    * already initialized. // k6todo maybe htere is a better way... \\
@@ -742,33 +421,6 @@ var ControlColor = ControlBase.extend({
     try {
       this.$picker.val(newColor).wpColorPicker('color', newColor);
     } catch (e) {}
-  },
-  /**
-   * [_applyPropagate description]
-   * propagate changes to the dependent values reading the netOn param
-   *
-   * @param  {[type]} newColor [description]
-   * @return {[type]}          [description]
-   */
-  _applyPropagate: function (newColor) {
-    var netOn = this.params.netOn;
-    for (var i = netOn.length; i--;) {
-      var relatedControl = api.control(netOn[i]);
-      // we don't actually need to propagate the change
-      // if the related control is not rendered, because the preview
-      // is not visible
-      if (relatedControl && relatedControl.rendered) {
-        var relatedControlExpr = relatedControl.params.expr;
-        // if there is an expression apply it and update picker color
-        if (relatedControlExpr) {
-          Utils.compileTest(relatedControlExpr, function (newColorProcessed) {
-            relatedControl._applyToPicker(newColorProcessed);
-          });
-        } else {
-          relatedControl._applyToPicker(newColor);
-        }
-      }
-    }
   },
   /**
    * [_applyValue description]
@@ -785,33 +437,13 @@ var ControlColor = ControlBase.extend({
 
     // transparent is a valid color
     if (value === 'transparent') {
-      self._updateExpr('');
-      self._updateUIexpr('transparent');
-      self._updateUIsimpleDynamic();
       self._setMode('custom', true);
       callback(value, 'transparent');
     }
     // if it is a valid hex or rgba color
     else if (Regexes.colorHex_test.test(value) || (params.allowAlpha && Regexes.colorRgba_test.test(value))) {
-      self._updateExpr('');
-      self._updateUIexpr(value);
-      self._updateUIsimpleDynamic();
       self._setMode('custom');
       callback(value, value);
-    }
-    // if it is a dynamic color (simple function or expression)
-    else {
-      var valueUpdated = self._updateExpr(value);
-      if (from !== 'expr') {
-        self._updateUIexpr(valueUpdated);
-      }
-      if (from !== 'dynamic') {
-        self._updateUIsimpleDynamic(valueUpdated);
-      }
-      self._setMode('dynamic');
-      Utils.compileTest(valueUpdated, function (color) {
-        callback(valueUpdated, color);
-      });
     }
   },
   /**
@@ -839,8 +471,8 @@ var ControlColor = ControlBase.extend({
         this.setting.set(newValue);
       }
 
-      // propagate to dependent settings
-      this._applyPropagate(newColor);
+      // // propagate to dependent settings
+      // this._applyPropagate(newColor);
 
     }.bind(this));
   }

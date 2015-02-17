@@ -1,5 +1,3 @@
-/* exported: Tooltips */
-
 /**
  * Tooltips
  * with additional content regarding controls
@@ -109,3 +107,6 @@ var Tooltips = (function () {
     }
   };
 })();
+
+// export to public api
+K6['Tooltips'] = Tooltips;

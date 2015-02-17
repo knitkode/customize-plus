@@ -1,5 +1,4 @@
 /* global ScreenPreview */
-/* exported: Tabs */
 
 /**
  * Tabs
@@ -85,3 +84,6 @@ var Tabs = (function () {
     }
   };
 })();
+
+// export to public api
+K6['Tabs'] = Tabs;
