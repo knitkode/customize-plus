@@ -34,3 +34,8 @@ class K6CP_Customize_Control_Layout_Columns extends K6CP_Customize_Control_Base 
 		$this->js_tpl_screen_based_sliders();
 	}
 }
+
+/**
+ * Register on WordPress Customize global object
+ */
+$wp_customize->register_control_type( 'K6CP_Customize_Control_Layout_Columns' ); // k6todo probably move to theme \\

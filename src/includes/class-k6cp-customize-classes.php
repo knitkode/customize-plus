@@ -16,6 +16,11 @@
  * @license      pkgLicenseUrl
  */
 
+/**
+ * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
+ */
+global $wp_customize;
+
   // include sections/base.php
 
 //= include controls/base.php

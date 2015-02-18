@@ -23,3 +23,8 @@ class K6CP_Customize_Control_Radio extends K6CP_Customize_Control_Base_Radio {
 		<?php
 	}
 }
+
+/**
+ * Register on WordPress Customize global object
+ */
+$wp_customize->register_control_type( 'K6CP_Customize_Control_Radio' );

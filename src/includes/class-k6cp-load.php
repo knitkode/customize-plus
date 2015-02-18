@@ -101,6 +101,7 @@ if ( ! class_exists( 'K6CP' ) ):
 				require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-admin.php' );
 			}
 			require_once( K6CP_PLUGIN_DIR . 'includes/k6cp-functions-sanitize.php' );
+			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize-manager.php' );
 			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize.php' );
 
 			add_action( 'plugins_loaded', array( __CLASS__, 'init' ) );
@@ -145,16 +146,16 @@ if ( ! class_exists( 'K6CP' ) ):
 		 * @return [type]           [description]
 		 */
 		public static function get_option( $opt_name ) {
-			if ( isset( get_option( K6CP_Customize::$OPTIONS_PREFIX )[ $opt_name ] ) ) {
-				return get_option( K6CP_Customize::$OPTIONS_PREFIX )[ $opt_name ];
-			}
-			// k6todo and think \\
-			else if ( isset( K6CP_Customize::$DEFAULTS[ $opt_name ] ) ) {
-				return K6CP_Customize::$DEFAULTS[ $opt_name ];
-			}
-			else {
-				return;
-			}
+			// if ( isset( get_option( K6CP_Customize::$OPTIONS_PREFIX )[ $opt_name ] ) ) {
+			// 	return get_option( K6CP_Customize::$OPTIONS_PREFIX )[ $opt_name ];
+			// }
+			// // k6todo and think \\
+			// else if ( isset( K6CP_Customize::$DEFAULTS[ $opt_name ] ) ) {
+			// 	return K6CP_Customize::$DEFAULTS[ $opt_name ];
+			// }
+			// else {
+			// 	return;
+			// }
 		}
 
 		// k6todo \\
