@@ -16,7 +16,7 @@
  * @license      pkgLicenseUrl
  */
 
-//= include sections/base.php
+  // include sections/base.php
 
 //= include controls/base.php
 	// include 'control-base-dummy.php

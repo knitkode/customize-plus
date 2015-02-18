@@ -72,4 +72,4 @@
 //   "instanceNumber": 60
 // }
 // // createControl(toTryID, toTryData);
-// window.K6.createControl = createControl;
+// window.k6cp.createControl = createControl;

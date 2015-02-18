@@ -1,0 +1,159 @@
+// Customized
+
+/**
+ *  webui popover plugin  - v1.0.5
+ *  A lightWeight popover plugin with jquery ,enchance the  popover plugin of bootstrap with some awesome new features. It works well with bootstrap ,but bootstrap is not necessary!
+ *  https://github.com/sandywalker/webui-popover
+ *
+ *  Made by Sandy Duan
+ *  Under MIT License
+ */
+.webui-popover {
+  z-index: 9999999;
+  position: absolute;
+  display: none;
+  width: 280px;
+  // top: 0;
+  // left: 0;
+
+  &-inner {
+    position: relative;
+    background: $popover--bg;
+    border: 1px solid $popover--border-color-fallback;
+    border: 1px solid $popover--border-color;
+    box-shadow: 10px 10px $popover--box-shadow-blur $popover--box-shadow-color;
+  }
+
+  .close {
+    font-family: monospace;
+    margin: 7px 12px 0 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 20px;
+    color: #000;
+    opacity: 0.2;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      opacity: 0.5;
+    }
+  }
+
+  &-content {
+    padding: 10px 14px;
+    overflow: auto;
+
+    .webui-no-padding & {
+      padding: 0;
+    }
+  }
+
+  h4 {
+    margin: 0 0 10px 0;
+    padding: 0 0 5px;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+  }
+
+  > .arrow,
+  > .arrow:after {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+  }
+  > .arrow {
+    border-width: 11px;
+    margin-left: 21px;
+    overflow: visible;
+    bottom: auto;
+  }
+  > .arrow:after {
+    border-width: 10px;
+    content: "";
+    top: auto;
+    background: 0;
+    transform: none;
+    box-shadow: none;
+  }
+  &.right > .arrow,
+  &.right-top > .arrow,
+  &.right-bottom > .arrow {
+    top: 50%;
+    left: -11px;
+    margin-top: -11px;
+    border-left-width: 0;
+    border-right-color: $popover--border-color-fallback;
+    border-right-color: $popover--border-color;
+  }
+  &.right > .arrow:after,
+  &.right-top > .arrow:after,
+  &.right-bottom > .arrow:after {
+    content: " ";
+    left: 1px;
+    bottom: -10px;
+    border-left-width: 0;
+    border-right-color: #ffffff;
+  }
+  // &.top > .arrow,
+  // &.top-right > .arrow,
+  // &.top-left > .arrow {
+  //   bottom: -11px;
+  //   left: 50%;
+  //   margin-left: -11px;
+  //   border-top-color: #ddd;
+  //   border-top-color: rgba(0, 0, 0, 0.2);
+  //   border-bottom-width: 0;
+  // }
+  // &.top > .arrow:after,
+  // &.top-right > .arrow:after,
+  // &.top-left > .arrow:after {
+  //   content: " ";
+  //   bottom: 1px;
+  //   margin-left: -10px;
+  //   border-top-color: #ffffff;
+  //   border-bottom-width: 0;
+  // }
+  // &.bottom > .arrow,
+  // &.bottom-right > .arrow,
+  // &.bottom-left > .arrow {
+  //   top: -11px;
+  //   left: 50%;
+  //   margin-left: -11px;
+  //   border-bottom-color: #999999;
+  //   border-bottom-color: rgba(0, 0, 0, 0.25);
+  //   border-top-width: 0;
+  // }
+  // &.bottom > .arrow:after,
+  // &.bottom-right > .arrow:after,
+  // &.bottom-left > .arrow:after {
+  //   content: " ";
+  //   top: 1px;
+  //   margin-left: -10px;
+  //   border-bottom-color: #ffffff;
+  //   border-top-width: 0;
+  // }
+  // &.left > .arrow,
+  // &.left-top > .arrow,
+  // &.left-bottom > .arrow {
+  //   top: 50%;
+  //   right: -11px;
+  //   margin-top: -11px;
+  //   border-right-width: 0;
+  //   border-left-color: #999999;
+  //   border-left-color: rgba(0, 0, 0, 0.25);
+  // }
+  // &.left > .arrow:after,
+  // &.left-top > .arrow:after,
+  // &.left-bottom > .arrow:after {
+  //   content: " ";
+  //   right: 1px;
+  //   border-right-width: 0;
+  //   border-left-color: #ffffff;
+  //   bottom: -10px;
+  // }
+}

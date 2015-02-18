@@ -71,4 +71,4 @@ var Skeleton = (function () {
 })();
 
 // export to public api
-K6['Skeleton'] = Skeleton;
+k6cp['Skeleton'] = Skeleton;

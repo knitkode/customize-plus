@@ -86,4 +86,4 @@ var Tabs = (function () {
 })();
 
 // export to public api
-K6['Tabs'] = Tabs;
+k6cp['Tabs'] = Tabs;

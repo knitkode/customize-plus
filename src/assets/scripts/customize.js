@@ -9,7 +9,7 @@
 // @externs_url https://gist.github.com/kuus/745c40c5bf29698f4765/raw/225dc7df973e2782b11ad122241a337c9bbb0dcf/externs
 // ==/ClosureCompiler==
 
-(function (window, document, $, _, K6, wp) {
+(function (window, document, $, _, k6cp, wp) {
   'use strict';
   // var t = performance.now(); // k6debug-perf \\
 
@@ -27,7 +27,7 @@
   var body = document.getElementsByTagName('body')[0];
 
   /** @type {Object} */
-  var l10n = K6['l10n'];
+  var l10n = k6cp['l10n'];
 
   /** @type {Object} */
   var api = wp['customize'];
@@ -50,7 +50,7 @@
    *
    * @type {Object}
    */
-  K6['sections'] = {};
+  k6cp['sections'] = {};
 
   //= include customize/sections/base.js
 
@@ -60,7 +60,7 @@
    *
    * @type {Object}
    */
-  K6['controls'] = {};
+  k6cp['controls'] = {};
 
   //= include customize/controls/base.js
     // include customize/controls/base-dummy' )
@@ -97,4 +97,4 @@
 
   //= include customize/temp.js
 
-})(window, document, jQuery, _, K6, wp);
+})(window, document, jQuery, _, k6cp, wp);

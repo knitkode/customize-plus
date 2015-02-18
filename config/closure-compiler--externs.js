@@ -59,5 +59,5 @@ var lunr = {};
 var Color = {};
 var jQuery = {};
 var _ = {};
-var K6 = {};
+var k6cp = {};
 var wp = {};

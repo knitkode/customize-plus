@@ -25,8 +25,8 @@ gulp.task('build-customize', [
  * @public
  */
 gulp.task('watch-customize', function() {
-  gulp.watch('./bower.json', ['build']);
-  gulp.watch(PATHS.src.assets + 'scripts/**/*.js', ['_customize-scripts']);
+  gulp.watch('./bower.json', ['build-customize']);
+  gulp.watch(PATHS.src.scripts + '**/*.js', ['_customize-scripts']);
 
 });
 
@@ -38,7 +38,6 @@ gulp.task('watch-customize', function() {
 gulp.task('_customize-scripts', [
   '_customize-scripts-admin-libs',
   '_customize-scripts-admin',
-  '_customize-scripts-admin-worker',
   '_customize-scripts-preview'
 ]);
 
@@ -51,13 +50,9 @@ gulp.task('_customize-scripts-admin-libs', function() {
   // Customize scripts admin libraries (outside iframe)
   var stream = streamqueue({ objectMode: true });
   stream.queue(gulp.src(PATHS.bower + 'es5-shim/es5-shim.min.js'));
-  stream.queue(gulp.src(PATHS.bower + 'less/dist/less.min.js'));
-  stream.queue(gulp.src(PATHS.bower + 'less-worker/dist/less.min.js')
-    .pipe($.rename('less-worker.min.js'))
-  );
   return stream.done()
     .pipe($.if(CONFIG.isDist, $.stripDebug()))
-    .pipe(gulp.dest(PATHS.build.assets));
+    .pipe(gulp.dest(PATHS.build.scripts));
 });
 
 /**
@@ -73,7 +68,7 @@ gulp.task('_customize-modernizr', function() {
   });
   // the src path is just needed by gulp but we don't want gulp-modernizr to
   // automatically look for tests to do, we just defined them here above
-  return gulp.src(PATHS.src.assets + 'scripts/customize.js')
+  return gulp.src(PATHS.src.scripts + 'customize.js')
     .pipe($.if(rebuild, $.modernizr(modernizrOpts)))
     .pipe($.if(rebuild, $.rename('modernizr-custom.js')))
     .pipe($.if(rebuild, $.uglify({ preserveComments: function (node, comment) {
@@ -84,7 +79,7 @@ gulp.task('_customize-modernizr', function() {
         return true;
       }
     }})))
-    .pipe($.if(rebuild, gulp.dest(PATHS.src.assets + 'scripts/vendor')));
+    .pipe($.if(rebuild, gulp.dest(PATHS.src.scripts + 'vendor-custom')));
 });
 
 /**
@@ -96,43 +91,24 @@ gulp.task('_customize-scripts-admin', function() {
   var stream = streamqueue({ objectMode: true });
   stream.queue(gulp.src([
     PATHS.bower + 'polyfill-classList/classList.js', // k6ie9 k6ie8 \\
-    PATHS.src.assets + 'scripts/vendor/modernizr-custom.js', // include modernizr custom build
-    PATHS.bower + 'lunr.js/lunr.min.js',
+    PATHS.src.scripts + 'vendor-custom/modernizr-custom.js', // include modernizr custom build
     PATHS.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.min.js',
     PATHS.bower + 'jquery-cookie/jquery.cookie.js',
     PATHS.bower + 'webui-popover/dist/jquery.webui-popover.min.js',
-    PATHS.bower + 'selectize/dist/js/standalone/selectize.js',
-    PATHS.bower + 'Caret.js/dist/jquery.caret.js',
-    PATHS.bower + 'At.js/dist/js/jquery.atwho.js'
+    PATHS.bower + 'selectize/dist/js/standalone/selectize.js'
   ]));
-  stream.queue(gulp.src(PATHS.src.assets + 'scripts/customize.js')
+  stream.queue(gulp.src(PATHS.src.scripts + 'customize.js')
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
     .pipe($.include())
     // .pipe($.if(argv.docs, $.jsdoc('./docs')))
   );
   return stream.done()
     .pipe($.concat('customize.js', { newLine: '\n' }))
-    .pipe(gulp.dest(PATHS.build.assets))
+    .pipe(gulp.dest(PATHS.build.scripts))
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
     .pipe($.rename({ suffix: '.min' }))
     .pipe($.if(CONFIG.isDist, $.stripDebug()))
-    .pipe(gulp.dest(PATHS.build.assets));
-});
-
-/**
- * Scripts | Admin worker (outside iframe)
- *
- * @private
- */
-gulp.task('_customize-scripts-admin-worker', function() {
-  return gulp.src(PATHS.src.assets + 'scripts/customize-worker.js')
-    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.concat('customize-worker.js', { newLine: '\n' }))
-    .pipe(gulp.dest(PATHS.build.assets))
-    .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
-    .pipe($.rename({ suffix: '.min' }))
-    .pipe($.if(CONFIG.isDist, $.stripDebug()))
-    .pipe(gulp.dest(PATHS.build.assets));
+    .pipe(gulp.dest(PATHS.build.scripts));
 });
 
 /**
@@ -141,10 +117,12 @@ gulp.task('_customize-scripts-admin-worker', function() {
  * @private
  */
 gulp.task('_customize-scripts-preview', function() {
-  return gulp.src(PATHS.src.assets + 'scripts/customize-preview.js')
+  return gulp.src(PATHS.src.scripts + 'customize-preview.js')
+    .pipe($.concat('customize-preview.js', { newLine: '\n' }))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe(gulp.dest(PATHS.build.scripts))
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
-    .pipe($.concat('customize-preview.min.js', { newLine: '\n' }))
+    .pipe($.rename({ suffix: '.min' }))
     .pipe($.if(CONFIG.isDist, $.stripDebug()))
-    .pipe(gulp.dest(PATHS.build.assets));
+    .pipe(gulp.dest(PATHS.build.scripts));
 });

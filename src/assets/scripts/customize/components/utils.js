@@ -21,4 +21,4 @@ var Utils = (function () {
 })();
 
 // export to public api
-K6['Utils'] = Utils;
+k6cp['Utils'] = Utils;

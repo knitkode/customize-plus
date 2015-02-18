@@ -30,7 +30,7 @@
   }
 
   // export public API
-  window.K6CP = {};
-  window.K6CP['toCSS'] = _toCSS;
+  window.k6cp = {};
+  window.k6cp['toCSS'] = _toCSS;
 
 })(window, jQuery, wp);

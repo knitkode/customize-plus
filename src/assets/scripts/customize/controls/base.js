@@ -366,7 +366,7 @@ var ControlBase = api.Control.extend({
 });
 
 // export to public api
-K6['controls']['Base'] = ControlBase;
+k6cp['controls']['Base'] = ControlBase;
 
 /**
  * Fix autofocus

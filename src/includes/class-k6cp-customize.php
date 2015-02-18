@@ -115,6 +115,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 
 			add_action( 'admin_menu', array( __CLASS__, 'clean_admin_menu' ) );
 
+			// allow themes to kicks in
 			add_action( 'after_setup_theme', array( __CLASS__, 'init_with_theme') );
 
 			// The priority here is very important, when adding custom classes to the customize
@@ -128,11 +129,6 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 			add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'inject_js_admin' ) );
 			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_view_loader' ) );
 			add_action( 'customize_preview_init' , array( __CLASS__, 'inject_js_preview' ) );
-			// k6doubt add_action( 'customize_save_after', array( $this, 'compile_css' ) ); // use this or the less.js result sent through ajax \\
-
-			add_action( 'wp_ajax_k6_save_css', array( $this, 'save_css' ) ); // this should loop through all saved stylesheets (also the one from the theme)
-			add_action( 'wp_ajax_k6_export', array( $this, 'export_settings' ) );
-			add_action( 'admin_post_k6_import', array( $this, 'import_settings' ) );
 		}
 
 		public static function init() {
@@ -173,7 +169,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function inject_css_admin() {
-			wp_enqueue_style( 'k6cp-customize', plugins_url( 'assets/customize.min.css', K6CP_PLUGIN_FILE ), array( 'dashicons' ), K6CP::VERSION ); // k6anticache \\ // k6trial wp_enqueue_script( 'k6cp-customize-preview', K6CP::$_ASSETS . 'jquery-velocity-patch.js?'.time().'='.mt_rand(), array( 'jquery' ), K6CP::VERSION ); // k6anticache k6temp \\
+			wp_enqueue_style( 'k6cp-customize', plugins_url( 'assets/customize.min.css', K6CP_PLUGIN_FILE ), array( 'dashicons' ), K6CP_PLUGIN_VERSION ); // k6anticache \\ // k6trial wp_enqueue_script( 'k6cp-customize-preview', K6CP::$_ASSETS . 'jquery-velocity-patch.js?'.time().'='.mt_rand(), array( 'jquery' ), K6CP::VERSION ); // k6anticache k6temp \\
 		}
 
 		/**
@@ -184,9 +180,9 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function inject_js_admin() {
-			wp_register_script( 'k6cp-customize', plugins_url( 'assets/customize.min.js', K6CP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery' ), K6CP::VERSION, false ); // k6anticache \\
+			wp_register_script( 'k6cp-customize', plugins_url( 'assets/customize.min.js', K6CP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery' ), K6CP_PLUGIN_VERSION, false ); // k6anticache \\
 
-			wp_localize_script( 'k6cp-customize', 'K6', array(
+			wp_localize_script( 'k6cp-customize', 'k6cp', array(
 					'constants' => self::get_js_constants(),
 					'options' => self::get_js_options(),
 					'l10n' => self::get_js_l10n(),
@@ -194,6 +190,10 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 			wp_enqueue_script( 'k6cp-customize' );
 		}
 
+		/**
+		 * [get_js_constants description]
+		 * @return [type] [description]
+		 */
 		public static function get_js_constants() {
 			$required = array(
 				'FONT_FAMILIES' => k6cp_sanitize_font_families( self::$FONT_FAMILIES ),
@@ -208,6 +208,10 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 			return array_merge( $required, $additional );
 		}
 
+		/**
+		 * [get_js_options description]
+		 * @return [type] [description]
+		 */
 		public static function get_js_options() {
 			$required = array(
 				// nothing for now
@@ -216,6 +220,10 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 			return array_merge( $required, $additional );
 		}
 
+		/**
+		 * [get_js_l10n description]
+		 * @return [type] [description]
+		 */
 		public static function get_js_l10n() {
 			$required = array(
 				'back' => __( 'Back', 'pkgTextdomain' ),
@@ -237,19 +245,6 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 			);
 			$additional = (array) apply_filters( 'k6cp/customize/js_l10n', array() );
 			return array_merge( $required, $additional );
-		}
-
-		/**
-		 * Get theme main less file content
-		 *
-		 * @link( http://stackoverflow.com/a/19510664/1938970, strip spaces)
-		 * @link( http://stackoverflow.com/a/15123777/1938970, strip comments (customized))
-		 * @return string The theme.less file as a string (we pass it to the web worker)
-		 */
-		public static function get_uncompiled_stylesheet_content() {
-			$response = wp_remote_get( K6CP::$_ASSETS . 'styles/theme.less' );
-			$less_string = wp_remote_retrieve_body( $response ); // k6doubt, keep it or not? // $less_string = preg_replace( '/(?:(?:(?<!\:|\\\|\')\/\/.*))/', '', $less_string ); // k6doubt, keep it or not? // $less_string = preg_replace( '/[ \t]+/', ' ', preg_replace( '/\s*$^\s*/m', "\n", $less_string ) ); \\
-			return $less_string;
 		}
 
 		/**
@@ -290,91 +285,6 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 			?>
 			<!--[if lt IE 9]><script src="<?php echo esc_url( plugins_url( "assets/es5-shim{$min}.js", K6CP_PLUGIN_FILE ) ); ?>"></script><![endif]-->
 			<?php
-		}
-
-		/**
-		 * Export settings callback.
-		 * It gets options and returns
-		 * a json response to the ajax request
-		 *
-		 * For a no ajax solution check this
-		 * link: https://pippinsplugins.com/building-settings-import-export-feature/
-		 *
-		 * @since  0.0.1
-		 */
-		public static function export_settings() {
-			$mods_to_export = array();
-			$mods = get_theme_mods();
-
-			unset( $mods['nav_menu_locations'] );
-
-			foreach ( $mods as $key => $value ) {
-				$mods_to_export[ $key ] = maybe_unserialize( $value );
-			}
-
-			wp_send_json_success(
-				array(
-					'mods' => $mods_to_export,
-					'options' => get_option( self::$OPTIONS_PREFIX, array() )
-				)
-			);
-			die(); // this is required to terminate immediately and return a proper response
-		}
-
-		/**
-		 * Import settings callback.
-		 * It stores the options and ...
-		 *
-		 * @since  0.0.1
-		 */
-		public static function import_settings() {
-
-			if ( ! current_user_can( 'manage_options' ) ) {
-				return; }
-
-			if ( isset( $_FILES['import'] ) && check_admin_referer( 'k6_import', 'k6_import_nonce' ) ) {
-				if ( $_FILES['import']['error'] > 0 ) {
-					wp_die( 'An error occured.' );
-				} else {
-					$file = $_FILES['import']['tmp_name'];
-					$name = $_FILES['import']['name'];
-					$size = $_FILES['import']['size'];
-					$value = explode( '.', $name );
-					$extension = strtolower( array_pop( $value ) );
-
-					if ( empty( $file ) ) {
-						wp_die( __( 'Please upload a file to import', 'pkgTextdomain' ) );
-					}
-					else if ( 'json' != $extension ) {
-						wp_die( __( 'Please upload a valid .json file', 'pkgTextdomain' ) );
-					}
-					else if ( $size > 500000 ) {
-						wp_die( __( 'The file size is too big', 'pkgTextdomain' ) );
-					}
-					else {
-						$settings = json_decode( file_get_contents( $file ), true );
-						foreach ( $settings['mods'] as $key => $value ) {
-							set_theme_mod( $key, $value );
-						}
-						$settings_options_prefix = self::$OPTIONS_PREFIX;
-
-						if ( false !== get_option( $settings_options_prefix ) ) {
-
-							// The option already exists, so we just update it.
-							update_option( $settings_options_prefix, $settings['options'] );
-						} else {
-
-							// The option hasn't been added yet. We'll add it with $autoload set to 'no'.
-							add_option( $settings_options_prefix, $settings['options'], null, 'no' );
-						}
-
-						do_action( 'k6cp/customize/import' );
-
-						wp_safe_redirect( admin_url( 'customize.php?k6_import=1' ) ); exit;
-					}
-				}
-			}
-			die(); // this is required to terminate immediately and return a proper response
 		}
 
 		/**
@@ -613,7 +523,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 					case 'k6cp_number':
 						$wp_customize->add_control( new K6CP_Customize_Control_Number( $wp_customize, $option_id, $control_args ) );
 						break;
-					case 'k6cp_tradio':
+					case 'k6cp_radio':
 						$wp_customize->add_control( new K6CP_Customize_Control_Radio( $wp_customize, $option_id, $control_args ) );
 						break;
 					case 'k6cp_radio_image':

@@ -9,4 +9,4 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-api.controlConstructor['k6cp_tradio'] = ControlBaseRadio;
+api.controlConstructor['k6cp_radio'] = ControlBaseRadio;

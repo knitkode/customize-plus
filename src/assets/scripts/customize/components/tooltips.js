@@ -109,4 +109,4 @@ var Tooltips = (function () {
 })();
 
 // export to public api
-K6['Tooltips'] = Tooltips;
+k6cp['Tooltips'] = Tooltips;

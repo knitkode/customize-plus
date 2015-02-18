@@ -1,15 +1,11 @@
 {
   "name": "customize-plus",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "dependencies": {
-    "less": "git@github.com:kuus/less.js.git#87beef96aef484cdb4206a565b6a91a9d4740167",
-    "less-worker": "git@github.com:kuus/less.js.git#8b953bb7a6a359e3a8a5ad54fe81bd7b0068b5e2",
     "webui-popover": "git@github.com:kuus/webui-popover.git#b1af0b73cf72f2611427c11ee5289ec027728d85",
-    "lunr.js": "~0.5.5",
     "jquery-ui-slider-pips": "~1.7.2",
     "jquery-cookie": "~1.4.1",
-    "intro.js": "~1.0.0",
     "es5-shim": "~4.1.0",
     "polyfill-classList": "git@github.com:eligrey/classList.js.git#2014-12-13",
     "selectize": "~0.12.0"

@@ -26,7 +26,7 @@ class K6CP_Customize_Control_Base_Input extends K6CP_Customize_Control_Base {
 		?>
 		<label>
 			<?php $this->js_tpl_header(); ?>
-			<input type="{{ data.type.replace('k6_','') }}" value="{{ data.value }}" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #>>
+			<input type="{{ data.type.replace('k6cp_','') }}" value="{{ data.value }}" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #>>
 		</label>
 		<?php
 	}

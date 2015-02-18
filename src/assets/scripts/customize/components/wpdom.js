@@ -44,4 +44,4 @@ var WpDom = (function () {
 })();
 
 // export to public api
-K6['WpDom'] = WpDom;
+k6cp['WpDom'] = WpDom;

@@ -28,7 +28,7 @@ var ControlFontFamily = ControlBase.extend({
    */
   ready: function () {
     this.input = this._container.getElementsByClassName('k6-selectize')[0];
-    this.fontFamilies = K6['constants']['FONT_FAMILIES'].map(function (fontFamilyName) {
+    this.fontFamilies = k6cp['constants']['FONT_FAMILIES'].map(function (fontFamilyName) {
       return { item: fontFamilyName };
     });
     this._updateUI();

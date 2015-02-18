@@ -154,22 +154,6 @@
 
 }
 
-/**
- * Style color preview next to `<li>` option element
- * created by the select2 plugin
- */
-.select2-results__option {
-  position: relative;
-  padding-left: 30px;
-  i {
-    position: absolute;
-    left: 5px;
-    top: 5px;
-    bottom: 5px;
-    width: 20px;
-  }
-}
-
 // states
 [data-k6-color-mode="custom"].k6-color .wp-color-result:after,
 [data-k6-color-mode="dynamic"] .k6-color-dynamic,

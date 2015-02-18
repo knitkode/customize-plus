@@ -44,7 +44,11 @@ gulp.task('_base-root', function() {
  * @private
  */
 gulp.task('_base-images', function() {
-  return gulp.src([PATHS.src.images + '*.*', '!' + PATHS.src.images + '*.dev*'])
+  return gulp.src([
+      PATHS.src.images + '*.*',
+      '!' + PATHS.src.images + '*.svg', // svg are inlined in css
+      '!' + PATHS.src.images + '*.dev*' // exclude dev images (kind of sketches)
+    ])
     .pipe($.if(CONFIG.isDist, $.cached(
       $.imagemin({
         progressive: true,
@@ -66,13 +70,14 @@ gulp.task('_base-styles', ['_base-images'], function() {
   return gulp.src(PATHS.src.styles + '*.scss')
     .pipe($.sass())
     .on('error', utilErrors)
-    .pipe($.rename({ suffix: '.min' }))
     .pipe($.if(CONFIG.isDist, $.base64({
       baseDir: PATHS.src.assets,
       extensions: ['svg'],
       debug: true
     })))
     .pipe($.autoprefixer(PLUGINS.autoprefixer))
+    .pipe(gulp.dest(PATHS.build.styles))
+    .pipe($.rename({ suffix: '.min' }))
     .pipe($.if(CONFIG.isDist, $.combineMediaQueries()))
     .pipe($.if(CONFIG.isDist, $.minifyCss()))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))

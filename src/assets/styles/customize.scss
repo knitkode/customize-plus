@@ -3,15 +3,15 @@
 @import "utils";
 
 // customize - vendors
-@import "vendor/spinner";
-@import "vendor/toggle-switch";
-@import "vendor/webui-popover";
-@import "vendor/jquery-ui.structure";
-@import "vendor/jquery-ui.theme";
-@import "vendor/jquery-ui.slider-pips";
-@import "vendor/jquery-ui.slider-custom";
-@import "vendor/selectize";
-@import "vendor/selectize-custom";
+@import "vendor-custom/spinner";
+@import "vendor-custom/toggle-switch";
+@import "vendor-custom/webui-popover";
+@import "vendor-custom/jquery-ui.structure";
+@import "vendor-custom/jquery-ui.theme";
+@import "vendor-custom/jquery-ui.slider-pips";
+@import "vendor-custom/jquery-ui.slider-custom";
+@import "vendor-custom/selectize";
+@import "vendor-custom/selectize-custom";
 
 // customize - base
 @import "customize/base";

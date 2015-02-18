@@ -22,7 +22,7 @@ class K6CP_Customize_Control_Font_Family extends K6CP_Customize_Control_Base {
 	 * @since 0.0.1
 	 */
 	protected function add_to_json() {
-		$this->json['value'] = $this->value();
+		$this->json['value'] = k6cp_sanitize_font_families( $this->value() );
 	}
 
 	/**

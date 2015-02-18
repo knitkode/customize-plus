@@ -4,7 +4,6 @@
   var themeCheckResults = document.getElementsByClassName("tc-result")[0];
   var nodes = themeCheckResults.querySelectorAll("li");
   var whitelisted = [
-    'wp-less-oncletom/lib/vendor/',
     'vendor/oyejorge/less.php/',
     'ReduxFramework/',
     // remove `<` and `>` because they got escaped within innerHTML result

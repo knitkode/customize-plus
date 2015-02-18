@@ -1,0 +1,30 @@
+/**
+ * Selectize custom style
+ *
+ * Make selectize `<select>` replacement look like the normal
+ * `<select>` tag styled with WordPress css on `select` selctor.
+ *
+ */
+.selectize-input {
+  border-radius: 0 !important;
+  padding: 5px 8px; // k6wptight-css like WordPress select \\
+  font-size: 14px; // k6wptight-css like WordPress select \\
+  outline: 0;
+  border: 1px solid $WP--select-border-color;
+  box-shadow: $WP--select-box-shadow;
+
+  &.focus {
+    border-color: $WP--select-border-color-focus;
+    box-shadow: $WP--select-box-shadow-focus;
+  }
+}
+
+.selectize-dropdown {
+  border-color: $WP--select-border-color-focus;
+  box-shadow: $WP--select-box-shadow-focus, $popover--box-shadow;
+  border-radius: 0;
+}
+
+.selectize-control.multi .selectize-input.has-items {
+  padding: 6px 6px 3px;
+}

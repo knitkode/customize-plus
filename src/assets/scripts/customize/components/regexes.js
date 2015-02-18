@@ -118,4 +118,4 @@ var Regexes = {
 };
 
 // export to public api
-K6['Regexes'] = Regexes;
+k6cp['Regexes'] = Regexes;

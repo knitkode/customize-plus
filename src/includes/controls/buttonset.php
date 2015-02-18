@@ -6,7 +6,7 @@
  */
 class K6CP_Customize_Control_Buttonset extends K6CP_Customize_Control_Base_Radio {
 
-	public $type = 'k6_buttonset';
+	public $type = 'k6cp_buttonset';
 
 	/**
 	 * Render template for choice displayment.
@@ -15,7 +15,7 @@ class K6CP_Customize_Control_Buttonset extends K6CP_Customize_Control_Base_Radio
 	 */
 	protected function js_tpl_choice () {
 		?>
-			<input id="{{ id }}" type="radio" value="{{ val }}" name="_customize-k6_buttonset-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
+			<input id="{{ id }}" type="radio" value="{{ val }}" name="_customize-k6cp_buttonset-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
 			<label for="{{ id }}" onclick=""{{{ tipAttrs }}}>{{{ label }}}</label>
 		<?php
 	}
