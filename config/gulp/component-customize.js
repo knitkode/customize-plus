@@ -6,7 +6,6 @@ var CONFIG = require('./wpkuus-config');
 var PLUGINS = require('./wpkuus-plugins');
 var streamqueue = require('streamqueue');
 var extend = require('util')._extend;
-// var swigHelpers = require('./wpkuus-util-swig-helpers');
 var pkg = require('../../package.json');
 
 
@@ -25,7 +24,7 @@ gulp.task('build-customize', [
  * @public
  */
 gulp.task('watch-customize', function() {
-  gulp.watch('./bower.json', ['build-customize']);
+  gulp.watch('./src/bower.json', ['build-customize']);
   gulp.watch(PATHS.src.scripts + '**/*.js', ['_customize-scripts']);
 
 });
