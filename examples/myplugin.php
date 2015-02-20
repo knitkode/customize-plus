@@ -79,7 +79,7 @@ class MyPlugin {
 	 * default value.
 	 */
 	public static function test_option() {
-		echo '<h1>myplugin with Customize Plus API `get_option_with_default` is: ' . esc_html( self::$customize->get_option_with_default( 'myplugin-value' ) ) . '</h1>';
+		echo '<h1>myplugin with Customize Plus API `get_setting_with_default` is: ' . esc_html( self::$customize->get_setting_with_default( 'myplugin-value' ) ) . '</h1>';
 		echo '<h1>myplugin with WordPress api `get_option` is: ' . esc_html( get_option( 'myplugin' )[ 'myplugin-value' ] ) . '</h1>';
 	}
 

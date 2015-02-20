@@ -194,10 +194,10 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 
 			/**
 			 * @hook 'k6cp/theme/is_configured' for themes,
-			 * @param array An array containing the defualt value for each option
+			 * @param array An array containing the defualt value for each setting
 			 *              declared in the customize panels
 			 */
-			do_action( 'k6cp/theme/is_configured', $customize_manager->options_defaults );
+			do_action( 'k6cp/theme/is_configured', $customize_manager->settings_defaults );
 		}
 	}
 

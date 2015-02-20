@@ -32,16 +32,16 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		public $option_prefix; // namespace used for options API
 
 		/**
-		 * Description for public
-		 * @var array
-		 */
-		public $options_defaults; // these will be the 'theme_mods'
-
-		/**
 		 * [$options description]
 		 * @var [type]
 		 */
 		public $panels;
+
+		/**
+		 * [$settings_defaults description]
+		 * @var [type]
+		 */
+		public $settings_defaults;
 
 		/**
 		 * Constructor
@@ -59,7 +59,7 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 			$this->is_plugin = (bool) self::interpret_mode( $mode );
 			$this->option_prefix = (string) $option_prefix;
 			$this->panels = (array) $panels;
-			$this->set_options_defaults();
+			$this->settings_defaults = K6CP_Utils::get_settings_defaults_from_panels( $panels );
 
 			add_action( 'k6cp/customize/ready', array( $this, 'register_panels' ) );
 		}
@@ -77,58 +77,17 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 			}
 		}
 
-		// // just trying stuff here, it's not javascript...
-		// protected function options_walker( $callback ) {
-		// 	foreach ( $options as $panel_id => $panel_args ) {
-		// 		foreach ( $panel_args['sections'] as $section_id => $section_args ) {
-		// 			foreach ( $section_args['fields'] as $option_id => $option_args ) {
-		// 				// $callback( $option_id, $option_args );
-		// 			}
-		// 		}
-		// 	}
-		// }
-
 		/**
-		 * [set_options_defaults description]
-		 *
-		 * @link http://wordpress.stackexchange.com/questions/28954/how-to-set-the-default-value-of-a-option-in-a-theme
-		 * @since 0.0.1
-		 * @return [type]              [description]
-		 */
-		public function set_options_defaults() {
-			foreach ( $this->panels as $panel_id => $panel_args ) {
-				foreach ( $panel_args['sections'] as $section_id => $section_args ) {
-					foreach ( $section_args['fields'] as $option_id => $option_args ) {
-
-						if ( isset ( $option_args['setting'] ) ) {
-
-							$setting = $option_args['setting'];
-
-							// this allow to use a different id for the setting than the default one
-							// (which is the shared between the setting and its related control)
-							if ( ! isset ( $setting['id'] ) ) {
-								$setting['id'] = $option_id;
-							}
-
-							// set default value on options defaults
-							$this->options_defaults[ $setting['id'] ] = $setting['default'];
-						}
-					}
-				}
-			}
-		}
-
-		/**
-		 * Get option
+		 * Get setting value with default.
 		 *
 		 * @param [type]  $opt_name [description]
 		 * @return [type]           [description]
 		 */
-		public function get_option_with_default( $opt_name, $use_theme_mods = false ) {
+		public function get_setting_with_default( $opt_name, $use_theme_mods = false ) {
 			// we need a `theme_mod`
 			if ( ! $this->is_plugin || $use_theme_mods ) {
 				// get from theme_mods (with default)
-				return get_theme_mod( $opt_name, $this->options_defaults[ $opt_name ] );
+				return get_theme_mod( $opt_name, $this->settings_defaults[ $opt_name ] );
 			}
 			// we need an `option`
 			else {
@@ -137,8 +96,8 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 					return get_option( $this->option_prefix )[ $opt_name ];
 				}
 				// or get from options defaults
-				else if ( isset( $this->options_defaults[ $opt_name ] ) ) {
-					return $this->options_defaults[ $opt_name ];
+				else if ( isset( $this->settings_defaults[ $opt_name ] ) ) {
+					return $this->settings_defaults[ $opt_name ];
 				}
 				// or return false, as in the WordPress API
 				else {

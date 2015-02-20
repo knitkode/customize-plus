@@ -21,7 +21,7 @@ if ( ! class_exists( 'MyTheme' ) ):
 		 * Theme options default values
 		 * @var array
 		 */
-		public static $options_defaults = array();
+		public static $settings_defaults = array();
 
 		/**
 		 * Constructor
@@ -33,7 +33,7 @@ if ( ! class_exists( 'MyTheme' ) ):
 
 			// just to be sure nobody else has hooked here \\
 			remove_all_actions( 'k6cp/theme/is_configured' );
-			add_action( 'k6cp/theme/is_configured', array( __CLASS__, 'set_options_defaults' ), 10, 1 );
+			add_action( 'k6cp/theme/is_configured', array( __CLASS__, 'set_settings_defaults' ), 10, 1 );
 
 			// the priority here is important
 			add_action( 'k6cp/customize/register_custom_classes', array( __CLASS__, 'add_customize_classes' ), 20 );
@@ -66,17 +66,17 @@ if ( ! class_exists( 'MyTheme' ) ):
 		}
 
 		/**
-		 * Set default options values on static theme class property.
+		 * Set default settings values on static theme class property.
 		 *
 		 * If you really don't care about getting default values
-		 * automatically you can forget this, the `$options_defaults`
+		 * automatically you can forget this, the `$settings_defaults`
 		 * static class property and the `get_theme_mod` method.
 		 *
-		 * @param array $options_defaults A key value pair with all the theme mods
+		 * @param array $settings_defaults A key value pair with all the theme mods
 		 *                                default values
 		 */
-		public static function set_options_defaults( $options_defaults ) {
-			self::$options_defaults = $options_defaults;
+		public static function set_settings_defaults( $settings_defaults ) {
+			self::$settings_defaults = $settings_defaults;
 		}
 
 		/**
@@ -92,8 +92,8 @@ if ( ! class_exists( 'MyTheme' ) ):
 		 * @return [type]           [description]
 		 */
 		public static function get_theme_mod( $opt_name ) {
-			if ( isset( self::$options_defaults[ $opt_name ] ) ) {
-				return get_theme_mod( $opt_name, self::$options_defaults[ $opt_name ] );
+			if ( isset( self::$settings_defaults[ $opt_name ] ) ) {
+				return get_theme_mod( $opt_name, self::$settings_defaults[ $opt_name ] );
 			} else {
 				return get_theme_mod( $opt_name );
 			}

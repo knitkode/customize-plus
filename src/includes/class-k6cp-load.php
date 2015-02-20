@@ -101,6 +101,7 @@ if ( ! class_exists( 'K6CP' ) ):
 				require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-admin.php' );
 			}
 			require_once( K6CP_PLUGIN_DIR . 'includes/k6cp-functions-sanitize.php' );
+			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-utils.php' );
 			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize-manager.php' );
 			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize.php' );
 			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-theme.php' );
