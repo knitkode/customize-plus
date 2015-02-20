@@ -61,6 +61,10 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 			add_action( 'k6cp/theme/ready', array( __CLASS__, 'configure' ) );
 		}
 
+		/**
+		 * [configure description]
+		 * @return [type] [description]
+		 */
 		public static function configure() {
 			$configuration = (array) apply_filters( 'k6cp/theme/configure', array() );
 
