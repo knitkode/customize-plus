@@ -17,6 +17,12 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 	class K6CP_Customize_Manager {
 
 		/**
+		 *
+		 * @var boolean
+		 */
+		public $is_plugin;
+
+		/**
 		 * Name of DB entry under which options are stored if 'type' => 'option'
 		 * is used for Theme Customizer settings
 		 *
@@ -42,16 +48,37 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		 *
 		 * @since  0.0.1
 		 */
-		public function __construct( $option_prefix, $panels ) {
+		/**
+		 * [__construct description]
+		 * @param [type] $mode          'plugin' or theme
+		 * @param [type] $option_prefix [description]
+		 * @param [type] $panels        [description]
+		 */
+		public function __construct( $mode, $option_prefix, $panels ) {
 
-			$this->option_prefix = $option_prefix;
-			$this->panels = $panels;
+			$this->is_plugin = (bool) self::interpret_mode( $mode );
+			$this->option_prefix = (string) $option_prefix;
+			$this->panels = (array) $panels;
 			$this->set_options_defaults();
-			$this->register_panels();
+
+			add_action( 'k6cp/customize/ready', array( $this, 'register_panels' ) );
+		}
+
+		/**
+		 * [interpret_mode description]
+		 * @param  [type] $mode [description]
+		 * @return [type]       [description]
+		 */
+		private static function interpret_mode( $mode ) {
+			if ( 'theme' === $mode ) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 
 		// // just trying stuff here, it's not javascript...
-		// protected static function options_walker( $callback ) {
+		// protected function options_walker( $callback ) {
 		// 	foreach ( $options as $panel_id => $panel_args ) {
 		// 		foreach ( $panel_args['sections'] as $section_id => $section_args ) {
 		// 			foreach ( $section_args['fields'] as $option_id => $option_args ) {
@@ -92,13 +119,44 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		}
 
 		/**
+		 * Get option
+		 *
+		 * @param [type]  $opt_name [description]
+		 * @return [type]           [description]
+		 */
+		public function get_option_with_default( $opt_name, $use_theme_mods = false ) {
+			// we need a `theme_mod`
+			if ( ! $this->is_plugin || $use_theme_mods ) {
+				// get from theme_mods (with default)
+				return get_theme_mod( $opt_name, $this->options_defaults[ $opt_name ] );
+			}
+			// we need an `option`
+			else {
+				// get from options (WordPress API)
+				if ( isset( get_option( $this->option_prefix )[ $opt_name ] ) ) {
+					return get_option( $this->option_prefix )[ $opt_name ];
+				}
+				// or get from options defaults
+				else if ( isset( $this->options_defaults[ $opt_name ] ) ) {
+					return $this->options_defaults[ $opt_name ];
+				}
+				// or return false, as in the WordPress API
+				else {
+					return false;
+				}
+			}
+		}
+
+		/**
 		 * [register_panels description]
 		 *
 		 * @since  0.0.1
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
 		public function register_panels() {
-			self::add_panels( $this->panels, $this->option_prefix );
+			$this->add_panels( $this->panels, $this->option_prefix );
+
+			do_action( 'k6cp/customize/register_panels_' . $this->option_prefix );
 		}
 
 		/**
@@ -107,7 +165,7 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		 * @since  0.0.1
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
-		protected static function add_panels( $panels, $prefix ) {
+		protected function add_panels( $panels, $prefix ) {
 			global $wp_customize;
 
 			// set priority to 0
@@ -135,7 +193,7 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 				// Add panel to WordPress
 				$wp_customize->add_panel( $panel_id, $panel_args );
 
-				self::add_sections( $panel_id, $panel['sections'], $prefix );
+				$this->add_sections( $panel_id, $panel['sections'], $prefix );
 			}
 		}
 
@@ -147,7 +205,7 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		 * @param [type]  $panel_fields     [description]
 		 * @param [type]  $panel_id     [description]
 		 */
-		protected static function add_sections( $panel_id, $panel_fields, $prefix ) {
+		protected function add_sections( $panel_id, $panel_fields, $prefix ) {
 			global $wp_customize;
 
 			// set priority to 0
@@ -173,7 +231,7 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 				$wp_customize->add_section( $section_id, $section_args );
 
 				// Loop through 'fields' array in each section and add settings and controls
-				self::add_controls( $section_id, $section['fields'], $prefix );
+				$this->add_controls( $section_id, $section['fields'], $prefix );
 			}
 		}
 
@@ -185,7 +243,7 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		 * @param [type]  $section_fields [description]
 		 * @param [type]  $section_id    [description]
 		 */
-		protected static function add_controls( $section_id, $section_fields, $prefix ) {
+		protected function add_controls( $section_id, $section_fields, $prefix ) {
 			global $wp_customize;
 
 			foreach ( $section_fields as $option_id => $option_args ) {
@@ -195,12 +253,23 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 
 				if ( $setting_args ) {
 
-					// Check if 'option' or 'theme_mod' is used to store option
-					// If nothing is set, $wp_customize->add_setting method will default use 'theme_mod'
-					// If 'option' is used as setting type its value will be stored in an entry in
-					// {prefix}_options table.
-					if ( isset( $setting_args['type'] ) && 'option' == $setting_args['type'] ) {
-						$option_id = $prefix . '[' . $option_id . ']'; // k6tobecareful this is tight to customize-component-import.js \\
+					// if it's a plugin always register settings with the `options` API
+					if ( $this->is_plugin ) {
+
+						// force option type
+						$setting_args['type'] = 'option';
+
+						// set prefixed option id
+						$option_id = $prefix . '[' . $option_id . ']';
+					}
+					// Otherwise check if 'option' or 'theme_mod' is used to store option
+					else {
+						// If nothing is set, $wp_customize->add_setting method will default use 'theme_mod'
+						// If 'option' is used as setting type its value will be stored in an entry in
+						// {prefix}_options table.
+						if ( isset( $setting_args['type'] ) && 'option' == $setting_args['type'] ) {
+							$option_id = $prefix . '[' . $option_id . ']'; // k6tobecareful this is tight to customize-component-import.js \\
+						}
 					}
 
 					// add default callback function, if none is defined
@@ -210,8 +279,9 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 					// Add setting to WordPress
 					$wp_customize->add_setting( $option_id, $setting_args );
 
-					// if no settings args are passed then use the Dummy Setting Class
-				} else {
+				}
+				// if no settings args are passed then use the Dummy Setting Class
+				else {
 					// Add dummy setting to WordPress
 					$wp_customize->add_setting( new K6CP_Customize_Setting_Dummy( $wp_customize, $option_id ) );
 				}

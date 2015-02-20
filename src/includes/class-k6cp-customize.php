@@ -98,26 +98,17 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		protected function __construct() {
-
-			do_action( 'k6cp/customize/init' );
-
-			// allow themes to kicks in
-			add_action( 'after_setup_theme', array( __CLASS__, 'init_with_theme') );
-
 			// The priority here is very important, when adding custom classes to the customize
 			// you should use a priority in this range (11, 99)
 			add_action( 'k6cp/customize/register', array( __CLASS__, 'register_custom_classes' ), 10 );
 
-			// add_action( 'customize_register', array( $this, 'change_wp_defaults' ) ); TODO
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_css_admin' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_js_shim' ) );
 			add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'enqueue_js_admin' ) );
 			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_view_loader' ) );
 			add_action( 'customize_preview_init' , array( __CLASS__, 'enqueue_js_preview' ) );
-		}
 
-		public static function init_with_theme() {
-			do_action( 'k6cp/customize/init_with_theme' );
+			// do_action( 'k6cp/customize/init' );
 		}
 
 		/**

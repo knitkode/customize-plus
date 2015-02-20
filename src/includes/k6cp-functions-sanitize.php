@@ -143,10 +143,6 @@ if ( ! function_exists( 'k6cp_sanitize_unit_px' ) ) :
 	 * @return [type]        [description]
 	 */
 	function k6cp_sanitize_unit_px( $value ) { // k6todo \\
-		// if ( is_int( $value ) ) {
-		// 	echo '<h1>' . strval( $value ) . 'px</h1>';
-		// 	return strval( $value ) . 'px';
-		// }
 		return $value;
 	}
 endif;
@@ -159,10 +155,6 @@ if ( ! function_exists( 'k6cp_sanitize_unit_percent' ) ) :
 	 * @return [type]        [description]
 	 */
 	function k6cp_sanitize_unit_percent( $value ) { // k6todo \\
-		// if ( is_int( $value ) ) {
-		// 	echo '<h1>' . strval( $value ) . 'px</h1>';
-		// 	return strval( $value ) . 'px';
-		// }
 		return $value;
 	}
 endif;
@@ -175,10 +167,6 @@ if ( ! function_exists( 'k6cp_sanitize_unit_px_percent' ) ) :
 	 * @return [type]        [description]
 	 */
 	function k6cp_sanitize_unit_px_percent( $value ) { // k6todo \\
-		// if ( is_int( $value ) ) {
-		// 	echo '<h1>' . strval( $value ) . 'px</h1>';
-		// 	return strval( $value ) . 'px';
-		// }
 		return $value;
 	}
 endif;

@@ -42,16 +42,16 @@ add_action( 'admin_init', 'k6cp_admin_init' );
 add_action( 'admin_head', 'k6cp_admin_head' );
 // add_action( 'admin_notices', 'k6cp_admin_notices' );
 add_action( 'admin_enqueue_scripts', 'k6cp_admin_enqueue_scripts' );
-// add_action( 'network_admin_menu', 'k6cp_admin_menu' );
-// add_action( 'wpmu_new_blog', 'bp_new_site', 10, 6 );
 
 // // Hook on to admin_init
 // add_action( 'k6cp_admin_init', 'bp_setup_updater', 1000 );
 // add_action( 'k6cp_admin_init', 'bp_core_activation_notice', 1010 );
-add_action( 'k6cp_admin_init', 'k6cp_register_admin_style' );
 add_action( 'k6cp_admin_init', 'k6cp_do_activation_redirect', 1 );
 
 add_action( 'customize_register', 'k6cp_customize_register' );
+
+add_action( 'plugins_loaded', 'k6cp_plugins_loaded' );
+add_action( 'after_setup_theme', 'k6cp_after_setup_theme' );
 
 /** Sub-Actions ***************************************************************/
 
@@ -108,17 +108,6 @@ function k6cp_admin_notices() {
 function k6cp_admin_enqueue_scripts( $hook_suffix = '' ) {
 	do_action( 'k6cp/admin/enqueue_scripts', $hook_suffix );
 }
-
-/**
- * Dedicated action to register admin styles
- *
- * @since BuddyPress (1.7)
- * @uses do_action() Calls 'k6cp_admin_notices'
- */
-function k6cp_register_admin_style() {
-	do_action( 'k6cp_register_admin_style' );
-}
-
 /**
  *
  *
@@ -127,4 +116,12 @@ function k6cp_register_admin_style() {
  */
 function k6cp_customize_register() {
   do_action( 'k6cp/customize/register' );
+}
+
+function k6cp_plugins_loaded() {
+  do_action( 'k6cp/ready/plugins' );
+}
+
+function k6cp_after_setup_theme() {
+  do_action( 'k6cp/theme/ready' );
 }

@@ -5,8 +5,6 @@
  * @type {Object}
  */
 module.exports = PATHS = {
-  /** @type {String} */
-  bower: './src/assets/bower_components/',
   /** @type {Object} */
   src: {
     root: './src/',
@@ -14,6 +12,7 @@ module.exports = PATHS = {
     includes: './src/includes/',
     views: './src/views/',
     assets: './src/assets/',
+    bower: './src/assets/bower_components/',
     images: './src/assets/images/',
     scripts: './src/assets/scripts/',
     styles: './src/assets/styles/',

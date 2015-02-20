@@ -103,6 +103,7 @@ if ( ! class_exists( 'K6CP' ) ):
 			require_once( K6CP_PLUGIN_DIR . 'includes/k6cp-functions-sanitize.php' );
 			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize-manager.php' );
 			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize.php' );
+			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-theme.php' );
 
 			add_action( 'plugins_loaded', array( __CLASS__, 'init' ) );
 			// add_action( 'init', array( __CLASS__, 'register' ) );
@@ -146,6 +147,8 @@ if ( ! class_exists( 'K6CP' ) ):
 		 * @return [type]           [description]
 		 */
 		public static function get_option( $opt_name ) {
+			// THIS HSOULD RETRIEVE THE PLUGINS GLOBAL OPTIONS IN DB UNDER K6CP (SERIALIZED ARRAY)
+
 			// if ( isset( get_option( K6CP_Customize::$OPTIONS_PREFIX )[ $opt_name ] ) ) {
 			// 	return get_option( K6CP_Customize::$OPTIONS_PREFIX )[ $opt_name ];
 			// }

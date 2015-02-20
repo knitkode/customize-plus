@@ -16,6 +16,11 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 
 	class K6CP_Theme {
 
+		public static $prefix;
+		public static $customize_panels;
+		public static $framework_name;
+		public static $theme_stylesheets;
+
 		/**
 		 * Singleton
 		 *
@@ -53,166 +58,145 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 		 * @since  0.0.1
 		 */
 		protected function __construct() {
+			// add_action( 'admin_menu', array( __CLASS__, 'clean_admin_menu' ) ); TODO
+			// add_action( 'customize_register', array( $this, 'change_wp_defaults' ) ); TODO
 
-			self::init();
-
-			add_action( 'admin_menu', array( __CLASS__, 'clean_admin_menu' ) );
-
-			// allow themes to kicks in
-			add_action( 'after_setup_theme', array( __CLASS__, 'init_with_theme') );
+			add_action( 'k6cp/theme/ready', array( __CLASS__, 'configure' ) );
 		}
 
-		public static function init() {
+		public static function configure() {
+			$configuration = (array) apply_filters( 'k6cp/theme/configure', array() );
 
-			self::set_options();
-		}
+			if ( $configuration ) {
+				$prefix = self::check_prefix( $configuration );
+				$customize_panels = self::check_customize_panels( $configuration );
+				$framework_name = self::check_framework( $configuration );
+				$theme_stylesheets = self::check_theme_stylesheets( $configuration );
 
-		public static function init_with_theme() {
-			do_action( 'k6cp/customize/init_with_theme' );
+				if ( is_wp_error( $prefix ) ) {
+					echo $prefix->get_error_message();
+				}
+				if ( is_wp_error( $customize_panels ) ) {
+					echo $customize_panels->get_error_message();
+				}
+				if ( is_wp_error( $framework_name ) ) {
+					echo $framework_name->get_error_message();
+				}
+				if ( is_wp_error( $theme_stylesheets ) ) {
+					echo $theme_stylesheets->get_error_message();
+				}
+
+				self::$prefix = $prefix;
+				self::$customize_panels = $customize_panels;
+				self::$framework_name = $framework_name;
+				self::$theme_stylesheets = $theme_stylesheets;
+				self::init();
+			}
 		}
 
 		/**
-		 * Tweak admin menu.
-		 * In first place remove the unnecessary links
-		 * from the 'Appearance' submenu which creates a bit of confusion/mess.
-		 * We have to use a weird way to remove them, kind of magic numbers ... // k6tobecareful check that those numbers stays the same accros wp versions \\
-		 *
-		 * @link(https://github.com/WordPress/WordPress/blob/master/wp-admin/menu.php#L162, WP source)
-		 * @link(https://github.com/WordPress/WordPress/blob/master/wp-admin/menu.php#L167, WP source)
+		 * [check_prefix description]
 		 * @return [type] [description]
 		 */
-		public static function clean_admin_menu() {
-			global $submenu;
-			unset( $submenu['themes.php'][15] );
-			unset( $submenu['themes.php'][20] ); // k6note the following should be the proper way, in theory,
-			// but it doesn't work
-			// remove_submenu_page( 'themes.php', 'custom-header' );
-			// remove_submenu_page( 'themes.php', 'custom-background' );
-			// \\
-		}
-
-		/**
-		 * Remove default wordpress panel/sections
-		 *
-		 * Move nav section to specific panel, bit hacky,
-		 * check here: http://wordpress.stackexchange.com/a/161110/25398
-		 *
-		 * @since  0.0.1
-		 * @param {WP_Customize_Manager} $wp_customize Theme Customizer object
-		 */
-		public static function change_wp_defaults( $wp_customize ) {
-			$wp_customize->remove_section( 'static_front_page' );
-
-			// Move title_tagline section and change name
-			$section_title_tagline = $wp_customize->get_section( 'title_tagline' );
-			$wp_customize->remove_section( 'title_tagline' );
-			$wp_customize->get_setting( 'blogname' )->transport = 'postMessage';
-			$wp_customize->get_setting( 'blogdescription' )->transport = 'postMessage';
-			$wp_customize->get_setting( 'header_textcolor' )->transport = 'postMessage';
-			$section_title_tagline->panel = K6CP::SHORTNAME . '-content'; // k6tobecareful \\
-			$wp_customize->add_section( $section_title_tagline );
-
-			// Move nav section and change nmae
-			$section_nav = $wp_customize->get_section( 'nav' );
-			$wp_customize->remove_section( 'nav' );
-			$section_nav->title = __( 'Menu Navigation', 'pkgTextdomain' );
-			$section_nav->panel = K6CP::SHORTNAME . '-layout'; // k6tobecareful \\
-			$wp_customize->add_section( $section_nav );
-
-			// Move background_image section
-			$section_custom_background = $wp_customize->get_section( 'background_image' );
-			$wp_customize->remove_section( 'background_image' );
-			$section_custom_background->panel = K6CP::SHORTNAME . '-layout'; // k6tobecareful \\
-			$wp_customize->add_section( $section_custom_background );
-
-			// Move header_image section
-			$section_header_image = $wp_customize->get_section( 'header_image' );
-			$wp_customize->remove_section( 'header_image' );
-			$section_header_image->panel = K6CP::SHORTNAME . '-layout'; // k6tobecareful \\
-			$wp_customize->add_section( $section_header_image );
-
-			// Remove background color control and header color
-			$wp_customize->remove_control( 'background_color' );
-			$wp_customize->remove_control( 'header_textcolor' );
-		}
-
-		/**
-		 * Declare theme customize options
-		 *
-		 * @k6hook `k6_customize_get_options`
-		 *
-		 * @since  0.0.1
-		 */
-		public static function get_framework_options() {
-			if ( class_exists( 'K6CPP_Framework' ) ) {
-				$framework_options = (array) K6CPP_Framework::get_options();
+		private static function check_prefix( $configuration ) {
+			if ( isset( $configuration['prefix'] ) ) {
+				return $configuration['prefix'];
 			} else {
-				$framework_options = array();
+				return new WP_Error( 'broke', __( 'Customize Plus: no `prefix` given.', 'pkgTextdomain' ) );
 			}
-			return (array) apply_filters( 'k6cp/customize/get_framework_options', $framework_options );
 		}
 
 		/**
-		 * Declare theme customize options
-		 *
-		 * @k6hook `k6_customize_get_options`
-		 *
-		 * @since  0.0.1
+		 * [check_customize_panels description]
+		 * @return [type] [description]
 		 */
-		public static function get_theme_options() {
-			return (array) apply_filters( 'k6cp/customize/get_theme_options', array() );
+		private static function check_customize_panels( $configuration ) {
+			if ( isset( $configuration[ 'customize_panels' ] ) ) {
+				$customize_panels = $configuration[ 'customize_panels' ];
+				if ( is_array( $customize_panels ) ) {
+					return $customize_panels;
+				} else {
+					return new WP_Error( 'broke', __( 'Customize Plus: `customize_panels` must be an array.', 'pkgTextdomain' ) );
+				}
+			} else {
+				return new WP_Error( 'broke', __( 'Customize Plus: no `customize_panels` array given.', 'pkgTextdomain' ) );
+			}
 		}
 
 		/**
-		 * Declare theme customize options
-		 *
-		 * @k6hook `k6_customize_get_options`
-		 *
-		 * @since  0.0.1
+		 * [check_framework description]
+		 * @return [type] [description]
 		 */
-		public static function get_options() {
-			$framework_options = self::get_framework_options();
-			$theme_options = self::get_theme_options();
-			return apply_filters( 'k6cp/customize/get_options', array_merge( $framework_options, $theme_options ) );
+		private static function check_framework( $configuration ) {
+			if ( isset( $configuration[ 'framework' ] ) ) {
+				$framework_name = $configuration[ 'framework' ];
+				if ( ! is_string( $framework_name ) ) {
+					return new WP_Error( 'broke', __( 'Customize Plus Premium: `framework` needs to be a string', 'pkgTextdomain' ) );
+				}
+				if ( ! class_exists( 'K6CPP_Framework' ) ) {
+					return new WP_Error( 'broke', __( 'Customize Plus Premium is required to use a framework', 'pkgTextdomain' ) );
+				} else {
+					if ( in_array( $framework_name, K6CPP_Framework::$available_frameworks ) ) {
+						return $framework_name;
+					} else {
+						return new WP_Error( 'broke', printf( __( 'Customize Plus Premium: %s framework does not exist.', 'pkgTextdomain' ), $framework_name ) );
+					}
+				}
+				return $framework_name;
+			}
 		}
 
 		/**
-		 * [set_options description]
-		 *
-		 * @link http://wordpress.stackexchange.com/questions/28954/how-to-set-the-default-value-of-a-option-in-a-theme
-		 * @since 0.0.1
-		 * @return [type]              [description]
+		 * [check_theme_stylesheets description]
+		 * @return [type] [description]
 		 */
-		public static function set_options() {
-			$options = self::get_options();
+		private static function check_theme_stylesheets( $configuration ) {
+			if ( isset( $configuration[ 'stylesheets' ] ) ) {
+				$theme_stylesheets = $configuration[ 'stylesheets' ];
+				if ( is_array( $theme_stylesheets ) ) {
+					return $theme_stylesheets;
+				} else {
+					return new WP_Error( 'broke', __( 'Customize Plus: `stylesheets` must be an array.', 'pkgTextdomain' ) );
+				}
+			} else {
+				return new WP_Error( 'broke', __( 'Customize Plus: no `stylesheets` array given.', 'pkgTextdomain' ) );
+			}
+		}
 
-			foreach ( $options as $panel_id => $panel_args ) {
-				foreach ( $panel_args['sections'] as $section_id => $section_args ) {
-					foreach ( $section_args['fields'] as $option_id => $option_args ) {
+		/**
+		 * [init description]
+		 * @return [type] [description]
+		 */
+		public static function init() {
 
-						if ( isset ( $option_args['setting'] ) ) {
+			// first register theme framework panels and stylesheets if it's asked and if it's premium
+			if ( self::$framework_name && class_exists( 'K6CPP_Framework' ) ) {
+				$customize_manager = new K6CP_Customize_Manager( 'theme', self::$prefix, K6CPP_Framework::get_customize_panels() );
 
-							$setting = $option_args['setting'];
-							$control = $option_args['control'];
-
-							// this allow to use a different id for the setting than the default one
-							// (which is the same for the setting and its related control)
-							if ( ! isset ( $setting['id'] ) ) {
-								$setting['id'] = $option_id;
-							}
-							// this allow to use a different id for the control than the default one
-							// (which is the same for the setting and its related control)
-							if ( ! isset ( $control['id'] ) ) {
-								$control['id'] = $option_id;
-							}
-
-							if ( $setting && $control ) {
-								do_action( 'k6cp/customize/each_option', $setting, $control );
-							}
-						}
+				if ( class_exists( 'K6CPP_Compiler' ) ) {
+					$framework_styles = K6CPP_Framework::get_styles();
+					foreach ( $framework_styles as $style ) {
+						K6CPP_Compiler::register_style( $style, $customize_manager );
 					}
 				}
 			}
+
+			// register theme panels
+			$customize_manager = new K6CP_Customize_Manager( 'theme', self::$prefix, self::$customize_panels );
+
+			// register theme stylesheets to compiler if it is premium
+			if ( self::$theme_stylesheets && class_exists( 'K6CPP_Compiler' ) ) {
+				foreach ( self::$theme_stylesheets as $style ) {
+					K6CPP_Compiler::register_style( $style, $customize_manager );
+				}
+			}
+
+			/**
+			 * @hook 'k6cp/theme/is_configured' for themes,
+			 * @param array An array containing the defualt value for each option
+			 *              declared in the customize panels
+			 */
+			do_action( 'k6cp/theme/is_configured', $customize_manager->options_defaults );
 		}
 	}
 
