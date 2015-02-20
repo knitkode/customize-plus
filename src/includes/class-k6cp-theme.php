@@ -58,9 +58,6 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 		 * @since  0.0.1
 		 */
 		protected function __construct() {
-			// add_action( 'admin_menu', array( __CLASS__, 'clean_admin_menu' ) ); TODO
-			// add_action( 'customize_register', array( $this, 'change_wp_defaults' ) ); TODO
-
 			add_action( 'k6cp/theme/ready', array( __CLASS__, 'configure' ) );
 		}
 

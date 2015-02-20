@@ -26,20 +26,20 @@ class MyPlugin {
 	 */
 	private static function get_customize_panels() {
 		return array(
-			'sutrial' => array(
-				'title' => __( 'Sutrial options', 'pkgTextdomain' ),
-				'description' => __( 'Sutrial options settings panel', 'pkgTextdomain' ),
+			'myplugin' => array(
+				'title' => __( 'Plugin | MyPlugin', 'pkgTextdomain' ),
+				'description' => __( 'MyPlugin options settings panel', 'pkgTextdomain' ),
 				'sections' => array(
-					'sutrial--section' => array(
-						'title' => __( 'Sutrial options section', 'pkgTextdomain' ),
+					'myplugin--section' => array(
+						'title' => __( 'MyPlugin options section', 'pkgTextdomain' ),
 						'fields' => array(
-							'sutrial-value' => array(
+							'myplugin-value' => array(
 								'setting' => array(
 									'default' => 'three',
 									'transport' => 'recompileRefresh',
 								),
 								'control' => array(
-									'label' => __( 'Sutrial option control', 'pkgTextdomain' ),
+									'label' => __( 'MyPlugin option control', 'pkgTextdomain' ),
 									'type' => 'k6cp_radio',
 									'choices' => array(
 										'one' => __( 'One', 'pkgTextdomain' ),
@@ -70,7 +70,7 @@ class MyPlugin {
 		if ( ! class_exists( 'K6CP_Customize_Manager' ) ) {
 			add_action( 'admin_notices', array( __CLASS__, 'unmet_dependencies' ) );
 		} else {
-			self::$customize = new K6CP_Customize_Manager( 'plugin', 'sutrial', self::get_customize_panels() );
+			self::$customize = new K6CP_Customize_Manager( 'plugin', 'myplugin', self::get_customize_panels() );
 		}
 	}
 
@@ -79,8 +79,8 @@ class MyPlugin {
 	 * default value.
 	 */
 	public static function test_option() {
-		echo '<h1>sutrial with Customize Plus API `get_option_with_default` is: ' . esc_html( self::$customize->get_option_with_default( 'sutrial-value' ) ) . '</h1>';
-		echo '<h1>sutrial with WordPress api `get_option` is: ' . esc_html( get_option( 'sutrial' )[ 'sutrial-value' ] ) . '</h1>';
+		echo '<h1>myplugin with Customize Plus API `get_option_with_default` is: ' . esc_html( self::$customize->get_option_with_default( 'myplugin-value' ) ) . '</h1>';
+		echo '<h1>myplugin with WordPress api `get_option` is: ' . esc_html( get_option( 'myplugin' )[ 'myplugin-value' ] ) . '</h1>';
 	}
 
 	/**
