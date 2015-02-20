@@ -17,12 +17,33 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 	class K6CP_Customize {
 
 		/**
+		 * [$control_types description]
+		 * @var array
+		 */
+		public static $control_types = array(
+			'color' => 'WP_Customize_Color_Control',
+			'image' => 'WP_Customize_Image_Control',
+			'upload' => 'WP_Customize_Upload_Control',
+			'k6cp_buttonset' => 'K6CP_Customize_Control_Buttonset',
+			'k6cp_color' => 'K6CP_Customize_Control_Color',
+			'k6cp_font_family' => 'K6CP_Customize_Control_Font_Family',
+			'k6cp_multicheck' => 'K6CP_Customize_Control_Multicheck',
+			'k6cp_number' => 'K6CP_Customize_Control_Number',
+			'k6cp_radio' => 'K6CP_Customize_Control_Radio',
+			'k6cp_radio_image' => 'K6CP_Customize_Control_Radio_Image',
+			'k6cp_select' => 'K6CP_Customize_Control_Select',
+			'k6cp_slider' => 'K6CP_Customize_Control_Slider',
+			'k6cp_text' => 'K6CP_Customize_Control_Text',
+			'k6cp_toggle' => 'K6CP_Customize_Control_Toggle',
+		);
+
+		/**
 		 * Font families
 		 *
 		 * @see http://www.w3schools.com/cssref/css_websafe_fonts.asp
 		 * @var array
 		 */
-		public static $FONT_FAMILIES = array(
+		public static $font_families = array(
 		  // Serif Fonts
 		  'Georgia',
 		  '"Palatino Linotype"',
@@ -145,7 +166,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 */
 		public static function get_js_constants() {
 			$required = array(
-				'FONT_FAMILIES' => k6cp_sanitize_font_families( self::$FONT_FAMILIES ),
+				'FONT_FAMILIES' => k6cp_sanitize_font_families( self::$font_families ),
 				'BREAKPOINTS' => array(
 					array( 'name' => 'xs', 'size' => 480 ), // k6todo, retrieve these from less options \\
 					array( 'name' => 'sm', 'size' => 768 ),
@@ -242,19 +263,24 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * this way
 		 *
 		 * @since  0.0.1
-		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
 		public static function register_custom_classes() {
 			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize-classes.php' );
 
-			do_action( 'k6cp/customize/register_custom_classes' );
-			// k6todo k6tobecareful-api is changing
-			// Add search section
-			// $wp_customize->add_section( new K6CP_Customize_Section_Search( $wp_customize, 'k6_search', array( 'priority' => 99999 ) ) );
-			// $wp_customize->add_setting( new K6CP_Customize_Setting_Dummy( $wp_customize, 'searchable' ) );
-			// $wp_customize->add_control('searchable', array( 'section' => 'k6_search' ));
-			// \\
+			do_action( 'k6cp/customize/register_custom_classes', self::get_instance() );
+
 			do_action( 'k6cp/customize/ready' );
+		}
+
+		/**
+		 * [register_controls description]
+		 *
+		 * @param  array(<$type, $class_name>) $controls The custom controls to add
+		 */
+		final public static function register_controls( $controls ) {
+			foreach ( $controls as $type => $class_name ) {
+				self::$control_types[ $type ] = $class_name;
+			}
 		}
 	}
 

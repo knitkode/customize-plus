@@ -44,6 +44,12 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		public $settings_defaults;
 
 		/**
+		 * [$control_types description]
+		 * @var [type]
+		 */
+		public $control_types;
+
+		/**
 		 * Constructor
 		 *
 		 * @since  0.0.1
@@ -59,7 +65,8 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 			$this->is_plugin = (bool) self::interpret_mode( $mode );
 			$this->option_prefix = (string) $option_prefix;
 			$this->panels = (array) $panels;
-			$this->settings_defaults = K6CP_Utils::get_settings_defaults_from_panels( $panels );
+			$this->settings_defaults = (array) K6CP_Utils::get_settings_defaults_from_panels( $panels );
+			$this->control_types = (array) K6CP_Customize::$control_types;
 
 			add_action( 'k6cp/customize/ready', array( $this, 'register_panels' ) );
 		}
@@ -249,61 +256,25 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 				$control_args['section'] = $section_id;
 
 				// Add control to WordPress
-				switch ( $control_args['type'] ) {
-					case 'color':
-						$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'image':
-						$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'upload':
-						$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_buttonset':
-						$wp_customize->add_control( new K6CP_Customize_Control_Buttonset( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_color':
-						$wp_customize->add_control( new K6CP_Customize_Control_Color( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_color_dynamic':
-						$wp_customize->add_control( new K6CP_Customize_Control_Color_Dynamic( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_font_family':
-						$wp_customize->add_control( new K6CP_Customize_Control_Font_Family( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_layout_columns':
-						$wp_customize->add_control( new K6CP_Customize_Control_Layout_Columns( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_multicheck':
-						$wp_customize->add_control( new K6CP_Customize_Control_Multicheck( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_number':
-						$wp_customize->add_control( new K6CP_Customize_Control_Number( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_radio':
-						$wp_customize->add_control( new K6CP_Customize_Control_Radio( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_radio_image':
-						$wp_customize->add_control( new K6CP_Customize_Control_Radio_Image( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_select':
-						$wp_customize->add_control( new K6CP_Customize_Control_Select( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_size_dynamic':
-						$wp_customize->add_control( new K6CP_Customize_Control_Size_Dynamic( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_slider':
-						$wp_customize->add_control( new K6CP_Customize_Control_Slider( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_text':
-						$wp_customize->add_control( new K6CP_Customize_Control_Text( $wp_customize, $option_id, $control_args ) );
-						break;
-					case 'k6cp_toggle':
-						$wp_customize->add_control( new K6CP_Customize_Control_Toggle( $wp_customize, $option_id, $control_args ) );
-						break;
-					default:
+				$control_type = $control_args['type'];
+
+				if ( isset ( $this->control_types[ $control_type ] ) ) {
+					$control_type_class = $this->control_types[ $control_type ];
+
+					// if the class exist use it
+					if ( class_exists( $control_type_class ) ) {
+						$wp_customize->add_control( new $control_type_class( $wp_customize, $option_id, $control_args ) );
+					}
+					// if the desired class doesn't exist just use the plain WordPress API
+					else {
 						$wp_customize->add_control( $option_id, $control_args );
-						break;
+						// k6todo error (wrong api implementation, missing class) \\
+					}
+				}
+				// if the desired control type is not specified just use the plain WordPress API
+				else {
+					$wp_customize->add_control( $option_id, $control_args );
+					// k6todo error (wrong api implementation, missing control type) \\
 				}
 			}
 		}
