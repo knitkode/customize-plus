@@ -1,4 +1,4 @@
-<div id="k6-loader" class="wp-full-overlay-main k6-full-overlay">
+<div id="k6-loader" class="wp-full-overlay-main k6-full-overlay" style="display:none">
   <div class="k6-u-midpoint-wrap">
     <div class="k6-u-midpoint">
       <img src="<?php echo includes_url( '/images/wlw/wp-watermark.png' ) ?>">

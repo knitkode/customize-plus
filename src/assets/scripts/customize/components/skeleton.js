@@ -40,7 +40,7 @@ var Skeleton = (function () {
       this.$loader.show();
     },
     hide: function () {
-      if (Modernizr.webworkers) {
+      if (Modernizr['webworkers']) {
         this.$loader.fadeOut();
       } else {
         this.$loader.hide();
