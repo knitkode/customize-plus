@@ -20,7 +20,8 @@ class K6CP_Customize_Control_Radio_Image extends K6CP_Customize_Control_Base_Rad
 		?>
 			<input id="{{ id }}" class="k6-radio-image" type="radio" value="{{ val }}" name="_customize-k6cp_radio_image-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
 			<label for="{{ id }}"{{{ tipAttrs }}}>
-				<img class="k6-tip" src="<?php echo esc_url( K6CP::$_IMAGES ); ?>{{ data.id }}-{{ val }}.png" title="{{{ label }}}">
+				<# var imgUrl = choice.img_custom ? choice.img_custom : <?php plugins_url( 'assets/images/', K6CP_PLUGIN_URL ); ?>choice.image + '.png'; #>
+				<img class="k6-tip" src="{{ imgUrl }}" title="{{{ label }}}">
 			</label>
 		<?php
 	}
