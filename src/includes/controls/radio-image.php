@@ -14,13 +14,16 @@ class K6CP_Customize_Control_Radio_Image extends K6CP_Customize_Control_Base_Rad
 	/**
 	 * Render template for choice displayment.
 	 *
+	 * It shows the full image path (`img_custom`) or an image bundled in the plugin
+	 * when `img` has been passed, with the plugin url as prepath, and always a `png`
+	 * extension.
 	 * @since 0.0.1
 	 */
 	protected function js_tpl_choice() {
 		?>
 			<input id="{{ id }}" class="k6-radio-image" type="radio" value="{{ val }}" name="_customize-k6cp_radio_image-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
 			<label for="{{ id }}"{{{ tipAttrs }}}>
-				<# var imgUrl = choice.img_custom ? choice.img_custom : <?php plugins_url( 'assets/images/', K6CP_PLUGIN_URL ); ?>choice.image + '.png'; #>
+				<# var imgUrl = choice.img_custom ? choice.img_custom : '<?php echo esc_url( K6CP_PLUGIN_URL . 'assets/images/' ); ?>' + choice.img + '.png'; #>
 				<img class="k6-tip" src="{{ imgUrl }}" title="{{{ label }}}">
 			</label>
 		<?php

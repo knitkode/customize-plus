@@ -127,7 +127,7 @@ if ( ! class_exists( 'K6CP_Utils' ) ):
 		 * @param  array  $defaults [description]
 		 * @return [type]           [description]
 		 */
-		public static function get_theme_mod_with_default( $opt_name = '', $default = '', $defaults = array() ) {
+		public static function get_theme_mod_with_default( $opt_name = '', $defaults = array(), $default = '' ) {
 			if ( $default ) {
 				return get_theme_mod( $opt_name, $default );
 			}

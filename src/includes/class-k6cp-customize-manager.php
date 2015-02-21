@@ -43,33 +43,6 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		 */
 		public $settings_defaults;
 
-
-		/**
-		 * [$control_types description]
-		 * @var array
-		 */
-		public static $control_types = array(
-			'color' => 'WP_Customize_Color_Control',
-			'image' => 'WP_Customize_Image_Control',
-			'upload' => 'WP_Customize_Upload_Control',
-			'k6cp_buttonset' => 'K6CP_Customize_Control_Buttonset',
-			'k6cp_color' => 'K6CP_Customize_Control_Color',
-			'k6cp_font_family' => 'K6CP_Customize_Control_Font_Family',
-			'k6cp_multicheck' => 'K6CP_Customize_Control_Multicheck',
-			'k6cp_number' => 'K6CP_Customize_Control_Number',
-			'k6cp_radio' => 'K6CP_Customize_Control_Radio',
-			'k6cp_radio_image' => 'K6CP_Customize_Control_Radio_Image',
-			'k6cp_select' => 'K6CP_Customize_Control_Select',
-			'k6cp_slider' => 'K6CP_Customize_Control_Slider',
-			'k6cp_text' => 'K6CP_Customize_Control_Text',
-			'k6cp_toggle' => 'K6CP_Customize_Control_Toggle',
-		);
-		/**
-		 * [$control_types description]
-		 * @var [type]
-		 */
-		// public $control_types;
-
 		/**
 		 * Constructor
 		 *
@@ -88,28 +61,7 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 			$this->panels = (array) $panels;
 			$this->settings_defaults = (array) K6CP_Utils::get_settings_defaults_from_panels( $panels );
 
-			add_action( 'k6cp/customize/ready', array( $this, 'on_custom_classes_ready' ) );
-		}
-
-		/**
-		 * [on_custom_classes_ready description]
-		 *
-		 */
-		public function on_custom_classes_ready() {
-			do_action( 'k6cp/customize/register_custom_classes', __CLASS__ );
-			$this->register_panels();
-		}
-
-		/**
-		 * [register_controls description]
-		 *
-		 * @param  array(<$type, $class_name>) $controls The custom controls to add
-		 */
-		// k6todo, this all thing is a little weird... \\
-		public static function register_controls( $controls ) {
-			foreach ( $controls as $type => $class_name ) {
-				self::$control_types[ $type ] = $class_name;
-			}
+			add_action( 'k6cp/customize/ready', array( $this, 'register_panels' ) );
 		}
 
 		/**
@@ -158,12 +110,10 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		 * [register_panels description]
 		 *
 		 * @since  0.0.1
-		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
 		public function register_panels() {
 			$this->add_panels( $this->panels, $this->option_prefix );
-
-			do_action( 'k6cp/customize/register_panels_' . $this->option_prefix );
+			// do_action( 'k6cp/customize/registering_panels_' . $this->option_prefix );
 		}
 
 		/**
@@ -299,8 +249,8 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 				// Add control to WordPress
 				$control_type = $control_args['type'];
 
-				if ( isset ( self::$control_types[ $control_type ] ) ) {
-					$control_type_class = self::$control_types[ $control_type ];
+				if ( isset( K6CP_Customize::$custom_types['controls'][ $control_type ] ) ) {
+					$control_type_class = K6CP_Customize::$custom_types['controls'][ $control_type ];
 
 					// if the class exist use it
 					if ( class_exists( $control_type_class ) ) {

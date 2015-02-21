@@ -19,32 +19,22 @@ if ( ! class_exists( 'K6CP' ) ):
 	class K6CP {
 
 		/**
-		 * Description for const
+		 * Namespace used for options stored in the database
 		 */
-		const VERSION = 'pkgVersion';
+		const PREFIX = 'k6cp-customize_plus';
 
 		/**
-		 * Description for const
+		 * Plugin settings with default values
+		 *
+		 * @var array
 		 */
-		const SHORTNAME = 'pkgNameShort'; // namespace used for options related to style
-
-		/**
-		 * Description for public
-		 * @var unknown
-		 */
-		public static $_ASSETS;
-
-		/**
-		 * Description for public
-		 * @var unknown
-		 */
-		public static $_IMAGES;
-
-		/**
-		 * Description for public
-		 * @var unknown
-		 */
-		public static $_LANGUAGES;
+		private static $settings = array(
+			'framework' => 'bootstrap',
+			'compiler' => true,
+			// 'live-compiling' => true,
+			'bootstrap-version' => '3.3.0',
+			'preprocessor' => 'less',
+		);
 
 		/**
 		 * Singleton
@@ -83,20 +73,6 @@ if ( ! class_exists( 'K6CP' ) ):
 		 * @since 0.0.1
 		 */
 		public function __construct() {
-
-			// set theme constants
-			self::set_constants();
-
-			// $this->version = '2.2';
-			// $this->load_deprecated = ! apply_filters( 'bp_ignore_deprecated', BP_IGNORE_DEPRECATED );
-			// $this->filters = new stdClass(); // Used when adding/removing filters
-			// $this->file = K6CP_PLUGIN_DIR . 'customize-plus.php';
-			// $this->basename = basename( K6CP_PLUGIN_DIR ) . '/customize-plus.php';
-			// $this->plugin_dir = trailingslashit( K6CP_PLUGIN_DIR );
-			// $this->plugin_url = trailingslashit( K6CP_PLUGIN_URL );
-			// $this->lang_dir = $this->plugin_dir . 'languages';
-
-			// initial setup
 			if ( is_admin() ) {
 				require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-admin.php' );
 			}
@@ -113,32 +89,29 @@ if ( ! class_exists( 'K6CP' ) ):
 			register_activation_hook( K6CP_PLUGIN_FILE, array( __CLASS__, 'deactivation' ) );
 		}
 
+		/**
+		 * [init description]
+		 * @return [type] [description]
+		 */
 		public static function init() {
 			// Make plugin available for translation
 			load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( K6CP_PLUGIN_FILE ) ) . '/languages/' );
 		}
 
+		/**
+		 * [activation description]
+		 * @return [type] [description]
+		 */
 		public static function activation() {
 			do_action( 'k6cp/activation' );
 		}
 
+		/**
+		 * [deactivation description]
+		 * @return [type] [description]
+		 */
 		public static function deactivation() {
 			do_action( 'k6cp/deactivation' );
-		}
-
-		/**
-		 * Set constants
-		 *
-		 * Long description (if any) ...
-		 *
-		 * @since  0.0.1
-		 */
-		private static function set_constants() {
-			self::$_ASSETS = plugin_dir_url( __FILE__ ) . '/assets/';
-			self::$_IMAGES = plugin_dir_url( __FILE__ ) . 'assets/images/';
-			self::$_LANGUAGES = plugin_dir_url( __FILE__ ) .'/languages/';
-			// use this instead
-			// plugins_url( 'assets/js/chart.js', SU_PLUGIN_FILE )
 		}
 
 		/**
@@ -147,53 +120,8 @@ if ( ! class_exists( 'K6CP' ) ):
 		 * @param [type]  $opt_name [description]
 		 * @return [type]           [description]
 		 */
-		public static function get_option( $opt_name ) {
-			// THIS HSOULD RETRIEVE THE PLUGINS GLOBAL OPTIONS IN DB UNDER K6CP (SERIALIZED ARRAY)
-
-			// if ( isset( get_option( K6CP_Customize::$OPTIONS_PREFIX )[ $opt_name ] ) ) {
-			// 	return get_option( K6CP_Customize::$OPTIONS_PREFIX )[ $opt_name ];
-			// }
-			// // k6todo and think \\
-			// else if ( isset( K6CP_Customize::$DEFAULTS[ $opt_name ] ) ) {
-			// 	return K6CP_Customize::$DEFAULTS[ $opt_name ];
-			// }
-			// else {
-			// 	return;
-			// }
-		}
-
-		// k6todo \\
-		// public static function add_asset( ) {
-
-		// 	$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		// 	$settings_page_prefix = 'settings_page_k6cp-';
-		// 	$settings_pages = array(
-		// 		$settings_page_prefix . 'welcome',
-		// 		$settings_page_prefix . 'about',
-		// 		$settings_page_prefix . 'settings',
-		// 		$settings_page_prefix . 'addons',
-		// 	);
-		// 	if ( in_array( $hook, $settings_pages  ) ) {
-		// 		wp_enqueue_style( 'k6cp-admin-css', plugins_url( "assets/admin{$min}.css", K6CP_PLUGIN_FILE ), array( 'dashicons'), K6CP_PLUGIN_VERSION );
-		// 		// wp_style_add_data( 'k6cp-admin-css', 'rtl', true );
-		// 		if ( $min ) {
-		// 			wp_style_add_data( 'k6cp-admin-css', 'suffix', $min );
-		// 		}
-		//	}
-		// }
-
-		/**
-		 * A simple logger
-		 *
-		 * @param  [type] $var  [description]
-		 * @param  [type] $text [description]
-		 * @return [type]       [description]
-		 */
-		public static function log( $var, $text ) {
-			echo '<h1>Logging: ' . esc_html( $text ) . '</h1>';
-			echo '<pre>';
-			var_dump( $var );
-			echo '</pre>';
+		public static function get_option( $setting_name ) {
+			return K6CP_Utils::get_option_with_default( self::PREFIX, $setting_name, self::$settings );
 		}
 	}
 

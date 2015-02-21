@@ -17,24 +17,29 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 	class K6CP_Customize {
 
 		/**
-		 * [$control_types description]
+		 * [$custom_types description]
 		 * @var array
 		 */
-		public static $control_types = array(
-			'color' => 'WP_Customize_Color_Control',
-			'image' => 'WP_Customize_Image_Control',
-			'upload' => 'WP_Customize_Upload_Control',
-			'k6cp_buttonset' => 'K6CP_Customize_Control_Buttonset',
-			'k6cp_color' => 'K6CP_Customize_Control_Color',
-			'k6cp_font_family' => 'K6CP_Customize_Control_Font_Family',
-			'k6cp_multicheck' => 'K6CP_Customize_Control_Multicheck',
-			'k6cp_number' => 'K6CP_Customize_Control_Number',
-			'k6cp_radio' => 'K6CP_Customize_Control_Radio',
-			'k6cp_radio_image' => 'K6CP_Customize_Control_Radio_Image',
-			'k6cp_select' => 'K6CP_Customize_Control_Select',
-			'k6cp_slider' => 'K6CP_Customize_Control_Slider',
-			'k6cp_text' => 'K6CP_Customize_Control_Text',
-			'k6cp_toggle' => 'K6CP_Customize_Control_Toggle',
+		public static $custom_types = array(
+			'panels' => array(),
+			'sections' => array(),
+			'controls' => array(
+				'color' => 'WP_Customize_Color_Control',
+				'image' => 'WP_Customize_Image_Control',
+				'upload' => 'WP_Customize_Upload_Control',
+				'k6cp_buttonset' => 'K6CP_Customize_Control_Buttonset',
+				'k6cp_color' => 'K6CP_Customize_Control_Color',
+				'k6cp_font_family' => 'K6CP_Customize_Control_Font_Family',
+				'k6cp_multicheck' => 'K6CP_Customize_Control_Multicheck',
+				'k6cp_number' => 'K6CP_Customize_Control_Number',
+				'k6cp_radio' => 'K6CP_Customize_Control_Radio',
+				'k6cp_radio_image' => 'K6CP_Customize_Control_Radio_Image',
+				'k6cp_select' => 'K6CP_Customize_Control_Select',
+				'k6cp_slider' => 'K6CP_Customize_Control_Slider',
+				'k6cp_text' => 'K6CP_Customize_Control_Text',
+				'k6cp_toggle' => 'K6CP_Customize_Control_Toggle',
+			),
+			'settings' => array(),
 		);
 
 		/**
@@ -121,7 +126,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		protected function __construct() {
 			// The priority here is very important, when adding custom classes to the customize
 			// you should use a priority in this range (11, 99)
-			add_action( 'k6cp/customize/register', array( __CLASS__, 'add_custom_classes' ), 10 );
+			add_action( 'k6cp/customize/register', array( __CLASS__, 'register_custom_classes' ), 10 );
 
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_css_admin' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_js_shim' ) );
@@ -139,7 +144,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function enqueue_css_admin() {
-			wp_enqueue_style( 'k6cp-customize', plugins_url( 'assets/customize.min.css', K6CP_PLUGIN_FILE ), array( 'dashicons' ), K6CP_PLUGIN_VERSION ); // k6anticache \\ // k6trial wp_enqueue_script( 'k6cp-customize-preview', K6CP::$_ASSETS . 'jquery-velocity-patch.js?'.time().'='.mt_rand(), array( 'jquery' ), K6CP::VERSION ); // k6anticache k6temp \\
+			wp_enqueue_style( 'k6cp-customize', plugins_url( 'assets/customize.min.css', K6CP_PLUGIN_FILE ), array( 'dashicons' ), K6CP_PLUGIN_VERSION );
 		}
 
 		/**
@@ -227,7 +232,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 
 			do_action( 'k6cp/customize/preview_init' );
 
-			wp_enqueue_script( 'k6cp-customize-preview', plugins_url( 'assets/customize-preview.min.js', K6CP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), K6CP::VERSION, true );
+			wp_enqueue_script( 'k6cp-customize-preview', plugins_url( 'assets/customize-preview.min.js', K6CP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), K6CP_PLUGIN_VERSION, true );
 		}
 
 
@@ -250,6 +255,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 */
 		public static function enqueue_js_shim() {
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+			// k6wpapichange following will work from WP 4.2 \\
 			// wp_enqueue_style( 'es5-shim', plugins_url( "assets/es5-shim{$min}.js", K6CP_PLUGIN_FILE ) );
 			// wp_style_add_data( 'es5-shim', 'conditional', 'if lt IE 9' );
 			?>
@@ -258,20 +264,31 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		}
 
 		/**
-		 * Custom controls, sections, and panels,load classes and register to through
-		 * WordPress API. Everything that use js templates needs to be registered
-		 * this way
+		 * Custom settings, controls, sections, and panels, load classes and
+		 * register through the WordPress API.
 		 *
 		 * @since  0.0.1
 		 */
-		public static function add_custom_classes() {
+		public static function register_custom_classes() {
 			require_once( K6CP_PLUGIN_DIR . 'includes/k6cp-customize-classes.php' );
 
-			do_action( 'k6cp/customize/add_custom_classes', K6CP_Customize::get_instance() );
+			do_action( 'k6cp/customize/register_custom_classes', __CLASS__ );
 
 			do_action( 'k6cp/customize/ready' );
 		}
 
+		/**
+		 * [register_custom_types description]
+		 *
+		 * @param  array(<$type, $class_name>) $panels The custom panels to add
+		 */
+		public static function register_custom_types( $components ) {
+			foreach ( $components as $component => $new_custom_types ) {
+				if ( self::$custom_types[ $component ] ) {
+					self::$custom_types[ $component ] = array_merge( self::$custom_types[ $component ], $new_custom_types );
+				}
+			}
+		}
 	}
 
 	// Instantiate

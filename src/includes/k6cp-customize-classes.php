@@ -21,7 +21,7 @@
  */
 global $wp_customize;
 
-  // include sections/base.php
+	// include sections/base.php
 
 //= include controls/base.php
 	// include 'control-base-dummy.php
@@ -30,8 +30,6 @@ global $wp_customize;
 //= include controls/buttonset.php
 //= include controls/color.php
 //= include controls/font-family.php
-// k6todo move it to theme probably \\
-//= include controls/layout-columns.php
 //= include controls/multicheck.php
 //= include controls/number.php
 //= include controls/radio.php

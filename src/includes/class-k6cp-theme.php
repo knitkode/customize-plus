@@ -16,10 +16,23 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 
 	class K6CP_Theme {
 
-		public static $prefix;
-		public static $customize_panels;
-		public static $framework_name;
-		public static $theme_stylesheets;
+		/**
+		 * [$framework_settings_defaults description]
+		 * @var [type]
+		 */
+		public static $framework_settings_defaults;
+
+		/**
+		 * [$theme_settings_defaults description]
+		 * @var [type]
+		 */
+		public static $theme_settings_defaults;
+
+		/**
+		 * [$all_settings_defaults description]
+		 * @var array
+		 */
+		public static $all_settings_defaults = array();
 
 		/**
 		 * Singleton
@@ -70,15 +83,15 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 
 			if ( $configuration ) {
 				$prefix = self::check_prefix( $configuration );
-				$customize_panels = self::check_customize_panels( $configuration );
+				$theme_customize_panels = self::check_customize_panels( $configuration );
 				$framework_name = self::check_framework( $configuration );
 				$theme_stylesheets = self::check_theme_stylesheets( $configuration );
 
 				if ( is_wp_error( $prefix ) ) {
 					echo $prefix->get_error_message();
 				}
-				if ( is_wp_error( $customize_panels ) ) {
-					echo $customize_panels->get_error_message();
+				if ( is_wp_error( $theme_customize_panels ) ) {
+					echo $theme_customize_panels->get_error_message();
 				}
 				if ( is_wp_error( $framework_name ) ) {
 					echo $framework_name->get_error_message();
@@ -87,11 +100,7 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 					echo $theme_stylesheets->get_error_message();
 				}
 
-				self::$prefix = $prefix;
-				self::$customize_panels = $customize_panels;
-				self::$framework_name = $framework_name;
-				self::$theme_stylesheets = $theme_stylesheets;
-				self::init();
+				self::init( $prefix, $theme_customize_panels, $theme_stylesheets, $framework_name );
 			}
 		}
 
@@ -113,9 +122,9 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 		 */
 		private static function check_customize_panels( $configuration ) {
 			if ( isset( $configuration[ 'customize_panels' ] ) ) {
-				$customize_panels = $configuration[ 'customize_panels' ];
-				if ( is_array( $customize_panels ) ) {
-					return $customize_panels;
+				$theme_customize_panels = $configuration[ 'customize_panels' ];
+				if ( is_array( $theme_customize_panels ) ) {
+					return $theme_customize_panels;
 				} else {
 					return new WP_Error( 'broke', __( 'Customize Plus: `customize_panels` must be an array.', 'pkgTextdomain' ) );
 				}
@@ -168,36 +177,75 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 		 * [init description]
 		 * @return [type] [description]
 		 */
-		public static function init() {
+		private static function init( $prefix, $theme_customize_panels, $theme_stylesheets, $framework_name ) {
 
-			// first register theme framework panels and stylesheets if it's asked and if it's premium
-			if ( self::$framework_name && class_exists( 'K6CPP_Framework' ) ) {
-				$customize_manager = new K6CP_Customize_Manager( 'theme', self::$prefix, K6CPP_Framework::get_customize_panels() );
+			$framework_enabled = K6CP::get_option( 'framework' ) && class_exists( 'K6CPP_Framework' );
+			$compiler_enabled = K6CP::get_option( 'compiler' ) && class_exists( 'K6CPP_Compiler' );
 
-				if ( class_exists( 'K6CPP_Compiler' ) ) {
-					$framework_styles = K6CPP_Framework::get_styles();
-					foreach ( $framework_styles as $style ) {
-						K6CPP_Compiler::register_style( $style, $customize_manager );
+			// pass all default settings values to the hook, so themes can use them
+			// to create a safe get_theme_mod in case they need it.
+			$all_settings_defaults = array();
+
+			// first maybe register theme framework panels and stylesheets
+			if ( $framework_name && $framework_enabled ) {
+
+				// register framework customize panels
+				$framework_customize_manager = new K6CP_Customize_Manager( 'theme', $prefix, K6CPP_Framework::get_customize_panels() );
+
+				// store framework settings defualt on instance, we use it in the framework classes
+				self::$framework_settings_defaults = $framework_customize_manager->settings_defaults;
+
+				// add framework settings defaults
+				self::$all_settings_defaults = array_merge( self::$all_settings_defaults, self::$framework_settings_defaults );
+
+				// register framework stylesheets to compiler if enabled
+				if ( $compiler_enabled ) {
+					foreach ( K6CPP_Framework::get_styles() as $style ) {
+						K6CPP_Compiler::register_style( $style, true, $framework_customize_manager );
 					}
 				}
 			}
 
-			// register theme panels
-			$customize_manager = new K6CP_Customize_Manager( 'theme', self::$prefix, self::$customize_panels );
+			// register theme customize panels
+			$theme_customize_manager = new K6CP_Customize_Manager( 'theme', $prefix, $theme_customize_panels );
 
-			// register theme stylesheets to compiler if it is premium
-			if ( self::$theme_stylesheets && class_exists( 'K6CPP_Compiler' ) ) {
-				foreach ( self::$theme_stylesheets as $style ) {
-					K6CPP_Compiler::register_style( $style, $customize_manager );
+			self::$theme_settings_defaults = $theme_customize_manager->settings_defaults;
+
+			// add theme settings defaults
+			self::$all_settings_defaults = array_merge( self::$all_settings_defaults, self::$theme_settings_defaults );
+
+			// register theme stylesheets to compiler if enabled
+			if ( $theme_stylesheets && $compiler_enabled ) {
+				foreach ( $theme_stylesheets as $style ) {
+					K6CPP_Compiler::register_style( $style, false, $theme_customize_manager );
 				}
 			}
 
 			/**
+			 * Pass all default settings values to the hook, so themes can use them
+			 * to create a safe get_theme_mod in case they need it.
+			 *
 			 * @hook 'k6cp/theme/is_configured' for themes,
 			 * @param array An array containing the defualt value for each setting
 			 *              declared in the customize panels
 			 */
-			do_action( 'k6cp/theme/is_configured', $customize_manager->settings_defaults );
+			do_action( 'k6cp/theme/is_configured', self::$all_settings_defaults );
+		}
+
+		/**
+		 * [get_theme_mod description]
+		 * we'll need this safe theme_mod in one of our sanitization functions
+		 * @see k6cp_get_less_test_input
+		 *
+		 * @param [type]  $opt_name [description]
+		 * @return [type]           [description]
+		 */
+		public static function get_theme_mod( $opt_name ) {
+			if ( isset( self::$all_settings_defaults[ $opt_name ] ) ) {
+				return get_theme_mod( $opt_name, self::$all_settings_defaults[ $opt_name ] );
+			} else {
+				return get_theme_mod( $opt_name );
+			}
 		}
 	}
 
