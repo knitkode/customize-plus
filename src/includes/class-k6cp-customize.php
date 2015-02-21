@@ -121,7 +121,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		protected function __construct() {
 			// The priority here is very important, when adding custom classes to the customize
 			// you should use a priority in this range (11, 99)
-			add_action( 'k6cp/customize/register', array( __CLASS__, 'register_custom_classes' ), 10 );
+			add_action( 'k6cp/customize/register', array( __CLASS__, 'add_custom_classes' ), 10 );
 
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_css_admin' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_js_shim' ) );
@@ -150,7 +150,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function enqueue_js_admin() {
-			wp_register_script( 'k6cp-customize', plugins_url( 'assets/customize.min.js', K6CP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery' ), K6CP_PLUGIN_VERSION, false ); // k6anticache \\
+			wp_register_script( 'k6cp-customize', plugins_url( 'assets/customize.min.js', K6CP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery', 'jquery-ui-slider' ), K6CP_PLUGIN_VERSION, false );
 
 			wp_localize_script( 'k6cp-customize', 'k6cp', array(
 					'constants' => self::get_js_constants(),
@@ -264,24 +264,14 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 *
 		 * @since  0.0.1
 		 */
-		public static function register_custom_classes() {
-			require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize-classes.php' );
+		public static function add_custom_classes() {
+			require_once( K6CP_PLUGIN_DIR . 'includes/k6cp-customize-classes.php' );
 
-			do_action( 'k6cp/customize/register_custom_classes', self::get_instance() );
+			do_action( 'k6cp/customize/add_custom_classes', K6CP_Customize::get_instance() );
 
 			do_action( 'k6cp/customize/ready' );
 		}
 
-		/**
-		 * [register_controls description]
-		 *
-		 * @param  array(<$type, $class_name>) $controls The custom controls to add
-		 */
-		final public static function register_controls( $controls ) {
-			foreach ( $controls as $type => $class_name ) {
-				self::$control_types[ $type ] = $class_name;
-			}
-		}
 	}
 
 	// Instantiate

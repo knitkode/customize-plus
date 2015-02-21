@@ -49,8 +49,7 @@ gulp.task('_customize-scripts-admin-libs', function() {
   // Customize scripts admin libraries (outside iframe)
   var stream = streamqueue({ objectMode: true });
   stream.queue(gulp.src([
-    PATHS.src.bower + 'es5-shim/es5-shim.min.js',
-    // PATHS.src.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.min.js', // k6todo, this is actually needed only in the layout_columns control... so maybe put it in the theme...
+    PATHS.src.bower + 'es5-shim/es5-shim.min.js'
   ]));
   return stream.done()
     .pipe($.if(CONFIG.isDist, $.stripDebug()))
@@ -94,7 +93,7 @@ gulp.task('_customize-scripts-admin', function() {
   stream.queue(gulp.src([
     PATHS.src.bower + 'polyfill-classList/classList.js', // k6ie9 k6ie8 \\
     PATHS.src.scripts + 'vendor-custom/modernizr-custom.js', // include modernizr custom build
-    // PATHS.src.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.min.js', // k6todo, this is actually needed only in the layout_columns control... so maybe put it in the theme...
+    PATHS.src.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.js', // k6todo, this is actually needed only in the layout_columns control... so maybe put it in the theme...
     PATHS.src.bower + 'jquery-cookie/jquery.cookie.js',
     PATHS.src.bower + 'webui-popover/dist/jquery.webui-popover.min.js',
     PATHS.src.bower + 'selectize/dist/js/standalone/selectize.js'

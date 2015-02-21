@@ -302,27 +302,32 @@ var ControlBase = api.Control.extend({
      * enabled and bind them. If the current value is the same
      * as the one the action effect would give disable the action.
      */
-    toggle.onclick = function () {
-      isOpen = !isOpen;
-      container.classList.toggle('k6-extras-open', isOpen);
-      if (isOpen) {
-        _onExtrasOpen();
-      }
-    };
-    area.onmouseenter = function () {
-      isOpen = true;
-      container.classList.add('k6-extras-open');
-      _onExtrasOpen();
-    };
-    area.onmouseleave = function () {
-      isOpen = false;
-      // don't close immediately, wait a bit and see if the mouse is still out of the area
-      setTimeout(function () {
-        if (!isOpen) {
-          container.classList.remove('k6-extras-open');
+    if (toggle) {
+      toggle.onclick = function () {
+        isOpen = !isOpen;
+        container.classList.toggle('k6-extras-open', isOpen);
+        if (isOpen) {
+          _onExtrasOpen();
         }
-      }, 300);
-    };
+      };
+    }
+
+    if (area) {
+      area.onmouseenter = function () {
+        isOpen = true;
+        container.classList.add('k6-extras-open');
+        _onExtrasOpen();
+      };
+      area.onmouseleave = function () {
+        isOpen = false;
+        // don't close immediately, wait a bit and see if the mouse is still out of the area
+        setTimeout(function () {
+          if (!isOpen) {
+            container.classList.remove('k6-extras-open');
+          }
+        }, 300);
+      };
+    }
 
     /**
      * Set on the hide_controls control a duplicate free
@@ -331,37 +336,38 @@ var ControlBase = api.Control.extend({
      * // k6todo, maybe don't use union here but use it in the `_validate`
      * method of the hide_controls control. \\
      */
-    var self = this;
-    btnHide.onclick = function () {
-      var controlToHide = api.control('k6[hide-controls]'); // k6tobecareful this is tight to class-customize.php $setting_control_id = K6CP::$OPTIONToHideS_PREFIX . '[' . $field_key . ']'; \\
-      if (controlToHide) {
-        controlToHide.setting.set(_.union(controlToHide.setting(), [self.id]));
-        var secondsTimeout = 5;
-        container.innerHTML =
-          '<a class="k6-hide-undo">' +
-            'Undo hide control <span class="k6-timer">' + secondsTimeout + 's</span>' +
-          '</a>';
-        var btnHideUndo = container.getElementsByClassName('k6-hide-undo')[0];
-        var secondsEl = container.getElementsByClassName('k6-timer')[0];
-        var timerHideUndo = setInterval(function () {
-          secondsTimeout--;
-          secondsEl.innerHTML = secondsTimeout + 's'; // k6ie8-textContent would be enough \\
-          if (secondsTimeout === 0) {
-            btnHideUndo.parentNode.removeChild(btnHideUndo);
+    if (btnHide) {
+      var self = this;
+      btnHide.onclick = function () {
+        var controlToHide = api.control('k6[hide-controls]'); // k6tobecareful this is tight to class-customize.php $setting_control_id = K6CP::$OPTIONToHideS_PREFIX . '[' . $field_key . ']'; \\
+        if (controlToHide) {
+          controlToHide.setting.set(_.union(controlToHide.setting(), [self.id]));
+          var secondsTimeout = 5;
+          container.innerHTML =
+            '<a class="k6-hide-undo">' +
+              'Undo hide control <span class="k6-timer">' + secondsTimeout + 's</span>' +
+            '</a>';
+          var btnHideUndo = container.getElementsByClassName('k6-hide-undo')[0];
+          var secondsEl = container.getElementsByClassName('k6-timer')[0];
+          var timerHideUndo = setInterval(function () {
+            secondsTimeout--;
+            secondsEl.innerHTML = secondsTimeout + 's'; // k6ie8-textContent would be enough \\
+            if (secondsTimeout === 0) {
+              btnHideUndo.parentNode.removeChild(btnHideUndo);
+              clearInterval(timerHideUndo);
+            }
+          }, 1000);
+          // Undo hide control handler
+          btnHideUndo.onclick = function () {
             clearInterval(timerHideUndo);
-          }
-        }, 1000);
-        // Undo hide control handler
-        btnHideUndo.onclick = function () {
-          clearInterval(timerHideUndo);
-          btnHideUndo.parentNode.removeChild(btnHideUndo);
-          self.inflate();
-          _closeExtras();
-          controlToHide.setting.set(_.without(controlToHide.setting(), [self.id]));
-        };
+            btnHideUndo.parentNode.removeChild(btnHideUndo);
+            self.inflate();
+            _closeExtras();
+            controlToHide.setting.set(_.without(controlToHide.setting(), [self.id]));
+          };
+        }
       }
     };
-
   }
 });
 

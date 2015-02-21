@@ -149,40 +149,6 @@ class K6CP_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
-	 * A reusable template partial to display a tabbed area with screen size based sliders.
-	 *
-	 * @since 0.0.1
-	 */
-	protected function js_tpl_screen_based_sliders() {
-		?>
-			<div class="k6-tabbed k6-screen-picker">
-				<ul>
-					<li data-screen="xs" class="k6-tab" tabindex="0" title="<?php _e( 'Extra small screen / phone', 'pkgTextdomain' ); ?>"><i class="dashicons dashicons-smartphone"></i></li>
-					<li data-screen="sm" class="k6-tab" tabindex="0" title="<?php _e( 'Small screen / tablet', 'pkgTextdomain' ); ?>"><i class="dashicons dashicons-tablet"></i></li>
-					<li data-screen="md" class="k6-tab" tabindex="0" title="<?php _e( 'Medium screen / desktop', 'pkgTextdomain' ); ?>"><i class="dashicons dashicons-tablet"></i></li>
-					<li data-screen="lg" class="k6-tab selected" tabindex="0" title="<?php _e( 'Large screen / wide desktop', 'pkgTextdomain' ); ?>"><i class="dashicons dashicons-desktop"></i></li>
-				</ul>
-				<div class="k6-tab-content" data-screen="xs">
-					<span class="k6-hint"><span class="k6-subhint"><?php _e( 'Control appearance on', 'pkgTextdomain' ) ?></span> <?php _e( 'extra small screen / phone:', 'pkgTextdomain' ); ?></span>
-					<div class="k6-slider" data-screen="xs"></div>
-				</div>
-				<div class="k6-tab-content" data-screen="sm">
-					<span class="k6-hint"><span class="k6-subhint"><?php _e( 'Control appearance on', 'pkgTextdomain' ) ?></span> <?php _e( 'small screen / tablet:', 'pkgTextdomain' ); ?></span>
-					<div class="k6-slider" data-screen="sm"></div>
-				</div>
-				<div class="k6-tab-content" data-screen="md">
-					<span class="k6-hint"><span class="k6-subhint"><?php _e( 'Control appearance on', 'pkgTextdomain' ) ?></span> <?php _e( 'medium screen / desktop:', 'pkgTextdomain' ); ?></span>
-					<div class="k6-slider" data-screen="md"></div>
-				</div>
-				<div class="k6-tab-content selected" data-screen="lg">
-					<span class="k6-hint"><span class="k6-subhint"><?php _e( 'Control appearance on', 'pkgTextdomain' ) ?></span> <?php _e( 'large screen / wide desktop:', 'pkgTextdomain' ); ?></span>
-					<div class="k6-slider" data-screen="lg"></div>
-				</div>
-			</div>
-		<?php
-	}
-
-	/**
 	 * To override in subclasses with js templates
 	 *
 	 * @since 0.0.1
