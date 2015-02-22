@@ -173,6 +173,7 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 		 * @return [type]           [description]
 		 */
 		public static function get_theme_mod( $opt_name ) {
+			var_dump( get_theme_mod( $opt_name ) );
 			if ( isset( self::$settings_defaults[ $opt_name ] ) ) {
 				return get_theme_mod( $opt_name, self::$settings_defaults[ $opt_name ] );
 			} else {

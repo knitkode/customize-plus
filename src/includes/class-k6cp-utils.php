@@ -128,11 +128,11 @@ if ( ! class_exists( 'K6CP_Utils' ) ):
 		 * @return [type]           [description]
 		 */
 		public static function get_theme_mod_with_default( $opt_name = '', $defaults = array(), $default = '' ) {
-			if ( $default ) {
-				return get_theme_mod( $opt_name, $default );
-			}
-			else if ( isset( $defaults[ $opt_name ] ) ) {
+			if ( isset( $defaults[ $opt_name ] ) ) {
 				return get_theme_mod( $opt_name, $defaults[ $opt_name ] );
+			}
+			else if ( $default ) {
+				return get_theme_mod( $opt_name, $default );
 			}
 			else {
 				return get_theme_mod( $opt_name );
