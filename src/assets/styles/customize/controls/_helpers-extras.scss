@@ -30,13 +30,12 @@
   z-index: 3;
   position: absolute;
   top: $control--spacing-top;
-  left: 0;
+  left: -$control--spacing-horizontal;
 
   // the button needs to slightly change the position
   // if it inside the control-wrap (when we have dividers...)
   .k6-control-wrap & {
     top: 0;
-    left: -$control--spacing-horizontal;
   }
 
   width: $extras--btn-size;
@@ -70,7 +69,7 @@
   display: none;
   position: absolute;
   top: $control--spacing-top + $extras--btn-size + 3px;
-  left: $control--spacing-horizontal;
+  left: 0;
 
   // the button needs to slightly change the position
   // if it inside the control-wrap (when we have dividers...)

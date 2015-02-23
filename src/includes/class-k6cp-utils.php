@@ -24,17 +24,6 @@ if ( ! class_exists( 'K6CP_Utils' ) ):
 		public function __construct() {
 		}
 
-		// // just trying stuff here, it's not javascript...
-		// protected function options_walker( $callback ) {
-		// 	foreach ( $options as $panel_id => $panel_args ) {
-		// 		foreach ( $panel_args['sections'] as $section_id => $section_args ) {
-		// 			foreach ( $section_args['fields'] as $option_id => $option_args ) {
-		// 				// $callback( $option_id, $option_args );
-		// 			}
-		// 		}
-		// 	}
-		// }
-
 		/**
 		 * [get_settings_defaults_from_panels description]
 		 *
@@ -47,16 +36,16 @@ if ( ! class_exists( 'K6CP_Utils' ) ):
 
 			foreach ( $panels as $panel_id => $panel_args ) {
 				foreach ( $panel_args['sections'] as $section_id => $section_args ) {
-					foreach ( $section_args['fields'] as $option_id => $option_args ) {
+					foreach ( $section_args['fields'] as $field_id => $field_args ) {
 
-						if ( isset( $option_args['setting'] ) ) {
+						if ( isset( $field_args['setting'] ) ) {
 
-							$setting = $option_args['setting'];
+							$setting = $field_args['setting'];
 
 							// this allow to use a different id for the setting than the default one
 							// (which is the shared between the setting and its related control)
 							if ( ! isset( $setting['id'] ) ) {
-								$setting['id'] = $option_id;
+								$setting['id'] = $field_id;
 							}
 
 							if ( isset( $setting['default'] ) ) {

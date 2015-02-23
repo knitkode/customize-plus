@@ -165,20 +165,33 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 		}
 
 		/**
-		 * [get_theme_mod description]
+		 * [get_theme_mod_with_default description]
 		 * we'll need this safe theme_mod in one of our sanitization functions
 		 * @see k6cp_get_less_test_input
 		 *
 		 * @param [type]  $opt_name [description]
 		 * @return [type]           [description]
 		 */
-		public static function get_theme_mod( $opt_name ) {
-			var_dump( get_theme_mod( $opt_name ) );
+		public static function get_theme_mod_with_default( $opt_name ) {
 			if ( isset( self::$settings_defaults[ $opt_name ] ) ) {
 				return get_theme_mod( $opt_name, self::$settings_defaults[ $opt_name ] );
 			} else {
 				return get_theme_mod( $opt_name );
 			}
+		}
+
+		/**
+		 * [get_theme_mods_with_defaults description]
+		 *
+		 * We always have arrays... So probably no need for wp_parse_args
+		 * @link(https://core.trac.wordpress.org/browser/trunk/src/wp-includes/functions.php#L3045, core.trac.wordpress)
+		 * Anyway the function would be reverted:
+		 * `wp_parse_args( get_theme_mods(), self::$settings_defaults )`
+		 *
+		 * @return array           [description]
+		 */
+		public static function get_theme_mods_with_defaults() {
+			return array_merge( self::$settings_defaults, get_theme_mods() );
 		}
 	}
 

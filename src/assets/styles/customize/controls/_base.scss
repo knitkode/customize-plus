@@ -5,7 +5,7 @@
  */
 .k6-control {
   margin: 0; // k6wptight-css-override .customize-control {} \\
-  padding: $control--spacing-top $control--spacing-horizontal $control--spacing-bottom;
+  padding: $control--spacing-top 0 $control--spacing-bottom;
   box-sizing: border-box;
   transition: opacity .18s ease;
 

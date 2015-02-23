@@ -1,14 +1,5 @@
 /* jshint undef: false, unused: false */
 
-// ==ClosureCompiler==
-// @output_file_name customize.min.js
-// @compilation_level ADVANCED_OPTIMIZATIONS
-// @externs_url https://rawgit.com/google/closure-compiler/master/contrib/externs/jquery-1.9.js
-// @externs_url https://rawgit.com/google/closure-compiler/master/contrib/externs/underscore-1.5.2.js
-// @externs_url https://rawgit.com/google/closure-compiler/master/contrib/externs/es6.js
-// @externs_url https://gist.github.com/kuus/745c40c5bf29698f4765/raw/225dc7df973e2782b11ad122241a337c9bbb0dcf/externs
-// ==/ClosureCompiler==
-
 (function (window, document, $, _, k6cp, wp) {
   'use strict';
   // var t = performance.now(); // k6debug-perf \\
@@ -42,6 +33,7 @@
   //= include customize/components/regexes.js
   //= include customize/components/utils.js
   //= include customize/components/skeleton.js
+  //= include customize/components/notices.js
   //= include customize/components/tabs.js
   //= include customize/components/tooltips.js
 
