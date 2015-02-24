@@ -25,7 +25,7 @@ if ( ! class_exists( 'K6CP_Extensions' ) ):
 		public function __construct() {
 
 			// Hooks
-			add_filter( 'all_plugins', array( $this, 'filter_extensions' ) );
+			// add_filter( 'all_plugins', array( $this, 'filter_extensions' ) );
 		}
 
 		public function get_active_extensions() {

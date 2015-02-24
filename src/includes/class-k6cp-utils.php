@@ -95,7 +95,6 @@ if ( ! class_exists( 'K6CP_Utils' ) ):
 						return $default || false;
 					}
 				}
-				return get_option( $prefix )[ $opt_name ];
 			}
 			// if it's not in the database and an array of defaults is passed look there
 			else if ( isset( $defaults[ $opt_name ] ) ) {

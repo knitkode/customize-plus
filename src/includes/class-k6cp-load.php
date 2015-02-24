@@ -24,17 +24,21 @@ if ( ! class_exists( 'K6CP' ) ):
 		const PREFIX = 'k6cp-customize_plus';
 
 		/**
-		 * Plugin settings with default values
+		 * Plugin settings default values
 		 *
 		 * @var array
 		 */
-		private static $settings = array(
-			'framework' => 'bootstrap',
+		private static $settings_defaults = array(
 			'compiler' => true,
-			// 'live-compiling' => true,
-			'bootstrap-version' => '3.3.0',
 			'preprocessor' => 'less',
 		);
+
+		/**
+		 * Plugin settings merged with default values
+		 *
+		 * @var array
+		 */
+		public static $settings = array();
 
 		/**
 		 * Singleton
@@ -87,6 +91,9 @@ if ( ! class_exists( 'K6CP' ) ):
 			// add_action( 'init', array( __CLASS__, 'update' ), 20 );
 			register_activation_hook( K6CP_PLUGIN_FILE, array( __CLASS__, 'activation' ) );
 			register_activation_hook( K6CP_PLUGIN_FILE, array( __CLASS__, 'deactivation' ) );
+
+			// query the options only once
+			self::set_settings();
 		}
 
 		/**
@@ -120,13 +127,27 @@ if ( ! class_exists( 'K6CP' ) ):
 		}
 
 		/**
+		 * [set_settings description]
+		 */
+		private static function set_settings() {
+			self::$settings = wp_parse_args( get_option( self::PREFIX ), self::$settings_defaults );
+		}
+
+		/**
 		 * Get option
 		 *
 		 * @param [type]  $opt_name [description]
 		 * @return [type]           [description]
 		 */
-		public static function get_option( $setting_name ) {
-			return K6CP_Utils::get_option_with_default( self::PREFIX, $setting_name, self::$settings );
+		public static function get_option_with_default( $setting_name ) {
+			// return K6CP_Utils::get_option_with_default( self::PREFIX, $setting_name, self::$settings_defaults );
+			if ( isset( self::$settings[ $setting_name ] ) ) {
+				return self::$settings[ $setting_name ];
+			} else {
+				$error = new WP_Error( 'broke', __( 'Option %s does not exist for Customize Plus', 'pkgTextDomain' ) );
+				print_r( $error );
+				return false;
+			}
 		}
 	}
 

@@ -92,10 +92,12 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 			// we need an `option`
 			else {
 				// get from options (WordPress API)
-				if ( isset( get_option( $this->option_prefix )[ $opt_name ] ) ) {
-					return get_option( $this->option_prefix )[ $opt_name ];
+				$options_array = get_option( $this->option_prefix );
+				// if it exists return that
+				if ( isset( $options_array[ $opt_name ] ) ) {
+					return $options_array[ $opt_name ];
 				}
-				// or get from options defaults
+				// otherwise get from options defaults
 				else if ( isset( $this->settings_defaults[ $opt_name ] ) ) {
 					return $this->settings_defaults[ $opt_name ];
 				}

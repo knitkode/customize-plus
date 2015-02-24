@@ -7,12 +7,10 @@
  */
 var Notices = (function () {
 
-  var CLASS_TAB_SELECTED = 'selected';
-
 
   // @public API
   return {
-    init: _init,
+    // init: _init,
     add: function () {
 
     }

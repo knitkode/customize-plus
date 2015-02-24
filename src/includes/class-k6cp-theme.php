@@ -16,6 +16,8 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 
 	class K6CP_Theme {
 
+		public static $options_prefix = '';
+
 		/**
 		 * [$settings_defaults description]
 		 * @var array
@@ -142,6 +144,9 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 		 */
 		private static function init( $prefix, $customize_panels, $styles ) {
 
+			// set the options prefix, we're going to use it in some places (e.g. import / export);
+			self::$options_prefix = $prefix;
+
 			// register theme customize panels
 			$customize_manager = new K6CP_Customize_Manager( 'theme', $prefix, $customize_panels );
 
@@ -149,7 +154,7 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 			self::$settings_defaults = $customize_manager->settings_defaults;
 
 			// register theme styles to compiler if enabled
-			if ( $styles && K6CP::get_option( 'compiler' ) && class_exists( 'K6CPP_Compiler' ) ) {
+			if ( $styles && K6CP::get_option_with_default( 'compiler' ) && class_exists( 'K6CPP_Compiler' ) ) {
 				K6CPP_Compiler::register_styles( $styles, $customize_manager );
 			}
 
