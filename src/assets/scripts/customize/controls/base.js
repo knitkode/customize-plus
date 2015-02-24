@@ -380,8 +380,7 @@ k6cp['controls']['Base'] = ControlBase;
  * This is needed if autofocus is set to one
  * of our 'post-rendered' custom controls
  */
-$(document).ready(function () {
-// api.bind('ready', function () {
+api.bind('ready', function () {
   try {
     var controlToFocusID = window._wpCustomizeSettings.autofocus.control;
     if (controlToFocusID) {

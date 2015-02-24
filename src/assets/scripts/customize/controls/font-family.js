@@ -41,7 +41,9 @@ var ControlFontFamily = ControlBase.extend({
    * @override
    */
   onDeflate: function () {
-    this.input.selectize.destroy();
+    if (this.rendered && this.input) {
+      this.input.selectize.destroy();
+    }
   },
   /**
    * @see php `k6cp_sanitize_font_families`

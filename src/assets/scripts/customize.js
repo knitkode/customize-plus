@@ -2,7 +2,6 @@
 
 (function (window, document, $, _, k6cp, wp) {
   'use strict';
-  // var t = performance.now(); // k6debug-perf \\
 
   /**
    * Reusable variables as globals in each component
@@ -29,7 +28,7 @@
     apiIsReady = true;
   });
 
-  //= include customize/components/wpdom.js
+  //= include customize/components/wptight.js
   //= include customize/components/regexes.js
   //= include customize/components/utils.js
   //= include customize/components/skeleton.js
@@ -53,6 +52,7 @@
    * @type {Object}
    */
   k6cp['controls'] = {};
+  // var t = performance.now(); // k6debug-perf \\
 
   //= include customize/controls/base.js
     // include customize/controls/base-dummy' )
@@ -70,21 +70,19 @@
   //= include customize/controls/text.js
   //= include customize/controls/toggle.js
 
+  // console.log('customize.js controls initialization took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
+
   /**
    * Components initialization
    *
-   * Not every component needs to wait for document ready
-   * The order of intialization is important here both
-   * because of dependencies among components and from a DOM
-   * perspective (like in the tools menu where first we need
-   * the tool menu then all the controls inside of it).
    */
-  Skeleton.init();
-
   $document.ready(function() {
+    // var t = performance.now(); // k6debug-perf \\
+    WpTight.init();
+    Skeleton.init();
     Tabs.init();
     Tooltips.init();
-    // console.log('customize.js took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
+    // console.log('customize.js components initialization took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
   });
 
   //= include customize/temp.js

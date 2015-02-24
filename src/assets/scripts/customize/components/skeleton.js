@@ -1,19 +1,20 @@
-/* global Modernizr, WpDom */
+/* global Modernizr, WpTight */
 
 /**
  * Skeleton element wrappers
  *
- * @requires WpDom
+ * @requires WpTight
  */
 var Skeleton = (function () {
-
-  var sidebar = WpDom.$wpSidebar[0];
+  var _wpSidebar;
 
   /**
    * Init
    */
   function _init () {
-    WpDom.$wpHeader.append(
+    _wpSidebar = WpTight.el.sidebar[0];
+
+    WpTight.el.header.append(
       '<span id="k6-back" class="k6-toggle">' +
         '<span class="screen-reader-text">"' + l10n['back'] + '"</span>' +
       '</span>'
@@ -65,7 +66,7 @@ var Skeleton = (function () {
      * @return {boolean} [description]
      */
     hasScrollbar: function () {
-      body.classList.toggle('k6-has-scrollbar', sidebar.scrollHeight > sidebar.clientHeight);
+      body.classList.toggle('k6-has-scrollbar', _wpSidebar.scrollHeight > _wpSidebar.clientHeight);
     }
   };
 })();
