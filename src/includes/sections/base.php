@@ -38,7 +38,7 @@ class K6CP_Customize_Section_Base extends WP_Customize_Section {
 		<li id="accordion-section-<?php echo esc_attr( $this->id ); ?>" class="<?php echo esc_attr( $classes ); ?>">
 			Search Search Search Search Search asdas as
 			<h3 class="accordion-section-title" tabindex="0">Search
-				<?php echo esc_html( $this->title ); ?>
+				<?php esc_html_e( $this->title ); ?>
 				<span class="screen-reader-text"><?php _e( 'Press return or enter to expand' ); ?></span>
 			</h3>
 			<ul class="accordion-section-content">

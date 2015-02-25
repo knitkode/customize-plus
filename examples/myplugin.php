@@ -89,7 +89,7 @@ class MyPlugin {
 	 *
 	 */
 	public static function unmet_dependencies() {
-		echo '<div class="error"><p>' . esc_html( __( 'MyPlugin needs Customize Plus needs to be activated', 'myPluginTextDomain' ) ) . '</p></div>';
+		echo '<div class="error"><p>' . esc_attr__( 'MyPlugin needs Customize Plus needs to be activated', 'myPluginTextDomain' ) . '</p></div>';
 	}
 }
 
