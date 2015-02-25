@@ -49,13 +49,14 @@ gulp.task('_base-images', function() {
       '!' + PATHS.src.images + '*.svg', // svg are inlined in css
       '!' + PATHS.src.images + '*.dev*' // exclude dev images (kind of sketches)
     ])
-    .pipe($.if(CONFIG.isDist, $.cached(
-      $.imagemin({
-        progressive: true,
-        svgoPlugins: [{removeViewBox: false}],
-        use: [pngquant()]
-      })
-    )))
+    // k6disabled for now, too slow while developing, we should fix it \\
+    // .pipe($.if(CONFIG.isDist, $.cached(
+    //   $.imagemin({
+    //     progressive: true,
+    //     svgoPlugins: [{removeViewBox: false}],
+    //     use: [pngquant()]
+    //   })
+    // )))
     .pipe(gulp.dest(PATHS.build.images));
 });
 

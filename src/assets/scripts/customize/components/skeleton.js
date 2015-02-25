@@ -55,8 +55,13 @@ var Skeleton = (function () {
      */
     inflate: function (layoutId, wrapper) {
       var temp = document.createElement('div');
-      temp.innerHTML = document.getElementById(layoutId).innerHTML;
-      wrapper.appendChild(temp.firstElementChild || temp.firstChild);
+      var tpl = document.getElementById(layoutId);
+      if (tpl) {
+        temp.innerHTML = tpl.innerHTML;
+        wrapper.appendChild(temp.firstElementChild || temp.firstChild);
+      } else {
+        // k6todo api error handling, template doesn't exist
+      }
     },
     /**
      * Check if the WordPress sidebar has a scrollbar and toggle class on it.
