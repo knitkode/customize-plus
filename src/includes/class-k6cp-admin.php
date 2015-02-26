@@ -35,7 +35,7 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 			// Add plugin meta links
 			add_filter( 'plugin_row_meta', array( __CLASS__, 'meta_links' ), 10, 2 );
 
- 			// Add contextual help
+			// Add contextual help
 			add_action( 'contextual_help', array( __CLASS__, 'contextual_help' ) );
 
 			// Add some page specific output to the <head>
@@ -98,16 +98,16 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 
 			$hooks[] = add_submenu_page(
 				'options-general.php',
-				__( 'Customize Plus Add-ons', 'pkgTextDomain' ),
-				__( 'Customize Plus Add-ons', 'pkgTextDomain' ),
+				__( 'Customize Plus Components', 'pkgTextDomain' ),
+				__( 'Customize Plus Components', 'pkgTextDomain' ),
 				'manage_options',
-				'k6cp-addons',
-				array( $this, 'get_view_addons' )
+				'k6cp-components',
+				array( $this, 'get_view_components' )
 			);
 
 			// Fudge the highlighted subnav item when on a Customize Plus admin page
-			foreach( $hooks as $hook ) {
-				add_action( "admin_head-$hook", array( __CLASS__, 'modify_menu_highlight' ) );
+			foreach ( $hooks as $hook ) {
+				add_action( 'admin_head-' . $hook, array( __CLASS__, 'modify_menu_highlight' ) );
 			}
 		}
 
@@ -126,7 +126,7 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 			global $plugin_page, $submenu_file;
 
 			// This tweaks the Settings subnav menu to highlight the only visible menu item
-			if ( in_array( $plugin_page, array( 'k6cp-welcome', 'k6cp-about', 'k6cp-settings', 'k6cp-addons' ) ) ) {
+			if ( in_array( $plugin_page, array( 'k6cp-welcome', 'k6cp-about', 'k6cp-settings', 'k6cp-components' ) ) ) {
 				$submenu_file = 'k6cp-settings';
 			}
 		}
@@ -165,7 +165,7 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 		public static function head() {
 			remove_submenu_page( 'options-general.php', 'k6cp-welcome' );
 			remove_submenu_page( 'options-general.php', 'k6cp-about' );
-			remove_submenu_page( 'options-general.php', 'k6cp-addons' );
+			remove_submenu_page( 'options-general.php', 'k6cp-components' );
 		}
 
 		/**
@@ -180,24 +180,23 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 				$settings_page_prefix . 'welcome',
 				$settings_page_prefix . 'about',
 				$settings_page_prefix . 'settings',
-				$settings_page_prefix . 'addons',
+				$settings_page_prefix . 'components',
 			);
-			if ( in_array( $hook, $settings_pages  ) ) {
-				wp_enqueue_style( 'k6cp-admin-css', plugins_url( "assets/admin{$min}.css", K6CP_PLUGIN_FILE ), array( 'dashicons'), K6CP_PLUGIN_VERSION );
-				// wp_style_add_data( 'k6cp-admin-css', 'rtl', true );
+			if ( in_array( $hook, $settings_pages ) ) {
+				wp_enqueue_style( 'k6cp-admin', plugins_url( "assets/admin{$min}.css", K6CP_PLUGIN_FILE ), array( 'dashicons' ), K6CP_PLUGIN_VERSION );
+				// wp_style_add_data( 'k6cp-admin', 'rtl', true );
 				if ( $min ) {
-					wp_style_add_data( 'k6cp-admin-css', 'suffix', $min );
+					wp_style_add_data( 'k6cp-admin', 'suffix', $min );
 				}
-	    }
+			}
 		}
 
 		/**
 		 * Get the data for the tabs in the admin area.
 		 *
 		 * @since BuddyPress (2.2.0)
-		 * @param string $active_tab Name of the tab that is active. Optional.
 		 */
-		public static function get_tabs( $active_tab = '' ) {
+		public static function get_tabs() {
 			$tabs = array(
 				'0' => array(
 					'href' => admin_url( add_query_arg( array( 'page' => 'k6cp-about' ), 'admin.php' ) ),
@@ -208,8 +207,8 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 					'name' => __( 'Settings', 'pkgTextDomain' )
 				),
 				'2' => array(
-					'href' => admin_url( add_query_arg( array( 'page' => 'k6cp-addons' ), 'admin.php' ) ),
-					'name' => __( 'Add-ons', 'pkgTextDomain' )
+					'href' => admin_url( add_query_arg( array( 'page' => 'k6cp-components' ), 'admin.php' ) ),
+					'name' => __( 'Components', 'pkgTextDomain' )
 				),
 			);
 
@@ -232,7 +231,7 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 			$tabs_html = '';
 			$idle_class = 'nav-tab';
 			$active_class = 'nav-tab nav-tab-active';
-			$tabs = self::get_tabs( $active_tab );
+			$tabs = self::get_tabs();
 
 			if ( ! is_array( $tabs ) ) {
 				return;
@@ -266,9 +265,9 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 		<?php
 		}
 
-		public function get_view_addons() {
+		public function get_view_components() {
 		?>
-			//= include ../views/page-addons.php
+			//= include ../views/page-components.php
 		<?php
 		}
 
@@ -343,11 +342,11 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 					break;
 
 				// Addons page
-				case 'settings_page_k6cp-addons' :
+				case 'settings_page_k6cp-components' :
 
-					// Add-ons tabs
+					// Components tabs
 					$screen->add_help_tab( array(
-						'id'      => 'k6cp-addons-overview',
+						'id'      => 'k6cp-components-overview',
 						'title'   => __( 'Overview', 'buddypress' ),
 						'content' => '<p>' . __( 'By default, all but four of the BuddyPress components are enabled. You can selectively enable or disable any of the components by using the form below. Your BuddyPress installation will continue to function. However, the features of the disabled components will no longer be accessible to anyone using the site.', 'buddypress' ) . '</p>',
 					) );

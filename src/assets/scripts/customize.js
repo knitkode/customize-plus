@@ -28,13 +28,13 @@
     apiIsReady = true;
   });
 
-  //= include customize/components/wptight.js
-  //= include customize/components/regexes.js
-  //= include customize/components/utils.js
-  //= include customize/components/skeleton.js
-  //= include customize/components/notices.js
-  //= include customize/components/tabs.js
-  //= include customize/components/tooltips.js
+  //= include customize/core/wptight.js
+  //= include customize/core/regexes.js
+  //= include customize/core/utils.js
+  //= include customize/core/skeleton.js
+  //= include customize/core/notices.js
+  //= include customize/core/tabs.js
+  //= include customize/core/tooltips.js
 
   /**
    * Collect here sections prototypes
@@ -82,7 +82,7 @@
     Skeleton.init();
     Tabs.init();
     Tooltips.init();
-    // console.log('customize.js components initialization took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
+    // console.log('customize.js core initialization took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
   });
 
   //= include customize/temp.js

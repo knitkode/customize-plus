@@ -59,7 +59,7 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 			$this->is_plugin = (bool) self::interpret_mode( $mode );
 			$this->option_prefix = (string) $option_prefix;
 			$this->panels = (array) $panels;
-			$this->settings_defaults = (array) K6CP_Utils::get_settings_defaults_from_panels( $panels );
+			$this->settings_defaults = (array) self::get_settings_defaults_from_panels( $panels );
 
 			add_action( 'k6cp/customize/ready', array( $this, 'register_panels' ) );
 		}
@@ -75,6 +75,44 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 			} else {
 				return true;
 			}
+		}
+
+		/**
+		 * [get_settings_defaults_from_panels description]
+		 *
+		 * @link http://wordpress.stackexchange.com/questions/28954/how-to-set-the-default-value-of-a-option-in-a-theme
+		 * @since 0.0.1
+		 * @return [type]              [description]
+		 */
+		public static function get_settings_defaults_from_panels( $panels ) {
+			$settings_defaults = array();
+
+			foreach ( $panels as $panel_id => $panel_args ) {
+				foreach ( $panel_args['sections'] as $section_id => $section_args ) {
+					foreach ( $section_args['fields'] as $field_id => $field_args ) {
+
+						if ( isset( $field_args['setting'] ) ) {
+
+							$setting = $field_args['setting'];
+
+							// this allow to use a different id for the setting than the default one
+							// (which is the shared between the setting and its related control)
+							if ( ! isset( $setting['id'] ) ) {
+								$setting['id'] = $field_id;
+							}
+
+							if ( isset( $setting['default'] ) ) {
+								// set default value on options defaults
+								$settings_defaults[ $setting['id'] ] = $setting['default'];
+							}
+							else {
+								// k6todo throw error here, a default is required \\
+							}
+						}
+					}
+				}
+			}
+			return $settings_defaults;
 		}
 
 		/**

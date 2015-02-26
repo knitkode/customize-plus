@@ -154,8 +154,11 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 			self::$settings_defaults = $customize_manager->settings_defaults;
 
 			// register theme styles to compiler if enabled
-			if ( $styles && K6CP::get_option_with_default( 'compiler' ) && class_exists( 'K6CPP_Compiler' ) ) {
-				K6CPP_Compiler::register_styles( $styles, $customize_manager );
+			// k6todo use theme supports api here... \\
+			if ( class_exists( 'K6CPP' ) ) {
+				if ( $styles && K6CPP::get_option_with_default( 'compiler' ) && class_exists( 'K6CPP_Compiler' ) ) {
+					K6CPP_Compiler::register_styles( $styles, $customize_manager );
+				}
 			}
 
 			/**

@@ -16,7 +16,7 @@
 				<div class="welcome-panel-column">
 					<h4><?php _e( 'Configure Customize Plus', 'buddypress' ); ?></h4>
 					<ul>
-						<li><?php printf( '<a href="%s" class="welcome-icon welcome-edit-page">' . __( 'Set Up Components', 'buddypress' ) . '</a>', admin_url( add_query_arg( array( 'page' => 'k6cp-addons' ), 'admin.php' ) ) ); ?></li>
+						<li><?php printf( '<a href="%s" class="welcome-icon welcome-edit-page">' . __( 'Set Up Components', 'buddypress' ) . '</a>', admin_url( add_query_arg( array( 'page' => 'k6cp-components' ), 'admin.php' ) ) ); ?></li>
 						<li><?php printf( '<a href="%s" class="welcome-icon welcome-edit-page">' . __( 'Customize Settings', 'buddypress' ) . '</a>', admin_url( add_query_arg( array( 'page' => 'k6cp-settings' ), 'admin.php' ) ) ); ?></li>
 					</ul>
 					<a class="button button-primary button-hero" style="margin-bottom:20px;margin-top:0;" href="<?php echo esc_url( wp_customize_url() ); ?>"><?php _e( 'Start Customizing', 'buddypress' ); ?></a>
