@@ -42,6 +42,8 @@ class K6CP_Requirements {
 		add_action( 'k6cp/activation', array( __CLASS__, 'wp' ) );
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( __CLASS__, 'check_plugins_incompatibilities' ) );
+			// k6todo the plugins get activated by themes anyway during live previews,
+			// so for instance Maera framework install Kirki and mess up the customize \\
 		}
 	}
 
