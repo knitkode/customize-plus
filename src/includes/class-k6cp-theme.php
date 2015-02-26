@@ -191,7 +191,7 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 		/**
 		 * [get_theme_mods_with_defaults description]
 		 *
-		 * We always have arrays... So probably no need for wp_parse_args
+		 * Initially the `theme_mods` are empty, so check for it.
 		 * @link(https://core.trac.wordpress.org/browser/trunk/src/wp-includes/functions.php#L3045, core.trac.wordpress)
 		 * Anyway the function would be reverted:
 		 * `wp_parse_args( get_theme_mods(), self::$settings_defaults )`
@@ -199,7 +199,8 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 		 * @return array           [description]
 		 */
 		public static function get_theme_mods_with_defaults() {
-			return array_merge( self::$settings_defaults, get_theme_mods() );
+			$theme_mods = get_theme_mods() || array();
+			return array_merge( self::$settings_defaults, $theme_mods );
 		}
 	}
 
