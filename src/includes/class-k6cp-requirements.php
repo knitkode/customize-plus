@@ -103,7 +103,7 @@ class K6CP_Requirements {
 				add_action( 'admin_notices', function() use ( $deactivated_plugins ) {
 
 					// inspired by TGM-Plugin-Activation by Thomas Griffin and Gary Jones
-					$self_title = '<b>Customize Plus</b>';
+					$self_title = '<a href="' . admin_url( 'plugins.php' ) . '#customize-plus"><b>Customize Plus</b></a>';
 					$count = count( $deactivated_plugins );
 					$last_plugin = array_pop( $deactivated_plugins ); // Pop off last name to prep for readability.
 					$imploded    = empty( $deactivated_plugins ) ? '<b>' . $last_plugin . '</b>' : '<b>' . ( implode( ', ', $deactivated_plugins ) . '</b> and <b>' . $last_plugin . '</b>.' );
