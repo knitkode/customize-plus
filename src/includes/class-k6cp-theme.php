@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'K6CP_Theme' ) ):
+if ( ! class_exists( 'K6CPP_Theme' ) ):
 
 	/**
 	 * Contains methods for customizing the theme customization screen.
@@ -61,7 +61,7 @@ if ( ! class_exists( 'K6CP_Theme' ) ):
 		 * @since  0.0.1
 		 */
 		protected function __construct() {
-			add_action( 'k6cp/theme/ready', array( __CLASS__, 'configure' ) );
+			add_action( 'after_setup_theme', array( __CLASS__, 'configure' ) );
 		}
 
 		/**

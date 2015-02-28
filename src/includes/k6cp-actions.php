@@ -37,91 +37,45 @@ defined( 'ABSPATH' ) || exit;
  *
  *           v--WordPress Actions       v--BuddyPress Sub-actions
  */
-add_action( 'admin_menu', 'k6cp_admin_menu' );
-add_action( 'admin_init', 'k6cp_admin_init' );
-add_action( 'admin_head', 'k6cp_admin_head' );
-// add_action( 'admin_notices', 'k6cp_admin_notices' );
-add_action( 'admin_enqueue_scripts', 'k6cp_admin_enqueue_scripts' );
 
-// // Hook on to admin_init
-// add_action( 'k6cp_admin_init', 'bp_setup_updater', 1000 );
-// add_action( 'k6cp_admin_init', 'bp_core_activation_notice', 1010 );
-add_action( 'k6cp_admin_init', 'k6cp_do_activation_redirect', 1 );
+add_action( 'admin_init', 'k6cp_do_activation_redirect', 1 );
 
-add_action( 'customize_register', 'k6cp_customize_register' );
-
-add_action( 'plugins_loaded', 'k6cp_plugins_loaded' );
-add_action( 'after_setup_theme', 'k6cp_after_setup_theme' );
-
-/** Sub-Actions ***************************************************************/
 
 /**
- * Piggy back admin_init action
+ * Redirect user to BuddyPress's What's New page on activation
  *
  * @since BuddyPress (1.7)
- * @uses do_action() Calls 'k6cp_admin_init'
+ *
+ * @internal Used internally to redirect BuddyPress to the about page on activation
+ *
+ * @uses get_transient() To see if transient to redirect exists
+ * @uses delete_transient() To delete the transient if it exists
+ * @uses is_network_admin() To bail if being network activated
+ * @uses wp_safe_redirect() To redirect
+ * @uses add_query_arg() To help build the URL to redirect to
+ * @uses admin_url() To get the admin URL to index.php
  */
-function k6cp_admin_init() {
-	do_action( 'k6cp/admin/init' );
-}
+function k6cp_do_activation_redirect() {
 
-/**
- * Piggy back admin_menu action
- *
- * @since BuddyPress (1.7)
- * @uses do_action() Calls 'k6cp_admin_menu'
- */
-function k6cp_admin_menu() {
-	do_action( 'k6cp/admin/menu' );
-}
+  // Bail if no activation redirect
+  if ( ! get_transient( '_k6cp_activation_redirect' ) ) {
+    return;
+  }
 
-/**
- * Piggy back admin_head action
- *
- * @since BuddyPress (1.7)
- * @uses do_action() Calls 'k6cp_admin_head'
- */
-function k6cp_admin_head() {
-	do_action( 'k6cp/admin/head' );
-}
+  // Delete the redirect transient
+  delete_transient( '_k6cp_activation_redirect' );
 
-/**
- * Piggy back admin_notices action
- *
- * @since BuddyPress (1.7)
- * @uses do_action() Calls 'k6cp_admin_notices'
- */
-function k6cp_admin_notices() {
-	do_action( 'k6cp/admin/notices' );
-}
+  // Bail if activating from network, or bulk
+  if ( isset( $_GET['activate-multi'] ) ) {
+    return;
+  }
 
-/**
- * Piggy back admin_enqueue_scripts action.
- *
- * @since BuddyPress (1.7.0)
- *
- * @uses do_action() Calls 'k6cp/admin/enqueue_scripts''.
- *
- * @param string $hook_suffix The current admin page, passed to
- *        'admin_enqueue_scripts'.
- */
-function k6cp_admin_enqueue_scripts( $hook_suffix = '' ) {
-	do_action( 'k6cp/admin/enqueue_scripts', $hook_suffix );
-}
-/**
- *
- *
- * @since BuddyPress (1.7)
- * @uses do_action() Calls 'k6cp_admin_notices'
- */
-function k6cp_customize_register() {
-  do_action( 'k6cp/customize/register' );
-}
+  $query_args = array( 'page' => 'k6cp-welcome' );
+  if ( get_transient( '_k6cp_is_new_install' ) ) {
+    $query_args['is_new_install'] = '1';
+    delete_transient( '_k6cp_is_new_install' );
+  }
 
-function k6cp_plugins_loaded() {
-  do_action( 'k6cp/ready/plugins' );
-}
-
-function k6cp_after_setup_theme() {
-  do_action( 'k6cp/theme/ready' );
+  // Redirect to BuddyPress about page
+  wp_safe_redirect( add_query_arg( $query_args, admin_url( 'index.php' ) ) );
 }

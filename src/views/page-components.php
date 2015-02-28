@@ -8,18 +8,28 @@
 					<?php foreach ( K6CPP::get_components() as $id => $args ) : ?>
 						<?php $class = isset( K6CPP::get_components( 'active' )[ $id ] ) ? 'active' : 'inactive'; ?>
 
-						<?php add_meta_box(
+						<?php
+
+
+
+						add_meta_box(
 							'my-custom-meta-box' . $id,
 							$args['title'],
 							'k6cp-components',
 							'normal' );
+
+						// add_action( 'add_meta_boxes', function () {
+					 //    add_meta_box( 'prfx_meta', __( 'Meta Box Title', 'prfx-textdomain' ), function () {
+						//     echo 'This is a meta box';
+					 //    }, 'k6cp-components' );
+						// } );
 						?>
-						<?php do_meta_boxes('k6cp-components','normal',null); ?>
+
 						<div id="post-body" class="metabox-holder columns-<?php echo 1 == get_current_screen()->get_columns() ? '1' : '2'; ?>">
-							<div id="post-body-content">
+							<div id="post-body-content>"
 							</div>
 							<div id="postbox-container-1" class="postbox-container">
-								<?php do_meta_boxes('my_custom_menu_page' . $id,'normal',null); ?>
+								<?php // do_meta_boxes('my_custom_menu_page' . $id,'normal',null); ?>
 							</div>
 						</div>
 						<!--
@@ -32,6 +42,7 @@
 						</div>
 						-->
 					<?php endforeach ?>
+					<?php do_meta_boxes('k6cp-components','normal',null); ?>
 				<?php else : ?>
 					<?php _e( 'No components found.', 'pkgTextDomain' ); ?>
 				<?php endif; ?>

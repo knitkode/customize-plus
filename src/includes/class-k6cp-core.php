@@ -65,4 +65,4 @@ if ( ! class_exists( 'K6CP' ) ):
 	// Instantiate
 	new K6CP;
 
-endif; // End if class_exists check
+endif;

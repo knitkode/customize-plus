@@ -1,7 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
 if ( ! class_exists( 'K6CP_Admin' ) ):
-
 	/**
 	 * Short description for class
 	 *
@@ -39,13 +38,13 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 			add_action( 'contextual_help', array( __CLASS__, 'contextual_help' ) );
 
 			// Add some page specific output to the <head>
-			add_action( 'k6cp/admin/head', array( __CLASS__, 'head' ), 999 );
+			add_action( 'admin_head', array( __CLASS__, 'head' ), 999 );
 
 			// Add menu item to settings menu
-			add_action( 'k6cp/admin/menu', array( $this, 'menu' ), 5 );
+			add_action( 'admin_menu', array( $this, 'menu' ), 15 );
 
 			// Enqueue all admin JS and CSS
-			add_action( 'k6cp/admin/enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
+			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 
 			// Customize Plus Admin is ready
 			do_action( 'k6cp/admin/init' );
@@ -360,11 +359,9 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 					break;
 			}
 		}
-
 	}
 
 	// Instantiate
-	// K6CP_Admin::get_instance();
-	new K6CP_Admin();
+	new K6CP_Admin;
 
-endif; // End if class_exists check
+endif;

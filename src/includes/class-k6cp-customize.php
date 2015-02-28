@@ -126,7 +126,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		protected function __construct() {
 			// The priority here is very important, when adding custom classes to the customize
 			// you should use a priority in this range (11, 99)
-			add_action( 'k6cp/customize/register', array( __CLASS__, 'register_custom_classes' ), 10 );
+			add_action( 'customize_register', array( __CLASS__, 'register_custom_classes' ), 10 );
 
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_css_admin' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_js_shim' ) );

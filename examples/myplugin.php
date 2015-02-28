@@ -11,7 +11,6 @@ class MyPlugin {
 	 * Constructor
 	 */
 	public function __construct() {
-		// add_action( 'k6cp/ready/plugins', array( __CLASS__, 'add_options' ) );
 		add_action( 'plugins_loaded', array( __CLASS__, 'add_options' ) );
 		add_action( 'wp_head', array( __CLASS__, 'test_option' ) );
 	}
@@ -67,10 +66,10 @@ class MyPlugin {
 	 * use TGM Plugin Activation here or whatever custom code you like.
 	 */
 	public static function add_options() {
-		if ( ! class_exists( 'K6CP_Customize_Manager' ) ) {
-			add_action( 'admin_notices', array( __CLASS__, 'unmet_dependencies' ) );
-		} else {
+		if ( class_exists( 'K6CP_Customize_Manager' ) ) {
 			self::$customize = new K6CP_Customize_Manager( 'plugin', 'myplugin', self::get_customize_panels() );
+		} else {
+			add_action( 'admin_notices', array( __CLASS__, 'unmet_dependencies' ) );
 		}
 	}
 
