@@ -3,6 +3,9 @@
  *
  */
 
+// Customize Plus
+$CP--logo-bg: #464646;
+
 // Wordpress layout variables
 $WP--border-radius: 3px !default;
 $WP--select-border-color: #ddd;
@@ -59,6 +62,7 @@ $popover--border-color: rgba(0,0,0,.2);
 
 // Customize Plugins related values
 $plugin--select-input-disabled-bg: #f4f4f4;
+$plugin--select-option-padding: 6px;
 $plugin--select-option-highlight-bg: #5897fb;
 
 $plugin--slider-handle-size: 13px;

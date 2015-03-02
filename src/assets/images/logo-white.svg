@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -56,16 +56,6 @@
        style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        d="M 30.71875 1.28125 C 13.76091 1.28125 0 15.04216 0 32 C 0 48.95784 13.76091 62.71875 30.71875 62.71875 C 47.67659 62.71875 61.40625 48.95784 61.40625 32 C 61.40625 15.04216 47.67659 1.28125 30.71875 1.28125 z M 30.71875 1.9375 C 47.317695 1.9375 60.75 15.401055 60.75 32 C 60.75 48.598945 47.317695 62.0625 30.71875 62.0625 C 14.119805 62.0625 0.65625 48.598945 0.65625 32 C 0.65625 15.401055 14.119805 1.9375 30.71875 1.9375 z "
        id="path3137-3-3-8-1-8-0-2" />
-    <path
-       d="m 436.89098,553.85193 a 100.51018,100.51018 0 1 1 -201.02036,0 100.51018,100.51018 0 1 1 201.02036,0 z"
-       sodipodi:ry="100.51018"
-       sodipodi:rx="100.51018"
-       sodipodi:cy="553.85193"
-       sodipodi:cx="336.3808"
-       id="path3137-3-3-8-1-8-7-6-0"
-       style="color:#000000;fill:#464646;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       sodipodi:type="arc"
-       transform="matrix(0.29902492,0,0,0.29902492,-69.881381,-133.61541)" />
     <path
        inkscape:connector-curvature="0"
        style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"

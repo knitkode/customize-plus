@@ -45,9 +45,6 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 
 			// Enqueue all admin JS and CSS
 			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
-
-			// Customize Plus Admin is ready
-			do_action( 'k6cp/admin/init' );
 		}
 
 		/**
@@ -95,15 +92,6 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 				array( $this, 'get_view_settings' )
 			);
 
-			$hooks[] = add_submenu_page(
-				'options-general.php',
-				__( 'Customize Plus Components', 'pkgTextDomain' ),
-				__( 'Customize Plus Components', 'pkgTextDomain' ),
-				'manage_options',
-				'k6cp-components',
-				array( $this, 'get_view_components' )
-			);
-
 			// Fudge the highlighted subnav item when on a Customize Plus admin page
 			foreach ( $hooks as $hook ) {
 				add_action( 'admin_head-' . $hook, array( __CLASS__, 'modify_menu_highlight' ) );
@@ -125,7 +113,7 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 			global $plugin_page, $submenu_file;
 
 			// This tweaks the Settings subnav menu to highlight the only visible menu item
-			if ( in_array( $plugin_page, array( 'k6cp-welcome', 'k6cp-about', 'k6cp-settings', 'k6cp-components' ) ) ) {
+			if ( in_array( $plugin_page, array( 'k6cp-welcome', 'k6cp-about', 'k6cp-settings' ) ) ) {
 				$submenu_file = 'k6cp-settings';
 			}
 		}
@@ -164,7 +152,6 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 		public static function head() {
 			remove_submenu_page( 'options-general.php', 'k6cp-welcome' );
 			remove_submenu_page( 'options-general.php', 'k6cp-about' );
-			remove_submenu_page( 'options-general.php', 'k6cp-components' );
 		}
 
 		/**
@@ -179,7 +166,6 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 				$settings_page_prefix . 'welcome',
 				$settings_page_prefix . 'about',
 				$settings_page_prefix . 'settings',
-				$settings_page_prefix . 'components',
 			);
 			if ( in_array( $hook, $settings_pages ) ) {
 				wp_enqueue_style( 'k6cp-admin', plugins_url( "assets/admin{$min}.css", K6CP_PLUGIN_FILE ), array( 'dashicons' ), K6CP_PLUGIN_VERSION );
@@ -196,19 +182,15 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 		 * @since BuddyPress (2.2.0)
 		 */
 		public static function get_tabs() {
-			$tabs = array(
-				'0' => array(
-					'href' => admin_url( add_query_arg( array( 'page' => 'k6cp-about' ), 'admin.php' ) ),
-					'name' => __( 'About', 'pkgTextDomain' )
-				),
-				'1' => array(
-					'href' => admin_url( add_query_arg( array( 'page' => 'k6cp-settings' ), 'admin.php' ) ),
-					'name' => __( 'Settings', 'pkgTextDomain' )
-				),
-				'2' => array(
-					'href' => admin_url( add_query_arg( array( 'page' => 'k6cp-components' ), 'admin.php' ) ),
-					'name' => __( 'Components', 'pkgTextDomain' )
-				),
+			$tabs = array();
+
+			$tabs[] = array(
+				'href' => admin_url( add_query_arg( array( 'page' => 'k6cp-about' ), 'admin.php' ) ),
+				'name' => __( 'About', 'pkgTextDomain' )
+			);
+			$tabs[] = array(
+				'href' => admin_url( add_query_arg( array( 'page' => 'k6cp-settings' ), 'admin.php' ) ),
+				'name' => __( 'Settings', 'pkgTextDomain' )
 			);
 
 			/**
@@ -239,11 +221,10 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 			foreach ( array_values( $tabs ) as $tab_data ) {
 				$is_current = (bool) ( $tab_data['name'] == $active_tab );
 				$tab_class = $is_current ? $active_class : $idle_class;
-				$tabs_html .= '<a href="' . esc_url( $tab_data['href'] ) . '" class="' . esc_attr( $tab_class ) . '">' . esc_html( $tab_data['name'] ) . '</a>';
+				?>
+				<a href="<?php echo esc_url( $tab_data['href'] ); ?>" class="<?php esc_attr_e( $tab_class ); ?>"><?php esc_html_e( $tab_data['name'] ); ?></a>
+				<?php
 			}
-
-			echo $tabs_html;
-			do_action( 'k6cp/admin/get_tabs_view' );
 		}
 
 		public function get_view_welcome() {
@@ -261,12 +242,6 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 		public function get_view_settings() {
 		?>
 			//= include ../views/page-settings.php
-		<?php
-		}
-
-		public function get_view_components() {
-		?>
-			//= include ../views/page-components.php
 		<?php
 		}
 
@@ -328,15 +303,15 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 					// Settings tabs
 					$screen->add_help_tab( array(
 						'id' => 'k6cp-settings-overview',
-						'title' => __( 'Overview', 'pkgTextDomain' ),
-						'content' => '<p>' . __( 'Extra configuration settings are provided and activated. You can selectively enable or disable any setting by using the form on this screen.', 'buddypress' ) . '</p>',
+						'title' => esc_html__( 'Overview', 'pkgTextDomain' ),
+						'content' => '<p>' . esc_html__( 'Extra configuration settings are provided and activated. You can selectively enable or disable any setting by using the form on this screen.', 'buddypress' ) . '</p>',
 					) );
 
 					// Help panel - sidebar links
 					$screen->set_help_sidebar(
-						'<p><strong>' . __( 'For more information:', 'buddypress' ) . '</strong></p>' .
-						'<p>' . __( '<a href="http://codex.buddypress.org/getting-started/configure-buddypress-components/#settings-buddypress-pages">Managing Pages</a>', 'buddypress' ) . '</p>' .
-						'<p>' . __( '<a href="http://buddypress.org/support/">Support Forums</a>', 'buddypress' ) . '</p>'
+						'<p><strong>' . esc_html__( 'For more information:', 'buddypress' ) . '</strong></p>' .
+						'<p><a href="http://codex.buddypress.org/getting-started/configure-buddypress/#settings-buddypress-pages">' . esc_html__( 'Managing Pages', 'buddypress' ) . '</a></p>' .
+						'<p><a href="http://buddypress.org/support/">' . esc_html__( 'Support Forums', 'buddypress' ) . '</a></p>'
 					);
 					break;
 
@@ -346,15 +321,15 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 					// Components tabs
 					$screen->add_help_tab( array(
 						'id'      => 'k6cp-components-overview',
-						'title'   => __( 'Overview', 'buddypress' ),
-						'content' => '<p>' . __( 'By default, all but four of the BuddyPress components are enabled. You can selectively enable or disable any of the components by using the form below. Your BuddyPress installation will continue to function. However, the features of the disabled components will no longer be accessible to anyone using the site.', 'buddypress' ) . '</p>',
+						'title'   => esc_html__( 'Overview', 'buddypress' ),
+						'content' => '<p>' . esc_html__( 'By default, all but four of the BuddyPress components are enabled. You can selectively enable or disable any of the components by using the form below. Your BuddyPress installation will continue to function. However, the features of the disabled components will no longer be accessible to anyone using the site.', 'buddypress' ) . '</p>',
 					) );
 
 					// help panel - sidebar links
 					$screen->set_help_sidebar(
-						'<p><strong>' . __( 'For more information:', 'buddypress' ) . '</strong></p>' .
-						'<p>' . __( '<a href="http://codex.buddypress.org/getting-started/configure-buddypress-components/#settings-buddypress-components">Managing Components</a>', 'buddypress' ) . '</p>' .
-						'<p>' . __( '<a href="http://buddypress.org/support/">Support Forums</a>', 'buddypress' ) . '</p>'
+						'<p><strong>' . esc_html__( 'For more information:', 'buddypress' ) . '</strong></p>' .
+						'<p><a href="http://codex.buddypress.org/getting-started/configure-buddypress/#settings-buddypress-pages">' . esc_html__( 'Managing Pages', 'buddypress' ) . '</a></p>' .
+						'<p><a href="http://buddypress.org/support/">' . esc_html__( 'Support Forums', 'buddypress' ) . '</a></p>'
 					);
 					break;
 			}

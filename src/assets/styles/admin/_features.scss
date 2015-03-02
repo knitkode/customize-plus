@@ -1,0 +1,60 @@
+/**
+ * Features list in the Admin UI
+ *
+ */
+.k6cp-features {
+  li {
+    position: relative;
+    padding: 10px 0 10px 40px;
+    margin: 0;
+
+    > i {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      width: 40px;
+      opacity: .4;
+      transition: font-size .18s ease;
+    }
+
+    &.k6cp-premium {
+      > i {
+        opacity: .8;
+        text-shadow: 0 0 6px #e8d43d;
+      }
+    }
+  }
+
+  &:hover {
+    li {
+      opacity: .8;
+      &:hover {
+        opacity: 1;
+
+        > i {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+
+  b {
+    font-size: 17px;
+    font-weight: normal;
+  }
+
+  em {
+    &:before {
+      font-family: 'dashicons';
+      font-style: normal;
+      content: "\f155";
+      margin-right: 3px;
+      color: #F9F25F;
+      text-shadow: -1px 1px 1px rgba(0,0,0,.3);
+    }
+  }
+
+  a {
+    font-style: normal;
+  }
+}

@@ -1,5 +1,5 @@
 <div class="wrap about-wrap">
-	<div class="k6cp-badge"></div>
+	<div class="k6cp-badge"><?php printf( esc_html__( 'Version %s', 'pkgTextDomain' ), self::display_version() ); ?></div>
 	<h1><?php printf( esc_html__( 'Welcome to Customize Plus %s', 'pkgTextDomain' ), self::display_version() ); ?></h1>
 	<div class="about-text">
 		<?php if ( self::is_new_install() ) : ?>
