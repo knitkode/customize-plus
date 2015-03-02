@@ -62,6 +62,8 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 			$this->settings_defaults = (array) self::get_settings_defaults_from_panels( $panels );
 
 			add_action( 'k6cp/customize/ready', array( $this, 'register_panels' ) );
+
+			add_action( 'customize_controls_print_styles', array( $this, 'maybe_print_css_icons' ), 999 );
 		}
 
 		/**
@@ -187,6 +189,11 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 				// $panel_args['capability'] = 'edit_theme_options'; // k6tocheck \\
 				// $panel_args['theme_supports'] = ''; // k6tocheck \\
 
+				// add panel icon if specified
+				if ( isset( $panel['icon'] ) ) {
+					$this->add_css_panel_icon( $panel_id, $panel['icon'] );
+				}
+
 				// Add panel to WordPress
 				$wp_customize->add_panel( $panel_id, $panel_args );
 
@@ -223,6 +230,11 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 				$section_args['priority'] = $priority_section;
 				// $section_args['capability'] = 'edit_theme_options'; // k6tocheck \\
 				$section_args['panel'] = $panel_id;
+
+				// add section icon if specified
+				if ( isset( $section_args['icon'] ) ) {
+					$this->add_css_section_icon( $section_id, $section_args['icon'] );
+				}
 
 				// Add section to WordPress
 				$wp_customize->add_section( $section_id, $section_args );
@@ -307,6 +319,56 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 					$wp_customize->add_control( $option_id, $control_args );
 					// k6todo error (wrong api implementation, missing control type) \\
 				}
+			}
+		}
+
+		/**
+		 * [$common_css_icons description]
+		 * @var string
+		 */
+		private static $common_css_icons = 'position:relative;top:4px;left:-2px;opacity:.5;font-size:20px;font-weight:normal;font-family:"dashicons";';
+
+		/**
+		 * [$css_icons description]
+		 * @var string
+		 */
+		private $css_icons = '';
+
+		/**
+		 * [add_css_panel_icon description]
+		 * @param string $panel_id      [description]
+		 * @param [type] $dashicon_code [description]
+		 */
+		private function add_css_panel_icon( $panel_id = '', $dashicon_code ) {
+			// the dashicon needs to be an integer, we add the `\f`
+			if ( ! absint( $dashicon_code ) ) {
+				return;
+			}
+			$this->css_icons .= "#accordion-panel-$panel_id > h3:before,#accordion-panel-$panel_id .panel-title:before{content:'\\f$dashicon_code';" . self::$common_css_icons . '}';
+		}
+
+		/**
+		 * [add_css_section_icon description]
+		 * @param string $section_id      [description]
+		 * @param [type] $dashicon_code [description]
+		 */
+		private function add_css_section_icon( $section_id = '', $dashicon_code ) {
+			return; // k6disabled for now \\
+			// the dashicon needs to be an integer, we add the `\f`
+			if ( ! absint( $dashicon_code ) ) {
+				return;
+			}
+			$this->css_icons .= "#accordion-section-$section_id > h3:before{content:'\\f$dashicon_code';}" . self::$common_css_icons . '}';
+		}
+
+		/**
+		 * [maybe_print_css_icons description]
+		 * @return [type] [description]
+		 */
+		public function maybe_print_css_icons() {
+			if ( $this->css_icons ) {
+				echo '<style>' . $this->css_icons . '</style>';
+				// wp_add_inline_style( 'dashicons', $this->css_icons );
 			}
 		}
 	}
