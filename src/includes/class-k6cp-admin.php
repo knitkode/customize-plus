@@ -125,7 +125,7 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 		 */
 		public static function actions_links( $links ) {
 			$links[] = '<a href="' . add_query_arg( array( 'page' => 'k6cp-settings' ), admin_url( 'options-general.php' ) ) . '">' . esc_html__( 'Settings', 'pkgTextDomain' ) . '</a>';
-			$links[] = '<a href="' . add_query_arg( array( 'page' => 'k6cp-about' ), admin_url( 'index.php' ) ) . '">' . esc_html__( 'About', 'pkgTextDomain' ) . '</a>';
+			$links[] = '<a href="' . add_query_arg( array( 'page' => 'k6cp-about' ), admin_url( 'options-general.php' ) ) . '">' . esc_html__( 'About', 'pkgTextDomain' ) . '</a>';
 			return $links;
 		}
 

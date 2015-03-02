@@ -61,63 +61,88 @@ if ( ! class_exists( 'K6CPP_Theme' ) ):
 		 * @since  0.0.1
 		 */
 		protected function __construct() {
-			add_action( 'after_setup_theme', array( __CLASS__, 'configure' ) );
+			add_action( 'after_setup_theme', array( __CLASS__, 'configure' ), 999 );
 		}
+
+		// public static function ready() {
+		// 	do_action( 'k6cp/theme/ready' );
+
+		// 	self::configure();
+		// }
 
 		/**
 		 * [configure description]
 		 * @return [type] [description]
 		 */
 		public static function configure() {
-			$configuration = (array) apply_filters( 'k6cp/theme/configure', array() );
-			if ( $configuration ) {
-				$prefix = self::check_prefix( $configuration );
-				$customize_panels = self::check_customize_panels( $configuration );
-				$styles = self::check_styles( $configuration );
 
-				if ( is_wp_error( $prefix ) ) {
-					// k6todo error handling, _doing_it_wrong() \\
-					// echo $prefix->get_error_message();
-				}
-				if ( is_wp_error( $customize_panels ) ) {
-					// k6todo error handling, _doing_it_wrong() \\
-					// echo $customize_panels->get_error_message();
-				}
-				if ( is_wp_error( $styles ) ) {
-					// k6todo error handling, _doing_it_wrong() \\
-					// echo $styles->get_error_message();
-				}
+			$settings = get_theme_support( 'k6cp-customize' );
 
-				self::init( $prefix, $customize_panels, $styles );
+			if ( is_array( $settings ) ) {
+				// Themes should provide an array of options
+				if ( isset( $settings[0] ) && is_array( $settings[0] ) ) {
+					$prefix = self::check_prefix( $settings[0] );
+					$panels = self::check_panels( $settings[0] );
+					$styles = self::check_styles( $settings[0] );
+
+					if ( is_wp_error( $prefix ) ) {
+						// k6todo error handling, _doing_it_wrong() \\
+						// echo $prefix->get_error_message();
+					}
+					if ( is_wp_error( $panels ) ) {
+						// k6todo error handling, _doing_it_wrong() \\
+						// echo $panels->get_error_message();
+					}
+					if ( is_wp_error( $styles ) ) {
+						// k6todo error handling, _doing_it_wrong() \\
+						// echo $styles->get_error_message();
+					}
+
+					// automatically create hooks for child themes or whatever
+					// on each style property
+					foreach ( $styles as $style ) {
+						foreach ( $style as $key => $value ) {
+							$style[ $key ] = apply_filters( $prefix . '/k6cp/compiler/' . $style['id'] . '/' . $key, $value );
+						}
+					}
+
+					// automatically create hooks for child themes or whatever
+					self::init(
+						apply_filters( $prefix . '/k6cp/compiler/prefix', $prefix ),
+						apply_filters( $prefix . '/k6cp/compiler/panels', $panels ),
+						apply_filters( $prefix . '/k6cp/compiler/styles', $styles )
+					);
+				}
 			}
 		}
 
 		/**
 		 * [check_prefix description]
+		 * @uses  sanitize_key The prefix get sanitized, just to be sure
 		 * @return [type] [description]
 		 */
 		private static function check_prefix( $configuration ) {
 			if ( isset( $configuration['prefix'] ) ) {
-				return $configuration['prefix'];
+				return sanitize_key( $configuration['prefix'] );
 			} else {
-				return new WP_Error( 'broke', __( 'Customize Plus: no `prefix` given.', 'pkgTextdomain' ) );
+				wp_die( __( 'Customize Plus: no `prefix` given.', 'pkgTextdomain' ) );
 			}
 		}
 
 		/**
-		 * [check_customize_panels description]
+		 * [check_panels description]
 		 * @return [type] [description]
 		 */
-		private static function check_customize_panels( $configuration ) {
-			if ( isset( $configuration[ 'customize_panels' ] ) ) {
-				$customize_panels = $configuration[ 'customize_panels' ];
-				if ( is_array( $customize_panels ) ) {
-					return $customize_panels;
+		private static function check_panels( $configuration ) {
+			if ( isset( $configuration[ 'panels' ] ) ) {
+				$panels = $configuration[ 'panels' ];
+				if ( is_array( $panels ) ) {
+					return $panels;
 				} else {
-					return new WP_Error( 'broke', __( 'Customize Plus: `customize_panels` must be an array.', 'pkgTextdomain' ) );
+					wp_die( __( 'Customize Plus: `panels` must be an array.', 'pkgTextdomain' ) );
 				}
 			} else {
-				return new WP_Error( 'broke', __( 'Customize Plus: no `customize_panels` array given.', 'pkgTextdomain' ) );
+				wp_die( __( 'Customize Plus: no `panels` array given.', 'pkgTextdomain' ) );
 			}
 		}
 
@@ -131,10 +156,10 @@ if ( ! class_exists( 'K6CPP_Theme' ) ):
 				if ( is_array( $styles ) ) {
 					return $styles;
 				} else {
-					return new WP_Error( 'broke', __( 'Customize Plus: `styles` must be an array.', 'pkgTextdomain' ) );
+					wp_die( __( 'Customize Plus: `styles` must be an array.', 'pkgTextdomain' ) );
 				}
 			} else {
-				return new WP_Error( 'broke', __( 'Customize Plus: no `styles` array given.', 'pkgTextdomain' ) );
+				wp_die( __( 'Customize Plus: no `styles` array given.', 'pkgTextdomain' ) );
 			}
 		}
 
@@ -142,13 +167,13 @@ if ( ! class_exists( 'K6CPP_Theme' ) ):
 		 * [init description]
 		 * @return [type] [description]
 		 */
-		private static function init( $prefix, $customize_panels, $styles ) {
+		private static function init( $prefix, $panels, $styles ) {
 
 			// set the options prefix, we're going to use it in some places (e.g. import / export);
 			self::$options_prefix = $prefix;
 
 			// register theme customize panels
-			$customize_manager = new K6CP_Customize_Manager( 'theme', $prefix, $customize_panels );
+			$customize_manager = new K6CP_Customize_Manager( 'theme', $prefix, $panels );
 
 			// add theme settings defaults
 			self::$settings_defaults = $customize_manager->settings_defaults;

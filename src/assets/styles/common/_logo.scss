@@ -1,6 +1,9 @@
 @import "variables";
 
 .k6cp-logo { // k6todo \\
+  position: absolute;
+  top: 0;
+  right: 20px;
   width: 110px; // image-width(images/logo.svg);
   height: 110px; // image-height(images/logo.svg);
   background: url(images/logo.png) center 100% no-repeat;
@@ -9,12 +12,10 @@
   // }
 
   .about-wrap & {
-    float: left;
-    margin: 0 20px 20px 0;
-
-    @media (max-width: 600px) {
-      width: 50px;
-      height: 50px;
+    @media (min-width: 769px) {
+      position: static;
+      float: left;
+      margin: 0 20px 20px 0;
     }
   }
 }
