@@ -1,11 +1,11 @@
 <div class="wrap about-wrap">
-	<div class="k6cp-badge"><?php printf( esc_html__( 'Version %s', 'pkgTextDomain' ), self::display_version() ); ?></div>
-	<h1><?php printf( esc_html__( 'Welcome to Customize Plus %s', 'pkgTextDomain' ), self::display_version() ); ?></h1>
+	<div class="k6cp-badge"><?php printf( esc_html__( 'Version %s', 'pkgTextDomain' ), K6CP_PLUGIN_VERSION ); ?></div>
+	<h1><?php printf( esc_html__( 'Welcome to Customize Plus %s', 'pkgTextDomain' ), K6CP_PLUGIN_VERSION ); ?></h1>
 	<div class="about-text">
-		<?php if ( self::is_new_install() ) : ?>
-			<?php printf( __( 'Thank you for installing Customize Plus! Customize Plus %s do this and that.', 'pkgTextDomain' ), self::display_version() ); ?>
+		<?php if ( isset( $_GET['is_new_install'] ) ) : ?>
+			<?php printf( __( 'Thank you for installing Customize Plus! Customize Plus %s do this and that.', 'pkgTextDomain' ), K6CP_PLUGIN_VERSION ); ?>
 		<?php else : ?>
-			<?php printf( __( 'Customize Plus %s comes with a bunch of great improvements we think you&#8217;re really going to like.', 'pkgTextDomain' ), self::display_version() ); ?>
+			<?php printf( __( 'Customize Plus %s comes with a bunch of great improvements we think you&#8217;re really going to like.', 'pkgTextDomain' ), K6CP_PLUGIN_VERSION ); ?>
 		<?php endif; ?>
 	</div>
 	<h2 class="nav-tab-wrapper"><?php self::get_tabs_view( '' ); ?></h2>

@@ -66,7 +66,6 @@ if ( ! class_exists( 'K6CPP_Theme' ) ):
 
 		// public static function ready() {
 		// 	do_action( 'k6cp/theme/ready' );
-
 		// 	self::configure();
 		// }
 
@@ -81,36 +80,15 @@ if ( ! class_exists( 'K6CPP_Theme' ) ):
 			if ( is_array( $settings ) ) {
 				// Themes should provide an array of options
 				if ( isset( $settings[0] ) && is_array( $settings[0] ) ) {
-					$prefix = self::check_prefix( $settings[0] );
-					$panels = self::check_panels( $settings[0] );
-					$styles = self::check_styles( $settings[0] );
-
-					if ( is_wp_error( $prefix ) ) {
-						// k6todo error handling, _doing_it_wrong() \\
-						// echo $prefix->get_error_message();
-					}
-					if ( is_wp_error( $panels ) ) {
-						// k6todo error handling, _doing_it_wrong() \\
-						// echo $panels->get_error_message();
-					}
-					if ( is_wp_error( $styles ) ) {
-						// k6todo error handling, _doing_it_wrong() \\
-						// echo $styles->get_error_message();
-					}
-
-					// automatically create hooks for child themes or whatever
-					// on each style property
-					foreach ( $styles as $style ) {
-						foreach ( $style as $key => $value ) {
-							$style[ $key ] = apply_filters( $prefix . '/k6cp/compiler/' . $style['id'] . '/' . $key, $value );
-						}
-					}
+					$theme_prefix = self::check_prefix( $settings[0] );
+					$theme_panels = self::check_panels( $settings[0] );
+					$theme_styles = self::check_styles( $settings[0] );
 
 					// automatically create hooks for child themes or whatever
 					self::init(
-						apply_filters( $prefix . '/k6cp/compiler/prefix', $prefix ),
-						apply_filters( $prefix . '/k6cp/compiler/panels', $panels ),
-						apply_filters( $prefix . '/k6cp/compiler/styles', $styles )
+						apply_filters( $theme_prefix . '/k6cp/theme/prefix', $theme_prefix ),
+						apply_filters( $theme_prefix . '/k6cp/theme/panels', $theme_panels ),
+						apply_filters( $theme_prefix . '/k6cp/theme/styles', $theme_styles )
 					);
 				}
 			}
@@ -135,9 +113,9 @@ if ( ! class_exists( 'K6CPP_Theme' ) ):
 		 */
 		private static function check_panels( $configuration ) {
 			if ( isset( $configuration[ 'panels' ] ) ) {
-				$panels = $configuration[ 'panels' ];
-				if ( is_array( $panels ) ) {
-					return $panels;
+				$theme_panels = $configuration[ 'panels' ];
+				if ( is_array( $theme_panels ) ) {
+					return $theme_panels;
 				} else {
 					wp_die( __( 'Customize Plus: `panels` must be an array.', 'pkgTextdomain' ) );
 				}
@@ -152,9 +130,9 @@ if ( ! class_exists( 'K6CPP_Theme' ) ):
 		 */
 		private static function check_styles( $configuration ) {
 			if ( isset( $configuration[ 'styles' ] ) ) {
-				$styles = $configuration[ 'styles' ];
-				if ( is_array( $styles ) ) {
-					return $styles;
+				$theme_styles = $configuration[ 'styles' ];
+				if ( is_array( $theme_styles ) ) {
+					return $theme_styles;
 				} else {
 					wp_die( __( 'Customize Plus: `styles` must be an array.', 'pkgTextdomain' ) );
 				}
@@ -167,22 +145,22 @@ if ( ! class_exists( 'K6CPP_Theme' ) ):
 		 * [init description]
 		 * @return [type] [description]
 		 */
-		private static function init( $prefix, $panels, $styles ) {
+		private static function init( $theme_prefix, $theme_panels, $theme_styles ) {
 
 			// set the options prefix, we're going to use it in some places (e.g. import / export);
-			self::$options_prefix = $prefix;
+			self::$options_prefix = $theme_prefix;
 
 			// register theme customize panels
-			$customize_manager = new K6CP_Customize_Manager( 'theme', $prefix, $panels );
+			$theme_customize_manager = new K6CP_Customize_Manager( 'theme', $theme_prefix, $theme_panels );
 
 			// add theme settings defaults
-			self::$settings_defaults = $customize_manager->settings_defaults;
+			self::$settings_defaults = $theme_customize_manager->settings_defaults;
 
 			// register theme styles to compiler if enabled
 			// k6todo use theme supports api here... \\
 			if ( class_exists( 'K6CPP' ) ) {
-				if ( $styles && /*K6CPP::get_option_with_default( 'compiler' ) &&*/ class_exists( 'K6CPP_Compiler' ) ) {
-					K6CPP_Compiler::register_styles( $styles, $customize_manager );
+				if ( $theme_styles && /*K6CPP::get_option_with_default( 'compiler' ) &&*/ class_exists( 'K6CPP_Compiler' ) ) {
+					K6CPP_Compiler::register_styles( $theme_styles, $theme_prefix, $theme_customize_manager->panels );
 				}
 			}
 

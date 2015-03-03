@@ -10,12 +10,14 @@
  *
  * @see Customize_Manager class.
  */
+$icons-opacity: .4;
+
 @mixin k6cp-icon ( $icon_code ) {
   content: "#{$icon_code}";
   position: relative;
   top: 4px;
   left: -2px;
-  opacity: .4;
+  opacity: $icons-opacity;
   font-size: 20px;
   font-weight: normal;
   font-family: 'dashicons';
@@ -47,4 +49,13 @@
   &-posts > h3:before {
     @include k6cp-icon('\f464');
   }
+}
+
+/**
+ * Icons for sections titles
+ *
+ * style icons present in the markup
+ */
+.accordion-section-title .dashicons {
+  opacity: $icons-opacity;
 }

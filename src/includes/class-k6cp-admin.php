@@ -34,6 +34,9 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 			// Add plugin meta links
 			add_filter( 'plugin_row_meta', array( __CLASS__, 'meta_links' ), 10, 2 );
 
+			// Maybe redirect to welcome page
+			add_action( 'admin_init', array( __CLASS__, 'activation_redirect' ), 1 );
+
 			// Add contextual help
 			add_action( 'contextual_help', array( __CLASS__, 'contextual_help' ) );
 
@@ -246,46 +249,6 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 		}
 
 		/**
-		 * Return true/false based on whether a query argument is set
-		 *
-		 * @see bp_do_activation_redirect()
-		 *
-		 * @since BuddyPress (2.2.0)
-		 * @return bool
-		 */
-		public static function is_new_install() {
-			return (bool) isset( $_GET['is_new_install'] );
-		}
-
-		/**
-		 * Return a user-friendly version-number string, for use in translations
-		 *
-		 * @since BuddyPress (2.2.0)
-		 * @return string
-		 */
-		public static function display_version() {
-
-			// Use static variable to prevent recalculations
-			static $display = '';
-
-			// Only calculate on first run
-			if ( '' === $display ) {
-
-				// Get current version
-				$version = K6CP_PLUGIN_VERSION;
-
-				// Check for prerelease hyphen
-				$pre = strpos( $version, '-' );
-
-				// Strip prerelease suffix
-				$display = ( false !== $pre ) ? substr( $version, 0, $pre ) : $version;
-			}
-
-			// Done!
-			return $display;
-		}
-
-		/**
 		 * adds contextual help to BuddyPress admin pages
 		 *
 		 * @since BuddyPress (1.7)
@@ -333,6 +296,44 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 					);
 					break;
 			}
+		}
+
+		/**
+		 * Redirect user to BuddyPress's What's New page on activation
+		 *
+		 * @since 0.0.1
+		 *
+		 * @uses get_transient() To see if transient to redirect exists
+		 * @uses delete_transient() To delete the transient if it exists
+		 * @uses wp_safe_redirect() To redirect
+		 * @uses add_query_arg() To help build the URL to redirect to
+		 * @uses admin_url() To get the admin URL to index.php
+		 *
+		 * @return void
+		 */
+		public static function activation_redirect() {
+
+			// Bail if no activation redirect
+			if ( ! get_transient( '_k6cp_activation_redirect' ) ) {
+				return;
+			}
+
+			// Delete the redirect transient
+			delete_transient( '_k6cp_activation_redirect' );
+
+			// Bail if activating from network, or bulk
+			if ( isset( $_GET['activate-multi'] ) ) {
+				return;
+			}
+
+			$query_args = array( 'page' => 'k6cp-welcome' );
+			if ( get_transient( '_k6cp_is_new_install' ) ) {
+				$query_args['is_new_install'] = '1';
+				delete_transient( '_k6cp_is_new_install' );
+			}
+
+			// Redirect to BuddyPress about page
+			wp_safe_redirect( add_query_arg( $query_args, admin_url( 'options-general.php' ) ) );
 		}
 	}
 
