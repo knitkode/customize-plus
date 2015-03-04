@@ -71,11 +71,13 @@ gulp.task('_base-styles', ['_base-images'], function() {
   return gulp.src(PATHS.src.styles + '*.scss')
     .pipe($.sass())
     .on('error', utilErrors)
-    .pipe($.if(CONFIG.isDist, $.base64({
+    .pipe($.base64({
+    // .pipe($.if(CONFIG.isDist, $.base64({
       baseDir: PATHS.src.assets,
       extensions: ['svg'],
       debug: true
-    })))
+    }))
+    // })))
     .pipe($.autoprefixer(PLUGINS.autoprefixer))
     .pipe(gulp.dest(PATHS.build.styles))
     .pipe($.rename({ suffix: '.min' }))

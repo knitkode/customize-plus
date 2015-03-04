@@ -16,7 +16,7 @@ var Skeleton = (function () {
 
     WpTight.el.header.append(
       '<span id="k6-back" class="k6-toggle">' +
-        '<span class="screen-reader-text">"' + l10n['back'] + '"</span>' +
+        '<span class="screen-reader-text">"' + k6cp['l10n']['back'] + '"</span>' +
       '</span>'
     );
   }

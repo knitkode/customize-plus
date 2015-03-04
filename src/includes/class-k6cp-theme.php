@@ -159,8 +159,8 @@ if ( ! class_exists( 'K6CPP_Theme' ) ):
 			// register theme styles to compiler if enabled
 			// k6todo use theme supports api here... \\
 			if ( class_exists( 'K6CPP' ) ) {
-				if ( $theme_styles && /*K6CPP::get_option_with_default( 'compiler' ) &&*/ class_exists( 'K6CPP_Compiler' ) ) {
-					K6CPP_Compiler::register_styles( $theme_styles, $theme_prefix, $theme_customize_manager->panels );
+				if ( $theme_styles && /*K6CPP::get_option_with_default( 'compiler' ) &&*/ class_exists( 'K6CPP_Component_Compiler' ) ) {
+					K6CPP_Component_Compiler::register_styles( $theme_styles, $theme_prefix, $theme_customize_manager->panels );
 				}
 			}
 

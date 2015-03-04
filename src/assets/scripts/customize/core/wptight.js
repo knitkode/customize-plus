@@ -16,15 +16,6 @@ var WpTight = (function () {
      * @return {void}
      */
     init: function () {
-
-      /**
-       * The suffix appended to the styles ids by WordPress when enqueuing them
-       * through `wp_enqueue_style`
-       *
-       * @type {String}
-       */
-      this.cssSuffix = '-css';
-
       /**
        * WordPress UI elements
        *
@@ -52,7 +43,14 @@ var WpTight = (function () {
       el.customizeControls = $('#customize-theme-controls').find('ul').first();
       /** @type {jQuery} */
       el.btnSave = $('#save');
-    }
+    },
+    /**
+     * The suffix appended to the styles ids by WordPress when enqueuing them
+     * through `wp_enqueue_style`
+     *
+     * @type {String}
+     */
+    cssSuffix: '-css'
   };
 })();
 

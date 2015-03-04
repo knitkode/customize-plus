@@ -17,9 +17,6 @@
   var body = document.getElementsByTagName('body')[0];
 
   /** @type {Object} */
-  var l10n = k6cp['l10n'];
-
-  /** @type {Object} */
   var api = wp['customize'];
 
   /** @type {boolean} */

@@ -189,9 +189,9 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 				// $panel_args['capability'] = 'edit_theme_options'; // k6tocheck \\
 				// $panel_args['theme_supports'] = ''; // k6tocheck \\
 
-				// add panel icon if specified
-				if ( isset( $panel['icon'] ) ) {
-					$this->add_css_panel_icon( $panel_id, $panel['icon'] );
+				// add panel dashicon if specified
+				if ( isset( $panel['dashicon'] ) ) {
+					$this->add_css_panel_dashicon( $panel_id, $panel['dashicon'] );
 				}
 
 				// Add panel to WordPress
@@ -231,9 +231,9 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 				// $section_args['capability'] = 'edit_theme_options'; // k6tocheck \\
 				$section_args['panel'] = $panel_id;
 
-				// add section icon if specified
-				if ( isset( $section_args['icon'] ) ) {
-					$this->add_css_section_icon( $section_id, $section_args['icon'] );
+				// add section dashicon if specified
+				if ( isset( $section_args['dashicon'] ) ) {
+					$this->add_css_section_dashicon( $section_id, $section_args['dashicon'] );
 				}
 
 				// Add section to WordPress
@@ -335,11 +335,11 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		private $css_icons = '';
 
 		/**
-		 * [add_css_panel_icon description]
+		 * [add_css_panel_dashicon description]
 		 * @param string $panel_id      [description]
 		 * @param [type] $dashicon_code [description]
 		 */
-		private function add_css_panel_icon( $panel_id = '', $dashicon_code ) {
+		private function add_css_panel_dashicon( $panel_id = '', $dashicon_code ) {
 			// the dashicon needs to be an integer, we add the `\f`
 			if ( ! absint( $dashicon_code ) ) {
 				return;
@@ -348,11 +348,11 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		}
 
 		/**
-		 * [add_css_section_icon description]
+		 * [add_css_section_dashicon description]
 		 * @param string $section_id      [description]
 		 * @param [type] $dashicon_code [description]
 		 */
-		private function add_css_section_icon( $section_id = '', $dashicon_code ) {
+		private function add_css_section_dashicon( $section_id = '', $dashicon_code ) {
 			return; // k6disabled for now \\
 			// the dashicon needs to be an integer, we add the `\f`
 			if ( ! absint( $dashicon_code ) ) {

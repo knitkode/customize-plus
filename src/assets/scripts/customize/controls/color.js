@@ -403,8 +403,8 @@ var ControlColor = ControlBase.extend({
       }
     };
     // change button texts through title attribute and data attribute
-    btnCustom.title = l10n['customColor'];
-    btnCustom.setAttribute('data-current', l10n['customColor']);
+    btnCustom.title = k6cp['l10n']['customColor'];
+    btnCustom.setAttribute('data-current', k6cp['l10n']['customColor']);
     // set the toggle as control property, we're gonna reuse it
     /** @type {jQuery} */
     this.$btnCustom = $(btnCustom);

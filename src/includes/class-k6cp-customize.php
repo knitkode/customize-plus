@@ -155,14 +155,22 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function enqueue_js_admin() {
-			wp_register_script( 'k6cp-customize', plugins_url( 'assets/customize.min.js', K6CP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery', 'jquery-ui-slider' ), K6CP_PLUGIN_VERSION, false );
+			$handle = 'k6cp-customize';
 
-			wp_localize_script( 'k6cp-customize', 'k6cp', array(
+			do_action( 'k6cp/customize/registered_script_pre', $handle );
+
+			wp_register_script( $handle, plugins_url( 'assets/customize.min.js', K6CP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery', 'jquery-ui-slider' ), K6CP_PLUGIN_VERSION, false );
+
+			wp_localize_script( $handle, 'k6cp', array(
+					'components' => apply_filters( 'k6cp/customize/js_components', array() ),
 					'constants' => self::get_js_constants(),
-					'options' => self::get_js_options(),
 					'l10n' => self::get_js_l10n(),
+					// filter to add extra stuff in the namespace, for developers
+					'extra' => apply_filters( 'k6cp/customize/js_extra', array() ),
 				) );
-			wp_enqueue_script( 'k6cp-customize' );
+			wp_enqueue_script( $handle );
+
+			do_action( 'k6cp/customize/registered_script_post', $handle );
 		}
 
 		/**
@@ -172,26 +180,8 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		public static function get_js_constants() {
 			$required = array(
 				'FONT_FAMILIES' => k6cp_sanitize_font_families( self::$font_families ),
-				'BREAKPOINTS' => array(
-					array( 'name' => 'xs', 'size' => 480 ), // k6todo, retrieve these from less options \\
-					array( 'name' => 'sm', 'size' => 768 ),
-					array( 'name' => 'md', 'size' => 992 ),
-					array( 'name' => 'lg', 'size' => 1200 ),
-				),
 			);
 			$additional = (array) apply_filters( 'k6cp/customize/js_constants', array() );
-			return array_merge( $required, $additional );
-		}
-
-		/**
-		 * [get_js_options description]
-		 * @return [type] [description]
-		 */
-		public static function get_js_options() {
-			$required = array(
-				// nothing for now
-			);
-			$additional = (array) apply_filters( 'k6cp/customize/js_options', array() );
 			return array_merge( $required, $additional );
 		}
 
@@ -202,20 +192,9 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		public static function get_js_l10n() {
 			$required = array(
 				'back' => __( 'Back', 'pkgTextdomain' ),
-				'searchPlaceholder' => __( 'Control name ...', 'pkgTextdomain' ),
-				'searchResultsFor' => __( 'Search for:', 'pkgTextdomain' ),
 				'tools' => __( 'Tools', 'pkgTextdomain' ),
-				'introTitle' => __( 'Customize', 'pkgTextdomain' ),
-				'introText' => __( 'Welcome to the customize tool', 'pkgTextdomain' ),
-				'exportUnsaved' => __( 'There are unsaved settings, they won\'t be exported. Proceed?', 'pkgTextdomain' ),
-				'importUnsaved' => __( 'There are unsaved settings, they will be lost. Proceed?', 'pkgTextdomain' ),
-				'failedLoadFile' => __( 'Failed to load file', 'pkgTextdomain' ),
-				'loadingPreview' => __( 'Loading preview ...', 'pkgTextdomain' ),
-				'resettingPreview' => __( 'Resetting preview ...', 'pkgTextdomain' ),
-				'resetting' => __( 'Resetting ...', 'pkgTextdomain' ),
-				'importResetted' => __( 'Import resetted', 'pkgTextdomain' ),
-				'importProcessing' => __( 'Processing import ...', 'pkgTextdomain' ),
-				'importUndo' => __( 'Undo Import', 'pkgTextdomain' ),
+				'introTitle' => __( 'Customize Plus', 'pkgTextdomain' ),
+				'introText' => __( 'Welcome to Customize Plus', 'pkgTextdomain' ),
 				'customColor' => __( 'Custom', 'pkgTextdomain' ),
 			);
 			$additional = (array) apply_filters( 'k6cp/customize/js_l10n', array() );
@@ -234,7 +213,6 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 
 			wp_enqueue_script( 'k6cp-customize-preview', plugins_url( 'assets/customize-preview.min.js', K6CP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), K6CP_PLUGIN_VERSION, true );
 		}
-
 
 		/**
 		 * [get_view_loader description]
