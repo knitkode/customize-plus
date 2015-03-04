@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'K6CP_Admin' ) ):
+if ( ! class_exists( 'K6CP_Admin' ) && class_exists( 'K6CPP_Singleton' ) ):
 	/**
 	 * Short description for class
 	 *
@@ -15,49 +15,67 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 	 * @link      http://pear.php.net/package/K6
 	 * @see       References to other sections (if any)...
 	 */
-	class K6CP_Admin {
+	class K6CP_Admin extends K6CPP_Singleton {
+
+		const MENU_PAGE = 'options-general.php';
+		const PARENT_HOOK = 'customize-plus';
+
+		private $subpages = array();
+
+		private $default_tab = 'about';
 
 		/**
 		 * Constructor
 		 *
 		 * @since 0.0.1
 		 */
-		public function __construct() {
-			// Translate plugin meta
-			__( 'pkgNamePretty', 'pkgTextDomain' );
-			__( 'pkgAuthorName', 'pkgTextDomain' );
-			__( 'pkgDescription', 'pkgTextDomain' );
-
-			// Add plugin actions links
-			add_filter( 'plugin_action_links_' . plugin_basename( K6CP_PLUGIN_FILE ), array( __CLASS__, 'actions_links' ), -10 );
-
-			// Add plugin meta links
-			add_filter( 'plugin_row_meta', array( __CLASS__, 'meta_links' ), 10, 2 );
-
-			// Maybe redirect to welcome page
-			add_action( 'admin_init', array( __CLASS__, 'activation_redirect' ), 1 );
-
-			// Add contextual help
-			add_action( 'contextual_help', array( __CLASS__, 'contextual_help' ) );
-
-			// Add some page specific output to the <head>
-			add_action( 'admin_head', array( __CLASS__, 'head' ), 999 );
+		protected function __construct() {
 
 			// Add menu item to settings menu
 			add_action( 'admin_menu', array( $this, 'menu' ), 15 );
 
+			// Remove subpages from side menu
+			add_action( 'admin_head', array( $this, 'hide_subpages' ), 999 );
+
 			// Enqueue all admin JS and CSS
-			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		}
+
+		/**
+		 * Public method to add subpages to Customize Plus
+		 *
+		 * @param  array $subpages An array of subpages array, each one needs a `title`
+		 *                        and a `view` callable function.
+		 * @since  0.0.1
+		 * @return void
+		 */
+		final public function add_subpages( $subpages ) {
+			if ( is_array( $subpages ) ) {
+				foreach ( $subpages as $id => $subpage ) {
+					if ( is_array( $subpage ) ) {
+						$this->subpages[ sanitize_key( $id ) ] = $subpage;
+					}
+				}
+			}
+		}
+
+		/**
+		 * Set default tab, the one visible when no query param is added to the url
+		 *
+		 * @param  string $subpage_id  The subpage / tab id to set as default.
+		 * @since  0.0.1
+		 * @return void
+		 */
+		final public function set_default_tab( $subpage_id ) {
+			$this->default_tab = sanitize_key( $subpage_id );
 		}
 
 		/**
 		 * Add the navigational menu elements.
 		 *
-		 * @since BuddyPress (1.6)
-		 *
-		 * @uses add_management_page() To add the Recount page in Tools section.
-		 * @uses add_options_page() To add the Forums settings page in Settings
-		 *       section.
+		 * @since  0.0.1
+		 * @uses   add_submenu_page() To add the the page submenu
+		 * @return void
 		 */
 		public function menu() {
 
@@ -66,85 +84,38 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 				return;
 			}
 
-			$hooks = array();
-
-			$hooks[] = add_submenu_page(
-				'options-general.php',
-				__( 'Welcome to Customize Plus',  'pkgTextDomain' ),
-				__( 'Welcome to Customize Plus',  'pkgTextDomain' ),
-				'manage_options',
-				'k6cp-welcome',
-				array( $this, 'get_view_welcome' )
-			);
-
-			$hooks[] = add_submenu_page(
-				'options-general.php',
-				__( 'Customize Plus About', 'pkgTextDomain' ),
-				__( 'Customize Plus About', 'pkgTextDomain' ),
-				'manage_options',
-				'k6cp-about',
-				array( $this, 'get_view_about' )
-			);
-
-			$hooks[] = add_submenu_page(
-				'options-general.php',
-				__( 'Customize Plus Settings', 'pkgTextDomain' ),
+			add_submenu_page(
+				self::MENU_PAGE,
+				__( 'Customize Plus', 'pkgTextDomain' ),
 				__( 'Customize Plus', 'pkgTextDomain' ),
 				'manage_options',
-				'k6cp-settings',
-				array( $this, 'get_view_settings' )
+				self::PARENT_HOOK,
+				array( $this, 'get_view' )
 			);
 
-			// Fudge the highlighted subnav item when on a Customize Plus admin page
-			foreach ( $hooks as $hook ) {
-				add_action( 'admin_head-' . $hook, array( __CLASS__, 'modify_menu_highlight' ) );
+			$hooks = array();
+
+			foreach ( $this->subpages as $subpage_id => $subpage_args ) {
+				$hooks[] = add_submenu_page(
+					self::MENU_PAGE,
+					$subpage_args['title'],
+					__( 'Customize Plus', 'pkgTextDomain' ),
+					'manage_options',
+					self::PARENT_HOOK . 'tab=' . sanitize_key( $subpage_id ),
+					'__return_null'
+				);
 			}
 		}
 
 		/**
-		 * This tells WP to highlight the Settings > BuddyPress menu item,
-		 * regardless of which actual BuddyPress admin screen we are on.
+		 * Hide subpages from side menu removing them
 		 *
-		 * The conditional prevents the behaviour when the user is viewing the
-		 * backpat "Help" page, the Activity page, or any third-party plugins.
-		 *
-		 * @global string $plugin_page
-		 * @global array $submenu
-		 * @since BuddyPress (1.6)
+		 * @since BuddyPress (1.6.0)
 		 */
-		public static function modify_menu_highlight() {
-			global $plugin_page, $submenu_file;
-
-			// This tweaks the Settings subnav menu to highlight the only visible menu item
-			if ( in_array( $plugin_page, array( 'k6cp-welcome', 'k6cp-about', 'k6cp-settings' ) ) ) {
-				$submenu_file = 'k6cp-settings';
+		public function hide_subpages() {
+			foreach ( $this->subpages as $subpage_id => $subpage_args ) {
+				remove_submenu_page( self::MENU_PAGE, self::PARENT_HOOK . 'tab=' . $subpage_id );
 			}
-		}
-
-		/**
-		 * Add plugin actions links
-		 * @param array $links Links array in which we would prepend our link.
-		 * @return array Processed links.
-		 */
-		public static function actions_links( $links ) {
-			$links[] = '<a href="' . add_query_arg( array( 'page' => 'k6cp-settings' ), admin_url( 'options-general.php' ) ) . '">' . esc_html__( 'Settings', 'pkgTextDomain' ) . '</a>';
-			$links[] = '<a href="' . add_query_arg( array( 'page' => 'k6cp-about' ), admin_url( 'options-general.php' ) ) . '">' . esc_html__( 'About', 'pkgTextDomain' ) . '</a>';
-			return $links;
-		}
-
-		/**
-		 * Add plugin meta links
-		 * @param array $links Links array in which we would prepend our link.
-		 */
-		public static function meta_links( $links, $file ) {
-			// Check plugin
-			if ( $file === plugin_basename( K6CP_PLUGIN_FILE ) ) {
-				unset( $links[2] );
-				$links[] = '<a href="http://gndev.info/shortcodes-ultimate/" target="_blank">' . __( 'Project homepage', 'su' ) . '</a>';
-				$links[] = '<a href="http://wordpress.org/support/plugin/shortcodes-ultimate/" target="_blank">' . __( 'Support forum', 'su' ) . '</a>';
-				$links[] = '<a href="http://wordpress.org/extend/plugins/shortcodes-ultimate/changelog/" target="_blank">' . __( 'Changelog', 'su' ) . '</a>';
-			}
-			return $links;
 		}
 
 		/**
@@ -152,25 +123,10 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 		 *
 		 * @since BuddyPress (1.6.0)
 		 */
-		public static function head() {
-			remove_submenu_page( 'options-general.php', 'k6cp-welcome' );
-			remove_submenu_page( 'options-general.php', 'k6cp-about' );
-		}
-
-		/**
-		 * Add some general styling to the admin area.
-		 *
-		 * @since BuddyPress (1.6.0)
-		 */
-		public static function enqueue_scripts( $hook ) {
+		public function enqueue_scripts( $hook ) {
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-			$settings_page_prefix = 'settings_page_k6cp-';
-			$settings_pages = array(
-				$settings_page_prefix . 'welcome',
-				$settings_page_prefix . 'about',
-				$settings_page_prefix . 'settings',
-			);
-			if ( in_array( $hook, $settings_pages ) ) {
+
+			if ( 'settings_page_' . self::PARENT_HOOK === $hook ) {
 				wp_enqueue_style( 'k6cp-admin', plugins_url( "assets/admin{$min}.css", K6CP_PLUGIN_FILE ), array( 'dashicons' ), K6CP_PLUGIN_VERSION );
 				// wp_style_add_data( 'k6cp-admin', 'rtl', true );
 				if ( $min ) {
@@ -180,164 +136,19 @@ if ( ! class_exists( 'K6CP_Admin' ) ):
 		}
 
 		/**
-		 * Get the data for the tabs in the admin area.
+		 * The view that wrap each subpage tab.
 		 *
-		 * @since BuddyPress (2.2.0)
-		 */
-		public static function get_tabs() {
-			$tabs = array();
-
-			$tabs[] = array(
-				'href' => admin_url( add_query_arg( array( 'page' => 'k6cp-about' ), 'admin.php' ) ),
-				'name' => __( 'About', 'pkgTextDomain' )
-			);
-			$tabs[] = array(
-				'href' => admin_url( add_query_arg( array( 'page' => 'k6cp-settings' ), 'admin.php' ) ),
-				'name' => __( 'Settings', 'pkgTextDomain' )
-			);
-
-			/**
-			 * Filters the tab data used in our wp-admin screens.
-			 *
-			 * @param array $tabs Tab data.
-			 * @since BuddyPress (2.2.0)
-			 */
-			return apply_filters( 'k6cp/admin/get_tabs', $tabs );
-		}
-
-		/**
-		 * Output the tabs in the admin area
-		 *
-		 * @since BuddyPress (1.5)
-		 * @param string $active_tab Name of the tab that is active. Optional.
-		 */
-		public static function get_tabs_view( $active_tab = '' ) {
-			$tabs_html = '';
-			$idle_class = 'nav-tab';
-			$active_class = 'nav-tab nav-tab-active';
-			$tabs = self::get_tabs();
-
-			if ( ! is_array( $tabs ) ) {
-				return;
-			}
-			// Loop through tabs and build navigation
-			foreach ( array_values( $tabs ) as $tab_data ) {
-				$is_current = (bool) ( $tab_data['name'] == $active_tab );
-				$tab_class = $is_current ? $active_class : $idle_class;
-				?>
-				<a href="<?php echo esc_url( $tab_data['href'] ); ?>" class="<?php esc_attr_e( $tab_class ); ?>"><?php esc_html_e( $tab_data['name'] ); ?></a>
-				<?php
-			}
-		}
-
-		public function get_view_welcome() {
-		?>
-			//= include ../views/page-welcome.php
-		<?php
-		}
-
-		public function get_view_about() {
-		?>
-			//= include ../views/page-about.php
-		<?php
-		}
-
-		public function get_view_settings() {
-		?>
-			//= include ../views/page-settings.php
-		<?php
-		}
-
-		/**
-		 * adds contextual help to BuddyPress admin pages
-		 *
-		 * @since BuddyPress (1.7)
-		 * @todo Make this part of the BP_Component class and split into each component
-		 */
-		public static function contextual_help( $screen = '' ) {
-
-			$screen = get_current_screen();
-
-			switch ( $screen->id ) {
-
-				// Settings page
-				case 'settings_page_k6cp-settings' :
-
-					// Settings tabs
-					$screen->add_help_tab( array(
-						'id' => 'k6cp-settings-overview',
-						'title' => esc_html__( 'Overview', 'pkgTextDomain' ),
-						'content' => '<p>' . esc_html__( 'Extra configuration settings are provided and activated. You can selectively enable or disable any setting by using the form on this screen.', 'buddypress' ) . '</p>',
-					) );
-
-					// Help panel - sidebar links
-					$screen->set_help_sidebar(
-						'<p><strong>' . esc_html__( 'For more information:', 'buddypress' ) . '</strong></p>' .
-						'<p><a href="http://codex.buddypress.org/getting-started/configure-buddypress/#settings-buddypress-pages">' . esc_html__( 'Managing Pages', 'buddypress' ) . '</a></p>' .
-						'<p><a href="http://buddypress.org/support/">' . esc_html__( 'Support Forums', 'buddypress' ) . '</a></p>'
-					);
-					break;
-
-				// Addons page
-				case 'settings_page_k6cp-components' :
-
-					// Components tabs
-					$screen->add_help_tab( array(
-						'id'      => 'k6cp-components-overview',
-						'title'   => esc_html__( 'Overview', 'buddypress' ),
-						'content' => '<p>' . esc_html__( 'By default, all but four of the BuddyPress components are enabled. You can selectively enable or disable any of the components by using the form below. Your BuddyPress installation will continue to function. However, the features of the disabled components will no longer be accessible to anyone using the site.', 'buddypress' ) . '</p>',
-					) );
-
-					// help panel - sidebar links
-					$screen->set_help_sidebar(
-						'<p><strong>' . esc_html__( 'For more information:', 'buddypress' ) . '</strong></p>' .
-						'<p><a href="http://codex.buddypress.org/getting-started/configure-buddypress/#settings-buddypress-pages">' . esc_html__( 'Managing Pages', 'buddypress' ) . '</a></p>' .
-						'<p><a href="http://buddypress.org/support/">' . esc_html__( 'Support Forums', 'buddypress' ) . '</a></p>'
-					);
-					break;
-			}
-		}
-
-		/**
-		 * Redirect user to BuddyPress's What's New page on activation
-		 *
-		 * @since 0.0.1
-		 *
-		 * @uses get_transient() To see if transient to redirect exists
-		 * @uses delete_transient() To delete the transient if it exists
-		 * @uses wp_safe_redirect() To redirect
-		 * @uses add_query_arg() To help build the URL to redirect to
-		 * @uses admin_url() To get the admin URL to index.php
-		 *
+		 * @since  0.0.1
 		 * @return void
 		 */
-		public static function activation_redirect() {
-
-			// Bail if no activation redirect
-			if ( ! get_transient( '_k6cp_activation_redirect' ) ) {
-				return;
-			}
-
-			// Delete the redirect transient
-			delete_transient( '_k6cp_activation_redirect' );
-
-			// Bail if activating from network, or bulk
-			if ( isset( $_GET['activate-multi'] ) ) {
-				return;
-			}
-
-			$query_args = array( 'page' => 'k6cp-welcome' );
-			if ( get_transient( '_k6cp_is_new_install' ) ) {
-				$query_args['is_new_install'] = '1';
-				delete_transient( '_k6cp_is_new_install' );
-			}
-
-			// Redirect to BuddyPress about page
-			wp_safe_redirect( add_query_arg( $query_args, admin_url( 'options-general.php' ) ) );
+		public function get_view() {
+		?>
+			//= include ../views/page-admin.php
+		<?php
 		}
 	}
 
 	// Instantiate
-	new K6CP_Admin;
+	K6CP_Admin::get_instance();
 
 endif;

@@ -23,5 +23,9 @@ module.exports = {
     toplevel: true,
     mangle: true
   },
-  autoprefixer: 'last 2 version'
+  autoprefixer: 'last 2 version',
+  jsonEditor: {
+    'indent_char': ' ',
+    'indent_size': 2
+  }
 };

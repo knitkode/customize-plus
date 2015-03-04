@@ -29,6 +29,35 @@ module.exports = PATHS = {
   }
 };
 
+/**
+ * Paths to Premium Plugin version
+ * @type {Object}
+ */
+module.exports = PATHS = require('util')._extend(PATHS, {
+  /** @type {Object} */
+  toPremium: {
+    files: [
+      // includes
+      PATHS.src.includes + '**/*.php',
+      // '!' + PATHS.src.includes + '**/.*.php',
+      // views
+      PATHS.src.views + '*.php',
+      // images
+      PATHS.src.images + '*.*',
+      // scripts
+      PATHS.src.scripts + '**/*.js',
+      '!' + PATHS.src.scripts + 'customize.js',
+      // styles
+      PATHS.src.styles + '**/*.scss',
+      '!' + PATHS.src.styles + 'admin.scss',
+      '!' + PATHS.src.styles + 'customize.scss'
+    ],
+    // destination
+    src: {
+      root: '../customize-plus-premium-synced/src/'
+    }
+  }
+});
 
 
 var gulp = require('gulp');
