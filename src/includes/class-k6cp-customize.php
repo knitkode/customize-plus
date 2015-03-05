@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'K6CP_Customize' ) ):
+if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CPP_Singleton' ) ):
 
 	/**
 	 * Contains methods for customizing the theme customization screen.
@@ -14,7 +14,7 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 	 * @license      pkgLicenseUrl
 	 */
 
-	class K6CP_Customize {
+	class K6CP_Customize extends K6CPP_Singleton {
 
 		/**
 		 * [$custom_types description]
@@ -86,37 +86,6 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		  // Google font
 		  '"Lato"',
 		);
-
-		/**
-		 * Singleton
-		 *
-		 * @since 0.0.1
-		 */
-		public static function get_instance() {
-			static $instances = array();
-			$called_class_name = self::get_called_class();
-			if ( ! isset( $instances[ $called_class_name ] ) ) {
-				$instances[ $called_class_name ] = new $called_class_name();
-			}
-			return $instances[ $called_class_name ];
-		}
-
-		/**
-		 * PHP 5.2 version support
-		 * See: http://stackoverflow.com/questions/7902586/extend-a-singleton-with-php-5-2-x
-		 *
-		 * @since 0.0.1
-		 */
-		private static function get_called_class() {
-			$bt = debug_backtrace();
-			$lines = file( $bt[1]['file'] );
-			preg_match(
-				'/([a-zA-Z0-9\_]+)::'.$bt[1]['function'].'/',
-				$lines[ $bt[1]['line'] -1 ],
-				$matches
-			);
-			return $matches[1];
-		}
 
 		/**
 		 * Constructor
@@ -232,9 +201,11 @@ if ( ! class_exists( 'K6CP_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function enqueue_js_shim() {
-			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-			// k6wpapichange following will work from WP 4.2 \\
-			// wp_enqueue_style( 'es5-shim', plugins_url( "assets/es5-shim{$min}.js", K6CP_PLUGIN_FILE ) );
+			// global $wp_scripts;
+			// $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+			// // k6wpapichange following will work from WP 4.2 \\
+			// wp_enqueue_script( 'es5-shim', plugins_url( "assets/es5-shim{$min}.js", K6CP_PLUGIN_FILE ) );
+			// did_action( 'init' ) && $wp_scripts->add_data( 'es5-shim', 'conditional', 'lt IE 8' );
 			// wp_style_add_data( 'es5-shim', 'conditional', 'if lt IE 9' );
 			?>
 			<!--[if lt IE 9]><script src="<?php echo esc_url( plugins_url( "assets/es5-shim{$min}.js", K6CP_PLUGIN_FILE ) ); ?>"></script><![endif]-->
