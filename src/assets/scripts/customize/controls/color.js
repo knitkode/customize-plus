@@ -222,16 +222,13 @@ var ControlColor = ControlBase.extend({
   /**
    * Validate
    *
-   * It could be good here to do some validation but we can't use the
-   * function `Preprocessor.compileTest` here because it's async, and this method
-   * because of the way the WordPress API is done must be synchronous
-   * instead. So we just be sure that the value is a string.
-   *
    * @param {*} value The value to validate.
-   * @return {?string} Null or the validated control value.
+   * @return {string} The validated control value.
    */
   _validate: function (value) {
-    return typeof value === 'string' ? value : null;
+    if ( validator.isHexColor( value ) || ( params.allowAlpha && validator.isRgbaColor( value ) ) ) {
+      return value;
+    }
   },
   /**
    * On initialization:
@@ -285,7 +282,6 @@ var ControlColor = ControlBase.extend({
      */
     self._setMode(params.mode, params.transparent);
 
-
     /**
      * Bind transparent button
      *
@@ -302,44 +298,7 @@ var ControlColor = ControlBase.extend({
       }
     };
 
-    /**
-     * On API ready
-     *
-     */
-    if (apiIsReady) {
-      self.onAPIready();
-    } else {
-      api.bind('ready', self.onAPIready.bind(self));
-    }
-  },
-  /**
-   * On API ready
-   * we need to wait the api to be ready because for the following
-   * functions we need to have all the controls ready,
-   * we retrieve data from them
-   *
-   */
-  onAPIready: function () {
-    // on load of this control
-    // we need to get the instance of the dependendant variable'
-    // control to bind the `focus()` action on the small link:
-    // 'This value depend on: @var' same for the nets, we need
-    // to access control instances.
-    // if (this.params.mode === 'dynamic') {
-    //   this._bindInfoLink();
-    // }
-
-    /**
-     * If we have a color expression (simple or complex doesn't matter)
-     * we need to quickly calculate the color to pass it to the picker
-     * for instance.
-     *
-     */
-    // if (this.params.expr) {
-    //   Preprocessor.compileTest(this.setting(), this._initPicker.bind(this));
-    // } else {
-      this._initPicker(this.setting());
-    // }
+    self._initPicker(self.setting());
   },
   /**
    * [_initPicker description]
@@ -435,13 +394,13 @@ var ControlColor = ControlBase.extend({
     var self = this;
     var params = this.params;
 
-    // transparent is a valid color
+    // could be a transparent color
     if (value === 'transparent') {
       self._setMode('custom', true);
       callback(value, 'transparent');
     }
-    // if it is a valid hex or rgba color
-    else if (Regexes.colorHex_test.test(value) || (params.allowAlpha && Regexes.colorRgba_test.test(value))) {
+    // otherwise is a custom color
+    else {
       self._setMode('custom');
       callback(value, value);
     }
@@ -470,9 +429,6 @@ var ControlColor = ControlBase.extend({
         // set new value
         this.setting.set(newValue);
       }
-
-      // // propagate to dependent settings
-      // this._applyPropagate(newColor);
 
     }.bind(this));
   }

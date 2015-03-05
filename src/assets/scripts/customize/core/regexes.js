@@ -14,7 +14,7 @@ var Regexes = {
   /**
    * Whitespaces global match
    *
-   * To clean user input (most ofen when writing custom expressions)
+   * To clean user input (most often when writing custom expressions)
    * so that it would later on be more easily parsable by our validation
    * regexes. Use this as follow: `string.replace(Regexes.whitespaces, '')`.
    *

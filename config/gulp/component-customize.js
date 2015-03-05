@@ -93,6 +93,7 @@ gulp.task('_customize-scripts-admin', function() {
   stream.queue(gulp.src([
     PATHS.src.bower + 'polyfill-classList/classList.js', // k6ie9 k6ie8 \\
     PATHS.src.scripts + 'vendor-custom/modernizr-custom.js', // include modernizr custom build
+    PATHS.src.bower + 'validator-js/validator.js',
     PATHS.src.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.js', // k6todo, this is actually needed only in the layout_columns control... so maybe put it in the theme...
     PATHS.src.bower + 'jquery-cookie/jquery.cookie.js',
     PATHS.src.bower + 'webui-popover/dist/jquery.webui-popover.min.js',

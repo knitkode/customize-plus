@@ -1,6 +1,6 @@
 /* jshint unused: false */
 
-(function (window, document, $, _, k6cp, wp) {
+(function (window, document, $, _, wp, k6cp, validator) {
   'use strict';
 
   /**
@@ -27,6 +27,7 @@
 
   //= include customize/core/wptight.js
   //= include customize/core/regexes.js
+  //= include customize/core/validators.js
   //= include customize/core/utils.js
   //= include customize/core/skeleton.js
   //= include customize/core/notices.js
@@ -84,4 +85,4 @@
 
   //= include customize/temp.js
 
-})(window, document, jQuery, _, k6cp, wp);
+})(window, document, jQuery, _, wp, k6cp, validator);

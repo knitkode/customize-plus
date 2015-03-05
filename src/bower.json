@@ -8,7 +8,8 @@
     "jquery-cookie": "~1.4.1",
     "es5-shim": "~4.1.0",
     "polyfill-classList": "git@github.com:eligrey/classList.js.git#2014-12-13",
-    "selectize": "~0.12.0"
+    "selectize": "~0.12.0",
+    "validator-js": "~3.33.0"
   },
   "license": {
     "type": "Copyright (C) kunderi kuus, Inc - All Rights Reserved",
