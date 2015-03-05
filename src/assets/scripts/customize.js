@@ -1,4 +1,4 @@
-/* jshint undef: false, unused: false */
+/* jshint unused: false */
 
 (function (window, document, $, _, k6cp, wp) {
   'use strict';

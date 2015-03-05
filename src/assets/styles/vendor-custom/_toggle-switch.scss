@@ -35,8 +35,8 @@
     padding: 0;
     margin-left: 6.25em;
     /* Position the label over all the elements, except the slide-button (<a>)
-  * Clicking anywhere on the label will change the switch-state
-  */
+    * Clicking anywhere on the label will change the switch-state
+    */
   // Don't hide the input from screen-readers and keyboard access
   }
     .switch-light * {
@@ -107,44 +107,45 @@
   .switch-toggle {
     display: block;
     min-height: 1.875em;
-    // Outline the toggles when the inputs are focused
     position: relative;
     display: table;
     table-layout: fixed;
-    // For callout panels in foundation
-    padding: 0 !important;
+    padding: 0 !important; // For callout panels in foundation
     width: 100%; // to fix bug in Firefox
-  }
-  // Generate styles for the multiple states
-    .switch-toggle * {
+
+    // Generate styles for the multiple states
+    * {
       box-sizing: border-box;
+      // font-size: 1em;
     }
-    .switch-toggle a {
+
+    a {
       display: block;
       // transition: all 0.2s ease-out;
     }
-    .switch-toggle label, .switch-toggle > span {
+
+    label,
+    > span {
       line-height: 1.875em;
-      vertical-align: middle; }
-    // .switch-toggle input:focus ~ a, .switch-toggle input:focus + label { // k6customized
-    //   outline: 1px dotted #888; }
-    .switch-toggle * {
-      font-size: 1em;
+      vertical-align: middle;
     }
-    .switch-toggle input {
+
+    input {
       position: absolute;
       opacity: 0;
+
+      + label {
+        position: relative;
+        z-index: 2;
+        display: table-cell;
+        width: 50%;
+        padding: 0 0.5em;
+        margin: 0;
+        text-align: center;
+      }
     }
-    .switch-toggle input + label {
-      position: relative;
-      z-index: 2;
-      display: table-cell;
-      width: 50%;
-      padding: 0 0.5em;
-      margin: 0;
-      text-align: center;
-    }
-    .switch-toggle a {
+
+    a {
       position: absolute;
       top: 0;
       left: 0;
@@ -153,19 +154,20 @@
       width: 50%;
       height: 100%;
     }
-    .switch-toggle input:last-of-type:checked ~ a { left: 50%; }
-    .switch-toggle.switch-3 label, .switch-toggle.switch-3 a { width: 33.3333333333%; }
-    .switch-toggle.switch-3 input:checked:nth-of-type(2) ~ a { left: 33.3333333333%; }
-    .switch-toggle.switch-3 input:checked:last-of-type ~ a { left: 66.6666666667%; }
-    .switch-toggle.switch-4 label, .switch-toggle.switch-4 a { width: 25%; }
-    .switch-toggle.switch-4 input:checked:nth-of-type(2) ~ a { left: 25%; }
-    .switch-toggle.switch-4 input:checked:nth-of-type(3) ~ a { left: 50%; }
-    .switch-toggle.switch-4 input:checked:last-of-type ~ a { left: 75%; }
-    .switch-toggle.switch-5 label, .switch-toggle.switch-5 a { width: 20%; }
-    .switch-toggle.switch-5 input:checked:nth-of-type(2) ~ a { left: 20%; }
-    .switch-toggle.switch-5 input:checked:nth-of-type(3) ~ a { left: 40%; }
-    .switch-toggle.switch-5 input:checked:nth-of-type(4) ~ a { left: 60%; }
-    .switch-toggle.switch-5 input:checked:last-of-type ~ a { left: 80%; }
+    & input:last-of-type:checked ~ a { left: 50%; }
+    &.switch-3 label, &.switch-3 a { width: 33.3333333333%; }
+    &.switch-3 input:checked:nth-of-type(2) ~ a { left: 33.3333333333%; }
+    &.switch-3 input:checked:last-of-type ~ a { left: 66.6666666667%; }
+    &.switch-4 label, &.switch-4 a { width: 25%; }
+    &.switch-4 input:checked:nth-of-type(2) ~ a { left: 25%; }
+    &.switch-4 input:checked:nth-of-type(3) ~ a { left: 50%; }
+    &.switch-4 input:checked:last-of-type ~ a { left: 75%; }
+    &.switch-5 label, &.switch-5 a { width: 20%; }
+    &.switch-5 input:checked:nth-of-type(2) ~ a { left: 20%; }
+    &.switch-5 input:checked:nth-of-type(3) ~ a { left: 40%; }
+    &.switch-5 input:checked:nth-of-type(4) ~ a { left: 60%; }
+    &.switch-5 input:checked:last-of-type ~ a { left: 80%; }
+  }
 
 
   // Custom Theme
@@ -236,7 +238,7 @@
 
   .k6-switch.switch-toggle {
     border: 1px solid $WPcustomize--btn-border-color;
-    border-radius: $WPcustomize--btn-border-radius;
+    // border-radius: $WPcustomize--btn-border-radius;
     box-shadow: $WPcustomize--btn-box-shadow;
     background-color: $WPcustomize--btn-bg;
     &:hover {
@@ -245,13 +247,20 @@
 
     a {
       background-color: $WPcustomize--btn-bg-active;
-      border-radius: $WPcustomize--btn-border-radius;
+      // border-radius: $WPcustomize--btn-border-radius;
       // transition: all 0.3s ease-out;
       box-shadow: $WPcustomize--btn-box-shadow-activetoggle;
     }
 
+    /**
+     * The label, makes the button background
+     */
     label {
       color: $WPcustomize--btn-color;
+      border-style: solid;
+      border-width: 1px;
+      border-color: $WP--select-border-color;
+
       &:hover {
         background-color: $WPcustomize--btn-bg-hover;
       }
@@ -268,18 +277,32 @@
       box-shadow: $WPcustomize--btn-box-shadow-activetoggle;
     }
   }
+
+  /**
+   * Focus state on label (button bg)
+   */
+  .k6-switch input:focus + label,
+  .k6-switch input:focus + label:hover {
+    border-color: $WP--select-border-color-focus;
+    box-shadow: $WP--select-box-shadow-focus;
+  }
 }
 
-/* Bugfix for older Webkit, including mobile Webkit. Adapted from
-* http://css-tricks.com/webkit-sibling-bug/
-*/
+/**
+ * Bugfix for older Webkit, including mobile Webkit. Adapted from
+ * http://css-tricks.com/webkit-sibling-bug/
+ */
 @media only screen and (-webkit-max-device-pixel-ratio: 2) and (max-device-width: 80em) {
   .switch-light, .switch-toggle {
-    -webkit-animation: webkitSiblingBugfix infinite 1s; } }
+    -webkit-animation: webkitSiblingBugfix infinite 1s;
+  }
+}
 
 @-webkit-keyframes webkitSiblingBugfix {
   from {
-    -webkit-transform: translate3d(0, 0, 0); }
-
+    -webkit-transform: translate3d(0, 0, 0);
+  }
   to {
-    -webkit-transform: translate3d(0, 0, 0); } }
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+}

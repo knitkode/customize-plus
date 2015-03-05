@@ -6,6 +6,9 @@
 
   label {
     margin-right: 3px;
+    &:focus {
+      box-shadow: 0 10px 10px red;
+    }
   }
 
   img {
@@ -13,16 +16,36 @@
   }
 }
 
+/**
+ * The checkbox is there, just hidden, we don't use `display: none`
+ * to be sure the checkbox receives focus, so we can "relay" the state
+ * to the `<img>`.
+ */
 input[type=radio].k6-radio-image {
-  display: none;
+  position: absolute;
+  opacity: 0;
 
+  /**
+   * Make the image highlightable
+   */
   + label img {
     border: 1px solid transparent;
     opacity: .4;
   }
 
+  /**
+   * Checked state
+   */
   &:checked + label img {
     border-color: #aaa;
     opacity: 1; // k6ie8 needs support for this \\
+  }
+
+  /**
+   * Create a focus state
+   */
+  &:focus + label img {
+    border-color: $WP--select-border-color-focus;
+    box-shadow: $WP--select-box-shadow-focus;
   }
 }

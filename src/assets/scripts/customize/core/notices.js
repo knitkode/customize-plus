@@ -2,8 +2,6 @@
  * Notices
  *
  * Manage tabbed content inside controls
- *
- * @requires ScreenPreview
  */
 var Notices = (function () {
 
