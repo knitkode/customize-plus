@@ -18,9 +18,10 @@
 @import "customize/base-icons";
 @import "customize/base-overflow_fix";
 
-// customize - components
-@import "customize/components/tabs";
-@import "customize/components/tips";
+// customize - core
+@import "customize/core/tabs";
+@import "customize/core/tips";
+@import "customize/core/notices";
 
 // customize - sections
 @import "customize/sections/base";

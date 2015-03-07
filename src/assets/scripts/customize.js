@@ -80,6 +80,7 @@
     Skeleton.init();
     Tabs.init();
     Tooltips.init();
+    Notices.init();
     // console.log('customize.js core initialization took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
   });
 
