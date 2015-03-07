@@ -2,6 +2,10 @@
 
 (function (window, document, $, _, wp, k6cp, validator) {
   'use strict';
+  // k6debug-perf
+  window.performance = window.performance || { now: function(){} }; // shim for Opera
+  var t = performance.now();
+  // \\
 
   /**
    * Reusable variables as globals in each component
