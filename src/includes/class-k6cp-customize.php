@@ -113,7 +113,11 @@ if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CPP_Singleton' ) ):
 		 * @since  0.0.1
 		 */
 		public static function enqueue_css_admin() {
+			do_action( 'k6cp/customize/enqueue_css_admin_pre', 'k6cp-customize' );
+
 			wp_enqueue_style( 'k6cp-customize', plugins_url( 'assets/customize.min.css', K6CP_PLUGIN_FILE ), array( 'dashicons' ), K6CP_PLUGIN_VERSION );
+
+			do_action( 'k6cp/customize/enqueue_css_admin_post', 'k6cp-customize' );
 		}
 
 		/**
@@ -124,22 +128,19 @@ if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CPP_Singleton' ) ):
 		 * @since  0.0.1
 		 */
 		public static function enqueue_js_admin() {
-			$handle = 'k6cp-customize';
+			do_action( 'k6cp/customize/enqueue_js_admin_pre', 'k6cp-customize' );
 
-			do_action( 'k6cp/customize/registered_script_pre', $handle );
-
-			wp_register_script( $handle, plugins_url( 'assets/customize.min.js', K6CP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery', 'jquery-ui-slider' ), K6CP_PLUGIN_VERSION, false );
-
-			wp_localize_script( $handle, 'k6cp', array(
+			wp_register_script( 'k6cp-customize', plugins_url( 'assets/customize.min.js', K6CP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery', 'jquery-ui-slider' ), K6CP_PLUGIN_VERSION, false );
+			wp_localize_script( 'k6cp-customize', 'k6cp', array(
 					'components' => apply_filters( 'k6cp/customize/js_components', array() ),
 					'constants' => self::get_js_constants(),
 					'l10n' => self::get_js_l10n(),
 					// filter to add extra stuff in the namespace, for developers
 					'extra' => apply_filters( 'k6cp/customize/js_extra', array() ),
 				) );
-			wp_enqueue_script( $handle );
+			wp_enqueue_script( 'k6cp-customize' );
 
-			do_action( 'k6cp/customize/registered_script_post', $handle );
+			do_action( 'k6cp/customize/enqueue_js_admin_post', 'k6cp-customize' );
 		}
 
 		/**

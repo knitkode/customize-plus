@@ -29,21 +29,21 @@
     font-size: 1em;
 }
 .ui-widget-content {
-    border: 1px solid #aaaaaa;
+    // border: 1px solid #aaaaaa;
     // background: #ffffff url("images/ui-bg_flat_75_ffffff_40x100.png") 50% 50% repeat-x;
-    color: #222222;
+    // color: #222222;
 }
 .ui-widget-content a {
-    color: #222222;
+    // color: #222222;
 }
 .ui-widget-header {
-    border: 1px solid #aaaaaa;
+    // border: 1px solid #aaaaaa;
     // background: #cccccc url("images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
-    color: #222222;
-    font-weight: bold;
+    // color: #222222;
+    // font-weight: bold;
 }
 .ui-widget-header a {
-    color: #222222;
+    // color: #222222;
 }
 
 /* Interaction states
@@ -51,7 +51,7 @@
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
-    border: 1px solid #d3d3d3;
+    // border: 1px solid #d3d3d3;
     // background: #e6e6e6 url("images/ui-bg_glass_75_e6e6e6_1x400.png") 50% 50% repeat-x;
     font-weight: normal;
     color: #555555;
@@ -68,7 +68,7 @@
 .ui-state-focus,
 .ui-widget-content .ui-state-focus,
 .ui-widget-header .ui-state-focus {
-    border: 1px solid #999999;
+    // border: 1px solid #999999;
     // background: #dadada url("images/ui-bg_glass_75_dadada_1x400.png") 50% 50% repeat-x;
     font-weight: normal;
     color: #212121;
@@ -87,7 +87,7 @@
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
-    border: 1px solid #aaaaaa;
+    // border: 1px solid #aaaaaa;
     // background: #ffffff url("images/ui-bg_glass_65_ffffff_1x400.png") 50% 50% repeat-x;
     font-weight: normal;
     color: #212121;
@@ -104,7 +104,7 @@
 .ui-state-highlight,
 .ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight {
-    border: 1px solid #fcefa1;
+    // border: 1px solid #fcefa1;
     // background: #fbf9ee url("images/ui-bg_glass_55_fbf9ee_1x400.png") 50% 50% repeat-x;
     color: #363636;
 }
@@ -116,7 +116,7 @@
 .ui-state-error,
 .ui-widget-content .ui-state-error,
 .ui-widget-header .ui-state-error {
-    border: 1px solid #cd0a0a;
+    // border: 1px solid #cd0a0a;
     // background: #fef1ec url("images/ui-bg_glass_95_fef1ec_1x400.png") 50% 50% repeat-x;
     color: #cd0a0a;
 }
