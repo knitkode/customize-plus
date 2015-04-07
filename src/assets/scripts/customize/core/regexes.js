@@ -28,7 +28,7 @@ var Regexes = {
   /**
    * Grab all variables (sanitized user input)
    *
-   * It capture a group fro each `@variable-name` found
+   * It capture a group from each `@variable-name` found
    *
    * @const
    * @type {RegExp}

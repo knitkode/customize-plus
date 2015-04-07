@@ -17,7 +17,11 @@ if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CPP_Singleton' ) ):
 	class K6CP_Customize extends K6CPP_Singleton {
 
 		/**
-		 * [$custom_types description]
+		 * WordPress customize custom types for panels,
+		 * sections controls and settings.
+		 * Each type must be declared with its shortname and name
+		 * of its php class.
+		 *
 		 * @var array
 		 */
 		public static $custom_types = array(
@@ -93,17 +97,12 @@ if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CPP_Singleton' ) ):
 		 * @since  0.0.1
 		 */
 		protected function __construct() {
-			// The priority here is very important, when adding custom classes to the customize
-			// you should use a priority in this range (11, 99)
-			add_action( 'customize_register', array( __CLASS__, 'register_custom_classes' ), 10 );
-
+			add_action( 'customize_register', array( __CLASS__, 'register_custom_classes' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_css_admin' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_js_shim' ) );
 			add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'enqueue_js_admin' ) );
 			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_view_loader' ) );
 			add_action( 'customize_preview_init' , array( __CLASS__, 'enqueue_js_preview' ) );
-
-			// do_action( 'k6cp/customize/init' );
 		}
 
 		/**
@@ -144,8 +143,10 @@ if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CPP_Singleton' ) ):
 		}
 
 		/**
-		 * [get_js_constants description]
-		 * @return [type] [description]
+		 * Get javascript constants
+		 *
+		 * @since  0.0.1
+		 * @return array The required plus the additional constants, added through hook.
 		 */
 		public static function get_js_constants() {
 			$required = array(
@@ -156,8 +157,10 @@ if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CPP_Singleton' ) ):
 		}
 
 		/**
-		 * [get_js_l10n description]
-		 * @return [type] [description]
+		 * Get javascript localized strings
+		 *
+		 * @since  0.0.1
+		 * @return array The required plus the additional localized strings, added through hook.
 		 */
 		public static function get_js_l10n() {
 			$required = array(
@@ -185,10 +188,10 @@ if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CPP_Singleton' ) ):
 		}
 
 		/**
-		 * [get_view_loader description]
+		 * Get view for fullscreen loader (used later on also by other components
+		 * like the 'importer')
 		 *
 		 * @since  0.0.1
-		 * @return [type] [description]
 		 */
 		public static function get_view_loader() { // k6wptight-layout \\
 			?>
@@ -197,7 +200,7 @@ if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CPP_Singleton' ) ):
 		}
 
 		/**
-		 * [enqueue_js_shim description]
+		 * Enqueue ECMA script 5 shim for old browsers
 		 *
 		 * @since  0.0.1
 		 */
@@ -209,7 +212,7 @@ if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CPP_Singleton' ) ):
 			// did_action( 'init' ) && $wp_scripts->add_data( 'es5-shim', 'conditional', 'lt IE 8' );
 			// wp_style_add_data( 'es5-shim', 'conditional', 'if lt IE 9' );
 			?>
-			<!--[if lt IE 9]><script src="<?php echo esc_url( plugins_url( "assets/es5-shim{$min}.js", K6CP_PLUGIN_FILE ) ); ?>"></script><![endif]-->
+			<!--[if lt IE 9]><script src="<?php echo esc_url( plugins_url( 'assets/es5-shim.min.js', K6CP_PLUGIN_FILE ) ); ?>"></script><![endif]-->
 			<?php
 		}
 
@@ -228,8 +231,9 @@ if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CPP_Singleton' ) ):
 		}
 
 		/**
-		 * [register_custom_types description]
+		 * Register custom types
 		 *
+		 * @since  0.0.1
 		 * @param  array(<$type, $class_name>) $panels The custom panels to add
 		 */
 		public static function register_custom_types( $components ) {

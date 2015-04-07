@@ -367,7 +367,7 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 		 */
 		public function maybe_print_css_icons() {
 			if ( $this->css_icons ) {
-				echo '<style>' . $this->css_icons . '</style>';
+				echo '<style id="k6cp-customize-plus-icons">' . $this->css_icons . '</style>' . "\n";
 				// wp_add_inline_style( 'dashicons', $this->css_icons );
 			}
 		}
