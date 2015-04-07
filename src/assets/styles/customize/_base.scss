@@ -1,18 +1,12 @@
 /**
- * Shadows
+ * Shadow on sidebar
  *
  */
-// Add shadow to sidebar
 .wp-full-overlay.expanded { // k6wptight-selector \\
   .wp-full-overlay-sidebar { // k6wptight-selector \\
     box-shadow: 50px 0 85px -65px rgba(0,0,0,0.15);
   }
 }
-// // add shadow to sections
-// .accordion-section {
-//   margin: 0 0 3px 0;
-//   box-shadow: -66px 38px 51px rgba(0,0,0,.18);
-// }
 
 
 /**
@@ -24,38 +18,48 @@
  * the left positions.
  * We're using here the same selectors as WordPress // k6wptight-css
  *
+ * This cause a bug on chrome when autofocus on load, where the sidebar is empty
+ * until any kind of event on any target occur (click, resizes, etc.). It is probably
+ * something related to redraw/repaint. On firefox works for instance.
+ * Anyway let's disable it for now. Try something like this url to test:
+ * http://localhost/WPlayground/wp-admin/customize.php?autofocus[control]=jumbotron-font-size
  */
-.no-csstransforms {
-  #customize-info, #customize-theme-controls>ul>.accordion-section {
-    transition: none; // it was transition: left ease-in-out .18s;
+$animate-sidebar-with-transforms-if-possible: false;
+
+@if ( $animate-sidebar-with-transforms-if-possible ) {
+
+  .no-csstransforms {
+    #customize-info, #customize-theme-controls > ul > .accordion-section {
+      transition: none; // it was transition: left ease-in-out .18s;
+    }
   }
-}
-.csstransforms {
-  .accordion-sub-container.control-panel-content {
-    left: 0; // it was left: $WPcustomize--sidebar-width;
-    transform: translateX($WPcustomize--sidebar-width);
-    transition: transform .18s ease; // it was transition: left ease-in-out .18s;
-  }
-  #customize-info, #customize-theme-controls > ul > .accordion-section {
-    transition: transform .18s ease; // it was transition: left ease-in-out .18s;
-  }
-  .in-sub-panel #customize-info, .in-sub-panel #customize-theme-controls>ul>.accordion-section {
-    left: 0; // it was left: -$WPcustomize--sidebar-width;
-    transform: translateX(-$WPcustomize--sidebar-width);
-  }
-  .control-panel-back {
-    left: 0; // it was left: -$WPcustomize--btnback-width;
-    transform: translateX(-$WPcustomize--btnback-width);
-    transition: transform .18s ease, background .1s ease-in-out; // it was transition: left .18s ease-in-out,color .1s ease-in-out, background .1s ease-in-out;
-  }
-  .in-sub-panel .control-panel-back {
-    left: 0; // it was left: 0;
-    transform: translateX(0);
-  }
-  // theme switcher feature as plugin
-  .in-themes-panel .themes-panel-back {
-    left: 0; // it was left: 0;
-    transform: translateX(0);
+  .csstransforms {
+    .accordion-sub-container.control-panel-content {
+      left: 0; // it was left: $WPcustomize--sidebar-width;
+      transform: translateX($WPcustomize--sidebar-width);
+      transition: transform .18s ease; // it was transition: left ease-in-out .18s;
+    }
+    #customize-info, #customize-theme-controls > ul > .accordion-section {
+      transition: transform .18s ease; // it was transition: left ease-in-out .18s;
+    }
+    .in-sub-panel #customize-info, .in-sub-panel #customize-theme-controls > ul > .accordion-section {
+      left: 0; // it was left: -$WPcustomize--sidebar-width;
+      transform: translateX(-$WPcustomize--sidebar-width);
+    }
+    .control-panel-back {
+      left: 0; // it was left: -$WPcustomize--btnback-width;
+      transform: translateX(-$WPcustomize--btnback-width);
+      transition: transform .18s ease, background .1s ease-in-out; // it was transition: left .18s ease-in-out,color .1s ease-in-out, background .1s ease-in-out;
+    }
+    .in-sub-panel .control-panel-back {
+      left: 0; // it was left: 0;
+      transform: translateX(0);
+    }
+    // theme switcher feature as plugin
+    .in-themes-panel .themes-panel-back {
+      left: 0; // it was left: 0;
+      transform: translateX(0);
+    }
   }
 }
 
