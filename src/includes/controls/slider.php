@@ -50,6 +50,23 @@ class K6CP_Customize_Control_Slider extends K6CP_Customize_Control_Base {
 	}
 
 	/**
+	 * Separate the slider template to make it reusable by child classes
+	 *
+	 * @since 0.0.1
+	 */
+	protected function js_tpl_slider() {
+		?>
+		<div class="k6-unit-wrap">
+			<input type="number" class="k6-slider-number" value="{{ data.number }}" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
+			<div class="k6-unit-wrap"><# for (var i = 0, l = data.units.length; i < l; i++) { #><span class="k6-unit<# if ( data.units[i] === data.unit ) { #> k6-current<# } #>">{{ data.units[i] }}</span><# } #></div>
+		</div>
+		<div class="k6-slider-wrap">
+			<div class="k6-slider"></div>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Render a JS template for the content of the slider control.
 	 *
 	 * @since 0.0.1
@@ -58,13 +75,7 @@ class K6CP_Customize_Control_Slider extends K6CP_Customize_Control_Base {
 		?>
 		<label>
 			<?php $this->js_tpl_header(); ?>
-			<div class="k6-unit-wrap">
-				<input type="number" class="k6-slider-number" value="{{ data.number }}" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
-				<div class="k6-unit-wrap"><# for (var i = 0, l = data.units.length; i < l; i++) { #><span class="k6-unit<# if ( data.units[i] === data.unit ) { #> k6-current<# } #>">{{ data.units[i] }}</span><# } #></div>
-			</div>
-			<div class="k6-slider-wrap">
-				<div class="k6-slider"></div>
-			</div>
+			<?php $this->js_tpl_slider(); ?>
 		</label>
 		<?php
 	}

@@ -11,42 +11,6 @@
  */
 var ControlColor = ControlBase.extend({
   /**
-   * [_setExState description]
-   * update css changing data attribute value
-   *
-   * @private
-   */
-  _setExState: function (state) {
-    var newState = (this.params.exState === state) ? '' : state;
-    var $body = $(body);
-    var _close = function () {
-      this.params.exState = '';
-      this.wrapper.setAttribute('data-k6-color-expanded', '');
-    }.bind(this);
-    // force close custom color area if it doesn't automatically
-    // triggering a click on it's toggle. This is needed for instance
-    // when click the 'transparent' toggle while the custom color area is open
-    if (state === 'custom'
-      && this.params.exState === 'custom'
-      && this.$btnCustom.hasClass('wp-picker-open')) { // k6wptight-selector \\
-      this.$btnCustom.trigger('click');
-    }
-    // system to be sure that clicks outside the current control
-    // close the others currently open dynamic colors areas in the page.
-    // System inspired by the WordPress one in color-picker.js#L128
-    if (newState) {
-      $body.trigger('click.k6.color').on('click.k6.color', _close);
-      if (newState === 'dynamic') {
-        $body.trigger('click.wpcolorpicker'); // k6wptight-js color-picker.js#L128 \\
-      }
-    } else {
-      $body.off('click.k6.color', _close);
-    }
-    this.params.exState = newState;
-    // update css thanks to this change on data attribute
-    this.wrapper.setAttribute('data-k6-color-expanded', newState);
-  },
-  /**
    * Set Color retrievement mode
    *
    * @private
@@ -64,35 +28,14 @@ var ControlColor = ControlBase.extend({
     if (isTransparent) {
       params.transparent = true;
       if (isRendered) {
-        this.wrapper.setAttribute('data-k6-transparent', '');
+        this.wrapper.setAttribute('data-k6color-transparent', '');
       }
     // remove transparent UI mode
     } else {
       params.transparent = false;
       if (isRendered) {
-        this.wrapper.removeAttribute('data-k6-transparent');
+        this.wrapper.removeAttribute('data-k6color-transparent');
       }
-    }
-
-    // // Custom mode
-    // if (mode === 'custom') {
-    //   // reset var name object property
-    //   params.varName = '';
-    // // Dynamic mode
-    // } else if (mode === 'dynamic') {
-    //   if (isRendered) {
-    //     // update dynamic color message text
-    //     this.msg.innerHTML = params.varName;
-    //     // and bind link
-    //     this._bindInfoLink();
-    //   }
-    // }
-    // set the mode property
-    params.mode = mode;
-
-    // update css thanks to this change on data attribute
-    if (isRendered) {
-      this.wrapper.setAttribute('data-k6-color-mode', mode);
     }
   },
   /**
@@ -152,7 +95,7 @@ var ControlColor = ControlBase.extend({
       _updatePicker(newColor);
       // set mode and setting
       self._setMode('custom');
-      self._apply(newColor, 'picker');
+      self._apply(newColor, 'ui');
     };
     // set the alpha slider and alpha input values
     var _setAlpha = function (alphaValid, color) {
@@ -179,13 +122,13 @@ var ControlColor = ControlBase.extend({
         // for now we haven't found a better way to differentiate this `change`
         // callback between a manual change (user click/drag) and a programmatic
         // one through code.
-        if (self.params.exState === 'custom') {
+        // if (self.params.exState === 'custom') {
           var newColor = ui.color.toString();
           alphaSlider.style.backgroundColor = ui.color.toString(true);
           _updatePicker(newColor);
           self._setMode('custom');
-          self._apply(newColor, 'picker');
-        }
+          self._apply(newColor, 'ui');
+        // }
       }
     });
 
@@ -239,10 +182,10 @@ var ControlColor = ControlBase.extend({
    */
   onInit: function () {
     var params = this.params;
-    // first set some common defaults, this could be done through
-    // the php Color Control class in the `add_to_json` method, but in
-    // this way we save bytes on the huge `_wpCustomizeSettings` JSON
-    params.exState = '';
+
+    params.netOn = [];
+    // in the netOff put the current control id, it can't be dynamic on itself...
+    params.netOff = [this.id];
 
     this.setting.validate = this._validate.bind(this);
 
@@ -250,9 +193,9 @@ var ControlColor = ControlBase.extend({
     // if we are programmatically changing the control value
     // for instance through js (during import, debugging, etc.)
     this.setting.bind(function (value) {
-      if (value !== this.inputExpr.value) {
+      // if (value !== this.inputExpr.value) {
         this._apply(value, 'api'); // k6todo \\
-      }
+      // }
     }.bind(this));
   },
   /**
@@ -264,7 +207,7 @@ var ControlColor = ControlBase.extend({
     var self = this;
     var params = self.params;
     var container = self._container;
-    var btnTransparent = container.getElementsByClassName('k6-color-transparent')[0];
+    var btnTransparent = container.getElementsByClassName('k6color-toggle-transparent')[0];
 
 
     /**
@@ -272,7 +215,7 @@ var ControlColor = ControlBase.extend({
      *
      */
     /** @type {HTMLelement} */
-    self.wrapper = container.getElementsByClassName('k6-color')[0];
+    self.wrapper = container.getElementsByClassName('k6color')[0];
     /** @type {jQuery} */
     self.$picker = self.container.find('.color-picker-hex');
 
@@ -288,13 +231,9 @@ var ControlColor = ControlBase.extend({
      */
     btnTransparent.onclick = function() {
       // always close the picker or the dynamic area
-      self._setExState(self.params.exState);
+      // self._setExState(self.params.exState);
       if (!self.params.transparent) {
         self._apply('transparent');
-        // change mode to custom if needed
-        if (self.params.mode === 'dynamic') {
-          self._setMode('custom');
-        }
       }
     };
 
@@ -332,10 +271,10 @@ var ControlColor = ControlBase.extend({
           // for now we haven't found a better way to differentiate this `change`
           // callback between a manual change (user click/drag) and a programmatic
           // one through code.
-          if (self.params.exState === 'custom') {
+          // if (self.params.exState === 'custom') {
             self._setMode('custom');
-            self._apply(ui.color.toString(), 'picker');
-          }
+            self._apply(ui.color.toString(), 'ui');
+          // }
         }
       });
     }
@@ -348,16 +287,15 @@ var ControlColor = ControlBase.extend({
     // which does its own DOM manipulations and create the toggle
     var btnCustom = container.getElementsByClassName('wp-color-result')[0]; // k6wptight selector \\
     btnCustom.onclick = function () {
-      self._setExState('custom');
+      // self._setExState('custom');
       // if we are clicking on custom from a 'transparent' mode
       // then 'activate' the last selected color from the picker
       if (self.params.transparent) {
-        self._setMode('custom');
         // it could be that color of the picker is an empty string if on ready the value
         // of the setting is transparent, so apply only if there is a selected color in the picker
         var lastColorSelected = $picker.wpColorPicker('color');
         if (lastColorSelected) {
-          self._apply(lastColorSelected, 'picker');
+          self._apply(lastColorSelected, 'ui');
         }
       }
     };
@@ -391,17 +329,14 @@ var ControlColor = ControlBase.extend({
    * @param  {string}                   from
    */
   _applyValue: function (value, from, callback) {
-    var self = this;
-    var params = this.params;
-
     // could be a transparent color
     if (value === 'transparent') {
-      self._setMode('custom', true);
+      this._setMode('custom', true);
       callback(value, 'transparent');
     }
     // otherwise is a custom color
     else {
-      self._setMode('custom');
+      this._setMode('custom');
       callback(value, value);
     }
   },
@@ -421,7 +356,7 @@ var ControlColor = ControlBase.extend({
 
       this.params.valueCSS = newColor;
 
-      if (from !== 'picker' && this.rendered) {
+      if (from !== 'ui' && this.rendered) {
         this._applyToPicker(newColor);
       }
 

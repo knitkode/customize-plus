@@ -10,6 +10,16 @@
   transition: opacity .18s ease;
 
   /**
+   * Highlight focused control (through WordPress API method control.focus())
+   * adding the class `.k6-control-focused` to the `control.container`
+   */
+  background: #fff;
+  transition: background 1s ease;
+  &-focused {
+    background: #ffc;
+  }
+
+  /**
    * 'Highlight' hovered control fading out a bit all the others
    *
    */

@@ -23,7 +23,9 @@ var ControlBase = api.Control.extend({
       settings,
       advancedClass;
 
+    // add default params object
     control.params = {};
+
     $.extend( control, options || {} );
     control.id = id;
 
@@ -31,6 +33,7 @@ var ControlBase = api.Control.extend({
     // custom controls, let's keep it short, so we need
     // only to check `if (control.k6)`
     control.k6 = 1;
+
 
     control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
     // control.templateSelector = 'customize-control-' + control.params.type + '-content';
@@ -118,15 +121,15 @@ var ControlBase = api.Control.extend({
    */
   renderContent: function () {
     var template;
-    var container = this._container;
+    var _container = this._container;
     var templateSelector = 'customize-control-' + this.params.type + '-content';
 
     // Replace the container element's content with the control.
     if ( document.getElementById( 'tmpl-' + templateSelector ) ) {
       template = wp.template( templateSelector );
-      if ( template && container ) {
+      if ( template && _container ) {
         // render and store it in the params
-        this.params.template = container.innerHTML = template( this.params ).trim();
+        this.params.template = _container.innerHTML = template( this.params ).trim();
       }
     }
   },
@@ -191,17 +194,20 @@ var ControlBase = api.Control.extend({
       this.renderContent();
       // flag control that it's rendered
       this.rendered = true;
+
       this.ready(true); // pass true for isForTheFirstTimeReady argument, so that we bind the setting only once
     } else {
       this._container.innerHTML = this.params.template;
       // flag control that it's rendered
       this.rendered = true;
+
       this.ready();
     }
     if (shouldWeResolveEmbeddedDeferred) {
       this.deferred.embedded.resolve();
     }
     this.extras();
+
     // console.log('inflate of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
   },
   /**

@@ -70,12 +70,10 @@ class K6CP_Customize_Control_Color extends K6CP_Customize_Control_Base {
 	 */
 	protected function js_tpl() {
 		?>
-		<label>
-			<?php $this->js_tpl_header(); ?>
-		</label>
-		<div class="customize-control-content k6-color" data-k6-color-mode="{{ data.mode }}" <# if (data.transparent ) { #>data-k6-transparent<# } #>>
+		<?php $this->js_tpl_header(); ?>
+		<div class="k6color" <# if (data.transparent ) { #>data-k6color-transparent<# } #>>
 			<input class="color-picker-hex" type="text" <# if (!data.allowAlpha ) { #>maxlength="7"<# } #> placeholder="<?php _e( 'Value', 'pkgTextdomain' ) ?>" />
-			<a href="javascript:void(0)" class="k6-color-toggle k6-color-transparent"><?php _e( 'Transparent', 'pkgTextdomain' ) ?></a>
+			<a href="javascript:void(0)" class="k6ui-toggle k6color-toggle-transparent"><?php _e( 'Transparent', 'pkgTextdomain' ) ?></a>
 		</div>
 		<?php
 	}

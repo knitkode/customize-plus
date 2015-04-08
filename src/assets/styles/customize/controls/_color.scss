@@ -1,115 +1,17 @@
 /**
  * Color Control
- * with dynamic picker
  *
  */
-.k6-color {
-
-  &-control {
-    padding: 8px 7px 8px 6px;
-    border: 1px solid #dfdfdf; // k6wptight-css from .wp-picker-container .iris-picker {} \\
-    font-size: 13px;
-    margin: 6px 0 9px;
-
-    // behavior
-    display: none;
-    [data-k6-color-expanded="dynamic"] & {
-      display: block;
-    }
-
-    i {
-      display: block;
-      margin-bottom: 2px;
-      font-style: normal;
-      font-size: 11px; // k6wptight-css from .wp-color-result:after {} \\
-    }
-
-    select {
-      width: 100%;
-    }
-
-    input[type=number] {
-      width: 100%;
-      height: 28px; // k6wptight-css from .customize-control select {} \\
-      line-height: 28px; // k6wptight-css from .customize-control select {} \\
-      padding: 0 5px;
-    }
-  }
-
+.k6color {
   // input to change var name (`<option>` inside select)
-  &-varoption { // k6plugintight-selectize
+  &-selectOption { // k6plugintight-selectize
     border-left-width: 25px;
     border-left-style: solid;
     margin: 6px;
   }
 
-  // input to change functionName
-  &-function {
-    display: inline-block;
-    margin-top: 8px;
-    padding-right: 10px;
-    min-width: 130px;
-  }
-
-  // input to change amount
-  &-amount {
-    display: inline-block;
-    margin-top: 8px;
-    max-width: 100px;
-  }
-
-  // input custom expression
-  &-expr {
-    display: block;
-    margin-top: 6px;
-  }
-
-  // text class for tiny messages
-  &-text {
-    margin-top: 3px;
-    color: #999;
-    font-size: 11px;
-  }
-
-  // message for Dynamic color
-  &-message-wrap {
-    // behavior
-    display: none;
-    [data-k6-color-mode="dynamic"] & {
-      display: block;
-    }
-  }
-
-  // button for Dynamic color
-  &-toggle {
-    // k6wptight-css from .wp-color-result:after {} \\
-    display: inline-block;
-    vertical-align: top;
-    padding: 0px 9px;
-    line-height: $WPcustomize--btn-height;
-    border-radius: 0;
-    border: 1px solid $WPcustomize--btn-border-color;
-    border-left: 0;
-    background: $WPcustomize--btn-bg;
-    box-shadow: $WPcustomize--btn-box-shadow;
-    color: $WPcustomize--btn-color;
-    font-size: 11px;
-    // k6wptight-css from .wp-color-result:focus, .wp-color-result:hover {} \\
-    &:hover,
-    &:focus {
-      background: $WPcustomize--btn-bg-hover;
-      border-color: $WPcustomize--btn-border-color-hover;
-      color: $WPcustomize--btn-color-hover;
-    }
-    // change a little the style when the color picker is open
-    [data-k6-color-expanded="custom"] & {
-      border-left: 1px solid $WPcustomize--btn-border-color;
-      border-radius: $WPcustomize--btn-border-radius 0 0 $WPcustomize--btn-border-radius;
-    }
-  }
-
   // button for Transparent color
-  &-transparent {
+  &-toggle-transparent {
     border-radius: 0 $WPcustomize--btn-border-radius $WPcustomize--btn-border-radius 0;
   }
 
@@ -133,13 +35,7 @@
   .wp-picker-input-wrap {
     display: block;
     overflow: hidden;
-    // .button {
-    //   float: right;
-    //   margin: 0;
-    //   max-width: 33%;
-    //   left: -2px;
-    //   position: relative;
-    // }
+
     input[type=text].wp-color-picker {
       display: block;
       width: auto;
@@ -154,29 +50,27 @@
 
 }
 
-// states
-[data-k6-color-mode="custom"].k6-color .wp-color-result:after,
-[data-k6-color-mode="dynamic"] .k6-color-dynamic,
-[data-k6-transparent] .k6-color-transparent {
-  background: $WPcustomize--btn-bg-active;
-  color: $WPcustomize--btn-color-active;
-}
-// when is transparent highlight transparent toggle only despite
-// the current color mode (we use cascading here, see here just above) ...
-[data-k6-transparent].k6-color .wp-color-result:after,
-[data-k6-transparent] .k6-color-dynamic {
-  background: $WPcustomize--btn-bg;
-  color: $WPcustomize--btn-color;
-}
-// ... and hide color preview of the wpColorPicker
-[data-k6-transparent] .wp-color-result {
-  padding-left: 0;
-  border-left: 0;
-}
-[data-k6-color-expanded="custom"].k6-color .wp-color-result:after,
-[data-k6-color-expanded="dynamic"] .k6-color-dynamic {
-  background: $WPcustomize--btn-bg-activetoggle;
-  box-shadow: $WPcustomize--btn-box-shadow-activetoggle;
+/**
+ * Transparent state
+ *
+ */
+[data-k6color-transparent] {
+  .k6color-toggle-transparent {
+    background: $WPcustomize--btn-bg-active !important;
+    color: $WPcustomize--btn-color-active !important;
+  }
+  // when is transparent highlight transparent toggle only despite
+  // the current color mode
+  &.k6color .wp-color-result:after,
+  .k6dyn-toggle-dynamic {
+    background: $WPcustomize--btn-bg !important;
+    color: $WPcustomize--btn-color !important;
+  }
+  // ... and hide color preview of the wpColorPicker
+  .wp-color-result {
+    padding-left: 0;
+    border-left: 0;
+  }
 }
 
 

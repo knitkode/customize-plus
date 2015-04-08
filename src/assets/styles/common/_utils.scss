@@ -34,23 +34,6 @@
 }
 
 /**
- * Input containing code (custom expressions values)
- *
- */
-input[type=text].k6-expr-input {
-  font-family: monospace;
-  font-size: 12px;
-}
-
-/**
- * Class for messages in the expression text input
- */
-.k6-expr-feedback {
-  display: block;
-  margin: 2px 0;
-}
-
-/**
  * Style disabled input to be more recognizable
  * and in line with the style of the `select` js plugin
  */
