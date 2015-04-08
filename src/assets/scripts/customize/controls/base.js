@@ -1,4 +1,4 @@
-/* exported: ControlBase */
+/* exported: ControlBase, Skeleton, Utils */
 
 /**
  * Control Base class
@@ -38,7 +38,9 @@ var ControlBase = api.Control.extend({
     control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
     // control.templateSelector = 'customize-control-' + control.params.type + '-content';
     advancedClass = control.params.advanced ? ' k6-control-advanced' : '';
-    control.container = $('<li id="customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' ) + '" class="customize-control k6-control customize-control-' + control.params.type + advancedClass + '"></li>'); // k6tobecareful change related to overridden render() in K6CP_Customize_Control_Base \\
+    control.container = $('<li id="customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' ) +
+      '" class="customize-control k6-control customize-control-' + control.params.type
+      + advancedClass + '"></li>'); // k6tobecareful check render() in K6CP_Customize_Control_Base \\
 
     // save a reference of the raw DOM node, we're gonna use it more
     // than the jquety object `container` (which we can't change, because it's
@@ -79,7 +81,8 @@ var ControlBase = api.Control.extend({
 
       control.setting = control.settings['default'] || null;
 
-      // embed controls only when the parent section get clicked to keep the DOM light, to make this work all data can't be stored in the DOM, which is good
+      // embed controls only when the parent section get clicked to keep the DOM light,
+      // to make this work all data can't be stored in the DOM, which is good
       api.section( control.section.get(), function ( section ) {
         section.expanded.bind(function (expanded) {
           if (expanded) {
@@ -292,7 +295,7 @@ var ControlBase = api.Control.extend({
       Skeleton.hasScrollbar(); // on open check if we have a scrollbar
       var currentValue = setting.get();
       if (currentValue === defaultValue) {
-        _disableBtnLast()
+        _disableBtnLast();
       } else {
         _enableBtnLast();
       }
@@ -372,8 +375,8 @@ var ControlBase = api.Control.extend({
             controlToHide.setting.set(_.without(controlToHide.setting(), [self.id]));
           };
         }
-      }
-    };
+      };
+    }
   }
 });
 
@@ -390,11 +393,7 @@ api.bind('ready', function () {
   try {
     var controlToFocusID = window._wpCustomizeSettings.autofocus.control;
     if (controlToFocusID) {
-      var controlToFocus = api.control(controlToFocusID);
-      // check that is one of our custom control
-      if (controlToFocus.k6) {
-        controlToFocus.inflate(true);
-      }
+      Utils.linkControl(null, controlToFocusID);
     }
   } catch (err) {}
 });

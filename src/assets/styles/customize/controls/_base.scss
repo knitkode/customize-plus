@@ -1,30 +1,83 @@
 /**
+ * Move the `padding` from the `<ul>` to the controls `<li>`s
+ * so they are fullwidth in the sidebar, allowing a nice highlighting
+ * in various situation like `:hover` or `.focus()`
+ */
+.customize-control,
+.k6-control {
+  padding-left: $control--spacing-horizontal;
+  padding-right: $control--spacing-horizontal;
+  box-sizing: border-box;
+}
+
+/**
+ * Normalize the padding of the section adding some space around the
+ * optional section description.
+ */
+.accordion-section-content {
+  padding: 0;
+}
+.customize-section-description-container {
+  // the vertical padding is intentionally inverted
+  padding: $control--spacing-bottom $control--spacing-horizontal $control--spacing-top;
+  background: linear-gradient(fade-out($control--bg-focus, .6), $control--bg);
+}
+
+/**
+ * Highlight the hovered control making it more prominent and visible
+ *
+ */
+.customize-control,
+.k6-control {
+  border-color: transparent;
+  border-style: solid;
+  border-width: 1px 0;
+  &:hover {
+    background: $control--bg-hover;
+    border-color: darken($control--bg-hover, 5%);
+
+    .k6-control-divider {
+      background: $control--bg-divider-hover;
+    }
+  }
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+/**
  * Control changes, class applied on `<li>`
  * container of each of our custom controls
  *
  */
 .k6-control {
   margin: 0; // k6wptight-css-override .customize-control {} \\
-  padding: $control--spacing-top 0 $control--spacing-bottom;
-  box-sizing: border-box;
-  transition: opacity .18s ease;
+  padding-top: $control--spacing-top;
+  padding-bottom: $control--spacing-bottom;
+
+  &:first-of-type {
+    padding-top: $control--spacing-top * 2;
+  }
 
   /**
    * Highlight focused control (through WordPress API method control.focus())
    * adding the class `.k6-control-focused` to the `control.container`
    */
-  background: #fff;
-  transition: background 1s ease;
+  background: $control--bg;
   &-focused {
-    background: #ffc;
+    transition: background 2s ease;
+    background: $control--bg-focus;
   }
 
-  /**
-   * 'Highlight' hovered control fading out a bit all the others
-   *
-   */
+  // /**
+  //  * 'Highlight' hovered control fading out a bit all the others
+  //  *
+  //  */
+  // transition: opacity .1s ease;
+
   // .control-section .accordion-section-content:hover & { // .k6-control-section
-  //   opacity: .4;
+  //   opacity: .8;
   // }
   // .control-section .accordion-section-content &:hover { // .k6-control-section
   //   opacity: 1;
@@ -33,7 +86,7 @@
   // // at the same time so we have to target the overall sidebar inner area
   // // to trigger the hover higlight in the right way
   // .k6-search-active #customize-theme-controls:hover & {
-  //   opacity: .4;
+  //   opacity: .8;
   // }
   // .k6-search-active #customize-theme-controls &:hover {
   //   opacity: 1;

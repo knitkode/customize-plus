@@ -48,8 +48,13 @@ $toggle--width: 30px;
 
 // Customize Controls
 $control--color-light: #999;
+$control--bg: #fff;
+$control--bg-focus: #ffc;
+$control--bg-hover: #fafafa;
+$control--bg-divider: $control--bg-hover;
+$control--bg-divider-hover: darken($control--bg-divider, 3%);
 $control--spacing-top: 6px;
-$control--spacing-bottom: 12px;
+$control--spacing-bottom: 10px;
 $control--spacing-horizontal: $WPcustomize--section-padding-horizontal;
 
 // Customize Extras menu
