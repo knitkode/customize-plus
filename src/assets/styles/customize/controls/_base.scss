@@ -35,10 +35,6 @@
   &:hover {
     background: $control--bg-hover;
     border-color: darken($control--bg-hover, 5%);
-
-    .k6-control-divider {
-      background: $control--bg-divider-hover;
-    }
   }
 
   &:last-of-type {

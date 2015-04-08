@@ -9,8 +9,9 @@
   margin-right: -$control--spacing-horizontal;
   padding: $control--spacing-top $control--spacing-horizontal;
   background: $control--bg-divider;
+  background: linear-gradient($control--bg-divider, $control--bg);
   border-top: 1px solid darken($control--bg-divider, 6%);
-  border-bottom: 1px solid darken($control--bg-divider, 4%);
+  // border-bottom: 1px solid darken($control--bg-divider, 4%);
   text-align: center;
 
   .customize-control:first-child > & {
