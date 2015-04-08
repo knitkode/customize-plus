@@ -60,7 +60,7 @@ var Utils = (function () {
      * @return {string}          The option template.
      */
     selectizeRenderSize: function (item, escape) {
-      return '<div class="">' + escape(item.valueCSS) + ' ' + escape(item.label) + '</div>';
+      return '<div class="k6size-selectOption"><i>' + escape(item.valueCSS) + '</i> ' + escape(item.label) + '</div>';
     },
     /**
      * Selectize render option function

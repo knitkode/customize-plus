@@ -3,12 +3,6 @@
  *
  */
 .k6color {
-  // input to change var name (`<option>` inside select)
-  &-selectOption { // k6plugintight-selectize
-    border-left-width: 25px;
-    border-left-style: solid;
-    margin: 6px;
-  }
 
   // button for Transparent color
   &-toggle-transparent {
