@@ -34,6 +34,7 @@ define( 'K6CP_PLUGIN_URL', plugin_dir_url( __FILE__ ) ); // k6todo, we are not u
 
 require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-requirements.php' );
 require_once( K6CP_PLUGIN_DIR . 'includes/k6cp-functions-sanitize.php' );
+require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-singleton.php' );
 require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-core.php' );
 require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize.php' );
 require_once( K6CP_PLUGIN_DIR . 'includes/class-k6cp-customize-manager.php' );

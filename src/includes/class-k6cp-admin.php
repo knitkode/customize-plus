@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'K6CP_Admin' ) && class_exists( 'K6CPP_Singleton' ) ):
+if ( ! class_exists( 'K6CP_Admin' ) && class_exists( 'K6CP_Singleton' ) ):
 	/**
 	 * Short description for class
 	 *
@@ -15,7 +15,7 @@ if ( ! class_exists( 'K6CP_Admin' ) && class_exists( 'K6CPP_Singleton' ) ):
 	 * @link      http://pear.php.net/package/K6
 	 * @see       References to other sections (if any)...
 	 */
-	class K6CP_Admin extends K6CPP_Singleton {
+	class K6CP_Admin extends K6CP_Singleton {
 
 		const MENU_PAGE = 'options-general.php';
 		const PARENT_HOOK = 'customize-plus';

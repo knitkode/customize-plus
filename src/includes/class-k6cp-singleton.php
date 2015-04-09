@@ -12,10 +12,10 @@
  * @license      pkgLicenseUrl
  */
 
-abstract class K6CPP_Singleton {
+abstract class K6CP_Singleton {
 
 	/**
-	 * Singleton
+	 * Get class instance
 	 *
 	 * @since 0.0.1
 	 */
@@ -64,12 +64,4 @@ abstract class K6CPP_Singleton {
 	 * @abstract
 	 */
 	protected function __construct() {}
-
-	/**
-	 * Register component hooks
-	 *
-	 * @since  0.0.1
-	 * @abstract
-	 */
-	// protected function register_hooks() {}
 }

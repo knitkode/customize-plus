@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'K6CPP_Theme' ) && class_exists( 'K6CPP_Singleton' ) ):
+if ( ! class_exists( 'K6CP_Theme' ) && class_exists( 'K6CP_Singleton' ) ):
 
 	/**
 	 * Contains methods for customizing the theme customization screen.
@@ -14,7 +14,7 @@ if ( ! class_exists( 'K6CPP_Theme' ) && class_exists( 'K6CPP_Singleton' ) ):
 	 * @license      pkgLicenseUrl
 	 */
 
-	class K6CP_Theme extends K6CPP_Singleton {
+	class K6CP_Theme extends K6CP_Singleton {
 
 		public static $options_prefix = '';
 
