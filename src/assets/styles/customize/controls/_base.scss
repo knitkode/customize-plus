@@ -9,6 +9,11 @@
   padding-right: $control--spacing-horizontal;
   box-sizing: border-box;
 }
+// reset to 0 control's padding inside themes preview section (feature as plugin 4.2)
+.theme-browser .customize-control {
+  padding-left: 0;
+  padding-right: 0;
+}
 
 /**
  * Normalize the padding of the section adding some space around the
@@ -16,6 +21,11 @@
  */
 .accordion-section-content {
   padding: 0;
+
+  #customize-info &,
+  .panel-meta & {
+    padding: $WPcustomize--section-padding-top $WPcustomize--section-padding-horizontal ($WPcustomize--section-padding-top * 2);
+  }
 }
 .customize-section-description-container {
   // the vertical padding is intentionally inverted
@@ -47,6 +57,7 @@
  * container of each of our custom controls
  *
  */
+.customize-control,
 .k6-control {
   margin: 0; // k6wptight-css-override .customize-control {} \\
   padding-top: $control--spacing-top;

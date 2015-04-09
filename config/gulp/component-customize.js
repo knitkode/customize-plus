@@ -109,7 +109,6 @@ gulp.task('_customize-scripts-admin', function() {
     .pipe(gulp.dest(PATHS.build.scripts))
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
     .pipe($.rename({ suffix: '.min' }))
-    .pipe($.if(CONFIG.isDist, $.stripDebug()))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
 
@@ -125,6 +124,5 @@ gulp.task('_customize-scripts-preview', function() {
     .pipe(gulp.dest(PATHS.build.scripts))
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
     .pipe($.rename({ suffix: '.min' }))
-    .pipe($.if(CONFIG.isDist, $.stripDebug()))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
