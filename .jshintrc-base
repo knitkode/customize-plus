@@ -18,6 +18,11 @@
   "unused": true,
   "indent": 2,
   "quotmark": true,
-  "curly": true,
-  "eqeqeq": true
+  "eqeqeq": true,
+  "curly": false,
+  "globals": {
+    "gulp": false,
+    "DEBUG": false,
+    "performance": false
+  }
 }

@@ -1,3 +1,4 @@
+/* global Skeleton, Utils */
 /* exported: ControlBase, Skeleton, Utils */
 
 /**
@@ -165,7 +166,6 @@ var ControlBase = api.Control.extend({
    * this method get called) it fills it.
    */
   deflate: function () {
-    // var t = performance.now(); // k6debug-perf \\
     var container = this._container;
     if (!this.params.template) {
       this.params.template = container.innerHTML.trim();
@@ -179,7 +179,6 @@ var ControlBase = api.Control.extend({
 
     // flag control that it's not rendered
     this.rendered = false;
-    // console.log('deflate of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
   },
   /**
    * Render or 'inflate' the template of the control
@@ -192,13 +191,14 @@ var ControlBase = api.Control.extend({
    *                                                   we need to resolve the embed
    */
   inflate: function (shouldWeResolveEmbeddedDeferred) {
-    // var t = performance.now(); // k6debug-perf \\
+    /* jshint funcscope: true */
+    if (DEBUG) var t = performance.now();
     if (!this.params.template) {
       this.renderContent();
       // flag control that it's rendered
       this.rendered = true;
-
-      this.ready(true); // pass true for isForTheFirstTimeReady argument, so that we bind the setting only once
+      // pass true for isForTheFirstTimeReady argument, so that we bind the setting only once
+      this.ready(true);
     } else {
       this._container.innerHTML = this.params.template;
       // flag control that it's rendered
@@ -210,8 +210,7 @@ var ControlBase = api.Control.extend({
       this.deferred.embedded.resolve();
     }
     this.extras();
-
-    // console.log('inflate of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
+    console.log('inflate of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.');
   },
   /**
    * Manage the `extras` dropdown menu
@@ -348,7 +347,9 @@ var ControlBase = api.Control.extend({
     if (btnHide) {
       var self = this;
       btnHide.onclick = function () {
-        var controlToHide = api.control('k6[hide-controls]'); // k6tobecareful this is tight to class-customize.php $setting_control_id = K6CP::$OPTIONToHideS_PREFIX . '[' . $field_key . ']'; \\
+        // k6tobecareful this is tight to class-customize.php $setting_control_id =
+        // K6CP::$OPTIONToHideS_PREFIX . '[' . $field_key . ']'; \\
+        var controlToHide = api.control('k6[hide-controls]');
         if (controlToHide) {
           controlToHide.setting.set(_.union(controlToHide.setting(), [self.id]));
           var secondsTimeout = 5;

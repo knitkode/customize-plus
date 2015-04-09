@@ -1,11 +1,13 @@
-/* jshint unused: false */
+/* global WpTight, Skeleton, Tabs, Tooltips, Notices */
+/* jshint unused: false, funcscope: true */
 
 (function (window, document, $, _, wp, k6cp, validator) {
   'use strict';
-  // k6debug-perf
-  window.performance = window.performance || { now: function(){} }; // shim for Opera
-  var t = performance.now();
-  // \\
+
+  if (DEBUG) {
+    window.performance = window.performance || { now: function(){} }; // shim for Opera
+    var t = performance.now();
+  }
 
   /**
    * Reusable variables as globals in each component
@@ -54,7 +56,6 @@
    * @type {Object}
    */
   k6cp['controls'] = {};
-  // var t = performance.now(); // k6debug-perf \\
 
   //= include customize/controls/base.js
     // include customize/controls/base-dummy' )
@@ -72,20 +73,20 @@
   //= include customize/controls/text.js
   //= include customize/controls/toggle.js
 
-  // console.log('customize.js controls initialization took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
+  console.log('customize.js controls initialization took ' + (performance.now() - t) + ' ms.');
 
   /**
    * Components initialization
    *
    */
   $document.ready(function() {
-    // var t = performance.now(); // k6debug-perf \\
+    if (DEBUG) var t = performance.now();
     WpTight.init();
     Skeleton.init();
     Tabs.init();
     Tooltips.init();
     Notices.init();
-    // console.log('customize.js core initialization took ' + (performance.now() - t) + ' ms.') // k6debug-perf \\
+    console.log('customize.js core initialization took ' + (performance.now() - t) + ' ms.');
   });
 
   //= include customize/temp.js

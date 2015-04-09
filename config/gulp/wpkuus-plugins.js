@@ -21,7 +21,13 @@ module.exports = {
   uglify: {
     preserveComments: 'some',
     toplevel: true,
-    mangle: true
+    mangle: true,
+    compress: {
+      drop_console: true,
+      global_defs: {
+        DEBUG: false
+      }
+    }
   },
   autoprefixer: 'last 2 version',
   jsonEditor: {

@@ -4,13 +4,11 @@
   "maxlen": 110,
   "browser": true,
   "devel": true,
-  "globals": {
-    "gulp": false
-  },
   "predef": [
     "jQuery",
     "$",
     "_",
+    "validator",
     "k6cp",
     "wp",
     "l10n",
