@@ -4,6 +4,9 @@
 (function (window, document, $, _, wp, k6cp, validator) {
   'use strict';
 
+  // this is needed to don't break js while developing
+  var DEBUG = true;
+
   if (DEBUG) {
     window.performance = window.performance || { now: function(){} }; // shim for Opera
     var t = performance.now();
