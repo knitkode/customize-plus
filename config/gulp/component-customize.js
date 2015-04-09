@@ -105,8 +105,9 @@ gulp.task('_customize-scripts-admin', function() {
     // .pipe($.if(argv.docs, $.jsdoc('./docs')))
   );
   return stream.done()
-    .pipe($.concat('customize.js', { newLine: '\n' }))
+    .pipe($.concat('customize.js', PLUGINS.concat))
     .pipe(gulp.dest(PATHS.build.scripts))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', '')))
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.scripts));
@@ -119,9 +120,10 @@ gulp.task('_customize-scripts-admin', function() {
  */
 gulp.task('_customize-scripts-preview', function() {
   return gulp.src(PATHS.src.scripts + 'customize-preview.js')
-    .pipe($.concat('customize-preview.js', { newLine: '\n' }))
+    .pipe($.concat('customize-preview.js', PLUGINS.concat))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
     .pipe(gulp.dest(PATHS.build.scripts))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', '')))
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.scripts));

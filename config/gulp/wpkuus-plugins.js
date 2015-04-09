@@ -29,6 +29,9 @@ module.exports = {
       }
     }
   },
+  concat: {
+    newLine: '\n\n'
+  },
   autoprefixer: 'last 2 version',
   jsonEditor: {
     'indent_char': ' ',
