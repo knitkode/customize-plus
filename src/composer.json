@@ -1,22 +1,22 @@
 {
-  "name": "wpkuus/customize-plus",
+  "name": "pluswp/customize-plus",
   "description": "Add premium features to the WordPress customize.",
   "type": "wordpress-plugin",
   "keywords": [
     "customize",
     "tool"
   ],
-  "homepage": "http://wpkuus.com/customize-plus",
+  "homepage": "http://pluswp.com/customize-plus",
   "license": "GPL-2.0+",
   "authors": [{
     "name": "kuus",
     "homepage": "http://kunderikuus.net/"
   }],
   "support": {
-    "forum": "http://wpkuus.com/customize-plus/support/",
-    "issues": "https://github.com/wpkuus/customize-plus/issues",
-    "wiki": "https://github.com/wpkuus/customize-plus/wiki",
-    "source": "https://github.com/wpkuus/customize-plus/"
+    "forum": "http://pluswp.com/customize-plus/support/",
+    "issues": "https://github.com/pluswp/customize-plus/issues",
+    "wiki": "https://github.com/pluswp/customize-plus/wiki",
+    "source": "https://github.com/pluswp/customize-plus/"
   },
   "require": {
     "php": ">=5.2.4"

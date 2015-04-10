@@ -7,7 +7,7 @@
     "nameShort": "k6cp",
     "startYear": 2014
   },
-  "homepage": "http://wpkuus.com/customize-plus",
+  "homepage": "http://pluswp.com/customize-plus",
   "author": {
     "name": "kuus",
     "email": "kunderikuus@gmail.com",
@@ -19,7 +19,7 @@
   },
   "private": false,
   "repository": {
-    "url": "https://github.com/wpkuus/customize-plus"
+    "url": "https://github.com/pluswp/customize-plus"
   },
   "dependencies": {},
   "devDependencies": {

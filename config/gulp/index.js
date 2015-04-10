@@ -1,5 +1,5 @@
 var fs = require('fs');
-var onlyScriptsTasks = require('./wpkuus-util-script-filter');
+var onlyScriptsTasks = require('./common-util-script-filter');
 var tasks = fs.readdirSync('./config/gulp/').filter(onlyScriptsTasks);
 
 // These variables are intentionally global,

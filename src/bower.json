@@ -20,10 +20,10 @@
     "email": "kunderikuus@gmail.com",
     "url": "http://kunderikuus.net/"
   },
-  "homepage": "http://wpkuus.com/customize-plus",
+  "homepage": "http://pluswp.com/customize-plus",
   "description": "Empower and extend the WordPress customize.",
   "repository": {
-    "url": "https://gitlab.com/wpkuus/customize-plus"
+    "url": "https://gitlab.com/pluswp/customize-plus"
   },
   "devDependencies": {
     "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip"

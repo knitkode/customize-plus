@@ -2,9 +2,9 @@
 /* jshint node: true */
 'use strict';
 
-var CONFIG = require('./wpkuus-config');
-var PLUGINS = require('./wpkuus-plugins');
-var utilErrors = require('./wpkuus-util-errors');
+var CONFIG = require('./common-config');
+var PLUGINS = require('./common-plugins');
+var utilErrors = require('./common-util-errors');
 var pngquant = require('imagemin-pngquant');
 var pkg = require('../../package.json');
 

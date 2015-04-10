@@ -18,7 +18,7 @@ class MyPlugin {
 	/**
 	 * Get the customize panels
 	 *
-	 * You can use @link(http://wpkuus.com/customize-plus/builder, the builder)
+	 * You can use @link(http://pluswp.com/customize-plus/builder, the builder)
 	 * interface to build your option panels.
 	 *
 	 * @return array The customize panels
