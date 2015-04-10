@@ -1,6 +1,5 @@
 {
   "name": "customize-plus",
-  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "webui-popover": "git@github.com:kuus/webui-popover.git#b1af0b73cf72f2611427c11ee5289ec027728d85",
@@ -10,20 +9,6 @@
     "polyfill-classList": "git@github.com:eligrey/classList.js.git#2014-12-13",
     "selectize": "~0.12.0",
     "validator-js": "~3.33.0"
-  },
-  "license": {
-    "type": "Copyright (C) kunderi kuus, Inc - All Rights Reserved",
-    "url": "http://themeforest.net/licenses/standard"
-  },
-  "author": {
-    "name": "kuus",
-    "email": "kunderikuus@gmail.com",
-    "url": "http://kunderikuus.net/"
-  },
-  "homepage": "http://pluswp.com/customize-plus",
-  "description": "Empower and extend the WordPress customize.",
-  "repository": {
-    "url": "https://gitlab.com/pluswp/customize-plus"
   },
   "devDependencies": {
     "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip"
