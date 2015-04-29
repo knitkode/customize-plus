@@ -17,6 +17,25 @@
 			<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/2anLjZwQg3g?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 		</div>
 	</div>
+	<div class="notice">
+		<?php if ( class_exists( 'K6CP_Requirements' ) ): ?>
+			<?php if ( version_compare( K6CP_Requirements::$min_php_version, '>' ) ) : ?>
+				<p><?php _e( 'Your php version is compatible', 'pkgTextDomain' ); ?></p>
+ 			<?php else : ?>
+				<p><?php _e( 'Your php version is too old', 'pkgTextDomain' ); ?></p>
+			<?php endif; ?>
+			<?php if ( version_compare( K6CP_Requirements::$min_wp_version, get_bloginfo( 'version' ), '>' ) ): ?>
+				<p><?php _e( 'Your WordPress version is compatible', 'pkgTextDomain' ); ?></p>
+			<?php else : ?>
+				<p><?php _e( 'Your WordPress version is too old', 'pkgTextDomain' ); ?></p>
+			<?php endif; ?>
+			<?php if ( wp_is_writable( wp_upload_dir()['basedir'] ) ): ?>
+				<p><?php _e( 'Your WordPress installation is fully compatible with all the Customize Plus Premium features', 'pkgTextDomain' ); ?></p>
+			<?php else : ?>
+				<p><?php _e( 'Your WordPress installation is not fully compatible with all the Customize Plus Premium features', 'pkgTextDomain' ); ?></p>
+			<?php endif; ?>
+		<?php endif; ?>
+	</div>
 	<h2><?php _e( 'Plugin features', 'pkgTextDomain' ); ?></h2>
 	<ul class="k6cp-features">
 		<li><i class="dashicons dashicons-wordpress"></i>
