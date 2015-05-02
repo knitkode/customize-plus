@@ -223,7 +223,7 @@ if ( ! class_exists( 'K6CP_Customize' ) && class_exists( 'K6CP_Singleton' ) ):
 		 * @since  0.0.1
 		 */
 		public static function register_custom_classes() {
-			require_once( K6CP_PLUGIN_DIR . 'includes/k6cp-customize-classes.php' );
+			require_once( K6CP_PLUGIN_DIR . 'includes/customize-classes.php' );
 
 			do_action( 'k6cp/customize/register_custom_classes', __CLASS__ );
 
