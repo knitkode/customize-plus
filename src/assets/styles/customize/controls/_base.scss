@@ -9,11 +9,6 @@
   padding-right: $control--spacing-horizontal;
   box-sizing: border-box;
 }
-// reset to 0 control's padding inside themes preview section (feature as plugin 4.2)
-.theme-browser .customize-control {
-  padding-left: 0;
-  padding-right: 0;
-}
 
 /**
  * Normalize the padding of the section adding some space around the
@@ -98,4 +93,22 @@
   // .k6-search-active #customize-theme-controls &:hover {
   //   opacity: 1;
   // }
+}
+
+/**
+ * Tweaks for WordPress themes switcher section:
+ * - Remove highlighting behavior on theme switcher control
+ * - Fix padding on section title when themes section is expanded
+ * - Reset to 0 the control's padding around themes thumbnails
+ */
+#accordion-section-themes.control-section:hover > .accordion-section-title {
+  background: $control--bg;
+}
+.customize-themes-panel > .customize-section-title {
+  float: none;
+  width: auto;
+}
+.customize-control-theme {
+  background: none;
+  padding: 0 !important; // important to override pseudo selectors like `:first-of-type`
 }
