@@ -8,7 +8,7 @@
  * Render controls content on demand when their section is expanded
  * then remove the DOM when the section is collapsed
  *
- * @see PHP class K6CP_Customize_Control_Base.
+ * @see PHP class PWPcp_Customize_Control_Base.
  * @class
  * @augments wp.customize.Control
  */
@@ -41,7 +41,7 @@ var ControlBase = api.Control.extend({
     advancedClass = control.params.advanced ? ' k6-control-advanced' : '';
     control.container = $('<li id="customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' ) +
       '" class="customize-control k6-control customize-control-' + control.params.type
-      + advancedClass + '"></li>'); // k6tobecareful check render() in K6CP_Customize_Control_Base \\
+      + advancedClass + '"></li>'); // k6tobecareful check render() in PWPcp_Customize_Control_Base \\
 
     // save a reference of the raw DOM node, we're gonna use it more
     // than the jquety object `container` (which we can't change, because it's

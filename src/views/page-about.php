@@ -18,13 +18,13 @@
 		</div>
 	</div>
 	<div class="notice">
-		<?php if ( class_exists( 'K6CP_Requirements' ) ): ?>
-			<?php if ( version_compare( K6CP_Requirements::$min_php_version, '>' ) ) : ?>
+		<?php if ( class_exists( 'PWPcp_Requirements' ) ): ?>
+			<?php if ( version_compare( PWPcp_Requirements::$min_php_version, '>' ) ) : ?>
 				<p><?php _e( 'Your php version is compatible', 'pkgTextDomain' ); ?></p>
  			<?php else : ?>
 				<p><?php _e( 'Your php version is too old', 'pkgTextDomain' ); ?></p>
 			<?php endif; ?>
-			<?php if ( version_compare( K6CP_Requirements::$min_wp_version, get_bloginfo( 'version' ), '>' ) ): ?>
+			<?php if ( version_compare( PWPcp_Requirements::$min_wp_version, get_bloginfo( 'version' ), '>' ) ): ?>
 				<p><?php _e( 'Your WordPress version is compatible', 'pkgTextDomain' ); ?></p>
 			<?php else : ?>
 				<p><?php _e( 'Your WordPress version is too old', 'pkgTextDomain' ); ?></p>

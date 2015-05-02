@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'K6CP_Theme' ) && class_exists( 'K6CP_Singleton' ) ):
+if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
 
 	/**
 	 * Contains methods for customizing the theme customization screen.
@@ -14,7 +14,7 @@ if ( ! class_exists( 'K6CP_Theme' ) && class_exists( 'K6CP_Singleton' ) ):
 	 * @license      pkgLicenseUrl
 	 */
 
-	class K6CP_Theme extends K6CP_Singleton {
+	class PWPcp_Theme extends PWPcp_Singleton {
 
 		public static $options_prefix = '';
 
@@ -120,7 +120,7 @@ if ( ! class_exists( 'K6CP_Theme' ) && class_exists( 'K6CP_Singleton' ) ):
 			self::$options_prefix = $theme_prefix;
 
 			// register theme customize panels
-			$theme_customize_manager = new K6CP_Customize_Manager( 'theme', $theme_prefix, $theme_panels );
+			$theme_customize_manager = new PWPcp_Customize_Manager( 'theme', $theme_prefix, $theme_panels );
 
 			// add theme settings defaults
 			self::$settings_defaults = $theme_customize_manager->settings_defaults;
@@ -128,8 +128,8 @@ if ( ! class_exists( 'K6CP_Theme' ) && class_exists( 'K6CP_Singleton' ) ):
 			// register theme styles to compiler if enabled
 			// k6todo use theme supports api here... \\
 			if ( class_exists( 'K6CPP' ) ) {
-				if ( $theme_styles && /*K6CPP::get_option_with_default( 'compiler' ) &&*/ class_exists( 'K6CPP_Component_Compiler' ) ) {
-					K6CPP_Component_Compiler::register_styles( $theme_styles, $theme_prefix, $theme_customize_manager->panels );
+				if ( $theme_styles && /*K6CPP::get_option_with_default( 'compiler' ) &&*/ class_exists( 'PWPcpp_Component_Compiler' ) ) {
+					PWPcpp_Component_Compiler::register_styles( $theme_styles, $theme_prefix, $theme_customize_manager->panels );
 				}
 			}
 
@@ -180,6 +180,6 @@ if ( ! class_exists( 'K6CP_Theme' ) && class_exists( 'K6CP_Singleton' ) ):
 	}
 
 	// Instantiate
-	K6CP_Theme::get_instance();
+	PWPcp_Theme::get_instance();
 
 endif;

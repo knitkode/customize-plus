@@ -4,7 +4,7 @@
  *
  * @since  0.0.1
  */
-class K6CP_Customize_Control_Base_Radio extends K6CP_Customize_Control_Base {
+class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Control_Base {
 
 	// public $tip_types = array( 'help', 'guide' );
 	// public $tip_content_types = array( 'tip_title', 'tip_text', 'tip_img', 'tip_iframe', 'tip_video' );

@@ -4,7 +4,7 @@
  *
  * @since  0.0.1
  */
-class K6CP_Customize_Control_Color extends K6CP_Customize_Control_Base {
+class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 
 	public $type = 'k6cp_color';
 
@@ -82,4 +82,4 @@ class K6CP_Customize_Control_Color extends K6CP_Customize_Control_Base {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'K6CP_Customize_Control_Color' );
+$wp_customize->register_control_type( 'PWPcp_Customize_Control_Color' );

@@ -12,7 +12,7 @@
  * @license      pkgLicenseUrl
  */
 
-abstract class K6CP_Singleton {
+abstract class PWPcp_Singleton {
 
 	/**
 	 * Get class instance

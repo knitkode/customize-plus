@@ -4,7 +4,7 @@
  *
  * @since  0.0.1
  */
-class K6CP_Customize_Control_Dummy extends K6CP_Customize_Control_Base {
+class PWPcp_Customize_Control_Dummy extends PWPcp_Customize_Control_Base {
 
 	public $type = 'k6_dummy';
 

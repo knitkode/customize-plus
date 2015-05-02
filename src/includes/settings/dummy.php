@@ -4,7 +4,7 @@
  *
  * @since  0.0.1
  */
-class K6CP_Customize_Setting_Dummy extends WP_Customize_Setting {
+class PWPcp_Customize_Setting_Dummy extends WP_Customize_Setting {
 
 	public $transport = '';
 

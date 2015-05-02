@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
+if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 
 	/**
 	 * Contains methods for customizing the theme customization screen.
@@ -14,7 +14,7 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 	 * @license      pkgLicenseUrl
 	 */
 
-	class K6CP_Customize_Manager {
+	class PWPcp_Customize_Manager {
 
 		/**
 		 *
@@ -292,7 +292,7 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 				// if no settings args are passed then use the Dummy Setting Class
 				else {
 					// Add dummy setting to WordPress
-					$wp_customize->add_setting( new K6CP_Customize_Setting_Dummy( $wp_customize, $option_id ) );
+					$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $option_id ) );
 				}
 
 				// augment control args array with section id
@@ -301,8 +301,8 @@ if ( ! class_exists( 'K6CP_Customize_Manager' ) ):
 				// Add control to WordPress
 				$control_type = $control_args['type'];
 
-				if ( isset( K6CP_Customize::$custom_types['controls'][ $control_type ] ) ) {
-					$control_type_class = K6CP_Customize::$custom_types['controls'][ $control_type ];
+				if ( isset( PWPcp_Customize::$custom_types['controls'][ $control_type ] ) ) {
+					$control_type_class = PWPcp_Customize::$custom_types['controls'][ $control_type ];
 
 					// if the class exist use it
 					if ( class_exists( $control_type_class ) ) {

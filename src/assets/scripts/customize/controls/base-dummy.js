@@ -51,13 +51,13 @@ var ControlBaseDummy = api.Control.extend({
     // the wrapper for this control can always be the same, we create it
     // in javascript instead of php, where we can therefore override
     // `protected function render() {}` with an empty output (see
-    // K6CP_Customize_Control_Dummy php class). This remove the unnecessary
+    // PWPcp_Customize_Control_Dummy php class). This remove the unnecessary
     // presence of the <li> micro template in the _wpCustomizeSettings JSON.
     // In addition the type of control is printed as a class name.
     control.container = $('<li class="customize-control customize-control-k6_dummy ' + control.params.type + '"></li>');
 
     // delete setting, unfortunately we need to create to make this fake control work.
-    // We do it through the K6CP_Customize_Setting_Dummy php class.
+    // We do it through the PWPcp_Customize_Setting_Dummy php class.
     try {
       delete api.settings.settings[this.id];
     } catch(err) {};

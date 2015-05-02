@@ -27,19 +27,19 @@
  * Domain Path:       /languages
  */
 
-define( 'K6CP_PLUGIN_FILE', __FILE__ );
-define( 'K6CP_PLUGIN_VERSION', '0.0.1' );
-define( 'K6CP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); // k6todo, we are not using this, but we should \\
-define( 'K6CP_PLUGIN_URL', plugin_dir_url( __FILE__ ) ); // k6todo, we are not using this, but we should \\
+define( 'PWPcp_PLUGIN_FILE', __FILE__ );
+define( 'PWPcp_PLUGIN_VERSION', '0.0.1' );
+define( 'PWPcp_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); // k6todo, we are not using this, but we should \\
+define( 'PWPcp_PLUGIN_URL', plugin_dir_url( __FILE__ ) ); // k6todo, we are not using this, but we should \\
 
-require_once( K6CP_PLUGIN_DIR . 'includes/class-requirements.php' );
-require_once( K6CP_PLUGIN_DIR . 'includes/functions-sanitize.php' );
-require_once( K6CP_PLUGIN_DIR . 'includes/class-singleton.php' );
-require_once( K6CP_PLUGIN_DIR . 'includes/class-core.php' );
-require_once( K6CP_PLUGIN_DIR . 'includes/class-customize.php' );
-require_once( K6CP_PLUGIN_DIR . 'includes/class-customize-manager.php' );
-require_once( K6CP_PLUGIN_DIR . 'includes/class-theme.php' );
+require_once( PWPcp_PLUGIN_DIR . 'includes/class-requirements.php' );
+require_once( PWPcp_PLUGIN_DIR . 'includes/functions-sanitize.php' );
+require_once( PWPcp_PLUGIN_DIR . 'includes/class-singleton.php' );
+require_once( PWPcp_PLUGIN_DIR . 'includes/class-core.php' );
+require_once( PWPcp_PLUGIN_DIR . 'includes/class-customize.php' );
+require_once( PWPcp_PLUGIN_DIR . 'includes/class-customize-manager.php' );
+require_once( PWPcp_PLUGIN_DIR . 'includes/class-theme.php' );
 if ( is_admin() ) {
-	require_once( K6CP_PLUGIN_DIR . 'includes/class-admin.php' );
-	require_once( K6CP_PLUGIN_DIR . 'includes/class-admin-about.php' );
+	require_once( PWPcp_PLUGIN_DIR . 'includes/class-admin.php' );
+	require_once( PWPcp_PLUGIN_DIR . 'includes/class-admin-about.php' );
 }

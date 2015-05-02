@@ -6,7 +6,7 @@
  * @since  0.0.1
  * @override
  */
-class K6CP_Customize_Section_Search extends K6CP_Customize_Section_Base {
+class PWPcp_Customize_Section_Search extends PWPcp_Customize_Section_Base {
 
 	/**
 	 * Type of this section.

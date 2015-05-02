@@ -6,7 +6,7 @@
  * @override
  * @since 0.0.1
  */
-class K6CP_Customize_Control_Base extends WP_Customize_Control {
+class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 	public $divider;
 
@@ -46,7 +46,7 @@ class K6CP_Customize_Control_Base extends WP_Customize_Control {
 
 		// remove content, we rely completely on js, and declare
 		// the control container in the js control base class
-		unset( $this->json['content'] ); // k6tobecareful change related to overridden render() in K6CP_Customize_Control_Base \\
+		unset( $this->json['content'] ); // k6tobecareful change related to overridden render() in PWPcp_Customize_Control_Base \\
 
 		// call a function to add data to `control.params`
 		$this->add_to_json();
@@ -70,7 +70,7 @@ class K6CP_Customize_Control_Base extends WP_Customize_Control {
 	 * @override
 	 * @since 0.0.1
 	 */
-	protected function render() {} // k6tobecareful change related to overridden render() in K6CP_Customize_Control_Base \\
+	protected function render() {} // k6tobecareful change related to overridden render() in PWPcp_Customize_Control_Base \\
 
 	/**
 	 * Never render any inner content for controls from PHP.

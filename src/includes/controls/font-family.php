@@ -4,7 +4,7 @@
  *
  * @since  0.0.1
  */
-class K6CP_Customize_Control_Font_Family extends K6CP_Customize_Control_Base {
+class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 
 	public $type = 'k6cp_font_family';
 
@@ -47,4 +47,4 @@ class K6CP_Customize_Control_Font_Family extends K6CP_Customize_Control_Base {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'K6CP_Customize_Control_Font_Family' );
+$wp_customize->register_control_type( 'PWPcp_Customize_Control_Font_Family' );

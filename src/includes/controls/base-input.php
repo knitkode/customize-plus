@@ -5,7 +5,7 @@
  *
  * @since  0.0.1
  */
-class K6CP_Customize_Control_Base_Input extends K6CP_Customize_Control_Base {
+class PWPcp_Customize_Control_Base_Input extends PWPcp_Customize_Control_Base {
 
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.

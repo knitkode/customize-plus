@@ -4,7 +4,7 @@
  *
  * @since  0.0.1
  */
-class K6CP_Customize_Control_Radio extends K6CP_Customize_Control_Base_Radio {
+class PWPcp_Customize_Control_Radio extends PWPcp_Customize_Control_Base_Radio {
 
 	public $type = 'k6cp_radio';
 
@@ -27,4 +27,4 @@ class K6CP_Customize_Control_Radio extends K6CP_Customize_Control_Base_Radio {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'K6CP_Customize_Control_Radio' );
+$wp_customize->register_control_type( 'PWPcp_Customize_Control_Radio' );

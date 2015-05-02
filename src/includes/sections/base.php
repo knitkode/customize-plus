@@ -6,7 +6,7 @@
  * @since  0.0.1
  * @override
  */
-class K6CP_Customize_Section_Base extends WP_Customize_Section {
+class PWPcp_Customize_Section_Base extends WP_Customize_Section {
 
 	/**
 	 *

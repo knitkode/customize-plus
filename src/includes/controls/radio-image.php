@@ -7,7 +7,7 @@
  *
  * @since  0.0.1
  */
-class K6CP_Customize_Control_Radio_Image extends K6CP_Customize_Control_Base_Radio {
+class PWPcp_Customize_Control_Radio_Image extends PWPcp_Customize_Control_Base_Radio {
 
 	public $type = 'k6cp_radio_image';
 
@@ -23,7 +23,7 @@ class K6CP_Customize_Control_Radio_Image extends K6CP_Customize_Control_Base_Rad
 		?>
 			<input id="{{ id }}" class="k6-radio-image" type="radio" value="{{ val }}" name="_customize-k6cp_radio_image-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
 			<label for="{{ id }}"{{{ tipAttrs }}}>
-				<# var imgUrl = choice.img_custom ? choice.img_custom : '<?php echo esc_url( K6CP_PLUGIN_URL . 'assets/images/' ); ?>' + choice.img + '.png'; #>
+				<# var imgUrl = choice.img_custom ? choice.img_custom : '<?php echo esc_url( PWPcp_PLUGIN_URL . 'assets/images/' ); ?>' + choice.img + '.png'; #>
 				<img class="k6-tip" src="{{ imgUrl }}" title="{{{ label }}}">
 			</label>
 		<?php
@@ -33,4 +33,4 @@ class K6CP_Customize_Control_Radio_Image extends K6CP_Customize_Control_Base_Rad
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'K6CP_Customize_Control_Radio_Image' );
+$wp_customize->register_control_type( 'PWPcp_Customize_Control_Radio_Image' );

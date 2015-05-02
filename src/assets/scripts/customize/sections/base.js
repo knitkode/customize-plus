@@ -7,7 +7,7 @@
  * Render controls content on demand when their section is expanded
  * then remove the DOM when the section is collapsed
  *
- * @see PHP class K6CP_Customize_Section_Base.
+ * @see PHP class PWPcp_Customize_Section_Base.
  * @class
  * @augments wp.customize.Section
  */

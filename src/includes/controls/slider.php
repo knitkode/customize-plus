@@ -4,7 +4,7 @@
  *
  * @since  0.0.1
  */
-class K6CP_Customize_Control_Slider extends K6CP_Customize_Control_Base {
+class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 
 	public $type = 'k6cp_slider';
 	public $units = array( 'px' );
@@ -84,4 +84,4 @@ class K6CP_Customize_Control_Slider extends K6CP_Customize_Control_Base {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'K6CP_Customize_Control_Slider' );
+$wp_customize->register_control_type( 'PWPcp_Customize_Control_Slider' );

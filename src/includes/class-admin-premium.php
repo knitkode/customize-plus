@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'K6CP_Admin_Premium' ) ):
+if ( ! class_exists( 'PWPcp_Admin_Premium' ) ):
 	/**
 	 * Short description for class
 	 *
@@ -15,7 +15,7 @@ if ( ! class_exists( 'K6CP_Admin_Premium' ) ):
 	 * @link      http://pear.php.net/package/K6
 	 * @see       References to other sections (if any)...
 	 */
-	class K6CP_Admin_Premium {
+	class PWPcp_Admin_Premium {
 
 		/**
 		 * Constructor
@@ -35,12 +35,12 @@ if ( ! class_exists( 'K6CP_Admin_Premium' ) ):
 		 * Add subpage tab to our plugin submenu page
 		 *
 		 * @since  0.0.1
-		 * @uses   K6CP_Admin->add_subpages To add the page tab
+		 * @uses   PWPcp_Admin->add_subpages To add the page tab
 		 * @return void
 		 */
 		public function add_menu_subpage() {
-			if ( class_exists( 'K6CP_Admin' ) ) {
-				K6CP_Admin::get_instance()->add_subpages( array(
+			if ( class_exists( 'PWPcp_Admin' ) ) {
+				PWPcp_Admin::get_instance()->add_subpages( array(
 					'about' => array(
 						'title' => __( 'About', 'pkgTextDomain' ),
 						'view' => array( $this, 'get_view' )
@@ -62,7 +62,7 @@ if ( ! class_exists( 'K6CP_Admin_Premium' ) ):
 				$settings_page_prefix . 'about',
 			);
 			if ( in_array( $hook, $settings_pages ) ) {
-				wp_enqueue_style( 'k6cp-admin', plugins_url( "assets/admin{$min}.css", K6CP_PLUGIN_FILE ), array( 'dashicons' ), K6CP_PLUGIN_VERSION );
+				wp_enqueue_style( 'k6cp-admin', plugins_url( "assets/admin{$min}.css", PWPcp_PLUGIN_FILE ), array( 'dashicons' ), PWPcp_PLUGIN_VERSION );
 				// wp_style_add_data( 'k6cp-admin', 'rtl', true );
 				if ( $min ) {
 					wp_style_add_data( 'k6cp-admin', 'suffix', $min );
@@ -84,6 +84,6 @@ if ( ! class_exists( 'K6CP_Admin_Premium' ) ):
 	}
 
 	// Instantiate
-	new K6CP_Admin_Premium;
+	new PWPcp_Admin_Premium;
 
 endif;
