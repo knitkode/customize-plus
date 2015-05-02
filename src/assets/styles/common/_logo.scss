@@ -21,7 +21,7 @@
 }
 
 .k6cp-badge { // k6wptight-css from .wp-badge {} \\
-  color: lighten($CP--logo-bg, 50%);
+  color: lighten($base--logo-bg, 50%);
   font-size: 13px;
   text-align: center;
   font-weight: 400;
@@ -32,15 +32,15 @@
   width: 150px;
   text-rendering: optimizeLegibility;
   box-shadow: 0 1px 3px rgba(0,0,0,.2);
-  background: url(images/logo-white.png) center 24px/85px 85px no-repeat $CP--logo-bg;
+  background: url(images/logo-white.png) center 24px/85px 85px no-repeat $base--logo-bg;
   // .svg & {
-  //   background: url(images/logo-white.svg) center 24px/85px 85px no-repeat $CP--logo-bg;
+  //   background: url(images/logo-white.svg) center 24px/85px 85px no-repeat $base--logo-bg;
   // }
 
   &:before {
     content: "Customize Plus";
     display: block;
-    color: lighten($CP--logo-bg, 70%);
+    color: lighten($base--logo-bg, 70%);
     font-size: 15px;
     font-weight: 600;
   }

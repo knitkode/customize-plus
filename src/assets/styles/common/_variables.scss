@@ -1,12 +1,9 @@
 /**
- * Variables
+ * Variables: WordPress
  *
  */
 
-// Customize Plus
-$CP--logo-bg: #464646;
-
-// Wordpress layout variables
+// WordPress layout variables
 $WP--bg: #f1f1f1 !default;
 $WP--border-radius: 3px !default;
 $WP--select-border-color: #ddd;
@@ -16,12 +13,9 @@ $WP--select-box-shadow-focus: 0 0 2px rgba(30,140,190,.8);
 $WP--link-color: #0099d5; // #0074a2;
 $WP--link-color-hover: #2ea2cc;
 
+// WordPress Customize variables
 $WPcustomize--section-padding-horizontal: 20px; // k6wptight-cs from .accordion-section-content {} \\
 $WPcustomize--section-padding-top: 10px; // k6wptight-cs from .accordion-section-content {} \\
-
-  // color: #23282d;
-  // background: #f5f5f5;
-
 $WPcustomize--sidebar-width: 300px;
 $WPcustomize--sidebar-inner-width: $WPcustomize--sidebar-width - ($WPcustomize--section-padding-horizontal * 2);
 $WPcustomize--header-height: 45px;
@@ -47,10 +41,34 @@ $WPcustomize--btn-border-radius: 3px;
 $WPcustomize--btn-box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0,0,0,.08);
 $WPcustomize--btn-box-shadow-activetoggle: inset 0 2px 2px rgba(0,0,0,.08), 0 1px 0 rgba(0,0,0,.08); // we made this up
 
+/**
+ * Variables: Customize Plus
+ *
+ */
+
 // Customize generic
+$base--logo-bg: #464646;
 $toggle--width: 30px;
 
-// Customize Controls
+// Customize UI: Popovers
+$popover--bg: #fff;
+$popover--box-shadow-distance: 0 10px;
+$popover--box-shadow-blur: 10px;
+$popover--box-shadow-color: rgba(0,0,0,.1);
+$popover--box-shadow: $popover--box-shadow-distance $popover--box-shadow-blur $popover--box-shadow-color;
+$popover--border-color-fallback: #ddd;
+$popover--border-color: rgba(0,0,0,.2);
+
+// Customize UI: select (plugins related values)
+$plugin--select-input-disabled-bg: #f4f4f4;
+$plugin--select-option-padding: 6px;
+$plugin--select-option-highlight-bg: #5897fb;
+
+// Customize UI: slider (plugins related values)
+$plugin--slider-handle-size: 13px;
+$plugin--slider-handle-border-width: 1px;
+
+// Customize Plus Controls
 $control--color-light: #999;
 $control--bg: #fff;
 $control--bg-focus: #ffc;
@@ -61,27 +79,10 @@ $control--spacing-top: 6px;
 $control--spacing-bottom: 10px;
 $control--spacing-horizontal: $WPcustomize--section-padding-horizontal;
 
-// Customize Extras menu
+// Customize Plus component: Extras menu
 $extras--btn-size: $control--spacing-horizontal;
 
-// Customize Popovers
-$popover--bg: #fff;
-$popover--box-shadow-distance: 0 10px;
-$popover--box-shadow-blur: 10px;
-$popover--box-shadow-color: rgba(0,0,0,.1);
-$popover--box-shadow: $popover--box-shadow-distance $popover--box-shadow-blur $popover--box-shadow-color;
-$popover--border-color-fallback: #ddd;
-$popover--border-color: rgba(0,0,0,.2);
-
-// Customize Plugins related values
-$plugin--select-input-disabled-bg: #f4f4f4;
-$plugin--select-option-padding: 6px;
-$plugin--select-option-highlight-bg: #5897fb;
-
-$plugin--slider-handle-size: 13px;
-$plugin--slider-handle-border-width: 1px;
-
-// Customize Screenpreview
+// Customize Plus component: Screenpreview
 $screenpreview--btn-padding-top: 5px;
 $screenpreview--btn-padding-horizontal: 4px;
 $screenpreview--device-margin-vertical: 20px;
@@ -92,3 +93,7 @@ $screen--sm-width: 576px;
 $screen--sm-height: 768px;
 $screen--xs-width: 300px;
 $screen--xs-height: 480px;
+
+// Customize Plus component: Compiler
+$compiler--feedback-height: 25px;
+$compiler--feedback-bottom: $WPcustomize--footer-height - 7;
