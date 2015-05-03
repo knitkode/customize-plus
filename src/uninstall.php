@@ -19,10 +19,11 @@
  * For more information, see the following discussion:
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
- * @link       http://example.com
- * @since      1.0.0
  *
- * @package    Plugin_Name
+ * @package    Customize_Plus
+ * @subpackage Core
+ *
+ * @since      1.0.0
  */
 
 // If uninstall not called from WordPress, then exit.
