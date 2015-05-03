@@ -15,5 +15,5 @@ class PWPcp_Customize_Section_Search extends PWPcp_Customize_Section_Base {
 	 * @access public
 	 * @var string
 	 */
-	public $type = 'k6_search';
+	public $type = 'pwpcp_search';
 }

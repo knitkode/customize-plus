@@ -6,7 +6,7 @@
  */
 class PWPcp_Customize_Control_Multicheck extends PWPcp_Customize_Control_Base_Radio {
 
-	public $type = 'k6cp_multicheck';
+	public $type = 'pwpcp_multicheck';
 
 	/**
 	 * Override here beacause we need to decode the value (is a JSON)
@@ -27,7 +27,7 @@ class PWPcp_Customize_Control_Multicheck extends PWPcp_Customize_Control_Base_Ra
 	protected function js_tpl_choice() {
 		?>
 			<label{{{ tipAttrs }}}>
-				<input type="checkbox" name="_customize-k6cp_multicheck-{{ data.id }}" value="{{ val }}" <# if (data.value.indexOf(val) !== -1) { #>checked<# } #>>{{{ label }}}
+				<input type="checkbox" name="_customize-pwpcp_multicheck-{{ data.id }}" value="{{ val }}" <# if (data.value.indexOf(val) !== -1) { #>checked<# } #>>{{{ label }}}
 			</label>
 		<?php
 	}

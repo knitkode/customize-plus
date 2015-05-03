@@ -6,7 +6,7 @@
  */
 class PWPcp_Customize_Control_Buttonset extends PWPcp_Customize_Control_Base_Radio {
 
-	public $type = 'k6cp_buttonset';
+	public $type = 'pwpcp_buttonset';
 
 	/**
 	 * Render template for choice displayment.
@@ -15,7 +15,7 @@ class PWPcp_Customize_Control_Buttonset extends PWPcp_Customize_Control_Base_Rad
 	 */
 	protected function js_tpl_choice () {
 		?>
-			<input id="{{ id }}" type="radio" value="{{ val }}" name="_customize-k6cp_buttonset-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
+			<input id="{{ id }}" type="radio" value="{{ val }}" name="_customize-pwpcp_buttonset-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
 			<label for="{{ id }}" onclick=""{{{ tipAttrs }}}>{{{ label }}}</label>
 		<?php
 	}

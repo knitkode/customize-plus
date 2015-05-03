@@ -9,7 +9,7 @@
  */
 class PWPcp_Customize_Control_Radio_Image extends PWPcp_Customize_Control_Base_Radio {
 
-	public $type = 'k6cp_radio_image';
+	public $type = 'pwpcp_radio_image';
 
 	/**
 	 * Render template for choice displayment.
@@ -21,7 +21,7 @@ class PWPcp_Customize_Control_Radio_Image extends PWPcp_Customize_Control_Base_R
 	 */
 	protected function js_tpl_choice() {
 		?>
-			<input id="{{ id }}" class="k6-radio-image" type="radio" value="{{ val }}" name="_customize-k6cp_radio_image-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
+			<input id="{{ id }}" class="k6-radio-image" type="radio" value="{{ val }}" name="_customize-pwpcp_radio_image-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
 			<label for="{{ id }}"{{{ tipAttrs }}}>
 				<# var imgUrl = choice.img_custom ? choice.img_custom : '<?php echo esc_url( PWPcp_PLUGIN_URL . 'assets/images/' ); ?>' + choice.img + '.png'; #>
 				<img class="k6-tip" src="{{ imgUrl }}" title="{{{ label }}}">

@@ -53,4 +53,4 @@ var ControlSelect = ControlBase.extend({
     }
   }
 });
-api.controlConstructor['k6cp_select'] = ControlSelect;
+api.controlConstructor['pwpcp_select'] = ControlSelect;

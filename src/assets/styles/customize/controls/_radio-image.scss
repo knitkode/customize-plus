@@ -2,7 +2,7 @@
  * Control Radio Image
  *
  */
-.customize-control-k6cp_radio_image {
+.customize-control-PWPcp_radio_image {
 
   label {
     margin-right: 3px;
@@ -38,7 +38,7 @@ input[type=radio].k6-radio-image {
    */
   &:checked + label img {
     border-color: #aaa;
-    opacity: 1; // k6ie8 needs support for this \\
+    opacity: 1; // @@ie8 needs support for this \\
   }
 
   /**

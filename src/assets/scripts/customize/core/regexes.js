@@ -106,16 +106,16 @@ var Regexes = {
    * @const
    * @type {RegExp}
    */
-  // k6todo allow floats? \\
+  // @@todo allow floats? \\
   sizeWithUnit: /^(\d+)(px|%|em|rem)$/,
 
 
 
-  // k6todo unit tests on regex101.com...
+  // @@todo unit tests on regex101.com...
   colorHex_test: /^#[0-9A-F]{6}$|^#[0-9A-F]{3}$/i,
   colorRgbaAlpha_match: /^rgba\(\d+,\d+,\d+,(0?\.[0-9]*[1-9][0-9]*|[01])\)$/,
   colorRgba_test: /^rgba\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0?\.[0-9]*[1-9][0-9]*|[01])\s*\)$/
 };
 
 // export to public api
-k6cp['Regexes'] = Regexes;
+PWPcp['Regexes'] = Regexes;

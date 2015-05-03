@@ -39,7 +39,7 @@ class MyPlugin {
 								),
 								'control' => array(
 									'label' => __( 'MyPlugin option control', 'pkgTextdomain' ),
-									'type' => 'k6cp_radio',
+									'type' => 'pwpcp_radio',
 									'choices' => array(
 										'one' => __( 'One', 'pkgTextdomain' ),
 										'two' => __( 'Two', 'pkgTextdomain' ),

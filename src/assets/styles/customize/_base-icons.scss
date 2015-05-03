@@ -12,7 +12,7 @@
  */
 $icons-opacity: .4;
 
-@mixin k6cp-icon ( $icon_code ) {
+@mixin PWPcp-icon ( $icon_code ) {
   content: "#{$icon_code}";
   position: relative;
   top: 4px;
@@ -30,12 +30,12 @@ $icons-opacity: .4;
 
   // Widgets Customizer (plugin embedded in core)
   &-widgets > h3:before, &-widgets .panel-title:before {
-    @include k6cp-icon('\f116');
+    @include PWPcp-icon('\f116');
   }
 
-  // Menu Customizer Plugin (it will probably be embedded in core) // k6pluginsupport \\
+  // Menu Customizer Plugin (it will probably be embedded in core) // @@pluginsupport \\
   &-menus > h3:before, &-menus .panel-title:before {
-    @include k6cp-icon('\f333');
+    @include PWPcp-icon('\f333');
   }
 }
 
@@ -44,10 +44,10 @@ $icons-opacity: .4;
  */
 #accordion-section {
 
-  // Customize Posts Plugin // k6pluginsupport \\
+  // Customize Posts Plugin // @@pluginsupport \\
   // https://wordpress.org/plugins/customize-posts/
   &-posts > h3:before {
-    @include k6cp-icon('\f464');
+    @include PWPcp-icon('\f464');
   }
 }
 

@@ -49,7 +49,7 @@ gulp.task('_base-images', function() {
       '!' + PATHS.src.images + '*.svg', // svg are inlined in css
       '!' + PATHS.src.images + '*.dev*' // exclude dev images (kind of sketches)
     ])
-    // k6disabled for now, too slow while developing, we should fix it \\
+    // @@temp disabled for now, too slow while developing, we should fix it \\
     // .pipe($.if(CONFIG.isDist, $.cached(
     //   $.imagemin({
     //     progressive: true,

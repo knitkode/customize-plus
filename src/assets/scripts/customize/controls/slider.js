@@ -25,7 +25,7 @@ var ControlSlider = ControlBase.extend({
     var number;
     var unit;
     var _isValidNumber = function (value) {
-      return _.isNumber(value) && value >= attrs.min && value <= attrs.max; // k6ie8 \\
+      return _.isNumber(value) && value >= attrs.min && value <= attrs.max; // @@ie8 \\
     };
     var _isValidUnit = function (value) {
       return params.units.indexOf(value) !== -1;
@@ -33,7 +33,7 @@ var ControlSlider = ControlBase.extend({
     var matches = Regexes.sizeWithUnit.exec(newValue);
 
     // if it has found a number
-    if (matches && _isValidNumber(parseInt(matches[1], 10))) { // k6todo allow float ? \\
+    if (matches && _isValidNumber(parseInt(matches[1], 10))) { // @@todo allow float ? \\
       number = matches[1];
     // otherwise check if the newValue is an ok number
     } else if (_isValidNumber(newValue)) {
@@ -78,7 +78,7 @@ var ControlSlider = ControlBase.extend({
     this.$inputSlider.slider('value', params.number);
     // update unit picker
     this.$inputUnits.removeClass('k6-current').filter(function () {
-      return (this.textContent || this.innerText) === params.unit; // k6ie8 \\
+      return (this.textContent || this.innerText) === params.unit; // @@ie8 \\
     }).addClass('k6-current');
   },
   /**
@@ -95,7 +95,7 @@ var ControlSlider = ControlBase.extend({
     // if we are programmatically changing the control value
     // for instance through js (during import, debugging, etc.)
     this.setting.bind(function () {
-      this._updateUI(); // k6todo, this updates the UI also when the value comes ... from the UI \\
+      this._updateUI(); // @@todo, this updates the UI also when the value comes ... from the UI \\
     }.bind(this));
   },
   /**
@@ -126,7 +126,7 @@ var ControlSlider = ControlBase.extend({
      */
     if (params.units.length > 1) {
       $inputUnits.on('click', function () {
-        var value = this.textContent || this.innerText; // k6ie8 \\
+        var value = this.textContent || this.innerText; // @@ie8 \\
         $inputUnits.removeClass('k6-current');
         this.className += ' k6-current';
         setting.set(value);
@@ -170,11 +170,11 @@ var ControlSlider = ControlBase.extend({
     //     $inputSlider.slider('value', params.number);
     //     // update unit picker
     //     $inputUnits.removeClass('k6-current').filter(function () {
-    //       return (this.textContent || this.innerText) === params.unit; // k6ie8 \\
+    //       return (this.textContent || this.innerText) === params.unit; // @@ie8 \\
     //     }).addClass('k6-current');
     //   });
     // }
   }
 });
 
-api.controlConstructor['k6cp_slider'] = ControlSlider;
+api.controlConstructor['pwpcp_slider'] = ControlSlider;

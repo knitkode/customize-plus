@@ -1,4 +1,4 @@
-/* exprted: SectionBase */
+/* exported: SectionBase */
 
 /**
  * Section Base class
@@ -53,4 +53,4 @@ var SectionBase = api.Section.extend({
   }
 });
 
-// api.sectionConstructor['k6_search'] = SectionBase;
+// api.sectionConstructor['PWPcp_search'] = SectionBase;

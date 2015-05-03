@@ -34,10 +34,10 @@
 }
 // always position the tooltip just at the edge
 // of the customize sidebar, overriding the js positioning
-// k6wptight-css \\
+// @@wptight-css \\
 .wp-customizer .webui-popover {
-  // padding-left: 20px; // k6wptight-css \\ // k6doubt..what to do here for help and guides, we'll see \\
-  // left: 279px !important; // k6doubt..what to do here for help and guides, we'll see \\
+  // padding-left: 20px; // @@wptight-css \\ // @@doubt..what to do here for help and guides, we'll see \\
+  // left: 279px !important; // @@doubt..what to do here for help and guides, we'll see \\
 }
 
 // show spinner behind iframe in tip popover

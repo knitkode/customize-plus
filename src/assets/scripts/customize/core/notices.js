@@ -34,4 +34,4 @@ var Notices = (function () {
 })();
 
 // export to public api
-k6cp['Notices'] = Notices;
+PWPcp['Notices'] = Notices;

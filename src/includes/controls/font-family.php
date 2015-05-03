@@ -6,7 +6,7 @@
  */
 class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 
-	public $type = 'k6cp_font_family';
+	public $type = 'pwpcp_font_family';
 
 	/**
 	 * [enqueue description]
@@ -22,7 +22,7 @@ class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 */
 	protected function add_to_json() {
-		$this->json['value'] = k6cp_sanitize_font_families( $this->value() );
+		$this->json['value'] = pwpcp_sanitize_font_families( $this->value() );
 	}
 
 	/**

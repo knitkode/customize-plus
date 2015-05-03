@@ -32,10 +32,10 @@ var Utils = (function () {
         // we click on this link from a search result
         // try/catch because search is not always enabled
         try {
-          k6cp['components']['Search'].deactivate();
+          PWPcp['components']['Search'].deactivate();
         } catch (e) {}
 
-        controlToFocus.focus(); // k6doubt focus or expand ? \\
+        controlToFocus.focus(); // @@doubt focus or expand ? \\
         controlToFocus.container.addClass('k6-control-focused');
         setTimeout(function () {
           controlToFocus.container.removeClass('k6-control-focused');
@@ -78,4 +78,4 @@ var Utils = (function () {
 })();
 
 // export to public api
-k6cp['Utils'] = Utils;
+PWPcp['Utils'] = Utils;

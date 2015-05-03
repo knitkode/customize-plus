@@ -54,7 +54,7 @@ var ControlBaseDummy = api.Control.extend({
     // PWPcp_Customize_Control_Dummy php class). This remove the unnecessary
     // presence of the <li> micro template in the _wpCustomizeSettings JSON.
     // In addition the type of control is printed as a class name.
-    control.container = $('<li class="customize-control customize-control-k6_dummy ' + control.params.type + '"></li>');
+    control.container = $('<li class="customize-control customize-control-PWPcp_dummy ' + control.params.type + '"></li>');
 
     // delete setting, unfortunately we need to create to make this fake control work.
     // We do it through the PWPcp_Customize_Setting_Dummy php class.
@@ -88,4 +88,4 @@ var ControlBaseDummy = api.Control.extend({
   dropdownInit: function() {}
 });
 
-api.controlConstructor['k6_dummy'] = ControlBaseDummy;
+api.controlConstructor['PWPcp_dummy'] = ControlBaseDummy;

@@ -61,7 +61,7 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 			$this->panels = (array) $panels;
 			$this->settings_defaults = (array) self::get_settings_defaults_from_panels( $panels );
 
-			add_action( 'k6cp/customize/ready', array( $this, 'register_panels' ) );
+			add_action( 'PWPcp/customize/ready', array( $this, 'register_panels' ) );
 
 			add_action( 'customize_controls_print_styles', array( $this, 'maybe_print_css_icons' ), 999 );
 		}
@@ -108,7 +108,7 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 								$settings_defaults[ $setting['id'] ] = $setting['default'];
 							}
 							else {
-								// k6todo throw error here, a default is required \\
+								// @@todo throw error here, a default is required \\
 							}
 						}
 					}
@@ -155,7 +155,7 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 		 */
 		public function register_panels() {
 			$this->add_panels( $this->panels, $this->option_prefix );
-			// do_action( 'k6cp/customize/registering_panels_' . $this->option_prefix );
+			// do_action( 'PWPcp/customize/registering_panels_' . $this->option_prefix );
 		}
 
 		/**
@@ -186,8 +186,8 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 					$panel_args['description'] = $panel['description'];
 				}
 				$panel_args['priority'] = $priority_panel;
-				// $panel_args['capability'] = 'edit_theme_options'; // k6tocheck \\
-				// $panel_args['theme_supports'] = ''; // k6tocheck \\
+				// $panel_args['capability'] = 'edit_theme_options'; // @@tocheck \\
+				// $panel_args['theme_supports'] = ''; // @@tocheck \\
 
 				// add panel dashicon if specified
 				if ( isset( $panel['dashicon'] ) ) {
@@ -228,7 +228,7 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 					$section_args['description'] = $section['description'];
 				}
 				$section_args['priority'] = $priority_section;
-				// $section_args['capability'] = 'edit_theme_options'; // k6tocheck \\
+				// $section_args['capability'] = 'edit_theme_options'; // @@tocheck \\
 				$section_args['panel'] = $panel_id;
 
 				// add section dashicon if specified
@@ -277,13 +277,13 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 						// If 'option' is used as setting type its value will be stored in an entry in
 						// {prefix}_options table.
 						if ( isset( $setting_args['type'] ) && 'option' == $setting_args['type'] ) {
-							$option_id = $prefix . '[' . $option_id . ']'; // k6tobecareful this is tight to customize-component-import.js \\
+							$option_id = $prefix . '[' . $option_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
 						}
 					}
 
 					// add default callback function, if none is defined
 					if ( ! isset( $setting_args['sanitize_callback'] ) ) {
-						$setting_args['sanitize_callback'] = 'k6cp_sanitize_callback';
+						$setting_args['sanitize_callback'] = 'pwpcp_sanitize_callback';
 					}
 					// Add setting to WordPress
 					$wp_customize->add_setting( $option_id, $setting_args );
@@ -311,13 +311,13 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 					// if the desired class doesn't exist just use the plain WordPress API
 					else {
 						$wp_customize->add_control( $option_id, $control_args );
-						// k6todo error (wrong api implementation, missing class) \\
+						// @@todo error (wrong api implementation, missing class) \\
 					}
 				}
 				// if the desired control type is not specified just use the plain WordPress API
 				else {
 					$wp_customize->add_control( $option_id, $control_args );
-					// k6todo error (wrong api implementation, missing control type) \\
+					// @@todo error (wrong api implementation, missing control type) \\
 				}
 			}
 		}
@@ -353,7 +353,7 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 		 * @param [type] $dashicon_code [description]
 		 */
 		private function add_css_section_dashicon( $section_id = '', $dashicon_code ) {
-			return; // k6disabled for now \\
+			return; // @@temp disabled for now \\
 			// the dashicon needs to be an integer, we add the `\f`
 			if ( ! absint( $dashicon_code ) ) {
 				return;
@@ -367,7 +367,7 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 		 */
 		public function maybe_print_css_icons() {
 			if ( $this->css_icons ) {
-				echo '<style id="k6cp-customize-plus-icons">' . $this->css_icons . '</style>' . "\n";
+				echo '<style id="PWPcp-customize-plus-icons">' . $this->css_icons . '</style>' . "\n";
 				// wp_add_inline_style( 'dashicons', $this->css_icons );
 			}
 		}

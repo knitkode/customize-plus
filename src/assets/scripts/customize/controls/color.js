@@ -194,7 +194,7 @@ var ControlColor = ControlBase.extend({
     // for instance through js (during import, debugging, etc.)
     this.setting.bind(function (value) {
       // if (value !== this.inputExpr.value) {
-        this._apply(value, 'api'); // k6todo \\
+        this._apply(value, 'api'); // @@todo \\
       // }
     }.bind(this));
   },
@@ -256,7 +256,7 @@ var ControlColor = ControlBase.extend({
     // with the common options between a picker
     // with 'alpha' allowed and one without
     $picker.val(initialColor).wpColorPicker({
-      palettes: false // k6doubt override wp native behavior or not? \\
+      palettes: false // @@doubt override wp native behavior or not? \\
     });
 
     // enable alpha control if allowed
@@ -285,7 +285,7 @@ var ControlColor = ControlBase.extend({
     // on Color Custom button toggle, this code is here because we
     // need to target the button after having initialized the color picker
     // which does its own DOM manipulations and create the toggle
-    var btnCustom = container.getElementsByClassName('wp-color-result')[0]; // k6wptight selector \\
+    var btnCustom = container.getElementsByClassName('wp-color-result')[0]; // @@wptight selector \\
     btnCustom.onclick = function () {
       // self._setExState('custom');
       // if we are clicking on custom from a 'transparent' mode
@@ -300,8 +300,8 @@ var ControlColor = ControlBase.extend({
       }
     };
     // change button texts through title attribute and data attribute
-    btnCustom.title = k6cp['l10n']['customColor'];
-    btnCustom.setAttribute('data-current', k6cp['l10n']['customColor']);
+    btnCustom.title = PWPcp['l10n']['customColor'];
+    btnCustom.setAttribute('data-current', PWPcp['l10n']['customColor']);
     // set the toggle as control property, we're gonna reuse it
     /** @type {jQuery} */
     this.$btnCustom = $(btnCustom);
@@ -309,7 +309,7 @@ var ControlColor = ControlBase.extend({
   /**
    * [_applyToPicker description]
    * In a try catch because not always we have the wpColorPicker
-   * already initialized. // k6todo maybe htere is a better way... \\
+   * already initialized. // @@todo maybe htere is a better way... \\
    *
    * @param  {[type]} newColor [description]
    * @return {[type]}          [description]
@@ -369,4 +369,4 @@ var ControlColor = ControlBase.extend({
   }
 });
 
-api.controlConstructor['k6cp_color'] = ControlColor;
+api.controlConstructor['pwpcp_color'] = ControlColor;

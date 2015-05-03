@@ -6,7 +6,7 @@
  */
 class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 
-	public $type = 'k6cp_color';
+	public $type = 'pwpcp_color';
 
 	/**
 	 * Enqueue scripts/styles for the color picker.
@@ -31,8 +31,8 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 
 		// add input_attrs as data params (allowAlpha, disallowTransparent)
 		foreach ( $this->input_attrs as $attr_key => $attr_value ) {
-			// 'allowAlpha' => true // k6todo \\
-			// 'disallowTransparent' => true // k6todo \\
+			// 'allowAlpha' => true // @@todo \\
+			// 'disallowTransparent' => true // @@todo \\
 			$this->json[ $attr_key ] = $attr_value;
 		}
 
@@ -47,7 +47,7 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 		}
 
 		// check for a hex color string
-		$custom_color_hex = k6cp_sanitize_hex_color( $value );
+		$custom_color_hex = pwpcp_sanitize_hex_color( $value );
 		if ( $custom_color_hex ) {
 			// hex color is valid, so we have a Custom Color
 			$this->json['valueCSS'] = $custom_color_hex;
@@ -55,7 +55,7 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 		}
 
 		// check for a rgba color string
-		$custom_color_rgba = k6cp_sanitize_alpha_color( $value );
+		$custom_color_rgba = pwpcp_sanitize_alpha_color( $value );
 		if ( $custom_color_rgba ) {
 			// hex color is valid, so we have a Custom Color
 			$this->json['valueCSS'] = $custom_color_rgba;

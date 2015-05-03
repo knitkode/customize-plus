@@ -41,7 +41,7 @@ var ControlBase = api.Control.extend({
     advancedClass = control.params.advanced ? ' k6-control-advanced' : '';
     control.container = $('<li id="customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' ) +
       '" class="customize-control k6-control customize-control-' + control.params.type
-      + advancedClass + '"></li>'); // k6tobecareful check render() in PWPcp_Customize_Control_Base \\
+      + advancedClass + '"></li>'); // @@tobecareful check render() in PWPcp_Customize_Control_Base \\
 
     // save a reference of the raw DOM node, we're gonna use it more
     // than the jquety object `container` (which we can't change, because it's
@@ -99,7 +99,7 @@ var ControlBase = api.Control.extend({
     control.onInit();
 
     /**
-     * Bind setting change // k6todo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \\
+     * Bind setting change // @@todo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \\
      *
      * propably it s better to extend setting class and add a memory store with a maximum queu (maybe 25)
      * and go back in the history there. we need also redo then...complicate.
@@ -231,7 +231,7 @@ var ControlBase = api.Control.extend({
     var btnHide = container.getElementsByClassName('k6-extras-hide')[0];
     // value variables, uses closure
     var setting = this.setting;
-    var defaultValue = this.settings['default'](); // k6todo-uglycode \\
+    var defaultValue = this.settings['default'](); // @@todo-uglycode \\
     var factoryValue = this.params.original;
     // state
     var isOpen = false;
@@ -341,14 +341,14 @@ var ControlBase = api.Control.extend({
      * Set on the hide_controls control a duplicate free
      * array with the current control id merged in.
      *
-     * // k6todo, maybe don't use union here but use it in the `_validate`
+     * // @@todo, maybe don't use union here but use it in the `_validate`
      * method of the hide_controls control. \\
      */
     if (btnHide) {
       var self = this;
       btnHide.onclick = function () {
-        // k6tobecareful this is tight to class-customize.php $setting_control_id =
-        // K6CP::$OPTIONToHideS_PREFIX . '[' . $field_key . ']'; \\
+        // @@tobecareful this is tight to class-customize.php $setting_control_id =
+        // PWPcp::$OPTIONToHideS_PREFIX . '[' . $field_key . ']'; \\
         var controlToHide = api.control('k6[hide-controls]');
         if (controlToHide) {
           controlToHide.setting.set(_.union(controlToHide.setting(), [self.id]));
@@ -361,7 +361,7 @@ var ControlBase = api.Control.extend({
           var secondsEl = container.getElementsByClassName('k6-timer')[0];
           var timerHideUndo = setInterval(function () {
             secondsTimeout--;
-            secondsEl.innerHTML = secondsTimeout + 's'; // k6ie8-textContent would be enough \\
+            secondsEl.innerHTML = secondsTimeout + 's'; // @@ie8-textContent would be enough \\
             if (secondsTimeout === 0) {
               btnHideUndo.parentNode.removeChild(btnHideUndo);
               clearInterval(timerHideUndo);
@@ -382,7 +382,7 @@ var ControlBase = api.Control.extend({
 });
 
 // export to public api
-k6cp['controls']['Base'] = ControlBase;
+PWPcp['controls']['Base'] = ControlBase;
 
 /**
  * Fix autofocus

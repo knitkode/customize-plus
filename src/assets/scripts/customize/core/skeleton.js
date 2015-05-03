@@ -16,7 +16,7 @@ var Skeleton = (function () {
 
     WpTight.el.header.append(
       '<span id="k6-back" class="k6-toggle">' +
-        '<span class="screen-reader-text">"' + k6cp['l10n']['back'] + '"</span>' +
+        '<span class="screen-reader-text">"' + PWPcp['l10n']['back'] + '"</span>' +
       '</span>'
     );
   }
@@ -60,7 +60,7 @@ var Skeleton = (function () {
         temp.innerHTML = tpl.innerHTML;
         wrapper.appendChild(temp.firstElementChild || temp.firstChild);
       } else {
-        // k6todo api error handling, template doesn't exist
+        // @@todo api error handling, template doesn't exist
       }
     },
     /**
@@ -77,4 +77,4 @@ var Skeleton = (function () {
 })();
 
 // export to public api
-k6cp['Skeleton'] = Skeleton;
+PWPcp['Skeleton'] = Skeleton;

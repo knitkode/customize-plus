@@ -12,14 +12,14 @@
  * @license      pkgLicenseUrl
  */
 
-// k6cptemp, this function is more an util than a sanitize function \\
-if ( ! function_exists( 'k6cp_compress_html' ) ) :
+// PWPcptemp, this function is more an util than a sanitize function \\
+if ( ! function_exists( 'pwpcp_compress_html' ) ) :
 	/**
-	 * [k6cp_compress_html description]
+	 * [pwpcp_compress_html description]
 	 * @param  [type] $buffer [description]
 	 * @return [type]         [description]
 	 */
-	function k6cp_compress_html( $buffer ) {
+	function pwpcp_compress_html( $buffer ) {
 		return preg_replace( '/\s+/', ' ', str_replace( array( "\n", "\r", "\t" ), '', $buffer ) );
 	}
 endif;
@@ -32,23 +32,23 @@ endif;
  * @since 0.0.1
  */
 
-if ( ! function_exists( 'k6cp_sanitize_callback' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_callback' ) ) :
 	/**
 	 * Theme Customizer sanitization callback function
 	 */
-	function k6cp_sanitize_callback( $input ) {
+	function pwpcp_sanitize_callback( $input ) {
 		return wp_kses_post( $input );
 	}
 endif;
 
 
-if ( ! function_exists( 'k6cp_sanitize_alpha' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_alpha' ) ) :
 	/**
-	 * [k6cp_sanitize_alpha description]
+	 * [pwpcp_sanitize_alpha description]
 	 * @param  [type] $value [description]
 	 * @return [type]        [description]
 	 */
-	function k6cp_sanitize_alpha( $value ) {
+	function pwpcp_sanitize_alpha( $value ) {
 		if ( is_numeric( $value ) && $value >= 0 && $value <= 1 ) {
 			return $value;
 		}
@@ -56,7 +56,7 @@ if ( ! function_exists( 'k6cp_sanitize_alpha' ) ) :
 endif;
 
 
-if ( ! function_exists( 'k6cp_sanitize_font_families' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_font_families' ) ) :
 	/**
 	 * Sanitize font families.
 	 *
@@ -66,7 +66,7 @@ if ( ! function_exists( 'k6cp_sanitize_font_families' ) ) :
 	 * @param  string $value
 	 * @return string
 	 */
-	function k6cp_sanitize_font_families( $value ) { // k6cptofinish, check that the values are valid font family names \\
+	function pwpcp_sanitize_font_families( $value ) { // @@todo to finish, check that the values are valid font family names \\
 		$font_families_sanitized = array();
 
 		// treat a string
@@ -91,25 +91,25 @@ if ( ! function_exists( 'k6cp_sanitize_font_families' ) ) :
 endif;
 
 
-if ( ! function_exists( 'k6cp_sanitize_font_weight' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_font_weight' ) ) :
 	/**
-	 * [k6cp_sanitize_font_weight description]
+	 * [pwpcp_sanitize_font_weight description]
 	 * @param  [type] $value [description]
 	 * @return [type]        [description]
 	 */
-	function k6cp_sanitize_font_weight( $value ) { // k6todo \\
+	function pwpcp_sanitize_font_weight( $value ) { // @@todo \\
 		return $value;
 	}
 endif;
 
 
-if ( ! function_exists( 'k6cp_sanitize_number' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_number' ) ) :
 	/**
-	 * [k6cp_sanitize_number description]
+	 * [pwpcp_sanitize_number description]
 	 * @param  [type] $value [description]
 	 * @return [type]        [description]
 	 */
-	function k6cp_sanitize_number( $value ) {
+	function pwpcp_sanitize_number( $value ) {
 		if ( is_numeric( $value ) && $value >= 0 ) {
 			return $value;
 		}
@@ -117,18 +117,18 @@ if ( ! function_exists( 'k6cp_sanitize_number' ) ) :
 endif;
 
 
-if ( ! function_exists( 'k6cp_sanitize_unit' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_unit' ) ) :
 	/**
-	 * [k6cp_sanitize_unit description]
+	 * [pwpcp_sanitize_unit description]
 	 * @param  [type] $value [description]
 	 * @return [type]        [description]
 	 */
-	function k6cp_sanitize_unit( $value ) { // k6todo \\
+	function pwpcp_sanitize_unit( $value ) { // @@todo \\
 		// $units_allowed = array( 'px', 'em', '%', 'rem' );
 		// if ( ! in_array( $extracted_unit, $units_allowed ) ) {
 		// 	$extracted_unit = 'px';
 		// }
-		// if ( strpos( $value, 'are' ) !== false ) { // k6todo what is this?? \\
+		// if ( strpos( $value, 'are' ) !== false ) { // @@todo what is this?? \\
 		// 	echo 'true';
 		// }
 		return $value;
@@ -136,51 +136,51 @@ if ( ! function_exists( 'k6cp_sanitize_unit' ) ) :
 endif;
 
 
-if ( ! function_exists( 'k6cp_sanitize_unit_px' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_unit_px' ) ) :
 	/**
-	 * [k6cp_sanitize_unit_px description]
+	 * [pwpcp_sanitize_unit_px description]
 	 * @param  [type] $value [description]
 	 * @return [type]        [description]
 	 */
-	function k6cp_sanitize_unit_px( $value ) { // k6todo \\
+	function pwpcp_sanitize_unit_px( $value ) { // @@todo \\
 		return $value;
 	}
 endif;
 
 
-if ( ! function_exists( 'k6cp_sanitize_unit_percent' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_unit_percent' ) ) :
 	/**
-	 * [k6cp_sanitize_unit_percent description]
+	 * [pwpcp_sanitize_unit_percent description]
 	 * @param  [type] $value [description]
 	 * @return [type]        [description]
 	 */
-	function k6cp_sanitize_unit_percent( $value ) { // k6todo \\
+	function pwpcp_sanitize_unit_percent( $value ) { // @@todo \\
 		return $value;
 	}
 endif;
 
 
-if ( ! function_exists( 'k6cp_sanitize_unit_px_percent' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_unit_px_percent' ) ) :
 	/**
-	 * [k6cp_sanitize_unit_px_percent description]
+	 * [pwpcp_sanitize_unit_px_percent description]
 	 * @param  [type] $value [description]
 	 * @return [type]        [description]
 	 */
-	function k6cp_sanitize_unit_px_percent( $value ) { // k6todo \\
+	function pwpcp_sanitize_unit_px_percent( $value ) { // @@todo \\
 		return $value;
 	}
 endif;
 
 
-if ( ! function_exists( 'k6cp_sanitize_hex_color' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_hex_color' ) ) :
 	/**
-	 * [k6cp_sanitize_hex_color description]
+	 * [pwpcp_sanitize_hex_color description]
 	 * check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or 'CCC'
 	 *
 	 * @param  [type] $input [description]
 	 * @return [type]        [description]
 	 */
-	function k6cp_sanitize_hex_color( $input ) {
+	function pwpcp_sanitize_hex_color( $input ) {
 		if ( preg_match( '/^#([A-Fa-f0-9]{3}){1,2}$/', $input ) ) {
 			return $input;
 		}
@@ -193,39 +193,39 @@ if ( ! function_exists( 'k6cp_sanitize_hex_color' ) ) :
 endif;
 
 
-if ( ! function_exists( 'k6cp_sanitize_color' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_color' ) ) :
 	/**
-	 * [k6cp_sanitize_color description]
+	 * [pwpcp_sanitize_color description]
 	 * @param  [type] $input [description]
 	 * @return [type]        [description]
 	 */
-	function k6cp_sanitize_color( $input ) {
-		// k6todo trim... \\
+	function pwpcp_sanitize_color( $input ) {
+		// @@todo trim... \\
 		// check for transparent color
 		if ( 'transparent' === $input ) {
 			return $input;
 		}
 		// check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000'
-		else if ( k6cp_sanitize_hex_color( $input ) ) {
+		else if ( pwpcp_sanitize_hex_color( $input ) ) {
 			// hex color is valid, return it normalized
-			return k6cp_sanitize_hex_color( $input );
+			return pwpcp_sanitize_hex_color( $input );
 		}
 	}
 endif;
 
 
-if ( ! function_exists( 'k6cp_sanitize_alpha_color' ) ) :
+if ( ! function_exists( 'pwpcp_sanitize_alpha_color' ) ) :
 	/**
-	 * [k6cp_sanitize_alpha_color description]
+	 * [pwpcp_sanitize_alpha_color description]
 	 * @param  [type] $input [description]
 	 * @return [type]        [description]
 	 */
-	function k6cp_sanitize_alpha_color( $input ) {
+	function pwpcp_sanitize_alpha_color( $input ) {
 		// check for rgba color
 		if ( preg_match( '/^rgba\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0?\.[0-9]*[1-9][0-9]*|[01])\s*\)$/', $input ) ) {
 			return $input;
 		} else {
-			k6cp_sanitize_color( $input );
+			pwpcp_sanitize_color( $input );
 		}
 	}
 endif;

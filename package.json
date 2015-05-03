@@ -4,14 +4,14 @@
   "description": "Empower and extend the WordPress customize.",
   "config": {
     "namePretty": "Customize Plus",
-    "nameShort": "k6cp",
+    "nameShort": "PWPcp",
     "startYear": 2014
   },
   "homepage": "http://pluswp.com/customize-plus",
   "author": {
     "name": "kuus",
-    "email": "kunderikuus@gmail.com",
-    "url": "http://kunderikuus.net/"
+    "email": "dev@pluswp.com",
+    "url": "http://pluswp.com/"
   },
   "license": {
     "type": "Copyright (C) kunderi kuus, Inc - All Rights Reserved",

@@ -5,7 +5,7 @@
  *
  * All custom classes are collected in this file by an automated gulp task.
  *
- * @link(docs, k6todolink)
+ * @link(docs, @@todolink)
  *
  * @package      pkgNamePretty
  * @subpackage   classes

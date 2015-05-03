@@ -9,4 +9,4 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-api.controlConstructor['k6cp_buttonset'] = ControlBaseRadio;
+api.controlConstructor['pwpcp_buttonset'] = ControlBaseRadio;

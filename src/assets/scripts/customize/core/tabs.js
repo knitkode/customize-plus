@@ -51,7 +51,7 @@ var Tabs = (function () {
       // if this tabbed area is related to the screenpreview then notify it
       if (isScreenPicker) {
         try {
-          k6cp['components']['Screenpreview'].change(true, target);
+          PWPcp['components']['Screenpreview'].change(true, target);
         } catch(e) {
           console.log( 'Tabs tried to use Screenpreview, which is undefined.')
         }
@@ -101,4 +101,4 @@ var Tabs = (function () {
 })();
 
 // export to public api
-k6cp['Tabs'] = Tabs;
+PWPcp['Tabs'] = Tabs;

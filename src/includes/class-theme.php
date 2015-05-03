@@ -34,7 +34,7 @@ if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		// public static function ready() {
-		// 	do_action( 'k6cp/theme/ready' );
+		// 	do_action( 'PWPcp/theme/ready' );
 		// 	self::configure();
 		// }
 
@@ -44,7 +44,7 @@ if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 */
 		public static function configure() {
 
-			$settings = get_theme_support( 'k6cp-customize' );
+			$settings = get_theme_support( 'PWPcp-customize' );
 
 			if ( is_array( $settings ) ) {
 				// Themes should provide an array of options
@@ -55,9 +55,9 @@ if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
 
 					// automatically create hooks for child themes or whatever
 					self::init(
-						apply_filters( $theme_prefix . '/k6cp/theme/prefix', $theme_prefix ),
-						apply_filters( $theme_prefix . '/k6cp/theme/panels', $theme_panels ),
-						apply_filters( $theme_prefix . '/k6cp/theme/styles', $theme_styles )
+						apply_filters( $theme_prefix . '/PWPcp/theme/prefix', $theme_prefix ),
+						apply_filters( $theme_prefix . '/PWPcp/theme/panels', $theme_panels ),
+						apply_filters( $theme_prefix . '/PWPcp/theme/styles', $theme_styles )
 					);
 				}
 			}
@@ -126,10 +126,10 @@ if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
 			self::$settings_defaults = $theme_customize_manager->settings_defaults;
 
 			// register theme styles to compiler if enabled
-			// k6todo use theme supports api here... \\
-			if ( class_exists( 'K6CPP' ) ) {
-				if ( $theme_styles && /*K6CPP::get_option_with_default( 'compiler' ) &&*/ class_exists( 'PWPcpp_Component_Compiler' ) ) {
-					PWPcpp_Component_Compiler::register_styles( $theme_styles, $theme_prefix, $theme_customize_manager->panels );
+			// @@todo use theme supports api here... \\
+			if ( class_exists( 'PWPcpp' ) ) {
+				if ( $theme_styles && /*PWPcpp::get_option_with_default( 'compiler' ) &&*/ class_exists( 'PWPcpp_Component_Compiler' ) ) {
+					PWPcpp_Component_Compiler::register_styles( $theme_styles, $theme_customize_manager->panels );
 				}
 			}
 
@@ -137,17 +137,17 @@ if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
 			 * Pass all default settings values to the hook, so themes can use them
 			 * to create a safe get_theme_mod in case they need it.
 			 *
-			 * @hook 'k6cp/theme/is_configured' for themes,
+			 * @hook 'PWPcp/theme/is_configured' for themes,
 			 * @param array An array containing the defualt value for each setting
 			 *              declared in the customize panels
 			 */
-			do_action( 'k6cp/theme/is_configured', self::$settings_defaults );
+			do_action( 'PWPcp/theme/is_configured', self::$settings_defaults );
 		}
 
 		/**
 		 * [get_theme_mod_with_default description]
 		 * we'll need this safe theme_mod in one of our sanitization functions
-		 * @see k6cp_get_less_test_input
+		 * @see pwpcp_get_less_test_input
 		 *
 		 * @param [type]  $opt_name [description]
 		 * @return [type]           [description]

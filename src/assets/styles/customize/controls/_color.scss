@@ -11,9 +11,9 @@
 
   // button for Custom color
   .wp-color-result {
-    margin-right: 0;// k6wptight-css-@override \\
-    margin-bottom: 0; // k6wptight-css-@override \\
-    vertical-align: top; // k6wptight-css-@override \\
+    margin-right: 0;// @@wptight-css-@override \\
+    margin-bottom: 0; // @@wptight-css-@override \\
+    vertical-align: top; // @@wptight-css-@override \\
     border-radius: $WPcustomize--btn-border-radius 0 0 $WPcustomize--btn-border-radius;
     &:after {
       border-radius: 0;
@@ -22,7 +22,7 @@
 
   // different positionment of toggle, input and clear button
   // to make more room for rgba values in input text field
-  // when wpColorPicker is open // k6tobecarfeul k6wptight-layout-css changes to default \\
+  // when wpColorPicker is open // k6tobecarfeul @@wptight-layout-css changes to default \\
   .wp-color-result.wp-picker-open {
     float: left;
   }
@@ -39,7 +39,7 @@
 
   // remove iris border
   .iris-border {
-    border: 0; // k6doubt override wp native style or not? \\
+    border: 0; // @@doubt override wp native style or not? \\
     background: transparent;
   }
 
@@ -102,7 +102,7 @@
       padding: 0;
     }
 
-    .ui-slider-handle { // k6wptight-css copied from .iris-picker .iris-slider-offset {} \\
+    .ui-slider-handle { // @@wptight-css copied from .iris-picker .iris-slider-offset {} \\
       position: absolute;
       background: 0;
       margin: 0 0 0 -6px; // custom, to center the handle

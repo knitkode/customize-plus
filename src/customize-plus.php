@@ -29,8 +29,8 @@
 
 define( 'PWPcp_PLUGIN_FILE', __FILE__ );
 define( 'PWPcp_PLUGIN_VERSION', '0.0.1' );
-define( 'PWPcp_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); // k6todo, we are not using this, but we should \\
-define( 'PWPcp_PLUGIN_URL', plugin_dir_url( __FILE__ ) ); // k6todo, we are not using this, but we should \\
+define( 'PWPcp_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); // @@todo, we are not using this, but we should \\
+define( 'PWPcp_PLUGIN_URL', plugin_dir_url( __FILE__ ) ); // @@todo, we are not using this, but we should \\
 
 require_once( PWPcp_PLUGIN_DIR . 'includes/class-requirements.php' );
 require_once( PWPcp_PLUGIN_DIR . 'includes/functions-sanitize.php' );

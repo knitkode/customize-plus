@@ -14,8 +14,8 @@ $WP--link-color: #0099d5; // #0074a2;
 $WP--link-color-hover: #2ea2cc;
 
 // WordPress Customize variables
-$WPcustomize--section-padding-horizontal: 20px; // k6wptight-cs from .accordion-section-content {} \\
-$WPcustomize--section-padding-top: 10px; // k6wptight-cs from .accordion-section-content {} \\
+$WPcustomize--section-padding-horizontal: 20px; // @@wptight-cs from .accordion-section-content {} \\
+$WPcustomize--section-padding-top: 10px; // @@wptight-cs from .accordion-section-content {} \\
 $WPcustomize--sidebar-width: 300px;
 $WPcustomize--sidebar-inner-width: $WPcustomize--sidebar-width - ($WPcustomize--section-padding-horizontal * 2);
 $WPcustomize--header-height: 45px;
@@ -27,7 +27,7 @@ $WPcustomize--collapse-sidebar-bottom: 12px;
 $WPcustomize--collapse-sidebar-marginleft: 15px;
 $WPcustomize--collapse-sidebar-color: #777;
 $WPcustomize--float-breakpoint: 640px;
-$WPcustomize--btn-height: 22px; // k6wptight-css from .wp-color-result {} \\
+$WPcustomize--btn-height: 22px; // @@wptight-css from .wp-color-result {} \\
 $WPcustomize--btn-bg: #f7f7f7;
 $WPcustomize--btn-bg-hover: #fafafa;
 $WPcustomize--btn-bg-active: #e6e6e6; // we made this up

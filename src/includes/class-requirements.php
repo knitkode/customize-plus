@@ -38,11 +38,11 @@ class PWPcp_Requirements {
 	 * @since 0.0.1
 	 */
 	public function __construct() {
-		add_action( 'k6cp/activation', array( __CLASS__, 'php' ) );
-		add_action( 'k6cp/activation', array( __CLASS__, 'wp' ) );
+		add_action( 'PWPcp/activation', array( __CLASS__, 'php' ) );
+		add_action( 'PWPcp/activation', array( __CLASS__, 'wp' ) );
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( __CLASS__, 'check_plugins_incompatibilities' ) );
-			// k6todo the plugins get activated by themes anyway during live previews,
+			// @@todo the plugins get activated by themes anyway during live previews,
 			// so for instance Maera framework install Kirki and mess up the customize \\
 		}
 	}

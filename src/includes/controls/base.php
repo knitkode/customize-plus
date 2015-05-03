@@ -46,7 +46,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 		// remove content, we rely completely on js, and declare
 		// the control container in the js control base class
-		unset( $this->json['content'] ); // k6tobecareful change related to overridden render() in PWPcp_Customize_Control_Base \\
+		unset( $this->json['content'] ); // @@tobecareful change related to overridden render() in PWPcp_Customize_Control_Base \\
 
 		// call a function to add data to `control.params`
 		$this->add_to_json();
@@ -70,7 +70,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @override
 	 * @since 0.0.1
 	 */
-	protected function render() {} // k6tobecareful change related to overridden render() in PWPcp_Customize_Control_Base \\
+	protected function render() {} // @@tobecareful change related to overridden render() in PWPcp_Customize_Control_Base \\
 
 	/**
 	 * Never render any inner content for controls from PHP.
@@ -88,7 +88,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since 0.0.1
 	 */
 	public function content_template() {
-		ob_start( 'k6cp_compress_html' );
+		ob_start( 'pwpcp_compress_html' );
 		$this->js_tpl_divider();
 		 // this wrapper is needed to make the Extras menu play nice when divider is there, because of the absolute positioning
 		echo '<# if (data.div) { #><div class="k6-control-wrap"><# } #>';

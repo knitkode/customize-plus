@@ -1,7 +1,7 @@
 /* global WpTight, Skeleton, Tabs, Tooltips, Notices */
 /* jshint unused: false, funcscope: true */
 
-(function (window, document, $, _, wp, k6cp, validator) {
+(function (window, document, $, _, wp, PWPcp, validator) {
   'use strict';
 
   // this is needed to don't break js while developing
@@ -48,7 +48,7 @@
    *
    * @type {Object}
    */
-  k6cp['sections'] = {};
+  PWPcp['sections'] = {};
 
   //= include customize/sections/base.js
 
@@ -58,7 +58,7 @@
    *
    * @type {Object}
    */
-  k6cp['controls'] = {};
+  PWPcp['controls'] = {};
 
   //= include customize/controls/base.js
     // include customize/controls/base-dummy' )
@@ -94,4 +94,4 @@
 
   //= include customize/temp.js
 
-})(window, document, jQuery, _, wp, k6cp, validator);
+})(window, document, jQuery, _, wp, PWPcp, validator);

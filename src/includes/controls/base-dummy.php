@@ -6,7 +6,7 @@
  */
 class PWPcp_Customize_Control_Dummy extends PWPcp_Customize_Control_Base {
 
-	public $type = 'k6_dummy';
+	public $type = 'PWPcp_dummy';
 
 	/**
 	 * Render
@@ -14,7 +14,7 @@ class PWPcp_Customize_Control_Dummy extends PWPcp_Customize_Control_Base {
 	 * The wrapper for this control can always be the same, we create it
 	 * in javascript instead of php, so here we can therefore override
 	 * the `render` function with an empty output This remove the unnecessary
-	 * presence of the <li> micro template in the _wpCustomizeSettings JSON. // k6tobecareful let's the changes in WP API, they'll probably fix this \\
+	 * presence of the <li> micro template in the _wpCustomizeSettings JSON. // @@tobecareful let's the changes in WP API, they'll probably fix this \\
 	 *
 	 * @since 0.0.1
 	 */

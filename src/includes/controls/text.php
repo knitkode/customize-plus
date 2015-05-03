@@ -6,7 +6,7 @@
  */
 class PWPcp_Customize_Control_Text extends PWPcp_Customize_Control_Base_Input {
 
-	public $type = 'k6cp_text';
+	public $type = 'pwpcp_text';
 }
 
 /**

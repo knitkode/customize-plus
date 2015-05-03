@@ -28,7 +28,7 @@ var ControlFontFamily = ControlBase.extend({
    */
   ready: function () {
     this.input = this._container.getElementsByClassName('k6-selectize')[0];
-    this.fontFamilies = k6cp['constants']['FONT_FAMILIES'].map(function (fontFamilyName) {
+    this.fontFamilies = PWPcp['constants']['FONT_FAMILIES'].map(function (fontFamilyName) {
       return { item: fontFamilyName };
     });
     this._updateUI();
@@ -46,7 +46,7 @@ var ControlFontFamily = ControlBase.extend({
     }
   },
   /**
-   * @see php `k6cp_sanitize_font_families`
+   * @see php `pwpcp_sanitize_font_families`
    * @param  {string|array} value [description]
    * @return {string}       [description]
    */
@@ -103,4 +103,4 @@ var ControlFontFamily = ControlBase.extend({
   }
 });
 
-api.controlConstructor['k6cp_font_family'] = ControlFontFamily;
+api.controlConstructor['pwpcp_font_family'] = ControlFontFamily;

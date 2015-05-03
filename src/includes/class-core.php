@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'K6CP' ) ):
+if ( ! class_exists( 'PWPcp' ) ):
 
 	/**
 	 * Short description for class
@@ -16,7 +16,7 @@ if ( ! class_exists( 'K6CP' ) ):
 	 * @link      http://pear.php.net/package/K6
 	 * @see       References to other sections (if any)...
 	 */
-	class K6CP {
+	class PWPcp {
 
 		/**
 		 * Constructor
@@ -88,7 +88,7 @@ if ( ! class_exists( 'K6CP' ) ):
 		 * @return [type] [description]
 		 */
 		public static function activation() {
-			do_action( 'k6cp/activation' );
+			do_action( 'PWPcp/activation' );
 		}
 
 		/**
@@ -96,11 +96,11 @@ if ( ! class_exists( 'K6CP' ) ):
 		 * @return [type] [description]
 		 */
 		public static function deactivation() {
-			do_action( 'k6cp/deactivation' );
+			do_action( 'PWPcp/deactivation' );
 		}
 	}
 
 	// Instantiate
-	new K6CP;
+	new PWPcp;
 
 endif;

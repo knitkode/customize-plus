@@ -32,7 +32,7 @@ var ControlMulticheck = ControlBase.extend({
       }
     }
     this.params.value = lastValue;
-    return JSON.stringify(lastValue); // k6doubt not sure if it is a good idea
+    return JSON.stringify(lastValue); // @@doubt not sure if it is a good idea
     // to stringify the setting and use params.value instead of
     // this.setting.get() where here above we get the last value \\
   },
@@ -88,4 +88,4 @@ var ControlMulticheck = ControlBase.extend({
   }
 });
 
-api.controlConstructor['k6cp_multicheck'] = ControlMulticheck;
+api.controlConstructor['pwpcp_multicheck'] = ControlMulticheck;

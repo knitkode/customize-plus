@@ -2,8 +2,8 @@
  * Shadow on sidebar
  *
  */
-.wp-full-overlay.expanded { // k6wptight-selector \\
-  .wp-full-overlay-sidebar { // k6wptight-selector \\
+.wp-full-overlay.expanded { // @@wptight-selector \\
+  .wp-full-overlay-sidebar { // @@wptight-selector \\
     box-shadow: 50px 0 85px -65px rgba(0,0,0,0.15);
   }
 }
@@ -16,7 +16,7 @@
  * We remove transitions if there is no csstransform support,
  * otherwise we use transform translateX to animate, resetting
  * the left positions.
- * We're using here the same selectors as WordPress // k6wptight-css
+ * We're using here the same selectors as WordPress // @@wptight-css
  *
  * This cause a bug on chrome when autofocus on load, where the sidebar is empty
  * until any kind of event on any target occur (click, resizes, etc.). It is probably
@@ -83,7 +83,7 @@ $animate-sidebar-with-transforms-if-possible: false;
     font-size: 45px;
   }
 
-  .spinner { // k6wptight-selector \\
+  .spinner { // @@wptight-selector \\
     float: none;
     display: inline-block;
   }
@@ -93,7 +93,7 @@ $animate-sidebar-with-transforms-if-possible: false;
 /**
  * Toggle
  *
- * Buttons on the top left bar in the 'customize' // k6wptight-css, almost exactly copied from '.customize-controls-close', and hover state from '.control-panel-back:focus, .control-panel-back:hover, .customize-controls-close:focus, .customize-controls-close:hover' \\
+ * Buttons on the top left bar in the 'customize' // @@wptight-css, almost exactly copied from '.customize-controls-close', and hover state from '.control-panel-back:focus, .control-panel-back:hover, .customize-controls-close:focus, .customize-controls-close:hover' \\
  */
 .k6-toggle {
   display: block;
@@ -136,7 +136,7 @@ $animate-sidebar-with-transforms-if-possible: false;
 
 /**
  * Back Toggle
- * // k6wptight-css[almost exactly copied from: .control-panel-back] \\
+ * // @@wptight-css[almost exactly copied from: .control-panel-back] \\
  */
 #k6-back {
   display: none; // custom code
@@ -208,7 +208,7 @@ $animate-sidebar-with-transforms-if-possible: false;
 //   cursor: wait;
 // }
 // Show spinner during live css compiling
-#customize-header-actions .spinner { // k6wptight-selector \\
+#customize-header-actions .spinner { // @@wptight-selector \\
   .k6-loading & {
     display: block;
   }
@@ -289,10 +289,10 @@ $animate-sidebar-with-transforms-if-possible: false;
   }
 
   .button-small.k6-btn {
-    height: auto; // k6wptight-css-override of: .wp-core-ui.wp-customizer .button {} \\
-    padding: 3px 5px; // k6wptight-css from: input {} \\
-    // padding: 6px 10px; // k6wptight-css from: input[type=text] {} \\
-    line-height: 18px; // k6wptight-css from: .customize-control input[type=text] {} \\
+    height: auto; // @@wptight-css-override of: .wp-core-ui.wp-customizer .button {} \\
+    padding: 3px 5px; // @@wptight-css from: input {} \\
+    // padding: 6px 10px; // @@wptight-css from: input[type=text] {} \\
+    line-height: 18px; // @@wptight-css from: .customize-control input[type=text] {} \\
     margin-left: -1px;
     border-radius: 0 3px 3px 0;
   }

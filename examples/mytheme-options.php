@@ -16,7 +16,7 @@ return array(
 						),
 						'control' => array(
 							'label' => __( 'Skeleton Layout', 'pkgTextdomain' ),
-							'type' => 'k6cp_radio',
+							'type' => 'pwpcp_radio',
 							'choices' => array(
 								"'standard'" => array(
 									'label' => __( 'Standard', 'pkgTextdomain' ),
@@ -43,7 +43,7 @@ return array(
 						),
 						'control' => array(
 							'label' => __( 'Layout container', 'pkgTextdomain' ),
-							'type' => 'k6cp_buttonset',
+							'type' => 'pwpcp_buttonset',
 							'choices' => array(
 								'' => __( 'Boxed', 'pkgTextdomain' ),
 								'-fluid' => __( 'Fluid', 'pkgTextdomain' ),
@@ -62,7 +62,7 @@ return array(
 						),
 						'control' => array(
 							'label' => __( 'Main Menu Navigation', 'pkgTextdomain' ),
-							'type' => 'k6cp_radio',
+							'type' => 'pwpcp_radio',
 							'choices' => array(
 								"'bootstrap'" => __( 'Bootstrap', 'pkgTextdomain' ),
 								"'nexus'" => __( 'Nexus', 'pkgTextdomain' ),
@@ -90,7 +90,7 @@ return array(
 							),
 						'control' => array(
 							'label' => __( 'Footer text', 'pkgTextdomain' ),
-							'type' => 'k6cp_text',
+							'type' => 'pwpcp_text',
 						)
 					)
 				)
@@ -106,7 +106,7 @@ return array(
 						'control' => array(
 							'label' => __( 'Social Links', 'pkgTextdomain' ),
 							'description' => __( 'Enable social links', 'pkgTextdomain' ),
-							'type' => 'k6cp_toggle',
+							'type' => 'pwpcp_toggle',
 						)
 					),
 					'social-share-networks' => array(
@@ -117,7 +117,7 @@ return array(
 						'control' => array(
 							'label' => __( 'Social share', 'pkgTextdomain' ),
 							'description' => __( 'Select the social networks you want to enable for social shares', 'pkgTextdomain' ),
-							'type' => 'k6cp_multicheck',
+							'type' => 'pwpcp_multicheck',
 							'choices' => array(
 								'facebook' => __( 'Facebook', 'pkgTextdomain' ),
 								'twitter' => __( 'Twitter', 'pkgTextdomain' ),

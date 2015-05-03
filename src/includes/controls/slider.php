@@ -6,7 +6,7 @@
  */
 class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 
-	public $type = 'k6cp_slider';
+	public $type = 'pwpcp_slider';
 	public $units = array( 'px' );
 
 	/**
