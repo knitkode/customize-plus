@@ -220,6 +220,7 @@ $animate-sidebar-with-transforms-if-possible: false;
 // Show spinner during live css compiling
 #customize-header-actions .spinner { // @@wptight-selector \\
   .pwpcp-loading & {
+    visibility: visible;
     display: block;
   }
 }
