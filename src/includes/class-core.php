@@ -7,13 +7,13 @@ if ( ! class_exists( 'PWPcp' ) ):
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @package   PWPcp
-	 * @author    kuus <kunderikuus@gmail.com>
-	 * @copyright Copyright (c) 2015, kunderi kuus (PlusWP)
-	 * @license   http://opensource.org/licenses/gpl-3.0.php GNU Public License
-	 * @link      http://pluswp.com/docs/customize-plus/core
-	 * @version   Release: @package_version@
-	 * @since     0.0.1
+	 * @package    Customize_Plus
+	 * @subpackage Core
+	 * @author     PlusWP <dev@pluswp.com> (http://pluswp.com)
+	 * @copyright  2015 PlusWP (kunderi kuus)
+	 * @license    GPL-2.0+
+	 * @version    Release: pkgVersion
+	 * @link       http://pluswp.com/customize-plus
 	 */
 	class PWPcp {
 

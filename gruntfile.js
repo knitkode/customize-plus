@@ -110,8 +110,9 @@ module.exports = function(grunt) {
 
     phpdocumentor: {
       options: {
-        directory: 'ReduxCore/',
-        target: 'docs/'
+        template: 'responsive-twig',
+        directory: './build',
+        target: 'docs'
       },
       generate: {}
     }

@@ -5,15 +5,13 @@
  *
  * All custom classes are collected in this file by an automated gulp task.
  *
- * @link(docs, @@todolink)
- *
- * @package      pkgNamePretty
- * @subpackage   classes
- * @since        0.0.1
- * @link         pkgHomepage
- * @author       pkgAuthorName <pkgAuthorEmail> (pkgAuthorUrl)
- * @copyright    pkgConfigStartYear - pkgConfigEndYear | pkgLicenseType
- * @license      pkgLicenseUrl
+ * @package    Customize_Plus
+ * @subpackage Customize
+ * @author     PlusWP <dev@pluswp.com> (http://pluswp.com)
+ * @copyright  2015 PlusWP (kunderi kuus)
+ * @license    GPL-2.0+
+ * @version    Release: pkgVersion
+ * @link       http://pluswp.com/customize-plus
  */
 
 /**

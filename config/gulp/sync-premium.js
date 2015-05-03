@@ -1,12 +1,11 @@
-/* global gulp, $, PATHS */
+/* global gulp */
 /* jshint node: true */
 'use strict';
 
-var CONFIG = require('./common-config');
+var PATHS = global.PATHS;
 var PLUGINS = require('./common-plugins');
 var extend = require('util')._extend;
 var jeditor = require('gulp-json-editor');
-var pkg = require('../../package.json');
 
 
 /**

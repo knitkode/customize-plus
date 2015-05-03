@@ -6,14 +6,13 @@ if ( ! class_exists( 'PWPcp_Admin_Premium' ) ):
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @category  CategoryName
-	 * @package   K6
-	 * @author    Author's name <author@mail.com>
-	 * @copyright 2015 Author's name
-	 * @license   http://www.opensource.org/licenses/bsd-license.php The BSD License
-	 * @version   Release: @package_version@
-	 * @link      http://pear.php.net/package/K6
-	 * @see       References to other sections (if any)...
+	 * @package    Customize_Plus
+	 * @subpackage Admin
+	 * @author     PlusWP <dev@pluswp.com> (http://pluswp.com)
+	 * @copyright  2015 PlusWP (kunderi kuus)
+	 * @license    GPL-2.0+
+	 * @version    Release: pkgVersion
+	 * @link       http://pluswp.com/customize-plus
 	 */
 	class PWPcp_Admin_Premium {
 

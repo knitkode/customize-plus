@@ -1,4 +1,5 @@
 /* jshint node: true */
+'use strict';
 
 var notify = require('gulp-notify');
 
@@ -8,7 +9,6 @@ var notify = require('gulp-notify');
  * @public
  */
 module.exports = function() {
-  'use strict';
 
   var args = Array.prototype.slice.call(arguments);
 

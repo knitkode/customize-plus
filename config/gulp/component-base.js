@@ -1,7 +1,8 @@
-/* global gulp, $, PATHS */
+/* global gulp, $ */
 /* jshint node: true */
 'use strict';
 
+var PATHS = global.PATHS;
 var CONFIG = require('./common-config');
 var PLUGINS = require('./common-plugins');
 var utilErrors = require('./common-util-errors');

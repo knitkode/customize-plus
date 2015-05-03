@@ -3,13 +3,13 @@
 /**
  * Sanitize functions
  *
- * @package      pkgNamePretty
- * @subpackage   sanitize
- * @since        0.0.1
- * @link         pkgHomepage
- * @author       pkgAuthorName <pkgAuthorEmail> (pkgAuthorUrl)
- * @copyright    pkgConfigStartYear - pkgConfigEndYear | pkgLicenseType
- * @license      pkgLicenseUrl
+ * @package    Customize_Plus
+ * @subpackage Sanitize
+ * @author     PlusWP <dev@pluswp.com> (http://pluswp.com)
+ * @copyright  2015 PlusWP (kunderi kuus)
+ * @license    GPL-2.0+
+ * @version    Release: pkgVersion
+ * @link       http://pluswp.com/customize-plus
  */
 
 // PWPcptemp, this function is more an util than a sanitize function \\

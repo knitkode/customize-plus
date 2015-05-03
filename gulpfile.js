@@ -1,10 +1,14 @@
 /* jshint node: true */
+'use strict';
+
+var gulp = require('gulp');
+var sequence = require('gulp-sequence');
 
 /**
  * Paths
  * @type {Object}
  */
-module.exports = PATHS = {
+var PATHS = {
   /** @type {Object} */
   src: {
     root: './src/',
@@ -33,7 +37,7 @@ module.exports = PATHS = {
  * Paths to Premium Plugin version
  * @type {Object}
  */
-module.exports = PATHS = require('util')._extend(PATHS, {
+PATHS = require('util')._extend(PATHS, {
   /** @type {Object} */
   toPremium: {
     files: [
@@ -59,18 +63,16 @@ module.exports = PATHS = require('util')._extend(PATHS, {
   }
 });
 
+global.PATHS = PATHS;
 
-var gulp = require('gulp');
-
-
-// @public
-gulp.task('default', ['build', 'watch']);
 
 // @public
-gulp.task('build', [
-  'build-base',
-  'build-customize'
-]);
+gulp.task('build', sequence([
+    'build-base',
+    'build-customize'
+  ],
+  '_build-replace-words'
+));
 
 // @public
 gulp.task('watch', [
@@ -79,10 +81,8 @@ gulp.task('watch', [
 ]);
 
 // @public
-gulp.task('help', require('gulp-task-listing'));
-
-// @public
 gulp.task('modernizr', ['_customize-modernizr']);
+
 
 // Require the gulp folder with all the tasks, don't change this
 require('./config/gulp');

@@ -1,7 +1,7 @@
 <?php defined( 'ABSPATH' ) or die;
 
 /**
- * pkgNamePretty
+ * Customize Plus
  *
  * pkgDescription
  *
@@ -10,17 +10,15 @@
  * and WordPress-Plugin-Boilerplate (see {@link
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/ here} for details).
  *
- * @link              pkgHomepage
- * @since             0.0.1
- * @package           pkgName
+ * @package           Customize_Plus
  *
  * @wordpress-plugin
  * Plugin Name:       Customize Plus
- * Plugin URI:        pkgHomepage
+ * Plugin URI:        http://pluswp.com/customize-plus
  * Description:       pkgDescription
  * Version:           pkgVersion
- * Author:            pkgAuthorName
- * Author URI:        http://example.com/
+ * Author:            PlusWP
+ * Author URI:        http://pluswp.com
  * License:           GPLv2 or later (license.txt)
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       pkgTextdomain

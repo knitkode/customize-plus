@@ -21,7 +21,6 @@
   "eqeqeq": true,
   "curly": false,
   "globals": {
-    "gulp": false,
     "DEBUG": false,
     "performance": false
   }
