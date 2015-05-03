@@ -1,5 +1,4 @@
 {
-  "name": "customize-plus",
   "private": true,
   "dependencies": {
     "webui-popover": "git@github.com:kuus/webui-popover.git#b1af0b73cf72f2611427c11ee5289ec027728d85",
