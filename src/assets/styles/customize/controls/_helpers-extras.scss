@@ -10,8 +10,8 @@
  * of each of our custom controls.
  *
  */
-.k6-control,
-.k6-control-wrap {
+.pwpcp-control,
+.pwpcp-control-wrap {
   position: relative;
 }
 
@@ -20,13 +20,13 @@
  * a wrapper, needed to bind the `mouseenter`, `mouseleave`
  * events on only one DOM element.
  */
-.k6-extras {
+.pwpcp-extras {
 }
 
 /**
  * Toggle button
  */
-.k6-extras-btn {
+.pwpcp-extras-btn {
   z-index: 3;
   position: absolute;
   top: $control--spacing-top;
@@ -34,15 +34,15 @@
 
   // the button needs to slightly change the position
   // if it inside the control-wrap (when we have dividers...)
-  .k6-control-wrap & {
+  .pwpcp-control-wrap & {
     top: 0;
     left: -$control--spacing-horizontal - 1;
   }
 
   width: $extras--btn-size;
   height: $extras--btn-size;
-  line-height: $extras--btn-size + 1; // k6tofix weird bug \\
-  text-align: right; // k6tofix weird bug \\
+  line-height: $extras--btn-size + 1; // pwpcptofix weird bug \\
+  text-align: right; // pwpcptofix weird bug \\
   font-size: 15px;
   color: #aaa;
   cursor: pointer;
@@ -52,11 +52,11 @@
   /**
    * Open state
    */
-  .k6-extras-open & {
+  .pwpcp-extras-open & {
     color: #333;
   }
-  .k6-extras-open &,
-  .k6-control:hover & {
+  .pwpcp-extras-open &,
+  .pwpcp-control:hover & {
     opacity: 1;
   }
 }
@@ -65,7 +65,7 @@
  * List inside extras menu
  *
  */
-.k6-extras-list {
+.pwpcp-extras-list {
   z-index: 11; // @@wptight-css we need to overtake .iris-picker .iris-square-handle { z-index: 10 } \\
   display: none;
   position: absolute;
@@ -74,14 +74,14 @@
 
   // the button needs to slightly change the position
   // if it inside the control-wrap (when we have dividers...)
-  .k6-control-wrap & {
+  .pwpcp-control-wrap & {
     top: $extras--btn-size + 3px;
     left: 0;
   }
   width: $WPcustomize--sidebar-inner-width;
 
   // the menus shrinks a bit when the scrollbar is visible
-  .k6-has-scrollbar & {
+  .pwpcp-has-scrollbar & {
     width: $WPcustomize--sidebar-inner-width - 16; // scrollbar width
   }
 
@@ -93,7 +93,7 @@
   box-shadow: $popover--box-shadow;
   box-sizing: border-box;
 
-  .k6-extras-open & {
+  .pwpcp-extras-open & {
     display: block;
   }
 
@@ -114,7 +114,7 @@
       cursor: pointer;
     }
 
-    &.k6-disabled {
+    &.pwpcp-disabled {
       cursor: default;
       opacity: .5;
     }
@@ -127,7 +127,7 @@
     }
   }
 }
-.k6-extras {
+.pwpcp-extras {
   &-undo:before {
     content: "\f171";
   }
@@ -146,7 +146,7 @@
  * Undo action (with timer) after having hided a control
  *
  */
-.k6-hide-undo {
+.pwpcp-hide-undo {
   display: block;
   padding: 6px 0;
   text-align: center;
@@ -157,7 +157,7 @@
     margin-right: 3px;
   }
 }
-.k6-timer {
+.pwpcp-timer {
   color: #888;
   &:before {
     content: "... ";

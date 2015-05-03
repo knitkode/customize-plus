@@ -77,9 +77,9 @@ var ControlSlider = ControlBase.extend({
     // update number slider
     this.$inputSlider.slider('value', params.number);
     // update unit picker
-    this.$inputUnits.removeClass('k6-current').filter(function () {
+    this.$inputUnits.removeClass('pwpcp-current').filter(function () {
       return (this.textContent || this.innerText) === params.unit; // @@ie8 \\
-    }).addClass('k6-current');
+    }).addClass('pwpcp-current');
   },
   /**
    * On initialization
@@ -105,9 +105,9 @@ var ControlSlider = ControlBase.extend({
     var setting = this.setting;
     var params = this.params;
     var attrs = params.attrs;
-    var inputNumber = this._container.getElementsByClassName('k6-slider-number')[0];
-    var $inputUnits = this.container.find('.k6-unit');
-    var $inputSlider = this.container.find('.k6-slider');
+    var inputNumber = this._container.getElementsByClassName('pwpcp-slider-number')[0];
+    var $inputUnits = this.container.find('.pwpcp-unit');
+    var $inputSlider = this.container.find('.pwpcp-slider');
 
     /**
      * Set elements as control properties
@@ -127,8 +127,8 @@ var ControlSlider = ControlBase.extend({
     if (params.units.length > 1) {
       $inputUnits.on('click', function () {
         var value = this.textContent || this.innerText; // @@ie8 \\
-        $inputUnits.removeClass('k6-current');
-        this.className += ' k6-current';
+        $inputUnits.removeClass('pwpcp-current');
+        this.className += ' pwpcp-current';
         setting.set(value);
       });
     }
@@ -169,12 +169,12 @@ var ControlSlider = ControlBase.extend({
     //     // update number slider
     //     $inputSlider.slider('value', params.number);
     //     // update unit picker
-    //     $inputUnits.removeClass('k6-current').filter(function () {
+    //     $inputUnits.removeClass('pwpcp-current').filter(function () {
     //       return (this.textContent || this.innerText) === params.unit; // @@ie8 \\
-    //     }).addClass('k6-current');
+    //     }).addClass('pwpcp-current');
     //   });
     // }
   }
 });
 
-api.controlConstructor['pwpcp_slider'] = ControlSlider;
+wpApi.controlConstructor['pwpcp_slider'] = ControlSlider;

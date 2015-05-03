@@ -15,8 +15,8 @@ var Skeleton = (function () {
     _wpSidebar = WpTight.el.sidebar[0];
 
     WpTight.el.header.append(
-      '<span id="k6-back" class="k6-toggle">' +
-        '<span class="screen-reader-text">"' + PWPcp['l10n']['back'] + '"</span>' +
+      '<span id="pwpcp-back" class="pwpcp-toggle">' +
+        '<span class="screen-reader-text">"' + api['l10n']['back'] + '"</span>' +
       '</span>'
     );
   }
@@ -26,16 +26,16 @@ var Skeleton = (function () {
     init: function () {
       _init();
       // set elements as properties
-      this.$loader = $('#k6-loader');
-      this.back = document.getElementById('k6-back');
-      this.title = document.getElementById('k6-title');
-      this.text = document.getElementById('k6-text');
+      this.$loader = $('#pwpcp-loader');
+      this.back = document.getElementById('pwpcp-back');
+      this.title = document.getElementById('pwpcp-title');
+      this.text = document.getElementById('pwpcp-text');
     },
     loading: function () {
-      body.classList.add('k6-loading');
+      body.classList.add('pwpcp-loading');
     },
     loaded: function () {
-      body.classList.remove('k6-loading');
+      body.classList.remove('pwpcp-loading');
     },
     show: function () {
       this.$loader.show();
@@ -60,7 +60,7 @@ var Skeleton = (function () {
         temp.innerHTML = tpl.innerHTML;
         wrapper.appendChild(temp.firstElementChild || temp.firstChild);
       } else {
-        // @@todo api error handling, template doesn't exist
+        // @@todo API error handling, template doesn't exist
       }
     },
     /**
@@ -71,10 +71,10 @@ var Skeleton = (function () {
      * @return {boolean} [description]
      */
     hasScrollbar: function () {
-      body.classList.toggle('k6-has-scrollbar', _wpSidebar.scrollHeight > _wpSidebar.clientHeight);
+      body.classList.toggle('pwpcp-has-scrollbar', _wpSidebar.scrollHeight > _wpSidebar.clientHeight);
     }
   };
 })();
 
-// export to public api
-PWPcp['Skeleton'] = Skeleton;
+// export to public API
+api['Skeleton'] = Skeleton;

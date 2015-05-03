@@ -171,7 +171,7 @@
 
 
   // Custom Theme
-  .k6-switch.switch-light {
+  .pwpcp-switch.switch-light {
     color: #868686;
 
     a {
@@ -236,7 +236,7 @@
     }
   }
 
-  .k6-switch.switch-toggle {
+  .pwpcp-switch.switch-toggle {
     border: 1px solid $WPcustomize--btn-border-color;
     // border-radius: $WPcustomize--btn-border-radius;
     box-shadow: $WPcustomize--btn-box-shadow;
@@ -267,7 +267,7 @@
     }
   }
 
-  .k6-switch input:checked + label {
+  .pwpcp-switch input:checked + label {
     color: $WPcustomize--btn-color-active;
     // &:hover ~ a {
     //   border: 1px solid $WPcustomize--btn-border-color-hover;
@@ -281,8 +281,8 @@
   /**
    * Focus state on label (button bg)
    */
-  .k6-switch input:focus + label,
-  .k6-switch input:focus + label:hover {
+  .pwpcp-switch input:focus + label,
+  .pwpcp-switch input:focus + label:hover {
     border-color: $WP--select-border-color-focus;
     box-shadow: $WP--select-box-shadow-focus;
   }

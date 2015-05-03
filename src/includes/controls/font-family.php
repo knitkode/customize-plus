@@ -36,10 +36,10 @@ class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 			<?php $this->js_tpl_header(); ?>
 		</label>
 		<!-- <label>
-			<input class="k6-font-google-toggle" type="checkbox" value="0">
+			<input class="pwpcp-font-google-toggle" type="checkbox" value="0">
 		 	<?php _e( 'Enable Google fonts', 'pkgTextdomain' ); ?>
 		</label> -->
-		<input class="k6-selectize" type="text" value="{{ data.value }}" required>
+		<input class="pwpcp-selectize" type="text" value="{{ data.value }}" required>
 		<?php
 	}
 }

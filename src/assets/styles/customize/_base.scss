@@ -68,14 +68,14 @@ $animate-sidebar-with-transforms-if-possible: false;
  * Full page loader
  *
  */
-.k6-full-overlay {
+.pwpcp-full-overlay {
   z-index: 9999999;
   left: 0;
   right: 0;
   width: auto;
   background: $WPcustomize--sidebar-bg;
 
-  .k6-text {
+  .pwpcp-text {
     font-weight: 200;
   }
 
@@ -95,7 +95,7 @@ $animate-sidebar-with-transforms-if-possible: false;
  *
  * Buttons on the top left bar in the 'customize' // @@wptight-css, almost exactly copied from '.customize-controls-close', and hover state from '.control-panel-back:focus, .control-panel-back:hover, .customize-controls-close:focus, .customize-controls-close:hover' \\
  */
-.k6-toggle {
+.pwpcp-toggle {
   display: block;
   position: absolute;
   top: 0;
@@ -129,7 +129,7 @@ $animate-sidebar-with-transforms-if-possible: false;
   }
 }
 // active status used by Search and Tools
-%k6-toggle-active {
+%pwpcp-toggle-active {
   box-shadow: inset 0 0 0 30px rgba(0,0,0,.075);
 }
 
@@ -138,7 +138,7 @@ $animate-sidebar-with-transforms-if-possible: false;
  * Back Toggle
  * // @@wptight-css[almost exactly copied from: .control-panel-back] \\
  */
-#k6-back {
+#pwpcp-back {
   display: none; // custom code
   position: fixed;
   top: 0;
@@ -160,8 +160,8 @@ $animate-sidebar-with-transforms-if-possible: false;
   }
 
   // custom close, display behavior
-  .k6-search-active &,
-  .k6-tools-active & {
+  .pwpcp-search-active &,
+  .pwpcp-tools-active & {
     display: block;
     left: 0;
   }
@@ -179,7 +179,7 @@ $animate-sidebar-with-transforms-if-possible: false;
  * <i class="dashicon ..glyph..">
  * ```
  */
-.k6-btn-icon {
+.pwpcp-btn-icon {
   display: inline-block;
   cursor: pointer;
   color: $WPcustomize--collapse-sidebar-color;
@@ -187,13 +187,13 @@ $animate-sidebar-with-transforms-if-possible: false;
   color: inherit;
   opacity: .5;
 
-  &.k6-active,
-  &.k6-active:hover {
+  &.pwpcp-active,
+  &.pwpcp-active:hover {
     opacity: 1;
   }
 
-  &.k6-current,
-  &.k6-current:hover {
+  &.pwpcp-current,
+  &.pwpcp-current:hover {
     opacity: 1;
     cursor: default;
   }
@@ -204,19 +204,19 @@ $animate-sidebar-with-transforms-if-possible: false;
  * Loading
  *
  */
-// body.k6-loading {
+// body.pwpcp-loading {
 //   cursor: wait;
 // }
 // Show spinner during live css compiling
 #customize-header-actions .spinner { // @@wptight-selector \\
-  .k6-loading & {
+  .pwpcp-loading & {
     display: block;
   }
 }
-.k6-show-on-loading {
+.pwpcp-show-on-loading {
   display: none;
 
-  .k6-loading & {
+  .pwpcp-loading & {
     display: inline-block;
   }
 }
@@ -226,12 +226,12 @@ $animate-sidebar-with-transforms-if-possible: false;
  * Browser support dependent markup
  * Show or hide
  */
-.k6-if-filereader,
-.k6-if-no-filereader {
+.pwpcp-if-filereader,
+.pwpcp-if-no-filereader {
   display: none;
 }
-.filereader .k6-if-filereader,
-.no-filereader .k6-if-no-filereader {
+.filereader .pwpcp-if-filereader,
+.no-filereader .pwpcp-if-no-filereader {
   display: block;
 }
 
@@ -239,14 +239,14 @@ $animate-sidebar-with-transforms-if-possible: false;
 /**
  * Textarea
  */
-.k6-textarea {
+.pwpcp-textarea {
   width: 100%;
   resize: vertical;
   color: #999;
 }
 
 
-// .k6-error {
+// .pwpcp-error {
 //   color: #c00;
 // }
 
@@ -257,20 +257,20 @@ $animate-sidebar-with-transforms-if-possible: false;
  *
  * Markup:
  * ```html
- * <div class="k6-input-group">
- *   <input type="text" class="k6-input">
- *   <span class="k6-input-group-btn">
- *     <button class="button button-small k6-btn" type="button"><?php _e( 'Do', 'pkgtextdomain' ); ?></button>
+ * <div class="pwpcp-input-group">
+ *   <input type="text" class="pwpcp-input">
+ *   <span class="pwpcp-input-group-btn">
+ *     <button class="button button-small pwpcp-btn" type="button"><?php _e( 'Do', 'pkgtextdomain' ); ?></button>
  *   </span>
  * </div>
  * ```
  */
-.k6-input-group {
+.pwpcp-input-group {
   position: relative;
   display: table;
   border-collapse: separate;
 
-  input.k6-input {
+  input.pwpcp-input {
     display: table-cell;
     position: relative;
     z-index: 2;
@@ -288,7 +288,7 @@ $animate-sidebar-with-transforms-if-possible: false;
     vertical-align: middle;
   }
 
-  .button-small.k6-btn {
+  .button-small.pwpcp-btn {
     height: auto; // @@wptight-css-override of: .wp-core-ui.wp-customizer .button {} \\
     padding: 3px 5px; // @@wptight-css from: input {} \\
     // padding: 6px 10px; // @@wptight-css from: input[type=text] {} \\

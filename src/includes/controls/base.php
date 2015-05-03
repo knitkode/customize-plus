@@ -91,7 +91,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 		ob_start( 'pwpcp_compress_html' );
 		$this->js_tpl_divider();
 		 // this wrapper is needed to make the Extras menu play nice when divider is there, because of the absolute positioning
-		echo '<# if (data.div) { #><div class="k6-control-wrap"><# } #>';
+		echo '<# if (data.div) { #><div class="pwpcp-control-wrap"><# } #>';
 			$this->js_tpl_extras();
 			$this->js_tpl();
 		// see comment above
@@ -107,7 +107,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	protected function js_tpl_divider() {
 		?>
 			<# if (data.div) { #>
-				<div class="k6-control-divider">
+				<div class="pwpcp-control-divider">
 					<# if (data.div.title) { #><span class="customize-control-title">{{{ data.div.title }}}</span><# }
 						if (data.div.text) { #><span class="description customize-control-description">{{{ data.div.text }}}</span><# } #>
 				</div>
@@ -137,12 +137,12 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 */
 	protected function js_tpl_extras() {
 		?>
-			<div class="k6-extras">
-				<i class="k6-extras-btn dashicons dashicons-admin-generic"></i>
-				<ul class="k6-extras-list">
-					<li class="k6-extras-reset_last"><?php _e( 'Reset to initial session value', 'pkgTextdomain' ); ?></li>
-					<li class="k6-extras-reset"><?php _e( 'Reset to factory value', 'pkgTextdomain' ); ?></li>
-					<li class="k6-extras-hide"><?php _e( 'Hide this control', 'pkgTextdomain' ); ?></li>
+			<div class="pwpcp-extras">
+				<i class="pwpcp-extras-btn dashicons dashicons-admin-generic"></i>
+				<ul class="pwpcp-extras-list">
+					<li class="pwpcp-extras-reset_last"><?php _e( 'Reset to initial session value', 'pkgTextdomain' ); ?></li>
+					<li class="pwpcp-extras-reset"><?php _e( 'Reset to factory value', 'pkgTextdomain' ); ?></li>
+					<li class="pwpcp-extras-hide"><?php _e( 'Hide this control', 'pkgTextdomain' ); ?></li>
 				</ul>
 			</div>
 		<?php

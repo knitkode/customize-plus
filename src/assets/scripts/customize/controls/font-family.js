@@ -27,8 +27,8 @@ var ControlFontFamily = ControlBase.extend({
    * @override
    */
   ready: function () {
-    this.input = this._container.getElementsByClassName('k6-selectize')[0];
-    this.fontFamilies = PWPcp['constants']['FONT_FAMILIES'].map(function (fontFamilyName) {
+    this.input = this._container.getElementsByClassName('pwpcp-selectize')[0];
+    this.fontFamilies = api['constants']['FONT_FAMILIES'].map(function (fontFamilyName) {
       return { item: fontFamilyName };
     });
     this._updateUI();
@@ -103,4 +103,4 @@ var ControlFontFamily = ControlBase.extend({
   }
 });
 
-api.controlConstructor['pwpcp_font_family'] = ControlFontFamily;
+wpApi.controlConstructor['pwpcp_font_family'] = ControlFontFamily;

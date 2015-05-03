@@ -1,7 +1,10 @@
+/* jshint unused: false */
+
 (function (window, $, wp) {
   'use strict';
 
-  var api = wp.customize;
+  var api = window.PWPcp || {};
+  var wpApi = wp.customize;
 
   /**
    * To CSS
@@ -11,11 +14,11 @@
    * @param  {string} value    CSS value
    * @param  {string} selector Selector to apply propert value css pair
    */
-  function _toCSS (id, property, value, selector) {
+  api.toCSS = function (id, property, value, selector) {
     if (!value || !selector) {
       return;
     }
-    var idFinal = 'k6-style-' + id;
+    var idFinal = 'pwpcp-style-' + id;
     var css = selector + '{' + property + ':' + value + '};';
     var oldCSS = document.getElementById(idFinal);
     if (oldCSS) {
@@ -27,10 +30,9 @@
       style.appendChild(document.createTextNode(''));
       document.head.appendChild(style);
     }
-  }
+  };
 
-  // export public API
-  window.PWPcp = {};
-  window.PWPcp['toCSS'] = _toCSS;
+  // export public API under namespace
+  window.PWPcp = api;
 
 })(window, jQuery, wp);

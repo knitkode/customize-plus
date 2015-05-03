@@ -8,7 +8,7 @@
 var Notices = (function () {
 
   var _$tpl = $(
-    '<div class="k6-notices"></div>'
+    '<div class="pwpcp-notices"></div>'
   );
 
   function _create() {
@@ -33,5 +33,5 @@ var Notices = (function () {
   };
 })();
 
-// export to public api
-PWPcp['Notices'] = Notices;
+// export to public API
+api['Notices'] = Notices;

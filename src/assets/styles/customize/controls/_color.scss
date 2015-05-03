@@ -2,7 +2,7 @@
  * Color Control
  *
  */
-.k6color {
+.pwpcpcolor {
 
   // button for Transparent color
   &-toggle-transparent {
@@ -22,7 +22,7 @@
 
   // different positionment of toggle, input and clear button
   // to make more room for rgba values in input text field
-  // when wpColorPicker is open // k6tobecarfeul @@wptight-layout-css changes to default \\
+  // when wpColorPicker is open // pwpcptobecarfeul @@wptight-layout-css changes to default \\
   .wp-color-result.wp-picker-open {
     float: left;
   }
@@ -49,15 +49,15 @@
  * Transparent state
  *
  */
-[data-k6color-transparent] {
-  .k6color-toggle-transparent {
+[data-pwpcpcolor-transparent] {
+  .pwpcpcolor-toggle-transparent {
     background: $WPcustomize--btn-bg-active !important;
     color: $WPcustomize--btn-color-active !important;
   }
   // when is transparent highlight transparent toggle only despite
   // the current color mode
-  &.k6color .wp-color-result:after,
-  .k6dyn-toggle-dynamic {
+  &.pwpcpcolor .wp-color-result:after,
+  .pwpcpdyn-toggle-dynamic {
     background: $WPcustomize--btn-bg !important;
     color: $WPcustomize--btn-color !important;
   }
@@ -75,7 +75,7 @@
  * some help from:
  * @link http://pluto.kiwi.nz/2014/07/how-to-add-a-color-control-with-alphaopacity-to-the-wordpress-theme-customizer/
  */
-.k6-alpha {
+.pwpcp-alpha {
   display: none;
   background: #fff;
   padding: 2px 9px 10px;

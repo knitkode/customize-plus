@@ -54,5 +54,5 @@ var WpTight = (function () {
   };
 })();
 
-// export to public api
-PWPcp['WpTight'] = WpTight;
+// export to public API
+api['WpTight'] = WpTight;

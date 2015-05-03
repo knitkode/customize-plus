@@ -11,7 +11,7 @@
  * @class
  * @augments wp.customize.Section
  */
-var SectionBase = api.Section.extend({
+var SectionBase = wpApi.Section.extend({
   /**
    * @since 4.1.0
    *
@@ -20,7 +20,7 @@ var SectionBase = api.Section.extend({
    */
   initialize: function ( id, options ) {
     var section = this;
-    api.Section.prototype.initialize.call( section, id, options );
+    wpApi.Section.prototype.initialize.call( section, id, options );
 
     var tplDescription = section.description ?
       '<li class="customize-section-description-container">' +
@@ -28,7 +28,7 @@ var SectionBase = api.Section.extend({
       '</li>' : '';
 
     section.container = $(
-      '<li id="accordion-section-' + id + '" class="accordion-section control-section k6-section">' +
+      '<li id="accordion-section-' + id + '" class="accordion-section control-section pwpcp-section">' +
       '<h3 class="accordion-section-title" tabindex="0">' + section.title +
         '<span class="screen-reader-text">Press return or enter to expand</span>' +
       '</h3>' +
@@ -39,12 +39,12 @@ var SectionBase = api.Section.extend({
     section.attachEvents();
 
     section.id = id;
-    section.panel = new api.Value();
+    section.panel = new wpApi.Value();
     section.panel.bind( function ( id ) {
       $( section.container ).toggleClass( 'control-subsection', !! id );
     });
     section.panel.set( section.params.panel || '' );
-    api.utils.bubbleChildValueChanges( section, [ 'panel' ] );
+    wpApi.utils.bubbleChildValueChanges( section, [ 'panel' ] );
 
     section.embed();
     section.deferred.embedded.done( function () {
@@ -53,4 +53,4 @@ var SectionBase = api.Section.extend({
   }
 });
 
-// api.sectionConstructor['PWPcp_search'] = SectionBase;
+// wpApi.sectionConstructor['PWPcp_search'] = SectionBase;

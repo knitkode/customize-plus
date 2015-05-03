@@ -2,7 +2,7 @@
  * Tips guides and helpers
  *
  */
-.k6-tip-guide-trigger {
+.pwpcp-tip-guide-trigger {
   float: right;
   padding: 2px 0;
   opacity: .25;
@@ -12,13 +12,13 @@
   }
 }
 
-.k6-has-tip-guide {
-  .k6-tip-guide-trigger + input {
+.pwpcp-has-tip-guide {
+  .pwpcp-tip-guide-trigger + input {
     margin-right: 5px;
     display: inline-block;
     width: 89%;
   }
-  .k6-slider {
+  .pwpcp-slider {
     width: 89%;
   }
 }

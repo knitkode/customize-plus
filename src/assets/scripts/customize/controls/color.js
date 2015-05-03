@@ -28,13 +28,13 @@ var ControlColor = ControlBase.extend({
     if (isTransparent) {
       params.transparent = true;
       if (isRendered) {
-        this.wrapper.setAttribute('data-k6color-transparent', '');
+        this.wrapper.setAttribute('data-pwpcpcolor-transparent', '');
       }
     // remove transparent UI mode
     } else {
       params.transparent = false;
       if (isRendered) {
-        this.wrapper.removeAttribute('data-k6color-transparent');
+        this.wrapper.removeAttribute('data-pwpcpcolor-transparent');
       }
     }
   },
@@ -63,9 +63,9 @@ var ControlColor = ControlBase.extend({
     var self = this;
     // add alpha slider template
     self.container.find('.wp-picker-container').append(
-      '<div class="k6-alpha">' +
-        '<div class="k6-alpha-slider"></div>' +
-        '<input type="number" min="0.01" max="1" step="0.01" class="k6-alpha-input">' +
+      '<div class="pwpcp-alpha">' +
+        '<div class="pwpcp-alpha-slider"></div>' +
+        '<input type="number" min="0.01" max="1" step="0.01" class="pwpcp-alpha-input">' +
       '</div>'
     );
     var container = this._container;
@@ -74,8 +74,8 @@ var ControlColor = ControlBase.extend({
     var iris = $picker.data('a8cIris');
     var pickerToggler = container.getElementsByClassName('wp-color-result')[0];
     var pickerInputText = container.getElementsByClassName('color-picker-hex')[0];
-    var alphaInput = container.getElementsByClassName('k6-alpha-input')[0];
-    var alphaSlider = container.getElementsByClassName('k6-alpha-slider')[0];
+    var alphaInput = container.getElementsByClassName('pwpcp-alpha-input')[0];
+    var alphaSlider = container.getElementsByClassName('pwpcp-alpha-slider')[0];
     var $alphaSlider = $(alphaSlider);
     /**
      * [_getColorAlpha description]
@@ -194,7 +194,7 @@ var ControlColor = ControlBase.extend({
     // for instance through js (during import, debugging, etc.)
     this.setting.bind(function (value) {
       // if (value !== this.inputExpr.value) {
-        this._apply(value, 'api'); // @@todo \\
+        this._apply(value, 'API'); // @@todo \\
       // }
     }.bind(this));
   },
@@ -207,7 +207,7 @@ var ControlColor = ControlBase.extend({
     var self = this;
     var params = self.params;
     var container = self._container;
-    var btnTransparent = container.getElementsByClassName('k6color-toggle-transparent')[0];
+    var btnTransparent = container.getElementsByClassName('pwpcpcolor-toggle-transparent')[0];
 
 
     /**
@@ -215,7 +215,7 @@ var ControlColor = ControlBase.extend({
      *
      */
     /** @type {HTMLelement} */
-    self.wrapper = container.getElementsByClassName('k6color')[0];
+    self.wrapper = container.getElementsByClassName('pwpcpcolor')[0];
     /** @type {jQuery} */
     self.$picker = self.container.find('.color-picker-hex');
 
@@ -300,8 +300,8 @@ var ControlColor = ControlBase.extend({
       }
     };
     // change button texts through title attribute and data attribute
-    btnCustom.title = PWPcp['l10n']['customColor'];
-    btnCustom.setAttribute('data-current', PWPcp['l10n']['customColor']);
+    btnCustom.title = api['l10n']['customColor'];
+    btnCustom.setAttribute('data-current', api['l10n']['customColor']);
     // set the toggle as control property, we're gonna reuse it
     /** @type {jQuery} */
     this.$btnCustom = $(btnCustom);
@@ -360,7 +360,7 @@ var ControlColor = ControlBase.extend({
         this._applyToPicker(newColor);
       }
 
-      if (from !== 'api') {
+      if (from !== 'API') {
         // set new value
         this.setting.set(newValue);
       }
@@ -369,4 +369,4 @@ var ControlColor = ControlBase.extend({
   }
 });
 
-api.controlConstructor['pwpcp_color'] = ControlColor;
+wpApi.controlConstructor['pwpcp_color'] = ControlColor;

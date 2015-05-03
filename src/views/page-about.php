@@ -1,5 +1,5 @@
 <div class="about-wrap">
-	<div class="PWPcp-logo"></div>
+	<div class="pwpcp-logo"></div>
 	<h1>Customize Plus</h1>
 	<div class="about-text">
 		<p class="description"><?php _e( 'Empower and extend the WordPress customize.', 'pkgTextDomain' ); ?></p>
@@ -12,8 +12,8 @@
 		</ul>
 	</div>
 	<div class="clear"></div>
-	<div class="PWPcp-video-container">
-		<div class="PWPcp-video">
+	<div class="pwpcp-video-container">
+		<div class="pwpcp-video">
 			<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/2anLjZwQg3g?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 		</div>
 	</div>
@@ -37,7 +37,7 @@
 		<?php endif; ?>
 	</div>
 	<h2><?php _e( 'Plugin features', 'pkgTextDomain' ); ?></h2>
-	<ul class="PWPcp-features">
+	<ul class="pwpcp-features">
 		<li><i class="dashicons dashicons-wordpress"></i>
 			<b><?php _e( 'Fully integrated in WordPress', 'pkgTextDomain' ); ?></b>
 			<p class="description"><?php _e( 'The code, the admin UI and the API totally looks like WordPress. As it should be.', 'pkgTextDomain' ); ?></p>
@@ -54,7 +54,7 @@
 			<b><?php _e( 'Hide & Show controls', 'pkgTextDomain' ); ?></b>
 			<p class="description"><?php _e( 'If your product has a lot of options you will be able to hide them. And in case, to show them again.', 'pkgTextDomain' ); ?></p>
 		</li>
-		<li class="PWPcp-premium"><i class="dashicons dashicons-update"></i>
+		<li class="pwpcp-premium"><i class="dashicons dashicons-update"></i>
 			<b><?php _e( 'Live Less Compiler', 'pkgTextDomain' ); ?></b> <em class="description">(<?php _e( 'Premium', 'pkgTextDomain' ); ?>)</em>
 			<p class="description"><?php _e( 'Use the power of less.js to ', 'pkgTextDomain' ); ?> | <a href="http://pluswp.com/">Learn more</a></p>
 		</li>

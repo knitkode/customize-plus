@@ -9,4 +9,4 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-api.controlConstructor['pwpcp_number'] = ControlBaseInput;
+wpApi.controlConstructor['pwpcp_number'] = ControlBaseInput;

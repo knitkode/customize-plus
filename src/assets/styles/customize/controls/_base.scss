@@ -4,7 +4,7 @@
  * in various situation like `:hover` or `.focus()`
  */
 .customize-control,
-.k6-control {
+.pwpcp-control {
   padding-left: $control--spacing-horizontal;
   padding-right: $control--spacing-horizontal;
   box-sizing: border-box;
@@ -33,7 +33,7 @@
  *
  */
 .customize-control,
-.k6-control {
+.pwpcp-control {
   border-color: transparent;
   border-style: solid;
   border-width: 1px 0;
@@ -53,7 +53,7 @@
  *
  */
 .customize-control,
-.k6-control {
+.pwpcp-control {
   margin: 0; // @@wptight-css-override .customize-control {} \\
   padding-top: $control--spacing-top;
   padding-bottom: $control--spacing-bottom;
@@ -64,7 +64,7 @@
 
   /**
    * Highlight focused control (through WordPress API method control.focus())
-   * adding the class `.k6-control-focused` to the `control.container`
+   * adding the class `.pwpcp-control-focused` to the `control.container`
    */
   background: $control--bg;
   &-focused {
@@ -78,19 +78,19 @@
   //  */
   // transition: opacity .1s ease;
 
-  // .control-section .accordion-section-content:hover & { // .k6-control-section
+  // .control-section .accordion-section-content:hover & { // .pwpcp-control-section
   //   opacity: .8;
   // }
-  // .control-section .accordion-section-content &:hover { // .k6-control-section
+  // .control-section .accordion-section-content &:hover { // .pwpcp-control-section
   //   opacity: 1;
   // }
   // // on search active we have multple accordion-section visible
   // // at the same time so we have to target the overall sidebar inner area
   // // to trigger the hover higlight in the right way
-  // .k6-search-active #customize-theme-controls:hover & {
+  // .pwpcp-search-active #customize-theme-controls:hover & {
   //   opacity: .8;
   // }
-  // .k6-search-active #customize-theme-controls &:hover {
+  // .pwpcp-search-active #customize-theme-controls &:hover {
   //   opacity: 1;
   // }
 }

@@ -56,12 +56,12 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	 */
 	protected function js_tpl_slider() {
 		?>
-		<div class="k6-unit-wrap">
-			<input type="number" class="k6-slider-number" value="{{ data.number }}" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
-			<div class="k6-unit-wrap"><# for (var i = 0, l = data.units.length; i < l; i++) { #><span class="k6-unit<# if ( data.units[i] === data.unit ) { #> k6-current<# } #>">{{ data.units[i] }}</span><# } #></div>
+		<div class="pwpcp-unit-wrap">
+			<input type="number" class="pwpcp-slider-number" value="{{ data.number }}" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
+			<div class="pwpcp-unit-wrap"><# for (var i = 0, l = data.units.length; i < l; i++) { #><span class="pwpcp-unit<# if ( data.units[i] === data.unit ) { #> pwpcp-current<# } #>">{{ data.units[i] }}</span><# } #></div>
 		</div>
-		<div class="k6-slider-wrap">
-			<div class="k6-slider"></div>
+		<div class="pwpcp-slider-wrap">
+			<div class="pwpcp-slider"></div>
 		</div>
 		<?php
 	}

@@ -9,4 +9,4 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-api.controlConstructor['pwpcp_radio_image'] = ControlBaseRadio;
+wpApi.controlConstructor['pwpcp_radio_image'] = ControlBaseRadio;

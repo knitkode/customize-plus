@@ -22,7 +22,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-var ControlBaseDummy = api.Control.extend({
+var ControlBaseDummy = wpApi.Control.extend({
   initialize: function( id, options ) {
     var control = this;
 
@@ -35,9 +35,9 @@ var ControlBaseDummy = api.Control.extend({
     control.deferred = {
       embedded: new $.Deferred()
     };
-    control.section = new api.Value();
-    control.priority = new api.Value();
-    control.active = new api.Value();
+    control.section = new wpApi.Value();
+    control.priority = new wpApi.Value();
+    control.active = new wpApi.Value();
 
 
     /**
@@ -54,12 +54,12 @@ var ControlBaseDummy = api.Control.extend({
     // PWPcp_Customize_Control_Dummy php class). This remove the unnecessary
     // presence of the <li> micro template in the _wpCustomizeSettings JSON.
     // In addition the type of control is printed as a class name.
-    control.container = $('<li class="customize-control customize-control-PWPcp_dummy ' + control.params.type + '"></li>');
+    control.container = $('<li class="customize-control customize-control-pwpcp_dummy ' + control.params.type + '"></li>');
 
     // delete setting, unfortunately we need to create to make this fake control work.
     // We do it through the PWPcp_Customize_Setting_Dummy php class.
     try {
-      delete api.settings.settings[this.id];
+      delete wpApi.settings.settings[this.id];
     } catch(err) {};
     /* end custom code */
 
@@ -88,4 +88,4 @@ var ControlBaseDummy = api.Control.extend({
   dropdownInit: function() {}
 });
 
-api.controlConstructor['PWPcp_dummy'] = ControlBaseDummy;
+wpApi.controlConstructor['pwpcp_dummy'] = ControlBaseDummy;

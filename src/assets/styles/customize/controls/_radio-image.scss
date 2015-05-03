@@ -2,7 +2,7 @@
  * Control Radio Image
  *
  */
-.customize-control-PWPcp_radio_image {
+.customize-control-pwpcp_radio_image {
 
   label {
     margin-right: 3px;
@@ -21,7 +21,7 @@
  * to be sure the checkbox receives focus, so we can "relay" the state
  * to the `<img>`.
  */
-input[type=radio].k6-radio-image {
+input[type=radio].pwpcp-radio-image {
   position: absolute;
   opacity: 0;
 

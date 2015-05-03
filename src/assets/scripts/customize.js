@@ -1,7 +1,7 @@
 /* global WpTight, Skeleton, Tabs, Tooltips, Notices */
 /* jshint unused: false, funcscope: true */
 
-(function (window, document, $, _, wp, PWPcp, validator) {
+(function (window, document, $, _, wp, api, validator) {
   'use strict';
 
   // this is needed to don't break js while developing
@@ -26,12 +26,12 @@
   var body = document.getElementsByTagName('body')[0];
 
   /** @type {Object} */
-  var api = wp['customize'];
+  var wpApi = wp['customize'];
 
   /** @type {boolean} */
-  var apiIsReady = false;
-  api.bind('ready', function () {
-    apiIsReady = true;
+  var wpApiIsReady = false;
+  wpApi.bind('ready', function () {
+    wpApiIsReady = true;
   });
 
   //= include customize/core/wptight.js
@@ -48,7 +48,7 @@
    *
    * @type {Object}
    */
-  PWPcp['sections'] = {};
+  api['sections'] = {};
 
   //= include customize/sections/base.js
 
@@ -58,7 +58,7 @@
    *
    * @type {Object}
    */
-  PWPcp['controls'] = {};
+  api['controls'] = {};
 
   //= include customize/controls/base.js
     // include customize/controls/base-dummy' )

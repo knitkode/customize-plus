@@ -88,4 +88,4 @@ var ControlMulticheck = ControlBase.extend({
   }
 });
 
-api.controlConstructor['pwpcp_multicheck'] = ControlMulticheck;
+wpApi.controlConstructor['pwpcp_multicheck'] = ControlMulticheck;

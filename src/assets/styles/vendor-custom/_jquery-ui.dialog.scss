@@ -31,12 +31,12 @@
  *
  * ```
  * $('#selector').dialog({
- *   dialogClass: 'wp-dialog k6-dialog-alert',
+ *   dialogClass: 'wp-dialog pwpcp-dialog-alert',
  *   modal: true
  * });
  * ```
  */
-.k6-dialog-alert {
+.pwpcp-dialog-alert {
   .ui-dialog-content {
     padding: 30px;
     text-align: center;

@@ -12,7 +12,7 @@
  * @class
  * @augments wp.customize.Control
  */
-var ControlBase = api.Control.extend({
+var ControlBase = wpApi.Control.extend({
   /**
    * Tweak the initialize methods.
    *
@@ -32,15 +32,15 @@ var ControlBase = api.Control.extend({
 
     // add a flag so that we are able to recognize our
     // custom controls, let's keep it short, so we need
-    // only to check `if (control.k6)`
-    control.k6 = 1;
+    // only to check `if (control.pwpcp)`
+    control.pwpcp = 1;
 
 
     control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
     // control.templateSelector = 'customize-control-' + control.params.type + '-content';
-    advancedClass = control.params.advanced ? ' k6-control-advanced' : '';
+    advancedClass = control.params.advanced ? ' pwpcp-control-advanced' : '';
     control.container = $('<li id="customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' ) +
-      '" class="customize-control k6-control customize-control-' + control.params.type
+      '" class="customize-control pwpcp-control customize-control-' + control.params.type
       + advancedClass + '"></li>'); // @@tobecareful check render() in PWPcp_Customize_Control_Base \\
 
     // save a reference of the raw DOM node, we're gonna use it more
@@ -51,9 +51,9 @@ var ControlBase = api.Control.extend({
     control.deferred = {
       embedded: new $.Deferred()
     };
-    control.section = new api.Value();
-    control.priority = new api.Value();
-    control.active = new api.Value();
+    control.section = new wpApi.Value();
+    control.priority = new wpApi.Value();
+    control.active = new wpApi.Value();
     control.activeArgumentsQueue = [];
 
     control.active.bind( function ( active ) {
@@ -66,25 +66,25 @@ var ControlBase = api.Control.extend({
     control.priority.set( isNaN( control.params.priority ) ? 10 : control.params.priority );
     control.active.set( control.params.active );
 
-    api.utils.bubbleChildValueChanges( control, [ 'section', 'priority', 'active' ] );
+    wpApi.utils.bubbleChildValueChanges( control, [ 'section', 'priority', 'active' ] );
 
     // Associate this control with its settings when they are created
     settings = $.map( control.params.settings, function( value ) {
       return value;
     });
-    api.apply( api, settings.concat( function () {
+    wpApi.apply( wpApi, settings.concat( function () {
       var key;
 
       control.settings = {};
       for ( key in control.params.settings ) {
-        control.settings[ key ] = api( control.params.settings[ key ] );
+        control.settings[ key ] = wpApi( control.params.settings[ key ] );
       }
 
       control.setting = control.settings['default'] || null;
 
       // embed controls only when the parent section get clicked to keep the DOM light,
       // to make this work all data can't be stored in the DOM, which is good
-      api.section( control.section.get(), function ( section ) {
+      wpApi.section( control.section.get(), function ( section ) {
         section.expanded.bind(function (expanded) {
           if (expanded) {
             control.inflate();
@@ -219,16 +219,16 @@ var ControlBase = api.Control.extend({
    */
   extras: function () {
     // constants
-    var CLASS_RESET_LAST = ' k6-extras-reset_last';
-    var CLASS_RESET_FACTORY = 'k6-extras-reset';
-    var CLASS_DISABLED = ' k6-disabled';
+    var CLASS_RESET_LAST = ' pwpcp-extras-reset_last';
+    var CLASS_RESET_FACTORY = 'pwpcp-extras-reset';
+    var CLASS_DISABLED = ' pwpcp-disabled';
     // DOM
     var container = this._container;
-    var area = container.getElementsByClassName('k6-extras')[0];
-    var toggle = container.getElementsByClassName('k6-extras-btn')[0];
-    var btnResetLast = container.getElementsByClassName('k6-extras-reset_last')[0];
-    var btnResetFactory = container.getElementsByClassName('k6-extras-reset')[0];
-    var btnHide = container.getElementsByClassName('k6-extras-hide')[0];
+    var area = container.getElementsByClassName('pwpcp-extras')[0];
+    var toggle = container.getElementsByClassName('pwpcp-extras-btn')[0];
+    var btnResetLast = container.getElementsByClassName('pwpcp-extras-reset_last')[0];
+    var btnResetFactory = container.getElementsByClassName('pwpcp-extras-reset')[0];
+    var btnHide = container.getElementsByClassName('pwpcp-extras-hide')[0];
     // value variables, uses closure
     var setting = this.setting;
     var defaultValue = this.settings['default'](); // @@todo-uglycode \\
@@ -237,7 +237,7 @@ var ControlBase = api.Control.extend({
     var isOpen = false;
     // handlers
     var _closeExtras = function () {
-      container.classList.remove('k6-extras-open');
+      container.classList.remove('pwpcp-extras-open');
     };
     /**
      * Reset setting to the value at the beginning of the session.
@@ -313,7 +313,7 @@ var ControlBase = api.Control.extend({
     if (toggle) {
       toggle.onclick = function () {
         isOpen = !isOpen;
-        container.classList.toggle('k6-extras-open', isOpen);
+        container.classList.toggle('pwpcp-extras-open', isOpen);
         if (isOpen) {
           _onExtrasOpen();
         }
@@ -323,7 +323,7 @@ var ControlBase = api.Control.extend({
     if (area) {
       area.onmouseenter = function () {
         isOpen = true;
-        container.classList.add('k6-extras-open');
+        container.classList.add('pwpcp-extras-open');
         _onExtrasOpen();
       };
       area.onmouseleave = function () {
@@ -331,7 +331,7 @@ var ControlBase = api.Control.extend({
         // don't close immediately, wait a bit and see if the mouse is still out of the area
         setTimeout(function () {
           if (!isOpen) {
-            container.classList.remove('k6-extras-open');
+            container.classList.remove('pwpcp-extras-open');
           }
         }, 300);
       };
@@ -349,16 +349,16 @@ var ControlBase = api.Control.extend({
       btnHide.onclick = function () {
         // @@tobecareful this is tight to class-customize.php $setting_control_id =
         // PWPcp::$OPTIONToHideS_PREFIX . '[' . $field_key . ']'; \\
-        var controlToHide = api.control('k6[hide-controls]');
+        var controlToHide = wpApi.control('pwpcp[hide-controls]');
         if (controlToHide) {
           controlToHide.setting.set(_.union(controlToHide.setting(), [self.id]));
           var secondsTimeout = 5;
           container.innerHTML =
-            '<a class="k6-hide-undo">' +
-              'Undo hide control <span class="k6-timer">' + secondsTimeout + 's</span>' +
+            '<a class="pwpcp-hide-undo">' +
+              'Undo hide control <span class="pwpcp-timer">' + secondsTimeout + 's</span>' +
             '</a>';
-          var btnHideUndo = container.getElementsByClassName('k6-hide-undo')[0];
-          var secondsEl = container.getElementsByClassName('k6-timer')[0];
+          var btnHideUndo = container.getElementsByClassName('pwpcp-hide-undo')[0];
+          var secondsEl = container.getElementsByClassName('pwpcp-timer')[0];
           var timerHideUndo = setInterval(function () {
             secondsTimeout--;
             secondsEl.innerHTML = secondsTimeout + 's'; // @@ie8-textContent would be enough \\
@@ -381,8 +381,8 @@ var ControlBase = api.Control.extend({
   }
 });
 
-// export to public api
-PWPcp['controls']['Base'] = ControlBase;
+// export to public API
+api['controls']['Base'] = ControlBase;
 
 /**
  * Fix autofocus
@@ -390,7 +390,7 @@ PWPcp['controls']['Base'] = ControlBase;
  * This is needed if autofocus is set to one
  * of our 'post-rendered' custom controls
  */
-api.bind('ready', function () {
+wpApi.bind('ready', function () {
   try {
     var controlToFocusID = window._wpCustomizeSettings.autofocus.control;
     if (controlToFocusID) {

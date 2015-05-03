@@ -10,8 +10,8 @@
 var Tabs = (function () {
 
   var CLASS_TAB_SELECTED = 'selected';
-  var SELECTOR_TAB = '.k6-tab';
-  var SELECTOR_TAB_CONTENT = '.k6-tab-content';
+  var SELECTOR_TAB = '.pwpcp-tab';
+  var SELECTOR_TAB_CONTENT = '.pwpcp-tab-content';
 
   /**
    * Uses event delegation so we are able to bind our 'temporary'
@@ -19,10 +19,10 @@ var Tabs = (function () {
    */
   function _init () {
     $document.on('click', SELECTOR_TAB, function() {
-      var area = this.parentNode.parentNode; // k6toimprove \\
-      var tabs = area.getElementsByClassName('k6-tab');
-      var panels = area.getElementsByClassName('k6-tab-content');
-      var isScreenPicker = area.classList.contains('k6-screen-picker');
+      var area = this.parentNode.parentNode; // pwpcptoimprove \\
+      var tabs = area.getElementsByClassName('pwpcp-tab');
+      var panels = area.getElementsByClassName('pwpcp-tab-content');
+      var isScreenPicker = area.classList.contains('pwpcp-screen-picker');
       var tabAttrName = isScreenPicker ? 'data-screen' : 'data-tab';
       var target = this.getAttribute(tabAttrName);
 
@@ -51,7 +51,7 @@ var Tabs = (function () {
       // if this tabbed area is related to the screenpreview then notify it
       if (isScreenPicker) {
         try {
-          PWPcp['components']['Screenpreview'].change(true, target);
+          api['components']['Screenpreview'].change(true, target);
         } catch(e) {
           console.log( 'Tabs tried to use Screenpreview, which is undefined.')
         }
@@ -60,7 +60,7 @@ var Tabs = (function () {
   }
 
   function _updateScreenPickerTabs (size, $container) {
-    var $screenPickers = $('.k6-screen-picker', $container);
+    var $screenPickers = $('.pwpcp-screen-picker', $container);
     $screenPickers.each(function () {
       var $area = $(this);
       var $tabs = $area.find(SELECTOR_TAB);
@@ -100,5 +100,5 @@ var Tabs = (function () {
   };
 })();
 
-// export to public api
-PWPcp['Tabs'] = Tabs;
+// export to public API
+api['Tabs'] = Tabs;

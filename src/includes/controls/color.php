@@ -71,9 +71,9 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 	protected function js_tpl() {
 		?>
 		<?php $this->js_tpl_header(); ?>
-		<div class="k6color" <# if (data.transparent ) { #>data-k6color-transparent<# } #>>
+		<div class="pwpcpcolor" <# if (data.transparent ) { #>data-pwpcpcolor-transparent<# } #>>
 			<input class="color-picker-hex" type="text" <# if (!data.allowAlpha ) { #>maxlength="7"<# } #> placeholder="<?php _e( 'Value', 'pkgTextdomain' ) ?>" />
-			<a href="javascript:void(0)" class="k6ui-toggle k6color-toggle-transparent"><?php _e( 'Transparent', 'pkgTextdomain' ) ?></a>
+			<a href="javascript:void(0)" class="pwpcpui-toggle pwpcpcolor-toggle-transparent"><?php _e( 'Transparent', 'pkgTextdomain' ) ?></a>
 		</div>
 		<?php
 	}

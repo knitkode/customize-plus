@@ -6,22 +6,22 @@
  * Temporary js to inject at the bottom
  */
 if (DEBUG) {
-  api.bind( 'ready', function() {
+  wpApi.bind( 'ready', function() {
     console.log('wp API ready');
   });
-  api.bind( 'save', function() {
+  wpApi.bind( 'save', function() {
     console.log('wp API saving ...');
   });
-  api.bind( 'saved', function() {
+  wpApi.bind( 'saved', function() {
     console.log('wp API saved !');
   });
-  api.bind( 'activated', function() {
+  wpApi.bind( 'activated', function() {
     console.log('wp API activated ????');
   });
 }
 
 // // from: https://make.wordpress.org/core/2014/10/27/toward-a-complete-javascript-api-for-the-customizer/
-// api.section.each(function ( section ) {
+// wpApi.section.each(function ( section ) {
 //   if ( ! section.panel() ) {
 //     section.expand({ allowMultiple: true });
 //   }

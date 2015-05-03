@@ -10,13 +10,13 @@
  * be sure to don't cut off the handle on the sides edges using
  * the padding in combinaiton with the negative margin.
  */
-.k6-slider-wrap {
+.pwpcp-slider-wrap {
   overflow: hidden;
   padding: 0 ($plugin--slider-handle-size / 1.5);
   // margin-left: -($plugin--slider-handle-size / 2);
   margin-right: -($plugin--slider-handle-size / 2);
 }
-.k6-unit-wrap {
+.pwpcp-unit-wrap {
   float: right;
 }
 
@@ -24,16 +24,16 @@
  * Slider number input
  *
  */
-input[type=number].k6-slider-number {
+input[type=number].pwpcp-slider-number {
   width: auto;
   padding: 3px 0;
   border: 0;
   box-shadow: none;
   font-weight: bold;
-  background: transparent; // k6maybenotneeded \\
-  margin: 0; // k6maybenotneeded \\
-  display: inline; // k6maybenotneeded \\
-  text-align: right; // k6maybenotneeded \\
+  background: transparent; // pwpcpmaybenotneeded \\
+  margin: 0; // pwpcpmaybenotneeded \\
+  display: inline; // pwpcpmaybenotneeded \\
+  text-align: right; // pwpcpmaybenotneeded \\
 
   // Hide spinner on input[type=number]
   // @link http://stackoverflow.com/a/23374725/1938970
@@ -49,7 +49,7 @@ input[type=number].k6-slider-number {
  * Unit picker (`px`, `em`, `%`, etc.)
  *
  */
-.k6-unit {
+.pwpcp-unit {
   display: inline-block;
   padding: 3px 5px;
   border: 1px solid #eee;
@@ -65,7 +65,7 @@ input[type=number].k6-slider-number {
     background: #fafafa;
   }
 
-  &.k6-current {
+  &.pwpcp-current {
     float: left;
     cursor: default;
     background: transparent;

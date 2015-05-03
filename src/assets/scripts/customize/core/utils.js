@@ -24,7 +24,7 @@ var Utils = (function () {
      * @method
      */
     linkControl: function (linkEl, controlId) {
-      var controlToFocus = api.control(controlId);
+      var controlToFocus = wpApi.control(controlId);
       var innerLink = function () {
         controlToFocus.inflate(true);
 
@@ -32,13 +32,13 @@ var Utils = (function () {
         // we click on this link from a search result
         // try/catch because search is not always enabled
         try {
-          PWPcp['components']['Search'].deactivate();
+          api['components']['Search'].deactivate();
         } catch (e) {}
 
         controlToFocus.focus(); // @@doubt focus or expand ? \\
-        controlToFocus.container.addClass('k6-control-focused');
+        controlToFocus.container.addClass('pwpcp-control-focused');
         setTimeout(function () {
-          controlToFocus.container.removeClass('k6-control-focused');
+          controlToFocus.container.removeClass('pwpcp-control-focused');
         }, 1000);
       };
 
@@ -60,7 +60,7 @@ var Utils = (function () {
      * @return {string}          The option template.
      */
     selectizeRenderSize: function (item, escape) {
-      return '<div class="k6size-selectOption"><i>' + escape(item.valueCSS) + '</i> ' + escape(item.label) + '</div>';
+      return '<div class="pwpcpsize-selectOption"><i>' + escape(item.valueCSS) + '</i> ' + escape(item.label) + '</div>';
     },
     /**
      * Selectize render option function
@@ -71,11 +71,11 @@ var Utils = (function () {
      * @return {string}          The option template.
      */
     selectizeRenderColor: function (item, escape) {
-      return '<div class="k6color-selectOption" style="border-color:' + escape(item.valueCSS) + '">' +
+      return '<div class="pwpcpcolor-selectOption" style="border-color:' + escape(item.valueCSS) + '">' +
         escape(item.label) + '</div>';
     }
   };
 })();
 
-// export to public api
-PWPcp['Utils'] = Utils;
+// export to public API
+api['Utils'] = Utils;

@@ -2,7 +2,7 @@
  * Control Radio
  *
  */
-.customize-control-PWPcp_radio {
+.customize-control-pwpcp_radio {
 
   & label {
     position: relative;
@@ -10,7 +10,7 @@
     padding: 5px 0; // @@wptight-css based on .customize-control-radio { line-height } \\
 
     &:hover {
-      .k6-tooltip {
+      .pwpcp-tooltip {
         display: block;
       }
     }

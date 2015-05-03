@@ -9,4 +9,4 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-api.controlConstructor['pwpcp_buttonset'] = ControlBaseRadio;
+wpApi.controlConstructor['pwpcp_buttonset'] = ControlBaseRadio;

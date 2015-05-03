@@ -27,7 +27,7 @@ class PWPcp_Customize_Control_Buttonset extends PWPcp_Customize_Control_Base_Rad
 	 */
 	protected function js_tpl_above_choices () {
 		?>
-			<div class="switch-toggle k6-switch switch-{{ _.size(choices) }}">
+			<div class="switch-toggle pwpcp-switch switch-{{ _.size(choices) }}">
 		<?php
 	}
 

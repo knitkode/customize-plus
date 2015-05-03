@@ -7,14 +7,13 @@ if ( ! class_exists( 'PWPcp' ) ):
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @category  CategoryName
-	 * @package   K6
-	 * @author    Author's name <author@mail.com>
-	 * @copyright 2015 Author's name
-	 * @license   http://www.opensource.org/licenses/bsd-license.php The BSD License
+	 * @package   PWPcp
+	 * @author    kuus <kunderikuus@gmail.com>
+	 * @copyright Copyright (c) 2015, kunderi kuus (PlusWP)
+	 * @license   http://opensource.org/licenses/gpl-3.0.php GNU Public License
+	 * @link      http://pluswp.com/docs/customize-plus/core
 	 * @version   Release: @package_version@
-	 * @link      http://pear.php.net/package/K6
-	 * @see       References to other sections (if any)...
+	 * @since     0.0.1
 	 */
 	class PWPcp {
 

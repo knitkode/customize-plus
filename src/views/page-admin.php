@@ -9,7 +9,7 @@ if ( isset( $_GET['tab'] ) && in_array( sanitize_key( $_GET['tab'] ), $allowed_t
 	$active_tab = $this->default_tab;
 }
 ?>
-<div id="PWPcp-admin-<?php esc_attr_e( $active_tab ); ?>" class="wrap">
+<div id="pwpcp-admin-<?php esc_attr_e( $active_tab ); ?>" class="wrap">
 	<h2 class="nav-tab-wrapper">
 	<?php
 	foreach ( $this->subpages as $subpage_id => $subpage_args ) {

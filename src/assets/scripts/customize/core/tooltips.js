@@ -49,11 +49,11 @@ var Tooltips = (function () {
     $tipGuides.each(function() {
       var $this = $(this);
       var dataAttrs = $this.data();
-      var $icon = $('<i class="k6-tip-guide-trigger dashicons dashicons-editor-help"></i>');
+      var $icon = $('<i class="pwpcp-tip-guide-trigger dashicons dashicons-editor-help"></i>');
       $icon.data(dataAttrs);
-      $this.before($icon).parents('label').addClass('k6-has-tip-guide');
+      $this.before($icon).parents('label').addClass('pwpcp-has-tip-guide');
     });
-    $tipGuidesTriggers = $('.k6-tip-guide-trigger');
+    $tipGuidesTriggers = $('.pwpcp-tip-guide-trigger');
   }
 
   function _stopVideos () {
@@ -103,10 +103,10 @@ var Tooltips = (function () {
       _initGuides();
       _initHelpers();
       // Init bootstrap tooltips
-      // $('.k6-tip').tooltip();
+      // $('.pwpcp-tip').tooltip();
     }
   };
 })();
 
-// export to public api
-PWPcp['Tooltips'] = Tooltips;
+// export to public API
+api['Tooltips'] = Tooltips;
