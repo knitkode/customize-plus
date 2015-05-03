@@ -127,6 +127,16 @@ $animate-sidebar-with-transforms-if-possible: false;
     font: 400 22px dashicons;
     line-height: $WPcustomize--header-height;
   }
+
+  @media (max-width: $WPcustomize--float-breakpoint) {
+    // hide toggle when, on small screens, the current view is the preview
+    // keep it in the media query because when resizing the browser from small to large
+    // WordPress doesn't remove the `preview-only` class even if it doesn't apply anymore
+    // @@wpapichange
+    .preview-only & {
+      display: none;
+    }
+  }
 }
 // active status used by Search and Tools
 %pwpcp-toggle-active {
