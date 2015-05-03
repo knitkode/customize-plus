@@ -45,7 +45,7 @@ var ControlColor = ControlBase.extend({
    * @private
    */
   _addAlpha: function (colorOnReady) {
-    Color.prototype.toString = function (ignoreAlpha) { // k6wptght-js_dep Color.js \\
+    Color.prototype.toString = function (ignoreAlpha) { // @@wptight-js_dep Color.js \\
       if (this._alpha < 1 && !ignoreAlpha) {
         return this.toCSS('rgba', this._alpha).replace(Regexes.whitespaces, '');
       }
