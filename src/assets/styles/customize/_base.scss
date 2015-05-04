@@ -69,7 +69,7 @@ $animate-sidebar-with-transforms-if-possible: false;
  *
  */
 .pwpcp-full-overlay {
-  z-index: 9999999;
+  z-index: 1;
   left: 0;
   right: 0;
   width: auto;
