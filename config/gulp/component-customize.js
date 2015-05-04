@@ -97,7 +97,7 @@ gulp.task('_customize-scripts-admin', function() {
     PATHS.src.bower + 'validator-js/validator.js',
     PATHS.src.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme...
     PATHS.src.bower + 'jquery-cookie/jquery.cookie.js',
-    PATHS.src.bower + 'webui-popover/dist/jquery.webui-popover.min.js',
+    PATHS.src.bower + 'webui-popover/dist/jquery.webui-popover.js',
     PATHS.src.bower + 'selectize/dist/js/standalone/selectize.js'
   ]));
   stream.queue(gulp.src(PATHS.src.scripts + 'customize.js')

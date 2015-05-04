@@ -1,5 +1,5 @@
-/* global Skeleton, Utils */
-/* exported: ControlBase, Skeleton, Utils */
+/* global Skeleton, Utils, Tooltips */
+/* exported: ControlBase */
 
 /**
  * Control Base class
@@ -174,8 +174,12 @@ var ControlBase = wpApi.Control.extend({
     // call the abstract method
     this.onDeflate();
 
+    // destroy guides to free up DOM
+    this.destroyGuide(this);
+
     // and empty the DOM from the container
     this.empty(container);
+
 
     // flag control that it's not rendered
     this.rendered = false;
@@ -209,8 +213,47 @@ var ControlBase = wpApi.Control.extend({
     if (shouldWeResolveEmbeddedDeferred) {
       this.deferred.embedded.resolve();
     }
+    this.initGuide();
+    this.initHelp();
     this.extras();
     console.log('inflate of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.');
+  },
+  /**
+   * Manage the initialization of control guides
+   *
+   * @use Tooltips
+   * @return {void}
+   */
+  initGuide: function () {
+    if (this.params.guide && Tooltips) {
+      Tooltips.createGuide(this);
+    }
+  },
+  /**
+   * Destroy guides on control deflate
+   *
+   * @use Tooltips
+   * @return {void}
+   */
+  destroyGuide: function () {
+    if (this.params.guide && Tooltips) {
+      Tooltips.destroyGuide(this);
+    }
+  },
+  /**
+   * Manage the initialization of control helpers
+   *
+   * @use Tooltips
+   * @return {void}
+   */
+  initHelp: function () {
+    if (!Tooltips) {
+      return;
+    }
+    var $helper = this.container.find('.pwpcp-help');
+    if ($helper.length) {
+      Tooltips.createHelper($helper);
+    }
   },
   /**
    * Manage the `extras` dropdown menu

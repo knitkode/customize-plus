@@ -1,28 +1,22 @@
 /**
- * Tips guides and helpers
+ * Dashicon button trigger for guides tooltips
  *
+ * @use `.pwpcp-control-btn`
  */
-.pwpcp-tip-guide-trigger {
-  float: right;
-  padding: 2px 0;
-  opacity: .25;
+.pwpcp-guide {
+  top: $control--spacing-top;
+  right: 3px;
+  // probably the dashicon font itself (`editor-help`) has different
+  // proportions so we need to enlarge a bit to make it look like
+  // as big as the extras menu dashicon (`cog`)
+  font-size: $control--btn-icon-fontsize + 3;
 
-  &:hover {
-    opacity: .75;
+  .pwpcp-guide-open & {
+    opacity: 1;
+    box-shadow: $WP--select-box-shadow-focus;
+    border-radius: $control--btn-size;
   }
 }
-
-.pwpcp-has-tip-guide {
-  .pwpcp-tip-guide-trigger + input {
-    margin-right: 5px;
-    display: inline-block;
-    width: 89%;
-  }
-  .pwpcp-slider {
-    width: 89%;
-  }
-}
-
 
 /**
  * Popover tweaks.
@@ -40,13 +34,16 @@
   // left: 279px !important; // @@doubt..what to do here for help and guides, we'll see \\
 }
 
-// show spinner behind iframe in tip popover
+/**
+ * Tip popover content
+ *
+ */
 .webui-popover-content {
+  // show spinner behind iframe in tip popover
   iframe {
     position: relative;
     z-index: 2;
   }
-
   .spinner {
     z-index: 1;
     display: block;

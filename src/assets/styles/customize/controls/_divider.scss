@@ -14,10 +14,6 @@
   // border-bottom: 1px solid darken($control--bg-divider, 4%);
   text-align: center;
 
-  .customize-control:first-child > & {
-    margin-top: -$control--spacing-top - 2;
-  }
-
   .customize-control-title {
     margin: 0;
   }

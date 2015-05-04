@@ -151,6 +151,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 		public static function get_js_constants() {
 			$required = array(
 				'FONT_FAMILIES' => pwpcp_sanitize_font_families( self::$font_families ),
+				'THEME_URI' => get_stylesheet_directory_uri(),
 			);
 			$additional = (array) apply_filters( 'PWPcp/customize/js_constants', array() );
 			return array_merge( $required, $additional );

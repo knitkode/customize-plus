@@ -4,7 +4,7 @@
  */
 .customize-control-pwpcp_radio {
 
-  & label {
+  label {
     position: relative;
     display: block;
     padding: 5px 0; // @@wptight-css based on .customize-control-radio { line-height } \\
@@ -16,7 +16,7 @@
     }
   }
 
-  & small {
+  small {
     opacity: .8;
     font-style: italic;
 

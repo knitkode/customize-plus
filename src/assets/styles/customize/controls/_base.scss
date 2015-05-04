@@ -58,10 +58,6 @@
   padding-top: $control--spacing-top;
   padding-bottom: $control--spacing-bottom;
 
-  &:first-of-type {
-    padding-top: $control--spacing-top * 2;
-  }
-
   /**
    * Highlight focused control (through WordPress API method control.focus())
    * adding the class `.pwpcp-control-focused` to the `control.container`

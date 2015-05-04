@@ -1,9 +1,4 @@
 /**
- * Extras menu for controls
- *
- */
-
-/**
  * Control changes, class applied on wrapper div inside the `<li>`
  * container (wrapper present only in case we have a control divider),
  * and on the container itself (for controls without a divider)
@@ -25,16 +20,12 @@
 
 /**
  * Toggle button
+ *
+ * @use `.pwpcp-control-btn`
  */
 .pwpcp-extras-btn {
-  z-index: 3;
-  position: absolute;
   top: $control--spacing-top;
-  left: -1px;
-
-  .pwpcp-control:first-of-type & {
-    top: $control--spacing-top * 2;
-  }
+  left: 1px;
 
   // the button needs to slightly change the position
   // if it inside the control-wrap (when we have dividers...)
@@ -43,24 +34,11 @@
     left: -$control--spacing-horizontal - 1;
   }
 
-  width: $extras--btn-size;
-  height: $extras--btn-size;
-  line-height: $extras--btn-size + 1; // pwpcptofix weird bug \\
-  text-align: right; // pwpcptofix weird bug \\
-  font-size: 15px;
-  color: #aaa;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity .18s ease, color .18s ease;
-
   /**
    * Open state
    */
   .pwpcp-extras-open & {
-    color: #333;
-  }
-  .pwpcp-extras-open &,
-  .pwpcp-control:hover & {
+    color: $control--btn-color-active;
     opacity: 1;
   }
 }
@@ -73,22 +51,9 @@
   z-index: 11; // @@wptight-css we need to overtake .iris-picker .iris-square-handle { z-index: 10 } \\
   display: none;
   position: absolute;
-  top: $control--spacing-top + $extras--btn-size + 3px;
+  top: $control--spacing-top + $control--btn-size + 3px;
   left: $control--spacing-horizontal;
-
-  // the button needs to slightly change the position
-  // if it inside the control-wrap (when we have dividers...)
-  .pwpcp-control-wrap & {
-    top: $extras--btn-size + 3px;
-    left: 0;
-  }
   width: $WPcustomize--sidebar-inner-width;
-
-  // the menus shrinks a bit when the scrollbar is visible
-  .pwpcp-has-scrollbar & {
-    width: $WPcustomize--sidebar-inner-width - 16; // scrollbar width
-  }
-
   margin: 0 0 $control--spacing-bottom;
   padding: 6px;
   background: $popover--bg;
@@ -97,6 +62,19 @@
   box-shadow: $popover--box-shadow;
   box-sizing: border-box;
 
+  // the button needs to slightly change the position
+  // if it inside the control-wrap (when we have dividers...)
+  .pwpcp-control-wrap & {
+    top: $control--btn-size + 3px;
+    left: 0;
+  }
+
+  // the menus shrinks a bit when the scrollbar is visible
+  .pwpcp-has-scrollbar & {
+    width: $WPcustomize--sidebar-inner-width - 16; // scrollbar width
+  }
+
+  // displayment is class based
   .pwpcp-extras-open & {
     display: block;
   }
@@ -131,6 +109,7 @@
     }
   }
 }
+
 .pwpcp-extras {
   &-undo:before {
     content: "\f171";
