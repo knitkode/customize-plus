@@ -120,6 +120,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 						if (data.div.text) { #><span class="description customize-control-description">{{{ data.div.text }}}</span><# } #>
 				</div>
 			<# } #>
+			<div class="pwpcp-control-help" data-tip="help" data-tip_title="trial" data-tip_text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque a beatae aspernatur recusandae soluta perspiciatis quam? Doloremque officiis non, fugit, placeat sunt incidunt recusandae assumenda, blanditiis ad minima nisi illo!">help</div>
 		<?php
 	}
 

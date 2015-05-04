@@ -18,10 +18,11 @@
 
   &-inner {
     position: relative;
-    background: $popover--bg;
+    margin-left: $control--spacing-horizontal;
     border: 1px solid $popover--border-color-fallback;
     border: 1px solid $popover--border-color;
     box-shadow: 10px 10px $popover--box-shadow-blur $popover--box-shadow-color;
+    background: $popover--bg;
   }
 
   .close {

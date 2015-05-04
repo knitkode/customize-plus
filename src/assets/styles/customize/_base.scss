@@ -86,6 +86,8 @@ $animate-sidebar-with-transforms-if-possible: false;
   .spinner { // @@wptight-selector \\
     float: none;
     display: inline-block;
+    visibility: visible;
+    margin: -3px 5px 0 0;
   }
 }
 

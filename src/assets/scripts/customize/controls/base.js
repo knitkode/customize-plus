@@ -116,7 +116,7 @@ var ControlBase = wpApi.Control.extend({
   /**
    * Triggered when the control has been initialized
    *
-   * $abstract
+   * @abstract
    */
   onInit: function() {},
   /**
@@ -219,8 +219,8 @@ var ControlBase = wpApi.Control.extend({
    */
   extras: function () {
     // constants
-    var CLASS_RESET_LAST = ' pwpcp-extras-reset_last';
     var CLASS_RESET_FACTORY = 'pwpcp-extras-reset';
+    var CLASS_RESET_LAST = ' pwpcp-extras-reset_last';
     var CLASS_DISABLED = ' pwpcp-disabled';
     // DOM
     var container = this._container;
