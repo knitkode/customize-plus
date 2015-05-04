@@ -32,6 +32,10 @@
   top: $control--spacing-top;
   left: -1px;
 
+  .pwpcp-control:first-of-type & {
+    top: $control--spacing-top * 2;
+  }
+
   // the button needs to slightly change the position
   // if it inside the control-wrap (when we have dividers...)
   .pwpcp-control-wrap & {
