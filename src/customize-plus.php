@@ -35,7 +35,6 @@ require_once( PWPcp_PLUGIN_DIR . 'includes/functions-sanitize.php' );
 require_once( PWPcp_PLUGIN_DIR . 'includes/class-singleton.php' );
 require_once( PWPcp_PLUGIN_DIR . 'includes/class-core.php' );
 require_once( PWPcp_PLUGIN_DIR . 'includes/class-customize.php' );
-require_once( PWPcp_PLUGIN_DIR . 'includes/class-customize-manager.php' );
 require_once( PWPcp_PLUGIN_DIR . 'includes/class-theme.php' );
 if ( is_admin() ) {
 	require_once( PWPcp_PLUGIN_DIR . 'includes/class-admin.php' );

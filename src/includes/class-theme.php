@@ -36,6 +36,8 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 *
 		 * Themes are required to declare this using through
 		 * `add_theme_support( 'PWPcp-customize' )`.
+		 * This is also the name of the DB entry under which options are
+		 * stored if `'type' => 'option'` is used for the Customizer settings.
 		 *
 		 * @since 0.0.1
 		 * @var string
@@ -43,18 +45,14 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		public static $options_prefix = '';
 
 		/**
-		 * Theme settings default values
+		 * The theme customize tree array.
 		 *
-		 * It acts like a store with the default values of theme settings (`theme_mods`)
-		 * extracted from the `tree` array declared by the theme through
-		 * `add_theme_support( 'PWPcp-customize' )`. The current theme or this plugin
-		 * can use this array to safely retrieve options without having to write the
-		 * default values to the db.
+		 * Themes pass all their organized customizer setup through
+		 * `add_theme_support( 'PWPcp-customize' )`.
 		 *
-		 * @since 0.0.1
 		 * @var array
 		 */
-		public static $settings_defaults = array();
+		public static $customize_tree = array();
 
 		/**
 		 * Images base url
@@ -86,6 +84,20 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * @var string
 		 */
 		public static $docs_base_url = '';
+
+		/**
+		 * Theme settings default values
+		 *
+		 * It acts like a store with the default values of theme settings (`theme_mods`)
+		 * extracted from the `tree` array declared by the theme through
+		 * `add_theme_support( 'PWPcp-customize' )`. The current theme or this plugin
+		 * can use this array to safely retrieve options without having to write the
+		 * default values to the db.
+		 *
+		 * @since 0.0.1
+		 * @var array
+		 */
+		public static $settings_defaults = array();
 
 		/**
 		 * Constructor
@@ -153,9 +165,8 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 					}
 				case 'customize_tree':
 					if ( isset( $configuration[ 'customize_tree' ] ) ) {
-						$customize_tree = $configuration[ 'customize_tree' ];
-						if ( is_array( $customize_tree ) ) {
-							return $customize_tree;
+						if ( is_array( $configuration[ 'customize_tree' ] ) ) {
+							return $configuration[ 'customize_tree' ];
 						} else {
 							// @@todo use doing_it_wrong ? \\
 							wp_die( __( 'Customize Plus: `customize_tree` must be an array.', 'pkgTextdomain' ) );
@@ -167,9 +178,8 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 					break;
 				case 'styles':
 					if ( isset( $configuration[ 'styles' ] ) ) {
-						$styles = $configuration[ 'styles' ];
-						if ( is_array( $styles ) ) {
-							return $styles;
+						if ( is_array( $configuration[ 'styles' ] ) ) {
+							return $configuration[ 'styles' ];
 						} else {
 							wp_die( __( 'Customize Plus: `styles` must be an array.', 'pkgTextdomain' ) ); // @@todo use doing_it_wrong ? \\
 						}
@@ -203,18 +213,16 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 			self::$options_prefix = $theme['prefix'];
 			self::$images_base_url = $theme['images_base_url'];
 			self::$docs_base_url = $theme['docs_base_url'];
-
-			// register theme customize tree
-			$theme_customize_manager = new PWPcp_Customize_Manager( 'theme', $theme['prefix'], $theme['customize_tree'] );
+			self::$customize_tree = $theme['customize_tree'];
 
 			// add theme settings defaults
-			self::$settings_defaults = $theme_customize_manager->settings_defaults;
+			self::set_settings_defaults();
 
 			// register theme styles to compiler if enabled
 			// @@todo use theme supports api here... \\
 			if ( class_exists( 'PWPcpp' ) ) {
 				if ( $theme['styles'] && /*PWPcpp::get_option_with_default( 'compiler' ) &&*/ class_exists( 'PWPcpp_Component_Compiler' ) ) {
-					PWPcpp_Component_Compiler::register_styles( $theme['styles'], $theme_customize_manager->tree );
+					PWPcpp_Component_Compiler::register_styles( $theme['styles'], self::$customize_tree );
 				}
 			}
 
@@ -230,14 +238,65 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * [get_theme_mod_with_default description]
+		 * [set_settings_defaults description]
+		 *
+		 * @link http://wordpress.stackexchange.com/questions/28954/how-to-set-the-default-value-of-a-option-in-a-theme
+		 * @since 0.0.1
+		 * @return [type]              [description]
+		 */
+		private static function set_settings_defaults() {
+
+			foreach ( self::$customize_tree as $component ) {
+				if ( 'panel' === $component['subject'] ) {
+					if ( isset( $component['sections'] ) && is_array( $component['sections'] ) ) {
+						foreach ( $component['sections'] as $section ) {
+							self::set_settings_default_from_section( $section );
+						}
+					}
+				}
+				else if ( 'section' === $component['subject'] ) {
+					self::set_settings_default_from_section( $component );
+				}
+			}
+		}
+
+		/**
+		 * [get_setting_default_from_field description]
+		 * @param  Array $section           [description]
+		 */
+		private static function set_settings_default_from_section ( $section ) {
+			if ( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
+				foreach ( $section['fields'] as $field_id => $field_args ) {
+					if ( isset( $field_args['setting'] ) ) {
+						$setting = $field_args['setting'];
+
+						// this allow to use a different id for the setting than the default one
+						// (which is the shared between the setting and its related control)
+						if ( ! isset( $setting['id'] ) ) {
+							$setting['id'] = $field_id;
+						}
+
+						if ( isset( $setting['default'] ) ) {
+							// set default value on options defaults
+							self::$settings_defaults[ $setting['id'] ] = $setting['default'];
+						}
+						else {
+							// @@todo throw error here, a default is required \\
+						}
+					}
+				}
+			}
+		}
+
+		/**
+		 * Get theme mod with default value as fallback
 		 * we'll need this safe theme_mod in one of our sanitization functions
 		 * @see pwpcp_get_less_test_input
 		 *
 		 * @param [type]  $opt_name [description]
 		 * @return [type]           [description]
 		 */
-		public static function get_theme_mod_with_default( $opt_name ) {
+		public static function get_theme_mod( $opt_name ) {
 			if ( isset( self::$settings_defaults[ $opt_name ] ) ) {
 				return get_theme_mod( $opt_name, self::$settings_defaults[ $opt_name ] );
 			} else {
@@ -246,7 +305,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * [get_theme_mods_with_defaults description]
+		 * Get all theme mods with default values as fallback
 		 *
 		 * Initially the `theme_mods` are empty, so check for it.
 		 * @link(https://core.trac.wordpress.org/browser/trunk/src/wp-includes/functions.php#L3045, core.trac.wordpress)
@@ -255,7 +314,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 *
 		 * @return array           [description]
 		 */
-		public static function get_theme_mods_with_defaults() {
+		public static function get_theme_mods() {
 			$theme_mods = get_theme_mods();
 			if ( ! $theme_mods ) {
 			 	$theme_mods = array();

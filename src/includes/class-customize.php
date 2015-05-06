@@ -46,6 +46,21 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 			'settings' => array(),
 		);
 
+
+		/**
+		 * CSS shared for all the icons
+		 *
+		 * @var string
+		 */
+		private static $css_icons_shared = 'position:relative;top:4px;left:-2px;opacity:.5;font-size:20px;font-weight:normal;font-family:"dashicons";';
+
+		/**
+		 * CSS for icons displayment
+		 *
+		 * @var string
+		 */
+		private static $css_icons = '';
+
 		/**
 		 * Font families
 		 *
@@ -115,6 +130,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 			do_action( 'PWPcp/customize/enqueue_css_admin_pre', 'PWPcp-customize' );
 
 			wp_enqueue_style( 'PWPcp-customize', plugins_url( 'assets/customize.min.css', PWPcp_PLUGIN_FILE ), array( 'dashicons' ), PWPcp_PLUGIN_VERSION );
+			wp_add_inline_style( 'PWPcp-customize', self::$css_icons );
 
 			do_action( 'PWPcp/customize/enqueue_css_admin_post', 'PWPcp-customize' );
 		}
@@ -134,8 +150,6 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 					'components' => apply_filters( 'PWPcp/customize/js_components', array() ),
 					'constants' => self::get_js_constants(),
 					'l10n' => self::get_js_l10n(),
-					// filter to add extra stuff in the namespace, for developers
-					'extra' => apply_filters( 'PWPcp/customize/js_extra', array() ),
 				) );
 			wp_enqueue_script( 'PWPcp-customize' );
 
@@ -208,15 +222,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 * @since  0.0.1
 		 */
 		public static function enqueue_js_shim() {
-			// global $wp_scripts;
-			// $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-			// // @@wpapichange following will work from WP 4.3? \\
-			// wp_enqueue_script( 'es5-shim', plugins_url( "assets/es5-shim{$min}.js", PWPcp_PLUGIN_FILE ) );
-			// did_action( 'init' ) && $wp_scripts->add_data( 'es5-shim', 'conditional', 'lt IE 8' );
-			// wp_style_add_data( 'es5-shim', 'conditional', 'if lt IE 9' );
-			?>
-			<!--[if lt IE 9]><script src="<?php echo esc_url( plugins_url( 'assets/es5-shim.min.js', PWPcp_PLUGIN_FILE ) ); ?>"></script><![endif]-->
-			<?php
+			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+			wp_enqueue_script( 'es5-shim', plugins_url( "assets/es5-shim{$min}.js", PWPcp_PLUGIN_FILE ), array(), PWPcp_PLUGIN_VERSION );
+			wp_script_add_data( 'es5-shim', 'conditional', 'if lt IE 9' );
 		}
 
 		/**
@@ -230,7 +238,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 
 			do_action( 'PWPcp/customize/register_custom_classes', __CLASS__ );
 
-			do_action( 'PWPcp/customize/ready' );
+			self::register_tree();
 		}
 
 		/**
@@ -245,6 +253,201 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 					self::$custom_types[ $type ] = array_merge( self::$custom_types[ $type ], $new_custom_types );
 				}
 			}
+		}
+
+		/**
+		 * [register_tree description]
+		 *
+		 * @since  0.0.1
+		 */
+		private static function register_tree() {
+			$priority = 0;
+
+			foreach ( PWPcp_Theme::$customize_tree as $component ) {
+				$priority++;
+
+				if ( 'panel' === $component['subject'] ) {
+					self::tree_add_panel( $component, $priority );
+				}
+				else if ( 'section' === $component['subject'] ) {
+					self::tree_add_section( null, $component, $priority );
+				}
+			}
+		}
+
+		/**
+		 * [add_panel description]
+		 *
+		 * @since  0.0.1
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
+		 */
+		private static function tree_add_panel( $panel, $priority ) {
+			global $wp_customize;
+
+			// dynamically get panel_id with opitons_prefix
+			$panel_id = PWPcp_Theme::$options_prefix . '-' . $panel['id'];
+
+			// augment panel args array
+			$panel_args = array();
+			$panel_args['title'] = $panel['title'];
+			if ( isset( $panel['description'] ) ) {
+				$panel_args['description'] = $panel['description'];
+			}
+			$panel_args['priority'] = $priority;
+			// $panel_args['capability'] = 'edit_theme_options'; // @@tocheck \\
+			// $panel_args['theme_supports'] = ''; // @@tocheck \\
+
+			// add panel icon if specified
+			if ( isset( $panel['icon'] ) ) {
+				self::add_css_panel_dashicon( $panel_id, $panel['icon'] );
+			}
+
+			// Add panel to WordPress
+			$wp_customize->add_panel( $panel_id, $panel_args );
+
+			// Add panel sections
+			if ( isset( $panel['sections'] ) ) {
+				// set priority to 0
+				$priority_depth1 = 0;
+				// Loop through 'sections' array in each panel and add sections
+				foreach ( $panel['sections'] as $section ) {
+					// increment priority
+					$priority_depth1++;
+					self::tree_add_section( $panel_id, $section, $priority_depth1 );
+				}
+			}
+		}
+
+		/**
+		 * [tree_add_section description]
+		 *
+		 * @since  0.0.1
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
+		 * @param [type]  $panel_fields     [description]
+		 * @param [type]  $panel_id     [description]
+		 */
+		protected function tree_add_section( $panel_id, $section, $priority ) {
+			global $wp_customize;
+
+			// create section args array
+			$section_args = array();
+			$section_args['title'] = $section['title'];
+			if ( isset( $section['description'] ) ) {
+				$section_args['description'] = $section['description'];
+			}
+			$section_args['priority'] = $priority;
+			// $section_args['capability'] = 'edit_theme_options'; // @@tocheck \\
+
+			if ( $panel_id ) {
+				$section_args['panel'] = $panel_id;
+			}
+
+			// add section dashicon if specified
+			if ( isset( $section_args['dashicon'] ) ) {
+				self::add_css_section_dashicon( $section['id'], $section_args['dashicon'] );
+			}
+
+			// Add section to WordPress
+			$wp_customize->add_section( $section['id'], $section_args );
+
+			// Loop through 'fields' array in each section and add settings and controls
+			self::tree_add_controls( $section['id'], $section['fields'] );
+		}
+
+		/**
+		 * Add controls
+		 *
+		 * @since  0.0.1
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
+		 * @param [type]  $section_fields [description]
+		 * @param [type]  $section_id    [description]
+		 */
+		protected function tree_add_controls( $section_id, $section_fields ) {
+			global $wp_customize;
+
+			foreach ( $section_fields as $option_id => $option_args ) {
+
+				$control_args = $option_args['control'];
+				$setting_args = isset( $option_args['setting'] ) ? $option_args['setting'] : null;
+
+				if ( $setting_args ) {
+
+					// Check if 'option' or 'theme_mod' is used to store option
+					// If nothing is set, $wp_customize->add_setting method will default use 'theme_mod'
+					// If 'option' is used as setting type its value will be stored in an entry in
+					// {prefix}_options table.
+					if ( isset( $setting_args['type'] ) && 'option' == $setting_args['type'] ) {
+						$option_id = PWPcp_Theme::$options_prefix . '[' . $option_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
+					}
+
+					// add default callback function, if none is defined
+					if ( ! isset( $setting_args['sanitize_callback'] ) ) {
+						$setting_args['sanitize_callback'] = 'pwpcp_sanitize_callback';
+					}
+					// Add setting to WordPress
+					$wp_customize->add_setting( $option_id, $setting_args );
+
+				}
+				// if no settings args are passed then use the Dummy Setting Class
+				else {
+					// Add dummy setting to WordPress
+					$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $option_id ) );
+				}
+
+				// augment control args array with section id
+				$control_args['section'] = $section_id;
+
+				// Add control to WordPress
+				$control_type = $control_args['type'];
+
+				if ( isset( PWPcp_Customize::$custom_types['controls'][ $control_type ] ) ) {
+					$control_type_class = PWPcp_Customize::$custom_types['controls'][ $control_type ];
+
+					// if the class exist use it
+					if ( class_exists( $control_type_class ) ) {
+						$wp_customize->add_control( new $control_type_class( $wp_customize, $option_id, $control_args ) );
+					}
+					// if the desired class doesn't exist just use the plain WordPress API
+					else {
+						$wp_customize->add_control( $option_id, $control_args );
+						// @@todo error (wrong api implementation, missing class) \\
+					}
+				}
+				// if the desired control type is not specified just use the plain WordPress API
+				else {
+					$wp_customize->add_control( $option_id, $control_args );
+					// @@todo error (wrong api implementation, missing control type) \\
+				}
+			}
+		}
+
+		/**
+		 * [add_css_panel_dashicon description]
+		 * The given dashicon needs to be an integer, we add the `\f`
+		 *
+		 * @param string $panel_id      [description]
+		 * @param [type] $dashicon_code [description]
+		 */
+		private static function add_css_panel_dashicon( $panel_id = '', $dashicon_code ) {
+			if ( ! absint( $dashicon_code ) ) {
+				return;
+			}
+			self::$css_icons .= "#accordion-panel-$panel_id > h3:before,#accordion-panel-$panel_id .panel-title:before{content:'\\f$dashicon_code';" . self::$css_icons_shared . '}';
+		}
+
+		/**
+		 * [add_css_section_dashicon description]
+		 * The given dashicon needs to be an integer, we add the `\f`
+		 *
+		 * @param string $section_id      [description]
+		 * @param [type] $dashicon_code [description]
+		 */
+		private static function add_css_section_dashicon( $section_id = '', $dashicon_code ) {
+			return; // @@temp disabled for now \\
+			if ( ! absint( $dashicon_code ) ) {
+				return;
+			}
+			self::$css_icons .= "#accordion-section-$section_id > h3:before{content:'\\f$dashicon_code';}" . self::$css_icons_shared . '}';
 		}
 	}
 
