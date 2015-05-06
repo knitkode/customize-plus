@@ -128,7 +128,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 				</div>
 			<# } #>
 			<# if (data.guide) { #>
-				<i class="pwpcp-guide pwpcp-control-btn dashicons dashicons-editor-help"></i>
+				<i class="pwpcp-guide pwpcp-control-btn dashicons dashicons-editor-help" title="<?php _e( 'Click to show some help', 'pkgTextdomain' ); ?>"></i>
 			<# } #>
 		<?php
 	}
