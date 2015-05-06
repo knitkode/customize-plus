@@ -139,7 +139,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * [validate_theme_support description]
 		 * @param  [type] $key           [description]
 		 * @param  [type] $configuration [description]
-		 * @uses  sanitize_url The url get sanitized, just to be sure
+		 * @uses  esc_url The url get sanitized, just to be sure
 		 * @return [type]                [description]
 		 */
 		private static function validate_theme_support( $key, $configuration ) {
@@ -153,9 +153,9 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 					}
 				case 'customize_tree':
 					if ( isset( $configuration[ 'customize_tree' ] ) ) {
-						$theme_customize_tree = $configuration[ 'customize_tree' ];
-						if ( is_array( $theme_customize_tree ) ) {
-							return $theme_customize_tree;
+						$customize_tree = $configuration[ 'customize_tree' ];
+						if ( is_array( $customize_tree ) ) {
+							return $customize_tree;
 						} else {
 							// @@todo use doing_it_wrong ? \\
 							wp_die( __( 'Customize Plus: `customize_tree` must be an array.', 'pkgTextdomain' ) );
@@ -167,9 +167,9 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 					break;
 				case 'styles':
 					if ( isset( $configuration[ 'styles' ] ) ) {
-						$theme_styles = $configuration[ 'styles' ];
-						if ( is_array( $theme_styles ) ) {
-							return $theme_styles;
+						$styles = $configuration[ 'styles' ];
+						if ( is_array( $styles ) ) {
+							return $styles;
 						} else {
 							wp_die( __( 'Customize Plus: `styles` must be an array.', 'pkgTextdomain' ) ); // @@todo use doing_it_wrong ? \\
 						}
@@ -177,14 +177,14 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 					break;
 				case 'images_base_url':
 					if ( isset( $configuration['images_base_url'] ) ) {
-						return sanitize_url( trailingslashit( $configuration['images_base_url'] ) );
+						return esc_url( trailingslashit( $configuration['images_base_url'] ) );
 					} else {
 						return trailingslashit( get_stylesheet_directory_uri() );
 					}
 					break;
 				case 'docs_base_url':
 					if ( isset( $configuration['docs_base_url'] ) ) {
-						return sanitize_url( trailingslashit( $configuration['docs_base_url'] ) );
+						return esc_url( trailingslashit( $configuration['docs_base_url'] ) );
 					} else {
 						return '';
 					}
@@ -214,7 +214,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 			// @@todo use theme supports api here... \\
 			if ( class_exists( 'PWPcpp' ) ) {
 				if ( $theme['styles'] && /*PWPcpp::get_option_with_default( 'compiler' ) &&*/ class_exists( 'PWPcpp_Component_Compiler' ) ) {
-					PWPcpp_Component_Compiler::register_styles( $theme['styles'], $theme_customize_manager->panels );
+					PWPcpp_Component_Compiler::register_styles( $theme['styles'], $theme_customize_manager->tree );
 				}
 			}
 

@@ -35,7 +35,7 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 		 * [$options description]
 		 * @var [type]
 		 */
-		public $panels;
+		public $tree;
 
 		/**
 		 * [$settings_defaults description]
@@ -47,21 +47,19 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 		 * Constructor
 		 *
 		 * @since  0.0.1
-		 */
-		/**
-		 * [__construct description]
 		 * @param [type] $mode          'plugin' or theme
 		 * @param [type] $option_prefix [description]
-		 * @param [type] $panels        [description]
+		 * @param [type] $tree        [description]
 		 */
-		public function __construct( $mode, $option_prefix, $panels ) {
+		public function __construct( $mode, $option_prefix, $tree ) {
 
 			$this->is_plugin = (bool) self::interpret_mode( $mode );
 			$this->option_prefix = (string) $option_prefix;
-			$this->panels = (array) $panels;
-			$this->settings_defaults = (array) self::get_settings_defaults_from_panels( $panels );
+			$this->tree = (array) $tree;
 
-			add_action( 'PWPcp/customize/ready', array( $this, 'register_panels' ) );
+			$this->set_settings_defaults_from_tree();
+
+			add_action( 'PWPcp/customize/ready', array( $this, 'register_tree' ) );
 
 			add_action( 'customize_controls_print_styles', array( $this, 'maybe_print_css_icons' ), 999 );
 		}
@@ -80,41 +78,54 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 		}
 
 		/**
-		 * [get_settings_defaults_from_panels description]
+		 * [set_settings_defaults_from_tree description]
 		 *
 		 * @link http://wordpress.stackexchange.com/questions/28954/how-to-set-the-default-value-of-a-option-in-a-theme
 		 * @since 0.0.1
 		 * @return [type]              [description]
 		 */
-		public static function get_settings_defaults_from_panels( $panels ) {
-			$settings_defaults = array();
+		public function set_settings_defaults_from_tree() {
 
-			foreach ( $panels as $panel_id => $panel_args ) {
-				foreach ( $panel_args['sections'] as $section_id => $section_args ) {
-					foreach ( $section_args['fields'] as $field_id => $field_args ) {
+			foreach ( $this->tree as $component ) {
+				if ( 'panel' === $component['subject'] ) {
+					if ( isset( $component['sections'] ) && is_array( $component['sections'] ) ) {
+						foreach ( $component['sections'] as $section ) {
+							$this->get_setting_default_from_section( $section );
+						}
+					}
+				}
+				else if ( 'section' === $component['subject'] ) {
+					$this->get_setting_default_from_section( $component );
+				}
+			}
+		}
 
-						if ( isset( $field_args['setting'] ) ) {
+		/**
+		 * [get_setting_default_from_field description]
+		 * @param  Array $section           [description]
+		 */
+		private function get_setting_default_from_section ( $section ) {
+			if ( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
+				foreach ( $section['fields'] as $field_id => $field_args ) {
+					if ( isset( $field_args['setting'] ) ) {
+						$setting = $field_args['setting'];
 
-							$setting = $field_args['setting'];
+						// this allow to use a different id for the setting than the default one
+						// (which is the shared between the setting and its related control)
+						if ( ! isset( $setting['id'] ) ) {
+							$setting['id'] = $field_id;
+						}
 
-							// this allow to use a different id for the setting than the default one
-							// (which is the shared between the setting and its related control)
-							if ( ! isset( $setting['id'] ) ) {
-								$setting['id'] = $field_id;
-							}
-
-							if ( isset( $setting['default'] ) ) {
-								// set default value on options defaults
-								$settings_defaults[ $setting['id'] ] = $setting['default'];
-							}
-							else {
-								// @@todo throw error here, a default is required \\
-							}
+						if ( isset( $setting['default'] ) ) {
+							// set default value on options defaults
+							$this->settings_defaults[ $setting['id'] ] = $setting['default'];
+						}
+						else {
+							// @@todo throw error here, a default is required \\
 						}
 					}
 				}
 			}
-			return $settings_defaults;
 		}
 
 		/**
@@ -149,99 +160,104 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 		}
 
 		/**
-		 * [register_panels description]
+		 * [register_tree description]
 		 *
 		 * @since  0.0.1
 		 */
-		public function register_panels() {
-			$this->add_panels( $this->panels, $this->option_prefix );
-			// do_action( 'PWPcp/customize/registering_panels_' . $this->option_prefix );
-		}
-
-		/**
-		 * [add_panels description]
-		 *
-		 * @since  0.0.1
-		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
-		 */
-		protected function add_panels( $panels, $prefix ) {
-			global $wp_customize;
-
+		public function register_tree() {
 			// set priority to 0
-			$priority_panel = 0;
+			$priority_depth0 = 0;
 
-			// Loop through the array and add Customizer panel
-			foreach ( $panels as $panel_key => $panel ) {
-
+			foreach ( $this->tree as $component ) {
 				// increment priority
-				$priority_panel++;
+				$priority_depth0++;
 
-				// dynamically get panel_id with prefix
-				$panel_id = $prefix . '-' . $panel_key;
-
-				// augment panel args array
-				$panel_args = array();
-				$panel_args['title'] = $panel['title'];
-				if ( isset( $panel['description'] ) ) {
-					$panel_args['description'] = $panel['description'];
+				if ( 'panel' === $component['subject'] ) {
+					$this->add_panel( $component, $priority_depth0 );
 				}
-				$panel_args['priority'] = $priority_panel;
-				// $panel_args['capability'] = 'edit_theme_options'; // @@tocheck \\
-				// $panel_args['theme_supports'] = ''; // @@tocheck \\
-
-				// add panel dashicon if specified
-				if ( isset( $panel['dashicon'] ) ) {
-					$this->add_css_panel_dashicon( $panel_id, $panel['dashicon'] );
+				else if ( 'section' === $component['subject'] ) {
+					$this->add_section( null, $component, $priority_depth0 );
 				}
-
-				// Add panel to WordPress
-				$wp_customize->add_panel( $panel_id, $panel_args );
-
-				$this->add_sections( $panel_id, $panel['sections'], $prefix );
 			}
 		}
 
 		/**
-		 * [add_sections description]
+		 * [add_panel description]
+		 *
+		 * @since  0.0.1
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
+		 */
+		protected function add_panel( $panel, $priority ) {
+			global $wp_customize;
+
+			// dynamically get panel_id with opiton_prefix
+			$panel_id = $this->option_prefix . '-' . $panel['id'];
+
+			// augment panel args array
+			$panel_args = array();
+			$panel_args['title'] = $panel['title'];
+			if ( isset( $panel['description'] ) ) {
+				$panel_args['description'] = $panel['description'];
+			}
+			$panel_args['priority'] = $priority;
+			// $panel_args['capability'] = 'edit_theme_options'; // @@tocheck \\
+			// $panel_args['theme_supports'] = ''; // @@tocheck \\
+
+			// add panel dashicon if specified
+			if ( isset( $panel['dashicon'] ) ) {
+				$this->add_css_panel_dashicon( $panel_id, $panel['dashicon'] );
+			}
+
+			// Add panel to WordPress
+			$wp_customize->add_panel( $panel_id, $panel_args );
+
+			// Add panel sections
+			if ( isset( $panel['sections'] ) ) {
+				// set priority to 0
+				$priority_depth1 = 0;
+				// Loop through 'sections' array in each panel and add sections
+				foreach ( $panel['sections'] as $section ) {
+					// increment priority
+					$priority_depth1++;
+					$this->add_section( $panel_id, $section, $priority_depth1 );
+				}
+			}
+		}
+
+		/**
+		 * [add_section description]
 		 *
 		 * @since  0.0.1
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 * @param [type]  $panel_fields     [description]
 		 * @param [type]  $panel_id     [description]
 		 */
-		protected function add_sections( $panel_id, $panel_fields, $prefix ) {
+		protected function add_section( $panel_id, $section, $priority ) {
 			global $wp_customize;
 
-			// set priority to 0
-			$priority_section = 0;
-
-			// Loop through 'panel_fields' array in each panel and add sections
-			foreach ( $panel_fields as $section_id => $section ) {
-
-				// increment priority
-				$priority_section++;
-
-				// create section args array
-				$section_args = array();
-				$section_args['title'] = $section['title'];
-				if ( isset( $section['description'] ) ) {
-					$section_args['description'] = $section['description'];
-				}
-				$section_args['priority'] = $priority_section;
-				// $section_args['capability'] = 'edit_theme_options'; // @@tocheck \\
-				$section_args['panel'] = $panel_id;
-
-				// add section dashicon if specified
-				if ( isset( $section_args['dashicon'] ) ) {
-					$this->add_css_section_dashicon( $section_id, $section_args['dashicon'] );
-				}
-
-				// Add section to WordPress
-				$wp_customize->add_section( $section_id, $section_args );
-
-				// Loop through 'fields' array in each section and add settings and controls
-				$this->add_controls( $section_id, $section['fields'], $prefix );
+			// create section args array
+			$section_args = array();
+			$section_args['title'] = $section['title'];
+			if ( isset( $section['description'] ) ) {
+				$section_args['description'] = $section['description'];
 			}
+			$section_args['priority'] = $priority;
+			// $section_args['capability'] = 'edit_theme_options'; // @@tocheck \\
+
+			if ( $panel_id ) {
+				$section_args['panel'] = $panel_id;
+			}
+
+			// add section dashicon if specified
+			if ( isset( $section_args['dashicon'] ) ) {
+				$this->add_css_section_dashicon( $section['id'], $section_args['dashicon'] );
+			}
+
+			// Add section to WordPress
+			$wp_customize->add_section( $section['id'], $section_args );
+
+			// Loop through 'fields' array in each section and add settings and controls
+			$this->add_controls( $section['id'], $section['fields'] );
 		}
 
 		/**
@@ -252,7 +268,7 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 		 * @param [type]  $section_fields [description]
 		 * @param [type]  $section_id    [description]
 		 */
-		protected function add_controls( $section_id, $section_fields, $prefix ) {
+		protected function add_controls( $section_id, $section_fields ) {
 			global $wp_customize;
 
 			foreach ( $section_fields as $option_id => $option_args ) {
@@ -269,7 +285,7 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 						$setting_args['type'] = 'option';
 
 						// set prefixed option id
-						$option_id = $prefix . '[' . $option_id . ']';
+						$option_id = $this->option_prefix . '[' . $option_id . ']';
 					}
 					// Otherwise check if 'option' or 'theme_mod' is used to store option
 					else {
@@ -277,7 +293,7 @@ if ( ! class_exists( 'PWPcp_Customize_Manager' ) ):
 						// If 'option' is used as setting type its value will be stored in an entry in
 						// {prefix}_options table.
 						if ( isset( $setting_args['type'] ) && 'option' == $setting_args['type'] ) {
-							$option_id = $prefix . '[' . $option_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
+							$option_id = $this->option_prefix . '[' . $option_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
 						}
 					}
 
