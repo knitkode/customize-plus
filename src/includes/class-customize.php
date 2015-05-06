@@ -234,15 +234,15 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * Register custom types
+		 * Register custom settings/controls/sections/panels types
 		 *
 		 * @since  0.0.1
-		 * @param  array(<$type, $class_name>) $panels The custom panels to add
+		 * @param  array(<$type, $class_name>) $types The custom types to add
 		 */
-		public static function register_custom_types( $components ) {
-			foreach ( $components as $component => $new_custom_types ) {
-				if ( self::$custom_types[ $component ] ) {
-					self::$custom_types[ $component ] = array_merge( self::$custom_types[ $component ], $new_custom_types );
+		public static function register_custom_types( $types ) {
+			foreach ( $types as $type => $new_custom_types ) {
+				if ( self::$custom_types[ $type ] ) {
+					self::$custom_types[ $type ] = array_merge( self::$custom_types[ $type ], $new_custom_types );
 				}
 			}
 		}
