@@ -256,7 +256,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * [register_tree description]
+		 * Register customize tree.
+		 * On the root level we can have either panels or section so we check
+		 * the `subject` of the arrays at the first level of depth of the tree.
 		 *
 		 * @since  0.0.1
 		 */
@@ -267,21 +269,24 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 				$priority++;
 
 				if ( 'panel' === $component['subject'] ) {
-					self::tree_add_panel( $component, $priority );
+					self::add_panel_from_tree( $component, $priority );
 				}
 				else if ( 'section' === $component['subject'] ) {
-					self::tree_add_section( null, $component, $priority );
+					self::add_section_from_tree( null, $component, $priority );
 				}
 			}
 		}
 
 		/**
-		 * [add_panel description]
+		 * Add panel declared in the Customizer tree.
 		 *
 		 * @since  0.0.1
+		 * @param Array $panel    The panel array as defined by the theme developers.
+		 * @param Int   $priority This incremental number is used by WordPress to calculate
+		 *                        the order at which the panel are inserted in the UI.
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
-		private static function tree_add_panel( $panel, $priority ) {
+		private static function add_panel_from_tree( $panel, $priority ) {
 			global $wp_customize;
 
 			// dynamically get panel_id with opitons_prefix
@@ -305,7 +310,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 			// Add panel to WordPress
 			$wp_customize->add_panel( $panel_id, $panel_args );
 
-			// Add panel sections
+			// Add panel's sections
 			if ( isset( $panel['sections'] ) ) {
 				// set priority to 0
 				$priority_depth1 = 0;
@@ -313,20 +318,23 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 				foreach ( $panel['sections'] as $section ) {
 					// increment priority
 					$priority_depth1++;
-					self::tree_add_section( $panel_id, $section, $priority_depth1 );
+					self::add_section_from_tree( $panel_id, $section, $priority_depth1 );
 				}
 			}
 		}
 
 		/**
-		 * [tree_add_section description]
+		 * Add section declared in the Customizer tree.
 		 *
 		 * @since  0.0.1
+		 * @param String $panel_id The id of the parent panel when the section is nested
+		 *                         inside a panel.
+		 * @param Array  $section  The section array as defined by the theme developers.
+		 * @param Int    $priority This incremental number is used by WordPress to calculate
+		 *                         the order at which the section are inserted in the UI.
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
-		 * @param [type]  $panel_fields     [description]
-		 * @param [type]  $panel_id     [description]
 		 */
-		protected function tree_add_section( $panel_id, $section, $priority ) {
+		private static function add_section_from_tree( $panel_id, $section, $priority ) {
 			global $wp_customize;
 
 			// create section args array
@@ -350,83 +358,87 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 			// Add section to WordPress
 			$wp_customize->add_section( $section['id'], $section_args );
 
-			// Loop through 'fields' array in each section and add settings and controls
-			self::tree_add_controls( $section['id'], $section['fields'] );
-		}
-
-		/**
-		 * Add controls
-		 *
-		 * @since  0.0.1
-		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
-		 * @param [type]  $section_fields [description]
-		 * @param [type]  $section_id    [description]
-		 */
-		protected function tree_add_controls( $section_id, $section_fields ) {
-			global $wp_customize;
-
-			foreach ( $section_fields as $option_id => $option_args ) {
-
-				$control_args = $option_args['control'];
-				$setting_args = isset( $option_args['setting'] ) ? $option_args['setting'] : null;
-
-				if ( $setting_args ) {
-
-					// Check if 'option' or 'theme_mod' is used to store option
-					// If nothing is set, $wp_customize->add_setting method will default use 'theme_mod'
-					// If 'option' is used as setting type its value will be stored in an entry in
-					// {prefix}_options table.
-					if ( isset( $setting_args['type'] ) && 'option' == $setting_args['type'] ) {
-						$option_id = PWPcp_Theme::$options_prefix . '[' . $option_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
-					}
-
-					// add default callback function, if none is defined
-					if ( ! isset( $setting_args['sanitize_callback'] ) ) {
-						$setting_args['sanitize_callback'] = 'pwpcp_sanitize_callback';
-					}
-					// Add setting to WordPress
-					$wp_customize->add_setting( $option_id, $setting_args );
-
-				}
-				// if no settings args are passed then use the Dummy Setting Class
-				else {
-					// Add dummy setting to WordPress
-					$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $option_id ) );
-				}
-
-				// augment control args array with section id
-				$control_args['section'] = $section_id;
-
-				// Add control to WordPress
-				$control_type = $control_args['type'];
-
-				if ( isset( PWPcp_Customize::$custom_types['controls'][ $control_type ] ) ) {
-					$control_type_class = PWPcp_Customize::$custom_types['controls'][ $control_type ];
-
-					// if the class exist use it
-					if ( class_exists( $control_type_class ) ) {
-						$wp_customize->add_control( new $control_type_class( $wp_customize, $option_id, $control_args ) );
-					}
-					// if the desired class doesn't exist just use the plain WordPress API
-					else {
-						$wp_customize->add_control( $option_id, $control_args );
-						// @@todo error (wrong api implementation, missing class) \\
-					}
-				}
-				// if the desired control type is not specified just use the plain WordPress API
-				else {
-					$wp_customize->add_control( $option_id, $control_args );
-					// @@todo error (wrong api implementation, missing control type) \\
+			// Add section fields
+			if ( isset( $section['fields'] ) ) {
+				// Loop through 'fields' array in each section and add settings and controls
+				foreach ( $section['fields'] as $field_id => $field_args ) {
+					self::tree_add_field( $section['id'], $field_id, $field_args );
 				}
 			}
 		}
 
 		/**
-		 * [add_css_panel_dashicon description]
-		 * The given dashicon needs to be an integer, we add the `\f`
+		 * Add field (setting + control) declared in the Customizer tree.
 		 *
-		 * @param string $panel_id      [description]
-		 * @param [type] $dashicon_code [description]
+		 * @since  0.0.1
+		 * @param String $section_id The id of the parent section (required).
+		 * @param Array  $field_id   The section id as defined by the theme developers.
+		 * @param Array  $field_args The section array as defined by the theme developers.
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
+		 */
+		private static function tree_add_field( $section_id, $field_id, $field_args ) {
+			global $wp_customize;
+
+			$control_args = $field_args['control'];
+			$setting_args = isset( $field_args['setting'] ) ? $field_args['setting'] : null;
+
+			if ( $setting_args ) {
+
+				// Check if 'option' or 'theme_mod' is used to store option
+				// If nothing is set, $wp_customize->add_setting method will default use 'theme_mod'
+				// If 'option' is used as setting type its value will be stored in an entry in
+				// {prefix}_options table.
+				if ( isset( $setting_args['type'] ) && 'option' == $setting_args['type'] ) {
+					$field_id = PWPcp_Theme::$options_prefix . '[' . $field_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
+				}
+
+				// add default callback function, if none is defined
+				if ( ! isset( $setting_args['sanitize_callback'] ) ) {
+					$setting_args['sanitize_callback'] = 'pwpcp_sanitize_callback';
+				}
+				// Add setting to WordPress
+				$wp_customize->add_setting( $field_id, $setting_args );
+
+			}
+			// if no settings args are passed then use the Dummy Setting Class
+			else {
+				// Add dummy setting to WordPress
+				$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $field_id ) );
+			}
+
+			// augment control args array with section id
+			$control_args['section'] = $section_id;
+
+			// Add control to WordPress
+			$control_type = $control_args['type'];
+
+			if ( isset( PWPcp_Customize::$custom_types['controls'][ $control_type ] ) ) {
+				$control_type_class = PWPcp_Customize::$custom_types['controls'][ $control_type ];
+
+				// if the class exist use it
+				if ( class_exists( $control_type_class ) ) {
+					$wp_customize->add_control( new $control_type_class( $wp_customize, $field_id, $control_args ) );
+				}
+				// if the desired class doesn't exist just use the plain WordPress API
+				else {
+					$wp_customize->add_control( $option_id, $control_args );
+					// @@todo error (wrong api implementation, missing class) \\
+				}
+			}
+			// if the desired control type is not specified just use the plain WordPress API
+			else {
+				$wp_customize->add_control( $option_id, $control_args );
+				// @@todo error (wrong api implementation, missing control type) \\
+			}
+		}
+
+		/**
+		 * Add the needed css to display a dashicon for the given panel
+		 *
+		 * @since  0.0.1
+		 * @param string $panel_id      The panel which will show the specified dashicon.
+		 * @param int    $dashicon_code The dashicon code number, the `\f` is automatically
+		 *                              added.
 		 */
 		private static function add_css_panel_dashicon( $panel_id = '', $dashicon_code ) {
 			if ( ! absint( $dashicon_code ) ) {
@@ -436,14 +448,16 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * [add_css_section_dashicon description]
-		 * The given dashicon needs to be an integer, we add the `\f`
+		 * Add the needed css to display a dashicon for the given section
+		 * // @@temp disabled for now \\
 		 *
-		 * @param string $section_id      [description]
-		 * @param [type] $dashicon_code [description]
+		 * @since  0.0.1
+		 * @param string $section_id    The section which will show the specified dashicon.
+		 * @param int    $dashicon_code The dashicon code number, the `\f` is automatically
+		 *                              added.
 		 */
 		private static function add_css_section_dashicon( $section_id = '', $dashicon_code ) {
-			return; // @@temp disabled for now \\
+			return;
 			if ( ! absint( $dashicon_code ) ) {
 				return;
 			}

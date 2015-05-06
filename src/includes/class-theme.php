@@ -50,6 +50,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * Themes pass all their organized customizer setup through
 		 * `add_theme_support( 'PWPcp-customize' )`.
 		 *
+		 * @since 0.0.1
 		 * @var array
 		 */
 		public static $customize_tree = array();
@@ -117,7 +118,6 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * developers to override these settings values through child themes or plugins.
 		 *
 		 * @since  0.0.1
-		 * @return [type] [description]
 		 */
 		public static function configure() {
 
@@ -148,11 +148,16 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * [validate_theme_support description]
-		 * @param  [type] $key           [description]
-		 * @param  [type] $configuration [description]
-		 * @uses  esc_url The url get sanitized, just to be sure
-		 * @return [type]                [description]
+		 * Validate the values passed by the theme developer through
+		 * `add_theme_support( 'PWPcp-customize' )`, and display error messages.
+		 *
+		 * @since  0.0.1
+		 * @param  string $key           One of the allowed keys for the configuration array.
+		 * @param  array  $configuration The `theme_support( 'PWPcp-customize' )` array.
+		 * @uses   esc_url               The url get sanitized, just to be sure
+		 * @uses   trailingslashit       Append always last slash to url, so it's cleaner for devs
+		 *         											 when defining their customize tree.
+		 * @return string|array
 		 */
 		private static function validate_theme_support( $key, $configuration ) {
 			switch ( $key ) {
@@ -205,8 +210,13 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * [init description]
-		 * @return [type] [description]
+		 * Initialize Customize Plus Theme
+		 *
+		 * Set some static validated properties and bootstrap the Compiler
+		 * component if it exists and it's enabled.
+		 *
+		 * @since  0.0.1
+		 * @param  Array $theme The theme_support declared by the theme.
 		 */
 		private static function init( $theme ) {
 
@@ -238,14 +248,16 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * [set_settings_defaults description]
+		 * Set settings default values.
+		 *
+		 * Loop over the Customizer tree and store on class static property
+		 * all the settings default values. Sine the root level of the tree
+		 * can have both panels and sections we need to check the subject first.
 		 *
 		 * @link http://wordpress.stackexchange.com/questions/28954/how-to-set-the-default-value-of-a-option-in-a-theme
 		 * @since 0.0.1
-		 * @return [type]              [description]
 		 */
 		private static function set_settings_defaults() {
-
 			foreach ( self::$customize_tree as $component ) {
 				if ( 'panel' === $component['subject'] ) {
 					if ( isset( $component['sections'] ) && is_array( $component['sections'] ) ) {
@@ -261,8 +273,14 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * [get_setting_default_from_field description]
-		 * @param  Array $section           [description]
+		 * Get settings default values from section.
+		 *
+		 * Loop through the section fields (setting + control) and store the settings
+		 * default values. We don't check for the existence of theme, because a default
+		 * value, with Customize Plus is always required.
+		 *
+		 * @since  0.0.1
+		 * @param  Array $section The section array as defined by the theme developers.
 		 */
 		private static function set_settings_default_from_section ( $section ) {
 			if ( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
@@ -291,8 +309,9 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		/**
 		 * Get theme mod with default value as fallback
 		 * we'll need this safe theme_mod in one of our sanitization functions
-		 * @see pwpcp_get_less_test_input
 		 *
+		 * @since  0.0.1
+		 * @see pwpcp_get_less_test_input
 		 * @param [type]  $opt_name [description]
 		 * @return [type]           [description]
 		 */
@@ -308,11 +327,12 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * Get all theme mods with default values as fallback
 		 *
 		 * Initially the `theme_mods` are empty, so check for it.
+		 *
+		 * @since  0.0.1
 		 * @link(https://core.trac.wordpress.org/browser/trunk/src/wp-includes/functions.php#L3045, core.trac.wordpress)
 		 * Anyway the function would be reverted:
 		 * `wp_parse_args( get_theme_mods(), self::$settings_defaults )`
-		 *
-		 * @return array           [description]
+		 * @return array All the `theme_mods` with default values as fallback.
 		 */
 		public static function get_theme_mods() {
 			$theme_mods = get_theme_mods();
