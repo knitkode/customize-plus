@@ -1,94 +1,39 @@
-/*
-* CSS TOGGLE SWITCHES
-* Unlicense
-*
-* Ionuț Colceriu - ghinda.net
-* https://github.com/ghinda/css-toggle-switch
-*
-*/
-/* Supported values are px, rem-calc, em-calc */
-/* Functions */
-/* Toggle Switches */
-/* Shared */
-/* Checkbox
-*/
-/* Radio Switch
-*/
-/* Hide by default
-*/
-.switch-toggle a, .switch-light span span {
-  display: none; }
+/*!
+ * CSS TOGGLE SWITCHES
+ * Unlicense
+ *
+ * Ionuț Colceriu - ghinda.net
+ * https://github.com/ghinda/css-toggle-switch
+ *
+ * Customized for Customize Plus by PlusWP
+ */
 
-/* We can't test for a specific feature,
-* so we only target browsers with support for media queries.
-*/
+// Hide by default
+.switch-toggle a,
+.switch-light span span {
+  display: none;
+}
+
+// We can't test for a specific feature,
+// so we only target browsers with support for media queries.
 @media only screen {
-  /* Checkbox switch
-  */
+  /**
+   * Checkbox switch
+   */
   .switch-light {
     display: block;
     min-height: 1.875em;
-    /* Outline the toggles when the inputs are focused
-  */
     position: relative;
     overflow: visible;
     padding: 0;
     margin-left: 6.25em;
-    /* Position the label over all the elements, except the slide-button (<a>)
-    * Clicking anywhere on the label will change the switch-state
-    */
-  // Don't hide the input from screen-readers and keyboard access
-  }
-    .switch-light * {
+
+    * {
       box-sizing: border-box;
     }
-    .switch-light a {
+
+    a {
       display: block;
-      // transition:  all 0.2s ease-out;
-    }
-    .switch-light label, .switch-light > span {
-      line-height: 1.875em;
-      vertical-align: middle;
-    }
-    // .switch-light input:focus ~ a, .switch-light input:focus + label { // @@customized
-    //   outline: 1px dotted #888;
-    // }
-    .switch-light label {
-      position: relative;
-      z-index: 3;
-      display: block;
-      width: 100%;
-    }
-    .switch-light input {
-      position: absolute;
-      opacity: 0;
-      z-index: 5;
-    }
-    .switch-light input:checked ~ a {
-      right: 0%;
-    }
-    .switch-light > span {
-      position: absolute;
-      left: -6.25em;
-      width: 100%;
-      margin: 0;
-      padding-right: 6.25em;
-      text-align: left;
-    }
-    .switch-light > span span {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 5;
-      display: block;
-      width: 50%;
-      margin-left: 6.25em;
-      text-align: center;
-    }
-    .switch-light > span span:last-child {
-      left: 50%;
-    }
-    .switch-light a {
       position: absolute;
       right: 50%;
       top: 0;
@@ -99,7 +44,53 @@
       padding: 0;
     }
 
+    label,
+    > span {
+      line-height: 1.875em;
+      vertical-align: middle;
+    }
 
+    label {
+      position: relative;
+      z-index: 3;
+      display: block;
+      width: 100%;
+    }
+
+    input {
+      position: absolute;
+      opacity: 0;
+      z-index: 5;
+
+      &:checked ~ a {
+        right: 0%;
+      }
+    }
+
+    > span {
+      position: absolute;
+      left: -6.25em;
+      width: 100%;
+      margin: 0;
+      padding-right: 6.25em;
+      text-align: left;
+
+      span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        display: block;
+        width: 50%;
+        margin-left: 6.25em;
+        text-align: center;
+
+        &:last-child {
+          left: 50%;
+        }
+      }
+    }
+  }
 
   /**
    *  Radio switch
@@ -121,7 +112,6 @@
 
     a {
       display: block;
-      // transition: all 0.2s ease-out;
     }
 
     label,
@@ -154,6 +144,7 @@
       width: 50%;
       height: 100%;
     }
+
     & input:last-of-type:checked ~ a { left: 50%; }
     &.switch-3 label, &.switch-3 a { width: 33.3333333333%; }
     &.switch-3 input:checked:nth-of-type(2) ~ a { left: 33.3333333333%; }
@@ -169,8 +160,9 @@
     &.switch-5 input:checked:last-of-type ~ a { left: 80%; }
   }
 
-
-  // Custom Theme
+  /**
+   * Custom Theme
+   */
   .pwpcp-switch.switch-light {
     color: #868686;
 
@@ -180,7 +172,6 @@
       background-color: #fff;
       border: 1px solid #d3d3d3;
       border-radius: $WPcustomize--btn-border-radius;
-      // transition: all 0.3s ease-out;
       box-shadow: inset 0 -3px 3px rgba(0, 0, 0, 0.025), 0 1px 4px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.1);
     }
 
@@ -209,7 +200,6 @@
       background-color: #fafafa;
       border: 1px solid #d3d3d3;
       border-radius: 30px;
-      // transition: all 0.5s ease-out;
       box-shadow: inset rgba(0, 0, 0, 0.1) 0 1px 0;
     }
 
@@ -248,7 +238,6 @@
     a {
       background-color: $WPcustomize--btn-bg-active;
       // border-radius: $WPcustomize--btn-border-radius;
-      // transition: all 0.3s ease-out;
       box-shadow: $WPcustomize--btn-box-shadow-activetoggle;
     }
 
@@ -260,6 +249,10 @@
       border-style: solid;
       border-width: 1px;
       border-color: $WP--select-border-color;
+      // @@doubt not sure if it's good to ellipse here for usability \\
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &:hover {
         background-color: $WPcustomize--btn-bg-hover;

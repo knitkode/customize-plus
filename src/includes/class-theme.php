@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
+if ( class_exists( 'PWPcp_Singleton' ) ):
 
 	/**
 	 * Contains methods for customizing the theme customization screen.
@@ -14,15 +14,78 @@ if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
 	 * @link       http://pluswp.com/customize-plus
 	 */
 
-	class PWPcp_Theme extends PWPcp_Singleton {
+	final class PWPcp_Theme extends PWPcp_Singleton {
 
+		/**
+		 * Allowed array keys for themes to use through
+		 * `add_theme_support( 'PWPcp-customize' )`.
+		 *
+		 * @since 0.0.1
+		 * @var array
+		 */
+		private static $theme_support_keys = array(
+			'prefix',
+			'panels',
+			'images_base_url',
+			'docs_base_url',
+			'styles',
+		);
+
+		/**
+		 * The unique theme prefix identifier
+		 *
+		 * Themes are required to declare this using through
+		 * `add_theme_support( 'PWPcp-customize' )`.
+		 *
+		 * @since 0.0.1
+		 * @var string
+		 */
 		public static $options_prefix = '';
 
 		/**
-		 * [$settings_defaults description]
+		 * Theme settings default values
+		 *
+		 * It acts like a store with the default values of theme settings (`theme_mods`)
+		 * extracted from the `tree` array declared by the theme through
+		 * `add_theme_support( 'PWPcp-customize' )`. The current theme or this plugin
+		 * can use this array to safely retrieve options without having to write the
+		 * default values to the db.
+		 *
+		 * @since 0.0.1
 		 * @var array
 		 */
 		public static $settings_defaults = array();
+
+		/**
+		 * Images base url
+		 *
+		 * This is either defined by the theme through
+		 * `add_theme_support( 'PWPcp-customize' )`, or set by default to
+		 * `get_stylesheet_directory_uri`.
+		 * This url will be prendeded to the images `src` used in the Customizer
+		 * for stuff like 'guides', 'helpers' and 'radio_images' controls.
+		 * The value always pass through the `trailingslashit` WordPress function
+		 * so it's not allowed to start images paths with a slash.
+		 *
+		 * @since 0.0.1
+		 * @var string
+		 */
+		public static $images_base_url = '';
+
+		/**
+		 * Docs base url
+		 *
+		 * This optional property is defined by the theme through
+		 * `add_theme_support( 'PWPcp-customize' )`.
+		 * This url will be prendeded in the Customizer to the
+		 * `guides => array( 'docs' => '{url}' )` value where defined.
+		 * The value always pass through the `trailingslashit` WordPress function
+		 * so it's not allowed to start images paths with a slash.
+		 *
+		 * @since 0.0.1
+		 * @var string
+		 */
+		public static $docs_base_url = '';
 
 		/**
 		 * Constructor
@@ -33,13 +96,15 @@ if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
 			add_action( 'after_setup_theme', array( __CLASS__, 'configure' ), 999 );
 		}
 
-		// public static function ready() {
-		// 	do_action( 'PWPcp/theme/ready' );
-		// 	self::configure();
-		// }
-
 		/**
-		 * [configure description]
+		 * Configure theme
+		 *
+		 * Check the theme support declared by the current theme,
+		 * validate the settings declared and bootstrap the Customize with the given settings.
+		 * A filter for wach setting declared by the theme is automatically created, allowing
+		 * developers to override these settings values through child themes or plugins.
+		 *
+		 * @since  0.0.1
 		 * @return [type] [description]
 		 */
 		public static function configure() {
@@ -47,66 +112,85 @@ if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
 			$settings = get_theme_support( 'PWPcp-customize' );
 
 			if ( is_array( $settings ) ) {
+
 				// Themes should provide an array of options
 				if ( isset( $settings[0] ) && is_array( $settings[0] ) ) {
-					$theme_prefix = self::check_prefix( $settings[0] );
-					$theme_panels = self::check_panels( $settings[0] );
-					$theme_styles = self::check_styles( $settings[0] );
 
-					// automatically create hooks for child themes or whatever
-					self::init(
-						apply_filters( $theme_prefix . '/PWPcp/theme/prefix', $theme_prefix ),
-						apply_filters( $theme_prefix . '/PWPcp/theme/panels', $theme_panels ),
-						apply_filters( $theme_prefix . '/PWPcp/theme/styles', $theme_styles )
-					);
-				}
-			}
-		}
+					$theme_prefix = self::validate_theme_support( 'prefix', $settings[0] );
+					$theme_customizer_settings = array();
 
-		/**
-		 * [check_prefix description]
-		 * @uses  sanitize_key The prefix get sanitized, just to be sure
-		 * @return [type] [description]
-		 */
-		private static function check_prefix( $configuration ) {
-			if ( isset( $configuration['prefix'] ) ) {
-				return sanitize_key( $configuration['prefix'] );
-			} else {
-				wp_die( __( 'Customize Plus: no `prefix` given.', 'pkgTextdomain' ) );
-			}
-		}
+					foreach ( self::$theme_support_keys as $key ) {
 
-		/**
-		 * [check_panels description]
-		 * @return [type] [description]
-		 */
-		private static function check_panels( $configuration ) {
-			if ( isset( $configuration[ 'panels' ] ) ) {
-				$theme_panels = $configuration[ 'panels' ];
-				if ( is_array( $theme_panels ) ) {
-					return $theme_panels;
+						// automatically create hooks for child themes or whatever
+						$theme_customizer_settings[ $key ] = apply_filters(
+							$theme_prefix . '/PWPcp/theme/prefix',
+							self::validate_theme_support( $key, $settings[0] )
+						);
+					}
+
+					self::init( $theme_customizer_settings );
 				} else {
-					wp_die( __( 'Customize Plus: `panels` must be an array.', 'pkgTextdomain' ) );
+					// @@todo error report doing_it_wrong ? \\
 				}
-			} else {
-				wp_die( __( 'Customize Plus: no `panels` array given.', 'pkgTextdomain' ) );
 			}
 		}
 
 		/**
-		 * [check_styles description]
-		 * @return [type] [description]
+		 * [validate_theme_support description]
+		 * @param  [type] $key           [description]
+		 * @param  [type] $configuration [description]
+		 * @uses  sanitize_url The url get sanitized, just to be sure
+		 * @return [type]                [description]
 		 */
-		private static function check_styles( $configuration ) {
-			if ( isset( $configuration[ 'styles' ] ) ) {
-				$theme_styles = $configuration[ 'styles' ];
-				if ( is_array( $theme_styles ) ) {
-					return $theme_styles;
-				} else {
-					wp_die( __( 'Customize Plus: `styles` must be an array.', 'pkgTextdomain' ) );
-				}
-			} else {
-				wp_die( __( 'Customize Plus: no `styles` array given.', 'pkgTextdomain' ) );
+		private static function validate_theme_support( $key, $configuration ) {
+			switch ( $key ) {
+				case 'prefix':
+					if ( isset( $configuration['prefix'] ) ) {
+						return sanitize_key( $configuration['prefix'] );
+					} else {
+						// @@todo use doing_it_wrong ? \\
+						wp_die( __( 'Customize Plus: no `prefix` given.', 'pkgTextdomain' ) );
+					}
+				case 'panels':
+					if ( isset( $configuration[ 'panels' ] ) ) {
+						$theme_panels = $configuration[ 'panels' ];
+						if ( is_array( $theme_panels ) ) {
+							return $theme_panels;
+						} else {
+							// @@todo use doing_it_wrong ? \\
+							wp_die( __( 'Customize Plus: `panels` must be an array.', 'pkgTextdomain' ) );
+						}
+					} else {
+						// @@todo use doing_it_wrong ? \\
+						wp_die( __( 'Customize Plus: no `panels` array given.', 'pkgTextdomain' ) );
+					}
+					break;
+				case 'styles':
+					if ( isset( $configuration[ 'styles' ] ) ) {
+						$theme_styles = $configuration[ 'styles' ];
+						if ( is_array( $theme_styles ) ) {
+							return $theme_styles;
+						} else {
+							wp_die( __( 'Customize Plus: `styles` must be an array.', 'pkgTextdomain' ) ); // @@todo use doing_it_wrong ? \\
+						}
+					}
+					break;
+				case 'images_base_url':
+					if ( isset( $configuration['images_base_url'] ) ) {
+						return sanitize_url( trailingslashit( $configuration['images_base_url'] ) );
+					} else {
+						return trailingslashit( get_stylesheet_directory_uri() );
+					}
+					break;
+				case 'docs_base_url':
+					if ( isset( $configuration['docs_base_url'] ) ) {
+						return sanitize_url( trailingslashit( $configuration['docs_base_url'] ) );
+					} else {
+						return '';
+					}
+					break;
+				default:
+					break;
 			}
 		}
 
@@ -114,13 +198,14 @@ if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 * [init description]
 		 * @return [type] [description]
 		 */
-		private static function init( $theme_prefix, $theme_panels, $theme_styles ) {
+		private static function init( $theme ) {
 
-			// set the options prefix, we're going to use it in some places (e.g. import / export);
-			self::$options_prefix = $theme_prefix;
+			self::$options_prefix = $theme['prefix'];
+			self::$images_base_url = $theme['images_base_url'];
+			self::$docs_base_url = $theme['docs_base_url'];
 
 			// register theme customize panels
-			$theme_customize_manager = new PWPcp_Customize_Manager( 'theme', $theme_prefix, $theme_panels );
+			$theme_customize_manager = new PWPcp_Customize_Manager( 'theme', $theme['prefix'], $theme['panels'] );
 
 			// add theme settings defaults
 			self::$settings_defaults = $theme_customize_manager->settings_defaults;
@@ -128,8 +213,8 @@ if ( ! class_exists( 'PWPcp_Theme' ) && class_exists( 'PWPcp_Singleton' ) ):
 			// register theme styles to compiler if enabled
 			// @@todo use theme supports api here... \\
 			if ( class_exists( 'PWPcpp' ) ) {
-				if ( $theme_styles && /*PWPcpp::get_option_with_default( 'compiler' ) &&*/ class_exists( 'PWPcpp_Component_Compiler' ) ) {
-					PWPcpp_Component_Compiler::register_styles( $theme_styles, $theme_customize_manager->panels );
+				if ( $theme['styles'] && /*PWPcpp::get_option_with_default( 'compiler' ) &&*/ class_exists( 'PWPcpp_Component_Compiler' ) ) {
+					PWPcpp_Component_Compiler::register_styles( $theme['styles'], $theme_customize_manager->panels );
 				}
 			}
 

@@ -30,10 +30,19 @@ var Tooltips = (function () {
    *
    * @type {Object}
    */
-  var _optsGuide = _.extend(_optsCommon, {
+  var _optsGuide = _.extend({
     trigger: 'click',
     closeable: true
-  });
+  }, _optsCommon);
+
+  /**
+   * Specific options for "guide" tooltips.
+   *
+   * @type {Object}
+   */
+  var _optsHelper = _.extend({
+    trigger: 'hover'
+  }, _optsCommon);
 
   /**
    * Init guides tooltips
@@ -45,21 +54,14 @@ var Tooltips = (function () {
    * @return {void}
    */
   function _initGuides () {
-    // stop videos also on hiddenAll event
     $document.on('hiddenAll.webui.popover', _stopVideos);
   }
 
-  function _initHelpers () {
-    var $tipHelpers = $('[data-tip="help"]');
-    var opts = $.extend(_optsCommon, {
-      trigger: 'hover'
-    });
-    $tipHelpers.webuiPopover(opts)
-      .each(function (idx, element) {
-        _setContent(element);
-      });
-  }
-
+  /**
+   * Stop all videos inside iframes in the popovers.
+   *
+   * @return {void}
+   */
   function _stopVideos () {
     var popovers = document.getElementsByClassName('webui-popover');
     for (var i = 0, l = popovers.length; i < l; i++) {
@@ -72,32 +74,22 @@ var Tooltips = (function () {
     }
   }
 
-  function _setContent (element) {
-    var $el = $(element);
-    var content = '';
-    var title = $el.data('tip_title');
-    var text = $el.data('tip_text');
-    var img = $el.data('tip_img');
-    var video = $el.data('tip_video');
-    if (title) {
-      content += '<h4>' + title + '</h4>';
-    }
-    if (img) {
-      content += '<img src="' + Utils.getImageUrl(img) + '">';
-    }
-    if (text) {
-      content += '<p>' + text + '</p>';
-    }
-    if (video) {
-      content +=
-        '<span class="spinner"></span>' +
-        '<iframe width="250" height="152"' +
-          ' src="//www.youtube-nocookie.com/embed/' + video +
-          '?rel=0&amp;showinfo=0&amp;enablejsapi=1"' +
-          ' frameborder="0" allowfullscreen>' +
-        '</iframe>';
-    }
-    $el.attr('data-content', content);
+  /**
+   * Create helper for stuff inside a single control, for instance
+   * we use it to display help on hover on some radio inputs.
+   *
+   * @param  {jQuery} $element
+   * @return {void}
+   */
+  function _createHelperInsideControl ($element) {
+    $element.one('mouseenter', function () {
+      var data = _getPopoverData($element.data());
+      var opts = _.extend(_optsHelper, data);
+      $element.webuiPopover(opts)
+        .on('hidden.webui.popover', function () {
+          _stopVideos();
+        });
+    });
   }
 
   /**
@@ -113,9 +105,8 @@ var Tooltips = (function () {
     var $container = control.container;
 
     $container.one('mouseenter', function () {
-      var opts = _.extend(_optsGuide, {
-        content: _getContentFromData(control.params.guide)
-      });
+      var data = _getPopoverData(control.params.guide);
+      var opts = _.extend(_optsGuide, data);
       $container.find('.pwpcp-guide')
         .webuiPopover(opts)
         .on('shown.webui.popover', function () {
@@ -132,59 +123,70 @@ var Tooltips = (function () {
     });
   }
 
-  // @@todo
+  /**
+   * Destroy webuiPopover instance to free up memory,
+   * We do this also because with our dynamic controls which get always removed
+   * and readded to the DOM, the popover plugin would just keep creating new DOM
+   * for the same control guide after this has been 'deinflated' and 'reinflated'.
+   *
+   * @param  {Object} control The customize control object.
+   * @return {void}
+   */
   function _destroyGuideOfControl (control) {
     control.container.find('.pwpcp-guide').webuiPopover('destroy');
   }
 
   /**
    * Get popover content from the given control data object
-   * (`control.params.guide`)
+   * (`control.params.guide`) or the data from the DOM wit $(el).data()
    *
    * @param {Object} data     [description]
    * @return {String} The html string ready with the template for the popover
    */
-  function _getContentFromData (data) {
+  function _getPopoverData (data) {
     var content = '';
-    var title = data.title;
+    var docs = data.docs;
     var img = data.img;
     var text = data.text;
     var video = data.video;
-    if (title) {
-      content += '<h4>' + title + '</h4>';
-    }
     if (img) {
-      content += '<img src="' + Utils.getImageUrl(img) + '">';
+      content += '<img class="pwpcp-popover--img" src="' + Utils.getImageUrl(img) + '">';
     }
     if (text) {
-      content += '<p>' + text + '</p>';
+      content += '<p class="pwpcp-popover--text">' + text + '</p>';
     }
     if (video) {
       content +=
-        '<span class="spinner"></span>' +
-        '<iframe width="250" height="152"' +
+        '<span class="spinner pwpcp-popover--spinner"></span>' +
+        '<iframe class="pwpcp-popover--iframe" width="250" height="152"' +
           ' src="//www.youtube-nocookie.com/embed/' + video +
           '?rel=0&amp;showinfo=0&amp;enablejsapi=1"' +
           ' frameborder="0" allowfullscreen>' +
         '</iframe>';
     }
-    return content;
+    if (docs) {
+      content += '<div class="pwpcp-popover--footer">' +
+        '<a target="_blank" href="' + Utils.getDocsUrl(docs) + '">Read more on the docs</a>' +
+        ' <i class="dashicons dashicons-external"></i>' +
+      '</div>';
+    }
+    return {
+      title: data.title || null,
+      content: content
+    };
   }
 
   // @public API
   return {
     init: function () {
       _initGuides();
-      // _initHelpers();
       // Init bootstrap tooltips
       // $('.pwpcp-tip').tooltip();
     },
-    createHelper: function ($element, data) {
-      var opts = _.extend(_optsCommon, {
-        trigger: 'hover'
-      });
-      $element.webuiPopover(opts);
-      _setContent($element);
+    createHelpers: function (elements) {
+      for (var i = elements.length - 1; i >= 0; i--) {
+        _createHelperInsideControl($(elements[i]));
+      }
     },
     createGuide: _createGuideForControl,
     destroyGuide: _destroyGuideOfControl

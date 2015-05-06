@@ -10,8 +10,10 @@
     padding: 5px 0; // @@wptight-css based on .customize-control-radio { line-height } \\
 
     &:hover {
-      .pwpcp-tooltip {
-        display: block;
+      color: $input--hover-color;
+
+      input[type=radio] {
+        border-color: $input--hover-color;
       }
     }
   }

@@ -43,7 +43,7 @@
   }
 
   &-content {
-    padding: 10px 14px;
+    padding: $popover--padding-vertical $popover--padding-horizontal;
     overflow: auto;
 
     .webui-no-padding & {
@@ -51,11 +51,12 @@
     }
   }
 
-  h4 {
-    margin: 0 0 10px 0;
-    padding: 0 0 5px;
+  &-title {
+    margin: $popover--padding-vertical $popover--padding-horizontal 0;
+    padding: 0 $popover--padding-vertical 5px 0;
     border-bottom: 1px solid #eee;
     font-weight: bold;
+    font-size: 14px;
   }
 
   > .arrow,
@@ -157,4 +158,49 @@
   //   border-left-color: #ffffff;
   //   bottom: -10px;
   // }
+}
+
+
+/**
+ * Custom popover content style
+ *
+ * @use webui-popover plugin
+ */
+.pwpcp-popover {
+  &--title {
+    margin: (-$popover--padding-vertical - 2) 0 10px 0;
+    padding: 0 $popover--padding-vertical 5px 0;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+  }
+
+  // images are always fullwidth, for UI consistency
+  &--img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 0 1em;
+  }
+
+  &--text {
+    margin: 0 0 1em;
+  }
+
+  // show spinner behind iframe in tip popover
+  &--iframe {
+    position: relative;
+    z-index: 2;
+  }
+
+  &--spinner {
+    z-index: 1;
+    display: block;
+    float: none;
+    margin: 0 auto -18px;
+    bottom: -67px;
+  }
+
+  &--footer {
+    padding-right: $popover--padding-horizontal;
+  }
 }

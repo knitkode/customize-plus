@@ -5,7 +5,60 @@
  */
 var Utils = (function () {
 
-  var _IMAGES_BASE_PATH = api['constants']['THEME_URI'];
+  var _IMAGES_BASE_URL = api['constants']['IMAGES_BASE_URL'];
+  var _DOCS_BASE_URL = api['constants']['DOCS_BASE_URL'];
+
+  /**
+   * Is an absolute URL?
+   *
+   * @link(http://stackoverflow.com/a/19709846/1938970)
+   * @param  {String}  url The URL to test
+   * @return {Boolean}     Wether is absolute or relative
+   */
+  function _isAbsoluteUrl (url) {
+    var r = new RegExp('^(?:[a-z]+:)?//', 'i'); // @@todo move to Regexes modules and create tests \\
+    return r.test(url);
+  }
+
+  /**
+   * Clean URL from multiple slashes
+   *
+   * Strips possible multiple slashes caused by the string concatenation or dev errors
+   * // @@todo move to Regexes modules and create tests \\
+   * @param  {String} url
+   * @return {String}
+   */
+  function _cleanUrlFromMultipleSlashes (url) {
+    return url.replace(/[a-z-A-Z-0-9_]{1}(\/\/+)/g, '/');
+  }
+
+  /**
+   * Get a clean URL
+   *
+   * If an absolute URL is passed we just strip multiple slashes,
+   * if a relative URL is passed we also prepend the right base url.
+   *
+   * @param  {String} url
+   * @param  {String} type
+   * @return {String}
+   */
+  function _getCleanUrl (url, type) {
+    // return the absolute url
+    var finalUrl = url;
+    if (!_isAbsoluteUrl(url)) {
+      switch (type) {
+        case 'img':
+          finalUrl = _IMAGES_BASE_URL + url;
+          break;
+        case 'docs':
+          finalUrl = _DOCS_BASE_URL + url;
+          break;
+        default:
+          break;
+      }
+    }
+    return _cleanUrlFromMultipleSlashes(finalUrl);
+  }
 
   // @public API
   return {
@@ -21,30 +74,22 @@ var Utils = (function () {
       return typeof value === 'boolean' ? value : !!parseInt(value, 10);
     },
     /**
-     * Is an absolute URL?
-     *
-     * @link(http://stackoverflow.com/a/19709846/1938970)
-     * @param  {String}  url The URL to test
-     * @return {Boolean}     Wether is absolute or relative
-     */
-    isAbsoluteUrl: function (url) {
-      var r = new RegExp('^(?:[a-z]+:)?//', 'i');
-      return r.test(url);
-    },
-    /**
-     * Get image url, prepending the theme url
-     * (grabbed with `get_stylesheet_directory_uri`)
-     * if the given url is a relative.
+     * Get image url
      *
      * @param  {String} url The image URL, relative or absolute
      * @return {String}     The absolute URL of the image
      */
     getImageUrl: function (url) {
-      if ( ! this.isAbsoluteUrl(url) ) {
-        url = _IMAGES_BASE_PATH + '/' + url;
-      }
-      // strip a possible double slash caused by the above string concatenation
-      return url.replace('//', '/');
+      return _getCleanUrl(url, 'img');
+    },
+    /**
+     * Get docs url
+     *
+     * @param  {String} url The docs URL, relative or absolute
+     * @return {String}     The absolute URL of the docs
+     */
+    getDocsUrl: function (url) {
+      return _getCleanUrl(url, 'docs');
     },
     /**
      * Bind a link element or directly link to a specific control to focus

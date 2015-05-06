@@ -34,7 +34,7 @@ class PWPcp_Customize_Control_Multicheck extends PWPcp_Customize_Control_Base_Ra
 	 */
 	protected function js_tpl_choice() {
 		?>
-			<label{{{ tipAttrs }}}>
+			<label class="{{helpClass}}"{{{ helpAttrs }}}>
 				<input type="checkbox" name="_customize-pwpcp_multicheck-{{ data.id }}" value="{{ val }}" <# if (data.value.indexOf(val) !== -1) { #>checked<# } #>>{{{ label }}}
 			</label>
 		<?php

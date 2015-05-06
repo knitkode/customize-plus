@@ -250,9 +250,9 @@ var ControlBase = wpApi.Control.extend({
     if (!Tooltips) {
       return;
     }
-    var $helper = this.container.find('.pwpcp-help');
-    if ($helper.length) {
-      Tooltips.createHelper($helper);
+    var helpers = this._container.getElementsByClassName('pwpcp-help');
+    if (helpers) {
+      Tooltips.createHelpers(helpers);
     }
   },
   /**

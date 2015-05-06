@@ -23,7 +23,7 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	 */
 	protected function js_tpl_choice() {
 		?>
-			<option value="{{ val }}"<# if (data.value==val) { #> selected<# } #>{{{ tipAttrs }}}<# if (choice.sublabel) { #> data-sublabel="{{{ choice.sublabel }}}"<# } #>>
+			<option class="{{helpClass}}"{{{ helpAttrs }}} value="{{ val }}"<# if (data.value==val) { #> selected<# } #><# if (choice.sublabel) { #> data-sublabel="{{{ choice.sublabel }}}"<# } #>>
 				{{{ label }}}
 			</option>
 		<?php

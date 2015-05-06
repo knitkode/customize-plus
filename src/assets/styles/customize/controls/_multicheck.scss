@@ -11,11 +11,12 @@
   label {
     display: block;
     margin: 3px 0 6px;
+
     &:hover {
-      color: #333;
+      color: $input--hover-color;
 
       input[type=checkbox] {
-        border-color: #333;
+        border-color: $input--hover-color;
       }
     }
   }

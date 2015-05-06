@@ -23,7 +23,7 @@ class PWPcp_Customize_Control_Radio extends PWPcp_Customize_Control_Base_Radio {
 	 */
 	protected function js_tpl_choice() {
 		?>
-			<label{{{ tipAttrs }}}>
+			<label class="{{helpClass}}"{{{ helpAttrs }}}>
 				<input type="radio" value="{{ val }}" name="_customize-pwpcp_radio-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
 				{{{ label }}}
 				<# if (choice.sublabel) { #><small> ({{{ choice.sublabel }}})</small><# } #>
