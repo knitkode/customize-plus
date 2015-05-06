@@ -123,7 +123,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 
 						// automatically create hooks for child themes or whatever
 						$theme_customizer_settings[ $key ] = apply_filters(
-							$theme_prefix . '/PWPcp/theme/prefix',
+							$theme_prefix . '/PWPcp/theme/' . $key,
 							self::validate_theme_support( $key, $settings[0] )
 						);
 					}
