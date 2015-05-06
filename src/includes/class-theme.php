@@ -25,7 +25,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 */
 		private static $theme_support_keys = array(
 			'prefix',
-			'panels',
+			'customize_tree',
 			'images_base_url',
 			'docs_base_url',
 			'styles',
@@ -151,18 +151,18 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 						// @@todo use doing_it_wrong ? \\
 						wp_die( __( 'Customize Plus: no `prefix` given.', 'pkgTextdomain' ) );
 					}
-				case 'panels':
-					if ( isset( $configuration[ 'panels' ] ) ) {
-						$theme_panels = $configuration[ 'panels' ];
-						if ( is_array( $theme_panels ) ) {
-							return $theme_panels;
+				case 'customize_tree':
+					if ( isset( $configuration[ 'customize_tree' ] ) ) {
+						$theme_customize_tree = $configuration[ 'customize_tree' ];
+						if ( is_array( $theme_customize_tree ) ) {
+							return $theme_customize_tree;
 						} else {
 							// @@todo use doing_it_wrong ? \\
-							wp_die( __( 'Customize Plus: `panels` must be an array.', 'pkgTextdomain' ) );
+							wp_die( __( 'Customize Plus: `customize_tree` must be an array.', 'pkgTextdomain' ) );
 						}
 					} else {
 						// @@todo use doing_it_wrong ? \\
-						wp_die( __( 'Customize Plus: no `panels` array given.', 'pkgTextdomain' ) );
+						wp_die( __( 'Customize Plus: no `customize_tree` array given.', 'pkgTextdomain' ) );
 					}
 					break;
 				case 'styles':
@@ -204,8 +204,8 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 			self::$images_base_url = $theme['images_base_url'];
 			self::$docs_base_url = $theme['docs_base_url'];
 
-			// register theme customize panels
-			$theme_customize_manager = new PWPcp_Customize_Manager( 'theme', $theme['prefix'], $theme['panels'] );
+			// register theme customize tree
+			$theme_customize_manager = new PWPcp_Customize_Manager( 'theme', $theme['prefix'], $theme['customize_tree'] );
 
 			// add theme settings defaults
 			self::$settings_defaults = $theme_customize_manager->settings_defaults;
@@ -224,7 +224,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 			 *
 			 * @hook 'PWPcp/theme/is_configured' for themes,
 			 * @param array An array containing the defualt value for each setting
-			 *              declared in the customize panels
+			 *              declared in the customize tree
 			 */
 			do_action( 'PWPcp/theme/is_configured', self::$settings_defaults );
 		}
