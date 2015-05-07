@@ -14,7 +14,33 @@
  */
 class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 
+	/**
+	 * Control type identifier
+	 *
+	 * Also used in the js on the `defaultConstructor`
+	 * property of the WordPress Customize API.
+	 *
+	 * @override
+	 * @since 0.0.1
+	 * @var string
+	 */
 	public $type = 'pwpcp_color';
+
+	/**
+	 * Allow alpha channel modification (rgba colors)
+	 *
+	 * @since 0.0.1
+	 * @var boolean
+	 */
+	protected $allowAlpha = false;
+
+	/**
+	 * Disallow transparent color
+	 *
+	 * @since 0.0.1
+	 * @var boolean
+	 */
+	protected $disallowTransparent = false;
 
 	/**
 	 * Enqueue scripts/styles for the color picker.
@@ -34,14 +60,14 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 	 */
 	protected function add_to_json() {
 
-		// value in a variable
 		$value = $this->value();
 
-		// add input_attrs as data params (allowAlpha, disallowTransparent)
-		foreach ( $this->input_attrs as $attr_key => $attr_value ) {
-			// 'allowAlpha' => true // @@todo \\
-			// 'disallowTransparent' => true // @@todo \\
-			$this->json[ $attr_key ] = $attr_value;
+		if ( $this->allowAlpha ) {
+			$this->json['allowAlpha'] = true;
+		}
+
+		if ( $this->disallowTransparent ) {
+			$this->json['disallowTransparent'] = true;
 		}
 
 		// Custom Color

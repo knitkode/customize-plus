@@ -169,7 +169,7 @@ var ControlColor = ControlBase.extend({
    * @return {string} The validated control value.
    */
   _validate: function (value) {
-    if ( validator.isHexColor( value ) || ( params.allowAlpha && validator.isRgbaColor( value ) ) ) {
+    if ( validator.isHexColor( value ) || ( this.params.allowAlpha && validator.isRgbaColor( value ) ) ) {
       return value;
     }
   },
