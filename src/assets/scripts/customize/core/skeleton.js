@@ -76,5 +76,29 @@ var Skeleton = (function () {
   };
 })();
 
+// @@todo ............................................................................. \\
 // export to public API
 api['Skeleton'] = Skeleton;
+
+var previewer = wpApi.Previewer;
+
+var customizeFirstLoad = true;
+
+wpApi.Previewer = previewer.extend({
+  refresh: function() {
+    // call the 'parent' method
+    previewer.prototype.refresh.apply(this);
+
+    // on iframe loaded
+    this.loading.done(function () {
+
+      // the first load is handled in the Compiler already
+      // where we wait for the less callback on compile done
+      if (customizeFirstLoad) {
+        Skeleton.hide();
+      } else {
+        customizeFirstLoad = false;
+      }
+    });
+  }
+});

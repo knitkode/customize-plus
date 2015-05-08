@@ -12,6 +12,21 @@
 
 
 /**
+ * Hide WordPress default loader
+ *
+ * We'll use our custom one with the css based spinner which
+ * will always spin even the browsers freezes for a moment
+ * on load due to the intensive cpu processing.
+ */
+#customize-preview.wp-full-overlay-main { // @@wptight-selector \\
+  display: none;
+
+  &.iframe-ready { // @@wptight-selector \\
+    display: block;
+  }
+}
+
+/**
  * Full page loader
  *
  */
