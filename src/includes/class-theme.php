@@ -121,29 +121,26 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 */
 		public static function configure() {
 
-			$settings = get_theme_support( 'PWPcp-customize' );
+			$theme_support = get_theme_support( 'PWPcp-customize' );
 
-			if ( is_array( $settings ) ) {
+			// Themes should provide an array of options
+			if ( is_array( $theme_support ) ) {
+				$theme_support = array_shift( $theme_support );
+				$prefix = self::validate_theme_support( 'prefix', $theme_support );
+				$customizer_settings = array();
 
-				// Themes should provide an array of options
-				if ( isset( $settings[0] ) && is_array( $settings[0] ) ) {
+				foreach ( self::$theme_support_keys as $key ) {
 
-					$theme_prefix = self::validate_theme_support( 'prefix', $settings[0] );
-					$theme_customizer_settings = array();
-
-					foreach ( self::$theme_support_keys as $key ) {
-
-						// automatically create hooks for child themes or whatever
-						$theme_customizer_settings[ $key ] = apply_filters(
-							$theme_prefix . '/PWPcp/theme/' . $key,
-							self::validate_theme_support( $key, $settings[0] )
-						);
-					}
-
-					self::init( $theme_customizer_settings );
-				} else {
-					// @@todo error report doing_it_wrong ? \\
+					// automatically create hooks for child themes or whatever
+					$customizer_settings[ $key ] = apply_filters(
+						$prefix . '/PWPcp/theme/' . $key,
+						self::validate_theme_support( $key, $theme_support )
+					);
 				}
+				self::init( $customizer_settings );
+
+			} else {
+				// @@todo error report doing_it_wrong ? \\
 			}
 		}
 
@@ -241,7 +238,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 			 * to create a safe get_theme_mod in case they need it.
 			 *
 			 * @hook 'PWPcp/theme/is_configured' for themes,
-			 * @param array An array containing the defualt value for each setting
+			 * @param array An array containing the default value for each setting
 			 *              declared in the customize tree
 			 */
 			do_action( 'PWPcp/theme/is_configured', self::$settings_defaults );
@@ -254,7 +251,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * all the settings default values. Sine the root level of the tree
 		 * can have both panels and sections we need to check the subject first.
 		 *
-		 * @link http://wordpress.stackexchange.com/questions/28954/how-to-set-the-default-value-of-a-option-in-a-theme
+		 * @link http://wordpress.stackexchange.com/q/28954/25398
 		 * @since 0.0.1
 		 */
 		private static function set_settings_defaults() {
@@ -311,7 +308,6 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * we'll need this safe theme_mod in one of our sanitization functions
 		 *
 		 * @since  0.0.1
-		 * @see pwpcp_get_less_test_input
 		 * @param [type]  $opt_name [description]
 		 * @return [type]           [description]
 		 */

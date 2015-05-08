@@ -27,14 +27,15 @@
  */
 input[type=number].pwpcp-slider-number {
   width: auto;
+  max-width: 50px;
   padding: 3px 0;
   border: 0;
   box-shadow: none;
   font-weight: bold;
-  background: transparent; // pwpcpmaybenotneeded \\
-  margin: 0; // pwpcpmaybenotneeded \\
-  display: inline; // pwpcpmaybenotneeded \\
-  text-align: right; // pwpcpmaybenotneeded \\
+  background: transparent; // @@maybenotneeded \\
+  margin: 0; // @@maybenotneeded \\
+  display: inline; // @@maybenotneeded \\
+  text-align: right; // @@maybenotneeded \\
 
   // Hide spinner on input[type=number]
   // @link http://stackoverflow.com/a/23374725/1938970

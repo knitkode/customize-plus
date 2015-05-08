@@ -12,7 +12,7 @@
  * @link       http://pluswp.com/customize-plus
  */
 
-// PWPcptemp, this function is more an util than a sanitize function \\
+// @@temp, this function is more an util than a sanitize function \\
 if ( ! function_exists( 'pwpcp_compress_html' ) ) :
 	/**
 	 * [pwpcp_compress_html description]

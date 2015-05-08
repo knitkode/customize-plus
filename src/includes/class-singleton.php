@@ -35,8 +35,8 @@ abstract class PWPcp_Singleton {
 
 	/**
 	 * PHP 5.2 version support
-	 * See: http://stackoverflow.com/questions/7902586/extend-a-singleton-with-php-5-2-x
 	 *
+	 * @link( http://stackoverflow.com/q/7902586/1938970 )
 	 * @since 0.0.1
 	 */
 	private static function get_called_class() {
@@ -51,7 +51,7 @@ abstract class PWPcp_Singleton {
 	}
 
 	/**
-	 * [__clone description]
+	 * Clone
 	 *
 	 * @since  0.0.1
 	 */

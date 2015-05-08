@@ -21,11 +21,24 @@ var ControlSlider = ControlBase.extend({
    */
   _validate: function (newValue) {
     var params = this.params;
-    var attrs = params.attrs;
+    var min = params.attrs.min;
+    var max = params.attrs.max;
     var number;
     var unit;
     var _isValidNumber = function (value) {
-      return _.isNumber(value) && value >= attrs.min && value <= attrs.max; // @@ie8 \\
+      if (_.isNumber(value)) { // @@ie8 \\
+        if (min && max) {
+          return value >= min && value <= max;
+        } else if (min) {
+          return value >= min;
+        } else if (max) {
+          return value <= max;
+        } else {
+          return true;
+        }
+      } else {
+        return false;
+      }
     };
     var _isValidUnit = function (value) {
       return params.units.indexOf(value) !== -1;
@@ -104,7 +117,6 @@ var ControlSlider = ControlBase.extend({
   ready: function (isForTheFirstTimeReady) {
     var setting = this.setting;
     var params = this.params;
-    var attrs = params.attrs;
     var inputNumber = this._container.getElementsByClassName('pwpcp-slider-number')[0];
     var $inputUnits = this.container.find('.pwpcp-unit');
     var $inputSlider = this.container.find('.pwpcp-slider');
@@ -146,18 +158,15 @@ var ControlSlider = ControlBase.extend({
     /**
      * Init Slider
      */
-    $inputSlider.slider({
+    $inputSlider.slider(_.extend({
       value: params.number,
-      min: attrs.min,
-      max: attrs.max,
-      step: attrs.step,
       slide: function(event, ui) {
         inputNumber.value = ui.value;
       },
       change: function(event, ui) {
         setting.set(ui.value);
       }
-    });
+    }, params.attrs));
 
     // // if the setting is changed programmatically (i.e. through code)
     // if (isForTheFirstTimeReady) {

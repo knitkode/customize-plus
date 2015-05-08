@@ -4,6 +4,8 @@
  */
 .customize-control-pwpcp_toggle {
   label {
+    display: block;
+    
     &:hover {
       color: $input--hover-color;
 
