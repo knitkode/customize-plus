@@ -1,0 +1,37 @@
+/**
+ * UI module, used within control's areas
+ *
+ */
+
+@mixin ui-toggle() {
+  // @@wptight-css from .wp-color-result:after {} \\
+  display: inline-block;
+  vertical-align: top;
+  padding: 0px $WPcustomize--btn-padding-horizontal;
+  line-height: $WPcustomize--btn-height;
+  border-radius: 0;
+  border: 1px solid $WPcustomize--btn-border-color;
+  background: $WPcustomize--btn-bg;
+  box-shadow: $WPcustomize--btn-box-shadow;
+  color: $WPcustomize--btn-color;
+  font-size: 11px;
+  // @@wptight-css from .wp-color-result:focus, .wp-color-result:hover {} \\
+  &:hover,
+  &:focus {
+    background: $WPcustomize--btn-bg-hover;
+    border-color: $WPcustomize--btn-border-color-hover;
+    color: $WPcustomize--btn-color-hover;
+  }
+}
+
+// %ui-toggle--active {
+@mixin ui-toggle--active() {
+  background: $WPcustomize--btn-bg-active;
+  color: $WPcustomize--btn-color-active;
+}
+
+// %ui-toggle--expanded {
+@mixin ui-toggle--expanded() {
+  background: $WPcustomize--btn-bg-activetoggle;
+  box-shadow: $WPcustomize--btn-box-shadow-activetoggle;
+}

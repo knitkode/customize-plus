@@ -39,7 +39,7 @@
   border-width: 1px 0;
   &:hover {
     background: $control--bg-hover;
-    border-color: darken($control--bg-hover, 5%);
+    border-color: darken($control--bg-hover, 1%);
   }
 
   &:last-of-type {

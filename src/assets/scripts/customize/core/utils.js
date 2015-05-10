@@ -133,7 +133,8 @@ var Utils = (function () {
      * @return {string}          The option template.
      */
     selectizeRenderSize: function (item, escape) {
-      return '<div class="pwpcpsize-selectOption"><i>' + escape(item.valueCSS) + '</i> ' + escape(item.label) + '</div>';
+      return '<div class="pwpcpsize-selectOption"><i>' + escape(item.valueCSS) + '</i> ' +
+        escape(item.label) + '</div>';
     },
     /**
      * Selectize render option function
@@ -146,6 +147,53 @@ var Utils = (function () {
     selectizeRenderColor: function (item, escape) {
       return '<div class="pwpcpcolor-selectOption" style="border-color:' + escape(item.valueCSS) + '">' +
         escape(item.label) + '</div>';
+    },
+    /**
+     * Get Spectrum plugin options
+     *
+     * @link(https://bgrins.github.io/spectrum/, spectrum API)
+     * @static
+     * @param  {Object} control Customize Control object
+     * @return {Object} The spectrum plugin options
+     */
+    getSpectrumOpts: function (control) {
+      var params = control.params;
+      var $container = control.container;
+
+      return {
+        containerClassName: 'pwpcp-expandable',
+        preferredFormat: 'hex',
+        flat: true,
+        showInput: true,
+        showInitial: false,
+        showButtons: false,
+        // localStorageKey: 'PWPcp_spectrum',
+        showSelectionPalette: false,
+        togglePaletteMoreText: api['l10n']['togglePaletteMoreText'],
+        togglePaletteLessText: api['l10n']['togglePaletteLessText'],
+        allowEmpty: !params.disallowTransparent,
+        showAlpha: params.allowAlpha,
+        showPalette: !!params.palette,
+        showPaletteOnly: params.showPaletteOnly && params.palette,
+        togglePaletteOnly: params.togglePaletteOnly && params.palette,
+        palette: params.palette,
+        color: control.setting(),
+        appendTo: control.expander,
+        show: function () {
+          $container.find('.sp-input').focus();
+        },
+        move: function (tinycolor) {
+          var color = tinycolor ? tinycolor.toString() : 'transparent';
+          control._apply(color);
+        },
+        change: function (tinycolor) {
+          var color = tinycolor ? tinycolor.toString() : 'transparent';
+          control._apply(color);
+          if (!tinycolor) {
+            $container.find('.sp-input').val('transparent');
+          }
+        }
+      };
     }
   };
 })();

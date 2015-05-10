@@ -1,3 +1,24 @@
+.pwpcp-expander {
+  overflow: hidden;
+  position: relative;
+  max-height: 0;
+  transition: max-height .18s ease;
+
+  > .pwpcp-expandable {
+    transform: translate(0, -100%);
+    transition: transform .18s ease;
+  }
+
+  &.pwpcp-expanded {
+    max-height: 1000px;
+
+    > .pwpcp-expandable {
+      transform: translate(0, 0%);
+    }
+  }
+}
+
+
 /**
  * Shadow on sidebar
  *

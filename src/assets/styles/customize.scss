@@ -1,5 +1,6 @@
 // generic
 @import "common/variables";
+@import "common/mixins";
 @import "common/utils";
 
 // customize - vendors
@@ -13,6 +14,8 @@
 @import "vendor-custom/jquery-ui.dialog";
 @import "vendor-custom/selectize";
 @import "vendor-custom/selectize-custom";
+@import "vendor-custom/spectrum";
+@import "vendor-custom/spectrum-custom";
 
 // customize - base
 @import "customize/base";
@@ -20,6 +23,7 @@
 @import "customize/base-icons";
 @import "customize/base-overflow_fix";
 @import "customize/base-scrollbars";
+@import "customize/base-ui";
 
 // customize - core
 @import "customize/core/tabs";

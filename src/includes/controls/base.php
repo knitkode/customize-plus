@@ -68,6 +68,22 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
+	 * Add booleans parameters to JSON
+	 *
+	 * Utility method to easily add truthy values to the control JSON data
+	 *
+	 * @since 0.0.1
+	 * @param array $keys [description]
+	 */
+	protected function add_booleans_params_to_json( $keys = array() ) {
+		foreach ( $keys as $key ) {
+			if ( $this->$key ) {
+				$this->json[ $key ] = true;
+			}
+		}
+	}
+
+	/**
 	 * Add parameters passed to the JavaScript via JSON.
 	 * This free us to override the `to_json` method
 	 * calling everytime the parent method.

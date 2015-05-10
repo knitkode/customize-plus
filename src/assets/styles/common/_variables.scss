@@ -6,12 +6,14 @@
 // WordPress layout variables
 $WP--bg: #f1f1f1 !default;
 $WP--border-radius: 3px !default;
+$WP--input-height: 27px;
 $WP--select-border-color: #ddd;
 $WP--select-border-color-focus: #5b9dd9;
 $WP--select-box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
 $WP--select-box-shadow-focus: 0 0 2px rgba(30,140,190,.8);
 $WP--link-color: #0099d5; // #0074a2;
 $WP--link-color-hover: #2ea2cc;
+$WP--link-box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30,140,190,.8);
 $WP--dashicons-size: 20px;
 
 // WordPress Customize variables
@@ -29,6 +31,7 @@ $WPcustomize--collapse-sidebar-marginleft: 15px;
 $WPcustomize--collapse-sidebar-color: #777;
 $WPcustomize--float-breakpoint: 640px;
 $WPcustomize--btn-height: 22px; // @@wptight-css from .wp-color-result {} \\
+$WPcustomize--btn-padding-horizontal: 9px;
 $WPcustomize--btn-bg: #f7f7f7;
 $WPcustomize--btn-bg-hover: #fafafa;
 $WPcustomize--btn-bg-active: #e6e6e6; // we made this up
@@ -40,6 +43,7 @@ $WPcustomize--btn-border-color: #ccc;
 $WPcustomize--btn-border-color-hover: #999;
 $WPcustomize--btn-border-radius: 3px;
 $WPcustomize--btn-box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0,0,0,.08);
+$WPcustomize--btn-box-shadow-focus: $WP--link-box-shadow;
 $WPcustomize--btn-box-shadow-activetoggle: inset 0 2px 2px rgba(0,0,0,.08), 0 1px 0 rgba(0,0,0,.08); // we made this up
 
 /**
@@ -51,6 +55,10 @@ $WPcustomize--btn-box-shadow-activetoggle: inset 0 2px 2px rgba(0,0,0,.08), 0 1p
 $base--logo-bg: #464646;
 $toggle--width: 30px;
 $input--hover-color: #333;
+$state--danger-bg: #fff9f9;
+$state--danger-border: #c00;
+$state--danger-box-shadow: 0 0 4px #c00;
+$state--danger-color: #c00;
 
 // Customize UI: Popovers
 $popover--bg: #fff;
@@ -76,7 +84,7 @@ $plugin--slider-handle-border-width: 1px;
 $control--color-light: #999;
 $control--bg: #fff;
 $control--bg-focus: #ffc;
-$control--bg-hover: #fafafa;
+$control--bg-hover: #fbfbfb;
 $control--bg-divider: #fffafa;
 $control--bg-divider-hover: darken($control--bg-divider, 3%);
 $control--spacing-top: 6px;

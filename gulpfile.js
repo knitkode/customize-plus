@@ -86,3 +86,11 @@ gulp.task('modernizr', ['_customize-modernizr']);
 
 // Require the gulp folder with all the tasks, don't change this
 require('./config/gulp');
+
+
+ // @@temp \\
+var jsdoc = require("gulp-jsdoc");
+gulp.task('docs-js', function () {
+  gulp.src('./build/assets/customize.js')
+    .pipe(jsdoc('./docs-js'));
+});

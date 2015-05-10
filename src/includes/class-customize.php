@@ -186,9 +186,26 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 				'introTitle' => __( 'Customize Plus', 'pkgTextdomain' ),
 				'introText' => __( 'Welcome to Customize Plus', 'pkgTextdomain' ),
 				'customColor' => __( 'Custom', 'pkgTextdomain' ),
+				'togglePaletteMoreText' => __( 'Show color picker', 'pkgTextdomain' ),
+				'togglePaletteLessText' => __( 'Hide color picker', 'pkgTextdomain' ),
 			);
 			$additional = (array) apply_filters( 'PWPcp/customize/js_l10n', array() );
 			return array_merge( $required, $additional );
+		}
+
+		/**
+		 * // @@todo @@trial .......................................................................
+		 * doesn't work for now and not  even sure if it will be needed \\
+		 * @param array $localized_strings [description]
+		 */
+		public static function add_js_l10n( $localized_strings = array() ) {
+			global $wp_scripts;
+			$data = '';
+			foreach ( $localized_strings as $key => $value ) {
+				$data .= sprintf( 'window.PWPcp.l10n[%s] = %s;', json_encode( $key ), json_encode( $value ) );
+			}
+			wp_localize_script( 'PWPcp-customize', 'dasadta', $data );
+			$wp_scripts->add_data( 'PWPcp-customize', 'dasadta', $data );
 		}
 
 		/**
@@ -421,13 +438,13 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 				}
 				// if the desired class doesn't exist just use the plain WordPress API
 				else {
-					$wp_customize->add_control( $option_id, $control_args );
+					$wp_customize->add_control( $field_id, $control_args );
 					// @@todo error (wrong api implementation, missing class) \\
 				}
 			}
 			// if the desired control type is not specified just use the plain WordPress API
 			else {
-				$wp_customize->add_control( $option_id, $control_args );
+				$wp_customize->add_control( $field_id, $control_args );
 				// @@todo error (wrong api implementation, missing control type) \\
 			}
 		}

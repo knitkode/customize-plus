@@ -1,0 +1,17 @@
+/**
+ * UI module, used within control's areas
+ *
+ */
+.pwpcpui {
+  &-label {
+    display: block;
+    margin-bottom: 2px;
+    font-style: normal;
+    font-size: 11px;
+  }
+
+  // toggle button within controls (used in color and dynamic controls)
+  &-toggle {
+    @include ui-toggle();
+  }
+}
