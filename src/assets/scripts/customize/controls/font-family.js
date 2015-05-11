@@ -103,4 +103,4 @@ var ControlFontFamily = ControlBase.extend({
   }
 });
 
-wpApi.controlConstructor['pwpcp_font_family'] = ControlFontFamily;
+wpApi['controlConstructor']['pwpcp_font_family'] = ControlFontFamily;

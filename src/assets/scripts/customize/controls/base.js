@@ -19,15 +19,16 @@ var ControlBase = wpApi.Control.extend({
    * @param  {string} id      The control id
    * @param  {Object} options The control options
    */
-  initialize: function( id, options ) {
-    var control = this,
-      settings,
-      advancedClass;
+  initialize: function(id, options) {
+    var control = this;
+    var settings;
+    var advancedClass;
 
     // add default params object
     control.params = {};
 
-    $.extend( control, options || {} );
+    _.extend(control, options || {});
+
     control.id = id;
 
     // add a flag so that we are able to recognize our
@@ -35,8 +36,7 @@ var ControlBase = wpApi.Control.extend({
     // only to check `if (control.pwpcp)`
     control.pwpcp = 1;
 
-
-    control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
+    // control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
     // control.templateSelector = 'customize-control-' + control.params.type + '-content';
     advancedClass = control.params.advanced ? ' pwpcp-control-advanced' : '';
     control.container = $('<li id="customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' ) +
@@ -72,6 +72,7 @@ var ControlBase = wpApi.Control.extend({
     settings = $.map( control.params.settings, function( value ) {
       return value;
     });
+
     wpApi.apply( wpApi, settings.concat( function () {
       var key;
 
@@ -95,7 +96,7 @@ var ControlBase = wpApi.Control.extend({
       });
     }) );
 
-    // an $abstract method to override
+    // an @abstract method to override
     control.onInit();
 
     /**
@@ -179,7 +180,6 @@ var ControlBase = wpApi.Control.extend({
 
     // and empty the DOM from the container
     this.empty(container);
-
 
     // flag control that it's not rendered
     this.rendered = false;

@@ -18,9 +18,9 @@ var ControlColor = ControlBase.extend({
    */
   _validate: function (value) {
     if (
-      ( !this.params.disallowTransparent && value === 'transparent' ) ||
+      (!this.params.disallowTransparent && value === 'transparent') ||
       validator.isHexColor( value ) ||
-      ( this.params.allowAlpha && validator.isRgbaColor( value ) )
+      (this.params.allowAlpha && validator.isRgbaColor( value ))
     ) {
       return value;
     }
@@ -33,21 +33,13 @@ var ControlColor = ControlBase.extend({
    * @override
    */
   onInit: function () {
-    var params = this.params;
-
-    params.netOn = [];
-    // in the netOff put the current control id, it can't be dynamic on itself...
-    params.netOff = [this.id];
-
     this.setting.validate = this._validate.bind(this);
 
     // bind setting change to pass value on apply value
     // if we are programmatically changing the control value
     // for instance through js (during import, debugging, etc.)
     this.setting.bind(function (value) {
-      // if (value !== this.inputExpr.value) {
-        this._apply(value, 'API'); // @@todo \\
-      // }
+      this._apply(value, 'API'); // @@todo \\
     }.bind(this));
   },
   /**
@@ -58,7 +50,9 @@ var ControlColor = ControlBase.extend({
    * @override
    */
   onDeflate: function () {
-    this.$picker.spectrum('destroy');
+    if (this.$picker && this.rendered) {
+      this.$picker.spectrum('destroy');
+    }
   },
   /**
    * On ready
@@ -80,7 +74,7 @@ var ControlColor = ControlBase.extend({
 
     this.expander = container.getElementsByClassName('pwpcp-expander')[0];
 
-    var btnCustom = container.getElementsByClassName('pwpcpcolor-toggle')[0];
+    var btnCustom = container.getElementsByClassName('pwpcpui-toggle')[0];
 
     self._applyOnUIpreview(self.setting());
 
@@ -99,11 +93,11 @@ var ControlColor = ControlBase.extend({
       // and toggle
       if (isOpen) {
         self.$picker.spectrum('show');
-        self.expander.classList.add('pwpcp-expanded');
-        container.setAttribute('data-pwpcpexpanded', 'custom');
+        // self.expander.classList.add('pwpcp-expanded');
+        container.setAttribute('data-pwpcp-expanded', 'custom');
       } else {
-        self.expander.classList.remove('pwpcp-expanded');
-        container.setAttribute('data-pwpcpexpanded', '');
+        // self.expander.classList.remove('pwpcp-expanded');
+        container.setAttribute('data-pwpcp-expanded', '');
         self.$picker.spectrum('hide');
       }
       return false;
@@ -111,8 +105,6 @@ var ControlColor = ControlBase.extend({
   },
   /**
    * [_applyOnUIpreview description]
-   * In a try catch because not always we have the wpColorPicker
-   * already initialized. // @@todo maybe there is a better way... \\
    *
    * @param  {[type]} newColor [description]
    * @return {[type]}          [description]
@@ -152,4 +144,5 @@ var ControlColor = ControlBase.extend({
   }
 });
 
-wpApi.controlConstructor['pwpcp_color'] = ControlColor;
+// export to our API and to WordPress API
+api['controls']['Color'] = wpApi['controlConstructor']['pwpcp_color'] = ControlColor;

@@ -7,6 +7,7 @@
 $WP--bg: #f1f1f1 !default;
 $WP--border-radius: 3px !default;
 $WP--input-height: 27px;
+$WP--input-height-md: 31px;
 $WP--select-border-color: #ddd;
 $WP--select-border-color-focus: #5b9dd9;
 $WP--select-box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
@@ -29,19 +30,20 @@ $WPcustomize--iframe-bg: #eee;
 $WPcustomize--collapse-sidebar-bottom: 12px;
 $WPcustomize--collapse-sidebar-marginleft: 15px;
 $WPcustomize--collapse-sidebar-color: #777;
-$WPcustomize--float-breakpoint: 640px;
+$WPcustomize--breakpoint-float: 640px;
+$WPcustomize--breakpoint-md: 782px; // some input fields get bigger here
 $WPcustomize--btn-height: 22px; // @@wptight-css from .wp-color-result {} \\
 $WPcustomize--btn-padding-horizontal: 9px;
 $WPcustomize--btn-bg: #f7f7f7;
 $WPcustomize--btn-bg-hover: #fafafa;
-$WPcustomize--btn-bg-active: #e6e6e6; // we made this up
-$WPcustomize--btn-bg-activetoggle: #ccc; // we made this up
+$WPcustomize--btn-bg-active: #e8e8e8; // we made this up
+$WPcustomize--btn-bg-activetoggle: #e0e0e0; // we made this up
 $WPcustomize--btn-color: #555;
 $WPcustomize--btn-color-hover: #222;
 $WPcustomize--btn-color-active: #444; // we made this up
 $WPcustomize--btn-border-color: #ccc;
 $WPcustomize--btn-border-color-hover: #999;
-$WPcustomize--btn-border-radius: 3px;
+$WPcustomize--btn-border-radius: $WP--border-radius;
 $WPcustomize--btn-box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0,0,0,.08);
 $WPcustomize--btn-box-shadow-focus: $WP--link-box-shadow;
 $WPcustomize--btn-box-shadow-activetoggle: inset 0 2px 2px rgba(0,0,0,.08), 0 1px 0 rgba(0,0,0,.08); // we made this up

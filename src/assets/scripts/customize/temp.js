@@ -20,6 +20,13 @@ if (DEBUG) {
   });
 }
 
+/**
+ * Get the prototype of a control
+ * and call the 'super/parent' method
+ */
+// var ControlColor = api.controls.Color.prototype;
+// ControlColor.ready.apply(this, arguments);
+
 // // from: https://make.wordpress.org/core/2014/10/27/toward-a-complete-javascript-api-for-the-customizer/
 // wpApi.section.each(function ( section ) {
 //   if ( ! section.panel() ) {

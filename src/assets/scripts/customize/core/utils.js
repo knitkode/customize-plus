@@ -165,7 +165,7 @@ var Utils = (function () {
         preferredFormat: 'hex',
         flat: true,
         showInput: true,
-        showInitial: false,
+        showInitial: true,
         showButtons: false,
         // localStorageKey: 'PWPcp_spectrum',
         showSelectionPalette: false,

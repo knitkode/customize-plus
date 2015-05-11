@@ -81,11 +81,7 @@ var ControlBaseDummy = wpApi.Control.extend({
     control.deferred.embedded.done( function () {
       control.ready();
     });
-  },
-  /**
-   * Override the unneded dropdownInit method
-   */
-  dropdownInit: function() {}
+  }
 });
 
-wpApi.controlConstructor['pwpcp_dummy'] = ControlBaseDummy;
+wpApi['controlConstructor']['pwpcp_dummy'] = ControlBaseDummy;

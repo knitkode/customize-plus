@@ -1,21 +1,49 @@
+// .pwpcp-expander {
+//   overflow: hidden;
+//   position: relative;
+//   max-height: 0;
+//   transition: max-height .18s ease;
+
+//   > .pwpcp-expandable {
+//     transform: translate(0, -100%);
+//     transition: transform .18s ease;
+//   }
+
+//   &.pwpcp-expanded {
+//     max-height: 1000px;
+//     overflow: auto;
+
+//     > .pwpcp-expandable {
+//       transform: translate(0, 0%);
+//     }
+//   }
+// }
+
 .pwpcp-expander {
   overflow: hidden;
   position: relative;
   max-height: 0;
   transition: max-height .18s ease;
+}
 
-  > .pwpcp-expandable {
-    transform: translate(0, -100%);
-    transition: transform .18s ease;
+.pwpcp-expandable {
+  transform: translate(0, -100%);
+  transition: transform .18s ease;
+}
+
+[data-pwpcp-expanded="custom"] [data-pwpcp-expander="custom"],
+[data-pwpcp-expanded="dynamic"] [data-pwpcp-expander="dynamic"] {
+  max-height: 1000px;
+  overflow: auto;
+
+  .pwpcp-expandable {
+    transform: translate(0, 0%);
   }
+}
 
-  &.pwpcp-expanded {
-    max-height: 1000px;
-
-    > .pwpcp-expandable {
-      transform: translate(0, 0%);
-    }
-  }
+[data-pwpcp-expanded="custom"] [data-pwpcp-expandtoggle="custom"],
+[data-pwpcp-expanded="dynamic"] [data-pwpcp-expandtoggle="dynamic"] {
+  @include ui-toggle--expanded();
 }
 
 
@@ -116,7 +144,7 @@
     line-height: $WPcustomize--header-height;
   }
 
-  @media (max-width: $WPcustomize--float-breakpoint) {
+  @media (max-width: $WPcustomize--breakpoint-float) {
     // hide toggle when, on small screens, the current view is the preview
     // keep it in the media query because when resizing the browser from small to large
     // WordPress doesn't remove the `preview-only` class even if it doesn't apply anymore

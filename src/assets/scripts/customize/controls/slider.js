@@ -186,4 +186,4 @@ var ControlSlider = ControlBase.extend({
   }
 });
 
-wpApi.controlConstructor['pwpcp_slider'] = ControlSlider;
+wpApi['controlConstructor']['pwpcp_slider'] = ControlSlider;

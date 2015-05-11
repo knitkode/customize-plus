@@ -54,4 +54,4 @@ var ControlSelect = ControlBase.extend({
   }
 });
 
-wpApi.controlConstructor['pwpcp_select'] = ControlSelect;
+wpApi['controlConstructor']['pwpcp_select'] = ControlSelect;

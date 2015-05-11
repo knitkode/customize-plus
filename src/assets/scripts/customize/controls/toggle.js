@@ -46,4 +46,4 @@ var ControlToggle = ControlBase.extend({
   }
 });
 
-wpApi.controlConstructor['pwpcp_toggle'] = ControlToggle;
+wpApi['controlConstructor']['pwpcp_toggle'] = ControlToggle;

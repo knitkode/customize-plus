@@ -28,10 +28,18 @@
 @mixin ui-toggle--active() {
   background: $WPcustomize--btn-bg-active;
   color: $WPcustomize--btn-color-active;
+  &:hover,
+  &:focus {
+    background: darken($WPcustomize--btn-bg-active, 4%);
+  }
 }
 
 // %ui-toggle--expanded {
 @mixin ui-toggle--expanded() {
   background: $WPcustomize--btn-bg-activetoggle;
   box-shadow: $WPcustomize--btn-box-shadow-activetoggle;
+  &:hover,
+  &:focus {
+    background: darken($WPcustomize--btn-bg-activetoggle, 4%);
+  }
 }
