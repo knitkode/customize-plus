@@ -151,9 +151,15 @@ var ControlBase = wpApi.Control.extend({
    * faster then: this.wrap[0].innerHTML = '';
    */
   empty: function (element) {
+    /* jshint funcscope: true */
+    if (DEBUG) var t = performance.now();
     while (element.lastChild) {
       element.removeChild(element.lastChild);
     }
+    // @@doubt, somethimes innerHTML seems to be faster, maybe when
+    // there are many DOM elements to remove, investigate here \\
+    // element.innerHTML = '';
+    console.log('deflate (empty()) of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.');
   },
   /**
    * Triggered just before the control get deflated from DOM
@@ -178,8 +184,12 @@ var ControlBase = wpApi.Control.extend({
     // destroy guides to free up DOM
     this.destroyGuide(this);
 
-    // and empty the DOM from the container
-    this.empty(container);
+    // and empty the DOM from the container in a timeout so
+    // the slide out animation of the section doesn't freeze
+    var self = this;
+    setTimeout(function () {
+      self.empty(container);
+    }, 300);
 
     // flag control that it's not rendered
     this.rendered = false;

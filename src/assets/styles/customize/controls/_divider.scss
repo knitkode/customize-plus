@@ -4,10 +4,10 @@
  */
 .pwpcp-control-divider {
   margin-top: -$control--spacing-top - 1;
-  margin-left: -$control--spacing-horizontal;
+  margin-left: -$control--spacing-left;
   margin-bottom: $control--spacing-bottom;
-  margin-right: -$control--spacing-horizontal;
-  padding: $control--spacing-top $control--spacing-horizontal;
+  margin-right: -$control--spacing-right;
+  padding: ($control--spacing-top * 2) $control--spacing-right ($control--spacing-bottom * 2) $control--spacing-left;
   background: $control--bg-divider;
   background: linear-gradient($control--bg-divider, $control--bg);
   border-top: 1px solid darken($control--bg-divider, 6%);

@@ -3,37 +3,30 @@
  * so they are fullwidth in the sidebar, allowing a nice highlighting
  * in various situation like `:hover` or `.focus()`
  */
-.customize-control,
-.pwpcp-control {
-  padding-left: $control--spacing-horizontal;
-  padding-right: $control--spacing-horizontal;
-  box-sizing: border-box;
-}
-
-/**
- * Normalize the padding of the section adding some space around the
- * optional section description.
- */
-.accordion-section-content {
+#customize-theme-controls .accordion-section-content {
   padding: 0;
-
-  #customize-info &,
-  .panel-meta & {
-    padding: $WPcustomize--section-padding-top $WPcustomize--section-padding-horizontal ($WPcustomize--section-padding-top * 2);
-  }
 }
-.customize-section-description-container {
-  // the vertical padding is intentionally inverted
-  padding: $control--spacing-bottom $control--spacing-horizontal $control--spacing-top;
-  background: linear-gradient(fade-out($control--bg-focus, .6), $control--bg);
+.customize-section-title {
+  margin: 0;
+}
+.customize-control,
+.customize-section-description {
+  box-sizing: border-box;
+  padding-left: $control--spacing-left;
+  padding-right: $control--spacing-right;
 }
 
 /**
- * Highlight the hovered control making it more prominent and visible
- *
+ * Control changes, class applied on `<li>`
+ * container of each of our custom controls
  */
 .customize-control,
 .pwpcp-control {
+  margin: 0; // @@wptight-css-override .customize-control {} \\
+  padding-top: $control--spacing-top;
+  padding-bottom: $control--spacing-bottom;
+
+  // Highlight the hovered control making it more prominent and visible.
   border-color: transparent;
   border-style: solid;
   border-width: 1px 0;
@@ -45,24 +38,12 @@
   &:last-of-type {
     border-bottom: none;
   }
-}
-
-/**
- * Control changes, class applied on `<li>`
- * container of each of our custom controls
- *
- */
-.customize-control,
-.pwpcp-control {
-  margin: 0; // @@wptight-css-override .customize-control {} \\
-  padding-top: $control--spacing-top;
-  padding-bottom: $control--spacing-bottom;
 
   /**
    * Highlight focused control (through WordPress API method control.focus())
    * adding the class `.pwpcp-control-focused` to the `control.container`
    */
-  background: $control--bg;
+  // background: $control--bg;
   &-focused {
     transition: background 2s ease;
     background: $control--bg-focus;
@@ -92,19 +73,35 @@
 }
 
 /**
- * Tweaks for WordPress themes switcher section:
- * - Remove highlighting behavior on theme switcher control
- * - Fix padding on section title when themes section is expanded
- * - Reset to 0 the control's padding around themes thumbnails
+ * Remove highlighting behavior on theme switcher control
  */
-#accordion-section-themes.control-section:hover > .accordion-section-title {
-  background: $control--bg;
-}
-.customize-themes-panel > .customize-section-title {
-  float: none;
-  width: auto;
-}
-.customize-control-theme {
+.customize-control-theme,
+.customize-control-theme:hover {
   background: none;
-  padding: 0 !important; // important to override pseudo selectors like `:first-of-type`
+}
+
+/**
+ * Reset our control custom style on the Nave Menus WordPress native panel.
+ * Add also generic class to apply on panel `ul` container
+ * to reset the control style.
+ */
+.pwpcp-panel--reset-control-style,
+#accordion-panel-nav_menus {
+  .customize-control {
+    padding: 0;
+    margin-bottom: $WPcustomize--control-margin-vertical;
+    border: 0;
+
+    &:hover {
+      background: transparent;
+    }
+  }
+
+  // re-add the padding on the outer control
+  .accordion-section-content > li.customize-control,
+  // and on the section descriptions
+  .customize-section-description-container p {
+    padding-left: $WPcustomize--section-padding-horizontal;
+    padding-right: $WPcustomize--section-padding-horizontal;
+  }
 }

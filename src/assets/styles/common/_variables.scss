@@ -18,8 +18,9 @@ $WP--link-box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30,140,190,.8);
 $WP--dashicons-size: 20px;
 
 // WordPress Customize variables
-$WPcustomize--section-padding-horizontal: 20px; // @@wptight-cs from .accordion-section-content {} \\
+$WPcustomize--section-padding-horizontal: 12px; // @@wptight-cs from .accordion-section-content {} \\
 $WPcustomize--section-padding-top: 10px; // @@wptight-cs from .accordion-section-content {} \\
+$WPcustomize--control-margin-vertical: 12px;
 $WPcustomize--sidebar-width: 300px;
 $WPcustomize--sidebar-inner-width: $WPcustomize--sidebar-width - ($WPcustomize--section-padding-horizontal * 2);
 $WPcustomize--header-height: 45px;
@@ -84,14 +85,15 @@ $plugin--slider-handle-border-width: 1px;
 
 // Customize Plus Controls
 $control--color-light: #999;
-$control--bg: #fff;
+$control--bg: $WPcustomize--sidebar-bg;
 $control--bg-focus: #ffc;
-$control--bg-hover: #fbfbfb;
-$control--bg-divider: #fffafa;
+$control--bg-hover: lighten($WPcustomize--sidebar-bg, 3%);
+$control--bg-divider: darken($control--bg-hover, 10%); // #fffafa;
 $control--bg-divider-hover: darken($control--bg-divider, 3%);
-$control--spacing-top: 6px;
-$control--spacing-bottom: 10px;
-$control--spacing-horizontal: $WPcustomize--section-padding-horizontal;
+$control--spacing-top: $WPcustomize--control-margin-vertical / 2;
+$control--spacing-bottom: $WPcustomize--control-margin-vertical / 2;
+$control--spacing-left: 20px;
+$control--spacing-right: $WPcustomize--section-padding-horizontal;
 $control--btn-size: $WP--dashicons-size;
 $control--btn-icon-fontsize: 15px;
 $control--btn-color: #aaa;

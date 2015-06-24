@@ -12,31 +12,6 @@
  * feature in those js libraries...). The following fix uses
  * `box-sizing` and float left 100% technique to fix it.
  */
-
-#customize-info,
-#customize-theme-controls > ul {
-  float: left;
-  width: 100%;
-}
-
-.control-section { // .pwpcp-control-section
-  float: left;
-  width: 100%;
-  // box-sizing: border-box;
-  // z-index: 2;
-
-  .accordion-section-title {
-    float: left;
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 2;
-  }
-
- .accordion-section-content {
-    float: left;
-    width: 100%;
-    clear: both;
-    box-sizing: border-box;
-    overflow: visible; // @override
-  }
+.accordion-section-content {
+  overflow: visible; // @@override \\
 }

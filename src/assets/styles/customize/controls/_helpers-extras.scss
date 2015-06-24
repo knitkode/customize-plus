@@ -31,7 +31,7 @@
   // if it inside the control-wrap (when we have dividers...)
   .pwpcp-control-wrap & {
     top: 0;
-    left: -$control--spacing-horizontal - 1;
+    left: -$control--spacing-left - 1;
   }
 
   /**
@@ -52,7 +52,7 @@
   display: none;
   position: absolute;
   top: $control--spacing-top + $control--btn-size + 3px;
-  left: $control--spacing-horizontal;
+  left: $control--spacing-left;
   width: $WPcustomize--sidebar-inner-width;
   margin: 0 0 $control--spacing-bottom;
   padding: 6px;
