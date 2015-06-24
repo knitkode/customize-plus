@@ -13,10 +13,7 @@
     "email": "dev@pluswp.com",
     "url": "http://pluswp.com/"
   },
-  "license": {
-    "type": "Copyright (C) kunderi kuus, Inc - All Rights Reserved",
-    "url": "http://themeforest.net/licenses/standard"
-  },
+  "license": "GPL-2.0+",
   "private": false,
   "repository": {
     "url": "https://github.com/PlusWP/customize-plus"

@@ -60,7 +60,7 @@ var Skeleton = (function () {
         temp.innerHTML = tpl.innerHTML;
         wrapper.appendChild(temp.firstElementChild || temp.firstChild);
       } else {
-        // @@todo API error handling, template doesn't exist
+        // @@todo API error handling, template doesn't exist \\
       }
     },
     /**

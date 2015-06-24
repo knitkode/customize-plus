@@ -1,7 +1,7 @@
 /**
  * WordPress Tight
  *
- * We can put some logic in the privat functions to grab the
+ * We can put some logic in private functions to grab the
  * right things in case WordPress change stuff across versions
  *
  * @type {Object}
@@ -48,7 +48,7 @@ var WpTight = (function () {
      * The suffix appended to the styles ids by WordPress when enqueuing them
      * through `wp_enqueue_style`
      *
-     * @type {String}
+     * @type {string}
      */
     cssSuffix: '-css'
   };

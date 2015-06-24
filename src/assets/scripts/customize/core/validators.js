@@ -41,14 +41,15 @@
       var regexPercent = /^rgba\((\s*(\b(0?\d{1,2}|100)\b%)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;
       return regexInteger.test(value) || regexPercent.test(value);
     }
-  }
+  };
 
+  validator.extend('isColor',
   /**
    * Is Color
    * @param  {string} str The string to validate
-   * @return {boolean}    Wether is valid or not.
+   * @return {boolean}    Whether is valid or not.
    */
-  validator.extend('isColor', function (str) {
+  function (str) {
     var types = _ValidatorColor.types;
     var isValid = false;
 
@@ -62,21 +63,23 @@
     return false;
   });
 
+  validator.extend('isRgbaColor',
   /**
    * Is rgba Color
    * @param  {string} str The string to validate
-   * @return {boolean}    Wether is valid or not.
+   * @return {boolean}    Whether is valid or not.
    */
-  validator.extend('isRgbaColor', function (str) {
+  function (str) {
     return _ValidatorColor['rgba'](str);
   });
 
+  validator.extend('isVar',
   /**
    * Is Var
    * @param  {string} str The string to validate
-   * @return {boolean}    Wether is valid or not.
+   * @return {boolean}    Whether is valid or not.
    */
-  validator.extend('isVar', function (str) {
+  function (str) {
     return validator.matches(str, /@([a-zA-Z-_0-9]+)/g);
   });
 

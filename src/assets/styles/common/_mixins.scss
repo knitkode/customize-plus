@@ -22,6 +22,14 @@
     border-color: $WPcustomize--btn-border-color-hover;
     color: $WPcustomize--btn-color-hover;
   }
+
+  &.active {
+    @include ui-toggle--active();
+  }
+
+  &.expanded {
+    @include ui-toggle--expanded();
+  }
 }
 
 // %ui-toggle--active {

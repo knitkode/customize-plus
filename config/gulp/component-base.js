@@ -75,7 +75,8 @@ gulp.task('_base-styles', ['_base-images'], function() {
     .pipe($.base64({
     // .pipe($.if(CONFIG.isDist, $.base64({
       baseDir: PATHS.src.assets,
-      extensions: ['svg'],
+      extensions: ['svg', 'png'],
+      maxImageSize: 8 * 1024,
       debug: true
     }))
     // })))

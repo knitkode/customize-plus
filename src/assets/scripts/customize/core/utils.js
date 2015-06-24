@@ -13,7 +13,7 @@ var Utils = (function () {
    *
    * @link(http://stackoverflow.com/a/19709846/1938970)
    * @param  {String}  url The URL to test
-   * @return {Boolean}     Wether is absolute or relative
+   * @return {Boolean}     Whether is absolute or relative
    */
   function _isAbsoluteUrl (url) {
     var r = new RegExp('^(?:[a-z]+:)?//', 'i'); // @@todo move to Regexes modules and create tests \\
@@ -154,14 +154,15 @@ var Utils = (function () {
      * @link(https://bgrins.github.io/spectrum/, spectrum API)
      * @static
      * @param  {Object} control Customize Control object
+     * @param  {Object} options Options that override the defaults (optional)
      * @return {Object} The spectrum plugin options
      */
-    getSpectrumOpts: function (control) {
+    getSpectrumOpts: function (control, options) {
       var params = control.params;
       var $container = control.container;
 
-      return {
-        containerClassName: 'pwpcp-expandable',
+      return _.extend({
+        // containerClassName: '',
         preferredFormat: 'hex',
         flat: true,
         showInput: true,
@@ -193,7 +194,7 @@ var Utils = (function () {
             $container.find('.sp-input').val('transparent');
           }
         }
-      };
+      }, options || {});
     }
   };
 })();

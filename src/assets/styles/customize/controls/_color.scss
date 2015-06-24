@@ -25,13 +25,14 @@ $control--color-preview-width: 30px;
 
     // the squared bg for transparent values
     &-bg {
-      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);
+      background-image: url(images/transparency-pattern.png);
     }
 
     // the overlay which get the currently selected color from javascript
     // and display it through `background-color`
     &-overlay {
-      box-shadow: inset 0 1px 0 #fff;
+      // box-shadow: inset 0 1px 0 #fff; // @@doubt ui \\
+      box-shadow: none;
       margin-left: -$control--color-preview-width - 2;
     }
   }

@@ -61,7 +61,10 @@ var ControlColor = ControlBase.extend({
    */
   ready: function () {
     var self = this;
+    /** @type {HTMLelement} */
     var container = this._container;
+    /** @type {HTMLelement} */
+    var btnCustom = container.getElementsByClassName('pwpcpui-toggle')[0];
 
     /**
      * Set elements as control properties
@@ -71,10 +74,8 @@ var ControlColor = ControlBase.extend({
     this.$picker = $(container.getElementsByClassName('pwpcpcolor-input')[0]);
     /** @type {HTMLelement} */
     this.preview = container.getElementsByClassName('pwpcpcolor-current-overlay')[0];
-
+    /** @type {HTMLelement} */
     this.expander = container.getElementsByClassName('pwpcp-expander')[0];
-
-    var btnCustom = container.getElementsByClassName('pwpcpui-toggle')[0];
 
     self._applyOnUIpreview(self.setting());
 
@@ -86,18 +87,20 @@ var ControlColor = ControlBase.extend({
 
       // initialize only once
       if (!pickerIsInitialized) {
-        self.$picker.spectrum(Utils.getSpectrumOpts(self));
+        self.$picker.spectrum(Utils.getSpectrumOpts(self, {
+          containerClassName: 'pwpcp-expandable'
+        }));
         pickerIsInitialized = true;
       }
 
       // and toggle
       if (isOpen) {
         self.$picker.spectrum('show');
-        // self.expander.classList.add('pwpcp-expanded');
-        container.setAttribute('data-pwpcp-expanded', 'custom');
+        this.classList.add('expanded');
+        self.expander.classList.add('pwpcp-expanded');
       } else {
-        // self.expander.classList.remove('pwpcp-expanded');
-        container.setAttribute('data-pwpcp-expanded', '');
+        self.expander.classList.remove('pwpcp-expanded');
+        this.classList.remove('expanded');
         self.$picker.spectrum('hide');
       }
       return false;
