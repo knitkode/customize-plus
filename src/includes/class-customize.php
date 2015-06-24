@@ -52,7 +52,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 *
 		 * @var string
 		 */
-		private static $css_icons_shared = 'position:relative;top:4px;left:-2px;opacity:.5;font-size:20px;font-weight:normal;font-family:"dashicons";';
+		private static $css_icons_shared = 'position:relative;top:4px;left:-2px;line-height:0;opacity:.5;font-size:20px;font-weight:normal;font-family:"dashicons";';
 
 		/**
 		 * CSS for icons displayment
