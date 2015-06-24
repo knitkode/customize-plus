@@ -112,7 +112,7 @@ var Utils = (function () {
         controlToFocus.container.addClass('pwpcp-control-focused');
         setTimeout(function () {
           controlToFocus.container.removeClass('pwpcp-control-focused');
-        }, 1000);
+        }, 2000);
       };
 
       // be sure there is the control and update dynamic color message text
