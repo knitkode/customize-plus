@@ -187,12 +187,12 @@ var ControlBase = wpApi.Control.extend({
     // and empty the DOM from the container in a timeout so
     // the slide out animation of the section doesn't freeze
     var self = this;
-    setTimeout(function () {
+    setTimeout(function () { // @@todo it breaks with search? \\
       self.empty(container);
+    self.rendered = false;
     }, 300);
 
     // flag control that it's not rendered
-    this.rendered = false;
   },
   /**
    * Render or 'inflate' the template of the control

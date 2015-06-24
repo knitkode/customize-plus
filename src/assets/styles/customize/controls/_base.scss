@@ -73,6 +73,13 @@
 }
 
 /**
+ * Add a subtle background to section description areas
+ */
+.customize-section-description-container {
+  background: linear-gradient(lighten($control--bg, 10%) 45%, rgba(0,0,0,0) 100%);
+}
+
+/**
  * Remove highlighting behavior on theme switcher control
  */
 .customize-control-theme,
