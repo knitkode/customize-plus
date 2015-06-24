@@ -9,8 +9,7 @@
  * but this prevent us to use popovers, dropdowns or typeahead
  * elements dynamically appended to the controls without having
  * to attach them to the body (which is not a very common
- * feature in those js libraries...). The following fix uses
- * `box-sizing` and float left 100% technique to fix it.
+ * feature in those js libraries...).
  */
 .accordion-section-content {
   overflow: visible; // @@override \\
