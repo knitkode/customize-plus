@@ -181,10 +181,11 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 */
 		public static function get_js_l10n() {
 			$required = array(
-				'back' => __( 'Back', 'pkgTextdomain' ),
-				'tools' => __( 'Tools', 'pkgTextdomain' ),
 				'introTitle' => __( 'Customize Plus', 'pkgTextdomain' ),
 				'introText' => __( 'Welcome to Customize Plus', 'pkgTextdomain' ),
+				'back' => __( 'Back', 'pkgTextdomain' ),
+				'pluginName' => __( 'Customize Plus', 'pkgTextdomain' ),
+				'tools' => __( 'Tools', 'pkgTextdomain' ),
 				'customColor' => __( 'Custom', 'pkgTextdomain' ),
 				'togglePaletteMoreText' => __( 'Show color picker', 'pkgTextdomain' ),
 				'togglePaletteLessText' => __( 'Hide color picker', 'pkgTextdomain' ),

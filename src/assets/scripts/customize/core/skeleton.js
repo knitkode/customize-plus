@@ -13,12 +13,6 @@ var Skeleton = (function () {
    */
   function _init () {
     _wpSidebar = WpTight.el.sidebar[0];
-
-    WpTight.el.header.append(
-      '<span id="pwpcp-back" class="pwpcp-toggle">' +
-        '<span class="screen-reader-text">"' + api['l10n']['back'] + '"</span>' +
-      '</span>'
-    );
   }
 
   // @public API
@@ -27,7 +21,6 @@ var Skeleton = (function () {
       _init();
       // set elements as properties
       this.$loader = $('#pwpcp-loader');
-      this.back = document.getElementById('pwpcp-back');
       this.title = document.getElementById('pwpcp-title');
       this.text = document.getElementById('pwpcp-text');
     },

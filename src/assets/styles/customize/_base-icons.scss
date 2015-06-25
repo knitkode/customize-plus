@@ -59,3 +59,10 @@ $icons-opacity: .4;
 .accordion-section-title .dashicons {
   opacity: $icons-opacity;
 }
+
+/**
+ * Fix height issue on native WordPress widget panel icon
+ */
+.panel-title:before {
+  line-height: 0;
+}

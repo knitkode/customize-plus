@@ -36,9 +36,7 @@ var WpTight = (function () {
       /** @type {jQuery} */
       el.sidebar = $('.wp-full-overlay-sidebar-content');
       /** @type {jQuery} */
-      el.infoTitle = $('#customize-info .accordion-section-title');
-      /** @type {jQuery} */
-      el.infoContent = $('#customize-info .accordion-section-content');
+      el.info = $('#customize-info');
       /** @type {jQuery} */
       el.customizeControls = $('#customize-theme-controls').find('ul').first();
       // /** @type {jQuery} */

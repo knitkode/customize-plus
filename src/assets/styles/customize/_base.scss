@@ -119,12 +119,14 @@
   left: 0;
   width: $toggle--width; // custom code
   height: $WPcustomize--header-height;
-  padding-right: 2px;
-  background: #eee;
+  padding: 0;
+  border: 0;
   border-right: 1px solid #ddd;
+  background: #eee;
   color: #444;
   cursor: pointer;
   transition: color .1s ease-in-out,background .1s ease-in-out;
+  user-select: none;
 
    &:focus,
    &:hover {
@@ -159,46 +161,6 @@
 %pwpcp-toggle-active {
   box-shadow: inset 0 0 0 30px rgba(0,0,0,.075);
 }
-
-
-/**
- * Back Toggle
- *
- * Used as navigation button for extra stuff like "search" and "tools" menu.
- * It will just cover the WordPress button in the top-left corner behaving
- * in the same way, for example closing the search or the tools menu.
- *
- * Almost exactly copied from WordPress `.control-panel-back` // @@wptight-css \\
- */
-#pwpcp-back {
-  display: none; // custom code
-  position: fixed;
-  top: 0;
-  z-index: 99;
-  left: 0; // custom code
-  width: $WPcustomize--header-height;
-  height: $WPcustomize--header-height;
-  padding-right: 2px;
-  background: #eee;
-  border-right: 1px solid #ddd;
-  cursor: pointer;
-
-  &:before {
-    font: 400 20px/1 dashicons;
-    content: "\f341";
-    position: relative;
-    top: 7px;
-    left: 13px;
-  }
-
-  // custom close, display behavior
-  .pwpcp-search-active &,
-  .pwpcp-tools-active & {
-    display: block;
-    left: 0;
-  }
-}
-
 
 /**
  * Button Icon

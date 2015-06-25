@@ -49,7 +49,7 @@ class PWPcp_Customize_Section_Base extends WP_Customize_Section {
 				<?php esc_html_e( $this->title ); ?>
 				<span class="screen-reader-text"><?php _e( 'Press return or enter to expand' ); ?></span>
 			</h3>
-			<ul class="accordion-section-content">
+			<ul class="accordion-content">
 				<?php if ( ! empty( $this->description ) ) : ?>
 					<li class="customize-section-description-container">
 						<p class="description customize-section-description"><?php echo esc_attr( $this->description ); ?></p>
