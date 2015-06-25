@@ -345,13 +345,22 @@ var ControlBase = wpApi.Control.extend({
      */
     var _onExtrasOpen = function () {
       Skeleton.hasScrollbar(); // on open check if we have a scrollbar
-      var currentValue = setting.get();
-      if (currentValue === defaultValue) {
+
+      // we need this to fix situations like: `'1' === 1` returning false,
+      // but we can't use a soft comparison here, we'll manage the other issues
+      // in the specific controls (like in the 'toggle' one)
+      var _maybeNormalizeValue = function (value) {
+        return (value === 0 || value === 1) ? value.toString() : value;
+      };
+
+      var currentValue = _maybeNormalizeValue( setting.get() );
+
+      if (currentValue === _maybeNormalizeValue( defaultValue )) {
         _disableBtnLast();
       } else {
         _enableBtnLast();
       }
-      if (currentValue === factoryValue) {
+      if (currentValue === _maybeNormalizeValue( factoryValue )) {
         _disableBtnFactory();
       } else {
         _enableBtnFactory();

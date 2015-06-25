@@ -11,6 +11,25 @@
  */
 var ControlToggle = ControlBase.extend({
   /**
+   * Validate
+   *
+   * @param  {string|array} newValue Value of the checkbox or sent through js API
+   * @return {number} 0 or 1 as integer
+   */
+  _validate: function (newValue) {
+    return Utils.toBoolean(newValue) ? 1 : 0;
+  },
+  /**
+   * On initialization
+   *
+   * add custom validation function overriding the empty function from WP API.
+   *
+   * @override
+   */
+  onInit: function () {
+    this.setting.validate = this._validate.bind(this);
+  },
+  /**
    * On ready
    *
    */
@@ -38,7 +57,9 @@ var ControlToggle = ControlBase.extend({
         params.value = val;
         var value = toBoolean(val);
         var inputStatus = toBoolean(input.checked);
-        if (inputStatus !== value) {
+        // important here is to do a soft comparison so that
+        // '1' is equal to 1 and '0' to 0
+        if (inputStatus != value) {
           input.checked = value;
         }
       });

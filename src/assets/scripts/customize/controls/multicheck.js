@@ -12,7 +12,8 @@ var ControlMulticheck = ControlBase.extend({
   /**
    * Validate
    *
-   * @param  {string|array} newValue Value of the checkbox clicked
+   * @param  {string|array} rawNewValue Value of the checkbox clicked or sent
+   *                                    through js API
    * @return {string} A JSONified Array
    */
   _validate: function (rawNewValue) {
