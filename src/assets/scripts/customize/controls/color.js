@@ -66,10 +66,6 @@ var ControlColor = ControlBase.extend({
     /** @type {HTMLelement} */
     var btnCustom = container.getElementsByClassName('pwpcpui-toggle')[0];
 
-    /**
-     * Set elements as control properties
-     *
-     */
     /** @type {jQuery} */
     this.$picker = $(container.getElementsByClassName('pwpcpcolor-input')[0]);
     /** @type {HTMLelement} */
