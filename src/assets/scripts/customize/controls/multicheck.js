@@ -12,29 +12,67 @@ var ControlMulticheck = ControlBase.extend({
   /**
    * Validate
    *
-   * @param  {string} newValue Value of the checkbox clicked
+   * @param  {string|array} newValue Value of the checkbox clicked
    * @return {string} A JSONified Array
    */
-  _validate: function (newValue) {
+  _validate: function (rawNewValue) {
+    var newValue;
+    try {
+      newValue = JSON.parse(rawNewValue);
+    } catch (e) {
+      newValue = rawNewValue;
+    }
     var params = this.params;
     var lastValue = params.value;
-    var index = lastValue.indexOf(newValue);
+    /**
+     * Validate string
+     * @return {string}
+     */
+    var _validateString = function () {
+      var index = lastValue.indexOf(newValue);
 
-    // if the checkbox ticked was in the last value array remove it
-    if (index !== -1) {
-      lastValue.splice(index, 1);
-    // otherwise push it
-    } else {
-      // but only if it is an allowed choice
-      // otherwise just return the last value;
-      if (params.choices[newValue]) {
-        lastValue.push(newValue);
+      // if the checkbox ticked was in the last value array remove it
+      if (index !== -1) {
+        lastValue.splice(index, 1);
+      // otherwise push it
+      } else {
+        // only if it is an allowed choice...
+        if (params.choices[newValue]) {
+          lastValue.push(newValue);
+        }
       }
+      //  otherwise just return the last value
+      params.value = lastValue;
+      return JSON.stringify(lastValue); // @@doubt not sure if it is a good idea
+      // to stringify the setting and use params.value instead of
+      // this.setting.get() where here above we get the last value \\
+    };
+    /**
+     * Validate array
+     * @return {string}
+     */
+    var _validateArray = function () {
+      var validArray = [];
+      var validArrayAsString;
+      for (var i = 0; i < newValue.length; i++) {
+        // only if it is an allowed choice...
+        if (params.choices[ newValue[i] ]) {
+          validArray.push( newValue[i] );
+        }
+      }
+      validArrayAsString = JSON.stringify(validArray);
+      params.value = validArrayAsString;
+      return validArrayAsString;
+    };
+    // check type and do appropriate validation
+    if (_.isString(newValue)) {
+      return _validateString();
+    } else if(_.isArray(newValue)){
+      return _validateArray();
+    } else {
+      // @@todo maybe throws exception? \\
+      return lastValue;
     }
-    this.params.value = lastValue;
-    return JSON.stringify(lastValue); // @@doubt not sure if it is a good idea
-    // to stringify the setting and use params.value instead of
-    // this.setting.get() where here above we get the last value \\
   },
   /**
    * On initialization
