@@ -1,4 +1,11 @@
 /**
+ * Give always some spacing on the bottom of the last control in the section
+ */
+#customize-theme-controls .control-section .accordion-section-content > li.customize-control:last-child {
+  margin-bottom: $WPcustomize--control-margin-vertical * 2;
+}
+
+/**
  * Move the `padding` from the `<ul>` to the controls `<li>`s
  * so they are fullwidth in the sidebar, allowing a nice highlighting
  * in various situation like `:hover` or `.focus()`
@@ -45,8 +52,13 @@
    */
   // background: $control--bg;
   &-focused {
-    transition: background 2s ease;
-    background: $control--bg-focus;
+    // transition: background 2s ease;
+    .no-cssanimations {
+      background: $control--bg-focus;
+    }
+    // transform: scale(1.2);
+    transform-origin : left center;
+    animation: focus-control 1.8s ease;
   }
 
   // /**
@@ -70,6 +82,12 @@
   // .pwpcp-search-active #customize-theme-controls &:hover {
   //   opacity: 1;
   // }
+}
+
+@keyframes focus-control {
+  0% { box-shadow: 0 0 0 rgba(0,0,0,0); background: $control--bg; }
+  50% { box-shadow: 0 0 80px rgba(0,0,0,.38); background: $control--bg-focus; margin: 24px 0; }
+  100% { box-shadow: 0 0 0 rgba(0,0,0,0); background: $control--bg; }
 }
 
 /**

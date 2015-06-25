@@ -61,6 +61,7 @@
 }
 
 
+
 /**
  * Hide WordPress default loader
  *
@@ -73,6 +74,11 @@
 
   &.iframe-ready { // @@wptight-selector \\
     display: block;
+    // set default background color of webpages, this is especially
+    // important when with the screenpreview component the iframe is
+    // overlapped to the dark grey devices, hence, when the previewed
+    // website has a transparent background the dark grey get through.
+    background-color: white;
   }
 }
 

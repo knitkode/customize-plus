@@ -107,14 +107,15 @@ var ControlColor = ControlBase.extend({
     };
   },
   /**
-   * [_applyOnUIpreview description]
-   *
-   * @param  {[type]} newColor [description]
-   * @return {[type]}          [description]
+   * Apply on UI preview (the color box on the left hand side)
+   * @param  {string} newColor
    */
   _applyOnUIpreview: function (newColor) {
     this.preview.style.background = newColor;
   },
+  /**
+   * Apply on UI control (the spectrum color picker)
+   */
   _applyOnUIcontrol: function (newColor) {
     this.$picker.spectrum('set', newColor);
   },
