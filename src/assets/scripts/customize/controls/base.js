@@ -190,7 +190,7 @@ var ControlBase = wpApi.Control.extend({
     setTimeout(function () { // @@todo it breaks with search? \\
       self.empty(container);
     self.rendered = false;
-    }, 300);
+    }, 100);
 
     // flag control that it's not rendered
   },
