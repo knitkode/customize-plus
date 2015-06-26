@@ -19,8 +19,8 @@ var ControlColor = ControlBase.extend({
   _validate: function (value) {
     if (
       (!this.params.disallowTransparent && value === 'transparent') ||
-      validator.isHexColor( value ) ||
-      (this.params.allowAlpha && validator.isRgbaColor( value ))
+      validator.isHexColor(value) ||
+      (this.params.allowAlpha && validator.isRgbaColor(value))
     ) {
       return value;
     }
@@ -66,37 +66,38 @@ var ControlColor = ControlBase.extend({
     /** @type {HTMLelement} */
     var btnCustom = container.getElementsByClassName('pwpcpui-toggle')[0];
 
-    /** @type {jQuery} */
-    this.$picker = $(container.getElementsByClassName('pwpcpcolor-input')[0]);
     /** @type {HTMLelement} */
     this.preview = container.getElementsByClassName('pwpcpcolor-current-overlay')[0];
-    /** @type {HTMLelement} */
-    this.expander = container.getElementsByClassName('pwpcp-expander')[0];
+    /** @type {jQuery} */
+    this.$picker = $(container.getElementsByClassName('pwpcpcolor-input')[0]);
+    /** @type {jQuery} */
+    this.$expander = $(container.getElementsByClassName('pwpcp-expander')[0]).hide();
 
     self._applyOnUIpreview(self.setting());
 
 
     var isOpen = false;
     var pickerIsInitialized = false;
-    btnCustom.onclick = function() {
-      isOpen = !isOpen;
-
+    var _maybeInitializeSpectrum = function () {
       // initialize only once
       if (!pickerIsInitialized) {
-        self.$picker.spectrum(Utils.getSpectrumOpts(self, {
-          containerClassName: 'pwpcp-expandable'
-        }));
+        self.$picker.spectrum(Utils.getSpectrumOpts(self));
         pickerIsInitialized = true;
       }
+    }
+
+    btnCustom.onmouseover = _maybeInitializeSpectrum;
+
+    btnCustom.onclick = function() {
+      isOpen = !isOpen;
+      _maybeInitializeSpectrum();
 
       // and toggle
       if (isOpen) {
         self.$picker.spectrum('show');
-        this.classList.add('expanded');
-        self.expander.classList.add('pwpcp-expanded');
+        self.$expander.slideDown();
       } else {
-        self.expander.classList.remove('pwpcp-expanded');
-        this.classList.remove('expanded');
+        self.$expander.slideUp();
         self.$picker.spectrum('hide');
       }
       return false;

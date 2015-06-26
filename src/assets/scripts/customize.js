@@ -12,6 +12,9 @@
     var t = performance.now();
   }
 
+  // Set default speed of jQuery animations
+  $.fx.speeds._default = 180;
+
   /**
    * Reusable variables as globals in each component
    *
