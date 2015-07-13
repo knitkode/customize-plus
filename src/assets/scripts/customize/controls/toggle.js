@@ -11,6 +11,21 @@
  */
 var ControlToggle = ControlBase.extend({
   /**
+   * Normalize setting for soft comparison
+   *
+   * We need this to fix situations like: `'1' === 1` returning false,
+   * due to the fact that we can't use a real soft comparison (`==`).
+   *
+   * @override
+   * @static
+   * @param  {?} value Could be the original, the current, or the initial
+   *                   session value
+   * @return {string} The 'normalized' value passed as an argument.
+   */
+  getForSoftCompare: function (value) {
+    return (value === 0 || value === 1) ? value.toString() : value;
+  },
+  /**
    * Validate
    *
    * @param  {string|array} newValue Value of the checkbox or sent through js API

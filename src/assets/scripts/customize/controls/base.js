@@ -266,11 +266,28 @@ var ControlBase = wpApi.Control.extend({
     }
   },
   /**
+   * Normalize setting for soft comparison
+   *
+   * @abstract
+   * @static
+   * @param  {?} value Could be the original, the current, or the initial
+   *                   session value
+   * @return {string} The 'normalized' value passed as an argument.
+   */
+  getForSoftCompare: function (value) {
+    return value;
+  },
+  /**
    * Manage the `extras` dropdown menu
    * of the control.
    *
    */
   extras: function () {
+    /**
+     * Reference to abstract method different in various control's subclasses
+     * @type {function(*)}
+     */
+    var _maybeNormalizeValue = this.getForSoftCompare;
     // constants
     var CLASS_RESET_FACTORY = 'pwpcp-extras-reset';
     var CLASS_RESET_LAST = ' pwpcp-extras-reset_last';
@@ -345,13 +362,6 @@ var ControlBase = wpApi.Control.extend({
      */
     var _onExtrasOpen = function () {
       Skeleton.hasScrollbar(); // on open check if we have a scrollbar
-
-      // we need this to fix situations like: `'1' === 1` returning false,
-      // but we can't use a soft comparison here, we'll manage the other issues
-      // in the specific controls (like in the 'toggle' one)
-      var _maybeNormalizeValue = function (value) {
-        return (value === 0 || value === 1) ? value.toString() : value;
-      };
 
       var currentValue = _maybeNormalizeValue( setting.get() );
 

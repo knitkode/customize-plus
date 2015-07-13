@@ -1,4 +1,4 @@
-/* global ControlBase, Utils */
+/* global ControlBase, Utils, tinycolor */
 
 /**
  * Control Color class
@@ -10,6 +10,28 @@
  * @requires Utils
  */
 var ControlColor = ControlBase.extend({
+  /**
+   * Normalize setting for soft comparison
+   *
+   * Use tinycolor (included in spectrum.js) to always convert
+   * colors to their rgb value, so to have the same output result when
+   * the input is `red` or `#f00` or `#ff0000` or `rgba(255, 0, 0, 1)`.
+   *
+   * @override
+   * @use tinycolor.toRgbString
+   * @static
+   * @param  {?} value Could be the original, the current, or the initial
+   *                   session value
+   * @return {string} The 'normalized' value passed as an argument.
+   */
+  getForSoftCompare: function (value) {
+    try {
+      var anyColor = tinycolor(value);
+      return anyColor.toRgbString();
+    } catch(e) {
+      return value;
+    }
+  },
   /**
    * Validate
    *
