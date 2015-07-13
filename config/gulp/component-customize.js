@@ -111,10 +111,6 @@ gulp.task('_customize-scripts-admin', function() {
     .pipe(gulp.dest(PATHS.build.scripts))
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', '')))
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
-    // .pipe($.if(CONFIG.isDist, $.closureCompiler({
-    //   compilerPath: 'src/bower_components/closure-compiler/compiler.jar',
-    //   fileName: 'customize.js'
-    // })))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
