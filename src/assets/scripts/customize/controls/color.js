@@ -31,7 +31,7 @@ var ControlColor = ControlBase.extend({
    *                   session value
    * @return {string} The 'normalized' value passed as an argument.
    */
-  getForSoftCompare: function (value) {
+  _getForSoftCompare: function (value) {
     try {
       var anyColor = tinycolor(value);
       return anyColor.toRgbString();
@@ -111,7 +111,7 @@ var ControlColor = ControlBase.extend({
       // initialize only once
       if (!pickerIsInitialized) {
         console.log('Control.Color -> init spectrum');
-        self.$picker.spectrum(Utils.getSpectrumOpts(self));
+        self.$picker.spectrum(Utils._getSpectrumOpts(self));
         pickerIsInitialized = true;
       }
     }
@@ -124,12 +124,9 @@ var ControlColor = ControlBase.extend({
 
       // and toggle
       if (isOpen) {
-        self.$picker.spectrum('show');
         self.$expander.slideDown();
       } else {
-        self.$expander.slideUp(function () {
-          self.$picker.spectrum('hide');
-        });
+        self.$expander.slideUp();
       }
       return false;
     };
