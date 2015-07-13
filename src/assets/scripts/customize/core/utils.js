@@ -9,7 +9,7 @@ var Utils = (function () {
   var _DOCS_BASE_URL = api['constants']['DOCS_BASE_URL'];
 
   /**
-   * Is an absolute URL?
+   * Is it an absolute URL?
    *
    * @link(http://stackoverflow.com/a/19709846/1938970)
    * @param  {String}  url The URL to test
@@ -132,7 +132,7 @@ var Utils = (function () {
      * @param  {function} escape Selectize escape function.
      * @return {string}          The option template.
      */
-    selectizeRenderSize: function (item, escape) {
+    _selectizeRenderSize: function (item, escape) {
       return '<div class="pwpcpsize-selectOption"><i>' + escape(item.valueCSS) + '</i> ' +
         escape(item.label) + '</div>';
     },
@@ -144,7 +144,7 @@ var Utils = (function () {
      * @param  {function} escape Selectize escape function.
      * @return {string}          The option template.
      */
-    selectizeRenderColor: function (item, escape) {
+    _selectizeRenderColor: function (item, escape) {
       return '<div class="pwpcpcolor-selectOption" style="border-color:' + escape(item.valueCSS) + '">' +
         escape(item.label) + '</div>';
     },
@@ -157,7 +157,7 @@ var Utils = (function () {
      * @param  {Object} options Options that override the defaults (optional)
      * @return {Object} The spectrum plugin options
      */
-    getSpectrumOpts: function (control, options) {
+    _getSpectrumOpts: function (control, options) {
       var params = control.params;
       var $container = control.container;
       return _.extend({

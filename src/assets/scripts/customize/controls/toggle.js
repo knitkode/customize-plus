@@ -22,7 +22,7 @@ var ControlToggle = ControlBase.extend({
    *                   session value
    * @return {string} The 'normalized' value passed as an argument.
    */
-  getForSoftCompare: function (value) {
+  _getForSoftCompare: function (value) {
     return (value === 0 || value === 1) ? value.toString() : value;
   },
   /**

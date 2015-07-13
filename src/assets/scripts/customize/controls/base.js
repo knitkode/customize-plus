@@ -270,11 +270,12 @@ var ControlBase = wpApi.Control.extend({
    *
    * @abstract
    * @static
+   * @private
    * @param  {?} value Could be the original, the current, or the initial
    *                   session value
    * @return {string} The 'normalized' value passed as an argument.
    */
-  getForSoftCompare: function (value) {
+  _getForSoftCompare: function (value) {
     return value;
   },
   /**
@@ -287,7 +288,7 @@ var ControlBase = wpApi.Control.extend({
      * Reference to abstract method different in various control's subclasses
      * @type {function(*)}
      */
-    var _maybeNormalizeValue = this.getForSoftCompare;
+    var _maybeNormalizeValue = this._getForSoftCompare;
     // constants
     var CLASS_RESET_FACTORY = 'pwpcp-extras-reset';
     var CLASS_RESET_LAST = ' pwpcp-extras-reset_last';
