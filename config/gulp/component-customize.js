@@ -89,18 +89,27 @@ gulp.task('_customize-modernizr', function() {
  *
  * @private
  */
-gulp.task('_customize-scripts-admin', function() {
+gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-unminified', '_customize-scripts-admin-minified']);
+
+var adminScriptsLibraries = [
+  PATHS.src.bower + 'polyfill-classList/classList.js', // @@ie9 @@ie8 \\
+  PATHS.src.scripts + 'vendor-custom/modernizr-custom.js', // include modernizr custom build
+  PATHS.src.bower + 'validator-js/validator.js',
+  PATHS.src.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme...
+  PATHS.src.bower + 'jquery-cookie/jquery.cookie.js',
+  PATHS.src.bower + 'webui-popover/dist/jquery.webui-popover.js',
+  PATHS.src.bower + 'selectize/dist/js/standalone/selectize.js',
+  PATHS.src.bower + 'spectrum/spectrum.js'
+];
+
+/**
+ * Scripts | Admin custom scripts unminified (outside iframe)
+ *
+ * @private
+ */
+gulp.task('_customize-scripts-admin-unminified', function() {
   var stream = streamqueue({ objectMode: true });
-  stream.queue(gulp.src([
-    PATHS.src.bower + 'polyfill-classList/classList.js', // @@ie9 @@ie8 \\
-    PATHS.src.scripts + 'vendor-custom/modernizr-custom.js', // include modernizr custom build
-    PATHS.src.bower + 'validator-js/validator.js',
-    PATHS.src.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme...
-    PATHS.src.bower + 'jquery-cookie/jquery.cookie.js',
-    PATHS.src.bower + 'webui-popover/dist/jquery.webui-popover.js',
-    PATHS.src.bower + 'selectize/dist/js/standalone/selectize.js',
-    PATHS.src.bower + 'spectrum/spectrum.js'
-  ]));
+  stream.queue(gulp.src(adminScriptsLibraries));
   stream.queue(gulp.src(PATHS.src.scripts + 'customize.js')
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
     .pipe($.include())
@@ -108,10 +117,26 @@ gulp.task('_customize-scripts-admin', function() {
   );
   return stream.done()
     .pipe($.concat('customize.js', PLUGINS.concat))
-    .pipe(gulp.dest(PATHS.build.scripts))
+    .pipe(gulp.dest(PATHS.build.scripts));
+});
+
+/**
+ * Scripts | Admin custom scripts minified (outside iframe)
+ *
+ * @private
+ */
+gulp.task('_customize-scripts-admin-minified', function() {
+  var stream = streamqueue({ objectMode: true });
+  stream.queue(gulp.src(adminScriptsLibraries)
+    .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify))));
+  stream.queue(gulp.src(PATHS.src.scripts + 'customize.js')
+    .pipe($.include())
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', '')))
-    .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
-    .pipe($.rename({ suffix: '.min' }))
+    .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
+    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+  );
+  return stream.done()
+    .pipe($.concat('customize.min.js', PLUGINS.concat))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
 

@@ -20,15 +20,21 @@ module.exports = {
     'customTests' : []
   },
   uglify: {
-    preserveComments: 'some',
-    toplevel: true,
-    mangle: true,
+    preserveComments: 'some', // --comments
+    // toplevel: true,
+    mangle: true, // --mangle
     compress: {
-      drop_console: true,
+      drop_console: true, // --compress drop_console=true
       global_defs: {
-        DEBUG: false
+        DEBUG: false // --define DEBUG=false
       }
     }
+  },
+  uglifyCustomScripts: { // @@todo see readme... \\
+    mangleProps: true, // --mangle-props
+    mangleRegex: '/^_/', // --mangle-regex='/^_/'
+    reserveDomprops: true // --reserve-domprops
+    // --name-cache .tmp/uglify-cache.json
   },
   concat: {
     newLine: '\n\n'

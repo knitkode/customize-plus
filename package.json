@@ -82,7 +82,6 @@
     "gulp-swig": "~0.7.4",
     "path": "~0.11.14",
     "validator": "~3.28.0",
-    "gulp-closure-compiler": "~0.2.16",
     "gulp-watch": "~4.1.1",
     "gulp-include": "~1.1.1",
     "gulp-sequence": "~0.3.2"
