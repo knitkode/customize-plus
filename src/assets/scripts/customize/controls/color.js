@@ -1,6 +1,13 @@
 /* global ControlBase, Utils, tinycolor */
 
 /**
+ * Load spectrum only on demand
+ * @link(https://github.com/bgrins/spectrum/issues/112)
+ * @type {Boolean}
+ */
+$.fn.spectrum.load = false;
+
+/**
  * Control Color class
  *
  * @constructor
@@ -103,6 +110,7 @@ var ControlColor = ControlBase.extend({
     var _maybeInitializeSpectrum = function () {
       // initialize only once
       if (!pickerIsInitialized) {
+        console.log('Control.Color -> init spectrum');
         self.$picker.spectrum(Utils.getSpectrumOpts(self));
         pickerIsInitialized = true;
       }
@@ -119,8 +127,9 @@ var ControlColor = ControlBase.extend({
         self.$picker.spectrum('show');
         self.$expander.slideDown();
       } else {
-        self.$expander.slideUp();
-        self.$picker.spectrum('hide');
+        self.$expander.slideUp(function () {
+          self.$picker.spectrum('hide');
+        });
       }
       return false;
     };

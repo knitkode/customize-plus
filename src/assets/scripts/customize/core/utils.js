@@ -160,7 +160,6 @@ var Utils = (function () {
     getSpectrumOpts: function (control, options) {
       var params = control.params;
       var $container = control.container;
-
       return _.extend({
         // containerClassName: '',
         preferredFormat: 'hex',
