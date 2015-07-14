@@ -2,7 +2,7 @@
   "name": "customize-plus",
   "private": true,
   "dependencies": {
-    "webui-popover": "git@github.com:PlusWP/webui-popover.git#a8633354ec9801c9baf81b4a08b06683fd6c2214",
+    "webui-popover": "~1.1.5",
     "jquery-ui-slider-pips": "~1.7.2",
     "jquery-cookie": "~1.4.1",
     "es5-shim": "~4.1.0",
