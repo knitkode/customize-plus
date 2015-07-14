@@ -153,12 +153,12 @@ var ControlBase = wpApi.Control.extend({
   empty: function (element) {
     /* jshint funcscope: true */
     if (DEBUG) var t = performance.now();
-    while (element.lastChild) {
-      element.removeChild(element.lastChild);
-    }
+    // while (element.lastChild) {
+    //   element.removeChild(element.lastChild);
+    // }
     // @@doubt, somethimes innerHTML seems to be faster, maybe when
     // there are many DOM elements to remove, investigate here \\
-    // element.innerHTML = '';
+    element.innerHTML = '';
     console.log('deflate (empty()) of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.');
   },
   /**
@@ -186,11 +186,10 @@ var ControlBase = wpApi.Control.extend({
 
     // and empty the DOM from the container in a timeout so
     // the slide out animation of the section doesn't freeze
-    var self = this;
     setTimeout(function () { // @@todo it breaks with search? \\
-      self.empty(container);
-    self.rendered = false;
-    }, 100);
+      this.empty(container);
+      this.rendered = false;
+    }.bind(this), 100);
 
     // flag control that it's not rendered
   },

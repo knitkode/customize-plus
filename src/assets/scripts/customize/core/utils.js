@@ -184,11 +184,11 @@ var Utils = (function () {
         },
         move: function (tinycolor) {
           var color = tinycolor ? tinycolor.toString() : 'transparent';
-          control._apply(color);
+          control._apply(color, 'ui');
         },
         change: function (tinycolor) {
           var color = tinycolor ? tinycolor.toString() : 'transparent';
-          control._apply(color);
+          control._apply(color, 'ui');
           if (!tinycolor) {
             $container.find('.sp-input').val('transparent');
           }
