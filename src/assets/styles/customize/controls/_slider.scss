@@ -54,8 +54,10 @@ input[type=number].pwpcp-slider-number {
 .pwpcp-unit {
   display: inline-block;
   padding: 3px 5px;
-  border: 1px solid #eee;
   margin-right: -1px;
+  border: 1px solid darken($control--bg, 7.5%);
+  background: $WPcustomize--btn-bg;
+  box-shadow: $WPcustomize--btn-box-shadow;
   font-size: 12px;
   cursor: pointer;
 
@@ -64,16 +66,17 @@ input[type=number].pwpcp-slider-number {
   }
 
   &:hover {
-    background: #eee;
-    border-color: #444;
+    background: lighten($control--bg, 5%);
+    border-color: darken($control--bg, 15%);
   }
 
   &.pwpcp-current {
     float: left;
-    cursor: default;
-    background: transparent;
-    border-color: transparent;
-    font-weight: bold;
     padding-left: 2px;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    font-weight: bold;
+    cursor: default;
   }
 }

@@ -80,12 +80,8 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 */
 	protected function js_tpl() {
-		?>
-		<label>
-			<?php $this->js_tpl_header(); ?>
-			<?php $this->js_tpl_slider(); ?>
-		</label>
-		<?php
+		$this->js_tpl_header();
+		$this->js_tpl_slider();
 	}
 }
 
