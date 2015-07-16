@@ -43,7 +43,7 @@ var ControlSlider = ControlBase.extend({
     var _isValidUnit = function (value) {
       return params.units.indexOf(value) !== -1;
     };
-    var matches = Regexes.sizeWithUnit.exec(newValue);
+    var matches = Regexes._sizeWithUnit.exec(newValue);
 
     // if it has found a number
     if (matches && _isValidNumber(parseInt(matches[1], 10))) { // @@todo allow float ? \\
@@ -117,20 +117,21 @@ var ControlSlider = ControlBase.extend({
   ready: function (isForTheFirstTimeReady) {
     var setting = this.setting;
     var params = this.params;
-    var inputNumber = this._container.getElementsByClassName('pwpcp-slider-number')[0];
+    var container = this._container;
+    var inputNumber = container.getElementsByClassName('pwpcp-slider-number')[0];
     var $inputUnits = this.container.find('.pwpcp-unit');
-    var $inputSlider = this.container.find('.pwpcp-slider');
+    var $inputSlider = $(container.getElementsByClassName('pwpcp-slider')[0]);
 
     /**
      * Set elements as control properties
      *
      */
     /** @type {HTMLelement} */
-    this.inputNumber = inputNumber;
+    this.__inputNumber = inputNumber;
     /** @type {jQuery} */
-    this.$inputUnits = $inputUnits;
+    this.__$inputUnits = $inputUnits;
     /** @type {jQuery} */
-    this.$inputSlider = $inputSlider;
+    this.__$inputSlider = $inputSlider;
 
     /**
      * Bind click action to unit picker

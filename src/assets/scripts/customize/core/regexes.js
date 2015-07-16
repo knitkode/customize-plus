@@ -1,3 +1,4 @@
+/* exported: Regexes */
 /* jshint maxlen: 1000 */
 
 /**
@@ -8,7 +9,6 @@
  * array (maybe coming from php?). So for array to regex conversion
  * do: `new RegExp(MY_VAR.join('|'), 'g')`. See {@link
  * http://stackoverflow.com/q/28280920/1938970 stackoverflow}.
- *
  */
 var Regexes = {
   /**
@@ -23,8 +23,7 @@ var Regexes = {
    * @const
    * @type {RegExp}
    */
-  whitespaces: /\s+/g,
-
+  _whitespaces: /\s+/g,
   /**
    * Grab all variables (sanitized user input)
    *
@@ -33,8 +32,7 @@ var Regexes = {
    * @const
    * @type {RegExp}
    */
-  variables_match: /@([a-zA-Z-_0-9]+)/g,
-
+  _variables_match: /@([a-zA-Z-_0-9]+)/g,
   /**
    * Simple color function (raw user input)
    *
@@ -47,8 +45,7 @@ var Regexes = {
    * @const
    * @type {RegExp}
    */
-  colorSimpleFunction_test: /^\s*[a-z]+\(\s*@[a-zA-Z-_0-9]+\,\s*(0\.[0-9]*[1-9][0-9]*|100|[1-9]\d?|[1-9]\d?\.[0-9]+)%?\s*\)\s*$/,
-
+  _colorSimpleFunction_test: /^\s*[a-z]+\(\s*@[a-zA-Z-_0-9]+\,\s*(0\.[0-9]*[1-9][0-9]*|100|[1-9]\d?|[1-9]\d?\.[0-9]+)%?\s*\)\s*$/,
   /**
    * Simple color function (sanitized user input)
    *
@@ -60,8 +57,7 @@ var Regexes = {
    * @const
    * @type {RegExp}
    */
-  colorSimpleFunction_match: /^([a-z]+)\(@([a-zA-Z-_0-9]+)\,(0\.[0-9]*[1-9][0-9]*|100|[1-9]\d?|[1-9]\d?\.[0-9]+)%?\)$/,
-
+  _colorSimpleFunction_match: /^([a-z]+)\(@([a-zA-Z-_0-9]+)\,(0\.[0-9]*[1-9][0-9]*|100|[1-9]\d?|[1-9]\d?\.[0-9]+)%?\)$/,
   /**
    * Simple variable (raw user input)
    *
@@ -73,8 +69,7 @@ var Regexes = {
    * @const
    * @type {RegExp}
    */
-  simpleVariable_test: /^\s*@[a-zA-Z-_0-9]+\s*$/,
-
+  _simpleVariable_test: /^\s*@[a-zA-Z-_0-9]+\s*$/,
   /**
    * Simple variable (sanitized user input)
    *
@@ -86,8 +81,7 @@ var Regexes = {
    * @const
    * @type {RegExp}
    */
-  simpleVariable_match: /^@([a-zA-Z-_0-9]+)$/,
-
+  _simpleVariable_match: /^@([a-zA-Z-_0-9]+)$/,
   /**
    * Variable (just grab a variable wherever it is)
    *
@@ -96,8 +90,7 @@ var Regexes = {
    * @const
    * @type {RegExp}
    */
-  variable_match: /@([a-zA-Z-_0-9]+)/,
-
+  _variable_match: /@([a-zA-Z-_0-9]+)/,
   /**
    * Variable (just grab a variable wherever it is)
    *
@@ -107,14 +100,7 @@ var Regexes = {
    * @type {RegExp}
    */
   // @@todo allow floats? \\
-  sizeWithUnit: /^(\d+)(px|%|em|rem)$/,
-
-
-
-  // @@todo unit tests on regex101.com...
-  colorHex_test: /^#[0-9A-F]{6}$|^#[0-9A-F]{3}$/i,
-  colorRgbaAlpha_match: /^rgba\(\d+,\d+,\d+,(0?\.[0-9]*[1-9][0-9]*|[01])\)$/,
-  colorRgba_test: /^rgba\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0?\.[0-9]*[1-9][0-9]*|[01])\s*\)$/
+  _sizeWithUnit: /^(\d+)(px|%|em|rem)$/
 };
 
 // export to public API
