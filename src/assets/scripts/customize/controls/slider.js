@@ -186,4 +186,5 @@ var ControlSlider = ControlBase.extend({
   }
 });
 
-wpApi['controlConstructor']['pwpcp_slider'] = ControlSlider;
+// export to our API and to WordPress API
+api['controls']['Slider'] = wpApi['controlConstructor']['pwpcp_slider'] = ControlSlider;

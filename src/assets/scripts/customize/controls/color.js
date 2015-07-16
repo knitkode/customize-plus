@@ -86,8 +86,8 @@ var ControlColor = ControlBase.extend({
    * @override
    */
   onDeflate: function () {
-    if (this.$picker && this.rendered) {
-      this.$picker.spectrum('destroy');
+    if (this.__$picker && this.rendered) {
+      this.__$picker.spectrum('destroy');
     }
   },
   /**
@@ -103,9 +103,9 @@ var ControlColor = ControlBase.extend({
     var btnCustom = container.getElementsByClassName('pwpcpui-toggle')[0];
 
     /** @type {HTMLelement} */
-    this.preview = container.getElementsByClassName('pwpcpcolor-current-overlay')[0];
+    this.__preview = container.getElementsByClassName('pwpcpcolor-current-overlay')[0];
     /** @type {jQuery} */
-    this.$picker = $(container.getElementsByClassName('pwpcpcolor-input')[0]);
+    this.__$picker = $(container.getElementsByClassName('pwpcpcolor-input')[0]);
     /** @type {jQuery} */
     this.$expander = $(container.getElementsByClassName('pwpcp-expander')[0]).hide();
 
@@ -117,7 +117,7 @@ var ControlColor = ControlBase.extend({
     var _maybeInitializeSpectrum = function () {
       // initialize only once
       if (!pickerIsInitialized) {
-        self.$picker.spectrum(Utils._getSpectrumOpts(self));
+        self.__$picker.spectrum(Utils._getSpectrumOpts(self));
         pickerIsInitialized = true;
       }
     }
@@ -139,16 +139,16 @@ var ControlColor = ControlBase.extend({
   },
   /**
    * Apply on UI preview (the color box on the left hand side)
-   * @param  {string} newColor
+   * @param  {string} newValue
    */
-  _applyOnUIpreview: function (newColor) {
-    this.preview.style.background = newColor;
+  _applyOnUIpreview: function (newValue) {
+    this.__preview.style.background = newValue;
   },
   /**
    * Apply on UI control (the spectrum color picker)
    */
-  _applyOnUIcustom: function (newColor) {
-    this.$picker.spectrum('set', newColor);
+  _applyOnUIcustom: function (newValue) {
+    this.__$picker.spectrum('set', newValue);
   },
   /**
    * Apply, wrap the `setting.set()` function
