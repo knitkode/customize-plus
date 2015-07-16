@@ -1,5 +1,7 @@
 <?php defined( 'ABSPATH' ) or die;
 
+define( 'PWP_TRIAL_THEME', true ); // @@temp \\
+
 if ( class_exists( 'PWPcp_Singleton' ) ):
 
 	/**
@@ -256,15 +258,20 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 */
 		private static function set_settings_defaults() {
 			foreach ( self::$customize_tree as $component ) {
-				if ( 'panel' === $component['subject'] ) {
-					if ( isset( $component['sections'] ) && is_array( $component['sections'] ) ) {
-						foreach ( $component['sections'] as $section ) {
-							self::set_settings_default_from_section( $section );
+				if ( isset( $component['subject'] ) ) {
+					if ( 'panel' === $component['subject'] ) {
+						if ( isset( $component['sections'] ) && is_array( $component['sections'] ) ) {
+							foreach ( $component['sections'] as $section ) {
+								self::set_settings_default_from_section( $section );
+							}
 						}
 					}
-				}
-				else if ( 'section' === $component['subject'] ) {
-					self::set_settings_default_from_section( $component );
+					else if ( 'section' === $component['subject'] ) {
+						self::set_settings_default_from_section( $component );
+					}
+				} else {
+					// echo '<pre>' . var_dump( self::$customize_tree ) . '</pre>';
+					wp_die( __( 'Customize Plus: `customize_tree` root components need a `subject` value.', 'pkgTextdomain' ) );
 				}
 			}
 		}

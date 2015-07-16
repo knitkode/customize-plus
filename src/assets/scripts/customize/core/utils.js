@@ -164,8 +164,9 @@ var Utils = (function () {
         // containerClassName: '',
         preferredFormat: 'hex',
         flat: true,
+        // appendTo: $container, // @@todo doesn't work... \\
         showInput: true,
-        showInitial: true,
+        showInitial: true, // @@doubt maybe it get too messy with this shown \\
         showButtons: false,
         // localStorageKey: 'PWPcp_spectrum',
         showSelectionPalette: false,
@@ -184,11 +185,11 @@ var Utils = (function () {
         },
         move: function (tinycolor) {
           var color = tinycolor ? tinycolor.toString() : 'transparent';
-          control._apply(color, 'ui');
+          control._apply(color, 'custom');
         },
         change: function (tinycolor) {
           var color = tinycolor ? tinycolor.toString() : 'transparent';
-          control._apply(color, 'ui');
+          // control._apply(color, 'custom');
           if (!tinycolor) {
             $container.find('.sp-input').val('transparent');
           }

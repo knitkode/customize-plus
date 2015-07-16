@@ -34,7 +34,14 @@ var ControlColor = ControlBase.extend({
   _getForSoftCompare: function (value) {
     try {
       var anyColor = tinycolor(value);
-      return anyColor.toRgbString();
+      // if it is not an actual color but an expression or a variable
+      // tinycolor won-t recognize a `format` (such as hex, name, rgba, etc..)
+      // hence we rely on this do decide what to return
+      if (!anyColor['_format']) {
+        return value;
+      } else {
+        return anyColor.toRgbString();
+      }
     } catch(e) {
       return value;
     }
@@ -68,7 +75,7 @@ var ControlColor = ControlBase.extend({
     // if we are programmatically changing the control value
     // for instance through js (during import, debugging, etc.)
     this.setting.bind(function (value) {
-      this._apply(value, 'API'); // @@todo \\
+      this._apply(value, 'API');
     }.bind(this));
   },
   /**
@@ -110,7 +117,6 @@ var ControlColor = ControlBase.extend({
     var _maybeInitializeSpectrum = function () {
       // initialize only once
       if (!pickerIsInitialized) {
-        console.log('Control.Color -> init spectrum');
         self.$picker.spectrum(Utils._getSpectrumOpts(self));
         pickerIsInitialized = true;
       }
@@ -141,7 +147,7 @@ var ControlColor = ControlBase.extend({
   /**
    * Apply on UI control (the spectrum color picker)
    */
-  _applyOnUIcontrol: function (newColor) {
+  _applyOnUIcustom: function (newColor) {
     this.$picker.spectrum('set', newColor);
   },
   /**
@@ -162,7 +168,7 @@ var ControlColor = ControlBase.extend({
       this._applyOnUIpreview(value);
 
       if (from === 'API') {
-        this._applyOnUIcontrol(value);
+        this._applyOnUIcustom(value);
       }
     }
 
