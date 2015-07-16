@@ -283,6 +283,7 @@ var ControlBase = wpApi.Control.extend({
    *
    */
   extras: function () {
+    var self = this;
     /**
      * Reference to abstract method different in various control's subclasses
      * @type {function(*)}
@@ -383,11 +384,18 @@ var ControlBase = wpApi.Control.extend({
      * as the one the action effect would give disable the action.
      */
     if (toggle) {
+      if (DEBUG) {
+        toggle.title = 'Click to dump control object into console';
+      }
       toggle.onclick = function () {
         isOpen = !isOpen;
         container.classList.toggle('pwpcp-extras-open', isOpen);
         if (isOpen) {
           _onExtrasOpen();
+        }
+        if (DEBUG) {
+          // console.log('%c Control[' + self.id + '] ' + self, 'background: #78DFFF;');
+          console.info('Control[' + self.id + '] ', self);
         }
       };
     }
@@ -417,7 +425,7 @@ var ControlBase = wpApi.Control.extend({
      * method of the hide_controls control. \\
      */
     if (btnHide) {
-      var self = this;
+      // var self = this;
       btnHide.onclick = function () {
         // @@tobecareful this is tight to class-customize.php $setting_control_id =
         // PWPcp::$OPTIONToHideS_PREFIX . '[' . $field_key . ']'; \\
