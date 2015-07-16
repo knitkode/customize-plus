@@ -133,15 +133,27 @@ var ControlBase = wpApi.Control.extend({
     if ( document.getElementById( 'tmpl-' + templateSelector ) ) {
       template = wp.template( templateSelector );
       if ( template && _container ) {
+
+        /* jshint funcscope: true */
+        if (DEBUG) var t = performance.now();
+
         // render and store it in the params
         this.params.template = _container.innerHTML = template( this.params ).trim();
+
+        // var frag = document.createDocumentFragment();
+        // var tplNode = document.createElement('div');
+        // tplNode.innerHTML = template( this.params ).trim();
+        // frag.appendChild(tplNode);
+        // this.params.template = frag;
+        // _container.appendChild(frag);
+
+        console.log('%c renderContent of ' + this.params.type + '(' + this.id +
+         ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
     }
   },
   /**
    * We don't need this method
-   *
-   * @private
    */
   dropdownInit: null,
   /**
@@ -179,15 +191,16 @@ var ControlBase = wpApi.Control.extend({
 
         // Super fast empty DOM element
         // @link(http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/20)
-        // while (element.lastChild) {
-        //   element.removeChild(element.lastChild);
+        // while (container.lastChild) {
+        //   container.removeChild(container.lastChild);
         // }
 
         // @@doubt, most of the times innerHTML seems to be faster, maybe when
         // there are many DOM elements to remove, investigate here \\
-        element.innerHTML = '';
+        container.innerHTML = '';
 
-        console.log('%c deflate of ' + this.params.type + '(' + this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+        console.log('%c deflate of ' + this.params.type + '(' + this.id + ') took '
+         + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
 
         this.rendered = false;
       }

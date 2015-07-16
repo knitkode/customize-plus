@@ -64,7 +64,7 @@
   api['controls'] = {};
 
   //= include customize/controls/base.js
-    // include customize/controls/base-dummy' )
+    // include customize/controls/base-dummy'
   //= include customize/controls/base-input.js
   //= include customize/controls/base-radio.js
   //= include customize/controls/buttonset.js

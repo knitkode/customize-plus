@@ -166,7 +166,7 @@ var Utils = (function () {
         // containerClassName: '',
         preferredFormat: 'hex',
         flat: true,
-        // appendTo: $container, // @@todo doesn't work... or control.$expander \\
+        // appendTo: $container, // @@todo doesn't work... or control.__$expander \\
         showInput: true,
         showInitial: true, // @@doubt maybe it get too messy with this shown \\
         showButtons: false,

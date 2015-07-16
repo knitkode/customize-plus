@@ -267,7 +267,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 */
 		public static function register_custom_types( $types ) {
 			foreach ( $types as $type => $new_custom_types ) {
-				if ( self::$custom_types[ $type ] ) {
+				if ( isset( self::$custom_types[ $type ] ) ) {
 					self::$custom_types[ $type ] = array_merge( self::$custom_types[ $type ], $new_custom_types );
 				}
 			}
@@ -325,8 +325,27 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 				self::add_css_panel_dashicon( $panel_id, $panel['icon'] );
 			}
 
-			// Add panel to WordPress
-			$wp_customize->add_panel( $panel_id, $panel_args );
+			// get type if specified
+			$panel_type = isset( $panel['type'] ) ? $panel['type'] : null;
+
+			// check if a custom type/class has been specified
+			if ( isset( self::$custom_types['panels'][ $panel_type ] ) ) {
+				$panel_type_class = self::$custom_types['panels'][ $panel_type ];
+
+				// if the class exist use it
+				if ( class_exists( $panel_type_class ) ) {
+					$wp_customize->add_panel( new $panel_type_class( $wp_customize, $panel_id, $panel_args ) );
+				}
+				// if the desired class doesn't exist just use the plain WordPress API
+				else {
+					$wp_customize->add_panel( $panel_id, $panel_args );
+					// @@todo error (wrong api implementation, missing class) \\
+				}
+			}
+			// if the desired control type is not specified just use the plain WordPress API
+			else {
+				$wp_customize->add_panel( $panel_id, $panel_args );
+			}
 
 			// Add panel's sections
 			if ( isset( $panel['sections'] ) ) {
@@ -373,8 +392,27 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 				self::add_css_section_dashicon( $section['id'], $section_args['dashicon'] );
 			}
 
-			// Add section to WordPress
-			$wp_customize->add_section( $section['id'], $section_args );
+			// get type if specified
+			$section_type = isset( $section['type'] ) ? $section['type'] : null;
+
+			// check if a custom type/class has been specified
+			if ( isset( self::$custom_types['sections'][ $section_type ] ) ) {
+				$section_type_class = self::$custom_types['sections'][ $section_type ];
+
+				// if the class exist use it
+				if ( class_exists( $section_type_class ) ) {
+					$wp_customize->add_section( new $section_type_class( $wp_customize, $section['id'], $section_args ) );
+				}
+				// if the desired class doesn't exist just use the plain WordPress API
+				else {
+					$wp_customize->add_section( $section['id'], $section_args );
+					// @@todo error (wrong api implementation, missing class) \\
+				}
+			}
+			// if the desired control type is not specified just use the plain WordPress API
+			else {
+				$wp_customize->add_section( $section['id'], $section_args );
+			}
 
 			// Add section fields
 			if ( isset( $section['fields'] ) ) {
@@ -427,11 +465,12 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 			// augment control args array with section id
 			$control_args['section'] = $section_id;
 
-			// Add control to WordPress
+			// get type (required)
 			$control_type = $control_args['type'];
 
-			if ( isset( PWPcp_Customize::$custom_types['controls'][ $control_type ] ) ) {
-				$control_type_class = PWPcp_Customize::$custom_types['controls'][ $control_type ];
+			// check if a custom type/class has been specified
+			if ( isset( self::$custom_types['controls'][ $control_type ] ) ) {
+				$control_type_class = self::$custom_types['controls'][ $control_type ];
 
 				// if the class exist use it
 				if ( class_exists( $control_type_class ) ) {

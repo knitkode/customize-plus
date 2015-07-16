@@ -20,6 +20,7 @@ var ControlSlider = ControlBase.extend({
    * @return {string} The validate control value.
    */
   _validate: function (newValue) {
+    console.info('_validate', newValue);
     var params = this.params;
     var min = params.attrs.min;
     var max = params.attrs.max;
@@ -107,14 +108,15 @@ var ControlSlider = ControlBase.extend({
     // bind setting change to pass value on apply value
     // if we are programmatically changing the control value
     // for instance through js (during import, debugging, etc.)
-    this.setting.bind(function () {
+    this.setting.bind(function (value) {
+      console.info('_updateUI', value);
       this._updateUI(); // @@todo, this updates the UI also when the value comes ... from the UI \\
     }.bind(this));
   },
   /**
    * On ready
    */
-  ready: function (isForTheFirstTimeReady) {
+  ready: function () {
     var setting = this.setting;
     var params = this.params;
     var container = this._container;
@@ -122,10 +124,6 @@ var ControlSlider = ControlBase.extend({
     var $inputUnits = this.container.find('.pwpcp-unit');
     var $inputSlider = $(container.getElementsByClassName('pwpcp-slider')[0]);
 
-    /**
-     * Set elements as control properties
-     *
-     */
     /** @type {HTMLelement} */
     this.__inputNumber = inputNumber;
     /** @type {jQuery} */
@@ -168,22 +166,6 @@ var ControlSlider = ControlBase.extend({
         setting.set(ui.value);
       }
     }, params.attrs));
-
-    // // if the setting is changed programmatically (i.e. through code)
-    // if (isForTheFirstTimeReady) {
-
-    //   // update inputs value
-    //   setting.bind(function (value) {
-    //     // update number input
-    //     inputNumber.value = params.number;
-    //     // update number slider
-    //     $inputSlider.slider('value', params.number);
-    //     // update unit picker
-    //     $inputUnits.removeClass('pwpcp-current').filter(function () {
-    //       return (this.textContent || this.innerText) === params.unit; // @@ie8 \\
-    //     }).addClass('pwpcp-current');
-    //   });
-    // }
   }
 });
 

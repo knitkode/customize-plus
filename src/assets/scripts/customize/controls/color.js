@@ -108,7 +108,7 @@ var ControlColor = ControlBase.extend({
     /** @type {jQuery} */
     this.__$picker = $(container.getElementsByClassName('pwpcpcolor-input')[0]);
     /** @type {jQuery} */
-    this.$expander = $(container.getElementsByClassName('pwpcp-expander')[0]).hide();
+    this.__$expander = $(container.getElementsByClassName('pwpcp-expander')[0]).hide();
 
     self._applyOnUIpreview(self.setting());
 
@@ -121,7 +121,7 @@ var ControlColor = ControlBase.extend({
         self.__$picker.spectrum(Utils._getSpectrumOpts(self));
         pickerIsInitialized = true;
       }
-    }
+    };
 
     btnCustom.onmouseover = _maybeInitializeSpectrum;
 
@@ -131,9 +131,9 @@ var ControlColor = ControlBase.extend({
 
       // and toggle
       if (isOpen) {
-        self.$expander.slideDown();
+        self.__$expander.slideDown();
       } else {
-        self.$expander.slideUp();
+        self.__$expander.slideUp();
       }
       return false;
     };
