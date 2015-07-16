@@ -54,7 +54,7 @@
     var isValid = false;
 
     for (var i = 0, l = types.length; i < l; i++) {
-      isValid = isValid || _ValidatorColor['_' + types[i]](str);
+      isValid = isValid || _ValidatorColor[types[i]](str);
       if (isValid) {
         return true;
       }

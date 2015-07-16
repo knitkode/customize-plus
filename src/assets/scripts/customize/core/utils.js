@@ -164,7 +164,7 @@ var Utils = (function () {
         // containerClassName: '',
         preferredFormat: 'hex',
         flat: true,
-        // appendTo: $container, // @@todo doesn't work... \\
+        // appendTo: $container, // @@todo doesn't work... or control.$expander \\
         showInput: true,
         showInitial: true, // @@doubt maybe it get too messy with this shown \\
         showButtons: false,
@@ -179,17 +179,15 @@ var Utils = (function () {
         togglePaletteOnly: params.togglePaletteOnly && params.palette,
         palette: params.palette,
         color: control.setting(),
-        appendTo: control.expander,
         show: function () {
           $container.find('.sp-input').focus();
         },
         move: function (tinycolor) {
           var color = tinycolor ? tinycolor.toString() : 'transparent';
-          control._apply(color, 'custom');
+          control.setting.set(color);
         },
         change: function (tinycolor) {
           var color = tinycolor ? tinycolor.toString() : 'transparent';
-          // control._apply(color, 'custom');
           if (!tinycolor) {
             $container.find('.sp-input').val('transparent');
           }

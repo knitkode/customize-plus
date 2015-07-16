@@ -161,7 +161,6 @@ var ControlColor = ControlBase.extend({
    *                        API (on programmatic value change).
    */
   _apply: function (value, from) {
-    console.log('apply color!!!!!');
     this.params.valueCSS = value;
 
     if (this.rendered) {

@@ -86,11 +86,11 @@ var ControlSlider = ControlBase.extend({
     }
     var params = this.params;
     // update number input
-    this.inputNumber.value = params.number;
+    this.__inputNumber.value = params.number;
     // update number slider
-    this.$inputSlider.slider('value', params.number);
+    this.__$inputSlider.slider('value', params.number);
     // update unit picker
-    this.$inputUnits.removeClass('pwpcp-current').filter(function () {
+    this.__$inputUnits.removeClass('pwpcp-current').filter(function () {
       return (this.textContent || this.innerText) === params.unit; // @@ie8 \\
     }).addClass('pwpcp-current');
   },
