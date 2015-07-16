@@ -145,23 +145,6 @@ var ControlBase = wpApi.Control.extend({
    */
   dropdownInit: null,
   /**
-   * Super fast empty DOM element
-   * see @link http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/20
-   *
-   * faster then: this.wrap[0].innerHTML = '';
-   */
-  empty: function (element) {
-    /* jshint funcscope: true */
-    if (DEBUG) var t = performance.now();
-    // while (element.lastChild) {
-    //   element.removeChild(element.lastChild);
-    // }
-    // @@doubt, somethimes innerHTML seems to be faster, maybe when
-    // there are many DOM elements to remove, investigate here \\
-    element.innerHTML = '';
-    console.log('deflate (empty()) of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.');
-  },
-  /**
    * Triggered just before the control get deflated from DOM
    *
    * @abstract
@@ -174,6 +157,7 @@ var ControlBase = wpApi.Control.extend({
    */
   deflate: function () {
     var container = this._container;
+
     if (!this.params.template) {
       this.params.template = container.innerHTML.trim();
     }
@@ -187,9 +171,27 @@ var ControlBase = wpApi.Control.extend({
     // and empty the DOM from the container in a timeout so
     // the slide out animation of the section doesn't freeze
     setTimeout(function () { // @@todo it breaks with search? \\
-      this.empty(container);
-      this.rendered = false;
-    }.bind(this), 100);
+      // due to the timeout we need to be sure that the section is not expanded
+      if (!wpApi.section(this.section.get()).expanded.get()) {
+
+        /* jshint funcscope: true */
+        if (DEBUG) var t = performance.now();
+
+        // Super fast empty DOM element
+        // @link(http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/20)
+        // while (element.lastChild) {
+        //   element.removeChild(element.lastChild);
+        // }
+
+        // @@doubt, most of the times innerHTML seems to be faster, maybe when
+        // there are many DOM elements to remove, investigate here \\
+        element.innerHTML = '';
+
+        console.log('%c deflate of ' + this.params.type + '(' + this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+
+        this.rendered = false;
+      }
+    }.bind(this), 2000);
 
     // flag control that it's not rendered
   },
@@ -208,12 +210,16 @@ var ControlBase = wpApi.Control.extend({
     if (DEBUG) var t = performance.now();
     if (!this.params.template) {
       this.renderContent();
+      console.log('%c inflate DOM of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       // flag control that it's rendered
       this.rendered = true;
       // pass true for isForTheFirstTimeReady argument, so that we bind the setting only once
       this.ready(true);
     } else {
-      this._container.innerHTML = this.params.template;
+      if (!this.rendered) {
+        this._container.innerHTML = this.params.template;
+        console.log('%c inflate DOM of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+      }
       // flag control that it's rendered
       this.rendered = true;
 
