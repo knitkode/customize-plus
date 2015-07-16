@@ -43,6 +43,7 @@ var ControlColor = ControlBase.extend({
         return anyColor.toRgbString();
       }
     } catch(e) {
+      console.warn('Control->Color->_getForSoftCompare: tinycolor conversion failed', e);
       return value;
     }
   },

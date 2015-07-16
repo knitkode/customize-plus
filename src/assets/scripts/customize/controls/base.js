@@ -476,5 +476,7 @@ wpApi.bind('ready', function () {
     if (controlToFocusID) {
       Utils.linkControl(null, controlToFocusID);
     }
-  } catch (err) {}
+  } catch(e) {
+    console.warn('Fix autofocus', e);
+  }
 });

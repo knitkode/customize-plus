@@ -60,7 +60,9 @@ var ControlBaseDummy = wpApi.Control.extend({
     // We do it through the PWPcp_Customize_Setting_Dummy php class.
     try {
       delete wpApi.settings.settings[this.id];
-    } catch(err) {};
+    } catch(e) {
+      console.warn('Control->Dummy->initialize: failed to delete dummy setting', e);
+    };
     /* end custom code */
 
 

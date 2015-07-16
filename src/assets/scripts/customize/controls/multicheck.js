@@ -20,8 +20,9 @@ var ControlMulticheck = ControlBase.extend({
     var newValue;
     try {
       newValue = JSON.parse(rawNewValue);
-    } catch (e) {
+    } catch(e) {
       newValue = rawNewValue;
+      console.warn('Control->Multicheck: Failed to parse a supposed-to-be JSON value', e);
     }
     var params = this.params;
     var lastValue = params.value;
