@@ -110,7 +110,7 @@ var Utils = (function () {
           console.warn('Utils->linkControl: failed attempt to deactivate Search', e);
         }
 
-        controlToFocus.focus(); // @@doubt focus or expand ? \\
+        controlToFocus.focus();
         controlToFocus.container.addClass('pwpcp-control-focused');
         setTimeout(function () {
           controlToFocus.container.removeClass('pwpcp-control-focused');
