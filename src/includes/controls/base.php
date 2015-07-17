@@ -16,10 +16,26 @@
  */
 class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
+	/**
+	 * The control divider data, optional
+	 * @var array
+	 */
 	public $divider;
 
+	/**
+	 * The control guide data, optional. It display some help
+	 * in a popover for this control.
+	 * @var array
+	 */
 	public $guide;
 
+	/**
+	 * Whether this control is advanced or normal,
+	 * users and developers will be able to hide or show
+	 * the advanced controls.
+	 *
+	 * @var boolean
+	 */
 	public $advanced = false;
 
 	/**
@@ -36,8 +52,11 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	public function to_json() {
 		parent::to_json();
 
-		// add original setting value
-		$this->json['original'] = $this->setting->default;
+		// add setting factory value
+		$this->json['vFactory'] = $this->setting->default;
+
+		// add setting initial value
+		$this->json['vInital'] = $this->value();
 
 		// add divider if any
 		if ( $this->divider ) {
@@ -61,7 +80,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 		// remove content, we rely completely on js, and declare
 		// the control container in the js control base class
-		unset( $this->json['content'] ); // @@tobecareful change related to overridden render() in PWPcp_Customize_Control_Base \\
+		unset( $this->json['content'] );
 
 		// call a function to add data to `control.params`
 		$this->add_to_json();
@@ -101,7 +120,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @override
 	 * @since 0.0.1
 	 */
-	protected function render() {} // @@tobecareful change related to overridden render() in PWPcp_Customize_Control_Base \\
+	protected function render() {}
 
 	/**
 	 * Never render any inner content for controls from PHP.

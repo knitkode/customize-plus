@@ -22,14 +22,6 @@
     border-color: $WPcustomize--btn-border-color-hover;
     color: $WPcustomize--btn-color-hover;
   }
-
-  &.active {
-    @include ui-toggle--active();
-  }
-
-  &.expanded {
-    @include ui-toggle--expanded();
-  }
 }
 
 // %ui-toggle--active {
@@ -50,4 +42,20 @@
   &:focus {
     background: darken($WPcustomize--btn-bg-activetoggle, 4%);
   }
+}
+
+// alert
+@mixin ui-alert( $accent-color ) {
+  background: lighten($accent-color, 7.5%);
+  border-color: darken($accent-color, 5%);
+  color: darken($accent-color, 80%);
+}
+
+// Panels/Sections description areas in customise
+// @@wptight-css #customize-controls .customize-info .customize-panel-description {}
+@mixin WPcustomize--container-description() {
+  color: #555;
+  background: #fff;
+  padding: 12px 15px;
+  border-top: 1px solid #ddd;
 }

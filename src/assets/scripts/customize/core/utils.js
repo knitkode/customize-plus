@@ -127,6 +127,27 @@ var Utils = (function () {
       }
     },
     /**
+     * Reset control -> setting value to the value according
+     * to the given mode argument
+     * @param  {Control} control The control whose setting has to be reset
+     * @param  {string} mode     Either `'initial'` or `'factory'`
+     * @return {boolean}         Whether the reset has succeded
+     */
+    resetControl: function (control, mode) {
+      var value;
+      if (mode === 'initial') {
+        value = control.params.vInital; // @@todo-uglycode \\
+      } else if (mode === 'factory') {
+        value = control.params.vFactory;
+      }
+      if (value) {
+        control.setting.set(value);
+        return true;
+      } else {
+        return false;
+      }
+    },
+    /**
      * Selectize render option function
      *
      * @abstract

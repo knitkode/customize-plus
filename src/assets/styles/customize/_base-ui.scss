@@ -14,4 +14,26 @@
   &-toggle {
     @include ui-toggle();
   }
+
+  &-alert {
+    border: 1px solid transparent;
+    padding: 10px 15px;
+    box-shadow: 0 8px 14px -12px rgba(0,0,0,.18);
+
+    &.danger {
+      @include ui-alert(#FFD4D4);
+    }
+
+    &.success {
+      @include ui-alert(#D8FFCD);
+    }
+
+    &.info {
+      @include ui-alert(#CDEBFF);
+    }
+
+    p {
+      margin: 5px 0;
+    }
+  }
 }

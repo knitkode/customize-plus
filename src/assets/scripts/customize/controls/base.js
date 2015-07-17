@@ -321,8 +321,8 @@ var ControlBase = wpApi.Control.extend({
     var btnHide = container.getElementsByClassName('pwpcp-extras-hide')[0];
     // value variables, uses closure
     var setting = this.setting;
-    var defaultValue = this.settings['default'](); // @@todo-uglycode \\
-    var factoryValue = this.params.original;
+    var defaultValue = this.params.vInital;
+    var factoryValue = this.params.vFactory;
     // state
     var isOpen = false;
     // handlers
