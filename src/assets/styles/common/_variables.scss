@@ -25,6 +25,10 @@ $WPcustomize--sidebar-inner-width: $WPcustomize--sidebar-width - ($WPcustomize--
 $WPcustomize--header-height: 45px;
 $WPcustomize--footer-height: 45px;
 $WPcustomize--btnback-width: $WPcustomize--header-height + 3;
+$WPcustomize--container-toggle-size: 40px;
+$WPcustomize--container-toggle-shadow-focus: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30,140,190,.8);
+$WPcustomize--container-toggle-color: #555;
+$WPcustomize--container-toggle-color-focus: #0073aa;
 $WPcustomize--sidebar-bg: #eee;
 $WPcustomize--iframe-bg: #eee;
 $WPcustomize--collapse-sidebar-bottom: 12px;

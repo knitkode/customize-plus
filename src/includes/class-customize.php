@@ -31,6 +31,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 				'color' => 'WP_Customize_Color_Control',
 				'image' => 'WP_Customize_Image_Control',
 				'upload' => 'WP_Customize_Upload_Control',
+				'pwpcp_dummy' => 'PWPcp_Customize_Control_Dummy',
 				'pwpcp_buttonset' => 'PWPcp_Customize_Control_Buttonset',
 				'pwpcp_color' => 'PWPcp_Customize_Control_Color',
 				'pwpcp_font_family' => 'PWPcp_Customize_Control_Font_Family',

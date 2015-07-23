@@ -12,9 +12,9 @@
  * @version    Release: pkgVersion
  * @link       http://pluswp.com/customize-plus
  */
-class PWPcp_Customize_Control_Dummy extends PWPcp_Customize_Control_Base {
+class PWPcp_Customize_Control_Dummy extends WP_Customize_Control {
 
-	public $type = 'PWPcp_dummy';
+	public $type = 'pwpcp_dummy';
 
 	/**
 	 * Render
@@ -28,15 +28,17 @@ class PWPcp_Customize_Control_Dummy extends PWPcp_Customize_Control_Base {
 	 */
 	protected function render() {}
 
-	/**
-	 * Render a JS template for the content of the control.
-	 *
-	 * @since 0.0.1
-	 */
-	protected function js_tpl() {
-		?>
+	// public function to_json() {}
+
+	public function content_template() {
+		ob_start( 'pwpcp_compress_html' ); ?>
 		<# if (data.label) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
 		<# if (data.description) { #><span class="description customize-control-description">{{{ data.description }}}</span><# } #>
-		<?php
+		<?php ob_end_flush();
 	}
 }
+
+/**
+ * Register on WordPress Customize global object
+ */
+$wp_customize->register_control_type( 'PWPcp_Customize_Control_Dummy' );

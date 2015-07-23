@@ -9,7 +9,8 @@
     "polyfill-classList": "git@github.com:eligrey/classList.js.git#2014-12-13",
     "selectize": "~0.12.0",
     "validator-js": "~3.33.0",
-    "spectrum": "~1.7.0"
+    "spectrum": "~1.7.0",
+    "mousetrap": "~1.5.3"
   },
   "devDependencies": {}
 }

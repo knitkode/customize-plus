@@ -95,6 +95,10 @@ var adminScriptsLibraries = [
   PATHS.src.bower + 'polyfill-classList/classList.js', // @@ie9 @@ie8 \\
   PATHS.src.scripts + 'vendor-custom/modernizr-custom.js', // include modernizr custom build
   PATHS.src.bower + 'validator-js/validator.js',
+  PATHS.src.bower + 'mousetrap/mousetrap.js',
+  PATHS.src.bower + 'mousetrap/plugins/bind-dictionary/mousetrap-bind-dictionary.js',
+  PATHS.src.bower + 'mousetrap/plugins/global-bind/mousetrap-global-bind.js',
+  PATHS.src.bower + 'mousetrap/plugins/pause/mousetrap-pause.js',
   PATHS.src.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme...
   PATHS.src.bower + 'jquery-cookie/jquery.cookie.js',
   PATHS.src.bower + 'webui-popover/dist/jquery.webui-popover.js',
