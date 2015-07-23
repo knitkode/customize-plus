@@ -9,6 +9,7 @@
     "$",
     "_",
     "validator",
+    "Mousetrap",
     "wp",
     "wpApi",
     "wpApiIsReady",
