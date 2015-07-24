@@ -31,7 +31,7 @@ var ControlColor = ControlBase.extend({
    *                   session value
    * @return {string} The 'normalized' value passed as an argument.
    */
-  _getForSoftCompare: function (value) {
+  softenize: function (value) {
     try {
       var anyColor = tinycolor(value);
       // if it is not an actual color but an expression or a variable
@@ -43,7 +43,7 @@ var ControlColor = ControlBase.extend({
         return anyColor.toRgbString();
       }
     } catch(e) {
-      console.warn('Control->Color->_getForSoftCompare: tinycolor conversion failed', e);
+      console.warn('Control->Color->softenize: tinycolor conversion failed', e);
       return value;
     }
   },

@@ -22,32 +22,28 @@ var ControlMulticheck = ControlBase.extend({
       newValue = JSON.parse(rawNewValue);
     } catch(e) {
       newValue = rawNewValue;
-      console.warn('Control->Multicheck: Failed to parse a supposed-to-be JSON value', e);
+      // console.warn('Control->Multicheck: Failed to parse a supposed-to-be JSON value', rawNewValue, e);
     }
     var params = this.params;
-    var lastValue = params.value;
+    var lastValueAsArray = JSON.parse(this.setting());
     /**
      * Validate string
      * @return {string}
      */
     var _validateString = function () {
-      var index = lastValue.indexOf(newValue);
+      var index = lastValueAsArray.indexOf(newValue);
 
       // if the checkbox ticked was in the last value array remove it
       if (index !== -1) {
-        lastValue.splice(index, 1);
+        lastValueAsArray.splice(index, 1);
       // otherwise push it
       } else {
         // only if it is an allowed choice...
         if (params.choices[newValue]) {
-          lastValue.push(newValue);
+          lastValueAsArray.push(newValue);
         }
       }
-      //  otherwise just return the last value
-      params.value = lastValue;
-      return JSON.stringify(lastValue); // @@doubt not sure if it is a good idea
-      // to stringify the setting and use params.value instead of
-      // this.setting.get() where here above we get the last value \\
+      return JSON.stringify(lastValueAsArray);
     };
     /**
      * Validate array
@@ -63,7 +59,6 @@ var ControlMulticheck = ControlBase.extend({
         }
       }
       validArrayAsString = JSON.stringify(validArray);
-      params.value = validArrayAsString;
       return validArrayAsString;
     };
     // check type and do appropriate validation
@@ -73,7 +68,7 @@ var ControlMulticheck = ControlBase.extend({
       return _validateArray();
     } else {
       // @@todo maybe throws exception? \\
-      return lastValue;
+      return lastValueAsArray;
     }
   },
   /**
@@ -85,45 +80,40 @@ var ControlMulticheck = ControlBase.extend({
    */
   onInit: function () {
     this.setting.validate = this._validate.bind(this);
+
+    // if the setting is changed programmatically (i.e. through code)
+    // update checkboxes status
+    this.setting.bind(function (value) {
+      this._syncCheckboxes();
+    }.bind(this));
   },
   /**
    * On ready
    *
    * @override
    */
-  ready: function (isForTheFirstTimeReady) {
-    var params = this.params;
-    var setting = this.setting;
-    var inputs = this._container.getElementsByTagName('input');
-    /**
-     * Sync checkboxes and maybe bind change event
-     * We need to be fast here, use vanilla js.
-     *
-     * @param  {boolean} bindAsWell Bind on change?
-     */
-    var _syncCheckboxes = function (bindAsWell) {
-      var valueAsArray = params.value;
-      for (var i = 0, l = inputs.length; i < l; i++) {
-        var input = inputs[i];
-        input.checked = valueAsArray.indexOf(input.value) !== -1;
-        if (bindAsWell) {
-          input.onchange = function (event) {
-            setting.set(event.target.value);
-          };
-        }
-      }
-    };
+  ready: function () {
+    this.__inputs = this._container.getElementsByTagName('input');
 
     // sync checked state on checkboxes on ready and bind (argument `true`)
-    _syncCheckboxes(true);
-
-    // if the setting is changed programmatically (i.e. through code)
-    // update checkboxes status
-    if (isForTheFirstTimeReady) {
-      this.setting.bind(function (value) {
-        params.value = JSON.parse(value);
-        _syncCheckboxes();
-      });
+    this._syncCheckboxes(true);
+  },
+  /**
+   * Sync checkboxes and maybe bind change event
+   * We need to be fast here, use vanilla js.
+   *
+   * @param  {boolean} bindAsWell Bind on change?
+   */
+  _syncCheckboxes: function (bindAsWell) {
+    var valueAsArray = JSON.parse(this.setting());
+    for (var i = 0, l = this.__inputs.length; i < l; i++) {
+      var input = this.__inputs[i];
+      input.checked = valueAsArray.indexOf(input.value) !== -1;
+      if (bindAsWell) {
+        input.onchange = function (event) {
+          this.setting.set(event.target.value);
+        }.bind(this);
+      }
     }
   }
 });

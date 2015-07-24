@@ -129,15 +129,18 @@ var Utils = (function () {
     /**
      * Reset control -> setting value to the value according
      * to the given mode argument
-     * @param  {Control} control The control whose setting has to be reset
-     * @param  {string} mode     Either `'initial'` or `'factory'`
-     * @return {boolean}         Whether the reset has succeded
+     * @param  {Control} control  The control whose setting has to be reset
+     * @param  {string} resetType Either `'initial'` or `'factory'`
+     * @return {boolean}          Whether the reset has succeded
      */
-    resetControl: function (control, mode) {
+    resetControl: function (control, resetType) {
+      if (control.params.type === 'pwpcp_dummy') {
+        return true;
+      }
       var value;
-      if (mode === 'initial') {
-        value = control.params.vInital; // @@todo-uglycode \\
-      } else if (mode === 'factory') {
+      if (resetType === 'initial') {
+        value = control.params.vInitial;
+      } else if (resetType === 'factory') {
         value = control.params.vFactory;
       }
       if (value) {
@@ -145,6 +148,24 @@ var Utils = (function () {
         return true;
       } else {
         return false;
+      }
+    },
+    /**
+     * Check if the given type of reset is needed for a specific control
+     * @param  {Control} control  The control which need to be checked
+     * @param  {string} resetType Either `'initial'` or `'factory'`
+     * @return {boolean}          Whether the reset has succeded
+     */
+    _isResetNeeded: function (control, resetType) {
+      if (control.params.type === 'pwpcp_dummy') {
+        return false;
+      }
+      var _softenize = control.softenize;
+      var value = _softenize(control.setting());
+      if (resetType === 'initial') {
+        return value !== _softenize(control.params.vInitial);
+      } else if (resetType === 'factory') {
+        return value !== _softenize(control.params.vFactory);
       }
     },
     /**

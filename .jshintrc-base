@@ -1,7 +1,7 @@
 {
   "bitwise": true,
   "immed": true,
-  "newcap": true,
+  "newcap": false,
   "noarg": true,
   "noempty": true,
   "nonew": true,

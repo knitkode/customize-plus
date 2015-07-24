@@ -56,7 +56,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 		$this->json['vFactory'] = $this->setting->default;
 
 		// add setting initial value
-		$this->json['vInital'] = $this->value();
+		$this->json['vInitial'] = $this->value();
 
 		// add divider if any
 		if ( $this->divider ) {

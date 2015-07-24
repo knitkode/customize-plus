@@ -293,7 +293,7 @@ var ControlBase = wpApi.Control.extend({
    *                   session value
    * @return {string} The 'normalized' value passed as an argument.
    */
-  _getForSoftCompare: function (value) {
+  softenize: function (value) {
     return value;
   },
   /**
@@ -307,7 +307,7 @@ var ControlBase = wpApi.Control.extend({
      * Reference to abstract method different in various control's subclasses
      * @type {function(*)}
      */
-    var _maybeNormalizeValue = this._getForSoftCompare;
+    var _maybeSoftenizeValue = this.softenize;
     // constants
     var CLASS_RESET_FACTORY = 'pwpcp-extras-reset';
     var CLASS_RESET_LAST = ' pwpcp-extras-reset_last';
@@ -321,7 +321,7 @@ var ControlBase = wpApi.Control.extend({
     var btnHide = container.getElementsByClassName('pwpcp-extras-hide')[0];
     // value variables, uses closure
     var setting = this.setting;
-    var defaultValue = this.params.vInital;
+    var defaultValue = this.params.vInitial;
     var factoryValue = this.params.vFactory;
     // state
     var isOpen = false;
@@ -383,14 +383,14 @@ var ControlBase = wpApi.Control.extend({
     var _onExtrasOpen = function () {
       Skeleton.hasScrollbar(); // on open check if we have a scrollbar
 
-      var currentValue = _maybeNormalizeValue( setting.get() );
+      var currentValue = _maybeSoftenizeValue( setting.get() );
 
-      if (currentValue === _maybeNormalizeValue( defaultValue )) {
+      if (currentValue === _maybeSoftenizeValue( defaultValue )) {
         _disableBtnLast();
       } else {
         _enableBtnLast();
       }
-      if (currentValue === _maybeNormalizeValue( factoryValue )) {
+      if (currentValue === _maybeSoftenizeValue( factoryValue )) {
         _disableBtnFactory();
       } else {
         _enableBtnFactory();
