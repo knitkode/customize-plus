@@ -18,7 +18,7 @@ var ControlToggle = ControlBase.extend({
    *
    * @override
    * @static
-   * @param  {?} value Could be the original, the current, or the initial
+   * @param  {?} value Could be the factory, the initial, or the current
    *                   session value
    * @return {string} The 'normalized' value passed as an argument.
    */
@@ -43,42 +43,36 @@ var ControlToggle = ControlBase.extend({
    */
   onInit: function () {
     this.setting.validate = this._validate.bind(this);
+
+    // if the setting is changed programmatically (i.e. through code)
+    // update input value
+    this.setting.bind(function (val) {
+      var value = Utils.toBoolean(val);
+      var inputStatus = Utils.toBoolean(this.__input.checked);
+      // important here is to do a soft comparison so that
+      // '1' is equal to 1 and '0' to 0
+      if (inputStatus !== value) {
+        this.__input.checked = value;
+      }
+    }.bind(this));
   },
   /**
    * On ready
    *
    */
-  ready: function (isForTheFirstTimeReady) {
-    var toBoolean = Utils.toBoolean;
-    var params = this.params;
+  ready: function () {
     var setting = this.setting;
-    var input = this._container.getElementsByTagName('input')[0];
+    this.__input = this._container.getElementsByTagName('input')[0];
 
     // sync input value on ready
-    input.checked = toBoolean(params.value);
+    this.__input.checked = Utils.toBoolean(setting());
 
     // bind input on ready
-    input.onchange = function (e) {
-      e.preventDefault();
+    this.__input.onchange = function (event) {
+      event.preventDefault();
       var value = this.checked ? 1 : 0;
-      params.value = value;
       setting.set(value);
     };
-
-    // if the setting is changed programmatically (i.e. through code)
-    // update input value
-    if (isForTheFirstTimeReady) {
-      setting.bind(function (val) {
-        params.value = val;
-        var value = toBoolean(val);
-        var inputStatus = toBoolean(input.checked);
-        // important here is to do a soft comparison so that
-        // '1' is equal to 1 and '0' to 0
-        if (inputStatus != value) {
-          input.checked = value;
-        }
-      });
-    }
   }
 });
 
