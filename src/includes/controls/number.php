@@ -15,6 +15,22 @@
 class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input {
 
 	public $type = 'pwpcp_number';
+
+	/**
+	 * Get localized strings
+	 *
+	 * @override
+	 * @since  0.0.1
+	 * @return array
+	 */
+	public function get_l10n() {
+		return array(
+			'vNotEmpty' => __( 'This field cannot be empty.', 'pkgTextdomain' ),
+			'vNumberLow' => __( 'The number is too low.', 'pkgTextdomain' ),
+			'vNumberHigh' => __( 'The number is too high.', 'pkgTextdomain' ),
+			'vNumberStep' => __( 'The value must be a multiple of', 'pkgTextdomain' ),
+		);
+	}
 }
 
 /**

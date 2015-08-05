@@ -47,6 +47,12 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 			'settings' => array(),
 		);
 
+		/**
+		 * Temporary store for localized strings defined through control classes
+		 *
+		 * @var array
+		 */
+		private static $controls_l10n = array();
 
 		/**
 		 * CSS shared for all the icons
@@ -118,6 +124,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_js_shim' ) );
 			add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'enqueue_js_admin' ) );
 			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_view_loader' ) );
+			add_action( 'customize_controls_enqueue_scripts', array( __CLASS__, 'add_controls_l10n' ) );
 			add_action( 'customize_preview_init' , array( __CLASS__, 'enqueue_js_preview' ) );
 		}
 
@@ -187,27 +194,24 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 				'back' => __( 'Back', 'pkgTextdomain' ),
 				'pluginName' => __( 'Customize Plus', 'pkgTextdomain' ),
 				'tools' => __( 'Tools', 'pkgTextdomain' ),
-				'customColor' => __( 'Custom', 'pkgTextdomain' ),
-				'togglePaletteMoreText' => __( 'Show color picker', 'pkgTextdomain' ),
-				'togglePaletteLessText' => __( 'Hide color picker', 'pkgTextdomain' ),
 			);
 			$additional = (array) apply_filters( 'PWPcp/customize/js_l10n', array() );
-			return array_merge( $required, $additional );
+			return array_merge( $required, self::$controls_l10n, $additional );
 		}
 
 		/**
-		 * // @@todo @@trial .......................................................................
-		 * doesn't work for now and not  even sure if it will be needed \\
-		 * @param array $localized_strings [description]
+		 * Allows control classes to add localized strings accessible
+		 * on our main `js` object `PWPcp.l10n`
+		 * @since  0.0.1
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
-		public static function add_js_l10n( $localized_strings = array() ) {
-			global $wp_scripts;
-			$data = '';
-			foreach ( $localized_strings as $key => $value ) {
-				$data .= sprintf( 'window.PWPcp.l10n[%s] = %s;', json_encode( $key ), json_encode( $value ) );
+		public static function add_controls_l10n() {
+			global $wp_customize;
+			foreach ( $wp_customize->controls() as $control ) {
+				if ( method_exists( $control, 'get_l10n' ) ) {
+					self::$controls_l10n = array_merge( self::$controls_l10n, $control->get_l10n() );
+				}
 			}
-			wp_localize_script( 'PWPcp-customize', 'dasadta', $data );
-			$wp_scripts->add_data( 'PWPcp-customize', 'dasadta', $data );
 		}
 
 		/**

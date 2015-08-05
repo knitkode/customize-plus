@@ -20,7 +20,7 @@
 global $wp_customize;
 
 //= include controls/base.php
-//= include controls/base-dummy.php
+	// include controls/base-dummy.php
 //= include controls/base-input.php
 //= include controls/base-radio.php
 //= include controls/buttonset.php

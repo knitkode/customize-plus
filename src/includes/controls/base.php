@@ -207,4 +207,16 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since 0.0.1
 	 */
 	protected function js_tpl() {}
+
+	/**
+	 * Get localized strings for current controls.
+	 * Allows control classes to add localized strings accessible
+	 * on our main `js` object `PWPcp.l10n`.
+	 * @abstract
+	 * @since  0.0.1
+	 * @return array
+	 */
+	public function get_l10n() {
+		return array();
+	}
 }

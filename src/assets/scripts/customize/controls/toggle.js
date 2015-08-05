@@ -37,22 +37,21 @@ var ControlToggle = ControlBase.extend({
   /**
    * On initialization
    *
-   * add custom validation function overriding the empty function from WP API.
+   * Add custom validation function overriding the empty function from WP API.
+   * Update input value if the setting is changed programmatically.
    *
    * @override
    */
   onInit: function () {
     this.setting.validate = this._validate.bind(this);
 
-    // if the setting is changed programmatically (i.e. through code)
-    // update input value
     this.setting.bind(function (val) {
-      var value = Utils.toBoolean(val);
-      var inputStatus = Utils.toBoolean(this.__input.checked);
-      // important here is to do a soft comparison so that
-      // '1' is equal to 1 and '0' to 0
-      if (inputStatus !== value) {
-        this.__input.checked = value;
+      if (this.rendered) {
+        var value = Utils.toBoolean(val);
+        var inputStatus = Utils.toBoolean(this.__input.checked);
+        if (inputStatus !== value) {
+          this.__input.checked = value;
+        }
       }
     }.bind(this));
   },

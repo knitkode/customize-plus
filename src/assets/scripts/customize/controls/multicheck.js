@@ -74,17 +74,18 @@ var ControlMulticheck = ControlBase.extend({
   /**
    * On initialization
    *
-   * add custom validation function overriding the empty function from WP API.
+   * Add custom validation function overriding the empty function from WP API.
+   * Update checkboxes status if the setting is changed programmatically.
    *
    * @override
    */
   onInit: function () {
     this.setting.validate = this._validate.bind(this);
 
-    // if the setting is changed programmatically (i.e. through code)
-    // update checkboxes status
-    this.setting.bind(function (value) {
-      this._syncCheckboxes();
+    this.setting.bind(function () {
+      if (this.rendered) {
+        this._syncCheckboxes();
+      }
     }.bind(this));
   },
   /**

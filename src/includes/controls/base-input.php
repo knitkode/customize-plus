@@ -22,7 +22,6 @@ class PWPcp_Customize_Control_Base_Input extends PWPcp_Customize_Control_Base {
 	 */
 	protected function add_to_json() {
 		$this->json['attrs'] = $this->input_attrs;
-		$this->json['value'] = $this->value();
 	}
 
 	/**
@@ -33,8 +32,9 @@ class PWPcp_Customize_Control_Base_Input extends PWPcp_Customize_Control_Base {
 	protected function js_tpl() {
 		?>
 		<label>
-			<?php $this->js_tpl_header(); ?>
-			<input type="{{ data.type.replace('pwpcp_','') }}" value="{{ data.value }}" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #>>
+			<?php $this->js_tpl_header(); ?><# var a = data.attrs; #>
+			<input type="{{ a.type || data.type.replace('pwpcp_','') }}" value="<?php // filled through js: `control.setting()` ?>" <# for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #>>
+			<div class="pwpcp-input-feedback"></div>
 		</label>
 		<?php
 	}
