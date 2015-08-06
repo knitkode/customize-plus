@@ -68,7 +68,7 @@ var ControlMulticheck = ControlBase.extend({
       return _validateArray();
     } else {
       // @@todo maybe throws exception? \\
-      return lastValueAsArray;
+      return this.setting();
     }
   },
   /**

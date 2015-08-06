@@ -60,6 +60,8 @@ var ControlColor = ControlBase.extend({
       (this.params.allowAlpha && validator.isRgbaColor(value))
     ) {
       return value;
+    } else {
+      return this.setting();
     }
   },
   /**

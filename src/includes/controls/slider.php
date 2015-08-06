@@ -14,7 +14,20 @@
  */
 class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 
+	/**
+	 * Control type.
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
 	public $type = 'pwpcp_slider';
+
+	/**
+	 * Units
+	 *
+	 * @since  0.0.1=
+	 * @var array
+	 */
 	public $units = array( 'px' );
 
 	/**

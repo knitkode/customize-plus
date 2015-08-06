@@ -14,6 +14,12 @@
  */
 class PWPcp_Customize_Control_Buttonset extends PWPcp_Customize_Control_Base_Radio {
 
+	/**
+	 * Control type.
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
 	public $type = 'pwpcp_buttonset';
 
 	/**
@@ -23,7 +29,7 @@ class PWPcp_Customize_Control_Buttonset extends PWPcp_Customize_Control_Base_Rad
 	 */
 	protected function js_tpl_choice () {
 		?>
-			<input id="{{ id }}" type="radio" value="{{ val }}" name="_customize-pwpcp_buttonset-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
+			<input id="{{ id }}" type="radio" value="{{ val }}" name="_customize-pwpcp_buttonset-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
 			<label class="{{helpClass}}"{{{ helpAttrs }}} for="{{ id }}" onclick="">{{{ label }}}</label>
 		<?php
 	}

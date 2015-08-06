@@ -226,8 +226,7 @@ var ControlBase = wpApi.Control.extend({
       console.log('%c inflate DOM of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       // flag control that it's rendered
       this.rendered = true;
-      // pass true for isForTheFirstTimeReady argument, so that we bind the setting only once
-      this.ready(true);
+      this.ready();
     } else {
       if (!this.rendered) {
         this._container.innerHTML = this.params.template;

@@ -14,7 +14,42 @@
  */
 class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio {
 
+	/**
+	 * Control type.
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
 	public $type = 'pwpcp_select';
+
+	/**
+	 * Multiple
+	 *
+	 * @since 0.0.1
+	 * @var boolean
+	 */
+	protected $multiple = false;
+
+	/**
+	 * Selectize
+	 *
+	 * @since 0.0.1
+	 * @var boolean|array
+	 */
+	protected $selectize = false;
+
+	/**
+	 * Override here beacause we need to decode the value (is a JSON)
+	 *
+	 * @since 0.0.1
+	 */
+	protected function add_to_json() {
+		parent::add_to_json();
+		$this->json['multiple'] = $this->multiple;
+		if ( $this->selectize ) {
+			$this->json['selectize'] = $this->selectize;
+		}
+	}
 
 	/**
 	 * Render template for choice displayment.
@@ -23,7 +58,7 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	 */
 	protected function js_tpl_choice() {
 		?>
-			<option class="{{helpClass}}"{{{ helpAttrs }}} value="{{ val }}"<# if (data.value==val) { #> selected<# } #><# if (choice.sublabel) { #> data-sublabel="{{{ choice.sublabel }}}"<# } #>>
+			<option class="{{helpClass}}"{{{ helpAttrs }}} value="{{ val }}"<?php // `selected` status synced through js in `control.ready()` ?><# if (choice.sublabel) { #> data-sublabel="{{{ choice.sublabel }}}"<# } #>>
 				{{{ label }}}
 			</option>
 		<?php
@@ -36,7 +71,7 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	 */
 	protected function js_tpl_above_choices () {
 		?>
-			<select name="_customize-pwpcp_select-{{ data.id }}">
+			<select name="_customize-pwpcp_select-{{ data.id }}"<# if (data.multiple) { #> multiple="true"<# } #>>
 		<?php
 	}
 

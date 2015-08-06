@@ -24,6 +24,7 @@ var ControlBaseInput = ControlBase.extend({
       if (_.isString(validationResult.msg)) {
         this.__inputFeedback.innerHTML = validationResult.msg;
       }
+      return this.setting();
     } else {
       this.__input.removeAttribute('style');
       this.__inputFeedback.removeAttribute('style');

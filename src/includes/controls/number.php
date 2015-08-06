@@ -14,6 +14,12 @@
  */
 class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input {
 
+	/**
+	 * Control type.
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
 	public $type = 'pwpcp_number';
 
 	/**

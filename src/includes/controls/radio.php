@@ -14,6 +14,12 @@
  */
 class PWPcp_Customize_Control_Radio extends PWPcp_Customize_Control_Base_Radio {
 
+	/**
+	 * Control type.
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
 	public $type = 'pwpcp_radio';
 
 	/**
@@ -24,7 +30,7 @@ class PWPcp_Customize_Control_Radio extends PWPcp_Customize_Control_Base_Radio {
 	protected function js_tpl_choice() {
 		?>
 			<label class="{{helpClass}}"{{{ helpAttrs }}}>
-				<input type="radio" value="{{ val }}" name="_customize-pwpcp_radio-{{ data.id }}" <# if (val===data.value) { #>checked<# } #>>
+				<input type="radio" value="{{ val }}" name="_customize-pwpcp_radio-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
 				{{{ label }}}
 				<# if (choice.sublabel) { #><small> ({{{ choice.sublabel }}})</small><# } #>
 			</label>

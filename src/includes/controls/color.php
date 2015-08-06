@@ -22,12 +22,8 @@
 class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 
 	/**
-	 * Control type identifier
+	 * Control type.
 	 *
-	 * Also used in the js on the `defaultConstructor`
-	 * property of the WordPress Customize API.
-	 *
-	 * @override
 	 * @since 0.0.1
 	 * @var string
 	 */

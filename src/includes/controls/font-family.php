@@ -14,6 +14,12 @@
  */
 class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 
+	/**
+	 * Control type.
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
 	public $type = 'pwpcp_font_family';
 
 	/**

@@ -14,18 +14,13 @@
  */
 class PWPcp_Customize_Control_Multicheck extends PWPcp_Customize_Control_Base_Radio {
 
-	public $type = 'pwpcp_multicheck';
-
 	/**
-	 * Override here beacause we need to decode the value (is a JSON)
+	 * Control type.
 	 *
 	 * @since 0.0.1
+	 * @var string
 	 */
-	protected function add_to_json() {
-		$this->json['id'] = $this->id;
-		$this->json['choices'] = $this->choices;
-		$this->json['value'] = json_decode( $this->value() );
-	}
+	public $type = 'pwpcp_multicheck';
 
 	/**
 	 * Render template for choice displayment.
@@ -35,7 +30,7 @@ class PWPcp_Customize_Control_Multicheck extends PWPcp_Customize_Control_Base_Ra
 	protected function js_tpl_choice() {
 		?>
 			<label class="{{helpClass}}"{{{ helpAttrs }}}>
-				<input type="checkbox" name="_customize-pwpcp_multicheck-{{ data.id }}" value="{{ val }}" <# if (data.value.indexOf(val) !== -1) { #>checked<# } #>>{{{ label }}}
+				<input type="checkbox" name="_customize-pwpcp_multicheck-{{ data.id }}" value="{{ val }}"<?php // `checked` status synced through js in `control.ready()` ?>>{{{ label }}}
 			</label>
 		<?php
 	}

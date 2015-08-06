@@ -14,6 +14,12 @@
  */
 class PWPcp_Customize_Control_Dummy extends WP_Customize_Control {
 
+	/**
+	 * Control type.
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
 	public $type = 'pwpcp_dummy';
 
 	/**
@@ -28,8 +34,10 @@ class PWPcp_Customize_Control_Dummy extends WP_Customize_Control {
 	 */
 	protected function render() {}
 
-	// public function to_json() {}
-
+	/**
+	 * [content_template description]
+	 * @return [type] [description]
+	 */
 	public function content_template() {
 		ob_start( 'pwpcp_compress_html' ); ?>
 		<# if (data.label) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>

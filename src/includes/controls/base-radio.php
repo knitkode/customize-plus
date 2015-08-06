@@ -23,7 +23,6 @@ class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Control_Base {
 	protected function add_to_json() {
 		$this->json['id'] = $this->id;
 		$this->json['choices'] = $this->choices;
-		$this->json['value'] = $this->value();
 	}
 
 	/**
