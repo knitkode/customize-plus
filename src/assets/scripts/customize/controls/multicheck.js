@@ -79,14 +79,13 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
    */
   onInit: function () {
     this.setting.bind(function (value) {
-      debugger;
-      if (this.rendered && value !== this._getCurrentValueFromUI()) {
+      var currentValueFromDOM = this._getCurrentValueFromUI();
+      if (this.rendered && value !== currentValueFromDOM) {
         this._syncCheckboxes();
 
         if (this.params.sortable) {
           this._reorder();
         }
-        this.params.lastValue = value;
       }
     }.bind(this));
   },
@@ -97,8 +96,6 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
    */
   ready: function () {
     this.__inputs = this._container.getElementsByTagName('input');
-
-    this.params.lastValue = this.setting();
 
     if (this.params.sortable) {
       var self = this;
@@ -118,13 +115,18 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
     // sync checked state on checkboxes on ready and bind (argument `true`)
     this._syncCheckboxes(true);
   },
+  /**
+   * Get current `setting` value from DOM
+   * @return {string} JSONified array
+   */
   _getCurrentValueFromUI: function () {
     var value = [];
     var allSorted = this.container.sortable('toArray', { attribute: 'title' });
     for (var i = 0, l = allSorted.length; i < l; i++) {
-      var input = this.__itemsMap[ allSorted[i] ];
+      var key = allSorted[i];
+      var input = this.__itemsMap[key]._input;
       if (input.checked) {
-        value.push(allSorted[i]);
+        value.push(key);
       }
     }
     return JSON.stringify(value);
@@ -164,7 +166,10 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
     this.__itemsMap = {};
 
     for (var i = 0, l = items.length; i < l; i++) {
-      this.__itemsMap[items[i].title] = items[i];
+      this.__itemsMap[items[i].title] = {
+        _sortable: items[i],
+        _input: items[i].getElementsByTagName('input')[0]
+      };
     }
   },
   /**
@@ -176,10 +181,9 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
 
     // then sort the unchecked ones
     var valueAsArray = JSON.parse(this.setting());
-    for (val in this.choices) {
-      var itemValue = valueAsArray[i];
-      if (valueAsArray.indexOf(itemValue) === -1) {
-        var itemDOM = this.__itemsMap[itemValue];
+    for (var key in this.params.choices) {
+      if (valueAsArray.indexOf(key) === -1) {
+        var itemDOM = this.__itemsMap[key]._sortable;
         itemDOM.parentNode.removeChild(itemDOM);
         this._container.appendChild(itemDOM);
       }

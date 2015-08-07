@@ -88,7 +88,9 @@ api['controls']['Sortable'] = wpApi['controlConstructor']['pwpcp_sortable'] = Co
     this.__itemsMap = {};
 
     for (var i = 0, l = items.length; i < l; i++) {
-      this.__itemsMap[items[i].title] = items[i];
+      this.__itemsMap[items[i].title] = {
+        _sortable: items[i]
+      };
     }
   },
   /**
@@ -100,7 +102,7 @@ api['controls']['Sortable'] = wpApi['controlConstructor']['pwpcp_sortable'] = Co
     var valueAsArray = JSON.parse(this.setting());
     for (var i = 0, l = valueAsArray.length; i < l; i++) {
       var itemValue = valueAsArray[i];
-      var itemDOM = this.__itemsMap[itemValue];
+      var itemDOM = this.__itemsMap[itemValue]._sortable;
       itemDOM.parentNode.removeChild(itemDOM);
       this._container.appendChild(itemDOM);
     }
