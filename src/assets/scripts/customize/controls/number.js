@@ -11,18 +11,18 @@
  */
 wpApi['controlConstructor']['pwpcp_number'] = ControlBaseInput.extend({
   /**
-   * Validate
+   * Validate value
    *
    * @override
    * @param  {string} value
    * @return {string|object<error,boolean|string>}
    */
-  validate: function (value) {
+  _validateValue: function (rawValue) {
+    var value = parseInt(rawValue, 10);
     var attrs = this.params.attrs;
     var errorMsg = '';
-
     // required
-    if (attrs.required && !value.length) {
+    if (attrs.required && !_.isNumber(value)) {
       errorMsg += api['l10n']['vNotEmpty'];
     } else {
       // min value

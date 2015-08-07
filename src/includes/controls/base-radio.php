@@ -35,35 +35,57 @@ class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Control_Base {
 	 */
 	protected function js_tpl() {
 		?>
-		<# var choices = data.choices, i = 0;
+		<# var choices = data.choices, idx = 0;
 			if (!_.isEmpty(choices)) { #>
 				<?php $this->js_tpl_header(); ?>
 				<?php $this->js_tpl_above_choices(); ?>
-				<# for (var val in choices) {
-						if (choices.hasOwnProperty(val)) {
-							var label;
-							var choice = choices[val];
-							var helpClass = '';
-							var helpAttrs = '';
-							var id = data.id + i++;
-							if (typeof choices[val] === 'string') {
-								label = choice;
-							} else {
-								label = choice.label;
-								if (choice.help) {
-									helpClass = 'pwpcp-help';
-									helpAttrs = ' data-help=' + choice.help;
-									if (choice.help_title) helpAttrs += ' data-title=' + choice.help_title;
-									if (choice.help_img) helpAttrs += ' data-img=' + choice.help_img;
-									if (choice.help_text) helpAttrs += ' data-text=' + choice.help_text;
-									if (choice.help_video) helpAttrs += ' data-video=' + choice.help_video;
-								}
-							}
-						#>
-						<?php $this->js_tpl_choice(); ?>
-						<# }
-					} #>
+				<?php $this->js_tpl_choices_loop(); ?>
 				<?php $this->js_tpl_below_choices(); ?>
+		<# } #>
+		<?php
+	}
+
+	/**
+	 * Ouput the choices template in a loop. Override this in subclasses
+	 * to change behavior, for instance in sortable controls.
+	 *
+	 * @since 0.0.1
+	 */
+	protected function js_tpl_choices_loop () {
+		?>
+		<# for (var val in choices) { #>
+			<?php $this->js_tpl_choice(); ?>
+		<#} #>
+		<?php
+	}
+
+	/**
+	 * Ouput the js to configure each choice template data and its UI
+	 *
+	 * @since 0.0.1
+	 */
+	protected function js_tpl_choice () {
+		?>
+		<# if (choices.hasOwnProperty(val)) {
+			var label;
+			var choice = choices[val];
+			var helpClass = '';
+			var helpAttrs = '';
+			var id = data.id + idx++;
+			if (typeof choices[val] === 'string') {
+				label = choice;
+			} else {
+				label = choice.label;
+				if (choice.help) {
+					helpClass = 'pwpcp-help';
+					helpAttrs = ' data-help=' + choice.help;
+					if (choice.help_title) helpAttrs += ' data-title=' + choice.help_title;
+					if (choice.help_img) helpAttrs += ' data-img=' + choice.help_img;
+					if (choice.help_text) helpAttrs += ' data-text=' + choice.help_text;
+					if (choice.help_video) helpAttrs += ' data-video=' + choice.help_video;
+				}
+			} #>
+			<?php $this->js_tpl_choice_ui(); ?>
 		<# } #>
 		<?php
 	}
@@ -73,7 +95,7 @@ class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Control_Base {
 	 *
 	 * @since 0.0.1
 	 */
-	protected function js_tpl_choice () {}
+	protected function js_tpl_choice_ui () {}
 
 	/**
 	 * Hook to add a part of template just before the choices loop

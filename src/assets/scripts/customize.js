@@ -76,7 +76,10 @@
   //= include customize/controls/radio-image.js
   //= include customize/controls/select.js
   //= include customize/controls/slider.js
+  //= include customize/controls/sortable.js
+  //= include customize/controls/tags.js
   //= include customize/controls/text.js
+  //= include customize/controls/textarea.js
   //= include customize/controls/toggle.js
 
   console.log('customize.js controls initialization took ' + (performance.now() - t) + ' ms.');

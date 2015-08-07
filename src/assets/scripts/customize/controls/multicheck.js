@@ -8,7 +8,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-var ControlMulticheck = ControlBase.extend({
+wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
   /**
    * Validate
    *
@@ -16,7 +16,7 @@ var ControlMulticheck = ControlBase.extend({
    *                                    through js API
    * @return {string} A JSONified Array
    */
-  _validate: function (rawNewValue) {
+  validate: function (rawNewValue) {
     var newValue;
     try {
       newValue = JSON.parse(rawNewValue);
@@ -41,25 +41,25 @@ var ControlMulticheck = ControlBase.extend({
         // only if it is an allowed choice...
         if (params.choices[newValue]) {
           lastValueAsArray.push(newValue);
+          // always sort it
+          lastValueAsArray = this._getSortedValue(lastValueAsArray);
         }
       }
       return JSON.stringify(lastValueAsArray);
-    };
+    }.bind(this);
     /**
      * Validate array
      * @return {string}
      */
     var _validateArray = function () {
       var validArray = [];
-      var validArrayAsString;
       for (var i = 0; i < newValue.length; i++) {
         // only if it is an allowed choice...
         if (params.choices[ newValue[i] ]) {
           validArray.push( newValue[i] );
         }
       }
-      validArrayAsString = JSON.stringify(validArray);
-      return validArrayAsString;
+      return JSON.stringify(validArray);
     };
     // check type and do appropriate validation
     if (_.isString(newValue)) {
@@ -67,24 +67,26 @@ var ControlMulticheck = ControlBase.extend({
     } else if(_.isArray(newValue)){
       return _validateArray();
     } else {
-      // @@todo maybe throws exception? \\
       return this.setting();
     }
   },
   /**
    * On initialization
    *
-   * Add custom validation function overriding the empty function from WP API.
    * Update checkboxes status if the setting is changed programmatically.
    *
    * @override
    */
   onInit: function () {
-    this.setting.validate = this._validate.bind(this);
-
-    this.setting.bind(function () {
-      if (this.rendered) {
+    this.setting.bind(function (value) {
+      debugger;
+      if (this.rendered && value !== this._getCurrentValueFromUI()) {
         this._syncCheckboxes();
+
+        if (this.params.sortable) {
+          this._reorder();
+        }
+        this.params.lastValue = value;
       }
     }.bind(this));
   },
@@ -96,8 +98,92 @@ var ControlMulticheck = ControlBase.extend({
   ready: function () {
     this.__inputs = this._container.getElementsByTagName('input');
 
+    this.params.lastValue = this.setting();
+
+    if (this.params.sortable) {
+      var self = this;
+      var setting = self.setting;
+
+      this.container.sortable({
+        items: '> label',
+        cursor: 'move',
+        update: function (event, ui) {
+          setting.set(self._getSortedValue(setting()));
+        }
+      });
+
+      this._buildItemsMap();
+    }
+
     // sync checked state on checkboxes on ready and bind (argument `true`)
     this._syncCheckboxes(true);
+  },
+  _getCurrentValueFromUI: function () {
+    var value = [];
+    var allSorted = this.container.sortable('toArray', { attribute: 'title' });
+    for (var i = 0, l = allSorted.length; i < l; i++) {
+      var input = this.__itemsMap[ allSorted[i] ];
+      if (input.checked) {
+        value.push(allSorted[i]);
+      }
+    }
+    return JSON.stringify(value);
+  },
+  /**
+   * Get sorted value
+   * @return {array}
+   */
+  _getSortedValue: function (value) {
+    var valueSorted = [];
+
+    // read sortable jQuery UI data
+    if (this.params.sortable) {
+      var valueAsArray = _.isArray(value) ? value : JSON.parse(value);
+      var sortedItems = this.container.sortable('toArray', { attribute: 'title' });
+      for (var i = 0; i < sortedItems.length; i++) {
+        if (valueAsArray.indexOf(sortedItems[i]) !== -1) {
+          valueSorted.push(sortedItems[i]);
+        }
+      }
+    // follow the order of the DOM
+    } else {
+      for (var i = 0, l = this.__inputs.length; i < l; i++) {
+        var input = this.__inputs[i];
+        if (input.checked) {
+          valueSorted.push(input.value);
+        }
+      }
+    }
+    return valueSorted;
+  },
+  /**
+   * @inherit
+   */
+  _buildItemsMap: function () {
+    var items = this._container.getElementsByTagName('label');
+    this.__itemsMap = {};
+
+    for (var i = 0, l = items.length; i < l; i++) {
+      this.__itemsMap[items[i].title] = items[i];
+    }
+  },
+  /**
+   * @inherit
+   */
+  _reorder: function () {
+    // sort first the checked ones
+    api['controls']['Sortable'].prototype._reorder.apply(this);
+
+    // then sort the unchecked ones
+    var valueAsArray = JSON.parse(this.setting());
+    for (val in this.choices) {
+      var itemValue = valueAsArray[i];
+      if (valueAsArray.indexOf(itemValue) === -1) {
+        var itemDOM = this.__itemsMap[itemValue];
+        itemDOM.parentNode.removeChild(itemDOM);
+        this._container.appendChild(itemDOM);
+      }
+    }
   },
   /**
    * Sync checkboxes and maybe bind change event
@@ -118,5 +204,3 @@ var ControlMulticheck = ControlBase.extend({
     }
   }
 });
-
-wpApi['controlConstructor']['pwpcp_multicheck'] = ControlMulticheck;

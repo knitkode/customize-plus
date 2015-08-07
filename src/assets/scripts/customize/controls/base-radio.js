@@ -27,6 +27,7 @@ var ControlBaseRadio = ControlBase.extend({
   /**
    * On ready
    *
+   * @override
    */
   ready: function () {
     this.__inputs = this._container.getElementsByTagName('input');

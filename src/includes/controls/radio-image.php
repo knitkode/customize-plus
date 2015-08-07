@@ -33,7 +33,7 @@ class PWPcp_Customize_Control_Radio_Image extends PWPcp_Customize_Control_Base_R
 	 * extension.
 	 * @since 0.0.1
 	 */
-	protected function js_tpl_choice() {
+	protected function js_tpl_choice_ui() {
 		?>
 			<input id="{{ id }}" class="pwpcp-radio-image" type="radio" value="{{ val }}" name="_customize-pwpcp_radio_image-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
 			<label class="{{helpClass}}"{{{ helpAttrs }}} for="{{ id }}">

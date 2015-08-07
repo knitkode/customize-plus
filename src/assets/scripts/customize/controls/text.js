@@ -11,13 +11,13 @@
  */
 wpApi['controlConstructor']['pwpcp_text'] = ControlBaseInput.extend({
   /**
-   * Validate
+   * Validate value
    *
    * @override
    * @param  {string} value
    * @return {string|object<error,boolean|string>}
    */
-  validate: function (value) {
+  _validateValue: function (value) {
     var attrs = this.params.attrs;
     var inputType = attrs.type || 'text';
     var errorMsg = '';
@@ -37,6 +37,11 @@ wpApi['controlConstructor']['pwpcp_text'] = ControlBaseInput.extend({
       // email
       else if (inputType === 'email' && !validator.isEmail(value)) {
         errorMsg += api['l10n']['vInvalidEmail'];
+      }
+      // text
+      else {
+        // always escape HTML with `validator`
+        value = validator.escape(value);
       }
     }
 

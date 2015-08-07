@@ -11,13 +11,24 @@
  */
 var ControlBaseInput = ControlBase.extend({
   /**
+   * Validate value
+   *
+   * @abstract To implement in subclasses
+   * @param  {string} newValue
+   * @return {string|object<boolean,string>}
+   */
+  _validateValue: function (newValue) {
+    // var errorObj = { error: true, msg: '' };
+    return newValue;
+  },
+  /**
    * Validate (private)
    *
    * @param  {string} newValue
    * @return {string|boolean}
    */
-  _validate: function (newValue) {
-    var validationResult = this.validate(newValue);
+  validate: function (newValue) {
+    var validationResult = this._validateValue(newValue);
     if (validationResult.error) {
       this.__input.style.cssText = 'border-color: #c00; background: #fff9f9; box-shadow: 0 0 4px #c00;';
       this.__inputFeedback.style.color = '#c00';
@@ -33,27 +44,13 @@ var ControlBaseInput = ControlBase.extend({
     }
   },
   /**
-   * Validate
-   *
-   * @abstract To implement in subclasses
-   * @param  {string} newValue
-   * @return {string|object<boolean,string>}
-   */
-  validate: function (newValue) {
-    // var errorObj = { error: true, msg: '' };
-    return newValue;
-  },
-  /**
    * On initialization
    *
-   * Add custom validation function overriding the empty function from WP API.
    * Update input value if the setting is changed programmatically.
    *
    * @override
    */
   onInit: function () {
-    this.setting.validate = this._validate.bind(this);
-
     // here value can be undefined if it doesn't pass the validate function
     this.setting.bind(function (value) {
       if (this.rendered && value && this.__input.value !== value) {
@@ -64,12 +61,18 @@ var ControlBaseInput = ControlBase.extend({
   /**
    * On ready
    *
+   * @override
    */
   ready: function () {
     this.__input = this._container.getElementsByTagName('input')[0];
     this.__inputFeedback = this._container.getElementsByClassName('pwpcp-input-feedback')[0];
 
-    // sync value and bind input on ready
+    this._syncAndListen();
+  },
+  /**
+   * Sync input and listen for changes
+   */
+  _syncAndListen: function () {
     $(this.__input)
       .val(this.setting())
       .on('change keyup paste', function (event) {

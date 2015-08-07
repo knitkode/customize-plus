@@ -25,14 +25,15 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	/**
 	 * Units
 	 *
-	 * @since  0.0.1=
+	 * @since  0.0.1
 	 * @var array
 	 */
 	public $units = array( 'px' );
 
 	/**
-	 * [enqueue description]
-	 * @return [type] [description]
+	 * Enqueue libraries
+	 *
+	 * @since  0.0.1
 	 */
 	public function enqueue() {
 		wp_enqueue_script( 'jquery-ui-slider' );

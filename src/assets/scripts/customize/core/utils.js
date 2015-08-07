@@ -157,7 +157,7 @@ var Utils = (function () {
      * @return {boolean}          Whether the reset has succeded
      */
     _isResetNeeded: function (control, resetType) {
-      if (control.params.type === 'pwpcp_dummy') {
+      if (!control.pwpcp || control.params.type === 'pwpcp_dummy') {
         return false;
       }
       var _softenize = control.softenize;

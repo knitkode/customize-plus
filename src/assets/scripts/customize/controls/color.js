@@ -16,7 +16,8 @@ $.fn.spectrum.load = false;
  * @augments wp.customize.Class
  * @requires Utils
  */
-var ControlColor = ControlBase.extend({
+// export to our API and to WordPress API
+api['controls']['Color'] = wpApi['controlConstructor']['pwpcp_color'] = ControlBase.extend({
   /**
    * Normalize setting for soft comparison
    *
@@ -53,7 +54,7 @@ var ControlColor = ControlBase.extend({
    * @param {*} value The value to validate.
    * @return {string} The validated control value.
    */
-  _validate: function (value) {
+  validate: function (value) {
     if (
       (!this.params.disallowTransparent && value === 'transparent') ||
       validator.isHexColor(value) ||
@@ -65,15 +66,11 @@ var ControlColor = ControlBase.extend({
     }
   },
   /**
-   * On initialization:
-   * add custom validation function overriding the empty function from WP API
-   * add rgba validation if alpha is allowed
+   * On initialization
    *
    * @override
    */
   onInit: function () {
-    this.setting.validate = this._validate.bind(this);
-
     // bind setting change to pass value on apply value
     // if we are programmatically changing the control value
     // for instance through js (during import, debugging, etc.)
@@ -180,6 +177,3 @@ var ControlColor = ControlBase.extend({
     }
   }
 });
-
-// export to our API and to WordPress API
-api['controls']['Color'] = wpApi['controlConstructor']['pwpcp_color'] = ControlColor;

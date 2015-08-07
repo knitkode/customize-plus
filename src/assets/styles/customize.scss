@@ -33,12 +33,19 @@
 
 // customize - controls
 @import "customize/controls/base";
-@import "customize/controls/font-family";
-@import "customize/controls/radio";
-@import "customize/controls/radio-image";
-@import "customize/controls/toggle";
-@import "customize/controls/multicheck";
+@import "customize/controls/buttonset";
 @import "customize/controls/color"; // @@todo, to simplify \\
-@import "customize/controls/slider";
 @import "customize/controls/divider";
+@import "customize/controls/font-family";
 @import "customize/controls/helpers-extras";
+@import "customize/controls/multicheck";
+@import "customize/controls/number";
+@import "customize/controls/radio-image";
+@import "customize/controls/radio";
+@import "customize/controls/select";
+@import "customize/controls/slider";
+@import "customize/controls/sortable";
+@import "customize/controls/tags";
+@import "customize/controls/text";
+@import "customize/controls/textarea";
+@import "customize/controls/toggle";

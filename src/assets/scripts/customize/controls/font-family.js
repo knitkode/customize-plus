@@ -8,7 +8,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-var ControlFontFamily = ControlBase.extend({
+wpApi['controlConstructor']['pwpcp_font_family'] = ControlBase.extend({
   /**
    * On init
    *
@@ -102,5 +102,3 @@ var ControlFontFamily = ControlBase.extend({
     });
   }
 });
-
-wpApi['controlConstructor']['pwpcp_font_family'] = ControlFontFamily;

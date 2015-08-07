@@ -9,7 +9,7 @@
  * @augments wp.customize.Class
  * @requires Utils
  */
-var ControlToggle = ControlBase.extend({
+wpApi['controlConstructor']['pwpcp_toggle'] = ControlBase.extend({
   /**
    * Normalize setting for soft comparison
    *
@@ -31,7 +31,7 @@ var ControlToggle = ControlBase.extend({
    * @param  {string|array} newValue Value of the checkbox or sent through js API
    * @return {number} 0 or 1 as integer
    */
-  _validate: function (newValue) {
+  validate: function (newValue) {
     return Utils.toBoolean(newValue) ? 1 : 0;
   },
   /**
@@ -43,8 +43,6 @@ var ControlToggle = ControlBase.extend({
    * @override
    */
   onInit: function () {
-    this.setting.validate = this._validate.bind(this);
-
     this.setting.bind(function (val) {
       if (this.rendered) {
         var value = Utils.toBoolean(val);
@@ -58,21 +56,19 @@ var ControlToggle = ControlBase.extend({
   /**
    * On ready
    *
+   * @override
    */
   ready: function () {
-    var setting = this.setting;
     this.__input = this._container.getElementsByTagName('input')[0];
 
     // sync input value on ready
-    this.__input.checked = Utils.toBoolean(setting());
+    this.__input.checked = Utils.toBoolean(this.setting());
 
     // bind input on ready
     this.__input.onchange = function (event) {
       event.preventDefault();
-      var value = this.checked ? 1 : 0;
-      setting.set(value);
-    };
+      var value = event.target.checked ? 1 : 0;
+      this.setting.set(value);
+    }.bind(this);
   }
 });
-
-wpApi['controlConstructor']['pwpcp_toggle'] = ControlToggle;

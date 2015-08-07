@@ -19,7 +19,7 @@ var ControlSlider = ControlBase.extend({
    *                                  `control.setting.set(value)`.
    * @return {string} The validate control value.
    */
-  _validate: function (newValue) {
+  validate: function (newValue) {
     console.info('_validate', newValue);
     var params = this.params;
     var min = params.attrs.min;
@@ -98,13 +98,9 @@ var ControlSlider = ControlBase.extend({
   /**
    * On initialization
    *
-   * add custom validation function overriding the empty function from WP API.
-   *
    * @override
    */
   onInit: function () {
-    this.setting.validate = this._validate.bind(this);
-
     // bind setting change to pass value on apply value
     // if we are programmatically changing the control value
     // for instance through js (during import, debugging, etc.)
@@ -115,6 +111,8 @@ var ControlSlider = ControlBase.extend({
   },
   /**
    * On ready
+   *
+   * @override
    */
   ready: function () {
     var setting = this.setting;

@@ -31,7 +31,7 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	protected $multiple = false;
 
 	/**
-	 * Selectize
+	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
 	 *
 	 * @since 0.0.1
 	 * @var boolean|array
@@ -39,13 +39,16 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	protected $selectize = false;
 
 	/**
-	 * Override here beacause we need to decode the value (is a JSON)
+	 * Add values to JSON params
 	 *
 	 * @since 0.0.1
 	 */
 	protected function add_to_json() {
 		parent::add_to_json();
-		$this->json['multiple'] = $this->multiple;
+
+		if ( $this->multiple ) {
+			$this->json['multiple'] = $this->multiple;
+		}
 		if ( $this->selectize ) {
 			$this->json['selectize'] = $this->selectize;
 		}
@@ -56,7 +59,7 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	 *
 	 * @since 0.0.1
 	 */
-	protected function js_tpl_choice() {
+	protected function js_tpl_choice_ui() {
 		?>
 			<option class="{{helpClass}}"{{{ helpAttrs }}} value="{{ val }}"<?php // `selected` status synced through js in `control.ready()` ?><# if (choice.sublabel) { #> data-sublabel="{{{ choice.sublabel }}}"<# } #>>
 				{{{ label }}}

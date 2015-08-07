@@ -27,7 +27,7 @@ class PWPcp_Customize_Control_Buttonset extends PWPcp_Customize_Control_Base_Rad
 	 *
 	 * @since 0.0.1
 	 */
-	protected function js_tpl_choice () {
+	protected function js_tpl_choice_ui () {
 		?>
 			<input id="{{ id }}" type="radio" value="{{ val }}" name="_customize-pwpcp_buttonset-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
 			<label class="{{helpClass}}"{{{ helpAttrs }}} for="{{ id }}" onclick="">{{{ label }}}</label>

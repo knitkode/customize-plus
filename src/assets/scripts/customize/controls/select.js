@@ -8,17 +8,40 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-var ControlSelect = ControlBase.extend({
+wpApi['controlConstructor']['pwpcp_select'] = ControlBase.extend({
   /**
    * Validate
    *
-   * @param  {string} newValue
+   * @param  {string} rawNewValue
    * @return {string} The new value if is an allowed choice or the last value
    */
-  _validate: function (newValue) {
-    if (Object.keys(this.params.choices).indexOf(newValue) !== -1) {
+  validate: function (rawNewValue) {
+    var choices = this.params.choices;
+    var newValue;
+    // it could come as a stringified array through a programmatic change
+    // of the setting (i.e. from a a reset action)
+    try {
+      newValue = JSON.parse(rawNewValue);
+    } catch(e) {
+      newValue = rawNewValue;
+    }
+    // validate array of values
+    if (_.isArray(newValue)) {
+      var validatedArray = [];
+      for (var i = 0, l = newValue.length; i < l; i++) {
+        var item = newValue[i];
+        if (choices[item]) {
+          validatedArray.push(item);
+        }
+      }
+      return JSON.stringify(validatedArray);
+    }
+    // validate string value
+    else if (_.isString(newValue) && choices[newValue]) {
       return newValue;
-    } else {
+    }
+    // otherwise return last value
+    else {
       return this.setting();
     }
   },
@@ -42,9 +65,7 @@ var ControlSelect = ControlBase.extend({
    * @override
    */
   onInit: function () {
-    this.setting.validate = this._validate.bind(this);
-
-    this.setting.bind(function () {
+    this.setting.bind(function (value) {
       if (this.rendered) {
         this._syncOptions();
       }
@@ -53,28 +74,32 @@ var ControlSelect = ControlBase.extend({
   /**
    * On ready
    *
+   * @override
    */
   ready: function () {
-    var select = this._container.getElementsByTagName('select')[0];
+    var selectize = this.params.selectize || false;
+    var setting = this.setting;
+
+    this.__select = this._container.getElementsByTagName('select')[0];
     this.__options = this._container.getElementsByTagName('option');
+
+    // use selectize
+    if (selectize) {
+      var options = _.extend({
+        onChange: function (value) {
+          setting.set(value);
+        }
+      }, selectize);
+      $(this.__select).selectize(options);
+    // or use normal DOM API
+    } else {
+      this.__select.onchange = function () {
+        setting.set(this.value);
+      };
+    }
 
     // sync selected state on options on ready
     this._syncOptions();
-
-    var selectize = this.params.selectize;
-    if (selectize) {
-      this.__$select = $(select);
-      var options = _.isObject(selectize) ? selectize : {};
-      // var options = _.isObject(selectize) ? _.extend({
-      // }, selectize) : {};
-      this.__$select.selectize(options);
-      // this.__$select.selectize.setValue(this.setting());
-    }
-
-    // bind select on ready
-    select.onchange = function (event) {
-      this.setting.set(event.target.value);
-    }.bind(this);
   },
   /**
    * Sync options and maybe bind change event
@@ -85,11 +110,21 @@ var ControlSelect = ControlBase.extend({
    */
   _syncOptions: function () {
     var value = this.setting();
-    for (var i = 0, l = this.__options.length; i < l; i++) {
-      var option = this.__options[i];
-      option.selected = value == option.value;
+
+    // use selectize
+    if (this.params.selectize) {
+      // it could be a json array or a simple string
+      try {
+        this.__select.selectize.setValue(JSON.parse(value));
+      } catch(e) {
+        this.__select.selectize.setValue(value);
+      }
+    // or use normal DOM API
+    } else {
+      for (var i = 0, l = this.__options.length; i < l; i++) {
+        var option = this.__options[i];
+        option.selected = (value == option.value);
+      }
     }
   }
 });
-
-wpApi['controlConstructor']['pwpcp_select'] = ControlSelect;
