@@ -97,6 +97,7 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
   ready: function () {
     this.__inputs = this._container.getElementsByTagName('input');
 
+    // special stuff for sortable multicheck controls
     if (this.params.sortable) {
       var self = this;
       var setting = self.setting;
