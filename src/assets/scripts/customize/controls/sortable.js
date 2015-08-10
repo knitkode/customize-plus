@@ -32,7 +32,7 @@ api['controls']['Sortable'] = wpApi['controlConstructor']['pwpcp_sortable'] = Co
       var validatedArray = [];
       for (var i = 0, l = newValue.length; i < l; i++) {
         var item = newValue[i];
-        if (choices[item]) {
+        if (choices.hasOwnProperty(item)) {
           validatedArray.push(item);
         }
       }

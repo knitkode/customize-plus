@@ -39,7 +39,7 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
       // otherwise push it
       } else {
         // only if it is an allowed choice...
-        if (params.choices[newValue]) {
+        if (params.choices.hasOwnProperty(newValue)) {
           lastValueAsArray.push(newValue);
           // always sort it
           lastValueAsArray = this._getSortedValue(lastValueAsArray);
@@ -55,7 +55,7 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
       var validArray = [];
       for (var i = 0; i < newValue.length; i++) {
         // only if it is an allowed choice...
-        if (params.choices[ newValue[i] ]) {
+        if (params.choices.hasOwnProperty(newValue[i])) {
           validArray.push( newValue[i] );
         }
       }
@@ -122,12 +122,23 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
    */
   _getCurrentValueFromUI: function () {
     var value = [];
-    var allSorted = this.container.sortable('toArray', { attribute: 'title' });
-    for (var i = 0, l = allSorted.length; i < l; i++) {
-      var key = allSorted[i];
-      var input = this.__itemsMap[key]._input;
-      if (input.checked) {
-        value.push(key);
+    // read sortable jQuery UI data
+    if (this.params.sortable) {
+      var allSorted = this.container.sortable('toArray', { attribute: 'title' });
+      for (var i = 0, l = allSorted.length; i < l; i++) {
+        var key = allSorted[i];
+        var input = this.__itemsMap[key]._input;
+        if (input.checked) {
+          value.push(key);
+        }
+      }
+    // follow the order of the DOM
+    } else {
+      for (var i = 0, l = this.__inputs.length; i < l; i++) {
+        var input = this.__inputs[i];
+        if (input.checked) {
+          value.push(input.value);
+        }
       }
     }
     return JSON.stringify(value);

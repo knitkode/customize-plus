@@ -1,7 +1,5 @@
 <?php defined( 'ABSPATH' ) or die;
 
-define( 'PWP_TRIAL_THEME', true ); // @@temp \\
-
 if ( class_exists( 'PWPcp_Singleton' ) ):
 
 	/**

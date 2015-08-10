@@ -29,6 +29,12 @@ class PWPcp_Customize_Control_Textarea extends PWPcp_Customize_Control_Base {
 	protected $allowHTML = false;
 
 	/**
+	 * Enable TinyMCE textarea (default = `false`)
+	 * @var boolean|array
+	 */
+	protected $wp_editor = false;
+
+	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
 	 *
 	 * @since 0.0.1
@@ -37,6 +43,9 @@ class PWPcp_Customize_Control_Textarea extends PWPcp_Customize_Control_Base {
 		$this->json['attrs'] = $this->input_attrs;
 		if ( $this->allowHTML ) {
 			$this->json['allowHTML'] = $this->allowHTML;
+		}
+		if ( $this->wp_editor ) {
+			$this->json['wp_editor'] = $this->wp_editor;
 		}
 	}
 

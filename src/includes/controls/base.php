@@ -138,7 +138,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since 0.0.1
 	 */
 	public function content_template() {
-		ob_start( 'pwpcp_compress_html' );
+		ob_start( 'pwpcp_compress_html' ); // @@doubt does this make the page load considerably slower? \\
 		$this->js_tpl_divider();
 		 // this wrapper is needed to make the Extras menu play nice when divider is there, because of the absolute positioning
 		echo '<# if (data.div) { #><div class="pwpcp-control-wrap"><# } #>';

@@ -12,6 +12,34 @@
  * @link       http://pluswp.com/customize-plus
  */
 
+/**
+ * Load editor through ajax call
+ * // @@temp, this function is more an util than a sanitize function \\
+ * @see  http://wordpress.stackexchange.com/a/130425/25398
+ */
+if ( ! function_exists( 'pwpcp_load_wp_editor' ) ) :
+	function pwpcp_load_wp_editor() {
+		$id = isset( $_POST['id'] ) ? sanitize_key( $_POST['id'] ) : 'pwpcp_tinymce_dummy';
+		$load = isset( $_POST['load'] ) ? true : false;
+		wp_editor( '', $id, array(
+			'teeny' => true,
+			'media_buttons' => false,
+			'quicktags' => false,
+			'textarea_rows' => 4,
+			'tinymce' => array(
+				'menubar' => false,
+			)
+		) );
+		if ( $load ) {
+			_WP_Editors::enqueue_scripts();
+			print_footer_scripts();
+			_WP_Editors::editor_js();
+		}
+		die();
+	}
+	add_action( 'wp_ajax_pwpcp_load_wp_editor', 'pwpcp_load_wp_editor' );
+endif;
+
 // @@temp, this function is more an util than a sanitize function \\
 if ( ! function_exists( 'pwpcp_compress_html' ) ) :
 	/**

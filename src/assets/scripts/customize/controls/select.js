@@ -26,18 +26,18 @@ wpApi['controlConstructor']['pwpcp_select'] = ControlBase.extend({
       newValue = rawNewValue;
     }
     // validate array of values
-    if (_.isArray(newValue)) {
+    if (_.isArray(newValue) && this.params.selectize) {
       var validatedArray = [];
       for (var i = 0, l = newValue.length; i < l; i++) {
         var item = newValue[i];
-        if (choices[item]) {
+        if (choices.hasOwnProperty(item)) {
           validatedArray.push(item);
         }
       }
       return JSON.stringify(validatedArray);
     }
     // validate string value
-    else if (_.isString(newValue) && choices[newValue]) {
+    else if (_.isString(newValue) && choices.hasOwnProperty(newValue)) {
       return newValue;
     }
     // otherwise return last value
@@ -119,8 +119,9 @@ wpApi['controlConstructor']['pwpcp_select'] = ControlBase.extend({
       } catch(e) {
         this.__select.selectize.setValue(value);
       }
+    }
     // or use normal DOM API
-    } else {
+    else {
       for (var i = 0, l = this.__options.length; i < l; i++) {
         var option = this.__options[i];
         option.selected = (value == option.value);

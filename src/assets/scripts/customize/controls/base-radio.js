@@ -31,7 +31,7 @@ var ControlBaseRadio = ControlBase.extend({
    */
   ready: function () {
     this.__inputs = this._container.getElementsByTagName('input');
-
+    console.log('dasdasd asdadas dasdasdas ');
     // sync checked state on radios on ready and bind (argument `true`)
     this._syncRadios(true);
   },

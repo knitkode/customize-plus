@@ -3,3 +3,15 @@
  *
  */
 .customize-control-pwpcp_textarea {}
+
+// fix tinymce zindex problem with dropdowns
+.mce-floatpanel {
+  z-index: 999990 !important;
+}
+
+#wp-link-backdrop {
+  z-index: 999991 !important;
+}
+#wp-link-wrap {
+  z-index: 999992 !important;
+}
