@@ -158,7 +158,7 @@ class Customize_Plus_Demo {
 	 * @param $customize_plus {PWPcp_Customize} Customize Plus Customize instance
 	 */
 	public static function register_custom_classes( $customize_plus ) {
-		// require_once( __DIR__ . '/class-customize-classes.php' );
+		// require_once( get_stylesheet_directory() . '/class-customize-classes.php' );
 		// $customize_plus::register_custom_types( array(
 		// 	'controls' => array(
 		// 		'pwppbs_layout_columns' => 'PWPpbs_Customize_Control_Layout_Columns',
@@ -173,7 +173,7 @@ class Customize_Plus_Demo {
 	 * @return array
 	 */
 	public static function get_customize_tree() {
-		$customize_tree_theme = (array) require( __DIR__ . '/options-demo.php' );
+		$customize_tree_theme = (array) require( get_stylesheet_directory() . '/options-demo.php' );
 		return $customize_tree_theme;
 	}
 
