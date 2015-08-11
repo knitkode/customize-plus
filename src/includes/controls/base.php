@@ -169,16 +169,17 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
-	 * Shared control header template
+	 * Shared control header template.
+	 * Read the label and description as markdown if the js plugin is available.
 	 *
 	 * @since 0.0.1
 	 */
 	protected function js_tpl_header() {
 		?>
 			<# if (data.label) { #>
-				<span class="customize-control-title">{{{ data.label }}}</span>
+				<div class="customize-control-title"><# if (marked) { #>{{{ marked(data.label) }}}<# } else { #>{{{ data.label }}}<# } #></div>
 			<# } if (data.description) { #>
-				<span class="description customize-control-description">{{{ data.description }}}</span>
+				<div class="description customize-control-description"><# if (marked) { #>{{{ marked(data.description) }}}<# } else { #>{{{ data.description }}}<# } #></div>
 			<# } #>
 		<?php
 	}

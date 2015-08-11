@@ -37,6 +37,7 @@
     wpApiIsReady = true;
   });
 
+  //= include customize/core/markdown.js
   //= include customize/core/wptight.js
   //= include customize/core/regexes.js
   //= include customize/core/validators.js

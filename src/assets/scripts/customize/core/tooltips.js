@@ -9,6 +9,13 @@
 var Tooltips = (function () {
 
   /**
+   * Hold reference to marked js plugin,
+   * it might be not here.
+   * @type {function()}
+   */
+  var marked = window.marked;
+
+  /**
    * Common options for both "help" and "guide" tooltips.
    *
    * @type {Object}
@@ -152,7 +159,11 @@ var Tooltips = (function () {
     if (img) {
       content += '<img class="pwpcp-popover--img" src="' + Utils.getImageUrl(img) + '">';
     }
-    if (text) {
+    // use markdown if available
+    if (text && marked) {
+      content += '<div class="pwpcp-popover--text">' + marked(text) + '</div>';
+    // otherwise use plain text
+    } else if (text) {
       content += '<p class="pwpcp-popover--text">' + text + '</p>';
     }
     if (video) {

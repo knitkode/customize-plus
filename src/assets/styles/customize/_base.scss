@@ -155,10 +155,8 @@
  * control specific content. Used for the `extras` menu and `guide` button.
  * Buttons using this class should add their specific class to determine
  * their position inside the control area.
- * Joined `dashicons` class to override some style coming from WordPress
- * specified after our plugin css.
  */
-.dashicons.pwpcp-control-btn {
+.pwpcp-control-btn {
   z-index: 3;
   position: absolute;
   width: $control--btn-size;
@@ -217,14 +215,11 @@
 .pwpcp-textarea {
   width: 100%;
   resize: vertical;
-  // color: #999;
 }
-
 
 // .pwpcp-error {
 //   color: #c00;
 // }
-
 
 /**
  * Input group (like size control).
