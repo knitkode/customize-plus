@@ -9,3 +9,42 @@
  License URI:  http://www.gnu.org/licenses/gpl-2.0.html
  Text Domain:  customize-plus-demo
 */
+
+.demo {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #666;
+  float: left;
+  margin: 80px 40px 0 40px;
+  padding: 5px;
+  background-color: #fafafa;
+  font-size: 12px;
+  text-align: center;
+  box-shadow: 0 0 0 transparent;
+  -webkit-transition: box-shadow .7s ease, -webkit-transform .7s ease;
+          transition: box-shadow .7s ease, transform .7s ease;
+  -webkit-transform: scale(1);
+      -ms-transform: scale(1);
+          transform: scale(1);
+  font-family: monospace;
+  word-break: break-word;
+}
+
+.demo:before {
+  content: attr(title);
+  position: absolute;
+  top: -20px;
+  left: -10px;
+  right: -10px;
+  white-space: nowrap;
+  font-family: arial;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.flash {
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.7);
+  -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+          transform: scale(1.1);
+}

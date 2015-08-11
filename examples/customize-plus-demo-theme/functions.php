@@ -46,6 +46,7 @@ class Customize_Plus_Demo {
 		add_action( 'PWPcp/customize/register_custom_classes', array( __CLASS__, 'register_custom_classes' ), 20, 1 );
 		add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'customize_enqueue_js_admin' ) );
 		add_action( 'customize_preview_init' , array( __CLASS__, 'customize_enqueue_js_preview' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_manager' ) ); // just for demo purposes
 	}
 
 	/**
@@ -209,6 +210,15 @@ class Customize_Plus_Demo {
 			return get_theme_mod( $opt_name );
 		}
 	}
+
+	/**
+		 * Enqueu default style.css, requried only for this demo
+		 *
+		 * @since 0.0.1
+		 */
+		public static function enqueue_manager() {
+			wp_enqueue_style( self::PREFIX . '-theme', get_template_directory_uri() . '/style.css', array(), self::VERSION );
+		}
 }
 
 new Customize_Plus_Demo;
