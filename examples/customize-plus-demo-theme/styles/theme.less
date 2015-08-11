@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+.color {
+  box-shadow:
+    0 0 1px @size-dynamic-active @color-dynamic-active,
+    4px 4px 1px @size-dynamic-passive @color-dynamic-passive,
+    6px 6px 1px @size-dynamic-hidetab-active @color-dynamic-hidetab-active,
+    8px 6px 1px @size-dynamic-hidetab-passive @color-dynamic-hidetab-passive !important;
+}
+.demo {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #666;
+  float: left;
+  margin: 80px 40px 0 40px;
+  padding: 5px;
+  background-color: #fafafa;
+  font-size: 12px;
+  text-align: center;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  transition: box-shadow .7s ease, transform .7s ease;
+  transform: scale(1);
+  font-family: monospace;
+  word-break: break-word;
+
+  &:before {
+    content: attr(title);
+    position: absolute;
+    top: -20px;
+    left: -10px;
+    right: -10px;
+    white-space: nowrap;
+    font-family: arial;
+    font-size: 13px;
+    font-weight: bold;
+  }
+}
+.flash {
+  box-shadow: 0 0 60px rgba(0,0,0,.7);
+  transform: scale(1.1);
+}
