@@ -11,6 +11,24 @@
  */
 var ControlBaseRadio = ControlBase.extend({
   /**
+   * Validate
+   *
+   * @param  {string} newValue
+   * @return {string} The new value if is an allowed choice or the last value
+   */
+  validate: function (newValue) {
+    var choices = this.params.choices;
+
+    // validate value as a string
+    if (_.isString(newValue) && choices.hasOwnProperty(newValue)) {
+      return newValue;
+    }
+    // otherwise return last value
+    else {
+      return this.setting();
+    }
+  },
+  /**
    * On initialization
    *
    * Update radios status if the setting is changed programmatically.
@@ -31,7 +49,6 @@ var ControlBaseRadio = ControlBase.extend({
    */
   ready: function () {
     this.__inputs = this._container.getElementsByTagName('input');
-    console.log('dasdasd asdadas dasdasdas ');
     // sync checked state on radios on ready and bind (argument `true`)
     this._syncRadios(true);
   },

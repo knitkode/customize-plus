@@ -124,7 +124,9 @@ var ControlBase = wpApi.Control.extend({
    * @param  {string} newValue
    * @return {string} The newValue validated
    */
-  validate: function (newValue) {},
+  validate: function (newValue) {
+    return newValue;
+  },
   /**
    * Triggered when the control has been initialized
    *
