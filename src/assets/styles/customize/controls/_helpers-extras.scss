@@ -53,7 +53,7 @@
   position: absolute;
   top: $control--spacing-top + $control--btn-size + 3px;
   left: $control--spacing-left;
-  width: $WPcustomize--sidebar-inner-width;
+  width: $WPcustomize--sidebar-inner-width - 20; // @@temp -20 to e sure to don't overflow \\
   margin: 0 0 $control--spacing-bottom;
   padding: 6px;
   background: $popover--bg;
@@ -71,7 +71,7 @@
 
   // the menus shrinks a bit when the scrollbar is visible
   .pwpcp-has-scrollbar & {
-    width: $WPcustomize--sidebar-inner-width - 16; // scrollbar width
+    width: $WPcustomize--sidebar-inner-width - 16 - 20; // scrollbar width // @@temp -20 to e sure to don't overflow \\
   }
 
   // displayment is class based
