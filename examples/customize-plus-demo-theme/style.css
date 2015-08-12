@@ -10,13 +10,21 @@
  Text Domain:  customize-plus-demo
 */
 
-.demo {
-  width: 80px;
+.setting-name {
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: arial;
+  font-size: 13px;
+  font-weight: bold;
+  text-overflow: ellipsis;
+}
+
+.setting-preview {
   height: 80px;
-  border: 1px solid #666;
-  float: left;
-  margin: 40px 20px 0 20px;
+  width: 100%;
+  margin: 5px 0 15px 0;
   padding: 5px;
+  border: 1px solid #ccc;
   background-color: #fafafa;
   font-size: 12px;
   box-shadow: 0 0 0 transparent;
@@ -26,22 +34,9 @@
       -ms-transform: scale(1);
           transform: scale(1);
   font-family: monospace;
-  word-break: break-word;
+  word-break: break-all; /* firefox */
+  word-break: break-word; /* chrome */
   overflow: auto;
-}
-
-.demo:before {
-  content: attr(title);
-  position: absolute;
-  top: -20px;
-  left: 0;
-  width: 80px;
-  overflow: hidden;
-  white-space: nowrap;
-  font-family: arial;
-  font-size: 13px;
-  font-weight: bold;
-  text-overflow: ellipsis;
 }
 
 .flash {
