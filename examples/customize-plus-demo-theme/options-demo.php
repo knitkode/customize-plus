@@ -229,7 +229,7 @@ return array(
 			'color-dynamic-active' => array(
 				'setting' => array(
 					'default' => '#f40030',
-					'transport' => 'recompile',
+					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
 					'label' => __( 'Dynamic Color [active]', 'i18n' ),
@@ -241,7 +241,7 @@ return array(
 'an-id' => array(
 	'setting' => array(
 		'default' => '#f40030',
-		'transport' => 'recompile',
+		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
 		'label' => __( 'Dynamic Color [active]', 'i18n' ),
@@ -255,7 +255,7 @@ return array(
 			'color-dynamic-passive' => array(
 				'setting' => array(
 					'default' => 'fadeout(@color-dynamic-active,30)',
-					'transport' => 'recompile',
+					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
 					'label' => __( 'Dynamic Color 2 [passive]', 'i18n' ),
@@ -267,7 +267,7 @@ return array(
 'an-id' => array(
 	'setting' => array(
 		'default' => 'fadeout(@color-dynamic-active,30)',
-		'transport' => 'recompile',
+		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
 		'label' => __( 'Dynamic Color 2 [passive]', 'i18n' ),
@@ -281,7 +281,7 @@ return array(
 			'color-dynamic-hidetab-active' => array(
 				'setting' => array(
 					'default' => '#29BD57',
-					'transport' => 'recompile',
+					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
 					'label' => __( 'Dynamic Color (hide dynamic tab) [active]', 'i18n' ),
@@ -294,7 +294,7 @@ return array(
 'an-id' => array(
 	'setting' => array(
 		'default' => '#29BD57',
-		'transport' => 'recompile',
+		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
 		'label' => __( 'Dynamic Color (hide dynamic tab) [active]', 'i18n' ),
@@ -310,7 +310,7 @@ return array(
 			'color-dynamic-hidetab-passive' => array(
 				'setting' => array(
 					'default' => 'lighten(@color-dynamic-hidetab-active,30)',
-					'transport' => 'recompile',
+					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
 					'label' => __( 'Dynamic Color (hide dynamic tab) [passive]', 'i18n' ),
@@ -323,7 +323,7 @@ return array(
 'an-id' => array(
 	'setting' => array(
 		'default' => 'lighten(@color-dynamic-hidetab-active,30)',
-		'transport' => 'recompile',
+		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
 		'label' => __( 'Dynamic Color (hide dynamic tab) [passive]', 'i18n' ),
@@ -450,7 +450,7 @@ return array(
 			'size-dynamic-active' => array(
 				'setting' => array(
 					'default' => '14px',
-					'transport' => 'recompile',
+					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
 					'label' => __( 'Size Dynamic [active]', 'i18n' ),
@@ -462,7 +462,7 @@ return array(
 'an-id' => array(
 	'setting' => array(
 		'default' => '14px',
-		'transport' => 'recompile',
+		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
 		'label' => __( 'Size Dynamic [active]', 'i18n' ),
@@ -476,7 +476,7 @@ return array(
 			'size-dynamic-passive' => array(
 				'setting' => array(
 					'default' => '@size-dynamic-active',
-					'transport' => 'recompile',
+					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
 					'label' => __( 'Size Dynamic [passive]', 'i18n' ),
@@ -488,7 +488,7 @@ return array(
 'an-id' => array(
 	'setting' => array(
 		'default' => '@size-dynamic-active',
-		'transport' => 'recompile',
+		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
 		'label' => __( 'Size Dynamic [passive]', 'i18n' ),
@@ -502,7 +502,7 @@ return array(
 			'size-dynamic-hidetab-active' => array(
 				'setting' => array(
 					'default' => '40px',
-					'transport' => 'recompile',
+					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
 					'label' => __( 'Size Dynamic (hide dynamic tab) [active]', 'i18n' ),
@@ -515,7 +515,7 @@ return array(
 'an-id' => array(
 	'setting' => array(
 		'default' => '40px',
-		'transport' => 'recompile',
+		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
 		'label' => __( 'Size Dynamic (hide dynamic tab) [active]', 'i18n' ),
@@ -530,7 +530,7 @@ return array(
 			'size-dynamic-hidetab-passive' => array(
 				'setting' => array(
 					'default' => '@size-dynamic-hidetab-active',
-					'transport' => 'recompile',
+					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
 					'label' => __( 'Size Dynamic (hide dynamic tab) [passive]', 'i18n' ),
@@ -543,7 +543,7 @@ return array(
 'an-id' => array(
 	'setting' => array(
 		'default' => '@size-dynamic-hidetab-active',
-		'transport' => 'recompile',
+		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
 		'label' => __( 'Size Dynamic (hide dynamic tab) [passive]', 'i18n' ),

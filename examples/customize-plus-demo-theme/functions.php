@@ -44,6 +44,7 @@ class Customize_Plus_Demo {
 		add_action( 'after_setup_theme', array( __CLASS__, 'add_theme_supports' ) );
 		add_action( 'PWPcp/theme/is_configured', array( __CLASS__, 'set_settings_defaults' ), 10, 1 );
 		add_action( 'PWPcp/customize/register_custom_classes', array( __CLASS__, 'register_custom_classes' ), 20, 1 );
+		add_action( 'customize_register', array( __CLASS__, 'remove_wp_defaults' ), 10, 1 );
 		add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'customize_enqueue_js_admin' ) );
 		add_action( 'customize_preview_init' , array( __CLASS__, 'customize_enqueue_js_preview' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_manager' ) ); // just for demo purposes
@@ -175,6 +176,24 @@ class Customize_Plus_Demo {
 	public static function get_customize_tree() {
 		$customize_tree_theme = (array) require( get_stylesheet_directory() . '/options-demo.php' );
 		return $customize_tree_theme;
+	}
+
+	/**
+	 * Remove default WordPress panel/sections
+	 *
+	 * check here: http://wordpress.stackexchange.com/a/161110/25398
+	 *
+	 * @since  0.0.1
+	 * @param {WP_Customize_Manager} $wp_customize Theme Customizer object
+	 */
+	public static function remove_wp_defaults( $wp_customize ) {
+		$wp_customize->remove_panel( 'nav_menus' );
+		$wp_customize->remove_section( 'static_front_page' );
+		$wp_customize->remove_section( 'title_tagline' );
+		$wp_customize->remove_section( 'background_image' );
+		$wp_customize->remove_section( 'header_image' );
+		$wp_customize->remove_control( 'background_color' );
+		$wp_customize->remove_control( 'header_textcolor' );
 	}
 
 	/**

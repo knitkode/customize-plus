@@ -89,7 +89,7 @@
       <div class="container">
         <h1>Customize Plus Demo Theme</h1>
         <p>Preview of each control and its associated setting</p>
-        <a href="https://github.com/PlusWP/customize-plus" class="btn btn-lg btn-warning">View on Github</a>
+        <a href="https://github.com/PlusWP/customize-plus" target="_blank" class="btn btn-lg btn-warning">View on Github</a>
       </div>
     </header>
     <article class="container">
