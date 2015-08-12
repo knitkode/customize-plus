@@ -23,14 +23,6 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	public $type = 'pwpcp_select';
 
 	/**
-	 * Multiple
-	 *
-	 * @since 0.0.1
-	 * @var boolean
-	 */
-	protected $multiple = false;
-
-	/**
 	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
 	 *
 	 * @since 0.0.1
@@ -46,9 +38,6 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	protected function add_to_json() {
 		parent::add_to_json();
 
-		if ( $this->multiple ) {
-			$this->json['multiple'] = $this->multiple;
-		}
 		if ( $this->selectize ) {
 			$this->json['selectize'] = $this->selectize;
 		}
@@ -74,7 +63,7 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	 */
 	protected function js_tpl_above_choices () {
 		?>
-			<select name="_customize-pwpcp_select-{{ data.id }}"<# if (data.multiple) { #> multiple="true"<# } #>>
+			<select name="_customize-pwpcp_select-{{ data.id }}">
 		<?php
 	}
 
@@ -87,6 +76,30 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 		?>
 			</select>
 		<?php
+	}
+
+	/**
+	 * Sanitization callback
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	public static function sanitize_callback( $value, $setting ) {
+		$control = $setting->manager->get_control( $setting->id );
+		$selectize = $control->selectize;
+		if ( isset( $selectize['maxItems'] ) ) {
+			$max_items = filter_var( $selectize['maxItems'], FILTER_SANITIZE_NUMBER_INT );
+		} else {
+			$max_items = null;
+		}
+		if ( is_numeric( $max_items ) && $max_items > 1 ) {
+			return self::sanitize_array( $value, $setting );
+		} else {
+			return self::sanitize_string( $value, $setting );
+		}
 	}
 }
 

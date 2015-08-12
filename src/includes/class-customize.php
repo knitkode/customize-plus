@@ -446,8 +446,20 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 			$control_args = $field_args['control'];
 			$setting_args = isset( $field_args['setting'] ) ? $field_args['setting'] : null;
 
-			if ( $setting_args ) {
+			// augment control args array with section id
+			$control_args['section'] = $section_id;
 
+			// get type (required)
+			$control_type = $control_args['type'];
+
+			// check if a custom class is needed for this control
+			if ( isset( self::$custom_types['controls'][ $control_type ] ) ) {
+				$control_type_class = self::$custom_types['controls'][ $control_type ];
+			} else {
+				$control_type_class = null;
+			}
+
+			if ( $setting_args ) {
 				// Check if 'option' or 'theme_mod' is used to store option
 				// If nothing is set, $wp_customize->add_setting method will default use 'theme_mod'
 				// If 'option' is used as setting type its value will be stored in an entry in
@@ -458,7 +470,14 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 
 				// add default callback function, if none is defined
 				if ( ! isset( $setting_args['sanitize_callback'] ) ) {
-					$setting_args['sanitize_callback'] = 'pwpcp_sanitize_callback';
+
+					// use sanitize_callbak method on control class if it exists
+					if ( class_exists( $control_type_class ) && method_exists( $control_type_class, 'sanitize_callback' ) ) {
+						$setting_args['sanitize_callback'] = $control_type_class . '::sanitize_callback';
+					// otherwise use a default function
+					} else {
+						$setting_args['sanitize_callback'] = 'PWPcp_Customize_Control_Base::sanitize_callback';
+					}
 				}
 				// Add setting to WordPress
 				$wp_customize->add_setting( $field_id, $setting_args );
@@ -470,15 +489,8 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 				$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $field_id ) );
 			}
 
-			// augment control args array with section id
-			$control_args['section'] = $section_id;
-
-			// get type (required)
-			$control_type = $control_args['type'];
-
 			// check if a custom type/class has been specified
-			if ( isset( self::$custom_types['controls'][ $control_type ] ) ) {
-				$control_type_class = self::$custom_types['controls'][ $control_type ];
+			if ( $control_type_class ) {
 
 				// if the class exist use it
 				if ( class_exists( $control_type_class ) ) {

@@ -648,7 +648,7 @@ return array(
 			),
 			'buttonset' => array(
 				'setting' => array(
-					'default' => 'boxed',
+					'default' => 'fluid',
 					'transport' => 'postMessage',
 				),
 				'control' => array(
@@ -677,6 +677,88 @@ return array(
 		'choices' => array(
 			'boxed' => __( 'Boxed', 'i18n' ),
 			'fluid' => __( 'Fluid', 'i18n' ),
+		),
+	),
+),
+```",
+					),
+				),
+			),
+			'buttonset-three' => array(
+				'setting' => array(
+					'default' => 'may',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'Buttonset three', 'i18n' ),
+					'type' => 'pwpcp_buttonset',
+					'guide' => array(
+						'title' => __( 'Buttonset guide', 'i18n' ),
+						'text' => __( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe laboriosam sunt ab, error explicabo cupiditate alias blanditiis minima inventore tempora necessitatibus excepturi mollitia quam laborum unde maxime laudantium! Ratione, impedit!', 'i18n' ),
+						'video' => 'uD7_Vt5q2q8',
+					),
+					'choices' => array(
+						'may' => __( 'May', 'i18n' ),
+						'ibanez' => __( 'Ibanez', 'i18n' ),
+						'ward' => __( 'Ward', 'i18n' ),
+					),
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => 'boxed',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'Buttonset three', 'i18n' ),
+		'type' => 'pwpcp_buttonset',
+		'choices' => array(
+			'may' => __( 'May', 'i18n' ),
+			'ibanez' => __( 'Ibanez', 'i18n' ),
+			'ward' => __( 'Ward', 'i18n' ),
+		),
+	),
+),
+```",
+					),
+				),
+			),
+			'buttonset-four' => array(
+				'setting' => array(
+					'default' => 'six',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'Buttonset three', 'i18n' ),
+					'type' => 'pwpcp_buttonset',
+					'guide' => array(
+						'title' => __( 'Buttonset guide', 'i18n' ),
+						'text' => __( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe laboriosam sunt ab, error explicabo cupiditate alias blanditiis minima inventore tempora necessitatibus excepturi mollitia quam laborum unde maxime laudantium! Ratione, impedit!', 'i18n' ),
+						'video' => 'uD7_Vt5q2q8',
+					),
+					'choices' => array(
+						'one' => __( 'One', 'i18n' ),
+						'two' => __( 'Two', 'i18n' ),
+						'five' => __( 'Five', 'i18n' ),
+						'six' => __( 'Six', 'i18n' ),
+					),
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => 'boxed',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'Buttonset three', 'i18n' ),
+		'type' => 'pwpcp_buttonset',
+		'choices' => array(
+			'one' => __( 'One', 'i18n' ),
+			'two' => __( 'Two', 'i18n' ),
+			'five' => __( 'Five', 'i18n' ),
+			'six' => __( 'Six', 'i18n' ),
 		),
 	),
 ),

@@ -110,4 +110,63 @@ class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 */
 	protected function js_tpl_below_choices () {}
+
+	/**
+	 * Sanitization callback
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	public static function sanitize_callback( $value, $setting ) {
+		return self::sanitize_string( $value, $setting );
+	}
+
+	/**
+	 * Sanitize string for radio based control
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	protected static function sanitize_string( $value, $setting ) {
+		$control = $setting->manager->get_control( $setting->id );
+
+		if ( isset( $control->choices[ $value ] ) ) {
+			return $value;
+		} else {
+			return $setting->default;
+		}
+	}
+
+	/**
+	 * Sanitize array for radio based control
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	protected static function sanitize_array( $value, $setting ) {
+		$value_decoded = json_decode( $value );
+
+		if ( is_array( $value_decoded ) ) {
+			$control = $setting->manager->get_control( $setting->id );
+			$value_sanitized = array();
+
+			foreach ( $value_decoded as $key ) {
+				if ( isset( $control->choices[ $key ] ) ) {
+					array_push( $value_sanitized, $key );
+				}
+			}
+			return json_encode( $value_sanitized );
+		} else {
+			return $setting->default;
+		}
+	}
 }

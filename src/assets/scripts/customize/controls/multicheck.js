@@ -79,8 +79,7 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
    */
   onInit: function () {
     this.setting.bind(function (value) {
-      var currentValueFromDOM = this._getCurrentValueFromUI();
-      if (this.rendered && value !== currentValueFromDOM) {
+      if (this.rendered && value !== this._getValueFromUI()) {
         this._syncCheckboxes();
 
         if (this.params.sortable) {
@@ -120,7 +119,7 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
    * Get current `setting` value from DOM
    * @return {string} JSONified array
    */
-  _getCurrentValueFromUI: function () {
+  _getValueFromUI: function () {
     var value = [];
     // read sortable jQuery UI data
     if (this.params.sortable) {

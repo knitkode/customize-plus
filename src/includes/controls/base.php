@@ -220,4 +220,16 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	public function get_l10n() {
 		return array();
 	}
+
+	/**
+	 * Sanitization callback
+	 *
+	 * @since 0.0.1
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	public static function sanitize_callback( $value, $setting ) {
+		return wp_kses_post( $value );
+	}
 }

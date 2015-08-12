@@ -63,6 +63,34 @@ class PWPcp_Customize_Control_Textarea extends PWPcp_Customize_Control_Base {
 		</label>
 		<?php
 	}
+
+	/**
+	 * Sanitization callback
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	public static function sanitize_callback( $value, $setting ) {
+    // if value is required and is empty return default
+		// also be sure it's a string value
+		if ( ( isset( $input_attrs['required'] ) && ! $value ) || ! is_string( $value ) ) {
+			return $setting->default;
+		} else {
+
+			$control = $setting->manager->get_control( $setting->id );
+			$html_is_allowed = $control->allowHTML || $control->wp_editor;
+
+      if ( $html_is_allowed ) {
+      	return wp_kses_post( $value );
+      } else {
+      	return wp_strip_all_tags( $value );
+      }
+      return $value;
+    }
+	}
 }
 
 /**

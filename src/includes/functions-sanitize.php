@@ -40,6 +40,7 @@ if ( ! function_exists( 'pwpcp_load_wp_editor' ) ) :
 	add_action( 'wp_ajax_pwpcp_load_wp_editor', 'pwpcp_load_wp_editor' );
 endif;
 
+
 // @@temp, this function is more an util than a sanitize function \\
 if ( ! function_exists( 'pwpcp_compress_html' ) ) :
 	/**
@@ -59,16 +60,6 @@ endif;
  *
  * @since 0.0.1
  */
-
-if ( ! function_exists( 'pwpcp_sanitize_callback' ) ) :
-	/**
-	 * Theme Customizer sanitization callback function
-	 */
-	function pwpcp_sanitize_callback( $input ) {
-		return wp_kses_post( $input );
-	}
-endif;
-
 
 if ( ! function_exists( 'pwpcp_sanitize_alpha' ) ) :
 	/**
@@ -126,75 +117,6 @@ if ( ! function_exists( 'pwpcp_sanitize_font_weight' ) ) :
 	 * @return [type]        [description]
 	 */
 	function pwpcp_sanitize_font_weight( $value ) { // @@todo \\
-		return $value;
-	}
-endif;
-
-
-if ( ! function_exists( 'pwpcp_sanitize_number' ) ) :
-	/**
-	 * [pwpcp_sanitize_number description]
-	 * @param  [type] $value [description]
-	 * @return [type]        [description]
-	 */
-	function pwpcp_sanitize_number( $value ) {
-		if ( is_numeric( $value ) && $value >= 0 ) {
-			return $value;
-		}
-	}
-endif;
-
-
-if ( ! function_exists( 'pwpcp_sanitize_unit' ) ) :
-	/**
-	 * [pwpcp_sanitize_unit description]
-	 * @param  [type] $value [description]
-	 * @return [type]        [description]
-	 */
-	function pwpcp_sanitize_unit( $value ) { // @@todo \\
-		// $units_allowed = array( 'px', 'em', '%', 'rem' );
-		// if ( ! in_array( $extracted_unit, $units_allowed ) ) {
-		// 	$extracted_unit = 'px';
-		// }
-		// if ( strpos( $value, 'are' ) !== false ) { // @@todo what is this?? \\
-		// 	echo 'true';
-		// }
-		return $value;
-	}
-endif;
-
-
-if ( ! function_exists( 'pwpcp_sanitize_unit_px' ) ) :
-	/**
-	 * [pwpcp_sanitize_unit_px description]
-	 * @param  [type] $value [description]
-	 * @return [type]        [description]
-	 */
-	function pwpcp_sanitize_unit_px( $value ) { // @@todo \\
-		return $value;
-	}
-endif;
-
-
-if ( ! function_exists( 'pwpcp_sanitize_unit_percent' ) ) :
-	/**
-	 * [pwpcp_sanitize_unit_percent description]
-	 * @param  [type] $value [description]
-	 * @return [type]        [description]
-	 */
-	function pwpcp_sanitize_unit_percent( $value ) { // @@todo \\
-		return $value;
-	}
-endif;
-
-
-if ( ! function_exists( 'pwpcp_sanitize_unit_px_percent' ) ) :
-	/**
-	 * [pwpcp_sanitize_unit_px_percent description]
-	 * @param  [type] $value [description]
-	 * @return [type]        [description]
-	 */
-	function pwpcp_sanitize_unit_px_percent( $value ) { // @@todo \\
 		return $value;
 	}
 endif;

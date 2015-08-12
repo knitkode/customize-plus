@@ -37,6 +37,47 @@ class PWPcp_Customize_Control_Text extends PWPcp_Customize_Control_Base_Input {
 			'vInvalidEmail' => __( 'Invalid email.', 'pkgTextdomain' ),
 		);
 	}
+
+	/**
+	 * Sanitization callback
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	public static function sanitize_callback( $value, $setting ) {
+    // if value is required and is empty return default
+    // also be sure it's a string value
+    if ( ( isset( $input_attrs['required'] ) && ! $value ) || ! is_string( $value ) ) {
+      return $setting->default;
+    } else {
+  		$control = $setting->manager->get_control( $setting->id );
+  		$input_attrs = $control->input_attrs;
+
+  		$input_type = isset( $input_attrs['type'] ) ? $input_attrs['type'] : 'text';
+
+      // url
+      if ( 'url' === $input_type ) {
+        $value = esc_url( $value );
+      }
+      // email
+      else if ( 'email' === $input_type ) {
+        $value = sanitize_email( $value );
+      }
+      // text
+      else {
+      	$value = wp_strip_all_tags( $value );
+      }
+      // max length
+			if ( isset( $input_attrs['maxlength'] ) && strlen( $value ) > $input_attrs['maxlength'] ) {
+        return $setting->default;
+      }
+
+      return $value;
+    }
+	}
 }
 
 /**

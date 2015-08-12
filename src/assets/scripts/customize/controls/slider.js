@@ -20,7 +20,6 @@ var ControlSlider = ControlBase.extend({
    * @return {string} The validate control value.
    */
   validate: function (newValue) {
-    console.info('_validate', newValue);
     var params = this.params;
     var min = params.attrs.min;
     var max = params.attrs.max;
@@ -82,9 +81,6 @@ var ControlSlider = ControlBase.extend({
    * @private
    */
   _updateUI: function () {
-    if (!this.rendered) {
-      return;
-    }
     var params = this.params;
     // update number input
     this.__inputNumber.value = params.number;
@@ -92,21 +88,21 @@ var ControlSlider = ControlBase.extend({
     this.__$inputSlider.slider('value', params.number);
     // update unit picker
     this.__$inputUnits.removeClass('pwpcp-current').filter(function () {
-      return (this.textContent || this.innerText) === params.unit; // @@ie8 \\
+      return this.value === params.unit;
     }).addClass('pwpcp-current');
   },
   /**
    * On initialization
    *
+   * Update UI if the setting is changed programmatically.
+   *
    * @override
    */
   onInit: function () {
-    // bind setting change to pass value on apply value
-    // if we are programmatically changing the control value
-    // for instance through js (during import, debugging, etc.)
     this.setting.bind(function (value) {
-      console.info('_updateUI', value);
-      this._updateUI(); // @@todo, this updates the UI also when the value comes ... from the UI \\
+      if (this.rendered && value !== this._getValueFromUI()) {
+        this._updateUI();
+      }
     }.bind(this));
   },
   /**
@@ -119,7 +115,7 @@ var ControlSlider = ControlBase.extend({
     var params = this.params;
     var container = this._container;
     var inputNumber = container.getElementsByClassName('pwpcp-slider-number')[0];
-    var $inputUnits = this.container.find('.pwpcp-unit');
+    var $inputUnits = $(container.getElementsByClassName('pwpcp-unit'));
     var $inputSlider = $(container.getElementsByClassName('pwpcp-slider')[0]);
 
     /** @type {HTMLelement} */
@@ -135,7 +131,7 @@ var ControlSlider = ControlBase.extend({
      */
     if (params.units.length > 1) {
       $inputUnits.on('click', function () {
-        var value = this.textContent || this.innerText; // @@ie8 \\
+        var value = this.value;
         $inputUnits.removeClass('pwpcp-current');
         this.className += ' pwpcp-current';
         setting.set(value);
@@ -145,12 +141,11 @@ var ControlSlider = ControlBase.extend({
     /**
      * Bind number input
      */
-    inputNumber.value = params.number;
-    $(inputNumber).on('change', function () {
+    inputNumber.onchange = function () {
       var value = this.value;
       setting.set(value);
       $inputSlider.slider('value', value);
-    });
+    };
 
     /**
      * Init Slider
@@ -164,6 +159,17 @@ var ControlSlider = ControlBase.extend({
         setting.set(ui.value);
       }
     }, params.attrs));
+
+    // update UI with current values (we have to wait that the jQuery UI
+    // slider has been initialized)
+    this._updateUI();
+  },
+  /**
+   * Get current `setting` value from DOM
+   * @return {string} JSONified array
+   */
+  _getValueFromUI: function () {
+    return this.__inputNumber.value + this.__$inputUnits.filter('.pwpcp-current').val();
   }
 });
 

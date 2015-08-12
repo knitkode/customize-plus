@@ -17,17 +17,22 @@
   // margin-left: -($plugin--slider-handle-size / 2);
   margin-right: -($plugin--slider-handle-size / 2);
 }
+.pwpcp-inputs-wrap {
+  float: right;
+}
 .pwpcp-unit-wrap {
   float: right;
+  margin-top: 1px;
 }
 
 /**
  * Slider number input
  *
  */
+.pwpcp-slider-number,
 input[type=number].pwpcp-slider-number {
   width: auto;
-  max-width: 50px;
+  max-width: 32px;
   padding: 3px 0;
   border: 0;
   box-shadow: none;
@@ -51,15 +56,19 @@ input[type=number].pwpcp-slider-number {
  * Unit picker (`px`, `em`, `%`, etc.)
  *
  */
-.pwpcp-unit {
+.pwpcp-unit,
+input[type=text].pwpcp-unit {
   display: inline-block;
-  padding: 3px 5px;
+  padding: 3px 3px;
   margin-right: -1px;
   border: 1px solid darken($control--bg, 7.5%);
   background: $WPcustomize--btn-bg;
   box-shadow: $WPcustomize--btn-box-shadow;
-  font-size: 12px;
+  font-size: 11px;
   cursor: pointer;
+  width: 24px;
+  text-align: center;
+  line-height: 14px;
 
   &:last-child {
     border-right-width: 1px;
@@ -72,11 +81,12 @@ input[type=number].pwpcp-slider-number {
 
   &.pwpcp-current {
     float: left;
-    padding-left: 2px;
+    padding: 3px 0;
     border-color: transparent;
     background: transparent;
     box-shadow: none;
     font-weight: bold;
     cursor: default;
+    font-size: 12px;
   }
 }
