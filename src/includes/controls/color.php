@@ -79,6 +79,12 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 	 * @return array
 	 */
 	public function get_l10n() {
+		// var localization = $.spectrum.localization["it"] = { // @@todo
+		// 	cancelText: "annulla",
+		// 	chooseText: "scegli",
+		// 	clearText: "Annulla selezione colore",
+		// 	noColorSelectedText: "Nessun colore selezionato" // \\
+		// };
 		return array(
 			'cancelText' => __( 'annulla', 'pkgTextdomain' ),
 			'chooseText' => __( 'scegli', 'pkgTextdomain' ),
@@ -87,29 +93,6 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 			'togglePaletteMoreText' => __( 'Show color picker', 'pkgTextdomain' ),
 			'togglePaletteLessText' => __( 'Hide color picker', 'pkgTextdomain' ),
 		);
-	}
-
-	/**
-	 * Enqueue scripts/styles for the color picker.
-	 *
-	 * @since 0.0.1
-	 */
-	public function enqueue() {
-		// var localization = $.spectrum.localization["it"] = {
-		// 	cancelText: "annulla",
-		// 	chooseText: "scegli",
-		// 	clearText: "Annulla selezione colore",
-		// 	noColorSelectedText: "Nessun colore selezionato"
-		// };
-
-		// $.extend($.fn.spectrum.defaults, localization);
-
-		// $serialized = json_encode( $exported_data );
-		// $data = sprintf( 'window.%s = %s;', $exported_name, $serialized );
-		// $wp_scripts->add_data( $handle, 'data', $data );
-
-		// wp_enqueue_script( 'wp-color-picker' );
-		// wp_enqueue_style( 'wp-color-picker' );
 	}
 
 	/**
@@ -143,7 +126,7 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 		}
 
 		// check for a hex color string
-		$custom_color_hex = pwpcp_sanitize_hex_color( $value );
+		$custom_color_hex = PWPcp_Sanitize::color_hex( $value );
 		if ( $custom_color_hex ) {
 			// hex color is valid, so we have a Custom Color
 			$this->json['valueCSS'] = $custom_color_hex;
@@ -151,7 +134,7 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 		}
 
 		// check for a rgba color string
-		$custom_color_rgba = pwpcp_sanitize_alpha_color( $value );
+		$custom_color_rgba = PWPcp_Sanitize::color_rgba( $value );
 		if ( $custom_color_rgba ) {
 			// hex color is valid, so we have a Custom Color
 			$this->json['valueCSS'] = $custom_color_rgba;
@@ -174,6 +157,19 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 			<input class="pwpcpcolor-input" type="text">
 		</div>
 		<?php
+	}
+
+	/**
+	 * Sanitization callback
+	 *
+	 * @since 0.0.1
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	public static function sanitize_callback( $value, $setting ) {
+		PWPcp_Sanitize::color();
+		return wp_kses_post( $value );
 	}
 }
 

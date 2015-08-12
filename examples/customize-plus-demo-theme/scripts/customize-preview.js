@@ -5,17 +5,22 @@
   var _toCSS = api['toCSS'];
 
   var $body = $('body');
+  var $toScroll = $('html, body');
 
   $.fn.flash = function(duration) {
     this.addClass('flash');
     setTimeout(function () {
       this.removeClass('flash');
     }.bind(this), 300);
+
+    $toScroll.animate({
+      scrollTop: this.offset().top -100
+    }, 300);
+
     return this;
   };
 
   var settingsToColor = [
-    'color-native',
     'color',
     'color-no-transparent',
     'color-alpha',
@@ -45,6 +50,15 @@
   });
 
   var settingsToText = [
+    'color-dynamic-active',
+    'color-dynamic-passive',
+    'color-dynamic-hidetab-active',
+    'color-dynamic-hidetab-passive',
+    'size-dynamic-active',
+    'size-dynamic-passive',
+    'size-dynamic-hidetab-active',
+    'size-dynamic-hidetab-passive',
+    //
     'radio',
     'buttonset',
     'buttonset-three',

@@ -17,7 +17,7 @@ return array(
 		'id' => 'layout',
 		'title' => __( 'Example panel', 'textDomain' ),
 		'description' => __( 'Layout generic options, globally change the look and feel', 'textDomain' ),
-		'icon' => 309,
+		// 'dashicon' => 309,
 		'type' => 'pwpcp_panel',
 		'sections' => array(
 			array(
@@ -34,33 +34,8 @@ return array(
 		'id' => 'section',
 		'title' => __( 'Color controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
+		'dashicon' => 309,
 		'fields' => array(
-			'color-native' => array(
-				'setting' => array(
-					'default' => '#000',
-					'transport' => 'postMessage',
-				),
-				'control' => array(
-					'label' => __( 'WordPress color', 'i18n' ),
-					'description' => __( '', 'i18n' ),
-					'type' => 'color',
-					'guide' => array(
-						'title' => __( 'See Code', 'i18n' ),
-						'text' => "```php
-'an-id' => array(
-	'setting' => array(
-		'default' => '#000',
-		'transport' => 'postMessage',
-	),
-	'control' => array(
-		'label' => __( 'WordPress color', 'i18n' ),
-		'type' => 'color',
-	),
-),
-```",
-					),
-				),
-			),
 			'color' => array(
 				'setting' => array(
 					'default' => 'transparent',
@@ -368,6 +343,7 @@ return array(
 		'id' => 'section-sizes',
 		'title' => __( 'Size controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
+		'dashicon' => 211,
 		'fields' => array(
 			'slider' => array(
 				'setting' => array(
@@ -586,6 +562,7 @@ return array(
 		'id' => 'section-radio',
 		'title' => __( 'Radio controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
+		'dashicon' => 159,
 		'fields' => array(
 			'radio' => array(
 				'setting' => array(
@@ -833,7 +810,7 @@ return array(
 			),
 			'radio-image-custom' => array(
 				'setting' => array(
-					'default' => 'moon',
+					'default' => 'firefox',
 					'transport' => 'postMessage',
 				),
 				'control' => array(
@@ -841,33 +818,58 @@ return array(
 					'description' => __( '', 'i18n' ),
 					'type' => 'pwpcp_radio_image',
 					'choices' => array(
-						'moon' => array(
-							'label' => __( 'First', 'i18n' ),
-							'img_custom' => 'radio-1.png',
+						'chrome' => array(
+							'label' => __( 'Chrome', 'i18n' ),
+							'img_custom' => 'icon-chrome.png',
 						),
-						'sun' => array(
-							'label' => __( 'Second', 'i18n' ),
-							'img_custom' => 'radio-2.png',
-						)
+						'firefox' => array(
+							'label' => __( 'Firefox', 'i18n' ),
+							'img_custom' => 'icon-firefox.png',
+						),
+						'ie' => array(
+							'label' => __( 'IE', 'i18n' ),
+							'img_custom' => 'icon-ie.png',
+						),
+						'opera' => array(
+							'label' => __( 'Opera', 'i18n' ),
+							'img_custom' => 'icon-opera.png',
+						),
+						'safari' => array(
+							'label' => __( 'Safari', 'i18n' ),
+							'img_custom' => 'icon-safari.png',
+						),
 					),
 					'guide' => array(
 						'title' => __( 'See Code', 'i18n' ),
 						'text' => "```php
 'an-id' => array(
 	'setting' => array(
-		'default' => 'moon',
+		'default' => 'firefox',
 		'transport' => 'postMessage',
 	),
 	'control' => array(
 		'label' => __( 'Radio image (custom)', 'i18n' ),
 		'type' => 'pwpcp_radio_image',
 		'choices' => array(
-			'1' => array(
-				'label' => __( 'First', 'i18n' ),
-				'img_custom' => 'radio-1.png', ),
-			'2' => array(
-				'label' => __( 'Second', 'i18n' ),
-				'img_custom' => 'radio-2.png',
+			'chrome' => array(
+				'label' => __( 'Chrome', 'i18n' ),
+				'img_custom' => 'icon-chrome.png',
+			),
+			'firefox' => array(
+				'label' => __( 'Firefox', 'i18n' ),
+				'img_custom' => 'icon-firefox.png',
+			),
+			'ie' => array(
+				'label' => __( 'IE', 'i18n' ),
+				'img_custom' => 'icon-ie.png',
+			),
+			'opera' => array(
+				'label' => __( 'Opera', 'i18n' ),
+				'img_custom' => 'icon-opera.png',
+			),
+			'safari' => array(
+				'label' => __( 'Safari', 'i18n' ),
+				'img_custom' => 'icon-safari.png',
 			),
 		),
 	),
@@ -883,6 +885,7 @@ return array(
 		'id' => 'section-checkbox',
 		'title' => __( 'Checkbox controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
+		'dashicon' => 314,
 		'fields' => array(
 			'toggle' => array(
 				'setting' => array(
@@ -1005,6 +1008,7 @@ return array(
 		'id' => 'section-texts',
 		'title' => __( 'Text controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
+		'dashicon' => 215,
 		'fields' => array(
 			'text' => array(
 				'setting' => array(
@@ -1301,6 +1305,7 @@ return array(
 		'id' => 'section-numbers',
 		'title' => __( 'Number controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
+		'dashicon' => 204,
 		'fields' => array(
 			'number' => array(
 				'setting' => array(
@@ -1437,6 +1442,7 @@ return array(
 		'id' => 'section-select',
 		'title' => __( 'Select controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
+		'dashicon' => 163,
 		'fields' => array(
 			'select' => array(
 				'setting' => array(
@@ -1708,6 +1714,7 @@ return array(
 		'id' => 'section-tags',
 		'title' => __( 'Tags controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
+		'dashicon' => 109,
 		'fields' => array(
 			'tags' => array(
 				'setting' => array(
@@ -1844,6 +1851,7 @@ return array(
 		'id' => 'section-sortable',
 		'title' => __( 'Sortable controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
+		'dashicon' => 156,
 		'fields' => array(
 			'sortable' => array(
 				'setting' => array(

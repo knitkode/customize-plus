@@ -46,7 +46,7 @@ wpApi['controlConstructor']['pwpcp_font_family'] = ControlBase.extend({
     }
   },
   /**
-   * @see php `pwpcp_sanitize_font_families`
+   * @see php `PWPcp_Sanitize::font_families`
    * @param  {string|array} value [description]
    * @return {string}       [description]
    */

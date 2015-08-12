@@ -178,7 +178,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 				'THEME_URL' => get_stylesheet_directory_uri(),
 				'IMAGES_BASE_URL' => PWPcp_Theme::$images_base_url,
 				'DOCS_BASE_URL' => PWPcp_Theme::$docs_base_url,
-				'FONT_FAMILIES' => pwpcp_sanitize_font_families( self::$font_families ),
+				'FONT_FAMILIES' => PWPcp_Sanitize::font_families( self::$font_families ),
 			);
 			$additional = (array) apply_filters( 'PWPcp/customize/js_constants', array() );
 			return array_merge( $required, $additional );
@@ -330,7 +330,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 
 			// add panel icon if specified
 			if ( isset( $panel['icon'] ) ) {
-				self::add_css_panel_dashicon( $panel_id, $panel['icon'] );
+				self::add_css_panel_dashicon( $panel_id, $panel['dashicon'] );
 			}
 
 			// get type if specified
@@ -396,8 +396,8 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 			}
 
 			// add section dashicon if specified
-			if ( isset( $section_args['dashicon'] ) ) {
-				self::add_css_section_dashicon( $section['id'], $section_args['dashicon'] );
+			if ( isset( $section['dashicon'] ) ) {
+				self::add_css_section_dashicon( $section['id'], $section['dashicon'] );
 			}
 
 			// get type if specified
@@ -479,9 +479,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 						$setting_args['sanitize_callback'] = 'PWPcp_Customize_Control_Base::sanitize_callback';
 					}
 				}
+
 				// Add setting to WordPress
 				$wp_customize->add_setting( $field_id, $setting_args );
-
 			}
 			// if no settings args are passed then use the Dummy Setting Class
 			else {
@@ -490,19 +490,11 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 			}
 
 			// check if a custom type/class has been specified
-			if ( $control_type_class ) {
-
-				// if the class exist use it
-				if ( class_exists( $control_type_class ) ) {
-					$wp_customize->add_control( new $control_type_class( $wp_customize, $field_id, $control_args ) );
-				}
-				// if the desired class doesn't exist just use the plain WordPress API
-				else {
-					$wp_customize->add_control( $field_id, $control_args );
-					// @@todo error (wrong api implementation, missing class) \\
-				}
+			if ( $control_type_class && class_exists( $control_type_class ) ) {
+				$wp_customize->add_control( new $control_type_class( $wp_customize, $field_id, $control_args ) );
 			}
-			// if the desired control type is not specified just use the plain WordPress API
+			// if the desired control type is not specified or if the desired class
+			// doesn't exist just use the plain WordPress API
 			else {
 				$wp_customize->add_control( $field_id, $control_args );
 				// @@todo error (wrong api implementation, missing control type) \\
@@ -534,11 +526,10 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 *                              added.
 		 */
 		private static function add_css_section_dashicon( $section_id = '', $dashicon_code ) {
-			return;
 			if ( ! absint( $dashicon_code ) ) {
 				return;
 			}
-			self::$css_icons .= "#accordion-section-$section_id > h3:before{content:'\\f$dashicon_code';}" . self::$css_icons_shared . '}';
+			self::$css_icons .= "#accordion-section-$section_id > h3:before{content:'\\f$dashicon_code';" . self::$css_icons_shared . '}';
 		}
 	}
 

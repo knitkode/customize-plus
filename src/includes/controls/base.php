@@ -89,7 +89,11 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * Add booleans parameters to JSON
 	 *
-	 * Utility method to easily add truthy values to the control JSON data
+	 * Utility method to easily add truthy values to the control JSON data,
+	 * without adding useless false values in the json params of the controls,
+	 * where checking `if (control.params.param) {}` returns false anyway if
+	 * the key is not set on the object. We save few bytes this way on the
+	 * maybe huge customize JSON data.
 	 *
 	 * @since 0.0.1
 	 * @param array $keys [description]

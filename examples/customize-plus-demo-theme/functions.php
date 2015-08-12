@@ -212,14 +212,15 @@ class Customize_Plus_Demo {
 	}
 
 	/**
-		 * Enqueu default style.css, requried only for this demo
-		 *
-		 * @since 0.0.1
-		 */
-		public static function enqueue_manager() {
-			wp_enqueue_style( self::PREFIX . '-bootstrap', get_template_directory_uri() . '/bootstrap.css', array(), self::VERSION );
-			wp_enqueue_style( self::PREFIX . '-theme', get_template_directory_uri() . '/style.css', array(), self::VERSION );
-		}
+	 * Enqueue default style.css and bootstrap files requried only for this demo
+	 *
+	 * @since 0.0.1
+	 */
+	public static function enqueue_manager() {
+		wp_enqueue_script( self::PREFIX . '-bootstrap', get_template_directory_uri() . '/scripts/bootstrap.js', array( 'jquery' ) );
+		wp_enqueue_style( self::PREFIX . '-bootstrap', get_template_directory_uri() . '/styles/bootstrap.css' );
+		wp_enqueue_style( self::PREFIX . '-theme', get_template_directory_uri() . '/style.css', array(), self::VERSION );
+	}
 }
 
 new Customize_Plus_Demo;

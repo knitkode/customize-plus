@@ -10,10 +10,14 @@
  Text Domain:  customize-plus-demo
 */
 
+body {
+  font-family: 'Open Sans', sans-serif;
+  padding-top: 50px;
+}
+
 .setting-name {
   overflow: hidden;
   white-space: nowrap;
-  font-family: arial;
   font-size: 13px;
   font-weight: bold;
   text-overflow: ellipsis;
@@ -33,7 +37,6 @@
   -webkit-transform: scale(1);
       -ms-transform: scale(1);
           transform: scale(1);
-  font-family: monospace;
   word-break: break-all; /* firefox */
   word-break: break-word; /* chrome */
   overflow: auto;
