@@ -19,7 +19,6 @@
   padding: 5px;
   background-color: #fafafa;
   font-size: 12px;
-  text-align: center;
   box-shadow: 0 0 0 transparent;
   -webkit-transition: box-shadow .7s ease, -webkit-transform .7s ease;
           transition: box-shadow .7s ease, transform .7s ease;
@@ -28,6 +27,7 @@
           transform: scale(1);
   font-family: monospace;
   word-break: break-word;
+  overflow: auto;
 }
 
 .demo:before {
