@@ -101,21 +101,6 @@ var ControlBase = wpApi.Control.extend({
 
     // Add custom validation function overriding the empty function from WP API.
     this.setting.validate = this.validate.bind(this);
-
-    /**
-     * Bind setting change // @@todo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \\
-     *
-     * propably it s better to extend setting class and add a memory store with a maximum queu (maybe 25)
-     * and go back in the history there. we need also redo then...complicate.
-     */
-    // var lastValue = control.setting;
-    // var changeId = 0;
-    // var changeMemory = [];
-    // control.setting.bind(function (value) {
-    //   changeId++;
-    //   changeMemory.push(value);
-    //   control.params.lastValue = value;
-    // });
   },
   /**
    * Validate
