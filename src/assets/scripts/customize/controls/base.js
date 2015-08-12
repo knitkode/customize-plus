@@ -200,11 +200,11 @@ var ControlBase = wpApi.Control.extend({
         console.log('%c deflate of ' + this.params.type + '(' + this.id + ') took '
          + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
 
+        // flag control that it's not rendered
         this.rendered = false;
       }
     }.bind(this), 2000);
 
-    // flag control that it's not rendered
   },
   /**
    * Render or 'inflate' the template of the control
