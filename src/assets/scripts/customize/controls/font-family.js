@@ -8,16 +8,14 @@
  */
 wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
   /**
-   * On init
-   *
+   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
+   * @param {string} value The new setting value.
    */
-  onInit: function () {
-    this.setting.bind(function (value) {
-      if (this.rendered && value !== this.input.value) {
-        this._updateUI(this._sanitize(value));
-      }
-    }.bind(this));
+  syncUIFromAPI: function (value) {
+    if (this.rendered && value !== this.input.value) {
+      this._updateUI(this._sanitize(value));
+    }
   },
   /**
    * On ready

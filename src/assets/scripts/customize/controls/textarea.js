@@ -1,3 +1,5 @@
+/* global tinyMCE */
+
 /**
  * Control Textarea class
  *
@@ -9,12 +11,12 @@
  */
 wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
   /**
-   * Validate value
+   * Validate
    *
    * @param  {string} newValue
    * @return {string} The new value if it is a string
    */
-  _validateValue: function (newValue) {
+  validate: function (newValue) {
     if (_.isString(newValue)) {
       if (!this.params.allowHTML && !this.params.wp_editor) {
         return validator.escape(newValue);
@@ -22,7 +24,7 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
         return newValue;
       }
     } else {
-      return this.setting();
+      return { error: true };
     }
   },
   /**
@@ -34,27 +36,30 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
    * @override
    */
   onInit: function () {
-
     this._setWpEditorId();
-
+  },
+  /**
+   * Sync UI with value coming from API, a programmatic change like a reset.
+   * @override
+   * @param {string} value The new setting value.
+   */
+  syncUIFromAPI: function (value) {
     // here value can be undefined if it doesn't pass the validate function
-    this.setting.bind(function (value) {
-      var lastValue;
-      var wpEditorInstance;
+    var lastValue;
+    var wpEditorInstance;
+    if (this.params.wp_editor) {
+      wpEditorInstance = tinyMCE.get(this._wpEditorID);
+      lastValue = wpEditorInstance.getContent();
+    } else {
+      lastValue = this.__input.value;
+    }
+    if (this.rendered && value && lastValue !== value) {
       if (this.params.wp_editor) {
-        wpEditorInstance = tinyMCE.get(this._wpEditorID);
-        lastValue = wpEditorInstance.getContent();
+        wpEditorInstance.setContent(value);
       } else {
-        lastValue = this.__input.value;
+        this.__input.value = value;
       }
-      if (this.rendered && value && lastValue !== value) {
-        if (this.params.wp_editor) {
-          wpEditorInstance.setContent(value);
-        } else {
-          this.__input.value = value;
-        }
-      }
-    }.bind(this));
+    }
   },
   /**
    * On ready

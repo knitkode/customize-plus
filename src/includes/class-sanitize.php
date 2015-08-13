@@ -180,11 +180,10 @@ class PWPcp_Sanitize {
 	 * @since 0.0.1
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @param WP_Customize_Control $control Control instance.
  	 * @return string The sanitized value.
  	 */
-	public static function string_in_choices( $value, $setting ) {
-		$control = $setting->manager->get_control( $setting->id );
-
+	public static function string_in_choices( $value, $setting, $control ) {
 		// value could be a number (i.e. in font_weight control)
 		if ( isset( $control->choices[ strval( $value ) ] ) ) {
 			return $value;
@@ -199,13 +198,13 @@ class PWPcp_Sanitize {
 	 * @since 0.0.1
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @param WP_Customize_Control $control Control instance.
  	 * @return string The sanitized value.
  	 */
-	public static function array_in_choices( $value, $setting ) {
+	public static function array_in_choices( $value, $setting, $control ) {
 		$value_decoded = json_decode( $value );
 
 		if ( is_array( $value_decoded ) ) {
-			$control = $setting->manager->get_control( $setting->id );
 			$value_sanitized = array();
 
 			foreach ( $value_decoded as $key ) {

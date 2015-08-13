@@ -14,30 +14,24 @@ api.controls.BaseRadio = api.controls.Base.extend({
    * @return {string} The new value if is an allowed choice or the last value
    */
   validate: function (newValue) {
-    var choices = this.params.choices;
-
     // validate value as a string
-    if (_.isString(newValue) && choices.hasOwnProperty(newValue)) {
+    if (_.isString(newValue) && this.params.choices.hasOwnProperty(newValue)) {
       return newValue;
     }
     // otherwise return last value
     else {
-      return this.setting();
+      return { error: true };
     }
   },
   /**
-   * On initialization
-   *
-   * Update radios status if the setting is changed programmatically.
-   *
+   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
+   * @param {string} value The new setting value.
    */
-  onInit: function () {
-    this.setting.bind(function () {
-      if (this.rendered) {
-        this._syncRadios();
-      }
-    }.bind(this));
+  syncUIFromAPI: function (value) {
+    if (this.rendered) {
+      this._syncRadios();
+    }
   },
   /**
    * On ready

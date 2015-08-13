@@ -93,18 +93,14 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
     }).addClass('pwpcp-current');
   },
   /**
-   * On initialization
-   *
-   * Update UI if the setting is changed programmatically.
-   *
+   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
+   * @param {string} value The new setting value.
    */
-  onInit: function () {
-    this.setting.bind(function (value) {
-      if (this.rendered && value !== this._getValueFromUI()) {
-        this._updateUI();
-      }
-    }.bind(this));
+  syncUIFromAPI: function (value) {
+    if (this.rendered && value !== this._getValueFromUI()) {
+      this._updateUI();
+    }
   },
   /**
    * On ready

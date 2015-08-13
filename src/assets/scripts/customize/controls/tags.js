@@ -10,14 +10,15 @@ wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
   /**
    * Validate
    *
-   * @param  {string} newValue
-   * @return {string} The new value if it is a string
+   * @param  {string} rawNewValue
+   * @return {string|object<string,boolean>} The new value if it is a string
+   *                                         or the error object.
    */
-  validate: function (newValue) {
-    if (_.isString(newValue)) {
-      return newValue;
+  validate: function (rawNewValue) {
+    if (_.isString(rawNewValue)) {
+      return Utils.stripHTML(rawNewValue);
     } else {
-      return this.setting();
+      return { error: true };
     }
   },
   /**
@@ -39,20 +40,18 @@ wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
    *
    * @override
    */
-  onInit: function () {
-    this.setting.bind(function (value) {
-      var selectize = this.__input.selectize;
-      if (this.rendered && selectize && selectize.getValue() !== value) {
-        this.__input.value = value;
-        // this is due to a bug, we should use:
-        // selectize.setValue(value, true);
-        // but @see https://github.com/brianreavis/selectize.js/issues/568
-        // so first we have to destroy thene to reinitialize, this happens
-        // only through a programmatic change such as a reset action
-        selectize.destroy();
-        this._initSelectize();
-      }
-    }.bind(this));
+  syncUIFromAPI: function (value) {
+    var selectize = this.__input ? this.__input.selectize : null;
+    if (this.rendered && selectize && selectize.getValue() !== value) {
+      this.__input.value = value;
+      // this is due to a bug, we should use:
+      // selectize.setValue(value, true);
+      // but @see https://github.com/brianreavis/selectize.js/issues/568
+      // so first we have to destroy thene to reinitialize, this happens
+      // only through a programmatic change such as a reset action
+      selectize.destroy();
+      this._initSelectize();
+    }
   },
   /**
    * On ready

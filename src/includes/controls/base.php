@@ -30,6 +30,13 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	public $guide;
 
 	/**
+	 * Whether this control is optional, hence it is allowed to be empty.
+	 *
+	 * @var boolean
+	 */
+	public $optional = false;
+
+	/**
 	 * Whether this control is advanced or normal,
 	 * users and developers will be able to hide or show
 	 * the advanced controls.
@@ -66,6 +73,11 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 		// add guide if any
 		if ( $this->guide ) {
 			$this->json['guide'] = $this->guide;
+		}
+
+		// set control setting as optional
+		if ( $this->optional ) {
+			$this->json['optional'] = $this->optional;
 		}
 
 		// add advanced flag if specified
@@ -228,12 +240,41 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * Sanitization callback
 	 *
+	 * All control's specific sanitizations pass from this function which
+	 * always check if the value satisfy the `optional` attribute and then
+	 * delegates additional and specific sanitization to the class that
+	 * inherits from this, which need to override the static method `sanitize`.
+	 * The control instance is always passed to that method in addition to the
+	 * value and the setting instance.
+	 *
 	 * @since 0.0.1
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
  	 * @return string The sanitized value.
  	 */
-	public static function sanitize_callback( $value, $setting ) {
+	final public static function sanitize_callback( $value, $setting ) {
+		$control = $setting->manager->get_control( $setting->id );
+
+		if ( $control && !$control->optional && is_null( $value ) ) { // @@todo tocheck if is_null is fine \\
+			return $setting->default;
+		} else {
+			return self::sanitize( $value, $setting, $control );
+		}
+	}
+
+	/**
+	 * Sanitize
+	 *
+	 * Class specific sanitization, method to override in subclasses.
+	 *
+	 * @since 0.0.1
+	 * @abstract
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @param WP_Customize_Control $control Control instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	protected static function sanitize( $value, $setting, $control ) {
 		return wp_kses_post( $value );
 	}
 }

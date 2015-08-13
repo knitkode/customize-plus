@@ -43,7 +43,7 @@
   'font-weight',
   'text',
   'text-max-length',
-  'text-required',
+  'text-optional',
   'text-url',
   'text-email',
   'textarea',

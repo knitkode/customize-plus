@@ -23,14 +23,6 @@ class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 	public $type = 'pwpcp_font_family';
 
 	/**
-	 * [enqueue description]
-	 * @return [type] [description]
-	 */
-	public function enqueue() {
-		wp_enqueue_script( 'jquery-ui-sortable' );
-	}
-
-	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
 	 *
 	 * @since 0.0.1

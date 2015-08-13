@@ -72,16 +72,17 @@ class PWPcp_Customize_Control_Sortable extends PWPcp_Customize_Control_Base_Radi
 	}
 
 	/**
-	 * Sanitization callback
+	 * Sanitize
 	 *
 	 * @since 0.0.1
 	 * @override
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @param WP_Customize_Control $control Control instance.
  	 * @return string The sanitized value.
  	 */
-	public static function sanitize_callback( $value, $setting ) {
-		return PWPcp_Sanitize::array_in_choices( $value, $setting );
+	protected static function sanitize( $value, $setting, $control ) {
+		return PWPcp_Sanitize::array_in_choices( $value, $setting, $control );
 	}
 }
 

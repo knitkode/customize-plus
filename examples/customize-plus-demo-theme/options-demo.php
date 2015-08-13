@@ -1068,18 +1068,16 @@ return array(
 					),
 				),
 			),
-			'text-required' => array(
+			'text-optional' => array(
 				'setting' => array(
 					'default' => 'something',
 					'transport' => 'postMessage',
 				),
 				'control' => array(
-					'label' => __( 'Text required (no empty)', 'i18n' ),
-					'description' => __( 'Empty value is not allowed, when the input is empty the control.setting keep the latest valid value.', 'i18n' ),
+					'label' => __( 'Text optional', 'i18n' ),
+					'description' => __( 'Empty value is allowed.', 'i18n' ),
 					'type' => 'pwpcp_text',
-					'input_attrs' => array(
-						'required' => true,
-					),
+					'optional' => true,
 					'guide' => array(
 						'title' => __( 'See Code', 'i18n' ),
 						'text' => "```php
@@ -1089,11 +1087,9 @@ return array(
 		'transport' => 'postMessage',
 	),
 	'control' => array(
-		'label' => __( 'Text required (no empty)', 'i18n' ),
+		'label' => __( 'Text optional', 'i18n' ),
 		'type' => 'pwpcp_text',
-		'input_attrs' => array(
-			'required' => true,
-		),
+		'optional' => true,
 	)
 ),
 ```",
@@ -1340,12 +1336,11 @@ return array(
 					'transport' => 'postMessage',
 				),
 				'control' => array(
-					'label' => __( 'Number min / required', 'i18n' ),
-					'description' => __( 'Number required (can not be empty) and with a minimum value.', 'i18n' ),
+					'label' => __( 'Number min', 'i18n' ),
+					'description' => __( 'Number with a minimum value.', 'i18n' ),
 					'type' => 'pwpcp_number',
 					'input_attrs' => array(
 						'min' => 4,
-						'required' => true,
 					),
 					'guide' => array(
 						'title' => __( 'See Code', 'i18n' ),
@@ -1356,12 +1351,11 @@ return array(
 		'transport' => 'postMessage',
 	),
 	'control' => array(
-		'label' => __( 'Number min / required', 'i18n' ),
+		'label' => __( 'Number min', 'i18n' ),
 		'description' => __( '', 'i18n' ),
 		'type' => 'pwpcp_number',
 		'input_attrs' => array(
 			'min' => 4,
-			'required' => true,
 		),
 	),
 ),
@@ -1375,9 +1369,10 @@ return array(
 					'transport' => 'postMessage',
 				),
 				'control' => array(
-					'label' => __( 'Number max', 'i18n' ),
-					'description' => __( 'Number with a  maximum value.', 'i18n' ),
+					'label' => __( 'Number max / optional', 'i18n' ),
+					'description' => __( 'Number with a maximum value. Empty value allowed.', 'i18n' ),
 					'type' => 'pwpcp_number',
+					'optional' => true,
 					'input_attrs' => array(
 						'max' => 7,
 					),
@@ -1393,6 +1388,7 @@ return array(
 		'label' => __( 'Number max', 'i18n' ),
 		'description' => __( '', 'i18n' ),
 		'type' => 'pwpcp_number',
+		'optional' => true,
 		'input_attrs' => array(
 			'max' => 7,
 		),

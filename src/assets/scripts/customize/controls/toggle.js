@@ -4,7 +4,7 @@
  * Control Toggle
  *
  * @constructor
- * @augments api.controls.BaseInput
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  * @requires Utils
@@ -35,23 +35,18 @@ wpApi.controlConstructor.pwpcp_toggle = api.controls.Base.extend({
     return Utils.toBoolean(newValue) ? 1 : 0;
   },
   /**
-   * On initialization
-   *
-   * Add custom validation function overriding the empty function from WP API.
-   * Update input value if the setting is changed programmatically.
-   *
+   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
+   * @param {string} value The new setting value.
    */
-  onInit: function () {
-    this.setting.bind(function (val) {
-      if (this.rendered) {
-        var value = Utils.toBoolean(val);
-        var inputStatus = Utils.toBoolean(this.__input.checked);
-        if (inputStatus !== value) {
-          this.__input.checked = value;
-        }
+  syncUIFromAPI: function (value) {
+    if (this.rendered) {
+      var valueClean = Utils.toBoolean(value);
+      var inputStatus = Utils.toBoolean(this.__input.checked);
+      if (inputStatus !== valueClean) {
+        this.__input.checked = valueClean;
       }
-    }.bind(this));
+    }
   },
   /**
    * On ready

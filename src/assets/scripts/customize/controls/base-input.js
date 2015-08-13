@@ -9,52 +9,37 @@
 // export to our API
 api.controls.BaseInput = api.controls.Base.extend({
   /**
-   * Validate value
-   *
-   * @abstract To implement in subclasses
-   * @param  {string} newValue
-   * @return {string|object<boolean,string>}
+   * On validation error
+   * @override
+   * @param  {object<string,boolean|string>} errorObject `{ error: true, msg: string }`
    */
-  _validateValue: function (newValue) {
-    // var errorObj = { error: true, msg: '' };
-    return newValue;
-  },
-  /**
-   * Validate (private)
-   *
-   * @param  {string} newValue
-   * @return {string|boolean}
-   */
-  validate: function (newValue) {
-    var validationResult = this._validateValue(newValue);
-    if (validationResult.error) {
-      this.__input.style.cssText = 'border-color: #c00; background: #fff9f9; box-shadow: 0 0 4px #c00;';
-      this.__inputFeedback.style.color = '#c00';
-      if (_.isString(validationResult.msg)) {
-        this.__inputFeedback.innerHTML = validationResult.msg;
-      }
-      return this.setting();
-    } else {
-      this.__input.removeAttribute('style');
-      this.__inputFeedback.removeAttribute('style');
-      this.__inputFeedback.innerHTML = '';
-      return newValue;
+  _onValidateError: function (errorObject) {
+    this.__input.style.cssText = 'border-color: #c00; background: #fff9f9; box-shadow: 0 0 4px #c00;';
+    this.__inputFeedback.style.color = '#c00';
+    if (_.isString(errorObject.msg)) {
+      this.__inputFeedback.innerHTML = errorObject.msg;
     }
   },
   /**
-   * On initialization
-   *
-   * Update input value if the setting is changed programmatically.
-   *
+   * On validation success
    * @override
    */
-  onInit: function () {
+  _onValidateSuccess: function () {
+    this.__input.removeAttribute('style');
+    this.__inputFeedback.removeAttribute('style');
+    this.__inputFeedback.innerHTML = '';
+  },
+  /**
+   * Sync UI with value coming from API, a programmatic change like a reset.
+   * @override
+   * @param {string} value The new setting value.
+   */
+  syncUIFromAPI: function (value) {
     // here value can be undefined if it doesn't pass the validate function
-    this.setting.bind(function (value) {
-      if (this.rendered && value && this.__input.value !== value) {
-        this.__input.value = value;
-      }
-    }.bind(this));
+    debugger;
+    if (this.rendered && value && this.__input.value !== value) {
+      this.__input.value = value;
+    }
   },
   /**
    * On ready
@@ -71,10 +56,11 @@ api.controls.BaseInput = api.controls.Base.extend({
    * Sync input and listen for changes
    */
   _syncAndListen: function () {
-    $(this.__input)
-      .val(this.setting())
-      .on('change keyup paste', function (event) {
-        this.setting.set(event.target.value);
-      }.bind(this));
+    var self = this;
+    $(self.__input)
+      .val(self.setting())
+      .on('change keyup paste', function () {
+        self.setting.set(this.value);
+      });
   }
 });

@@ -74,6 +74,15 @@ var Utils = (function () {
       return typeof value === 'boolean' ? value : !!parseInt(value, 10);
     },
     /**
+     * Strip HTML from input
+     * @link(http://stackoverflow.com/q/5002111/1938970)
+     * @param  {string} input
+     * @return {string}
+     */
+    stripHTML: function (input) {
+      return $('<div/>').html(input).text();
+    },
+    /**
      * Get image url
      *
      * @param  {String} url The image URL, relative or absolute
@@ -167,6 +176,37 @@ var Utils = (function () {
       } else if (resetType === 'factory') {
         return value !== _softenize(control.params.vFactory);
       }
+    },
+    /**
+     * Force `setting.set`.
+     * Use case:
+     * When a required text control content gets deleted by the user,
+     * the extras dropdown shows the reset buttons enabled but clicking on any
+     * of them doesn't give any effect in the UI. Why? Because when the input
+     * field gets emptied the validate function set the setting to the last
+     * value using `return this.setting()`, this returning value it is likely
+     * to be the same as the initial session or the factory value, therefore
+     * before and after the user has clicked the reset button the value of the
+     * setting cold stay the same. Despite this make sense, the input field
+     * gets out of sync since once it become empty (while the setting value
+     * remains the latest valid value).
+     * The callback that should be called on reset (the `syncUIfromAPI` method)
+     * in this scenario doesn't get called because in the WordPress
+     * `customize-base.js#187` there is a check that return the function if the
+     * setting has been set with the same value as the last one, preventing so
+     * to fire the callbacks binded to the setting and, with these, also our
+     * `syncUIfromAPI` that would update the UI, our input field with the
+     * resetted value. To overcome this problem we can force the setting to set
+     * anyway by temprarily set the private property `_value` to a dummy value
+     * and then re-setting the setting to the desired value, in this way the
+     * callbacks are fired and the UI get back in sync.
+     *
+     * @param  {wp.customize.Setting} setting
+     * @param  {string} value
+     */
+    _forceSettingSet: function (setting, value) {
+      setting['_value'] = 'dummy'; // @@todo careful of uglify minification \\
+      setting.set(value);
     },
     /**
      * Selectize render option function

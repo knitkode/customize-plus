@@ -13,7 +13,7 @@ api.controls.Sortable = wpApi.controlConstructor.pwpcp_sortable = api.controls.B
    *
    * @param  {string|array} rawNewValue Value of the checkbox clicked or sent
    *                                    through js API
-   * @return {string} A JSONified Array
+   * @return {string|object<string,boolean>} A JSONified Array or the error object
    */
   validate: function (rawNewValue) {
     var choices = this.params.choices;
@@ -38,23 +38,19 @@ api.controls.Sortable = wpApi.controlConstructor.pwpcp_sortable = api.controls.B
     }
     // otherwise return last value
     else {
-      return this.setting();
+      return { error: true };
     }
   },
   /**
-   * On initialization
-   *
-   * Update sortable items order if the setting is changed programmatically.
-   *
+   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
+   * @param {string} value The new setting value.
    */
-  onInit: function () {
-    this.setting.bind(function (value) {
-      if (this.rendered && value !== this.params.lastValue) {
-        this._reorder();
-        this.params.lastValue = value;
-      }
-    }.bind(this));
+  syncUIFromAPI: function (value) {
+    if (this.rendered && value !== this.params.lastValue) {
+      this._reorder();
+      this.params.lastValue = value;
+    }
   },
   /**
    * On ready

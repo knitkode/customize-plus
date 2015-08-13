@@ -9,19 +9,19 @@
  */
 wpApi.controlConstructor.pwpcp_text = api.controls.BaseInput.extend({
   /**
-   * Validate value
+   * Validate
    *
    * @override
    * @param  {string} value
    * @return {string|object<error,boolean|string>}
    */
-  _validateValue: function (value) {
+  validate: function (value) {
     var attrs = this.params.attrs;
     var inputType = attrs.type || 'text';
     var errorMsg = '';
 
-    // required
-    if (attrs.required && !value.length) {
+    // optional check
+    if (!this.params.optional && !value.length) {
       errorMsg += api.l10n['vNotEmpty'];
     } else {
       // max length
@@ -38,8 +38,8 @@ wpApi.controlConstructor.pwpcp_text = api.controls.BaseInput.extend({
       }
       // text
       else {
-        // always escape HTML with `validator`
-        value = validator.escape(value);
+        // always strip HTML
+        value = Utils.stripHTML(value);
       }
     }
 

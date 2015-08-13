@@ -12,7 +12,7 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
    *
    * @param  {string|array} rawNewValue Value of the checkbox clicked or sent
    *                                    through js API
-   * @return {string} A JSONified Array
+   * @return {string|object<string,boolean>} A JSONified Array
    */
   validate: function (rawNewValue) {
     var newValue;
@@ -65,26 +65,22 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
     } else if(_.isArray(newValue)){
       return _validateArray();
     } else {
-      return this.setting();
+      return { error: true };
     }
   },
   /**
-   * On initialization
-   *
-   * Update checkboxes status if the setting is changed programmatically.
-   *
+   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
+   * @param {string} value The new setting value.
    */
-  onInit: function () {
-    this.setting.bind(function (value) {
-      if (this.rendered && value !== this._getValueFromUI()) {
-        this._syncCheckboxes();
+  syncUIFromAPI: function (value) {
+    if (this.rendered && value !== this._getValueFromUI()) {
+      this._syncCheckboxes();
 
-        if (this.params.sortable) {
-          this._reorder();
-        }
+      if (this.params.sortable) {
+        this._reorder();
       }
-    }.bind(this));
+    }
   },
   /**
    * On ready

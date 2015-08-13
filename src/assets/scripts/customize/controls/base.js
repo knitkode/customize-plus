@@ -74,10 +74,8 @@ api.controls.Base = wpApi.Control.extend({
     });
 
     wpApi.apply( wpApi, settings.concat( function () {
-      var key;
-
       control.settings = {};
-      for ( key in control.params.settings ) {
+      for ( var key in control.params.settings ) {
         control.settings[ key ] = wpApi( control.params.settings[ key ] );
       }
 
@@ -100,8 +98,52 @@ api.controls.Base = wpApi.Control.extend({
     control.onInit();
 
     // Add custom validation function overriding the empty function from WP API.
-    this.setting.validate = this.validate.bind(this);
+    this.setting.validate = this._validateWrap.bind(this);
+
+    // bind setting change to control method to reflect a programmatic
+    // change on the UI
+    this.setting.bind(this.syncUIFromAPI.bind(this));
   },
+  /**
+   * Validate wrap function.
+   * Always check that required setting (not `optional`) are not empty,
+   * if it pass the check call the control specific abstract `validate` method.
+   *
+   * // @@doubt not sure whether this should be private or not \\
+   * @param  {string} newValue
+   * @return {string} The newValue validated or the last setting value.
+   */
+  _validateWrap: function (newValue) {
+    if ( !this.params.optional && newValue.toString() === '' ) {
+      this._onValidateError({ error: true, msg: api.l10n['vRequired'] });
+      this._currentValueHasError = true;
+      return this.setting();
+
+    } else {
+      var validationResult = this.validate(newValue);
+
+      if (validationResult.error) {
+        this._onValidateError(validationResult);
+        this._currentValueHasError = true;
+        return this.setting();
+      } else {
+        this._onValidateSuccess(validationResult);
+        this._currentValueHasError = false;
+        return validationResult;
+      }
+    }
+  },
+  /**
+   * On validation error (optionally override it in subclasses)
+   * @abstract
+   * @param  {object<string,boolean|string>} errorObject `{ error: true, msg: string }`
+   */
+  _onValidateError: function (errorObject) {},
+  /**
+   * On validation success (optionally override it in subclasses)
+   * @abstract
+   */
+  _onValidateSuccess: function () {},
   /**
    * Validate
    *
@@ -112,6 +154,13 @@ api.controls.Base = wpApi.Control.extend({
   validate: function (newValue) {
     return newValue;
   },
+  /**
+   * Sync UI with value coming from API, a programmatic change like a reset.
+   *
+   * @abstract
+   * @param {string} value The new setting value.
+   */
+  syncUIFromAPI: function (value) {},
   /**
    * Triggered when the control has been initialized
    *
@@ -176,7 +225,7 @@ api.controls.Base = wpApi.Control.extend({
     this.onDeflate();
 
     // destroy guides to free up DOM
-    this.destroyGuide(this);
+    this._destroyGuide(this);
 
     // and empty the DOM from the container in a timeout so
     // the slide out animation of the section doesn't freeze
@@ -238,47 +287,10 @@ api.controls.Base = wpApi.Control.extend({
     if (shouldWeResolveEmbeddedDeferred) {
       this.deferred.embedded.resolve();
     }
-    this.initGuide();
-    this.initHelp();
-    this.extras();
+    this._initGuide();
+    this._initHelp();
+    this._extras();
     console.log('inflate of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.');
-  },
-  /**
-   * Manage the initialization of control guides
-   *
-   * @use Tooltips
-   * @return {void}
-   */
-  initGuide: function () {
-    if (this.params.guide && Tooltips) {
-      Tooltips.createGuide(this);
-    }
-  },
-  /**
-   * Destroy guides on control deflate
-   *
-   * @use Tooltips
-   * @return {void}
-   */
-  destroyGuide: function () {
-    if (this.params.guide && Tooltips) {
-      Tooltips.destroyGuide(this);
-    }
-  },
-  /**
-   * Manage the initialization of control helpers
-   *
-   * @use Tooltips
-   * @return {void}
-   */
-  initHelp: function () {
-    if (!Tooltips) {
-      return;
-    }
-    var helpers = this._container.getElementsByClassName('pwpcp-help');
-    if (helpers) {
-      Tooltips.createHelpers(helpers);
-    }
   },
   /**
    * Normalize setting for soft comparison
@@ -294,11 +306,47 @@ api.controls.Base = wpApi.Control.extend({
     return value;
   },
   /**
-   * Manage the `extras` dropdown menu
-   * of the control.
+   * Manage the initialization of control guides
+   *
+   * @use Tooltips
+   * @return {void}
+   */
+  _initGuide: function () {
+    if (this.params.guide && Tooltips) {
+      Tooltips.createGuide(this);
+    }
+  },
+  /**
+   * Destroy guides on control deflate
+   *
+   * @use Tooltips
+   * @return {void}
+   */
+  _destroyGuide: function () {
+    if (this.params.guide && Tooltips) {
+      Tooltips.destroyGuide(this);
+    }
+  },
+  /**
+   * Manage the initialization of control helpers
+   *
+   * @use Tooltips
+   * @return {void}
+   */
+  _initHelp: function () {
+    if (!Tooltips) {
+      return;
+    }
+    var helpers = this._container.getElementsByClassName('pwpcp-help');
+    if (helpers) {
+      Tooltips.createHelpers(helpers);
+    }
+  },
+  /**
+   * Manage the extras dropdown menu of the control.
    *
    */
-  extras: function () {
+  _extras: function () {
     var self = this;
     /**
      * Reference to abstract method different in various control's subclasses
@@ -318,10 +366,11 @@ api.controls.Base = wpApi.Control.extend({
     var btnHide = container.getElementsByClassName('pwpcp-extras-hide')[0];
     // value variables, uses closure
     var setting = this.setting;
-    var defaultValue = this.params.vInitial;
+    var initialValue = this.params.vInitial;
     var factoryValue = this.params.vFactory;
     // state
     var isOpen = false;
+
     // handlers
     var _closeExtras = function () {
       container.classList.remove('pwpcp-extras-open');
@@ -332,7 +381,7 @@ api.controls.Base = wpApi.Control.extend({
      *
      */
     var _resetLastValue = function () {
-      setting.set(defaultValue);
+      Utils._forceSettingSet(setting, initialValue);
       _closeExtras();
     };
     /**
@@ -342,20 +391,20 @@ api.controls.Base = wpApi.Control.extend({
      *
      */
     var _resetFactoryValue = function () {
-      setting.set(factoryValue);
+      Utils._forceSettingSet(setting, factoryValue);
       _closeExtras();
     };
     /**
-     * Enable button responsible for: resetting to last value
+     * Enable button responsible for: resetting to initial value
      */
-    var _enableBtnLast = function () {
+    var _enableBtnInitial = function () {
       btnResetLast.className = CLASS_RESET_LAST;
       btnResetLast.onclick = _resetLastValue;
     };
     /**
-     * Disable button responsible for: resetting to last value
+     * Disable button responsible for: resetting to initial value
      */
-    var _disableBtnLast = function () {
+    var _disableBtnInitial = function () {
       btnResetLast.className = CLASS_RESET_LAST + CLASS_DISABLED;
       btnResetLast.onclick = '';
     };
@@ -380,12 +429,19 @@ api.controls.Base = wpApi.Control.extend({
     var _onExtrasOpen = function () {
       Skeleton.hasScrollbar(); // on open check if we have a scrollbar
 
+      // if the control current value is not valid enable both reset buttons
+      if (self._currentValueHasError) {
+        _enableBtnInitial();
+        _enableBtnFactory();
+        return;
+      }
+
       var currentValue = _maybeSoftenizeValue( setting.get() );
 
-      if (currentValue === _maybeSoftenizeValue( defaultValue )) {
-        _disableBtnLast();
+      if (currentValue === _maybeSoftenizeValue( initialValue )) {
+        _disableBtnInitial();
       } else {
-        _enableBtnLast();
+        _enableBtnInitial();
       }
       if (currentValue === _maybeSoftenizeValue( factoryValue )) {
         _disableBtnFactory();

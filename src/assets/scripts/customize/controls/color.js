@@ -52,7 +52,7 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
    * Validate
    *
    * @param {*} value The value to validate.
-   * @return {string} The validated control value.
+   * @return {string|object<string,boolean>} The validated control value.
    */
   validate: function (value) {
     if (
@@ -62,21 +62,16 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
     ) {
       return value;
     } else {
-      return this.setting();
+      return { error: true };
     }
   },
   /**
-   * On initialization
-   *
+   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
+   * @param {string} value The new setting value.
    */
-  onInit: function () {
-    // bind setting change to pass value on apply value
-    // if we are programmatically changing the control value
-    // for instance through js (during import, debugging, etc.)
-    this.setting.bind(function (value) {
-      this._apply(value, 'API');
-    }.bind(this));
+  syncUIFromAPI: function (value) {
+    this._apply(value, 'API');
   },
   /**
    * On deflate

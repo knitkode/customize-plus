@@ -12,7 +12,8 @@ api.controls.Select = wpApi.controlConstructor.pwpcp_select = api.controls.Base.
    * Validate
    *
    * @param  {string} rawNewValue
-   * @return {string} The new value if is an allowed choice or the last value
+   * @return {string|object<string,boolean>} The new value if is an allowed
+   *                                         choice or the error object.
    */
   validate: function (rawNewValue) {
     var choices = this.params.choices;
@@ -40,7 +41,7 @@ api.controls.Select = wpApi.controlConstructor.pwpcp_select = api.controls.Base.
       return newValue;
     }
     // otherwise return last value
-    return this.setting();
+    return { error: true };
   },
   /**
    * On deflate
@@ -55,18 +56,14 @@ api.controls.Select = wpApi.controlConstructor.pwpcp_select = api.controls.Base.
     }
   },
   /**
-   * On initialization
-   *
-   * Update select status if the setting is changed programmatically.
-   *
+   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
+   * @param {string} value The new setting value.
    */
-  onInit: function () {
-    this.setting.bind(function (value) {
-      if (this.rendered) {
-        this._syncOptions();
-      }
-    }.bind(this));
+  syncUIFromAPI: function (value) {
+    if (this.rendered) {
+      this._syncOptions();
+    }
   },
   /**
    * On ready

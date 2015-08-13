@@ -52,6 +52,22 @@ class PWPcp_Customize_Control_Tags extends PWPcp_Customize_Control_Base {
 		</label>
 		<?php
 	}
+
+	/**
+	 * Sanitize
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @param WP_Customize_Control $control Control instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	protected static function sanitize( $value, $setting, $control ) {
+		//  always cast as a string
+		$value = (string) $value;
+		return wp_kses_post( $value );
+	}
 }
 
 /**

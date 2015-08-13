@@ -10,27 +10,26 @@
 // export to our API and to WordPress API
 api.controls.Number = wpApi.controlConstructor.pwpcp_number = api.controls.BaseInput.extend({
   /**
-   * Validate value
+   * Validate
    *
    * @override
    * @param  {string} value
    * @return {string|object<error,boolean|string>}
    */
-  _validateValue: function (rawValue) {
+  validate: function (rawValue) {
     var value = parseInt(rawValue, 10);
     var attrs = this.params.attrs;
     var errorMsg = '';
 
-    if (!_.isNumber(value)) {
+    // optional check
+    if (!this.params.optional && value.toString() === '') {
+      errorMsg += api.l10n['vNotEmpty'];
+    // is number
+    } else if (!_.isNumber(value)) {
       errorMsg += api.l10n['vNotNumber'];
-    }
-
-    // read attrs if any
-    if (attrs) {
-      // required
-      if (attrs.required && !_.isNumber(value)) {
-        errorMsg += api.l10n['vNotEmpty'];
-      } else {
+    } else {
+      // read attrs if any
+      if (attrs) {
         // min value
         if (attrs.min && value < attrs.min) {
           errorMsg += api.l10n['vNumberLow'] + ' ';

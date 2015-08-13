@@ -48,17 +48,16 @@ class PWPcp_Customize_Control_Toggle extends PWPcp_Customize_Control_Base_Radio 
 	}
 
 	/**
-	 * Sanitization callback
-	 *
-	 * @see  http://stackoverflow.com/a/15075609/1938970
+	 * Sanitize
 	 *
 	 * @since 0.0.1
 	 * @override
-	 * @param string $value The value to sanitize.
-	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @param WP_Customize_Control $control Control instance.
  	 * @return string The sanitized value.
  	 */
-	public static function sanitize_callback( $value, $setting ) {
+	protected static function sanitize( $value, $setting, $control ) {
 		$filtered = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 		return $filtered ? 1 : 0;
 	}

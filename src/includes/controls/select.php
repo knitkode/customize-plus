@@ -79,16 +79,16 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	}
 
 	/**
-	 * Sanitization callback
+	 * Sanitize
 	 *
 	 * @since 0.0.1
 	 * @override
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @param WP_Customize_Control $control Control instance.
  	 * @return string The sanitized value.
  	 */
-	public static function sanitize_callback( $value, $setting ) {
-		$control = $setting->manager->get_control( $setting->id );
+	protected static function sanitize( $value, $setting, $control ) {
 		$selectize = $control->selectize;
 		if ( isset( $selectize['maxItems'] ) ) {
 			$max_items = filter_var( $selectize['maxItems'], FILTER_SANITIZE_NUMBER_INT );
@@ -96,9 +96,9 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 			$max_items = null;
 		}
 		if ( is_numeric( $max_items ) && $max_items > 1 ) {
-			return PWPcp_Sanitize::array_in_choices( $value, $setting );
+			return PWPcp_Sanitize::array_in_choices( $value, $setting, $control );
 		} else {
-			return PWPcp_Sanitize::string_in_choices( $value, $setting );
+			return PWPcp_Sanitize::string_in_choices( $value, $setting, $control );
 		}
 	}
 }

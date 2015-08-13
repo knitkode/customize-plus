@@ -101,16 +101,16 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	}
 
 	/**
-	 * Sanitization callback
+	 * Sanitize
 	 *
 	 * @since 0.0.1
 	 * @override
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @param WP_Customize_Control $control Control instance.
  	 * @return string The sanitized value.
  	 */
-	public static function sanitize_callback( $value, $setting ) {
-		$control = $setting->manager->get_control( $setting->id );
+	protected static function sanitize( $value, $setting, $control ) {
 		$input_attrs = $control->input_attrs;
 		$number = self::get_number_from( $value );
 		$unit = self::get_unit_from( $control, $value );
