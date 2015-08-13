@@ -50,6 +50,8 @@
   'textarea-html',
   'textarea-wp_editor',
   'textarea-wp_editor-options',
+  'knob',
+  'knob-options',
 ); ?>
 <!doctype html>
 <html>

@@ -20,29 +20,39 @@ api.controls.Number = wpApi.controlConstructor.pwpcp_number = api.controls.BaseI
     var value = parseInt(rawValue, 10);
     var attrs = this.params.attrs;
     var errorMsg = '';
-    // required
-    if (attrs.required && !_.isNumber(value)) {
-      errorMsg += api.l10n['vNotEmpty'];
-    } else {
-      // min value
-      if (attrs.min && value < attrs.min) {
-        errorMsg += api.l10n['vNumberLow'] + ' ';
-      }
-      // max value
-      if (attrs.max && value > attrs.max) {
-        errorMsg += api.l10n['vNumberHigh'] + ' ';
-      }
-      // step
-      if (attrs.step && !validator.isDivisibleBy(value, attrs.step)) {
-        errorMsg += api.l10n['vNumberStep'] + ' ' + attrs.step;
+
+    if (!_.isNumber(value)) {
+      errorMsg += api.l10n['vNotNumber'];
+    }
+
+    // read attrs if any
+    if (attrs) {
+      // required
+      if (attrs.required && !_.isNumber(value)) {
+        errorMsg += api.l10n['vNotEmpty'];
+      } else {
+        // min value
+        if (attrs.min && value < attrs.min) {
+          errorMsg += api.l10n['vNumberLow'] + ' ';
+        }
+        // max value
+        if (attrs.max && value > attrs.max) {
+          errorMsg += api.l10n['vNumberHigh'] + ' ';
+        }
+        // step
+        if (attrs.step && !validator.isDivisibleBy(value, attrs.step)) {
+          errorMsg += api.l10n['vNumberStep'] + ' ' + attrs.step;
+        }
       }
     }
 
+    // if there is an error return it
     if (errorMsg) {
       return {
         error: true,
         msg: errorMsg
       };
+    // otherwise return the valid value
     } else {
       return value;
     }

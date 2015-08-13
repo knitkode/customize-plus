@@ -31,6 +31,7 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
 	 */
 	public function get_l10n() {
 		return array(
+			'vNotNumber' => __( 'The value is not a number.', 'pkgTextdomain' ),
 			'vNotEmpty' => __( 'This field cannot be empty.', 'pkgTextdomain' ),
 			'vNumberLow' => __( 'The number is too low.', 'pkgTextdomain' ),
 			'vNumberHigh' => __( 'The number is too high.', 'pkgTextdomain' ),

@@ -79,7 +79,6 @@
     'multicheck',
     'multicheck-sortable',
     'select',
-    // 'select-multiple',
     'select-selectize',
     'select-selectize-options',
     'select-selectize-more-items',
@@ -91,7 +90,9 @@
     'sortable',
     // 'sortable-editable'
     'font-family',
-    'font-weight'
+    'font-weight',
+    'knob',
+    'knob-options',
   ].concat(settingsToColor, settingsToWidth);
 
   _.each(settingsToText, function (setting) {

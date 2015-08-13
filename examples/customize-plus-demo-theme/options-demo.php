@@ -1984,25 +1984,63 @@ return array(
 		'fields' => array(
 			'knob' => array(
 				'setting' => array(
-					'default' => 144,
+					'default' => 74,
 					'transport' => 'postMessage',
 				),
 				'control' => array(
 					'label' => __( 'Knob', 'i18n' ),
-					'description' => __( '', 'i18n' ),
+					'description' => __( 'Basically a number input. Uses [jQuery.knob.js](https://github.com/aterrien/jQuery-Knob).', 'i18n' ),
 					'type' => 'pwpcp_knob',
 					'guide' => array(
 						'title' => __( 'See Code', 'i18n' ),
 						'text' => "```php
 'an-id' => array(
 	'setting' => array(
-		'default' => 144,
+		'default' => 74,
 		'transport' => 'postMessage',
 	),
 	'control' => array(
 		'label' => __( 'Knob', 'i18n' ),
 		'description' => __( '', 'i18n' ),
 		'type' => 'pwpcp_knob',
+	),
+),
+```",
+					),
+				),
+			),
+			'knob-options' => array(
+				'setting' => array(
+					'default' => 275,
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'Knob (with options)', 'i18n' ),
+					'description' => __( 'It is possible to pass to the `input_attrs` arg some jQuery.knob js options. See a [list here](http://@@todo) of the options allowed.', 'i18n' ),
+					'type' => 'pwpcp_knob',
+					'input_attrs' => array(
+						'min' => 30,
+						'step' => 5,
+						'max' => 360,
+						'cursor' => 20,
+					),
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'default' => 275,
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'Knob (with options)', 'i18n' ),
+		'description' => __( '', 'i18n' ),
+		'type' => 'pwpcp_knob',
+		'input_attrs' => array(
+			'min' => 30,
+			'step' => 5,
+			'max' => 360,
+			'cursor' => 20,
+		),
 	),
 ),
 ```",
