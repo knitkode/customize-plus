@@ -1982,7 +1982,7 @@ return array(
 		'type' => 'pwpcp_section',
 		'dashicon' => 322,
 		'fields' => array(
-			'font-family' => array(
+			'knob' => array(
 				'setting' => array(
 					'default' => 144,
 					'transport' => 'postMessage',
