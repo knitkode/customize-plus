@@ -31,6 +31,7 @@ global $wp_customize;
 //= include controls/radio.php
 //= include controls/radio-image.php
 //= include controls/select.php
+//= include controls/font-weight.php
 //= include controls/slider.php
 //= include controls/sortable.php
 //= include controls/tags.php

@@ -120,26 +120,7 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 		$this->json['mode'] = 'custom';
 
 		// check for transparent color
-		if ( 'transparent' === $value ) {
-			$this->json['valueCSS'] = $value;
-			return;
-		}
-
-		// check for a hex color string
-		$custom_color_hex = PWPcp_Sanitize::color_hex( $value );
-		if ( $custom_color_hex ) {
-			// hex color is valid, so we have a Custom Color
-			$this->json['valueCSS'] = $custom_color_hex;
-			return;
-		}
-
-		// check for a rgba color string
-		$custom_color_rgba = PWPcp_Sanitize::color_rgba( $value );
-		if ( $custom_color_rgba ) {
-			// hex color is valid, so we have a Custom Color
-			$this->json['valueCSS'] = $custom_color_rgba;
-			return;
-		}
+		$this->json['valueCSS'] = $value;
 	}
 
 	/**
@@ -168,8 +149,20 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
  	 * @return string The sanitized value.
  	 */
 	public static function sanitize_callback( $value, $setting ) {
-		PWPcp_Sanitize::color();
-		return wp_kses_post( $value );
+		$control = $setting->manager->get_control( $setting->id );
+
+		if ( ! $control->disallowTransparent && 'transparent' === $value ) {
+			return $value;
+		}
+		else if ( $control->allowAlpha && PWPcp_Sanitize::color_rgba( $value ) ) {
+			return PWPcp_Sanitize::color_rgba( $value );
+		}
+		else if ( PWPcp_Sanitize::color_hex( $value ) ) {
+			return PWPcp_Sanitize::color_hex( $value );
+		}
+		else {
+			return $setting->default;
+		}
 	}
 }
 

@@ -90,6 +90,8 @@
     'tags-max-items',
     'sortable',
     // 'sortable-editable'
+    'font-family',
+    'font-weight'
   ].concat(settingsToColor, settingsToWidth);
 
   _.each(settingsToText, function (setting) {

@@ -81,7 +81,7 @@ class PWPcp_Customize_Control_Sortable extends PWPcp_Customize_Control_Base_Radi
  	 * @return string The sanitized value.
  	 */
 	public static function sanitize_callback( $value, $setting ) {
-		return self::sanitize_array( $value, $setting );
+		return PWPcp_Sanitize::array_in_choices( $value, $setting );
 	}
 }
 

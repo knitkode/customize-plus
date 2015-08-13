@@ -39,6 +39,8 @@
   'tags-sortable-removable',
   'tags-max-items',
   'sortable',
+  'font-family',
+  'font-weight',
   'text',
   'text-max-length',
   'text-required',

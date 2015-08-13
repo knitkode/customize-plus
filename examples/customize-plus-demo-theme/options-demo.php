@@ -31,7 +31,7 @@ return array(
 	),
 	array(
 		'subject' => 'section',
-		'id' => 'section',
+		'id' => 'section-colors',
 		'title' => __( 'Color controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
 		'dashicon' => 309,
@@ -1008,7 +1008,7 @@ return array(
 		'id' => 'section-texts',
 		'title' => __( 'Text controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
-		'dashicon' => 215,
+		'dashicon' => 217,
 		'fields' => array(
 			'text' => array(
 				'setting' => array(
@@ -1714,7 +1714,7 @@ return array(
 		'id' => 'section-tags',
 		'title' => __( 'Tags controls', 'textDomain' ),
 		'type' => 'pwpcp_section',
-		'dashicon' => 109,
+		'dashicon' => 323,
 		'fields' => array(
 			'tags' => array(
 				'setting' => array(
@@ -1912,6 +1912,67 @@ return array(
 			// 	),
 			// ),
 			// \\
+		),
+	),
+	array(
+		'subject' => 'section',
+		'id' => 'section-font',
+		'title' => __( 'Font controls', 'textDomain' ),
+		'type' => 'pwpcp_section',
+		'dashicon' => 215,
+		'fields' => array(
+			'font-family' => array(
+				'setting' => array(
+					'default' => "'Helvetica Neue', Helvetica, Arial, sans-serif",
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'Font family', 'i18n' ),
+					'description' => __( 'Select the font families and sort them.', 'i18n' ),
+					'type' => 'pwpcp_font_family',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => \"'Helvetica Neue', Helvetica, Arial, sans-serif\",
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'Font family', 'i18n' ),
+		'type' => 'pwpcp_font_family',
+	),
+),
+```",
+					),
+				),
+			),
+			'font-weight' => array(
+				'setting' => array(
+					'default' => 'bold',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'Font weight', 'i18n' ),
+					'description' => __( 'Select the font weight. Just a shortcut of an otherwise verbose select with many choices.', 'i18n' ),
+					'type' => 'pwpcp_font_weight',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => 'bold',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'Font weight', 'i18n' ),
+		'type' => 'pwpcp_font_weight',
+	),
+),
+```",
+					),
+				),
+			),
 		),
 	),
 );

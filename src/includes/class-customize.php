@@ -35,6 +35,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 				'pwpcp_color' => 'PWPcp_Customize_Control_Color',
 				'pwpcp_dummy' => 'PWPcp_Customize_Control_Dummy',
 				'pwpcp_font_family' => 'PWPcp_Customize_Control_Font_Family',
+				'pwpcp_font_weight' => 'PWPcp_Customize_Control_Font_Weight',
 				'pwpcp_multicheck' => 'PWPcp_Customize_Control_Multicheck',
 				'pwpcp_number' => 'PWPcp_Customize_Control_Number',
 				'pwpcp_radio' => 'PWPcp_Customize_Control_Radio',

@@ -60,7 +60,7 @@ class PWPcp_Customize_Control_Text extends PWPcp_Customize_Control_Base_Input {
 
       // url
       if ( 'url' === $input_type ) {
-        $value = esc_url( $value );
+        $value = esc_url_raw( $value );
       }
       // email
       else if ( 'email' === $input_type ) {

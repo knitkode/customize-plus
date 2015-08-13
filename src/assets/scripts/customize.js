@@ -76,6 +76,7 @@
   //= include customize/controls/radio.js
   //= include customize/controls/radio-image.js
   //= include customize/controls/select.js
+  //= include customize/controls/font-weight.js
   //= include customize/controls/slider.js
   //= include customize/controls/sortable.js
   //= include customize/controls/tags.js

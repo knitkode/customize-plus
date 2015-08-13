@@ -96,9 +96,9 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 			$max_items = null;
 		}
 		if ( is_numeric( $max_items ) && $max_items > 1 ) {
-			return self::sanitize_array( $value, $setting );
+			return PWPcp_Sanitize::array_in_choices( $value, $setting );
 		} else {
-			return self::sanitize_string( $value, $setting );
+			return PWPcp_Sanitize::string_in_choices( $value, $setting );
 		}
 	}
 }

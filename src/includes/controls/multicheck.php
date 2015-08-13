@@ -108,7 +108,7 @@ class PWPcp_Customize_Control_Multicheck extends PWPcp_Customize_Control_Base_Ra
  	 * @return string The sanitized value.
  	 */
 	public static function sanitize_callback( $value, $setting ) {
-		return self::sanitize_array( $value, $setting );
+		return PWPcp_Sanitize::array_in_choices( $value, $setting );
 	}
 }
 

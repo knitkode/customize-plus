@@ -8,7 +8,8 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi['controlConstructor']['pwpcp_select'] = ControlBase.extend({
+// export to our API and to WordPress API
+api['controls']['Select'] = wpApi['controlConstructor']['pwpcp_select'] = ControlBase.extend({
   /**
    * Validate
    *
@@ -23,7 +24,7 @@ wpApi['controlConstructor']['pwpcp_select'] = ControlBase.extend({
     try {
       newValue = JSON.parse(rawNewValue);
     } catch(e) {
-      newValue = rawNewValue;
+      newValue = rawNewValue.toString();
     }
     // validate array of values
     if (_.isArray(newValue) && this.params.selectize) {
@@ -37,13 +38,11 @@ wpApi['controlConstructor']['pwpcp_select'] = ControlBase.extend({
       return JSON.stringify(validatedArray);
     }
     // validate string value
-    else if (_.isString(newValue) && choices.hasOwnProperty(newValue)) {
+    if (choices.hasOwnProperty(newValue)) {
       return newValue;
     }
     // otherwise return last value
-    else {
-      return this.setting();
-    }
+    return this.setting();
   },
   /**
    * On deflate
