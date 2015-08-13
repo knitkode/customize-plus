@@ -71,8 +71,8 @@ class Customize_Plus_Demo {
 				'name'             => 'Customize Plus Premium',
 				'slug'             => 'customize-plus-premium',
 				'version'          => '0.0.1',
-				// 'required'         => true,
-				// 'force_activation' => true,
+				'required'         => true, // @@note once released this should be false ... ? \\
+				'force_activation' => true, // @@note once released this should be false ... ? \\
 			),
 		);
 

@@ -1975,4 +1975,40 @@ return array(
 			),
 		),
 	),
+	array(
+		'subject' => 'section',
+		'id' => 'section-others',
+		'title' => __( 'Other controls', 'textDomain' ),
+		'type' => 'pwpcp_section',
+		'dashicon' => 322,
+		'fields' => array(
+			'font-family' => array(
+				'setting' => array(
+					'default' => 144,
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'Knob', 'i18n' ),
+					'description' => __( '', 'i18n' ),
+					'type' => 'pwpcp_knob',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => 144,
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'Knob', 'i18n' ),
+		'description' => __( '', 'i18n' ),
+		'type' => 'pwpcp_knob',
+	),
+),
+```",
+					),
+				),
+			),
+		),
+	),
 );
