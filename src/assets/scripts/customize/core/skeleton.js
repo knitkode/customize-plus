@@ -34,7 +34,7 @@ var Skeleton = (function () {
       this.$loader.show();
     },
     hide: function () {
-      if (Modernizr['webworkers']) {
+      if (Modernizr.webworkers) {
         this.$loader.fadeOut();
       } else {
         this.$loader.hide();
@@ -71,7 +71,7 @@ var Skeleton = (function () {
 
 // @@todo ............................................................................. \\
 // export to public API
-api['Skeleton'] = Skeleton;
+api.Skeleton = Skeleton;
 
 var previewer = wpApi.Previewer;
 

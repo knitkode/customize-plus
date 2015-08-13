@@ -104,4 +104,4 @@ var Regexes = {
 };
 
 // export to public API
-api['Regexes'] = Regexes;
+api.Regexes = Regexes;

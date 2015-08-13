@@ -1,15 +1,13 @@
-/* global ControlBase */
-
 /**
  * Control Sortable
  *
  * @constructor
- * @augments ControlBase
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
 // export to our API and to WordPress API
-api['controls']['Sortable'] = wpApi['controlConstructor']['pwpcp_sortable'] = ControlBase.extend({
+api.controls.Sortable = wpApi.controlConstructor.pwpcp_sortable = api.controls.Base.extend({
   /**
    * Validate
    *

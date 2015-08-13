@@ -1,14 +1,12 @@
-/* global ControlBase */
-
 /**
  * Control Multicheck
  *
  * @constructor
- * @augments ControlBase
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
+wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
   /**
    * Validate
    *
@@ -188,7 +186,7 @@ wpApi['controlConstructor']['pwpcp_multicheck'] = ControlBase.extend({
    */
   _reorder: function () {
     // sort first the checked ones
-    api['controls']['Sortable'].prototype._reorder.apply(this);
+    api.controls['Sortable'].prototype._reorder.apply(this);
 
     // then sort the unchecked ones
     var valueAsArray = JSON.parse(this.setting());

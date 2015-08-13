@@ -1,15 +1,16 @@
-/* global ControlBase, Regexes */
+/* global Regexes */
 
 /**
  * Control Slider
  *
  * @constructor
- * @augments ControlBase
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  * @requires Regexes
  */
-var ControlSlider = ControlBase.extend({
+// export to our API and to WordPress API
+api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.extend({
   /**
    * Validate
    *
@@ -172,6 +173,3 @@ var ControlSlider = ControlBase.extend({
     return this.__inputNumber.value + this.__$inputUnits.filter('.pwpcp-current').val();
   }
 });
-
-// export to our API and to WordPress API
-api['controls']['Slider'] = wpApi['controlConstructor']['pwpcp_slider'] = ControlSlider;

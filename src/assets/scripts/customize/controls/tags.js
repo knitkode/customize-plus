@@ -1,14 +1,12 @@
-/* global ControlBase */
-
 /**
  * Control Tags class
  *
  * @constructor
- * @augments ControlBase
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi['controlConstructor']['pwpcp_tags'] = ControlBase.extend({
+wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
   /**
    * Validate
    *

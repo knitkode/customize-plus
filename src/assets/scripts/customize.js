@@ -8,7 +8,8 @@
   var DEBUG = true;
 
   if (DEBUG) {
-    window.performance = window.performance || { now: function(){} }; // shim for Opera
+    // shim for Opera
+    window.performance = window.performance || { now: function(){} };
     var t = performance.now();
   }
 
@@ -29,7 +30,7 @@
   var body = document.getElementsByTagName('body')[0];
 
   /** @type {Object} */
-  var wpApi = wp['customize'];
+  var wpApi = wp.customize;
 
   /** @type {boolean} */
   var wpApiIsReady = false;
@@ -48,21 +49,11 @@
   //= include customize/core/tooltips.js
 
   /**
-   * Collect here sections prototypes
-   *
-   * @type {Object}
-   */
-  api['sections'] = {};
-
-  //= include customize/sections/base.js
-
-
-  /**
    * Collect here controls prototypes
    *
    * @type {Object}
    */
-  api['controls'] = {};
+  api.controls = {};
 
   //= include customize/controls/base.js
     // include customize/controls/base-dummy.js

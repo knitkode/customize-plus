@@ -70,7 +70,7 @@
    * @return {boolean}    Whether is valid or not.
    */
   function (str) {
-    return _ValidatorColor['rgba'](str);
+    return _ValidatorColor.rgba(str);
   });
 
   validator.extend('isVar',

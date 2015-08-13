@@ -205,4 +205,4 @@ var Tooltips = (function () {
 })();
 
 // export to public API
-api['Tooltips'] = Tooltips;
+api.Tooltips = Tooltips;

@@ -1,5 +1,4 @@
 /* global Skeleton, Utils, Tooltips */
-/* exported: ControlBase */
 
 /**
  * Control Base class
@@ -12,7 +11,8 @@
  * @class
  * @augments wp.customize.Control
  */
-var ControlBase = wpApi.Control.extend({
+// export to our API
+api.controls.Base = wpApi.Control.extend({
   /**
    * Tweak the initialize methods.
    *
@@ -476,9 +476,6 @@ var ControlBase = wpApi.Control.extend({
     }
   }
 });
-
-// export to public API
-api['controls']['Base'] = ControlBase;
 
 /**
  * Fix autofocus

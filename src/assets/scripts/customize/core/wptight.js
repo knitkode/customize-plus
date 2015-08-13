@@ -53,4 +53,4 @@ var WpTight = (function () {
 })();
 
 // export to public API
-api['WpTight'] = WpTight;
+api.WpTight = WpTight;

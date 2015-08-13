@@ -1,14 +1,12 @@
-/* global ControlBase */
-
 /**
  * Font Family
  *
  * @constructor
- * @augments ControlBase
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi['controlConstructor']['pwpcp_font_family'] = ControlBase.extend({
+wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
   /**
    * On init
    *

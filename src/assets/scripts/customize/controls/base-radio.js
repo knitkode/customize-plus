@@ -1,15 +1,12 @@
-/* global ControlBase */
-/* exported: ControlBaseRadio */
-
 /**
  * Control Base Radio class
  *
  * @constructor
- * @augments ControlBase
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-var ControlBaseRadio = ControlBase.extend({
+api.controls.BaseRadio = api.controls.Base.extend({
   /**
    * Validate
    *

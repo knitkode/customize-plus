@@ -1,15 +1,15 @@
-/* global ControlBase, Utils */
+/* global Utils */
 
 /**
  * Control Toggle
  *
  * @constructor
- * @augments ControlBase
+ * @augments api.controls.BaseInput
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  * @requires Utils
  */
-wpApi['controlConstructor']['pwpcp_toggle'] = ControlBase.extend({
+wpApi.controlConstructor.pwpcp_toggle = api.controls.Base.extend({
   /**
    * Normalize setting for soft comparison
    *

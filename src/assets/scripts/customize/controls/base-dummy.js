@@ -1,5 +1,3 @@
-/* exported: ControlBaseDummy */
-
 /**
  * Control Base Dummy class
  *
@@ -22,7 +20,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-var ControlBaseDummy = wpApi.Control.extend({
+api.controls.BaseDummy = wpApi.controlConstructor.pwpcp_dummy = wpApi.Control.extend({
   initialize: function( id, options ) {
     var control = this;
 
@@ -85,5 +83,3 @@ var ControlBaseDummy = wpApi.Control.extend({
     });
   }
 });
-
-wpApi['controlConstructor']['pwpcp_dummy'] = ControlBaseDummy;

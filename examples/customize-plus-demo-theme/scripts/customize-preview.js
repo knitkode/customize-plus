@@ -2,7 +2,7 @@
   'use strict';
 
   var wpApi = wp.customize;
-  var _toCSS = api['toCSS'];
+  var _toCSS = api.toCSS;
 
   var $body = $('body');
   var $toScroll = $('html, body');

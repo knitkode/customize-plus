@@ -1,15 +1,14 @@
-/* global ControlBaseInput */
-
 /**
  * Control Number
  *
  * @constructor
- * @augments ControlBaseInput
- * @augments ControlBase
+ * @augments api.controls.BaseInput
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi['controlConstructor']['pwpcp_number'] = ControlBaseInput.extend({
+// export to our API and to WordPress API
+api.controls.Number = wpApi.controlConstructor.pwpcp_number = api.controls.BaseInput.extend({
   /**
    * Validate value
    *
@@ -23,19 +22,19 @@ wpApi['controlConstructor']['pwpcp_number'] = ControlBaseInput.extend({
     var errorMsg = '';
     // required
     if (attrs.required && !_.isNumber(value)) {
-      errorMsg += api['l10n']['vNotEmpty'];
+      errorMsg += api.l10n['vNotEmpty'];
     } else {
       // min value
       if (attrs.min && value < attrs.min) {
-        errorMsg += api['l10n']['vNumberLow'] + ' ';
+        errorMsg += api.l10n['vNumberLow'] + ' ';
       }
       // max value
       if (attrs.max && value > attrs.max) {
-        errorMsg += api['l10n']['vNumberHigh'] + ' ';
+        errorMsg += api.l10n['vNumberHigh'] + ' ';
       }
       // step
       if (attrs.step && !validator.isDivisibleBy(value, attrs.step)) {
-        errorMsg += api['l10n']['vNumberStep'] + ' ' + attrs.step;
+        errorMsg += api.l10n['vNumberStep'] + ' ' + attrs.step;
       }
     }
 

@@ -1,15 +1,13 @@
-/* global ControlBaseInput */
-
 /**
  * Control Textarea class
  *
  * @constructor
- * @augments ControlBaseInput
- * @augments ControlBase
+ * @augments api.controls.BaseInput
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi['controlConstructor']['pwpcp_textarea'] = ControlBaseInput.extend({
+wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
   /**
    * Validate value
    *

@@ -5,8 +5,8 @@
  */
 var Utils = (function () {
 
-  var _IMAGES_BASE_URL = api['constants']['IMAGES_BASE_URL'];
-  var _DOCS_BASE_URL = api['constants']['DOCS_BASE_URL'];
+  var _IMAGES_BASE_URL = api.constants.IMAGES_BASE_URL;
+  var _DOCS_BASE_URL = api.constants.DOCS_BASE_URL;
 
   /**
    * Is it an absolute URL?
@@ -105,7 +105,7 @@ var Utils = (function () {
         // we click on this link from a search result
         // try/catch because search is not always enabled
         try {
-          api['components']['Search'].deactivate();
+          api.components.Search.deactivate();
         } catch(e) {
           console.warn('Utils->linkControl: failed attempt to deactivate Search', e);
         }
@@ -214,8 +214,8 @@ var Utils = (function () {
         showButtons: false,
         // localStorageKey: 'PWPcp_spectrum',
         showSelectionPalette: false,
-        togglePaletteMoreText: api['l10n']['togglePaletteMoreText'],
-        togglePaletteLessText: api['l10n']['togglePaletteLessText'],
+        togglePaletteMoreText: api.l10n['togglePaletteMoreText'],
+        togglePaletteLessText: api.l10n['togglePaletteLessText'],
         allowEmpty: !params.disallowTransparent,
         showAlpha: params.allowAlpha,
         showPalette: !!params.palette,
@@ -242,4 +242,4 @@ var Utils = (function () {
 })();
 
 // export to public API
-api['Utils'] = Utils;
+api.Utils = Utils;

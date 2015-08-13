@@ -1,12 +1,10 @@
-/* global ControlBaseRadio */
-
 /**
  * Control Buttonset
  *
  * @constructor
- * @augments ControlBaseRadio
- * @augments ControlBase
+ * @augments api.controls.BaseRadio
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi['controlConstructor']['pwpcp_buttonset'] = ControlBaseRadio;
+wpApi.controlConstructor.pwpcp_buttonset = api.controls.BaseRadio;

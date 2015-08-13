@@ -1,15 +1,13 @@
-/* global ControlBaseInput */
-
 /**
  * Control Text class
  *
  * @constructor
- * @augments ControlBaseInput
- * @augments ControlBase
+ * @augments api.controls.BaseInput
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi['controlConstructor']['pwpcp_text'] = ControlBaseInput.extend({
+wpApi.controlConstructor.pwpcp_text = api.controls.BaseInput.extend({
   /**
    * Validate value
    *
@@ -24,19 +22,19 @@ wpApi['controlConstructor']['pwpcp_text'] = ControlBaseInput.extend({
 
     // required
     if (attrs.required && !value.length) {
-      errorMsg += api['l10n']['vNotEmpty'];
+      errorMsg += api.l10n['vNotEmpty'];
     } else {
       // max length
       if (attrs.maxlength && value.length > attrs.maxlength) {
-        errorMsg += api['l10n']['vTooLong'];
+        errorMsg += api.l10n['vTooLong'];
       }
       // url
       if (inputType === 'url' && !validator.isURL(value)) {
-        errorMsg += api['l10n']['vInvalidUrl'];
+        errorMsg += api.l10n['vInvalidUrl'];
       }
       // email
       else if (inputType === 'email' && !validator.isEmail(value)) {
-        errorMsg += api['l10n']['vInvalidEmail'];
+        errorMsg += api.l10n['vInvalidEmail'];
       }
       // text
       else {

@@ -34,4 +34,4 @@ var Notices = (function () {
 })();
 
 // export to public API
-api['Notices'] = Notices;
+api.Notices = Notices;

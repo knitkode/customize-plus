@@ -1,15 +1,13 @@
-/* global ControlBase */
-/* exported: ControlBaseInput */
-
 /**
  * Control Base Input class
  *
  * @constructor
- * @augments ControlBase
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-var ControlBaseInput = ControlBase.extend({
+// export to our API
+api.controls.BaseInput = api.controls.Base.extend({
   /**
    * Validate value
    *

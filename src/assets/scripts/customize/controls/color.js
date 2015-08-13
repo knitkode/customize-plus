@@ -1,4 +1,4 @@
-/* global ControlBase, Utils, tinycolor */
+/* global Utils, tinycolor */
 
 /**
  * Load spectrum only on demand
@@ -11,13 +11,13 @@ $.fn.spectrum.load = false;
  * Control Color class
  *
  * @constructor
- * @augments ControlBase
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  * @requires Utils
  */
 // export to our API and to WordPress API
-api['controls']['Color'] = wpApi['controlConstructor']['pwpcp_color'] = ControlBase.extend({
+api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.extend({
   /**
    * Normalize setting for soft comparison
    *

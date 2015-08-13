@@ -51,7 +51,7 @@ var Tabs = (function () {
       // if this tabbed area is related to the screenpreview then notify it
       if (isScreenPicker) {
         try {
-          api['components']['Screenpreview'].change(true, target);
+          api.components.Screenpreview.change(true, target);
         } catch(e) {
           console.warn('Tabs tried to use Screenpreview, which is undefined.', e)
         }
@@ -101,4 +101,4 @@ var Tabs = (function () {
 })();
 
 // export to public API
-api['Tabs'] = Tabs;
+api.Tabs = Tabs;

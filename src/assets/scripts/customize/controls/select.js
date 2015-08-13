@@ -1,15 +1,13 @@
-/* global ControlBase */
-
 /**
  * Control Select class
  *
  * @constructor
- * @augments ControlBase
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
 // export to our API and to WordPress API
-api['controls']['Select'] = wpApi['controlConstructor']['pwpcp_select'] = ControlBase.extend({
+api.controls.Select = wpApi.controlConstructor.pwpcp_select = api.controls.Base.extend({
   /**
    * Validate
    *
