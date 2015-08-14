@@ -95,7 +95,7 @@ var adminScriptsLibraries = [
   PATHS.src.bower + 'polyfill-classList/classList.js', // @@ie9 @@ie8 \\
   PATHS.src.scripts + 'vendor-custom/modernizr-custom.js', // include modernizr custom build
   PATHS.src.bower + 'validator-js/validator.js',
-  PATHS.src.bower + 'sweetalert/dist/sweetalert-dev.js',
+  PATHS.src.bower + 'sweetalert/dist/sweetalert.min.js', // @@investigate the `-dev.js` version break the inspector (it's in es6) \\
   PATHS.src.bower + 'marked/lib/marked.js', // @@doubt, not sure if always include this, or maybe use https://github.com/SimonWaldherr/micromarkdown.js\\
   PATHS.src.scripts + 'vendor-custom/highlight.pack.js', // include highlight.js custom build
   PATHS.src.bower + 'mousetrap/mousetrap.js',
