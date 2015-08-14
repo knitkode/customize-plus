@@ -21,11 +21,7 @@ api.controls.Number = wpApi.controlConstructor.pwpcp_number = api.controls.BaseI
     var attrs = this.params.attrs;
     var errorMsg = '';
 
-    // optional check
-    if (!this.params.optional && value.toString() === '') {
-      errorMsg += api.l10n['vNotEmpty'];
-    // is number
-    } else if (!_.isNumber(value)) {
+    if (!_.isNumber(value)) {
       errorMsg += api.l10n['vNotNumber'];
     } else {
       // read attrs if any
