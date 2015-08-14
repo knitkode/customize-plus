@@ -54,18 +54,14 @@ if ( ! class_exists( 'PWPcp_Admin_About' ) ):
 		 * @since BuddyPress (1.6.0)
 		 */
 		public static function enqueue_scripts( $hook ) {
-			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 			$settings_page_prefix = 'settings_page_PWPcp-';
 			$settings_pages = array(
 				$settings_page_prefix . 'welcome',
 				$settings_page_prefix . 'about',
 			);
 			if ( in_array( $hook, $settings_pages ) ) {
+				$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 				wp_enqueue_style( 'PWPcp-admin', plugins_url( "assets/admin{$min}.css", PWPcp_PLUGIN_FILE ), array( 'dashicons' ), PWPcp_PLUGIN_VERSION );
-				// wp_style_add_data( 'PWPcp-admin', 'rtl', true );
-				if ( $min ) {
-					wp_style_add_data( 'PWPcp-admin', 'suffix', $min );
-				}
 			}
 		}
 
