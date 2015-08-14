@@ -10,46 +10,18 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
   /**
    * Validate
    *
-   * @param  {string|array} rawNewValue Value of the checkbox clicked or sent
-   *                                    through js API
+   * @param  {string|array} rawNewValue
    * @return {string|object<string,boolean>} A JSONified Array
    */
   validate: function (rawNewValue) {
-    var newValue;
+    var params = this.params;
+    var newValue = rawNewValue;
     try {
       newValue = JSON.parse(rawNewValue);
     } catch(e) {
-      newValue = rawNewValue;
-      // console.warn('Control->Multicheck: Failed to parse a supposed-to-be JSON value', rawNewValue, e);
+      console.warn('Control->Multicheck: Failed to parse a supposed-to-be JSON value', rawNewValue, e);
     }
-    var params = this.params;
-    var lastValueAsArray = JSON.parse(this.setting());
-    /**
-     * Validate string
-     * @return {string}
-     */
-    var _validateString = function () {
-      var index = lastValueAsArray.indexOf(newValue);
-
-      // if the checkbox ticked was in the last value array remove it
-      if (index !== -1) {
-        lastValueAsArray.splice(index, 1);
-      // otherwise push it
-      } else {
-        // only if it is an allowed choice...
-        if (params.choices.hasOwnProperty(newValue)) {
-          lastValueAsArray.push(newValue);
-          // always sort it
-          lastValueAsArray = this._getSortedValue(lastValueAsArray);
-        }
-      }
-      return JSON.stringify(lastValueAsArray);
-    }.bind(this);
-    /**
-     * Validate array
-     * @return {string}
-     */
-    var _validateArray = function () {
+    if(_.isArray(newValue)) {
       var validArray = [];
       for (var i = 0; i < newValue.length; i++) {
         // only if it is an allowed choice...
@@ -58,12 +30,6 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
         }
       }
       return JSON.stringify(validArray);
-    };
-    // check type and do appropriate validation
-    if (_.isString(newValue)) {
-      return _validateString();
-    } else if(_.isArray(newValue)){
-      return _validateArray();
     } else {
       return { error: true };
     }
@@ -207,9 +173,32 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
       input.checked = valueAsArray.indexOf(input.value) !== -1;
       if (bindAsWell) {
         input.onchange = function (event) {
-          this.setting.set(event.target.value);
+          this._onCheckboxClicked(event.target.value);
         }.bind(this);
       }
     }
+  },
+  /**
+   * On checbkox clicked
+   * @param  {string} value The value of the clicked checkbox
+   */
+  _onCheckboxClicked: function (value) {
+    var lastValueAsArray = JSON.parse(this.setting());
+    var index = lastValueAsArray.indexOf(value);
+
+    // if the checkbox ticked was in the last value array remove it
+    if (index !== -1) {
+      lastValueAsArray.splice(index, 1);
+    // otherwise push it
+    } else {
+      // only if it is an allowed choice...
+      if (this.params.choices.hasOwnProperty(value)) {
+        lastValueAsArray.push(value);
+        // and always sort it
+        lastValueAsArray = this._getSortedValue(lastValueAsArray);
+      }
+    }
+    // set the setting now
+    this.setting.set(lastValueAsArray);
   }
 });
