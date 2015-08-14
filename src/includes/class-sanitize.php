@@ -1,6 +1,5 @@
 <?php defined( 'ABSPATH' ) or die;
 
-
 /**
  * Sanitize functions
  *
@@ -12,7 +11,6 @@
  * @version    Release: pkgVersion
  * @link       http://pluswp.com/customize-plus
  */
-
 class PWPcp_Sanitize {
 
 	/**
