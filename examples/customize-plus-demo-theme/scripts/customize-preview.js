@@ -21,6 +21,7 @@
   };
 
   var settingsToColor = [
+    // Customize Plus controls
     'color',
     'color-no-transparent',
     'color-alpha',
@@ -37,6 +38,7 @@
   });
 
   var settingsToWidth = [
+    // Customize Plus controls
     'slider',
     'slider-em',
     'slider-px-percent',
@@ -50,15 +52,7 @@
   });
 
   var settingsToText = [
-    'color-dynamic-active',
-    'color-dynamic-passive',
-    'color-dynamic-hidetab-active',
-    'color-dynamic-hidetab-passive',
-    'size-dynamic-active',
-    'size-dynamic-passive',
-    'size-dynamic-hidetab-active',
-    'size-dynamic-hidetab-passive',
-    //
+    // Customize Plus controls
     'radio',
     'buttonset',
     'buttonset-three',
@@ -88,11 +82,28 @@
     'tags-sortable-removable',
     'tags-max-items',
     'sortable',
-    // 'sortable-editable'
     'font-family',
     'font-weight',
+    // Customize Plus Premium controls
     'knob',
     'knob-options',
+    'color-dynamic-active',
+    'color-dynamic-passive',
+    'color-dynamic-hidetab-active',
+    'color-dynamic-hidetab-passive',
+    'size-dynamic-active',
+    'size-dynamic-passive',
+    'size-dynamic-hidetab-active',
+    'size-dynamic-hidetab-passive',
+    // WordPress controls
+    'wp-color',
+    'wp-media',
+    'wp-image',
+    'wp-background',
+    'wp-upload',
+    'wp-cropped',
+    'wp-site',
+    'wp-header'
   ].concat(settingsToColor, settingsToWidth);
 
   _.each(settingsToText, function (setting) {

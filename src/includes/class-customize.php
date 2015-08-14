@@ -28,9 +28,17 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 			'panels' => array(),
 			'sections' => array(),
 			'controls' => array(
+				// WordPress controls
+				'text' => 'WP_Customize_Control',
 				'color' => 'WP_Customize_Color_Control',
+				'media' => 'WP_Customize_Media_Control',
 				'image' => 'WP_Customize_Image_Control',
+				'background' => 'WP_Customize_Background_Image_Control',
 				'upload' => 'WP_Customize_Upload_Control',
+				'cropped_image' => 'WP_Customize_Cropped_Image_Control',
+				'site_icon' => 'WP_Customize_Site_Icon_Control',
+				'header' => 'WP_Customize_Header_Image_Control',
+				// Customize Plus controls
 				'pwpcp_buttonset' => 'PWPcp_Customize_Control_Buttonset',
 				'pwpcp_color' => 'PWPcp_Customize_Control_Color',
 				'pwpcp_dummy' => 'PWPcp_Customize_Control_Dummy',
@@ -325,43 +333,51 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		private static function add_panel_from_tree( $panel, $priority ) {
 			global $wp_customize;
 
-			// dynamically get panel_id with opitons_prefix
+			// dynamically get panel_id with options_prefix
 			$panel_id = PWPcp_Theme::$options_prefix . '-' . $panel['id'];
 
-			// augment panel args array
+			// create panel args array
 			$panel_args = array();
+			// title (native): required
 			$panel_args['title'] = $panel['title'];
+			// priority (native): automated but overridable
+			$panel_args['priority'] = isset( $panel['priority'] ) ? $panel['priority'] : $priority;
+			// description (native): optional
 			if ( isset( $panel['description'] ) ) {
 				$panel_args['description'] = $panel['description'];
 			}
-			$panel_args['priority'] = $priority;
-			// $panel_args['capability'] = 'edit_theme_options'; // @@tocheck \\
-			// $panel_args['theme_supports'] = ''; // @@tocheck \\
-
-			// add panel icon if specified
+			// active_callback (native): optional
+			if ( isset( $panel['active_callback'] ) ) {
+				$panel_args['active_callback'] = $panel['active_callback'];
+			}
+			// capability (native): optional
+			if ( isset( $panel['capability'] ) ) {
+				$panel_args['capability'] = $panel['capability'];
+			}
+			// theme_supports (native): optional
+			if ( isset( $panel['theme_supports'] ) ) {
+				$panel_args['theme_supports'] = $panel['theme_supports'];
+			}
+			// dashicon (custom): optional
 			if ( isset( $panel['icon'] ) ) {
 				self::add_css_panel_dashicon( $panel_id, $panel['dashicon'] );
 			}
-
 			// get type if specified
 			$panel_type = isset( $panel['type'] ) ? $panel['type'] : null;
 
 			// check if a custom type/class has been specified
-			if ( isset( self::$custom_types['panels'][ $panel_type ] ) ) {
+			if ( $panel_type && isset( self::$custom_types['panels'][ $panel_type ] ) ) {
+				// get class name
 				$panel_type_class = self::$custom_types['panels'][ $panel_type ];
-
 				// if the class exist use it
 				if ( class_exists( $panel_type_class ) ) {
 					$wp_customize->add_panel( new $panel_type_class( $wp_customize, $panel_id, $panel_args ) );
-				}
 				// if the desired class doesn't exist just use the plain WordPress API
-				else {
-					$wp_customize->add_panel( $panel_id, $panel_args );
-					// @@todo error (wrong api implementation, missing class) \\
+				} else {
+					wp_die( sprintf( __( 'Customize Plus: missing class %s for panel type %s.', 'pkgTextdomain' ), '<code>' . $panel_type_class . '</code>', '<code><b>' . $panel_type . '</b></code>' ) );
 				}
-			}
-			// if the desired control type is not specified just use the plain WordPress API
-			else {
+			// if the desired panel type is not specified just use the plain WordPress API
+			} else {
 				$wp_customize->add_panel( $panel_id, $panel_args );
 			}
 
@@ -394,47 +410,56 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 
 			// create section args array
 			$section_args = array();
+			// title (native): required
 			$section_args['title'] = $section['title'];
+			// priority (native): automated but overridable
+			$section_args['priority'] = isset( $section['priority'] ) ? $section['priority'] : $priority;
+			// description (native): optional
 			if ( isset( $section['description'] ) ) {
 				$section_args['description'] = $section['description'];
 			}
-			$section_args['priority'] = $priority;
-			// $section_args['capability'] = 'edit_theme_options'; // @@tocheck \\
-
-			if ( $panel_id ) {
-				$section_args['panel'] = $panel_id;
+			// active_callback (native): optional
+			if ( isset( $section['active_callback'] ) ) {
+				$section_args['active_callback'] = $section['active_callback'];
 			}
-
-			// add section dashicon if specified
+			// capability (native): optional
+			if ( isset( $section['capability'] ) ) {
+				$section_args['capability'] = $section['capability'];
+			}
+			// theme_supports (native): optional
+			if ( isset( $section['theme_supports'] ) ) {
+				$section_args['theme_supports'] = $section['theme_supports'];
+			}
+			// dashicon (custom): optional
 			if ( isset( $section['dashicon'] ) ) {
 				self::add_css_section_dashicon( $section['id'], $section['dashicon'] );
 			}
-
+			// panel (native): optional
+			if ( $panel_id ) {
+				$section_args['panel'] = $panel_id;
+			}
 			// get type if specified
 			$section_type = isset( $section['type'] ) ? $section['type'] : null;
 
 			// check if a custom type/class has been specified
-			if ( isset( self::$custom_types['sections'][ $section_type ] ) ) {
+			if ( $section_type && isset( self::$custom_types['sections'][ $section_type ] ) ) {
+				// get class name
 				$section_type_class = self::$custom_types['sections'][ $section_type ];
-
-				// if the class exist use it
+				// if the class exists use it
 				if ( class_exists( $section_type_class ) ) {
 					$wp_customize->add_section( new $section_type_class( $wp_customize, $section['id'], $section_args ) );
+				// if the desired class doesn't exist report the error
+				} else {
+					wp_die( sprintf( __( 'Customize Plus: missing class %s for section type %s.', 'pkgTextdomain' ), '<code>' . $section_type_class . '</code>', '<code><b>' . $section_type . '</b></code>' ) );
 				}
-				// if the desired class doesn't exist just use the plain WordPress API
-				else {
-					$wp_customize->add_section( $section['id'], $section_args );
-					// @@todo error (wrong api implementation, missing class) \\
-				}
-			}
 			// if the desired control type is not specified just use the plain WordPress API
-			else {
+			} else {
 				$wp_customize->add_section( $section['id'], $section_args );
 			}
 
-			// Add section fields
+			// add section fields
 			if ( isset( $section['fields'] ) ) {
-				// Loop through 'fields' array in each section and add settings and controls
+				// loop through 'fields' array in each section and add settings and controls
 				foreach ( $section['fields'] as $field_id => $field_args ) {
 					self::tree_add_field( $section['id'], $field_id, $field_args );
 				}
@@ -463,7 +488,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 			$control_type = $control_args['type'];
 
 			// check if a custom class is needed for this control
-			if ( isset( self::$custom_types['controls'][ $control_type ] ) ) {
+			if ( $control_type && isset( self::$custom_types['controls'][ $control_type ] ) ) {
 				$control_type_class = self::$custom_types['controls'][ $control_type ];
 			} else {
 				$control_type_class = null;
@@ -477,11 +502,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				if ( isset( $setting_args['type'] ) && 'option' == $setting_args['type'] ) {
 					$field_id = PWPcp_Theme::$options_prefix . '[' . $field_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
 				}
-
-				// add default callback function, if none is defined
+				// add sanitize callback function from control class, if none is defined
 				if ( ! isset( $setting_args['sanitize_callback'] ) ) {
-
-					// use sanitize_callbak method on control class if it exists
+					// use sanitize_callback method on control class if it exists
 					if ( class_exists( $control_type_class ) && method_exists( $control_type_class, 'sanitize_callback' ) ) {
 						$setting_args['sanitize_callback'] = $control_type_class . '::sanitize_callback';
 					// otherwise use a default function
@@ -489,25 +512,25 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 						$setting_args['sanitize_callback'] = 'PWPcp_Customize_Control_Base::sanitize_callback';
 					}
 				}
-
-				// Add setting to WordPress
+				// add setting to WordPress
 				$wp_customize->add_setting( $field_id, $setting_args );
-			}
-			// if no settings args are passed then use the Dummy Setting Class
-			else {
-				// Add dummy setting to WordPress
-				$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $field_id ) );
+			} else {
+				// if no settings args are passed then use the Dummy Setting Class with a dummy id
+				$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, 'pwpcp-dummy-setting' ) );
 			}
 
 			// check if a custom type/class has been specified
-			if ( $control_type_class && class_exists( $control_type_class ) ) {
-				$wp_customize->add_control( new $control_type_class( $wp_customize, $field_id, $control_args ) );
-			}
-			// if the desired control type is not specified or if the desired class
-			// doesn't exist just use the plain WordPress API
-			else {
+			if ( $control_type_class ) {
+				// if the class exists use it
+				if ( class_exists( $control_type_class ) ) {
+					$wp_customize->add_control( new $control_type_class( $wp_customize, $field_id, $control_args ) );
+				// if the desired class doesn't exist report the error
+				} else {
+					wp_die( sprintf( __( 'Customize Plus: missing class %s for control type %s.', 'pkgTextdomain' ), '<code>' . $control_type_class . '</code>', '<code><b>' . $control_type . '</b></code>' ) );
+				}
+			// if the desired control type is not specified use the plain WordPress API
+			} else {
 				$wp_customize->add_control( $field_id, $control_args );
-				// @@todo error (wrong api implementation, missing control type) \\
 			}
 		}
 
@@ -528,7 +551,6 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 
 		/**
 		 * Add the needed css to display a dashicon for the given section
-		 * // @@temp disabled for now \\
 		 *
 		 * @since  0.0.1
 		 * @param string $section_id    The section which will show the specified dashicon.

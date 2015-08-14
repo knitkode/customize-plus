@@ -2045,4 +2045,238 @@ return array(
 			),
 		),
 	),
+	array(
+		'subject' => 'section',
+		'id' => 'section-wordpress',
+		'title' => __( 'WordPress controls', 'textDomain' ),
+		'type' => 'pwpcp_section',
+		'dashicon' => 120,
+		'fields' => array(
+			'wp-text' => array(
+				'setting' => array(
+					'default' => 'Some text',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'WP Text', 'i18n' ),
+					'type' => 'text',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => 'Some text',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'WP Text', 'i18n' ),
+		'type' => 'text',
+	),
+),
+```",
+					),
+				),
+			),
+			'wp-color' => array(
+				'setting' => array(
+					'default' => '#fc4fd7',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'WP Color', 'i18n' ),
+					'type' => 'color',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => '#fc4fd7',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'WP Color', 'i18n' ),
+		'type' => 'color',
+	),
+),
+```",
+					),
+				),
+			),
+			'wp-media' => array(
+				'setting' => array(
+					'default' => '@@todo',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'WP Media', 'i18n' ),
+					'type' => 'media',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => '@@todo',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'WP Media', 'i18n' ),
+		'type' => 'media',
+	),
+),
+```",
+					),
+				),
+			),
+			'wp-image' => array(
+				'setting' => array(
+					'default' => '@@todo',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'WP Image', 'i18n' ),
+					'type' => 'image',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => '@@todo',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'WP Image', 'i18n' ),
+		'type' => 'image',
+	),
+),
+```",
+					),
+				),
+			),
+			'wp-background' => array(
+				'setting' => array(
+					'default' => '@@todo',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'WP Background', 'i18n' ),
+					'type' => 'background',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => '@@todo',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'WP Background', 'i18n' ),
+		'type' => 'background',
+	),
+),
+```",
+					),
+				),
+			),
+			'wp-upload' => array(
+				'setting' => array(
+					'default' => '@@todo',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'WP Upload', 'i18n' ),
+					'type' => 'upload',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => '@@todo',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'WP Upload', 'i18n' ),
+		'type' => 'upload',
+	),
+),
+```",
+					),
+				),
+			),
+			'wp-cropped-image' => array(
+				'setting' => array(
+					'default' => '@@todo',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'WP Cropped Image', 'i18n' ),
+					'type' => 'cropped-image',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => '@@todo',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'WP Cropped Image', 'i18n' ),
+		'type' => 'cropped-image',
+	),
+),
+```",
+					),
+				),
+			),
+			'wp-site_icon' => array(
+				'setting' => array(
+					'default' => '@@todo',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'WP Site Icon', 'i18n' ),
+					'type' => 'site_icon',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => '@@todo',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'WP Site Icon', 'i18n' ),
+		'type' => 'site_icon',
+	),
+),
+```",
+					),
+				),
+			),
+			'wp-header' => array(
+				'setting' => array(
+					'default' => '@@todo',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'WP Header', 'i18n' ),
+					'type' => 'header',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => '@@todo',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'WP Header', 'i18n' ),
+		'type' => 'header',
+	),
+),
+```",
+					),
+				),
+			),
+		),
+	),
 );

@@ -108,12 +108,14 @@ var Utils = (function () {
     linkControl: function (linkEl, controlId) {
       var controlToFocus = wpApi.control(controlId);
       var innerLink = function () {
-        controlToFocus.inflate(true);
-
-        // always deactivate search, it could be that
-        // we click on this link from a search result
-        // try/catch because search is not always enabled
         try {
+          // try this so it become possible to use this function even
+          // with WordPress native controls which don't have this method
+          controlToFocus.inflate(true);
+
+          // always deactivate search, it could be that we click on this
+          // link from a search result try/catch because search is not
+          // always enabled
           api.components.Search.deactivate();
         } catch(e) {
           console.warn('Utils->linkControl: failed attempt to deactivate Search', e);
