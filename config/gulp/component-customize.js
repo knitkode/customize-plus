@@ -95,6 +95,7 @@ var adminScriptsLibraries = [
   PATHS.src.bower + 'polyfill-classList/classList.js', // @@ie9 @@ie8 \\
   PATHS.src.scripts + 'vendor-custom/modernizr-custom.js', // include modernizr custom build
   PATHS.src.bower + 'validator-js/validator.js',
+  PATHS.src.bower + 'sweetalert/dist/sweetalert-dev.js',
   PATHS.src.bower + 'marked/lib/marked.js', // @@doubt, not sure if always include this, or maybe use https://github.com/SimonWaldherr/micromarkdown.js\\
   PATHS.src.scripts + 'vendor-custom/highlight.pack.js', // include highlight.js custom build
   PATHS.src.bower + 'mousetrap/mousetrap.js',
@@ -117,7 +118,7 @@ gulp.task('_customize-scripts-admin-unminified', function() {
   var stream = streamqueue({ objectMode: true });
   stream.queue(gulp.src(adminScriptsLibraries));
   stream.queue(gulp.src(PATHS.src.scripts + 'customize.js')
-    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe(/*$.if(CONFIG.isDist, */$.header(CONFIG.credits, { pkg: pkg }))/*)*/
     .pipe($.include())
     // .pipe($.if(argv.docs, $.jsdoc('./docs')))
   );
@@ -139,7 +140,7 @@ gulp.task('_customize-scripts-admin-minified', function() {
     .pipe($.include())
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', '')))
     .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
-    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe(/*$.if(CONFIG.isDist,*/ $.header(CONFIG.credits, { pkg: pkg }))/*)*/
   );
   return stream.done()
     .pipe($.concat('customize.min.js', PLUGINS.concat))

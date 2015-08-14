@@ -1,0 +1,12 @@
+.sweet-overlay {
+  z-index: $WPcustomize--overlay-z-index + 10;
+}
+
+.sweet-alert {
+  z-index: $WPcustomize--overlay-z-index + 20;
+  border-radius: 0;
+
+  button {
+    border-radius: 0;
+  }
+}

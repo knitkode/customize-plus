@@ -38,7 +38,7 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
       // if it is not an actual color but an expression or a variable
       // tinycolor won't recognize a `format` (such as hex, name, rgba, etc..)
       // hence we rely on this do decide what to return
-      if (!anyColor['_format']) { // @@todo probably problem with uglify due to the underscore \\
+      if (!anyColor['_format']) { // @@todo whitelist from uglify mangle regex private names \\
         return value;
       } else {
         return anyColor.toRgbString();

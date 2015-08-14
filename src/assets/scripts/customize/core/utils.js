@@ -205,7 +205,7 @@ var Utils = (function () {
      * @param  {string} value
      */
     _forceSettingSet: function (setting, value) {
-      setting['_value'] = 'dummy'; // @@todo careful of uglify minification \\
+      setting['_value'] = 'dummy'; // @@todo whitelist from uglify mangle regex private names \\
       setting.set(value);
     },
     /**
