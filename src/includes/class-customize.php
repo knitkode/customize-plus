@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
+if ( ! class_exists( 'PWPcp_Customize' ) ):
 
 	/**
 	 * Contains methods for customizing the theme customization screen.
@@ -14,7 +14,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 	 * @link       http://pluswp.com/customize-plus
 	 */
 
-	class PWPcp_Customize extends PWPcp_Singleton {
+	final class PWPcp_Customize {
 
 		/**
 		 * WordPress customize custom types for panels,
@@ -129,8 +129,8 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 *
 		 * @since  0.0.1
 		 */
-		protected function __construct() {
-		'.self::$min.'. defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		public function __construct() {
+		 	self::$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 			add_action( 'customize_register', array( __CLASS__, 'register_custom_classes' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_css_admin' ) );
@@ -544,6 +544,6 @@ if ( ! class_exists( 'PWPcp_Customize' ) && class_exists( 'PWPcp_Singleton' ) ):
 	}
 
 	// Instantiate
-	PWPcp_Customize::get_instance();
+	new PWPcp_Customize;
 
 endif;

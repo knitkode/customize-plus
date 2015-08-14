@@ -73,8 +73,8 @@ class PWPcp_Customize_Control_Multicheck extends PWPcp_Customize_Control_Base_Ra
 				<# }
 				for (var val in choices) {
 					if (lastValue.indexOf(val) === -1) { #>
-					<?php $this->js_tpl_choice(); ?>
-				<# }
+						<?php $this->js_tpl_choice(); ?>
+					<# }
 				}
 			}
 		} else {

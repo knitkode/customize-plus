@@ -74,6 +74,30 @@ class PWPcp_Sanitize {
 	}
 
 	/**
+   * Is setting value (`control.setting()`) empty?
+   * Used to check if required control's settings have instead an empty value
+   * @see php class method `PWPcp_Sanitize::is_setting_value_empty()`
+   * @param  string  $value
+   * @return Boolean
+   */
+	public static function is_setting_value_empty( $value ) {
+		// first try to compare it to an empty string
+    if ( $value === '' ) {
+    	return true;
+    } else {
+    	// if it's a jsonized value try to parse it and
+	    $value_parsed = json_decode( $value );
+			if ( $value_parsed ) {
+				// see if we have an empty array or an empty object
+				if ( is_array( $value_parsed ) && empty( $value_parsed ) ) {
+					return true;
+				}
+			}
+      return false;
+		}
+	}
+
+	/**
 	 * Sanitize font families.
 	 *
 	 * Be sure that each font family is wrapped in quote,

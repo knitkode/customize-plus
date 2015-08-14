@@ -255,7 +255,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	final public static function sanitize_callback( $value, $setting ) {
 		$control = $setting->manager->get_control( $setting->id );
 
-		if ( $control && !$control->optional && is_null( $value ) ) { // @@todo tocheck if is_null is fine \\
+		if ( $control && !$control->optional && PWPcp_Sanitize::is_setting_value_empty( $value ) ) {
 			return $setting->default;
 		} else {
 			return self::sanitize( $value, $setting, $control );

@@ -114,7 +114,7 @@ api.controls.Base = wpApi.Control.extend({
    * @return {string} The newValue validated or the last setting value.
    */
   _validateWrap: function (newValue) {
-    if ( !this.params.optional && newValue.toString() === '' ) {
+    if ( !this.params.optional && Utils._isSettingValueEmpty(newValue)) {
       this._onValidateError({ error: true, msg: api.l10n['vRequired'] });
       this._currentValueHasError = true;
       return this.setting();

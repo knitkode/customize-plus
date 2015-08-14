@@ -209,6 +209,31 @@ var Utils = (function () {
       setting.set(value);
     },
     /**
+     * Is setting value (`control.setting()`) empty?
+     * Used to check if required control's settings have instead an empty value
+     * @see php class method `PWPcp_Sanitize::is_setting_value_empty()`
+     * @param  {string}  value
+     * @return {Boolean}
+     */
+    _isSettingValueEmpty: function (value) {
+      // first try to compare it to an empty string
+      if (value === '') {
+        return true;
+      } else {
+        // if it's a jsonized value try to parse it and
+        try {
+          // if it-s a jsonized value try to parse it and
+          valueParsed = JSON.parse(value);
+          // see if we have an empty array or an empty object
+          if ((_.isArray(valueParsed) || _.isObject(valueParsed)) && _.isEmpty(valueParsed)) {
+            return true;
+          }
+        } catch(e) {}
+
+        return false;
+      }
+    },
+    /**
      * Selectize render option function
      *
      * @abstract
