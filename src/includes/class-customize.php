@@ -66,6 +66,13 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		private static $controls_l10n = array();
 
 		/**
+		 * Temporary store for localized strings defined through control classes
+		 *
+		 * @var array
+		 */
+		private static $controls_constants = array();
+
+		/**
 		 * CSS shared for all the icons
 		 *
 		 * @var string
@@ -87,51 +94,6 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		private static $min = '';
 
 		/**
-		 * Font families
-		 *
-		 * @see http://www.w3schools.com/cssref/css_websafe_fonts.asp
-		 * @var array
-		 */
-		public static $font_families = array(
-		  // Serif Fonts
-		  'Georgia',
-		  '"Palatino Linotype"',
-		  '"Book Antiqua"',
-		  'Palatino',
-		  '"Times New Roman"',
-		  'Times',
-		  'serif',
-		  // Sans-Serif Fonts
-		  'Arial',
-		  'Helvetica',
-		  '"Helvetica Neue"',
-		  '"Arial Black"',
-		  'Gadget',
-		  '"Comic Sans MS"',
-		  'cursive',
-		  'Impact',
-		  'Charcoal',
-		  '"Lucida Sans Unicode"',
-		  '"Lucida Grande"',
-		  'Tahoma',
-		  'Geneva',
-		  '"Trebuchet MS"',
-		  'Verdana',
-		  'sans-serif',
-		  // Monospace Font
-		  '"Courier New"',
-		  'Courier',
-		  '"Lucida Console"',
-		  'Monaco',
-		  'monospace',
-		  'Menlo',
-		  'Consolas',
-
-		  // Google font
-		  '"Lato"',
-		);
-
-		/**
 		 * Constructor
 		 *
 		 * @since  0.0.1
@@ -144,7 +106,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_js_shim' ) );
 			add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'enqueue_js_admin' ) );
 			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_view_loader' ) );
-			add_action( 'customize_controls_enqueue_scripts', array( __CLASS__, 'add_controls_l10n' ) );
+			add_action( 'customize_controls_enqueue_scripts', array( __CLASS__, 'add_controls_js_vars' ) );
 			add_action( 'customize_preview_init' , array( __CLASS__, 'enqueue_js_preview' ) );
 		}
 
@@ -195,10 +157,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				'THEME_URL' => get_stylesheet_directory_uri(),
 				'IMAGES_BASE_URL' => PWPcp_Theme::$images_base_url,
 				'DOCS_BASE_URL' => PWPcp_Theme::$docs_base_url,
-				'FONT_FAMILIES' => PWPcp_Sanitize::font_families( self::$font_families ),
 			);
 			$additional = (array) apply_filters( 'PWPcp/customize/js_constants', array() );
-			return array_merge( $required, $additional );
+			return array_merge( $required, self::$controls_constants, $additional );
 		}
 
 		/**
@@ -226,11 +187,14 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * @since  0.0.1
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
-		public static function add_controls_l10n() {
+		public static function add_controls_js_vars() {
 			global $wp_customize;
 			foreach ( $wp_customize->controls() as $control ) {
 				if ( method_exists( $control, 'get_l10n' ) ) {
 					self::$controls_l10n = array_merge( self::$controls_l10n, $control->get_l10n() );
+				}
+				if ( method_exists( $control, 'get_constants' ) ) {
+					self::$controls_constants = array_merge( self::$controls_constants, $control->get_constants() );
 				}
 			}
 		}
