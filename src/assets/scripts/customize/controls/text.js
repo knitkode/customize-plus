@@ -9,11 +9,7 @@
  */
 wpApi.controlConstructor.pwpcp_text = api.controls.BaseInput.extend({
   /**
-   * Validate
-   *
    * @override
-   * @param  {string} value
-   * @return {string|object<error,boolean|string>}
    */
   validate: function (value) {
     var attrs = this.params.attrs;

@@ -2043,6 +2043,32 @@ return array(
 					),
 				),
 			),
+			'datetime' => array(
+				'setting' => array(
+					'default' => '13/03/1987',
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'Datetime', 'i18n' ),
+					'description' => __( '', 'i18n' ),
+					'type' => 'pwpcp_datetime',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => '13-03-1987',
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'Datetime', 'i18n' ),
+		'type' => 'pwpcp_datetime',
+	),
+),
+```",
+					),
+				),
+			),
 		),
 	),
 	array(

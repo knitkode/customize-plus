@@ -10,11 +10,7 @@
 // export to our API and to WordPress API
 api.controls.Number = wpApi.controlConstructor.pwpcp_number = api.controls.BaseInput.extend({
   /**
-   * Validate
-   *
    * @override
-   * @param  {string} value
-   * @return {string|object<error,boolean|string>}
    */
   validate: function (rawValue) {
     var value = parseInt(rawValue, 10);

@@ -1,5 +1,5 @@
 /**
- * Font Family
+ * Font Family Control
  *
  * @constructor
  * @augments api.controls.Base
@@ -16,16 +16,6 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
     }
   },
   /**
-   * @override
-   */
-  ready: function () {
-    this.input = this._container.getElementsByClassName('pwpcp-selectize')[0];
-    this.fontFamilies = api['constants']['FONT_FAMILIES'].map(function (fontFamilyName) {
-      return { item: fontFamilyName };
-    });
-    this._updateUI();
-  },
-  /**
    * Destroy `selectize` instance.
    *
    * @override
@@ -34,6 +24,16 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
     if (this.rendered && this.input) {
       this.input.selectize.destroy();
     }
+  },
+  /**
+   * @override
+   */
+  ready: function () {
+    this.input = this._container.getElementsByClassName('pwpcp-selectize')[0];
+    this.fontFamilies = api['constants']['FONT_FAMILIES'].map(function (fontFamilyName) {
+      return { item: fontFamilyName };
+    });
+    this._updateUI();
   },
   /**
    * @see php `PWPcp_Sanitize::font_families`
@@ -53,12 +53,17 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
       return fontFamiliesSanitized.join(',');
     }
   },
+  /**
+   * Update UI
+   *
+   * @param  {string} value
+   */
   _updateUI: function (value) {
     var setting = this.setting;
 
     // if there is an instance of selectize destroy it
     if (this.input.selectize) {
-      this.onDeflate();
+      this.input.selectize.destroy();
     }
 
     if (value) {
@@ -78,11 +83,10 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
       sortField: 'item',
       searchField: 'item',
       create: function (input) {
-        console.log(input);
         return {
           value: input,
           text: input.replace(/'/g, '') // remove quotes from UI only
-        }
+        };
       }
     }).on('change', function () {
       setting.set(this.value);
