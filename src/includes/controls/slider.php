@@ -40,36 +40,14 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	}
 
 	/**
-	 * [get_unit_from_value description]
-	 * @param  string $value The control's setting value
-	 * @return [type] [description]
-	 */
-	private static function get_unit_from( $control, $value ) {
-		foreach ( $control->units as $unit ) {
-			if ( false != strpos( $value, $unit ) ) {
-				return $unit;
-			}
-		}
-	}
-
-	/**
-	 * [get_number_from_value description]
-	 * @param  string $value The control's setting value
-	 * @return [type] [description]
-	 */
-	private static function get_number_from( $value ) {
-		return preg_replace( '/[^0-9,.]/', '', $value );
-	}
-
-	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
 	 *
 	 * @since 0.0.1
 	 */
 	protected function add_to_json() {
 		$this->json['units'] = $this->units;
-		$this->json['number'] = self::get_number_from( $this->value() );
-		$this->json['unit'] = self::get_unit_from( $this, $this->value());
+		$this->json['number'] = PWPcp_Sanitize::extract_number( $this->value() );
+		$this->json['unit'] = PWPcp_Sanitize::extract_size_unit( $this, $this->value());
 		$this->json['attrs'] = $this->input_attrs;
 	}
 
@@ -111,26 +89,14 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		$input_attrs = $control->input_attrs;
-		$number = self::get_number_from( $value );
-		$unit = self::get_unit_from( $control, $value );
+		$unit = PWPcp_Sanitize::extract_size_unit( $control, $value );
+		$number = PWPcp_Sanitize::number( PWPcp_Sanitize::extract_number( $value ), $control->input_attrs );
 
-		if ( $input_attrs ) {
-			// if doesn't respect the step given round it to the closest
-			// then do the min and max checks
-			if ( isset( $input_attrs['step'] ) && $number % $input_attrs['step'] != 0 ) {
-				$number = round( $number / $input_attrs['step'] ) * $input_attrs['step'];
-			}
-			// if it's lower than the minimum return the minimum
-			if ( isset( $input_attrs['min'] ) && $number < $input_attrs['min'] ) {
-				return $input_attrs['min'] . $unit;
-			}
-			// if it's higher than the maxmimum return the maximum
-			if ( isset( $input_attrs['max'] ) && $number > $input_attrs['max'] ) {
-				return $input_attrs['max'] . $unit;
-			}
+		if ( $number ) {
+			return $number . $unit;
+		} else {
+			return $setting->default;
 		}
-		return $number . $unit;
 	}
 }
 

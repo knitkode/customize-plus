@@ -79,17 +79,11 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 	 * @return array
 	 */
 	public function get_l10n() {
-		// var localization = $.spectrum.localization["it"] = { // @@todo
-		// 	cancelText: "annulla",
-		// 	chooseText: "scegli",
-		// 	clearText: "Annulla selezione colore",
-		// 	noColorSelectedText: "Nessun colore selezionato" // \\
-		// };
 		return array(
-			'cancelText' => __( 'annulla', 'pkgTextdomain' ),
-			'chooseText' => __( 'scegli', 'pkgTextdomain' ),
-			'clearText' => __( 'Annulla selezione colore', 'pkgTextdomain' ),
-			'noColorSelectedText' => __( 'Nessun colore selezionato', 'pkgTextdomain' ),
+			'cancelText' => __( 'Cancel', 'pkgTextdomain' ),
+			'chooseText' => __( 'Choose', 'pkgTextdomain' ),
+			'clearText' => __( 'Clear selection', 'pkgTextdomain' ),
+			'noColorSelectedText' => __( 'No color selected', 'pkgTextdomain' ),
 			'togglePaletteMoreText' => __( 'Show color picker', 'pkgTextdomain' ),
 			'togglePaletteLessText' => __( 'Hide color picker', 'pkgTextdomain' ),
 		);

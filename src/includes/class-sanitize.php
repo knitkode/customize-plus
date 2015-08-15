@@ -64,6 +64,7 @@ class PWPcp_Sanitize {
 	 * No-HTML sanitization callback example.
 	 *
 	 * @link(https://github.com/WPTRT/code-examples/blob/master/customizer/sanitization-callbacks.php#L179, source)
+	 * @since  0.0.1
 	 * @param string $nohtml The no-HTML content to sanitize.
 	 * @return string Sanitized no-HTML content.
 	 */
@@ -74,9 +75,12 @@ class PWPcp_Sanitize {
 	/**
    * Is setting value (`control.setting()`) empty?
    * Used to check if required control's settings have instead an empty value
+   *
+   * @since  0.0.1
    * @see php class method `PWPcp_Sanitize::is_setting_value_empty()`
-   * @param  string  $value
-   * @return Boolean
+   * @param  string  $value A setting value
+   * @return boolean 				Whether the setting value has to be considered
+   *                        empty, or not set.
    */
 	public static function is_setting_value_empty( $value ) {
 		// first try to compare it to an empty string
@@ -98,9 +102,9 @@ class PWPcp_Sanitize {
 	/**
 	 * Sanitize font families.
 	 *
-	 * Be sure that each font family is wrapped in quote,
-	 * good for CSS consistency.
+	 * Be sure that each font family is wrapped in quote, good for consistency
 	 *
+	 * @since  0.0.1
 	 * @param  string $input
 	 * @return string
 	 */
@@ -128,20 +132,74 @@ class PWPcp_Sanitize {
 	}
 
 	/**
-	 * [font_weight description]
-	 * @param  [type] $input [description]
-	 * @return [type]        [description]
+	 * Extract unit (like `px`, `em`, `%`, etc.) from control->units property
+	 *
+	 * @since  0.0.1
+	 * @param  string $input The control's setting value
+	 * @return string|boolean The first valid unit found.
 	 */
-	public static function font_weight( $input ) { // @@todo \\
-		return $input;
+	public static function extract_size_unit( $control, $input ) {
+		foreach ( $control->units as $unit ) {
+			if ( false != strpos( $input, $unit ) ) {
+				return $unit;
+			}
+		}
+		return false;
 	}
 
 	/**
-	 * Sanitize hex color
+	 * Extract number from input, it replaces everything that is not a digit
+	 *
+	 * @since  0.0.1
+	 * @param  string $input  The value from where to extract
+	 * @return number|boolean The extracted number or false if the input does
+	 *                        not contain any digit.
+	 */
+	public static function extract_number( $input ) {
+		$number = preg_replace( '/[^0-9,.]/', '', $input );
+		if ( $number ) {
+			return $number;
+		}
+		return false;
+	}
+
+	/**
+	 * Sanitize / validate a number against an array of attributes.
+	 * @param  int|float $number A number
+	 * @param  array $attrs  		 Usually the `input_attrs` of a control
+	 * @return int|float|boolean The saniitized / valid number
+	 */
+	public static function number( $number, $attrs ) {
+		if ( ! is_numeric( $number ) ) {
+			return false;
+		}
+		if ( $attrs ) {
+			// if doesn't respect the step given round it to the closest
+			// then do the min and max checks
+			if ( isset( $attrs['step'] ) && $number % $attrs['step'] != 0 ) {
+				$number = round( $number / $attrs['step'] ) * $attrs['step'];
+			}
+			// if it's lower than the minimum return the minimum
+			if ( isset( $attrs['min'] ) && $number < $attrs['min'] ) {
+				return $attrs['min'];
+			}
+			// if it's higher than the maxmimum return the maximum
+			if ( isset( $attrs['max'] ) && $number > $attrs['max'] ) {
+				return $attrs['max'];
+			}
+		} else {
+			return $number;
+		}
+	}
+
+	/**
+	 * Sanitize/validate hex color
 	 * check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or 'CCC'
 	 *
-	 * @param  [type] $input [description]
-	 * @return [type]        [description]
+	 * @since  0.0.1
+	 * @param  string $input  The input value to sanitize
+	 * @return string|boolean The sanitized input or `false` in case the input
+	 *                        value is not valid.
 	 */
 	public static function color_hex( $input ) {
 		$input = trim( $input );
@@ -153,13 +211,18 @@ class PWPcp_Sanitize {
 		else if ( preg_match( '/^([A-Fa-f0-9]{3}){1,2}$/', $input ) ) {
 			// hex color is valid, add hash
 			return '#' . $input;
+		} else {
+			return false;
 		}
 	}
 
 	/**
-	 * Sanitize RGBA color
-	 * @param  [type] $input [description]
-	 * @return string|false
+	 * Sanitize/validate RGBA color
+	 *
+	 * @since  0.0.1
+	 * @param  string $input  The input value to sanitize
+	 * @return string|boolean The sanitized input or `false` in case the input
+	 *                        value is not valid.
 	 */
 	public static function color_rgba( $input ) {
 		$input = trim( $input );
@@ -173,42 +236,17 @@ class PWPcp_Sanitize {
 	}
 
 	/**
-	 * Sanitize color (transparent or hex)
-	 * @param  [type] $input [description]
-	 * @return [type]        [description]
-	 */
-	public static function color( $input ) {
-		$input = trim( $input );
-		// @@todo trim... \\
-		// check for transparent color
-		if ( 'transparent' === $input ) {
-			return $input;
-		}
-		// check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000'
-		else if ( self::color_hex( $input ) ) {
-			// hex color is valid, return it normalized
-			return self::color_hex( $input );
-		}
-		// check for a rgba color string
-		else if ( self::color_rgba( $input ) ) {
-			// hex color is valid, return it normalized
-			return self::color_rgba( $input );
-		}
-	}
-
-	/**
 	 * Sanitize string compared to the choices array (i.e. for radio based control)
 	 *
 	 * @since 0.0.1
-	 * @param string               $value   The value to sanitize.
+	 * @param string               $input   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
  	 * @param WP_Customize_Control $control Control instance.
  	 * @return string The sanitized value.
  	 */
-	public static function string_in_choices( $value, $setting, $control ) {
-		// value could be a number (i.e. in font_weight control)
-		if ( isset( $control->choices[ strval( $value ) ] ) ) {
-			return $value;
+	public static function string_in_choices( $input, $setting, $control ) {
+		if ( isset( $control->choices[ $input ] ) ) {
+			return $input;
 		} else {
 			return $setting->default;
 		}
@@ -218,23 +256,23 @@ class PWPcp_Sanitize {
 	 * Sanitize array compared to the choices array (i.e. for radio based control)
 	 *
 	 * @since 0.0.1
-	 * @param string               $value   The value to sanitize.
+	 * @param string               $input   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
  	 * @param WP_Customize_Control $control Control instance.
  	 * @return string The sanitized value.
  	 */
-	public static function array_in_choices( $value, $setting, $control ) {
-		$value_decoded = json_decode( $value );
+	public static function array_in_choices( $input, $setting, $control ) {
+		$input_decoded = json_decode( $input );
 
-		if ( is_array( $value_decoded ) ) {
-			$value_sanitized = array();
+		if ( is_array( $input_decoded ) ) {
+			$input_sanitized = array();
 
-			foreach ( $value_decoded as $key ) {
+			foreach ( $input_decoded as $key ) {
 				if ( isset( $control->choices[ $key ] ) ) {
-					array_push( $value_sanitized, $key );
+					array_push( $input_sanitized, $key );
 				}
 			}
-			return json_encode( $value_sanitized );
+			return json_encode( $input_sanitized );
 		} else {
 			return $setting->default;
 		}
