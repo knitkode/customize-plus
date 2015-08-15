@@ -24,11 +24,10 @@
 }
 
 /**
- * Control changes, class applied on `<li>`
- * container of each of our custom controls
+ * Control changes, class applied on `<li>` container of each of our custom
+ * controls and WordPress native control as well
  */
-.customize-control,
-.pwpcp-control {
+.customize-control {
   margin: 0; // @@wptight-css-override .customize-control {} \\
   padding-top: $control--spacing-top;
   padding-bottom: $control--spacing-bottom;
@@ -37,6 +36,8 @@
   border-color: transparent;
   border-style: solid;
   border-width: 1px 0;
+  transition: background .18s ease;
+
   &:hover {
     background: $control--bg-hover;
     border-color: darken($control--bg-hover, 1%);
@@ -45,12 +46,35 @@
   &:last-of-type {
     border-bottom: none;
   }
+}
 
-  /**
-   * Highlight focused control (through WordPress API method control.focus())
-   * adding the class `.pwpcp-control-focused` to the `control.container`
-   */
+/**
+ * Status class and message attribute on controls, used i.e. to show a
+ * validation error without the need of new DOM, through js it is enough
+ * to add or change the `data-pwpcp-msg` and optionally add a status class.
+ */
+.customize-control {
+  &[data-pwpcp-msg]:after {
+    content: attr(data-pwpcp-msg);
+  }
+
+  &.pwpcp-error {
+    background: #fff9f9;
+
+    &:after {
+      color: #c00;
+      font-size: 11px;
+    }
+  }
+}
+
+/**
+ * Highlight focused control (through WordPress API method control.focus())
+ * adding the class `.pwpcp-control-focused` to the `control.container`
+ */
+.pwpcp-control {
   // background: $control--bg;
+
   &-focused {
     // transition: background 2s ease;
     .no-cssanimations {
@@ -60,29 +84,31 @@
     transform-origin : left center;
     animation: focus-control 1.8s ease;
   }
-
-  // /**
-  //  * 'Highlight' hovered control fading out a bit all the others
-  //  *
-  //  */
-  // transition: opacity .1s ease;
-
-  // .control-section .accordion-section-content:hover & { // .pwpcp-control-section
-  //   opacity: .8;
-  // }
-  // .control-section .accordion-section-content &:hover { // .pwpcp-control-section
-  //   opacity: 1;
-  // }
-  // // on search active we have multple accordion-section visible
-  // // at the same time so we have to target the overall sidebar inner area
-  // // to trigger the hover higlight in the right way
-  // .pwpcp-search-active #customize-theme-controls:hover & {
-  //   opacity: .8;
-  // }
-  // .pwpcp-search-active #customize-theme-controls &:hover {
-  //   opacity: 1;
-  // }
 }
+
+/**
+ * 'Highlight' hovered control fading out a bit all the others
+ *
+ */
+// .pwpcp-control {
+//   transition: opacity .1s ease;
+
+//   .control-section .accordion-section-content:hover & { // .pwpcp-control-section
+//     opacity: .8;
+//   }
+//   .control-section .accordion-section-content &:hover { // .pwpcp-control-section
+//     opacity: 1;
+//   }
+//   // on search active we have multple accordion-section visible
+//   // at the same time so we have to target the overall sidebar inner area
+//   // to trigger the hover higlight in the right way
+//   .pwpcp-search-active #customize-theme-controls:hover & {
+//     opacity: .8;
+//   }
+//   .pwpcp-search-active #customize-theme-controls &:hover {
+//     opacity: 1;
+//   }
+// }
 
 @keyframes focus-control {
   0% { box-shadow: 0 0 0 rgba(0,0,0,0); background: $control--bg; }

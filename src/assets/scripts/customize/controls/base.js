@@ -138,12 +138,20 @@ api.controls.Base = wpApi.Control.extend({
    * @abstract
    * @param  {object<string,boolean|string>} errorObject `{ error: true, msg: string }`
    */
-  _onValidateError: function (errorObject) {},
+  _onValidateError: function (errorObject) {
+    this._container.classList.add('pwpcp-error');
+    if (errorObject.msg) {
+      this._container.setAttribute('data-pwpcp-msg', errorObject.msg);
+    }
+  },
   /**
    * On validation success (optionally override it in subclasses)
    * @abstract
    */
-  _onValidateSuccess: function () {},
+  _onValidateSuccess: function () {
+    this._container.classList.remove('pwpcp-error');
+    this._container.removeAttribute('data-pwpcp-msg');
+  },
   /**
    * Validate
    *
@@ -290,6 +298,10 @@ api.controls.Base = wpApi.Control.extend({
     this._initGuide();
     this._initHelp();
     this._extras();
+    // errors get resetted because on ready we fill the values in the UI
+    // with the value of `this.setting()` which can never be not valid
+    // (see the `_validateWrap` method above)
+    this._onValidateSuccess();
     console.log('inflate of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.');
   },
   /**

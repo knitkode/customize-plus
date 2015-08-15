@@ -206,8 +206,8 @@ var Utils = (function () {
      * @param  {wp.customize.Setting} setting
      * @param  {string} value
      */
-    _forceSettingSet: function (setting, value) {
-      setting['_value'] = 'dummy'; // @@todo whitelist from uglify mangle regex private names \\
+    _forceSettingSet: function (setting, value, dummyValue) {
+      setting['_value'] = dummyValue || 'dummy'; // whitelisted from uglify mangle regex private names \\
       setting.set(value);
     },
     /**
@@ -224,13 +224,14 @@ var Utils = (function () {
       } else {
         // if it's a jsonized value try to parse it and
         try {
-          // if it-s a jsonized value try to parse it and
-          valueParsed = JSON.parse(value);
-          // see if we have an empty array or an empty object
-          if ((_.isArray(valueParsed) || _.isObject(valueParsed)) && _.isEmpty(valueParsed)) {
-            return true;
-          }
+          // if it-s a jsonized value try to parse it
+          value = JSON.parse(value);
         } catch(e) {}
+
+        // see if we have an empty array or an empty object
+        if ((_.isArray(value) || _.isObject(value)) && _.isEmpty(value)) {
+          return true;
+        }
 
         return false;
       }
