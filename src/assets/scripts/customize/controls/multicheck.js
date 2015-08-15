@@ -14,18 +14,17 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
    * @return {string|object<string,boolean>} A JSONified Array
    */
   validate: function (rawNewValue) {
-    var params = this.params;
     var newValue = rawNewValue;
+    // in case the value come from a reset action it is a json
+    // string (as it is saed in the db) so we need to parse it
     try {
       newValue = JSON.parse(rawNewValue);
-    } catch(e) {
-      console.warn('Control->Multicheck: Failed to parse a supposed-to-be JSON value', rawNewValue, e);
-    }
+    } catch(e) {}
     if(_.isArray(newValue)) {
       var validArray = [];
       for (var i = 0; i < newValue.length; i++) {
         // only if it is an allowed choice...
-        if (params.choices.hasOwnProperty(newValue[i])) {
+        if (this.params.choices.hasOwnProperty(newValue[i])) {
           validArray.push( newValue[i] );
         }
       }
