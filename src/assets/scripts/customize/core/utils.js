@@ -70,7 +70,7 @@ var Utils = (function () {
      * @param  {strin|number} value
      * @return {boolean}
      */
-    toBoolean: function (value) {
+    _toBoolean: function (value) {
       return typeof value === 'boolean' ? value : !!parseInt(value, 10);
     },
     /**
@@ -80,7 +80,7 @@ var Utils = (function () {
      * @return {string}
      */
     stripHTML: function (input) {
-      return $('<div/>').html(input).text();
+      return $(document.createElement('div')).html(input).text();
     },
     /**
      * Get image url

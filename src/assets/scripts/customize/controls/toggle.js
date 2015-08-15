@@ -32,7 +32,7 @@ wpApi.controlConstructor.pwpcp_toggle = api.controls.Base.extend({
    * @return {number} 0 or 1 as integer
    */
   validate: function (newValue) {
-    return Utils.toBoolean(newValue) ? 1 : 0;
+    return Utils._toBoolean(newValue) ? 1 : 0;
   },
   /**
    * Sync UI with value coming from API, a programmatic change like a reset.
@@ -41,8 +41,8 @@ wpApi.controlConstructor.pwpcp_toggle = api.controls.Base.extend({
    */
   syncUIFromAPI: function (value) {
     if (this.rendered) {
-      var valueClean = Utils.toBoolean(value);
-      var inputStatus = Utils.toBoolean(this.__input.checked);
+      var valueClean = Utils._toBoolean(value);
+      var inputStatus = Utils._toBoolean(this.__input.checked);
       if (inputStatus !== valueClean) {
         this.__input.checked = valueClean;
       }
@@ -57,7 +57,7 @@ wpApi.controlConstructor.pwpcp_toggle = api.controls.Base.extend({
     this.__input = this._container.getElementsByTagName('input')[0];
 
     // sync input value on ready
-    this.__input.checked = Utils.toBoolean(this.setting());
+    this.__input.checked = Utils._toBoolean(this.setting());
 
     // bind input on ready
     this.__input.onchange = function (event) {

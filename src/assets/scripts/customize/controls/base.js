@@ -39,14 +39,18 @@ api.controls.Base = wpApi.Control.extend({
     // control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
     // control.templateSelector = 'customize-control-' + control.params.type + '-content';
     advancedClass = control.params.advanced ? ' pwpcp-control-advanced' : '';
-    control.container = $('<li id="customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' ) +
-      '" class="customize-control pwpcp-control customize-control-' + control.params.type
-      + advancedClass + '"></li>'); // @@tobecareful check render() in PWPcp_Customize_Control_Base \\
+
+    var container = document.createElement('li');
+    container.id = 'customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
+    container.className = 'customize-control pwpcp-control customize-control-'
+      + control.params.type + advancedClass;
+
+    control.container = $(container); // @@tobecareful check render() in PWPcp_Customize_Control_Base \\
 
     // save a reference of the raw DOM node, we're gonna use it more
     // than the jquety object `container` (which we can't change, because it's
     // used by methods which we don't override)
-    control._container = control.container[0];
+    control._container = container;
 
     control.deferred = {
       embedded: new $.Deferred()
