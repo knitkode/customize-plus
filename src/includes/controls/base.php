@@ -233,9 +233,9 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since  0.0.1
 	 * @return array
 	 */
-	public function get_l10n() { // @@doubt maybe not needed on this base class \\
-		return array();
-	}
+	// public function get_l10n() { // @@doubt maybe not needed on this base class \\
+	// 	return array();
+	// }
 
 	/**
 	 * Get js constants for current controls.
@@ -245,9 +245,9 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since  0.0.1
 	 * @return array
 	 */
-	public function get_constants() { // @@doubt maybe not needed on this base class \\
-		return array();
-	}
+	// public function get_constants() { // @@doubt maybe not needed on this base class \\
+	// 	return array();
+	// }
 
 	/**
 	 * Sanitization callback
