@@ -165,6 +165,8 @@ class PWPcp_Sanitize {
 
 	/**
 	 * Sanitize / validate a number against an array of attributes.
+	 *
+	 * @since  0.0.1
 	 * @param  int|float $number A number
 	 * @param  array $attrs  		 Usually the `input_attrs` of a control
 	 * @return int|float|boolean The saniitized / valid number
@@ -217,7 +219,7 @@ class PWPcp_Sanitize {
 	}
 
 	/**
-	 * Sanitize/validate RGBA color
+	 * Sanitize / validate RGBA color
 	 *
 	 * @since  0.0.1
 	 * @param  string $input  The input value to sanitize
