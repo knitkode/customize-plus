@@ -48,7 +48,7 @@ class PWPcp_Customize_Control_Tags extends PWPcp_Customize_Control_Base {
 		?>
 		<label>
 			<?php $this->js_tpl_header(); ?>
-			<input type="text" value="<?php // filled through js: `control.setting()` ?>">
+			<input type="text" value="<?php // filled through js ?>">
 		</label>
 		<?php
 	}

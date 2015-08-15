@@ -44,8 +44,6 @@
   'textarea-wp_editor',
   'textarea-wp_editor-options',
   // Customize Plus Premium controls
-  'knob',
-  'knob-options',
   'color-dynamic-active',
   'color-dynamic-passive',
   'color-dynamic-hidetab-active',
@@ -54,6 +52,10 @@
   'size-dynamic-passive',
   'size-dynamic-hidetab-active',
   'size-dynamic-hidetab-passive',
+  'knob',
+  'knob-options',
+  'datetime',
+  'datetime-inline',
   // WordPress controls
   'wp-color',
   'wp-media',

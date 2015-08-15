@@ -87,6 +87,8 @@
     // Customize Plus Premium controls
     'knob',
     'knob-options',
+    'datetime',
+    'datetime-inline',
     'color-dynamic-active',
     'color-dynamic-passive',
     'color-dynamic-hidetab-active',
