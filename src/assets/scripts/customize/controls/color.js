@@ -49,10 +49,7 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
     }
   },
   /**
-   * Validate
-   *
-   * @param {*} value The value to validate.
-   * @return {string|object<string,boolean>} The validated control value.
+   * @override
    */
   validate: function (value) {
     if (
@@ -66,17 +63,13 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
     }
   },
   /**
-   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
-   * @param {string} value The new setting value.
    */
   syncUIFromAPI: function (value) {
     this._apply(value, 'API');
   },
   /**
-   * On deflate
-   *
-   * Destroy `spetrum` instances if any.
+   * Destroy `spectrum` instances if any.
    *
    * @override
    */
@@ -86,8 +79,6 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
     }
   },
   /**
-   * On ready
-   *
    * @override
    */
   ready: function () {
@@ -134,7 +125,6 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
   },
   /**
    * Apply on UI preview (the color box on the left hand side)
-   * @param  {string} newValue
    */
   _applyOnUIpreview: function (newValue) {
     this.__preview.style.background = newValue;

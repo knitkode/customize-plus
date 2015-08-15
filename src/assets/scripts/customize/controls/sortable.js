@@ -9,11 +9,7 @@
 // export to our API and to WordPress API
 api.controls.Sortable = wpApi.controlConstructor.pwpcp_sortable = api.controls.Base.extend({
   /**
-   * Validate
-   *
-   * @param  {string|array} rawNewValue Value of the checkbox clicked or sent
-   *                                    through js API
-   * @return {string|object<string,boolean>} A JSONified Array or the error object
+   * @override
    */
   validate: function (rawNewValue) {
     var choices = this.params.choices;
@@ -36,25 +32,20 @@ api.controls.Sortable = wpApi.controlConstructor.pwpcp_sortable = api.controls.B
       }
       return JSON.stringify(validatedArray);
     }
-    // otherwise return last value
     else {
       return { error: true };
     }
   },
   /**
-   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
-   * @param {string} value The new setting value.
    */
   syncUIFromAPI: function (value) {
-    if (this.rendered && value !== this.params.lastValue) {
+    if (value !== this.params.lastValue) {
       this._reorder();
       this.params.lastValue = value;
     }
   },
   /**
-   * On ready
-   *
    * @override
    */
   ready: function () {
@@ -68,7 +59,7 @@ api.controls.Sortable = wpApi.controlConstructor.pwpcp_sortable = api.controls.B
     container.sortable({
       items: '.pwpcp-sortable',
       cursor: 'move',
-      update: function (event, ui) {
+      update: function () {
         setting.set(container.sortable('toArray', { attribute: 'title' }));
       }
     });
@@ -94,6 +85,7 @@ api.controls.Sortable = wpApi.controlConstructor.pwpcp_sortable = api.controls.B
    */
   _reorder: function () {
     var valueAsArray = JSON.parse(this.setting());
+
     for (var i = 0, l = valueAsArray.length; i < l; i++) {
       var itemValue = valueAsArray[i];
       var itemDOM = this.__itemsMap[itemValue]._sortable;

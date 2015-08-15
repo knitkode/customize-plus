@@ -9,11 +9,7 @@
 // export to our API and to WordPress API
 api.controls.Select = wpApi.controlConstructor.pwpcp_select = api.controls.Base.extend({
   /**
-   * Validate
-   *
-   * @param  {string} rawNewValue
-   * @return {string|object<string,boolean>} The new value if is an allowed
-   *                                         choice or the error object.
+   * override
    */
   validate: function (rawNewValue) {
     var choices = this.params.choices;
@@ -44,8 +40,6 @@ api.controls.Select = wpApi.controlConstructor.pwpcp_select = api.controls.Base.
     return { error: true };
   },
   /**
-   * On deflate
-   *
    * Destroy `selectize` instance if any.
    *
    * @override
@@ -56,18 +50,12 @@ api.controls.Select = wpApi.controlConstructor.pwpcp_select = api.controls.Base.
     }
   },
   /**
-   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
-   * @param {string} value The new setting value.
    */
-  syncUIFromAPI: function (value) {
-    if (this.rendered) {
-      this._syncOptions();
-    }
+  syncUIFromAPI: function () {
+    this._syncOptions();
   },
   /**
-   * On ready
-   *
    * @override
    */
   ready: function () {

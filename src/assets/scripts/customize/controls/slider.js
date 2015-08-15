@@ -12,13 +12,7 @@
 // export to our API and to WordPress API
 api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.extend({
   /**
-   * Validate
-   *
-   * {@link http://stackoverflow.com/a/175787/1938970 stackoverflow}
-   *
-   * @param  {string|number} newValue The value that has been set through
-   *                                  `control.setting.set(value)`.
-   * @return {string} The validate control value.
+   * @override
    */
   validate: function (newValue) {
     var params = this.params;
@@ -74,37 +68,14 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
     return number.toString() + unit;
   },
   /**
-   * Update UI.
-   *
-   * Reflect a programmatic setting change on the UI, only
-   * if the control is rendered.
-   *
-   * @private
-   */
-  _updateUI: function () {
-    var params = this.params;
-    // update number input
-    this.__inputNumber.value = params.number;
-    // update number slider
-    this.__$inputSlider.slider('value', params.number);
-    // update unit picker
-    this.__$inputUnits.removeClass('pwpcp-current').filter(function () {
-      return this.value === params.unit;
-    }).addClass('pwpcp-current');
-  },
-  /**
-   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
-   * @param {string} value The new setting value.
    */
   syncUIFromAPI: function (value) {
-    if (this.rendered && value !== this._getValueFromUI()) {
+    if (value !== this._getValueFromUI()) {
       this._updateUI();
     }
   },
   /**
-   * On ready
-   *
    * @override
    */
   ready: function () {
@@ -166,6 +137,23 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
    * @return {string} JSONified array
    */
   _getValueFromUI: function () {
-    return this.__inputNumber.value + this.__$inputUnits.filter('.pwpcp-current').val();
+    return this.__inputNumber.value +
+      this.__$inputUnits.filter('.pwpcp-current').val();
+  },
+  /**
+   * Update UI
+   *
+   * Reflect a programmatic setting change on the UI.
+   */
+  _updateUI: function () {
+    var params = this.params;
+    // update number input
+    this.__inputNumber.value = params.number;
+    // update number slider
+    this.__$inputSlider.slider('value', params.number);
+    // update unit picker
+    this.__$inputUnits.removeClass('pwpcp-current').filter(function () {
+      return this.value === params.unit;
+    }).addClass('pwpcp-current');
   }
 });

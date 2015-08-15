@@ -1,3 +1,5 @@
+/* global Utils */
+
 /**
  * Control Tags class
  *
@@ -8,22 +10,26 @@
  */
 wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
   /**
-   * Validate
-   *
-   * @param  {string} rawNewValue
-   * @return {string|object<string,boolean>} The new value if it is a string
-   *                                         or the error object.
+   * @override
    */
   validate: function (rawNewValue) {
     if (_.isString(rawNewValue)) {
-      return Utils.stripHTML(rawNewValue);
-    } else {
-      return { error: true };
+      var newValue = rawNewValue;
+      newValue = _.map(newValue.split(','), function (string) {
+        string.trim();
+      });
+      newValue = _.uniq(newValue);
+      var maxItems = this.params.selectize.maxItems;
+      if (maxItems && _.isNumber(maxItems)) {
+        if (newValue.length > maxItems) {
+          newValue = newValue.slice(0, maxItems);
+        }
+      }
+      return Utils.stripHTML(newValue.join(','));
     }
+    return { error: true };
   },
   /**
-   * On deflate
-   *
    * Destroy `selectize` instance if any.
    *
    * @override
@@ -34,15 +40,11 @@ wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
     }
   },
   /**
-   * On initialization
-   *
-   * Update tags status if the setting is changed programmatically.
-   *
    * @override
    */
   syncUIFromAPI: function (value) {
-    var selectize = this.__input ? this.__input.selectize : null;
-    if (this.rendered && selectize && selectize.getValue() !== value) {
+    var selectize = this.__input.selectize;
+    if (selectize && selectize.getValue() !== value) {
       this.__input.value = value;
       // this is due to a bug, we should use:
       // selectize.setValue(value, true);
@@ -54,8 +56,6 @@ wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
     }
   },
   /**
-   * On ready
-   *
    * @override
    */
   ready: function () {

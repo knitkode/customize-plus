@@ -26,31 +26,22 @@ wpApi.controlConstructor.pwpcp_toggle = api.controls.Base.extend({
     return (value === 0 || value === 1) ? value.toString() : value;
   },
   /**
-   * Validate
-   *
-   * @param  {string|array} newValue Value of the checkbox or sent through js API
-   * @return {number} 0 or 1 as integer
+   * @override
    */
   validate: function (newValue) {
     return Utils._toBoolean(newValue) ? 1 : 0;
   },
   /**
-   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
-   * @param {string} value The new setting value.
    */
   syncUIFromAPI: function (value) {
-    if (this.rendered) {
-      var valueClean = Utils._toBoolean(value);
-      var inputStatus = Utils._toBoolean(this.__input.checked);
-      if (inputStatus !== valueClean) {
-        this.__input.checked = valueClean;
-      }
+    var valueClean = Utils._toBoolean(value);
+    var inputStatus = Utils._toBoolean(this.__input.checked);
+    if (inputStatus !== valueClean) {
+      this.__input.checked = valueClean;
     }
   },
   /**
-   * On ready
-   *
    * @override
    */
   ready: function () {

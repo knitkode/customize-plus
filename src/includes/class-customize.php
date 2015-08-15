@@ -13,8 +13,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 	 * @version    Release: pkgVersion
 	 * @link       http://pluswp.com/customize-plus
 	 */
-
-	final class PWPcp_Customize {
+	class PWPcp_Customize {
 
 		/**
 		 * WordPress customize custom types for panels,

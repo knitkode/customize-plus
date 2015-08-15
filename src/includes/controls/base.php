@@ -252,13 +252,13 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
  	 * @param WP_Customize_Setting $setting Setting instance.
  	 * @return string The sanitized value.
  	 */
-	final public static function sanitize_callback( $value, $setting ) {
+	public static function sanitize_callback( $value, $setting ) {
 		$control = $setting->manager->get_control( $setting->id );
 
-		if ( $control && !$control->optional && PWPcp_Sanitize::is_setting_value_empty( $value ) ) {
+		if ( $control && ! $control->optional && PWPcp_Sanitize::is_setting_value_empty( $value ) ) {
 			return $setting->default;
 		} else {
-			return self::sanitize( $value, $setting, $control );
+			return $control::sanitize( $value, $setting, $control ); // @@doubt, $control used to be `self` \\
 		}
 	}
 

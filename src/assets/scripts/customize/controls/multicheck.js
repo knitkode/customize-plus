@@ -10,9 +10,7 @@
  */
 wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
   /**
-   * Validate
-   *
-   * @param  {string|array} rawNewValue
+   * @override
    * @return {string|object<string,boolean>} A JSONified Array
    */
   validate: function (rawNewValue) {
@@ -36,12 +34,10 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
     }
   },
   /**
-   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
-   * @param {string} value The new setting value.
    */
   syncUIFromAPI: function (value) {
-    if (this.rendered && value !== this._getArrayFromUI(true)) {
+    if (value !== this._getArrayFromUI(true)) {
       this._syncCheckboxes();
 
       if (this.params.sortable) {
@@ -50,8 +46,6 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
     }
   },
   /**
-   * On ready
-   *
    * @override
    */
   ready: function () {
@@ -65,7 +59,7 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
       this.container.sortable({
         items: '> label',
         cursor: 'move',
-        update: function (event, ui) {
+        update: function () {
           setting.set(self._getArrayFromUI());
         }
       });
@@ -77,22 +71,7 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
     this._syncCheckboxes(true);
   },
   /**
-   * Get sorted value, reaading checkboxes status from the DOM
-   * @param {boolean} jsonize Whether to stringify the array or not
-   * @return {array|JSONized array}
-   */
-  _getArrayFromUI: function (jsonize) {
-    var valueSorted = [];
-    for (var i = 0, l = this.__inputs.length; i < l; i++) {
-      var input = this.__inputs[i];
-      if (input.checked) {
-        valueSorted.push(input.value);
-      }
-    }
-    return jsonize ? JSON.stringify(valueSorted) : valueSorted;
-  },
-  /**
-   * @inherit
+   * @override
    */
   _buildItemsMap: function () {
     var items = this._container.getElementsByTagName('label');
@@ -106,7 +85,7 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
     }
   },
   /**
-   * @inherit
+   * @override
    */
   _reorder: function () {
     // sort first the checked ones
@@ -121,6 +100,22 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
         this._container.appendChild(itemDOM);
       }
     }
+  },
+  /**
+   * Get sorted value, reaading checkboxes status from the DOM
+   *
+   * @param {boolean} jsonize Whether to stringify the array or not
+   * @return {array|JSONized array}
+   */
+  _getArrayFromUI: function (jsonize) {
+    var valueSorted = [];
+    for (var i = 0, l = this.__inputs.length; i < l; i++) {
+      var input = this.__inputs[i];
+      if (input.checked) {
+        valueSorted.push(input.value);
+      }
+    }
+    return jsonize ? JSON.stringify(valueSorted) : valueSorted;
   },
   /**
    * Sync checkboxes and maybe bind change event

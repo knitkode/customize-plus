@@ -13,8 +13,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 	 * @version    Release: pkgVersion
 	 * @link       http://pluswp.com/customize-plus
 	 */
-
-	final class PWPcp_Theme extends PWPcp_Singleton {
+	class PWPcp_Theme extends PWPcp_Singleton {
 
 		/**
 		 * Allowed array keys for themes to use through

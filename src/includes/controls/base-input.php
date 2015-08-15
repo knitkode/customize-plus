@@ -13,7 +13,7 @@
  * @version    Release: pkgVersion
  * @link       http://pluswp.com/customize-plus
  */
-class PWPcp_Customize_Control_Base_Input extends PWPcp_Customize_Control_Base {
+abstract class PWPcp_Customize_Control_Base_Input extends PWPcp_Customize_Control_Base {
 
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.

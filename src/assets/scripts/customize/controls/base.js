@@ -102,11 +102,15 @@ api.controls.Base = wpApi.Control.extend({
     control.onInit();
 
     // Add custom validation function overriding the empty function from WP API.
-    this.setting.validate = this._validateWrap.bind(this);
+    // this.setting.validate = this._validateWrap.bind(this);
 
     // bind setting change to control method to reflect a programmatic
-    // change on the UI
-    this.setting.bind(this.syncUIFromAPI.bind(this));
+    // change on the UI, only if the control is rendered
+    this.setting.bind(function (value) {
+      if (this.rendered) {
+        this.syncUIFromAPI.call(this, value);
+      }
+    }.bind(this));
   },
   /**
    * Validate wrap function.
@@ -274,22 +278,25 @@ api.controls.Base = wpApi.Control.extend({
    * After the template has been rendered call the `ready`
    * method, overridden in each control wit its own logic.
    *
-   * @param  {boolean} shouldWeResolveEmbeddedDeferred Sometimes (i.e. for the `control.focus()` method)
-   *                                                   we need to resolve the embed
+   * @param  {boolean} shouldWeResolveEmbeddedDeferred Sometimes (i.e. for the
+   *                                                   `control.focus()` method)
+   *                                                   we need to resolve embed
    */
   inflate: function (shouldWeResolveEmbeddedDeferred) {
     /* jshint funcscope: true */
     if (DEBUG) var t = performance.now();
     if (!this.params.template) {
       this.renderContent();
-      console.log('%c inflate DOM of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+      console.log('%c inflate DOM of ' + this.params.type + ' took ' +
+        (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       // flag control that it's rendered
       this.rendered = true;
       this.ready();
     } else {
       if (!this.rendered) {
         this._container.innerHTML = this.params.template;
-        console.log('%c inflate DOM of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+        console.log('%c inflate DOM of ' + this.params.type + ' took ' +
+          (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
       // flag control that it's rendered
       this.rendered = true;
@@ -306,7 +313,8 @@ api.controls.Base = wpApi.Control.extend({
     // with the value of `this.setting()` which can never be not valid
     // (see the `_validateWrap` method above)
     this._onValidateSuccess();
-    console.log('inflate of ' + this.params.type + ' took ' + (performance.now() - t) + ' ms.');
+    console.log('inflate of ' + this.params.type + ' took ' +
+      (performance.now() - t) + ' ms.');
   },
   /**
    * Normalize setting for soft comparison

@@ -8,10 +8,7 @@
  */
 api.controls.BaseRadio = api.controls.Base.extend({
   /**
-   * Validate
-   *
-   * @param  {string} newValue
-   * @return {string} The new value if is an allowed choice or the last value
+   * @override
    */
   validate: function (newValue) {
     // validate value as a string
@@ -24,18 +21,12 @@ api.controls.BaseRadio = api.controls.Base.extend({
     }
   },
   /**
-   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
-   * @param {string} value The new setting value.
    */
-  syncUIFromAPI: function (value) {
-    if (this.rendered) {
-      this._syncRadios();
-    }
+  syncUIFromAPI: function () {
+    this._syncRadios();
   },
   /**
-   * On ready
-   *
    * @override
    */
   ready: function () {

@@ -36,7 +36,7 @@ api.controls.BaseInput = api.controls.Base.extend({
    */
   syncUIFromAPI: function (value) {
     // here value can be undefined if it doesn't pass the validate function
-    if (this.rendered && value && this.__input.value !== value) {
+    if (value && this.__input.value !== value) {
       this.__input.value = value;
     }
   },

@@ -273,12 +273,10 @@ var Utils = (function () {
       var params = control.params;
       var $container = control.container;
       return _.extend({
-        // containerClassName: '',
         preferredFormat: 'hex',
         flat: true,
-        // appendTo: $container, // @@todo doesn't work... or control.__$expander \\
         showInput: true,
-        showInitial: true, // @@doubt maybe it get too messy with this shown \\
+        showInitial: false, // @@doubt maybe enable it \\
         showButtons: false,
         // localStorageKey: 'PWPcp_spectrum',
         showSelectionPalette: false,
@@ -299,7 +297,6 @@ var Utils = (function () {
           control.setting.set(color);
         },
         change: function (tinycolor) {
-          var color = tinycolor ? tinycolor.toString() : 'transparent';
           if (!tinycolor) {
             $container.find('.sp-input').val('transparent');
           }

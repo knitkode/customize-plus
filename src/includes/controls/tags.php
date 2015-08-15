@@ -64,9 +64,17 @@ class PWPcp_Customize_Control_Tags extends PWPcp_Customize_Control_Base {
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		//  always cast as a string
-		$value = (string) $value;
-		return wp_kses_post( $value );
+		$value = array_map( 'trim', explode( ',', $value ) );
+		$value = array_unique( $value );
+
+		if ( isset( $control->selectize['maxItems'] ) ) {
+			$max_items = filter_var( $control->selectize['maxItems'], FILTER_SANITIZE_NUMBER_INT );
+
+			if ( count( $value ) > $max_items ) {
+				$value = array_slice( $value, $max_items );
+			}
+		}
+		return wp_strip_all_tags( implode( ',', $value ) );
 	}
 }
 

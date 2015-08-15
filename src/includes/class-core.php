@@ -53,7 +53,7 @@ if ( ! class_exists( 'PWPcp' ) ):
 			$locale = apply_filters( 'plugin_locale', get_locale(), 'pkgTextDomain' );
 
 			// Make plugin available for translation
-			load_textdomain( 'pkgTextDomain',  WP_LANG_DIR . '/customize-plus/pkgTextDomain-' . $locale . '.mo' );
+			load_textdomain( 'pkgTextDomain', WP_LANG_DIR . '/customize-plus/pkgTextDomain-' . $locale . '.mo' );
 			load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( PWPcp_PLUGIN_FILE ) ) . '/languages/' );
 		}
 

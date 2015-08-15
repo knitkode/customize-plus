@@ -11,10 +11,7 @@
  */
 wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
   /**
-   * Validate
-   *
-   * @param  {string} newValue
-   * @return {string} The new value if it is a string
+   * @override
    */
   validate: function (newValue) {
     if (_.isString(newValue)) {
@@ -39,9 +36,7 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
     this._setWpEditorId();
   },
   /**
-   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
-   * @param {string} value The new setting value.
    */
   syncUIFromAPI: function (value) {
     // here value can be undefined if it doesn't pass the validate function
@@ -53,7 +48,7 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
     } else {
       lastValue = this.__input.value;
     }
-    if (this.rendered && value && lastValue !== value) {
+    if (value && lastValue !== value) {
       if (this.params.wp_editor) {
         wpEditorInstance.setContent(value);
       } else {
@@ -62,8 +57,6 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
     }
   },
   /**
-   * On ready
-   *
    * @override
    */
   ready: function () {

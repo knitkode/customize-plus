@@ -12,7 +12,7 @@
  * @version    Release: pkgVersion
  * @link       http://pluswp.com/customize-plus
  */
-class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Control_Base {
+abstract class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Control_Base {
 
 	/**
 	 * Add basic parameters passed to the JavaScript via JSON
