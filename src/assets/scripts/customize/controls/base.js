@@ -102,7 +102,7 @@ api.controls.Base = wpApi.Control.extend({
     control.onInit();
 
     // Add custom validation function overriding the empty function from WP API.
-    // this.setting.validate = this._validateWrap.bind(this);
+    this.setting.validate = this._validateWrap.bind(this);
 
     // bind setting change to control method to reflect a programmatic
     // change on the UI, only if the control is rendered
@@ -243,9 +243,9 @@ api.controls.Base = wpApi.Control.extend({
     // destroy guides to free up DOM
     this._destroyGuide(this);
 
-    // and empty the DOM from the container in a timeout so
+    // and empty the DOM from the container deferred
     // the slide out animation of the section doesn't freeze
-    setTimeout(function () { // @@todo it breaks with search? \\
+    _.defer(function () { // @@todo it breaks with search? \\
       // due to the timeout we need to be sure that the section is not expanded
       if (!wpApi.section(this.section.get()).expanded.get()) {
 
@@ -268,7 +268,7 @@ api.controls.Base = wpApi.Control.extend({
         // flag control that it's not rendered
         this.rendered = false;
       }
-    }.bind(this), 2000);
+    }.bind(this));
 
   },
   /**
@@ -509,7 +509,7 @@ api.controls.Base = wpApi.Control.extend({
           if (!isOpen) {
             container.classList.remove('pwpcp-extras-open');
           }
-        }, 300);
+        }, 200);
       };
     }
 

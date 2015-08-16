@@ -42,7 +42,7 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
    * @override
    */
   onDeflate: function () {
-    if (this.input) {
+    if (this.input  && this.input.selectize) {
       this.input.selectize.destroy();
     }
   },

@@ -54,8 +54,8 @@
   'size-dynamic-hidetab-passive',
   'knob',
   'knob-options',
-  'datetime',
-  'datetime-inline',
+  'date',
+  'date-inline',
   // WordPress controls
   'wp-color',
   'wp-media',

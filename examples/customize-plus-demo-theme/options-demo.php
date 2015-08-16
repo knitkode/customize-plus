@@ -2043,15 +2043,18 @@ return array(
 					),
 				),
 			),
-			'datetime' => array(
+			'date' => array(
 				'setting' => array(
 					'default' => '03/09/2015',
 					'transport' => 'postMessage',
 				),
 				'control' => array(
-					'label' => __( 'Datetime', 'i18n' ),
+					'label' => __( 'Date', 'i18n' ),
 					'description' => __( '', 'i18n' ),
-					'type' => 'pwpcp_datetime',
+					'type' => 'pwpcp_date',
+					'input_attrs' => array(
+						'dateFormat' => 'dd/mm/yy',
+					),
 					'guide' => array(
 						'title' => __( 'See Code', 'i18n' ),
 						'text' => "```php
@@ -2061,27 +2064,29 @@ return array(
 		'transport' => 'postMessage',
 	),
 	'control' => array(
-		'label' => __( 'Datetime', 'i18n' ),
-		'type' => 'pwpcp_datetime',
+		'label' => __( 'Date', 'i18n' ),
+		'type' => 'pwpcp_date',
+		'input_attrs' => array(
+			'dateFormat' => 'dd/mm/yy',
+		),
 	),
 ),
 ```",
 					),
 				),
 			),
-			'datetime-inline' => array(
+			'date-inline' => array(
 				'setting' => array(
 					'default' => '1997-12-24',
 					'transport' => 'postMessage',
 				),
 				'control' => array(
-					'label' => __( 'Datetime (`inline` with `input_attrs`)', 'i18n' ),
+					'label' => __( 'Date (`inline` with `input_attrs`)', 'i18n' ),
 					'description' => __( 'Pass [jQuery UI datepicker](http://api.jqueryui.com/datepicker/) options and `inline`.', 'i18n' ),
-					'type' => 'pwpcp_datetime',
+					'type' => 'pwpcp_date',
 					'inline' => true,
 					'input_attrs' => array(
-						'altFormat' => 'yyyy-mm-dd',
-						'appendText' => '(yyyy-mm-dd)',
+						'dateFormat' => 'yy-mm-dd',
 						'maxDate' => '+1m +1w',
 						'firstDay' => 0,
 						'showButtonPanel' => true,
@@ -2091,16 +2096,15 @@ return array(
 						'text' => "```php
 'an-id' => array(
 	'setting' => array(
-		'default' => '13-03-1987',
+		'default' => '1997-12-24',
 		'transport' => 'postMessage',
 	),
 	'control' => array(
-		'label' => __( 'Datetime', 'i18n' ),
-		'type' => 'pwpcp_datetime',
+		'label' => __( 'Date', 'i18n' ),
+		'type' => 'pwpcp_date',
 		'inline' => true,
 		'input_attrs' => array(
-			'altFormat' => 'yyyy-mm-dd',
-			'appendText' => '(yyyy-mm-dd)',
+			'dateFormat' => 'yy-mm-dd',
 			'maxDate' => '+1m +1w',
 			'firstDay' => 0,
 			'showButtonPanel' => true,
