@@ -16,7 +16,7 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
   validate: function (newValue) {
     if (_.isString(newValue)) {
       if (!this.params.allowHTML && !this.params.wp_editor) {
-        return validator.escape(newValue);
+        return _.escape(newValue);
       } else {
         return newValue;
       }
@@ -25,15 +25,28 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
     }
   },
   /**
-   * On initialization
-   *
    * Update input value if the setting is changed programmatically.
    * Use TyinMCE API if needed.
    *
    * @override
    */
   onInit: function () {
-    this._setWpEditorId();
+    if (this.params.wp_editor) {
+      this._setWpEditorId();
+    }
+  },
+  /**
+   * Destroy tinyMCE instance
+   * @override
+   */
+  onDeflate: function () {
+    if (this.params.wp_editor) {
+      // it might be that this method is called too soon, even before tinyMCE
+      // has been loaded, so try it and don't break.
+      try {
+        tinyMCE.remove('#' + this._wpEditorID);
+      } catch(e) {}
+    }
   },
   /**
    * @override
@@ -68,15 +81,6 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
     this._maybeInitWpEditor();
   },
   /**
-   * Get textarea id, add a suffix and replace dashes with underscores
-   * as suggested by WordPress Codex.
-   *
-   * @see https://codex.wordpress.org/Function_Reference/wp_editor -> $editor_id
-   */
-  _setWpEditorId: function () {
-    this._wpEditorID = this.id.replace(/-/g, '_') + '_textarea';
-  },
-  /**
    * Maybe init wp_editor.
    *
    * In case it's needed we load by ajax the wp_editor. We put a promise
@@ -92,6 +96,9 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
   _maybeInitWpEditor: function () {
     // params.wp_editor can be either a boolean or an object with options
     if (this.params.wp_editor) {
+
+      this._onValidateSuccess = function () {};
+      this._onValidateError = function () {};
 
       if (!api.tinyMCEload) {
         api.tinyMCEload = $.post(window.ajaxurl, {
@@ -119,8 +126,8 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
     var id = this._wpEditorID;
     this.__input.id = id;
 
-    if (this._wpEditorTpl) {
-      this._onWpEditorLoaded.bind(this);
+    if (this._wpEditorTplInjected) {
+      this._initTinyMCE();
     } else {
       $.post(window.ajaxurl, {
         'action': 'pwpcp_load_wp_editor',
@@ -129,33 +136,48 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
     }
   },
   /**
+   * Get textarea id, add a suffix and replace dashes with underscores
+   * as suggested by WordPress Codex.
+   *
+   * @see https://codex.wordpress.org/Function_Reference/wp_editor -> $editor_id
+   */
+  _setWpEditorId: function () {
+    this._wpEditorID = this.id.replace(/-/g, '_') + '_textarea';
+  },
+  /**
    * Callback executed once the wp_editor has been loaded and the editor
    * template specific to this control id is available.
    *
-   * @param  {?string} templateFromAjax The editor template from ajax or nothing
-   *                                    when the template is already in memory.
+   * @param  {?string} template The editor template from ajax or nothing when
+   *                            the template is already in memory.
    */
-  _onWpEditorLoaded: function (templateFromAjax) {
-    var template = this._wpEditorTpl || templateFromAjax;
-
-    // save template on control object
-    if (!this._wpEditorTpl) {
-      // remove inline stylesheets, we don't need them again
-      this._wpEditorTpl = template.replace(/<link.*\/>/g, '');
+  _onWpEditorLoaded: function (template) {
+    // bail if we have already injected the template
+    if (this._wpEditorTplInjected) {
+      return;
     }
+    // remove inline stylesheets, we don't need them again
+    var templateCleaned = template.replace(/<link.*\/>/g, '');
 
+    $(this.__input).replaceWith(templateCleaned);
+
+    this._wpEditorTplInjected = true;
+
+    this._initTinyMCE();
+  },
+  /**
+   * Initialize tinymce on textarea
+   */
+  _initTinyMCE: function () {
     var setting = this.setting;
-
-    $(this.__input).replaceWith(this._wpEditorTpl);
-
-    // cast it always to an object
     var id = this._wpEditorID;
     // get wp_editor custom options defined by the developer through the php API
     var optionsCustom = _.isObject(this.params.wp_editor) ? this.params.wp_editor : {};
     // default wp_editor options
     var optionsDefaults = {
       menubar: false,
-      toolbar1: 'styleselect,bold,italic,strikethrough,underline,blockquote,bullist,numlist,alignleft,aligncenter,alignright,undo,redo',
+      toolbar1: 'styleselect,bold,italic,strikethrough,underline,blockquote,'
+       + 'bullist,numlist,alignleft,aligncenter,alignright,undo,redo',
     };
     // merge the options
     var options = _.extend(optionsDefaults, optionsCustom);
@@ -178,8 +200,6 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
         });
       }
     };
-
-    // tinyMCE.execCommand('mceAddEditor', true, id);
 
     // in this way we make sure the required options can't be overwritten
     // by developers when declaring wp_editor support through an array of opts
