@@ -23,6 +23,14 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	public $type = 'pwpcp_slider';
 
 	/**
+	 * Float numbers allowed
+	 *
+	 * @since 0.0.1
+	 * @var boolean
+	 */
+	public $allowFloat = false;
+
+	/**
 	 * Units
 	 *
 	 * @since  0.0.1
@@ -45,10 +53,20 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 */
 	protected function add_to_json() {
-		$this->json['units'] = $this->units;
-		$this->json['number'] = PWPcp_Sanitize::extract_number( $this->value() );
-		$this->json['unit'] = PWPcp_Sanitize::extract_size_unit( $this, $this->value());
-		$this->json['attrs'] = $this->input_attrs;
+		$this->json['number'] = PWPcp_Sanitize::extract_number( $this->value(), $this );
+
+		if ( is_array( $this->input_attrs ) && ! empty( $this->input_attrs ) ) {
+			$this->json['attrs'] = $this->input_attrs;
+		}
+
+		if ( ! empty( $this->units ) ) {
+			$this->json['units'] = $this->units;
+			$this->json['unit'] = PWPcp_Sanitize::extract_size_unit( $this->value(), $this );
+		}
+
+		if ( $this->allowFloat ) {
+			$this->json['allowFloat'] = true;
+		}
 	}
 
 	/**
@@ -58,10 +76,14 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	 */
 	protected function js_tpl_slider() {
 		?>
+		<# if (data.units) { #>
 		<div class="pwpcp-inputs-wrap">
 			<input type="number" class="pwpcp-slider-number" value="{{ data.number }}" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
 			<div class="pwpcp-unit-wrap"><# for (var i = 0, l = data.units.length; i < l; i++) { #><input type="text" class="pwpcp-unit" readonly="true" tabindex="-1" value="{{ data.units[i] }}"><# } #></div>
 		</div>
+		<# } else { #>
+		<input type="number" class="pwpcp-slider-number" value="{{ data.number }}" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
+		<# } #>
 		<div class="pwpcp-slider-wrap">
 			<div class="pwpcp-slider"></div>
 		</div>
@@ -89,14 +111,27 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		$unit = PWPcp_Sanitize::extract_size_unit( $control, $value );
-		$number = PWPcp_Sanitize::number( PWPcp_Sanitize::extract_number( $value ), $control->input_attrs );
+		$number = PWPcp_Sanitize::extract_number( $value, $control );
 
 		if ( $number ) {
-			return $number . $unit;
+			$unit = PWPcp_Sanitize::extract_size_unit( $value, $control );
+			return PWPcp_Sanitize::number( $number, $control ) . $unit;
 		} else {
 			return $setting->default;
 		}
+	}
+
+	/**
+	 * Get localized strings
+	 *
+	 * @override
+	 * @since  0.0.1
+	 * @return array
+	 */
+	public function get_l10n() {
+		return array(
+			'vInvalidUnit' => __( 'The CSS unit is invalid.', 'pkgTextdomain' ),
+		);
 	}
 }
 

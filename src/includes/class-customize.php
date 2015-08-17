@@ -176,6 +176,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				'pluginName' => __( 'Customize Plus', 'pkgTextdomain' ),
 				'tools' => __( 'Tools', 'pkgTextdomain' ),
 				'vRequired' => __( 'A value is required', 'pkgTextdomain' ),
+				'vInvalid' => __( 'Invalid value', 'pkgTextdomain' ),
 			);
 			$additional = (array) apply_filters( 'PWPcp/customize/js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );

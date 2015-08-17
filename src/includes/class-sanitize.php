@@ -14,6 +14,22 @@
 class PWPcp_Sanitize {
 
 	/**
+	 * Is an associative array or not
+	 * @link(http://stackoverflow.com/a/14669600/1938970, source)
+	 * @since  0.0.1
+	 * @param  array   $array The array to test
+	 * @return boolean        Whether is associative or not
+	 */
+	public static function is_assoc(array $array) {
+		// Keys of the array
+		$keys = array_keys($array);
+
+		// If the array keys of the keys match the keys, then the array must
+		// not be associative (e.g. the keys array looked like {0:0, 1:1...}).
+		return array_keys($keys) !== $keys;
+	}
+
+	/**
 	 * Sanitize CSS
 	 *
 	 * @link(https://github.com/WPTRT/code-examples/blob/master/customizer/sanitization-callbacks.php#L27, source)
@@ -35,18 +51,18 @@ class PWPcp_Sanitize {
 	public static function image( $image, $setting ) {
 		// Array of valid image file types.
 		// The array includes image mime types that are included in wp_get_mime_types()
-    $mimes = array(
-        'jpg|jpeg|jpe' => 'image/jpeg',
-        'gif'          => 'image/gif',
-        'png'          => 'image/png',
-        'bmp'          => 'image/bmp',
-        'tif|tiff'     => 'image/tiff',
-        'ico'          => 'image/x-icon'
-    );
+		$mimes = array(
+				'jpg|jpeg|jpe' => 'image/jpeg',
+				'gif'          => 'image/gif',
+				'png'          => 'image/png',
+				'bmp'          => 'image/bmp',
+				'tif|tiff'     => 'image/tiff',
+				'ico'          => 'image/x-icon'
+		);
 		// Return an array with file extension and mime_type.
-    $file = wp_check_filetype( $image, $mimes );
+		$file = wp_check_filetype( $image, $mimes );
 		// If $image has a valid mime_type, return it; otherwise, return the default.
-    return ( $file['ext'] ? $image : $setting->default );
+		return ( $file['ext'] ? $image : $setting->default );
 	}
 
 	/**
@@ -73,29 +89,29 @@ class PWPcp_Sanitize {
 	}
 
 	/**
-   * Is setting value (`control.setting()`) empty?
-   * Used to check if required control's settings have instead an empty value
-   *
-   * @since  0.0.1
-   * @see php class method `PWPcp_Sanitize::is_setting_value_empty()`
-   * @param  string  $value A setting value
-   * @return boolean 				Whether the setting value has to be considered
-   *                        empty, or not set.
-   */
+	 * Is setting value (`control.setting()`) empty?
+	 * Used to check if required control's settings have instead an empty value
+	 *
+	 * @since  0.0.1
+	 * @see php class method `PWPcp_Sanitize::is_setting_value_empty()`
+	 * @param  string  $value A setting value
+	 * @return boolean 				Whether the setting value has to be considered
+	 *                        empty, or not set.
+	 */
 	public static function is_setting_value_empty( $value ) {
 		// first try to compare it to an empty string
-    if ( $value === '' ) {
-    	return true;
-    } else {
-    	// if it's a jsonized value try to parse it and
-	    $value_parsed = json_decode( $value );
+		if ( $value === '' ) {
+			return true;
+		} else {
+			// if it's a jsonized value try to parse it and
+			$value_parsed = json_decode( $value );
 			if ( $value_parsed ) {
 				// see if we have an empty array or an empty object
 				if ( is_array( $value_parsed ) && empty( $value_parsed ) ) {
 					return true;
 				}
 			}
-      return false;
+			return false;
 		}
 	}
 
@@ -135,30 +151,41 @@ class PWPcp_Sanitize {
 	 * Extract unit (like `px`, `em`, `%`, etc.) from control->units property
 	 *
 	 * @since  0.0.1
-	 * @param  string $input The control's setting value
-	 * @return string|boolean The first valid unit found.
+	 * @param  string               $input   The control's setting value
+	 * @param  WP_Customize_Control $control Control instance.
+	 * @return string 				               The first valid unit found.
 	 */
-	public static function extract_size_unit( $control, $input ) {
-		foreach ( $control->units as $unit ) {
-			if ( false != strpos( $input, $unit ) ) {
-				return $unit;
+	public static function extract_size_unit( $input, $control ) {
+		if ( is_array( $control->units ) ) {
+			foreach ( $control->units as $unit ) {
+				if ( false != strpos( $input, $unit ) ) {
+					return $unit;
+				}
 			}
+			return isset( $control->units[0] ) ? $control->units[0] : '';
 		}
-		return false;
+		return '';
 	}
 
 	/**
-	 * Extract number from input, it replaces everything that is not a digit
+	 * Extract number from input, returns 0 otherwise
 	 *
 	 * @since  0.0.1
-	 * @param  string $input  The value from where to extract
-	 * @return number|boolean The extracted number or false if the input does
-	 *                        not contain any digit.
+	 * @param  string 							$input   The value from where to extract
+	 * @param  WP_Customize_Control $control Control instance.
+	 * @return int|float|boolean The extracted number or false if the input does not
+	 *                           contain any digit.
 	 */
-	public static function extract_number( $input ) {
-		$number = preg_replace( '/[^0-9,.]/', '', $input );
-		if ( $number ) {
-			return $number;
+	public static function extract_number( $input, $control ) {
+		if ( ! is_numeric( $input ) || ( ! is_float( $input ) && ! is_int( $input ) ) ) {
+			if ( $control->allowFloat ) {
+				$number_extracted = filter_var( $input, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+			} else {
+				$number_extracted = filter_var( $input, FILTER_SANITIZE_NUMBER_INT );
+			}
+			if ( $number_extracted || 0 == $number_extracted ) {
+				return $number_extracted;
+			}
 		}
 		return false;
 	}
@@ -167,13 +194,16 @@ class PWPcp_Sanitize {
 	 * Sanitize / validate a number against an array of attributes.
 	 *
 	 * @since  0.0.1
-	 * @param  int|float $number A number
-	 * @param  array $attrs  		 Usually the `input_attrs` of a control
-	 * @return int|float|boolean The saniitized / valid number
+	 * @param  int|float 						$number  The number to sanitize
+	 * @param  WP_Customize_Control $control Control instance.
+	 * @return int|float      			The saniitized / valid number
 	 */
-	public static function number( $number, $attrs ) {
-		if ( ! is_numeric( $number ) ) {
-			return false;
+	public static function number( $number, $control ) {
+		$attrs = $control->input_attrs;
+
+		// if it's a float but it is not allowed to be it round it
+		if ( is_float( $number ) && ! $control->allowFloat ) {
+			$number = round( $number );
 		}
 		if ( $attrs ) {
 			// if doesn't respect the step given round it to the closest
@@ -189,9 +219,8 @@ class PWPcp_Sanitize {
 			if ( isset( $attrs['max'] ) && $number > $attrs['max'] ) {
 				return $attrs['max'];
 			}
-		} else {
-			return $number;
 		}
+		return $number;
 	}
 
 	/**
@@ -242,10 +271,10 @@ class PWPcp_Sanitize {
 	 *
 	 * @since 0.0.1
 	 * @param string               $input   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
- 	 */
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return string The sanitized value.
+	 */
 	public static function string_in_choices( $input, $setting, $control ) {
 		if ( isset( $control->choices[ $input ] ) ) {
 			return $input;
@@ -259,10 +288,10 @@ class PWPcp_Sanitize {
 	 *
 	 * @since 0.0.1
 	 * @param string               $input   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
- 	 */
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return string The sanitized value.
+	 */
 	public static function array_in_choices( $input, $setting, $control ) {
 		$input_decoded = json_decode( $input );
 

@@ -16,7 +16,7 @@ wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
     if (_.isString(rawNewValue)) {
       var newValue = rawNewValue;
       newValue = _.map(newValue.split(','), function (string) {
-        string.trim();
+        return string.trim();
       });
       newValue = _.uniq(newValue);
       var maxItems = this.params.selectize.maxItems;

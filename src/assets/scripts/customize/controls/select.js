@@ -19,7 +19,7 @@ api.controls.Select = wpApi.controlConstructor.pwpcp_select = api.controls.Base.
     try {
       newValue = JSON.parse(rawNewValue);
     } catch(e) {
-      newValue = rawNewValue.toString();
+      newValue = rawNewValue;
     }
     // validate array of values
     if (_.isArray(newValue) && this.params.selectize) {
@@ -36,7 +36,7 @@ api.controls.Select = wpApi.controlConstructor.pwpcp_select = api.controls.Base.
     if (choices.hasOwnProperty(newValue)) {
       return newValue;
     }
-    // otherwise return last value
+    // otherwise return error
     return { error: true };
   },
   /**

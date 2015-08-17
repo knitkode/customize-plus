@@ -37,7 +37,7 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
    * @override
    */
   syncUIFromAPI: function (value) {
-    if (value !== this._getArrayFromUI(true)) {
+    if (value !== this._getValueFromUI(true)) {
       this._syncCheckboxes();
 
       if (this.params.sortable) {
@@ -60,7 +60,7 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
         items: '> label',
         cursor: 'move',
         update: function () {
-          setting.set(self._getArrayFromUI());
+          setting.set(self._getValueFromUI());
         }
       });
 
@@ -107,7 +107,7 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
    * @param {boolean} jsonize Whether to stringify the array or not
    * @return {array|JSONized array}
    */
-  _getArrayFromUI: function (jsonize) {
+  _getValueFromUI: function (jsonize) {
     var valueSorted = [];
     for (var i = 0, l = this.__inputs.length; i < l; i++) {
       var input = this.__inputs[i];
@@ -130,7 +130,7 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
       input.checked = valueAsArray.indexOf(input.value) !== -1;
       if (bindAsWell) {
         input.onchange = function (event) {
-          this.setting.set(this._getArrayFromUI());
+          this.setting.set(this._getValueFromUI());
         }.bind(this);
       }
     }

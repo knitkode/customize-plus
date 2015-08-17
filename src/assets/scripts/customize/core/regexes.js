@@ -92,15 +92,22 @@ var Regexes = {
    */
   _variable_match: /@([a-zA-Z-_0-9]+)/,
   /**
-   * Variable (just grab a variable wherever it is)
+   * Extract unit, it returns the first matched, so the units are sorted by
+   * popularity (approximately).
    *
-   * it capture two groups: the `number` and the `unit` values
-   *
+   * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
    * @const
    * @type {RegExp}
    */
-  // @@todo allow floats? \\
-  _sizeWithUnit: /^(\d+)(px|%|em|rem)$/
+  _extractUnit: /(px|%|em|rem|vh|vw|vmin|vmax|cm|mm|in|pt|pc|ch|ex)/,
+  /**
+   * Extract number from string (both integers or float)
+   *
+   * @see http://stackoverflow.com/a/17885985/1938970
+   * @const
+   * @type {RegExp}
+   */
+  _extractNumber: /(\+|-)?((\d+(\.\d+)?)|(\.\d+))/
 };
 
 // export to public API

@@ -71,41 +71,15 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		$input_attrs = $control->input_attrs;
+    $number_extracted = PWPcp_Sanitize::extract_number( $value, $control );
 
-		// if it's not a number try to extract it, otherwise return default value
-    if ( ! is_numeric( $value ) || ( ! is_float( $value ) && ! is_int( $value ) ) ) {
-    	if ( $control->allowFloat ) {
-	    	$number_extracted = filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-    	} else {
-    		$number_extracted = filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
-    	}
-    	if ( $number_extracted ) {
-    		$value = $number_extracted;
-    	} else {
-	      return $setting->default;
-    	}
-    }
-    // if it's a float but it is not allowed to be it round it
-    if ( is_float( $value ) && ! $control->allowFloat ) {
-    	$value = round( $value );
-    }
-		if ( is_array( $input_attrs ) ) {
-			// if doesn't respect the step given round it to the closest
-			// then do the min and max checks
-			if ( isset( $input_attrs['step'] ) && $value % $input_attrs['step'] != 0 ) {
-				$value = round( $value / $input_attrs['step'] ) * $input_attrs['step'];
-			}
-			// if it's lower than the minimum return the minimum
-			if ( isset( $input_attrs['min'] ) && $value < $input_attrs['min'] ) {
-				return $input_attrs['min'];
-			}
-			// if it's higher than the maxmimum return the maximum
-			if ( isset( $input_attrs['max'] ) && $value > $input_attrs['max'] ) {
-				return $input_attrs['max'];
-			}
-		}
-		return $value;
+    if ( $number_extracted ) {
+  		$value = $number_extracted;
+  	} else {
+      return $setting->default;
+  	}
+
+    return PWPcp_Sanitize::number( $value, $control );
 	}
 }
 

@@ -381,6 +381,7 @@ return array(
 					'description' => __( '', 'i18n' ),
 					'type' => 'pwpcp_slider',
 					'units' => array( 'em' ),
+					'allowFloat' => true,
 					'input_attrs' => array(
 						'min' => 0,
 						'max' => 3,
@@ -398,6 +399,7 @@ return array(
 		'label' => __( 'Slider (em)', 'i18n' ),
 		'type' => 'pwpcp_slider',
 		'units' => array( 'em' ),
+		'allowFloat' => true,
 		'input_attrs' => array(
 			'min' => 0,
 			'max' => 3,
@@ -441,6 +443,34 @@ return array(
 			'max' => 300,
 			'step' => 1,
 		),
+	),
+),
+```",
+					),
+				),
+			),
+			'slider-no-units' => array(
+				'setting' => array(
+					'default' => 44,
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'Slider (no units)', 'i18n' ),
+					'description' => __( '', 'i18n' ),
+					'type' => 'pwpcp_slider',
+					'units' => array(),
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => 44,
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'Slider (no units)', 'i18n' ),
+		'type' => 'pwpcp_slider',
+		'units' => array(),
 	),
 ),
 ```",

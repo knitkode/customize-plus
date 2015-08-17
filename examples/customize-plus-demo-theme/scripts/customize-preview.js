@@ -70,6 +70,7 @@
     'number-min',
     'number-max',
     'number-step',
+    'slider-no-units',
     'toggle',
     'multicheck',
     'multicheck-sortable',

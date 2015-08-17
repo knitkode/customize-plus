@@ -16,56 +16,32 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
    */
   validate: function (newValue) {
     var params = this.params;
-    var min = params.attrs.min;
-    var max = params.attrs.max;
-    var number;
-    var unit;
-    var _isValidNumber = function (value) {
-      if (_.isNumber(value)) { // @@ie8 \\
-        if (min && max) {
-          return value >= min && value <= max;
-        } else if (min) {
-          return value >= min;
-        } else if (max) {
-          return value <= max;
-        } else {
-          return true;
-        }
-      } else {
-        return false;
+    var errorMsg = '';
+    var unit = '';
+
+    if (params.units) {
+      var matchesUnit = Regexes._extractUnit.exec(newValue);
+      unit = matchesUnit && matchesUnit[1] ? matchesUnit[1] : null;
+      if (!unit || params.units.indexOf(unit) === -1) {
+        errorMsg = api.l10n['vInvalidUnit'];
       }
-    };
-    var _isValidUnit = function (value) {
-      return params.units.indexOf(value) !== -1;
-    };
-    var matches = Regexes._sizeWithUnit.exec(newValue);
+    }
+    var matchesNumber = Regexes._extractNumber.exec(newValue);
+    var number = matchesNumber && matchesNumber[0] ? matchesNumber[0] : null;
+    number = api.controls.Number.prototype.validate.call(this, number);
 
-    // if it has found a number
-    if (matches && _isValidNumber(parseInt(matches[1], 10))) { // @@todo allow float ? \\
-      number = matches[1];
-    // otherwise check if the newValue is an ok number
-    } else if (_isValidNumber(newValue)) {
-      number = newValue;
-    // otherwise use the last valid number stored in params
-    } else {
-      number = params.number;
+    if (number.error) {
+      errorMsg =+ ' ' + number.msg;
     }
 
-    // if it has found a unit
-    if (matches && _isValidUnit(matches[2])) {
-      unit = matches[2];
-    // otherwise check if the newValue is an ok unit
-    } else if (_isValidUnit(newValue)) {
-      unit = newValue;
-    // otherwise use the last valid unit stored in params
+    if (errorMsg) {
+      return {
+        error: true,
+        msg: errorMsg
+      };
     } else {
-      unit = params.unit;
+      return number.toString() + unit;
     }
-    // update storage in params
-    params.number = number;
-    params.unit = unit;
-    // return unified string
-    return number.toString() + unit;
   },
   /**
    * @override
@@ -79,66 +55,63 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
    * @override
    */
   ready: function () {
-    var setting = this.setting;
-    var params = this.params;
-    var container = this._container;
+    var self = this;
+    var setting = self.setting;
+    var params = self.params;
+    var container = self._container;
     var inputNumber = container.getElementsByClassName('pwpcp-slider-number')[0];
     var $inputUnits = $(container.getElementsByClassName('pwpcp-unit'));
     var $inputSlider = $(container.getElementsByClassName('pwpcp-slider')[0]);
 
     /** @type {HTMLelement} */
-    this.__inputNumber = inputNumber;
+    self.__inputNumber = inputNumber;
     /** @type {jQuery} */
-    this.__$inputUnits = $inputUnits;
+    self.__$inputUnits = $inputUnits;
     /** @type {jQuery} */
-    this.__$inputSlider = $inputSlider;
+    self.__$inputSlider = $inputSlider;
 
-    /**
-     * Bind click action to unit picker
-     * (only if there is more than one unit allowed)
-     */
-    if (params.units.length > 1) {
+    // Bind click action to unit picker
+    // (only if there is more than one unit allowed)
+    if (params.units && params.units.length > 1) {
       $inputUnits.on('click', function () {
-        var value = this.value;
+        var unit = this.value;
         $inputUnits.removeClass('pwpcp-current');
         this.className += ' pwpcp-current';
-        setting.set(value);
+        setting.set(self._getValueFromUI(null, unit));
       });
     }
 
-    /**
-     * Bind number input
-     */
+    // Bind number input
     inputNumber.onchange = function () {
-      var value = this.value;
-      setting.set(value);
-      $inputSlider.slider('value', value);
+      var number = this.value;
+      setting.set(self._getValueFromUI(number, null));
+      $inputSlider.slider('value', number);
     };
 
-    /**
-     * Init Slider
-     */
-    $inputSlider.slider(_.extend({
+    // Init Slider
+    $inputSlider.slider(_.extend(params.attrs, {
       value: params.number,
       slide: function(event, ui) {
         inputNumber.value = ui.value;
       },
       change: function(event, ui) {
-        setting.set(ui.value);
+        setting.set(self._getValueFromUI(ui.value));
       }
-    }, params.attrs));
+    }));
 
-    // update UI with current values (we have to wait that the jQuery UI
-    // slider has been initialized)
-    this._updateUI();
+    // update UI with current values (wait for the slider to be initialized)
+    self._updateUI();
   },
   /**
    * Get current `setting` value from DOM
-   * @return {string} JSONified array
+   * @return {string}
    */
-  _getValueFromUI: function () {
-    return this.__inputNumber.value +
-      this.__$inputUnits.filter('.pwpcp-current').val();
+  _getValueFromUI: function (number, unit) {
+    var output = number ? number.toString() : this.__inputNumber.value;
+    if (this.params.units) {
+      output +=  unit || this.__$inputUnits.filter('.pwpcp-current').val();
+    }
+    return output;
   },
   /**
    * Update UI
@@ -152,8 +125,10 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
     // update number slider
     this.__$inputSlider.slider('value', params.number);
     // update unit picker
-    this.__$inputUnits.removeClass('pwpcp-current').filter(function () {
-      return this.value === params.unit;
-    }).addClass('pwpcp-current');
+    if (params.units) {
+      this.__$inputUnits.removeClass('pwpcp-current').filter(function () {
+        return this.value === params.unit;
+      }).addClass('pwpcp-current');
+    }
   }
 });

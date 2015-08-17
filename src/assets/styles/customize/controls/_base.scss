@@ -59,10 +59,10 @@
   }
 
   &.pwpcp-error {
-    background: #fff9f9;
+    background: $state--danger-bg;
 
     &:after {
-      color: #c00;
+      color: $state--danger-color;
       font-size: 11px;
     }
   }

@@ -1,7 +1,6 @@
 <?php // @partial
 /**
- * Customize Control base class, override WordPress one
- * with few variations
+ * Customize Control base class
  *
  * @override
  * @since 0.0.1
@@ -18,40 +17,42 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 	/**
 	 * The control divider data, optional
+	 *
+	 * @since 0.0.1
 	 * @var array
 	 */
 	public $divider;
 
 	/**
-	 * The control guide data, optional. It display some help
-	 * in a popover for this control.
+	 * The control guide data, optional. It displays some help in a popover.
+	 *
+	 * @since 0.0.1
 	 * @var array
 	 */
 	public $guide;
 
 	/**
-	 * Whether this control is optional, hence it is allowed to be empty.
+	 * Whether this control is optional, that is when it is allowed to be empty.
 	 *
+	 * @since 0.0.1
 	 * @var boolean
 	 */
 	public $optional = false;
 
 	/**
-	 * Whether this control is advanced or normal,
-	 * users and developers will be able to hide or show
-	 * the advanced controls.
+	 * Whether this control is advanced or normal, users and developers will be
+	 * able to hide or show the advanced controls.
 	 *
+	 * @since 0.0.1
 	 * @var boolean
 	 */
 	public $advanced = false;
 
 	/**
-	 * Change parent method adding more default data
-	 * shared by all the controls (add them only if needed
-	 * to save bytes on the huge `_wpCustomizeSettings` JSON
-	 * on load):
-	 * original value, divider, guide, advanced flag
-	 * In the end call a method to add stuff here
+	 * Change parent method adding more default data shared by all the controls
+	 * (add them only if needed to save bytes on the huge `_wpCustomizeSettings`
+	 * JSON on load). In the end call an abstract method to add stuff here from
+	 * subclasses.
 	 *
 	 * @override
 	 * @since 0.0.1
@@ -77,7 +78,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 		// set control setting as optional
 		if ( $this->optional ) {
-			$this->json['optional'] = $this->optional;
+			$this->json['optional'] = true;
 		}
 
 		// add advanced flag if specified
@@ -99,6 +100,19 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
+	 * Add value to JSON if truthy on this object
+	 *
+	 * @deprecated 0.0.1
+	 * @since 0.0.1
+	 * @param string $key The name of the property
+	 */
+	protected function add_to_json_if_set( $key = '' ) {
+		if ( $this->$key ) {
+			$this->json[ $key ] = $this->$key;
+		}
+	}
+
+	/**
 	 * Add booleans parameters to JSON
 	 *
 	 * Utility method to easily add truthy values to the control JSON data,
@@ -108,7 +122,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 * maybe huge customize JSON data.
 	 *
 	 * @since 0.0.1
-	 * @param array $keys [description]
+	 * @param array $keys
 	 */
 	protected function add_booleans_params_to_json( $keys = array() ) {
 		foreach ( $keys as $key ) {
@@ -119,9 +133,64 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
-	 * Add parameters passed to the JavaScript via JSON.
-	 * This free us to override the `to_json` method
-	 * calling everytime the parent method.
+	 * Add `'attrs'` to JSON checking that the values specifies in the given
+	 * options are allowed to be configured.
+	 *
+	 * @since 0.0.1
+	 * @param array $allowed The array contianing the allowed option keys.
+	 * @param array $options The associative array with the customized options.
+	 */
+	protected function add_attrs_allowed_to_json( $allowed = array(), $options = array() ) {
+		if ( is_array( $options ) && ! empty( $options ) ) {
+			$attrs = array();
+			foreach ( $options as $key => $value ) {
+				if ( in_array( $key, $allowed ) ) {
+					$attrs[ $key ] = $value;
+				}
+			}
+			if ( ! empty( $attrs ) ) {
+				$this->json['attrs'] = $attrs;
+			}
+		}
+	}
+
+	/**
+	 * Add `'attrs'` to JSON merging them with the given defaults.
+	 * Important is that null values are removed from the attrs array,
+	 * so we use the defaults array both to check that the custom options
+	 * are actually configurable (check if key exist on the defaults) and
+	 * also to merge required default values using a value different than
+	 * `null` in the given #defaults array.
+	 *
+	 * @since 0.0.1
+	 * @param array $defaults Associative array with the default values.
+	 * @param array $options  Associative array with the custom value.
+	 */
+	protected function add_attrs_with_defaults_to_json( $defaults = array(), $options = array() ) {
+		$attrs = (array) $defaults;
+		if ( is_array( $options ) && ! empty( $options ) ) {
+			$options_cleaned = array();
+			foreach ( $options as $key => $value ) {
+				if ( $defaults[ $key ] ) {
+					$options_cleaned[ $key ] = $value;
+				}
+			}
+			$attrs = array_merge( $defaults, $options_cleaned );
+		}
+		// now remove null values
+		foreach( $attrs as $key => $value ) {
+			if( is_null( $value ) ) {
+				unset( $attrs[ $key ] );
+			}
+		}
+		if ( ! empty( $attrs ) ) {
+			$this->json['attrs'] = $attrs;
+		}
+	}
+
+	/**
+	 * Add parameters passed to the JavaScript via JSON. This free us to override
+	 * the `to_json` method calling everytime the parent method.
 	 *
 	 * @override
 	 * @since 0.0.1
@@ -129,9 +198,8 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	protected function add_to_json() {}
 
 	/**
-	 * Never render any wrapper content for controls from PHP.
-	 * We rely completely on js, and declare the control `<li>`
-	 * container in the js control base class
+	 * Never render any content for controls from PHP. We rely completely on js,
+	 * and declare the control `<li>` container in the js control base class.
 	 *
 	 * @override
 	 * @since 0.0.1
@@ -147,16 +215,16 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	public function render_content() {}
 
 	/**
-	 * Overrride WordPress method to minify js template
-	 * rendered in the js_tpl function
+	 * Compose and minify js template rendered in the `js_tpl` function.
 	 *
 	 * @override
 	 * @since 0.0.1
 	 */
 	public function content_template() {
-		ob_start( 'pwpcp_compress_html' ); // @@doubt does this make the page load considerably slower? \\
+		ob_start( 'pwpcp_compress_html' ); // @@doubt does this make the page load slower? \\
 		$this->js_tpl_divider();
-		 // this wrapper is needed to make the Extras menu play nice when divider is there, because of the absolute positioning
+		 // this wrapper is needed to make the Extras menu play nice when divider
+		 // is there, because of the absolute positioning
 		echo '<# if (data.div) { #><div class="pwpcp-control-wrap"><# } #>';
 			$this->js_tpl_extras();
 			$this->js_tpl();
@@ -201,7 +269,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
-	 * Subclasses can have their own 'extras' template overriding this method
+	 * Subclasses can have their own 'extras' template overriding this method.
 	 *
 	 * @since 0.0.1
 	 */
@@ -221,6 +289,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * To override in subclasses with js templates
 	 *
+	 * @abstract
 	 * @since 0.0.1
 	 */
 	protected function js_tpl() {}
@@ -270,8 +339,8 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 	/**
 	 * Get localized strings for current controls.
-	 * Allows control classes to add localized strings accessible
-	 * on our main `js` object `PWPcp.l10n`.
+	 * Allows control classes to add localized strings accessible on our main
+	 * `js` object `PWPcp.l10n`.
 	 * @abstract
 	 * @since  0.0.1
 	 * @return array
@@ -282,8 +351,8 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 	/**
 	 * Get js constants for current controls.
-	 * Allows control classes to add its specific constants variables
-	 * on our main `js` object `PWPcp.l10n`.
+	 * Allows control classes to add its specific constants variables on our
+	 * main `js` object `PWPcp.l10n`.
 	 * @abstract
 	 * @since  0.0.1
 	 * @return array

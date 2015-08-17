@@ -20,9 +20,9 @@ api.controls.Number = wpApi.controlConstructor.pwpcp_number = api.controls.BaseI
     if (isNaN(number)) {
       errorMsg += api.l10n['vNotNumber'];
     }
-    else if (!validator.is_int(number) && !validator.is_float(number)) {
-      errorMsg += api.l10n['vNotNumber'];
-    }
+    // else if (!validator.is_int(number) && !validator.is_float(number)) {
+    //   errorMsg += api.l10n['vNotNumber'];
+    // }
     else if (!this.params.allowFloat && validator.is_float(number)) {
       errorMsg += api.l10n['vNoFloat'] + ' ';
     }
