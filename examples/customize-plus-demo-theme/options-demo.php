@@ -1310,8 +1310,35 @@ return array(
 				),
 				'control' => array(
 					'label' => __( 'Number', 'i18n' ),
-					'description' => __( 'Default number control', 'i18n' ),
+					'description' => __( 'Default number control, only integer numbers.', 'i18n' ),
 					'type' => 'pwpcp_number',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'an-id' => array(
+	'setting' => array(
+		'default' => 4,
+		'transport' => 'postMessage',
+	),
+	'control' => array(
+		'label' => __( 'Number', 'i18n' ),
+		'type' => 'pwpcp_number',
+	),
+),
+```",
+					),
+				),
+			),
+			'number-float' => array(
+				'setting' => array(
+					'default' => 27.56,
+					'transport' => 'postMessage',
+				),
+				'control' => array(
+					'label' => __( 'Number', 'i18n' ),
+					'description' => __( 'Default number control, accept both integers and float numbers.', 'i18n' ),
+					'type' => 'pwpcp_number',
+					'allowFloat' => true,
 					'guide' => array(
 						'title' => __( 'See Code', 'i18n' ),
 						'text' => "```php
@@ -1324,6 +1351,7 @@ return array(
 		'label' => __( 'Number', 'i18n' ),
 		'description' => __( '', 'i18n' ),
 		'type' => 'pwpcp_number',
+		'allowFloat' => true,
 	),
 ),
 ```",

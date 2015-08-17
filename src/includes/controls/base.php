@@ -226,30 +226,6 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	protected function js_tpl() {}
 
 	/**
-	 * Get localized strings for current controls.
-	 * Allows control classes to add localized strings accessible
-	 * on our main `js` object `PWPcp.l10n`.
-	 * @abstract
-	 * @since  0.0.1
-	 * @return array
-	 */
-	// public function get_l10n() { // @@doubt maybe not needed on this base class \\
-	// 	return array();
-	// }
-
-	/**
-	 * Get js constants for current controls.
-	 * Allows control classes to add its specific constants variables
-	 * on our main `js` object `PWPcp.l10n`.
-	 * @abstract
-	 * @since  0.0.1
-	 * @return array
-	 */
-	// public function get_constants() { // @@doubt maybe not needed on this base class \\
-	// 	return array();
-	// }
-
-	/**
 	 * Sanitization callback
 	 *
 	 * All control's specific sanitizations pass from this function which
@@ -266,6 +242,8 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
  	 */
 	public static function sanitize_callback( $value, $setting ) {
 		$control = $setting->manager->get_control( $setting->id );
+
+		$value = trim( $value );
 
 		if ( $control && ! $control->optional && PWPcp_Sanitize::is_setting_value_empty( $value ) ) {
 			return $setting->default;
@@ -289,4 +267,28 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	protected static function sanitize( $value, $setting, $control ) {
 		return wp_kses_post( $value );
 	}
+
+	/**
+	 * Get localized strings for current controls.
+	 * Allows control classes to add localized strings accessible
+	 * on our main `js` object `PWPcp.l10n`.
+	 * @abstract
+	 * @since  0.0.1
+	 * @return array
+	 */
+	// public function get_l10n() { // @@doubt maybe not needed on this base class \\
+	// 	return array();
+	// }
+
+	/**
+	 * Get js constants for current controls.
+	 * Allows control classes to add its specific constants variables
+	 * on our main `js` object `PWPcp.l10n`.
+	 * @abstract
+	 * @since  0.0.1
+	 * @return array
+	 */
+	// public function get_constants() { // @@doubt maybe not needed on this base class \\
+	// 	return array();
+	// }
 }

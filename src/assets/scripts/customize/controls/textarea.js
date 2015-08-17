@@ -97,8 +97,8 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
     // params.wp_editor can be either a boolean or an object with options
     if (this.params.wp_editor) {
 
-      this._onValidateSuccess = function () {};
-      this._onValidateError = function () {};
+      this._onValidateSuccess = _.constant;
+      this._onValidateError = _.constant;
 
       if (!api.tinyMCEload) {
         api.tinyMCEload = $.post(window.ajaxurl, {

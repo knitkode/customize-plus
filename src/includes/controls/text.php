@@ -48,9 +48,6 @@ class PWPcp_Customize_Control_Text extends PWPcp_Customize_Control_Base_Input {
    * @return string The sanitized value.
    */
   protected static function sanitize( $value, $setting, $control ) {
-    // always cast to string
-    $value = (string) $value;
-
 		$input_attrs = $control->input_attrs;
 
 		$input_type = isset( $input_attrs['type'] ) ? $input_attrs['type'] : 'text';

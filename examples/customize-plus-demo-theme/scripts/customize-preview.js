@@ -66,6 +66,7 @@
     'text-email',
     'textarea',
     'number',
+    'number-float',
     'number-min',
     'number-max',
     'number-step',

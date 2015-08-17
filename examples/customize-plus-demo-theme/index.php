@@ -16,6 +16,7 @@
   'radio-image',
   'radio-image-custom',
   'number',
+  'number-float',
   'number-min',
   'number-max',
   'number-step',

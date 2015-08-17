@@ -12,26 +12,33 @@ api.controls.Number = wpApi.controlConstructor.pwpcp_number = api.controls.BaseI
   /**
    * @override
    */
-  validate: function (rawValue) {
-    var value = parseInt(rawValue, 10);
+  validate: function (value) {
+    var number = Number(value);
     var attrs = this.params.attrs;
     var errorMsg = '';
 
-    if (!_.isNumber(value)) {
+    if (isNaN(number)) {
       errorMsg += api.l10n['vNotNumber'];
-    } else {
+    }
+    else if (!validator.is_int(number) && !validator.is_float(number)) {
+      errorMsg += api.l10n['vNotNumber'];
+    }
+    else if (!this.params.allowFloat && validator.is_float(number)) {
+      errorMsg += api.l10n['vNoFloat'] + ' ';
+    }
+    else {
       // read attrs if any
       if (attrs) {
         // min value
-        if (attrs.min && value < attrs.min) {
+        if (attrs.min && number < attrs.min) {
           errorMsg += api.l10n['vNumberLow'] + ' ';
         }
         // max value
-        if (attrs.max && value > attrs.max) {
+        if (attrs.max && number > attrs.max) {
           errorMsg += api.l10n['vNumberHigh'] + ' ';
         }
         // step
-        if (attrs.step && !validator.isDivisibleBy(value, attrs.step)) {
+        if (attrs.step && !validator.isDivisibleBy(number, attrs.step)) {
           errorMsg += api.l10n['vNumberStep'] + ' ' + attrs.step;
         }
       }
@@ -45,7 +52,7 @@ api.controls.Number = wpApi.controlConstructor.pwpcp_number = api.controls.BaseI
       };
     // otherwise return the valid value
     } else {
-      return value;
+      return number;
     }
   }
 });
