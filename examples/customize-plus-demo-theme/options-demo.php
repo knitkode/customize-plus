@@ -69,7 +69,7 @@ return array(
 				),
 				'control' => array(
 					'label' => __( 'Disallow Transparent', 'i18n' ),
-					'description' => __( '', 'i18n' ),
+					'description' => __( 'Disable the transparent button, `transparent` value not allowed.', 'i18n' ),
 					'type' => 'pwpcp_color',
 					'disallowTransparent' => true,
 					'guide' => array(
@@ -97,7 +97,7 @@ return array(
 				),
 				'control' => array(
 					'label' => __( 'Allow Alpha', 'i18n' ),
-					'description' => __( '', 'i18n' ),
+					'description' => __( 'Allow `rgba` colors. Show a slider to control the alpha channel.', 'i18n' ),
 					'type' => 'pwpcp_color',
 					'allowAlpha' => true,
 					'guide' => array(
@@ -125,7 +125,7 @@ return array(
 				),
 				'control' => array(
 					'label' => __( 'Palette only', 'i18n' ),
-					'description' => __( '', 'i18n' ),
+					'description' => __( 'Disable the normal color picker and show only a palette with the color you define. Only these colors are allowed when `showPaletteOnly` is set to `true`. The `palette` arg is an array of arrays where each array it is a row of color choices in the UI.', 'i18n' ),
 					'type' => 'pwpcp_color',
 					'showPaletteOnly' => true,
 					'palette' => array(

@@ -30,6 +30,68 @@ class PWPcp_Sanitize {
 	}
 
 	/**
+	 * In array recursive
+	 * @link(http://stackoverflow.com/a/4128377/1938970, source)
+	 * @since  0.0.1
+	 * @param  string|number $needle
+	 * @param  array    		 $haystack
+	 * @param  boolean       $strict
+	 * @return boolean
+	 */
+	public static function in_array_r( $needle, $haystack, $strict = false ) {
+		foreach ( $haystack as $item ) {
+			if ( ( $strict ? $item === $needle : $item == $needle ) ||
+				( is_array( $item ) && self::in_array_r( $needle, $item, $strict ) )
+			) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Flattens a nested array.
+	 *
+	 * @author {@link(http://ramartin.net/, Ron Martinez)}
+	 * {@link(http://davidwalsh.name/flatten-nested-arrays-php#comment-64616,
+	 * source)}
+	 *
+	 * Based on:
+	 * {@link http://davidwalsh.name/flatten-nested-arrays-php#comment-56256}
+	 *
+	 * @param array $array     The array to flatten.
+	 * @param int   $max_depth How many levels to flatten. Negative numbers
+	 *                         mean flatten all levels. Defaults to -1.
+	 * @param int   $_depth    The current depth level. Should be left alone.
+	 */
+	public static function array_flatten(array $array, $max_depth = -1, $_depth = 0) {
+		$result = array();
+
+		foreach ( $array as $key => $value ) {
+			if ( is_array( $value ) && ( $max_depth < 0 || $_depth < $max_depth ) ) {
+				$flat = self::array_flatten( $value, $max_depth, $_depth + 1 );
+				if ( is_string( $key ) ) {
+					$duplicate_keys = array_keys( array_intersect_key( $array, $flat ) );
+					foreach ( $duplicate_keys as $k ) {
+						$flat["$key.$k"] = $flat[ $k ];
+						unset( $flat[ $k ] );
+					}
+				}
+				$result = array_merge( $result, $flat );
+			}
+			else {
+				if ( is_string( $key ) ) {
+					$result[ $key ] = $value;
+				}
+				else {
+					$result[] = $value;
+				}
+			}
+		}
+		return $result;
+	}
+
+	/**
 	 * Sanitize CSS
 	 *
 	 * @link(https://github.com/WPTRT/code-examples/blob/master/customizer/sanitization-callbacks.php#L27, source)
@@ -265,6 +327,39 @@ class PWPcp_Sanitize {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Convert a hexa decimal color code to its RGB equivalent
+	 *
+	 * @link(http://php.net/manual/en/function.hexdec.php#99478, original source)
+	 * @since  0.0.1
+	 * @param  string  $hex_str 				 Hexadecimal color value
+	 * @param  boolean $return_as_string If set true, returns the value separated
+	 *                                   by the separator character. Otherwise
+	 *                                   returns associative array
+	 * @return array|string 						 Depending on second parameter. Returns
+	 *                                   `false` if invalid hex color value
+	 */
+	public static function hex_to_rgb( $hex_str, $return_as_string = true ) {
+		$hex_str = preg_replace( '/[^0-9A-Fa-f]/ ', '', $hex_str ); // Gets a proper hex string
+		$rgb_array = array();
+		// If a proper hex code, convert using bitwise operation. No overhead... faster
+		if ( strlen( $hex_str ) == 6 ) {
+			$color_val = hexdec( $hex_str );
+			$rgb_array['red'] = 0xFF & ( $color_val >> 0x10 );
+			$rgb_array['green'] = 0xFF & ( $color_val >> 0x8 );
+			$rgb_array['blue'] = 0xFF & $color_val;
+		// if shorthand notation, need some string manipulations
+		} else if ( strlen( $hex_str ) == 3 ) {
+			$rgb_array['red'] = hexdec( str_repeat( substr( $hex_str, 0, 1 ), 2 ) );
+			$rgb_array['green'] = hexdec( str_repeat( substr( $hex_str, 1, 1 ), 2 ) );
+			$rgb_array['blue'] = hexdec( str_repeat( substr( $hex_str, 2, 1 ), 2 ) );
+		} else {
+			return false; //Invalid hex color code
+		}
+		// returns the rgb string or the associative array
+		return $return_as_string ? implode( ',', $rgb_array ) : $rgb_array;
 	}
 
 	/**

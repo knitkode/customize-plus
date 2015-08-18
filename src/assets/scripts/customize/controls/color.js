@@ -19,25 +19,18 @@ $.fn.spectrum.load = false;
 // export to our API and to WordPress API
 api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.extend({
   /**
-   * Normalize setting for soft comparison
-   *
-   * Use tinycolor (included in spectrum.js) to always convert
-   * colors to their rgb value, so to have the same output result when
-   * the input is `red` or `#f00` or `#ff0000` or `rgba(255, 0, 0, 1)`.
+   * Use tinycolor (included in spectrum.js) to always convert colors to their
+   * rgb value, so to have the same output result when the input is `red` or
+   * `#f00` or `#ff0000` or `rgba(255, 0, 0, 1)`. If it is not an actual color
+   * but an expression or a variable tinycolor won't recognize a `_format`
+   * (such as hex, name, rgba, etc..), we rely on this do decide what to return
    *
    * @override
    * @use tinycolor.toRgbString
-   * @static
-   * @param  {?} value Could be the original, the current, or the initial
-   *                   session value
-   * @return {string} The 'normalized' value passed as an argument.
    */
   softenize: function (value) {
     try {
       var anyColor = tinycolor(value);
-      // if it is not an actual color but an expression or a variable
-      // tinycolor won't recognize a `format` (such as hex, name, rgba, etc..)
-      // hence we rely on this do decide what to return
       if (!anyColor['_format']) { // whitelisted from uglify mangle regex private names \\
         return value;
       } else {
@@ -52,10 +45,26 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
    * @override
    */
   validate: function (value) {
-    if (
-      (!this.params.disallowTransparent && value === 'transparent') ||
+    var params = this.params;
+    var softenize = this.softenize;
+    if (params.showPaletteOnly &&
+      !params.togglePaletteOnly &&
+      _.isArray(params.palette)
+    ) {
+      var allColorsAllowed = _.flatten(params.palette, true);
+      allColorsAllowed = _.map(allColorsAllowed, function (color) {
+        return softenize(color);
+      });
+      if (allColorsAllowed.indexOf(softenize(value)) !== -1) {
+        return value;
+      } else {
+        return { error: true, msg: api.l10n['vNotInPalette'] };
+      }
+    }
+    else if (
+      (!params.disallowTransparent && value === 'transparent') ||
       validator.isHexColor(value) ||
-      (this.params.allowAlpha && validator.isRgbaColor(value))
+      (params.allowAlpha && validator.isRgbaColor(value))
     ) {
       return value;
     } else {

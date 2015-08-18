@@ -24,18 +24,11 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 	/**
 	 * Control type.
 	 *
+	 * {@inheritdoc}
 	 * @since 0.0.1
 	 * @var string
 	 */
 	public $type = 'pwpcp_color';
-
-	/**
-	 * Palette
-	 *
-	 * @since 0.0.1
-	 * @var boolean
-	 */
-	protected $palette = array();
 
 	/**
 	 * Allow alpha channel modification (rgba colors)
@@ -54,9 +47,18 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 	protected $disallowTransparent = false;
 
 	/**
+	 * Palette
+	 *
+	 * {@link(https://bgrins.github.io/spectrum/#options-selectionPalette, js docs)}
+	 * @since 0.0.1
+	 * @var boolean
+	 */
+	protected $palette = array();
+
+	/**
 	 * Show palette only in color control
 	 *
-	 * @link(https://bgrins.github.io/spectrum/#options-showPaletteOnly, Javascript plugin docs)
+	 * {@link(https://bgrins.github.io/spectrum/#options-showPaletteOnly, js docs)}
 	 * @since 0.0.1
 	 * @var boolean
 	 */
@@ -65,18 +67,18 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 	/**
 	 * Toggle palette only in color control
 	 *
-	 * @link(https://bgrins.github.io/spectrum/#options-togglePaletteOnly, Javascript plugin docs)
+	 * {@link(https://bgrins.github.io/spectrum/#options-togglePaletteOnly, js docs)}
 	 * @since 0.0.1
 	 * @var boolean
 	 */
 	protected $togglePaletteOnly = false;
 
 	/**
-	 * Get localized strings for current controls
+	 * Get l10n
 	 *
-	 * @override
+	 * {@inheritdoc}
 	 * @since  0.0.1
-	 * @return array
+	 * @override
 	 */
 	public function get_l10n() {
 		return array(
@@ -86,17 +88,18 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 			'noColorSelectedText' => __( 'No color selected', 'pkgTextdomain' ),
 			'togglePaletteMoreText' => __( 'Show color picker', 'pkgTextdomain' ),
 			'togglePaletteLessText' => __( 'Hide color picker', 'pkgTextdomain' ),
+			'vNotInPalette' => __( 'Color not in the allowed palette.', 'pkgTextdomain' ),
 		);
 	}
 
 	/**
-	 * Refresh the parameters passed to the JavaScript via JSON.
-	 * Let's use early returns here. Not the cleanest anyway.
+	 * Add to JSON
 	 *
+	 * {@inheritdoc}
 	 * @since 0.0.1
+	 * @override
 	 */
 	protected function add_to_json() {
-
 		$value = $this->value();
 
 		$this->add_booleans_params_to_json( array(
@@ -110,17 +113,16 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 			$this->json['palette'] = $this->palette;
 		}
 
-		// Custom Color
 		$this->json['mode'] = 'custom';
-
-		// check for transparent color
 		$this->json['valueCSS'] = $value;
 	}
 
 	/**
-	 * Render a JS template for the content of the control.
+	 * JS template
 	 *
+	 * {@inheritdoc}
 	 * @since 0.0.1
+	 * @override
 	 */
 	protected function js_tpl() {
 		?>
@@ -137,6 +139,7 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 	/**
 	 * Sanitize
 	 *
+	 * {@inheritdoc}
 	 * @since 0.0.1
 	 * @override
 	 * @param string               $value   The value to sanitize.
@@ -145,7 +148,20 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		if ( ! $control->disallowTransparent && 'transparent' === $value ) {
+		if ( $control->showPaletteOnly &&
+			! $control->togglePaletteOnly &&
+			is_array( $control->palette )
+		) {
+			$palette_flatten = PWPcp_Sanitize::array_flatten( $control->palette, 1 );
+			$palette_normalized = array_map( 'PWPcp_Sanitize::hex_to_rgb', $palette_flatten );
+			$value_normalized = PWPcp_Sanitize::hex_to_rgb( $value );
+			if ( PWPcp_Sanitize::in_array_r( $value_normalized, $palette_normalized ) ) {
+				return $value;
+			} else {
+				return $setting->default;
+			}
+		}
+		else if ( ! $control->disallowTransparent && 'transparent' === $value ) {
 			return $value;
 		}
 		else if ( $control->allowAlpha && PWPcp_Sanitize::color_rgba( $value ) ) {
