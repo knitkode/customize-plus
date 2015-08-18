@@ -28,9 +28,12 @@
 /**
  * Slider number input
  *
+ * When the slider has no unit this element is on its own, while when
+ * there is the unit picker it is a children of `.pwpcp-inputs-wrap`.
  */
 .pwpcp-slider-number,
 input[type=number].pwpcp-slider-number {
+  float: right;
   width: auto;
   max-width: 32px;
   padding: 3px 0;
@@ -39,8 +42,12 @@ input[type=number].pwpcp-slider-number {
   font-weight: bold;
   background: transparent; // @@maybenotneeded \\
   margin: 0; // @@maybenotneeded \\
-  display: inline; // @@maybenotneeded \\
   text-align: right; // @@maybenotneeded \\
+
+  .pwpcp-inputs-wrap & {
+    float: none;
+    display: inline; // @@maybenotneeded \\
+  }
 
   // Hide spinner on input[type=number]
   // @link http://stackoverflow.com/a/23374725/1938970

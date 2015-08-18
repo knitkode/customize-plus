@@ -64,7 +64,12 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 			$this->json['unit'] = PWPcp_Sanitize::extract_size_unit( $this->value(), $this );
 		}
 
-		if ( $this->allowFloat ) {
+		// allowFloat also if input_attrs['step'] is a float number
+		if ( $this->allowFloat ||
+			( is_array( $this->input_attrs ) &&
+				isset(  $this->input_attrs['step'] ) &&
+				is_float( $this->input_attrs['step'] ) )
+		) {
 			$this->json['allowFloat'] = true;
 		}
 	}
@@ -101,6 +106,19 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	}
 
 	/**
+	 * Get localized strings
+	 *
+	 * @override
+	 * @since  0.0.1
+	 * @return array
+	 */
+	public function get_l10n() {
+		return array(
+			'vInvalidUnit' => __( 'The CSS unit is invalid.', 'pkgTextdomain' ),
+		);
+	}
+
+	/**
 	 * Sanitize
 	 *
 	 * @since 0.0.1
@@ -114,24 +132,12 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 		$number = PWPcp_Sanitize::extract_number( $value, $control );
 
 		if ( $number ) {
+			// unit can also be an empty string, useful for sliders without units
 			$unit = PWPcp_Sanitize::extract_size_unit( $value, $control );
 			return PWPcp_Sanitize::number( $number, $control ) . $unit;
 		} else {
 			return $setting->default;
 		}
-	}
-
-	/**
-	 * Get localized strings
-	 *
-	 * @override
-	 * @since  0.0.1
-	 * @return array
-	 */
-	public function get_l10n() {
-		return array(
-			'vInvalidUnit' => __( 'The CSS unit is invalid.', 'pkgTextdomain' ),
-		);
 	}
 }
 

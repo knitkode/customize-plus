@@ -128,6 +128,7 @@ api.controls.Base = wpApi.Control.extend({
       return this.setting();
 
     } else {
+      newValue = this.sanitize(newValue);
       var validationResult = this.validate(newValue);
 
       if (validationResult.error) {
@@ -167,6 +168,16 @@ api.controls.Base = wpApi.Control.extend({
    * @return {string} The newValue validated
    */
   validate: function (newValue) {
+    return newValue;
+  },
+  /**
+   * Sanitize
+   *
+   * @abstract
+   * @param  {string} newValue
+   * @return {string} The newValue sanitized
+   */
+  sanitize: function (newValue) {
     return newValue;
   },
   /**

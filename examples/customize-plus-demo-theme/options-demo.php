@@ -232,11 +232,11 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Dynamic Color [active]', 'i18n' ),
-					'description' => __( '**★ PREMIUM**', 'i18n' ),
+					'label' => __( 'Dynamic Color', 'i18n' ),
+					'description' => __( '(active role)', 'i18n' ),
 					'type' => 'pwpcp_color_dynamic',
 					'guide' => array(
-						'title' => __( 'See Code', 'i18n' ),
+						'title' => __( 'See Code (Premium control)', 'i18n' ),
 						'text' => "```php
 'an-id' => array(
 	'setting' => array(
@@ -244,7 +244,7 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Dynamic Color [active]', 'i18n' ),
+		'label' => __( 'Dynamic Color', 'i18n' ),
 		'type' => 'pwpcp_color_dynamic',
 	),
 ),
@@ -258,11 +258,11 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Dynamic Color 2 [passive]', 'i18n' ),
-					'description' => __( '**★ PREMIUM**', 'i18n' ),
+					'label' => __( 'Dynamic Color', 'i18n' ),
+					'description' => __( '(passive role)', 'i18n' ),
 					'type' => 'pwpcp_color_dynamic',
 					'guide' => array(
-						'title' => __( 'See Code', 'i18n' ),
+						'title' => __( 'See Code (Premium control)', 'i18n' ),
 						'text' => "```php
 'an-id' => array(
 	'setting' => array(
@@ -270,7 +270,7 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Dynamic Color 2 [passive]', 'i18n' ),
+		'label' => __( 'Dynamic Color', 'i18n' ),
 		'type' => 'pwpcp_color_dynamic',
 	),
 ),
@@ -284,12 +284,12 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Dynamic Color (hide dynamic tab) [active]', 'i18n' ),
-					'description' => __( '**★ PREMIUM**', 'i18n' ),
+					'label' => __( 'Dynamic Color (hide dynamic tab)', 'i18n' ),
+					'description' => __( '(active role)', 'i18n' ),
 					'type' => 'pwpcp_color_dynamic',
 					'hideDynamic' => true,
 					'guide' => array(
-						'title' => __( 'See Code', 'i18n' ),
+						'title' => __( 'See Code (Premium control)', 'i18n' ),
 						'text' => "```php
 'an-id' => array(
 	'setting' => array(
@@ -297,7 +297,7 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Dynamic Color (hide dynamic tab) [active]', 'i18n' ),
+		'label' => __( 'Dynamic Color (hide dynamic tab)', 'i18n' ),
 		'description' => __( '', 'i18n' ),
 		'type' => 'pwpcp_color_dynamic',
 		'hideDynamic' => true,
@@ -313,12 +313,12 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Dynamic Color (hide dynamic tab) [passive]', 'i18n' ),
-					'description' => __( '**★ PREMIUM**', 'i18n' ),
+					'label' => __( 'Dynamic Color (hide dynamic tab)', 'i18n' ),
+					'description' => __( '(passive role)', 'i18n' ),
 					'type' => 'pwpcp_color_dynamic',
 					'hideDynamic' => true,
 					'guide' => array(
-						'title' => __( 'See Code', 'i18n' ),
+						'title' => __( 'See Code (Premium control)', 'i18n' ),
 						'text' => "```php
 'an-id' => array(
 	'setting' => array(
@@ -326,7 +326,7 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Dynamic Color (hide dynamic tab) [passive]', 'i18n' ),
+		'label' => __( 'Dynamic Color (hide dynamic tab)', 'i18n' ),
 		'description' => __( '', 'i18n' ),
 		'type' => 'pwpcp_color_dynamic',
 		'hideDynamic' => true,
@@ -381,7 +381,6 @@ return array(
 					'description' => __( '', 'i18n' ),
 					'type' => 'pwpcp_slider',
 					'units' => array( 'em' ),
-					'allowFloat' => true,
 					'input_attrs' => array(
 						'min' => 0,
 						'max' => 3,
@@ -399,7 +398,6 @@ return array(
 		'label' => __( 'Slider (em)', 'i18n' ),
 		'type' => 'pwpcp_slider',
 		'units' => array( 'em' ),
-		'allowFloat' => true,
 		'input_attrs' => array(
 			'min' => 0,
 			'max' => 3,
@@ -483,11 +481,11 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Size Dynamic [active]', 'i18n' ),
-					'description' => __( '**★ PREMIUM**', 'i18n' ),
+					'label' => __( 'Size Dynamic', 'i18n' ),
+					'description' => __( '(active role)', 'i18n' ),
 					'type' => 'pwpcp_size_dynamic',
 					'guide' => array(
-						'title' => __( 'See Code', 'i18n' ),
+						'title' => __( 'See Code (Premium control)', 'i18n' ),
 						'text' => "```php
 'an-id' => array(
 	'setting' => array(
@@ -495,7 +493,7 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Size Dynamic [active]', 'i18n' ),
+		'label' => __( 'Size Dynamic', 'i18n' ),
 		'type' => 'pwpcp_size_dynamic',
 	),
 ),
@@ -509,11 +507,11 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Size Dynamic [passive]', 'i18n' ),
-					'description' => __( '**★ PREMIUM**', 'i18n' ),
+					'label' => __( 'Size Dynamic', 'i18n' ),
+					'description' => __( '(passive role)', 'i18n' ),
 					'type' => 'pwpcp_size_dynamic',
 					'guide' => array(
-						'title' => __( 'See Code', 'i18n' ),
+						'title' => __( 'See Code (Premium control)', 'i18n' ),
 						'text' => "```php
 'an-id' => array(
 	'setting' => array(
@@ -521,7 +519,7 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Size Dynamic [passive]', 'i18n' ),
+		'label' => __( 'Size Dynamic', 'i18n' ),
 		'type' => 'pwpcp_size_dynamic',
 	),
 ),
@@ -535,12 +533,12 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Size Dynamic (hide dynamic tab) [active]', 'i18n' ),
-					'description' => __( '**★ PREMIUM**', 'i18n' ),
+					'label' => __( 'Size Dynamic (hide dynamic tab)', 'i18n' ),
+					'description' => __( '(active role)', 'i18n' ),
 					'type' => 'pwpcp_size_dynamic',
 					'hideDynamic' => true,
 					'guide' => array(
-						'title' => __( 'See Code', 'i18n' ),
+						'title' => __( 'See Code (Premium control)', 'i18n' ),
 						'text' => "```php
 'an-id' => array(
 	'setting' => array(
@@ -548,7 +546,7 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Size Dynamic (hide dynamic tab) [active]', 'i18n' ),
+		'label' => __( 'Size Dynamic (hide dynamic tab)', 'i18n' ),
 		'type' => 'pwpcp_size_dynamic',
 		'hideDynamic' => true,
 	),
@@ -563,12 +561,12 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Size Dynamic (hide dynamic tab) [passive]', 'i18n' ),
-					'description' => __( '**★ PREMIUM**', 'i18n' ),
+					'label' => __( 'Size Dynamic (hide dynamic tab)', 'i18n' ),
+					'description' => __( '(passive role)', 'i18n' ),
 					'type' => 'pwpcp_size_dynamic',
 					'hideDynamic' => true,
 					'guide' => array(
-						'title' => __( 'See Code', 'i18n' ),
+						'title' => __( 'See Code (Premium control)', 'i18n' ),
 						'text' => "```php
 'an-id' => array(
 	'setting' => array(
@@ -576,7 +574,7 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Size Dynamic (hide dynamic tab) [passive]', 'i18n' ),
+		'label' => __( 'Size Dynamic (hide dynamic tab)', 'i18n' ),
 		'type' => 'pwpcp_size_dynamic',
 		'hideDynamic' => true,
 	),

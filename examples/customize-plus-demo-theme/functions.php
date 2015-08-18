@@ -204,6 +204,7 @@ class Customize_Plus_Demo {
 	 * @since  0.0.1
 	 */
 	public static function customize_enqueue_js_admin() {
+		wp_enqueue_style( self::PREFIX . '-customize', get_template_directory_uri() . '/styles/customize.css', array( 'PWPcp-customize', 'PWPcpp-customize' ), self::VERSION, false );
 		wp_enqueue_script( self::PREFIX . '-customize', get_template_directory_uri() . '/scripts/customize.js', array( 'json2', 'underscore', 'jquery', 'PWPcp-customize', 'PWPcpp-customize' ), self::VERSION, false );
 	}
 

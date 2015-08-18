@@ -1,3 +1,5 @@
+/* global Regexes */
+
 /**
  * Validator
  *
@@ -17,7 +19,154 @@
   var _ValidatorColor = {
     types: [ 'hex', 'rgb', 'rgba', 'hsl', 'hsla', 'keyword' ],
     // available also on `less.js` global var `less.data.colors` as Object
-    keywords: [ 'aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'azure', 'beige', 'bisque', 'black', 'blanchedalmond', 'blue', 'blueviolet', 'brown', 'burlywood', 'cadetblue', 'chartreuse', 'chocolate', 'coral', 'cornflowerblue', 'cornsilk', 'crimson', 'cyan', 'darkblue', 'darkcyan', 'darkgoldenrod', 'darkgray', 'darkgreen', 'darkgrey', 'darkkhaki', 'darkmagenta', 'darkolivegreen', 'darkorange', 'darkorchid', 'darkred', 'darksalmon', 'darkseagreen', 'darkslateblue', 'darkslategray', 'darkslategrey', 'darkturquoise', 'darkviolet', 'deeppink', 'deepskyblue', 'dimgray', 'dimgrey', 'dodgerblue', 'firebrick', 'floralwhite', 'forestgreen', 'fuchsia', 'gainsboro', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'green', 'greenyellow', 'grey', 'honeydew', 'hotpink', 'indianred', 'indigo', 'ivory', 'khaki', 'lavender', 'lavenderblush', 'lawngreen', 'lemonchiffon', 'lightblue', 'lightcoral', 'lightcyan', 'lightgoldenrodyellow', 'lightgray', 'lightgreen', 'lightgrey', 'lightpink', 'lightsalmon', 'lightseagreen', 'lightskyblue', 'lightslategray', 'lightslategrey', 'lightsteelblue', 'lightyellow', 'lime', 'limegreen', 'linen', 'magenta', 'maroon', 'mediumaquamarine', 'mediumblue', 'mediumorchid', 'mediumpurple', 'mediumseagreen', 'mediumslateblue', 'mediumspringgreen', 'mediumturquoise', 'mediumvioletred', 'midnightblue', 'mintcream', 'mistyrose', 'moccasin', 'navajowhite', 'navy', 'oldlace', 'olive', 'olivedrab', 'orange', 'orangered', 'orchid', 'palegoldenrod', 'palegreen', 'paleturquoise', 'palevioletred', 'papayawhip', 'peachpuff', 'peru', 'pink', 'plum', 'powderblue', 'purple', 'red', 'rosybrown', 'royalblue', 'saddlebrown', 'salmon', 'sandybrown', 'seagreen', 'seashell', 'sienna', 'silver', 'skyblue', 'slateblue', 'slategray', 'slategrey', 'snow', 'springgreen', 'steelblue', 'tan', 'teal', 'thistle', 'tomato', 'transparent', 'turquoise', 'violet', 'wheat', 'white', 'whitesmoke', 'yellow', 'yellowgreen'
+    keywords: [ 'aliceblue',
+      'antiquewhite',
+      'aqua',
+      'aquamarine',
+      'azure',
+      'beige',
+      'bisque',
+      'black',
+      'blanchedalmond',
+      'blue',
+      'blueviolet',
+      'brown',
+      'burlywood',
+      'cadetblue',
+      'chartreuse',
+      'chocolate',
+      'coral',
+      'cornflowerblue',
+      'cornsilk',
+      'crimson',
+      'cyan',
+      'darkblue',
+      'darkcyan',
+      'darkgoldenrod',
+      'darkgray',
+      'darkgreen',
+      'darkgrey',
+      'darkkhaki',
+      'darkmagenta',
+      'darkolivegreen',
+      'darkorange',
+      'darkorchid',
+      'darkred',
+      'darksalmon',
+      'darkseagreen',
+      'darkslateblue',
+      'darkslategray',
+      'darkslategrey',
+      'darkturquoise',
+      'darkviolet',
+      'deeppink',
+      'deepskyblue',
+      'dimgray',
+      'dimgrey',
+      'dodgerblue',
+      'firebrick',
+      'floralwhite',
+      'forestgreen',
+      'fuchsia',
+      'gainsboro',
+      'ghostwhite',
+      'gold',
+      'goldenrod',
+      'gray',
+      'green',
+      'greenyellow',
+      'grey',
+      'honeydew',
+      'hotpink',
+      'indianred',
+      'indigo',
+      'ivory',
+      'khaki',
+      'lavender',
+      'lavenderblush',
+      'lawngreen',
+      'lemonchiffon',
+      'lightblue',
+      'lightcoral',
+      'lightcyan',
+      'lightgoldenrodyellow',
+      'lightgray',
+      'lightgreen',
+      'lightgrey',
+      'lightpink',
+      'lightsalmon',
+      'lightseagreen',
+      'lightskyblue',
+      'lightslategray',
+      'lightslategrey',
+      'lightsteelblue',
+      'lightyellow',
+      'lime',
+      'limegreen',
+      'linen',
+      'magenta',
+      'maroon',
+      'mediumaquamarine',
+      'mediumblue',
+      'mediumorchid',
+      'mediumpurple',
+      'mediumseagreen',
+      'mediumslateblue',
+      'mediumspringgreen',
+      'mediumturquoise',
+      'mediumvioletred',
+      'midnightblue',
+      'mintcream',
+      'mistyrose',
+      'moccasin',
+      'navajowhite',
+      'navy',
+      'oldlace',
+      'olive',
+      'olivedrab',
+      'orange',
+      'orangered',
+      'orchid',
+      'palegoldenrod',
+      'palegreen',
+      'paleturquoise',
+      'palevioletred',
+      'papayawhip',
+      'peachpuff',
+      'peru',
+      'pink',
+      'plum',
+      'powderblue',
+      'purple',
+      'red',
+      'rosybrown',
+      'royalblue',
+      'saddlebrown',
+      'salmon',
+      'sandybrown',
+      'seagreen',
+      'seashell',
+      'sienna',
+      'silver',
+      'skyblue',
+      'slateblue',
+      'slategray',
+      'slategrey',
+      'snow',
+      'springgreen',
+      'steelblue',
+      'tan',
+      'teal',
+      'thistle',
+      'tomato',
+      'transparent',
+      'turquoise',
+      'violet',
+      'wheat',
+      'white',
+      'whitesmoke',
+      'yellow',
+      'yellowgreen'
     ],
     hex: function(value) {
       return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(value);
@@ -80,55 +229,52 @@
    * @return {boolean}    Whether is valid or not.
    */
   function (str) {
-    return validator.matches(str, /@([a-zA-Z-_0-9]+)/g);
+    return validator.matches(str, Regexes._simpleVariable_match);
+  });
+
+  validator.extend('isMultipleOf',
+  /**
+   * Is Multiple of
+   *
+   * Take a look at the @link(http://stackoverflow.com/q/12429362/1938970,
+   * stackoverflow question) about this topic. This solution is an ok
+   * compromise. We use `Math.abs` to convert negative number to positive
+   * otherwise the minor comparison would always return true for negative
+   * numbers.
+   *
+   * @param  {string}  number   [description]
+   * @param  {string}  multiple [description]
+   * @return {Boolean}          [description]
+   */
+  function isMultipleOf(number1, number2) {
+    var a = Math.abs(number1);
+    var b = Math.abs(number2);
+    var result = Math.round( Math.round(a * 100000) % Math.round(b * 100000) ) / 100000;
+    return result < 1e-5;
   });
 
   validator.extend('is_int',
   /**
    * Is int (php js)
+   * @see http://phpjs.org/functions/is_int/
    * @param  {?}  mixed_var
    * @return {boolean}
    */
   function is_int(mixed_var) {
     var number = Number(mixed_var);
-    //  discuss at: http://phpjs.org/functions/is_int/
-    // original by: Alex
-    // improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // improved by: WebDevHobo (http://webdevhobo.blogspot.com/)
-    // improved by: Rafał Kukawski (http://blog.kukawski.pl)
-    //  revised by: Matt Bradley
-    // bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    //        note: 1.0 is simplified to 1 before it can be accessed by the function, this makes
-    //        note: it different from the PHP implementation. We can't fix this unfortunately.
-    //   example 1: is_int(23)
-    //   returns 1: true
-    //   example 2: is_int('23')
-    //   returns 2: false
-    //   example 3: is_int(23.5)
-    //   returns 3: false
-    //   example 4: is_int(true)
-    //   returns 4: false
-    return number === +number && isFinite(number) && !(number % 1);
+    return number === +number && isFinite(number) && number % 1 === 0;
   });
 
   validator.extend('is_float',
   /**
    * Is float (php js)
+   * @see http://phpjs.org/functions/is_float/
    * @param  {?}  mixed_var
    * @return {boolean}
    */
   function is_float(mixed_var) {
     var number = Number(mixed_var);
-    //  discuss at: http://phpjs.org/functions/is_float/
-    // original by: Paulo Freitas
-    // bugfixed by: Brett Zamir (http://brett-zamir.me)
-    // improved by: WebDevHobo (http://webdevhobo.blogspot.com/)
-    // improved by: Rafał Kukawski (http://blog.kukawski.pl)
-    //        note: 1.0 is simplified to 1 before it can be accessed by the function, this makes
-    //        note: it different from the PHP implementation. We can't fix this unfortunately.
-    //   example 1: is_float(186.31);
-    //   returns 1: true
-    return +number === number && (!isFinite(number) || !!(number % 1));
+    return +number === number && (!isFinite(number) || number % 1 !== 0);
   });
 
 })();

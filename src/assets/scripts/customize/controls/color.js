@@ -95,7 +95,7 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
     /** @type {jQuery} */
     this.__$expander = $(container.getElementsByClassName('pwpcp-expander')[0]).hide();
 
-    self._applyOnUIpreview(self.setting());
+    self._updateUIpreview(self.setting());
 
 
     var isOpen = false;
@@ -124,15 +124,15 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
     };
   },
   /**
-   * Apply on UI preview (the color box on the left hand side)
+   * Update UI preview (the color box on the left hand side)
    */
-  _applyOnUIpreview: function (newValue) {
+  _updateUIpreview: function (newValue) {
     this.__preview.style.background = newValue;
   },
   /**
-   * Apply on UI control (the spectrum color picker)
+   * Update UI control (the spectrum color picker)
    */
-  _applyOnUIcustom: function (newValue) {
+  _updateUIcustomControl: function (newValue) {
     this.__$picker.spectrum('set', newValue);
   },
   /**
@@ -149,10 +149,10 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
     this.params.valueCSS = value;
 
     if (this.rendered) {
-      this._applyOnUIpreview(value);
+      this._updateUIpreview(value);
 
       if (from === 'API') {
-        this._applyOnUIcustom(value);
+        this._updateUIcustomControl(value);
       }
     }
 

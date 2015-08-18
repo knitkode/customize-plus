@@ -1,0 +1,26 @@
+
+/**
+ * Indicate the Premium Controls with a badge
+ */
+.customize-control-pwpcp_icon_picker:before,
+.customize-control-pwpcp_date:before,
+.customize-control-pwpcp_knob:before,
+.customize-control-pwpcp_size_dynamic:before,
+.customize-control-pwpcp_color_dynamic:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 35px;
+  height: 48px;
+  background: url(../images/badge-premium-35x48.png) no-repeat 36px -1px;
+  -webkit-transition: background-position .18s ease;
+  -moz-transition: background-position .18s ease;
+  -o-transition: background-position .18s ease;
+  -ms-transition: background-position .18s ease;
+  transition: background-position .18s ease;
+}
+
+.pwpcp-control:hover:before {
+  background-position: 5px -1px;
+}

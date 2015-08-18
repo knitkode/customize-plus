@@ -177,15 +177,16 @@ class PWPcp_Sanitize {
 	 *                           contain any digit.
 	 */
 	public static function extract_number( $input, $control ) {
-		if ( ! is_numeric( $input ) || ( ! is_float( $input ) && ! is_int( $input ) ) ) {
-			if ( $control->allowFloat ) {
-				$number_extracted = filter_var( $input, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-			} else {
-				$number_extracted = filter_var( $input, FILTER_SANITIZE_NUMBER_INT );
-			}
-			if ( $number_extracted || 0 == $number_extracted ) {
-				return $number_extracted;
-			}
+		if ( is_int( $input ) || ( is_float( $input ) && $control->allowFloat ) ) {
+			return $input;
+		}
+		if ( $control->allowFloat ) {
+			$number_extracted = filter_var( $input, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+		} else {
+			$number_extracted = filter_var( $input, FILTER_SANITIZE_NUMBER_INT );
+		}
+		if ( $number_extracted || 0 == $number_extracted ) {
+			return $number_extracted;
 		}
 		return false;
 	}
