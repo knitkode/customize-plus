@@ -242,6 +242,9 @@ api.controls.Base = wpApi.Control.extend({
    * this method get called) it fills it.
    */
   deflate: function () {
+    /* jshint funcscope: true */
+    if (DEBUG) var t = performance.now();
+
     var container = this._container;
 
     if (!this.params.template) {
@@ -261,7 +264,7 @@ api.controls.Base = wpApi.Control.extend({
       if (!wpApi.section(this.section.get()).expanded.get()) {
 
         /* jshint funcscope: true */
-        if (DEBUG) var t = performance.now();
+        // if (DEBUG) var t = performance.now();
 
         // Super fast empty DOM element
         // @link(http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/20)
@@ -274,7 +277,7 @@ api.controls.Base = wpApi.Control.extend({
         container.innerHTML = '';
 
         console.log('%c deflate of ' + this.params.type + '(' + this.id + ') took '
-         + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+         + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
 
         // flag control that it's not rendered
         this.rendered = false;
@@ -283,11 +286,14 @@ api.controls.Base = wpApi.Control.extend({
 
   },
   /**
-   * Render or 'inflate' the template of the control
-   * The first time render it from the js template,
-   * afterward retrieve the DOM string from the DOM store.
-   * After the template has been rendered call the `ready`
-   * method, overridden in each control wit its own logic.
+   * Inflate
+   *
+   * Render or 'inflate' the template of the control. The first time render it
+   * from the js template, afterward retrieve the DOM string from the `template`
+   * param store. After the template has been rendered call the `ready` method,
+   * overridden in each control with their own specific logic. Also put a flag
+   * `rendered` on the control instance to indicate whether the control is
+   * rendered or not.
    *
    * @param  {boolean} shouldWeResolveEmbeddedDeferred Sometimes (i.e. for the
    *                                                   `control.focus()` method)
@@ -298,37 +304,37 @@ api.controls.Base = wpApi.Control.extend({
     if (DEBUG) var t = performance.now();
     if (!this.params.template) {
       this.renderContent();
-      console.log('%c inflate DOM of ' + this.params.type + ' took ' +
-        (performance.now() - t) + ' ms.', 'background: #EF9CD7');
-      // flag control that it's rendered
+      // console.log('%c inflate DOM of ' + this.params.type + ' took ' +
+      //   (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       this.rendered = true;
       this.ready();
     } else {
       if (!this.rendered) {
         this._container.innerHTML = this.params.template;
-        console.log('%c inflate DOM of ' + this.params.type + ' took ' +
-          (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+        // console.log('%c inflate DOM of ' + this.params.type + ' took ' +
+        //   (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
-      // flag control that it's rendered
       this.rendered = true;
-
       this.ready();
     }
     if (shouldWeResolveEmbeddedDeferred) {
       this.deferred.embedded.resolve();
     }
-    this._initGuide();
-    this._initHelp();
+    this._guide();
+    this._help();
     this._extras();
-    // errors get resetted because on ready we fill the values in the UI
-    // with the value of `this.setting()` which can never be not valid
-    // (see the `_validateWrap` method above)
+    // errors get resetted because on ready we fill the values in the UI with
+    // the value of `this.setting()` which can never be not valid (see the
+    // `_validateWrap` method above)
     this._onValidateSuccess();
-    console.log('inflate of ' + this.params.type + ' took ' +
-      (performance.now() - t) + ' ms.');
+
+    console.log('%c inflate of ' + this.params.type + ' took ' +
+      (performance.now() - t) + ' ms.', 'background: #D2FFF1');
   },
   /**
-   * Normalize setting for soft comparison
+   * Softenize
+   *
+   * Normalize setting for soft comparison.
    *
    * @abstract
    * @static
@@ -341,12 +347,14 @@ api.controls.Base = wpApi.Control.extend({
     return value;
   },
   /**
-   * Manage the initialization of control guides
+   * Guide
+   *
+   * Manage the initialization of control guides.
    *
    * @use Tooltips
    * @return {void}
    */
-  _initGuide: function () {
+  _guide: function () {
     if (this.params.guide && Tooltips) {
       Tooltips.createGuide(this);
     }
@@ -368,7 +376,7 @@ api.controls.Base = wpApi.Control.extend({
    * @use Tooltips
    * @return {void}
    */
-  _initHelp: function () {
+  _help: function () {
     if (!Tooltips) {
       return;
     }

@@ -5,8 +5,8 @@
  */
 var Utils = (function () {
 
-  var _IMAGES_BASE_URL = api.constants.IMAGES_BASE_URL;
-  var _DOCS_BASE_URL = api.constants.DOCS_BASE_URL;
+  var _IMAGES_BASE_URL = api.constants['IMAGES_BASE_URL'];
+  var _DOCS_BASE_URL = api.constants['DOCS_BASE_URL'];
 
   /**
    * Is it an absolute URL?
@@ -259,49 +259,6 @@ var Utils = (function () {
     _selectizeRenderColor: function (item, escape) {
       return '<div class="pwpcpcolor-selectOption" style="border-color:' + escape(item.valueCSS) + '">' +
         escape(item.label) + '</div>';
-    },
-    /**
-     * Get Spectrum plugin options
-     *
-     * @link(https://bgrins.github.io/spectrum/, spectrum API)
-     * @static
-     * @param  {Object} control Customize Control object
-     * @param  {Object} options Options that override the defaults (optional)
-     * @return {Object} The spectrum plugin options
-     */
-    _getSpectrumOpts: function (control, options) {
-      var params = control.params;
-      var $container = control.container;
-      return _.extend({
-        preferredFormat: 'hex',
-        flat: true,
-        showInput: true,
-        showInitial: false, // @@doubt maybe enable it \\
-        showButtons: false,
-        // localStorageKey: 'PWPcp_spectrum',
-        showSelectionPalette: false,
-        togglePaletteMoreText: api.l10n['togglePaletteMoreText'],
-        togglePaletteLessText: api.l10n['togglePaletteLessText'],
-        allowEmpty: !params.disallowTransparent,
-        showAlpha: params.allowAlpha,
-        showPalette: !!params.palette,
-        showPaletteOnly: params.showPaletteOnly && params.palette,
-        togglePaletteOnly: params.togglePaletteOnly && params.palette,
-        palette: params.palette,
-        color: control.setting(),
-        show: function () {
-          $container.find('.sp-input').focus();
-        },
-        move: function (tinycolor) {
-          var color = tinycolor ? tinycolor.toString() : 'transparent';
-          control.setting.set(color);
-        },
-        change: function (tinycolor) {
-          if (!tinycolor) {
-            $container.find('.sp-input').val('transparent');
-          }
-        }
-      }, options || {});
     }
   };
 })();

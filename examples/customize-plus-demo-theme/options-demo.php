@@ -2106,7 +2106,7 @@ return array(
 				),
 				'control' => array(
 					'label' => __( 'Date', 'i18n' ),
-					'description' => __( '', 'i18n' ),
+					'description' => __( 'Focus the input to slide down the [jQuery UI datepicker](https://jqueryui.com/datepicker/)  widget. The date is validated according to the `dateFormat` selected.', 'i18n' ),
 					'type' => 'pwpcp_date',
 					'input_attrs' => array(
 						'dateFormat' => 'dd/mm/yy',
@@ -2138,7 +2138,7 @@ return array(
 				),
 				'control' => array(
 					'label' => __( 'Date (`inline` with `input_attrs`)', 'i18n' ),
-					'description' => __( 'Pass [jQuery UI datepicker](http://api.jqueryui.com/datepicker/) options and `inline`.', 'i18n' ),
+					'description' => __( 'Pass [jQuery UI datepicker](http://api.jqueryui.com/datepicker/) options and `inline` to always show a calendar without text input.', 'i18n' ),
 					'type' => 'pwpcp_date',
 					'inline' => true,
 					'input_attrs' => array(

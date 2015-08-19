@@ -112,7 +112,7 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
     var _maybeInitializeSpectrum = function () {
       // initialize only once
       if (!pickerIsInitialized) {
-        self.__$picker.spectrum(Utils._getSpectrumOpts(self));
+        self.__$picker.spectrum(self._getSpectrumOpts(self));
         pickerIsInitialized = true;
       }
     };
@@ -131,6 +131,51 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
       }
       return false;
     };
+  },
+  /**
+   * Get Spectrum plugin options
+   *
+   * @link(https://bgrins.github.io/spectrum/, spectrum API)
+   * @param  {Object} options Options that override the defaults (optional)
+   * @return {Object} The spectrum plugin options
+   */
+  _getSpectrumOpts: function (options) {
+    var self = this;
+    var params = self.params;
+    var $container = self.container;
+    return _.extend({
+      preferredFormat: 'hex',
+      flat: true,
+      showInput: true,
+      showInitial: false,
+      showButtons: false,
+      // localStorageKey: 'PWPcp_spectrum',
+      showSelectionPalette: false,
+      togglePaletteMoreText: api.l10n['togglePaletteMoreText'],
+      togglePaletteLessText: api.l10n['togglePaletteLessText'],
+      allowEmpty: !params.disallowTransparent,
+      showAlpha: params.allowAlpha,
+      showPalette: !!params.palette,
+      showPaletteOnly: params.showPaletteOnly && params.palette,
+      togglePaletteOnly: params.togglePaletteOnly && params.palette,
+      palette: params.palette,
+      color: self.setting(),
+      show: function () {
+        $container.find('.sp-input').focus();
+        if (params.showInitial) {
+          $container.find('.sp-container').addClass('sp-show-initial');
+        }
+      },
+      move: function (tinycolor) {
+        var color = tinycolor ? tinycolor.toString() : 'transparent';
+        self.setting.set(color);
+      },
+      change: function (tinycolor) {
+        if (!tinycolor) {
+          $container.find('.sp-input').val('transparent');
+        }
+      }
+    }, options || {});
   },
   /**
    * Update UI preview (the color box on the left hand side)

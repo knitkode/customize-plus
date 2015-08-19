@@ -4,7 +4,8 @@
 (function (window, document, $, _, wp, api, validator) {
   'use strict';
 
-  // this is needed to don't break js while developing
+  // this is needed to don't break js while developing,
+  // it gets stripped out during minification
   var DEBUG = true;
 
   if (DEBUG) {
@@ -17,7 +18,7 @@
   $.fx.speeds['_default'] = 180; // whitelisted from uglify mangle regex private names \\
 
   /**
-   * Reusable variables as globals in each component
+   * Reusable variables as globals in each included file
    *
    */
   /** @type {jQuery} */
@@ -78,7 +79,7 @@
   console.log('customize.js controls initialization took ' + (performance.now() - t) + ' ms.');
 
   /**
-   * Components initialization
+   * Core initialization
    *
    */
   $document.ready(function() {

@@ -320,9 +320,10 @@ input[type=text].sp-input {
   }
 }
 
-// show the initial value and the current one
-// beside the input field
-.sp-input-container {
+// show the initial value and the current one beside the input field
+// `.sp-show-initial` is a custom class we add in the `show` callback of
+// the spectrum options if the `showInitial` options has been set to true.
+.sp-show-initial .sp-input-container {
   float: right;
   width: auto;
 }

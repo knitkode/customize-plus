@@ -53,7 +53,7 @@ var Tabs = (function () {
         try {
           api.components.Screenpreview.change(true, target);
         } catch(e) {
-          console.warn('Tabs tried to use Screenpreview, which is undefined.', e)
+          console.warn('Tabs tried to use screenpreview, which is undefined.', e);
         }
       }
     });

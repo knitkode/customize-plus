@@ -1,4 +1,4 @@
-/* jshint */
+/* jshint unused: false */
 
 (function (window, document, $, _, wp, api, validator) {
   'use strict';
