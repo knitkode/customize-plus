@@ -16,11 +16,30 @@ if ( ! class_exists( 'PWPcp_Admin' ) && class_exists( 'PWPcp_Singleton' ) ):
 	 */
 	class PWPcp_Admin extends PWPcp_Singleton {
 
+		/**
+		 * The menu page
+		 * @since  0.0.1
+		 */
 		const MENU_PAGE = 'options-general.php';
+
+		/**
+		 * Parent hook
+		 * @since  0.0.1
+		 */
 		const PARENT_HOOK = 'customize-plus';
 
+		/**
+		 * The options subpages array
+		 * @since  0.0.1
+		 * @var array
+		 */
 		private $subpages = array();
 
+		/**
+		 * The options page default tab
+		 * @since  0.0.1
+		 * @var string
+		 */
 		private $default_tab = 'about';
 
 		/**
@@ -44,9 +63,8 @@ if ( ! class_exists( 'PWPcp_Admin' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 * Public method to add subpages to Customize Plus
 		 *
 		 * @param  array $subpages An array of subpages array, each one needs a `title`
-		 *                        and a `view` callable function.
+		 *                         and a `view` callable function.
 		 * @since  0.0.1
-		 * @return void
 		 */
 		final public function add_subpages( $subpages ) {
 			if ( is_array( $subpages ) ) {
@@ -63,7 +81,6 @@ if ( ! class_exists( 'PWPcp_Admin' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 *
 		 * @param  string $subpage_id  The subpage / tab id to set as default.
 		 * @since  0.0.1
-		 * @return void
 		 */
 		final public function set_default_tab( $subpage_id ) {
 			$this->default_tab = sanitize_key( $subpage_id );
@@ -74,7 +91,6 @@ if ( ! class_exists( 'PWPcp_Admin' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 *
 		 * @since  0.0.1
 		 * @uses   add_submenu_page() To add the the page submenu
-		 * @return void
 		 */
 		public function menu() {
 
@@ -109,7 +125,7 @@ if ( ! class_exists( 'PWPcp_Admin' ) && class_exists( 'PWPcp_Singleton' ) ):
 		/**
 		 * Hide subpages from side menu removing them
 		 *
-		 * @since BuddyPress (1.6.0)
+		 * @since 0.0.1
 		 */
 		public function hide_subpages() {
 			foreach ( $this->subpages as $subpage_id => $subpage_args ) {
@@ -120,7 +136,8 @@ if ( ! class_exists( 'PWPcp_Admin' ) && class_exists( 'PWPcp_Singleton' ) ):
 		/**
 		 * Add some general styling to the admin area.
 		 *
-		 * @since BuddyPress (1.6.0)
+		 * @since 0.0.1
+		 * @param string $hook The page hook
 		 */
 		public function enqueue_scripts( $hook ) {
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
@@ -138,7 +155,6 @@ if ( ! class_exists( 'PWPcp_Admin' ) && class_exists( 'PWPcp_Singleton' ) ):
 		 * The view that wrap each subpage tab.
 		 *
 		 * @since  0.0.1
-		 * @return void
 		 */
 		public function get_view() {
 		?>

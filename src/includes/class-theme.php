@@ -308,8 +308,10 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * Get theme mod with default value as fallback
-		 * we'll need this safe theme_mod in one of our sanitization functions
+		 * Get theme mod
+		 *
+		 * Get theme mod with default value as fallback, we'll need this safe
+		 * theme_mod in one of our sanitization functions.
 		 *
 		 * @since  0.0.1
 		 * @param [type]  $opt_name [description]
@@ -324,14 +326,15 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * Get all theme mods with default values as fallback
+		 * Get theme mods
 		 *
-		 * Initially the `theme_mods` are empty, so check for it.
-		 *
-		 * @since  0.0.1
-		 * @link(https://core.trac.wordpress.org/browser/trunk/src/wp-includes/functions.php#L3045, core.trac.wordpress)
+		 * Get all theme mods with default values as fallback. Initially the
+		 * `theme_mods` are empty, so check for it.
+		 * {@link(https://core.trac.wordpress.org/browser/trunk/src/wp-includes/functions.php#L3045, core.trac.wordpress)}
 		 * Anyway the function would be reverted:
 		 * `wp_parse_args( get_theme_mods(), self::$settings_defaults )`
+		 *
+		 * @since  0.0.1
 		 * @return array All the `theme_mods` with default values as fallback.
 		 */
 		public static function get_theme_mods() {

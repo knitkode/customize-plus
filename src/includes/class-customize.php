@@ -16,11 +16,10 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 	class PWPcp_Customize {
 
 		/**
-		 * WordPress customize custom types for panels,
-		 * sections controls and settings.
-		 * Each type must be declared with its shortname and name
-		 * of its php class.
+		 * Custom types for panels, sections controls and settings.
+		 * Each type must be declared with its shortname and name of its php class.
 		 *
+		 * @since  0.0.1
 		 * @var array
 		 */
 		public static $custom_types = array(
@@ -61,6 +60,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		/**
 		 * Temporary store for localized strings defined through control classes
 		 *
+		 * @since  0.0.1
 		 * @var array
 		 */
 		private static $controls_l10n = array();
@@ -68,6 +68,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		/**
 		 * Temporary store for localized strings defined through control classes
 		 *
+		 * @since  0.0.1
 		 * @var array
 		 */
 		private static $controls_constants = array();
@@ -75,6 +76,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		/**
 		 * CSS shared for all the icons
 		 *
+		 * @since  0.0.1
 		 * @var string
 		 */
 		private static $css_icons_shared = 'position:relative;top:4px;left:-2px;line-height:0;opacity:.5;font-size:20px;font-weight:normal;font-family:"dashicons";';
@@ -82,6 +84,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		/**
 		 * CSS for icons displayment
 		 *
+		 * @since  0.0.1
 		 * @var string
 		 */
 		private static $css_icons = '';
@@ -89,6 +92,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		/**
 		 * Whether `SCRIPT_DEBUG` is enabled
 		 *
+		 * @since  0.0.1
 		 * @var string
 		 */
 		private static $min = '';
@@ -111,8 +115,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		}
 
 		/**
-		 * Outputs the custom css file
-		 * in the admin page of the customize
+		 * Enqueue CSS for admin
+		 *
+		 * Outputs the custom css file in the admin page of the customize.
 		 *
 		 * @since  0.0.1
 		 */
@@ -126,9 +131,10 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		}
 
 		/**
-		 * Outputs the javascript needed
-		 * in the admin page of the customize (not the iframe in it).
-		 * Register and add data and localized strings to the customize.js
+		 * Enqueue Javascript for admin
+		 *
+		 * Outputs the javascript needed in the admin page of the customize (not
+		 * the iframe in it). Register and add data and localized strings.
 		 *
 		 * @since  0.0.1
 		 */
@@ -183,8 +189,11 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		}
 
 		/**
-		 * Allows control classes to add localized strings accessible
-		 * on our main `js` object `PWPcp.l10n`
+		 * Add controls javascript variables
+		 *
+		 * Allows control classes to add localized strings accessible on our main
+		 * `js` object `PWPcp.l10n`
+		 *
 		 * @since  0.0.1
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
@@ -201,8 +210,10 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		}
 
 		/**
-		 * This outputs the javascript needed in the iframe
-		 * and manage the dequeuing / enqueuing of the stylesheets
+		 * Enqueue JS for preview
+		 *
+		 * This outputs the javascript needed in the iframe and manage the
+		 * dequeuing / enqueuing of the stylesheets
 		 *
 		 * @since  0.0.1
 		 */
@@ -214,6 +225,8 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		}
 
 		/**
+		 * Get view loader
+		 *
 		 * Get view for fullscreen loader (used later on also by other components
 		 * like the 'importer')
 		 *
@@ -236,9 +249,12 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		}
 
 		/**
+		 * Register custom classes
+		 *
 		 * Custom settings, controls, sections, and panels, load classes and
 		 * register through the WordPress API.
 		 *
+		 * @internal
 		 * @since  0.0.1
 		 */
 		public static function register_custom_classes() {
@@ -253,12 +269,15 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Register custom settings/controls/sections/panels types
 		 *
 		 * @since  0.0.1
-		 * @param  array(<$type, $class_name>) $types The custom types to add
+		 * @param  array $types The custom types to add: `array(<$type, $class_name>)`
 		 */
 		public static function register_custom_types( $types ) {
 			foreach ( $types as $type => $new_custom_types ) {
 				if ( isset( self::$custom_types[ $type ] ) ) {
-					self::$custom_types[ $type ] = array_merge( self::$custom_types[ $type ], $new_custom_types );
+					self::$custom_types[ $type ] = array_merge(
+						self::$custom_types[ $type ],
+						$new_custom_types
+					);
 				}
 			}
 		}
@@ -289,9 +308,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Add panel declared in the Customizer tree.
 		 *
 		 * @since  0.0.1
-		 * @param Array $panel    The panel array as defined by the theme developers.
-		 * @param Int   $priority This incremental number is used by WordPress to calculate
-		 *                        the order at which the panel are inserted in the UI.
+		 * @param  array $panel    The panel array as defined by the theme developers.
+		 * @param  int   $priority This incremental number is used by WordPress to calculate
+		 *                         the order at which the panel are inserted in the UI.
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
 		private static function add_panel_from_tree( $panel, $priority ) {
@@ -362,10 +381,10 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Add section declared in the Customizer tree.
 		 *
 		 * @since  0.0.1
-		 * @param String $panel_id The id of the parent panel when the section is nested
-		 *                         inside a panel.
-		 * @param Array  $section  The section array as defined by the theme developers.
-		 * @param Int    $priority This incremental number is used by WordPress to calculate
+		 * @param  string $panel_id The id of the parent panel when the section is nested
+		 *                          inside a panel.
+		 * @param  array  $section  The section array as defined by the theme developers.
+		 * @param  int    $priority This incremental number is used by WordPress to calculate
 		 *                         the order at which the section are inserted in the UI.
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
@@ -434,9 +453,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Add field (setting + control) declared in the Customizer tree.
 		 *
 		 * @since  0.0.1
-		 * @param String $section_id The id of the parent section (required).
-		 * @param Array  $field_id   The section id as defined by the theme developers.
-		 * @param Array  $field_args The section array as defined by the theme developers.
+		 * @param  string $section_id The id of the parent section (required).
+		 * @param  array  $field_id   The section id as defined by the theme developers.
+		 * @param  array  $field_args The section array as defined by the theme developers.
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
 		 */
 		private static function tree_add_field( $section_id, $field_id, $field_args ) {
@@ -502,9 +521,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Add the needed css to display a dashicon for the given panel
 		 *
 		 * @since  0.0.1
-		 * @param string $panel_id      The panel which will show the specified dashicon.
-		 * @param int    $dashicon_code The dashicon code number, the `\f` is automatically
-		 *                              added.
+		 * @param  string $panel_id      The panel which will show the specified dashicon.
+		 * @param  int    $dashicon_code The dashicon code number, the `\f` is automatically
+		 *                               added.
 		 */
 		private static function add_css_panel_dashicon( $panel_id = '', $dashicon_code ) {
 			if ( ! absint( $dashicon_code ) ) {
@@ -517,9 +536,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Add the needed css to display a dashicon for the given section
 		 *
 		 * @since  0.0.1
-		 * @param string $section_id    The section which will show the specified dashicon.
-		 * @param int    $dashicon_code The dashicon code number, the `\f` is automatically
-		 *                              added.
+		 * @param  string $section_id    The section which will show the specified dashicon.
+		 * @param  int    $dashicon_code The dashicon code number, the `\f` is automatically
+		 *                               added.
 		 */
 		private static function add_css_section_dashicon( $section_id = '', $dashicon_code ) {
 			if ( ! absint( $dashicon_code ) ) {

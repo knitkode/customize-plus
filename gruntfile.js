@@ -1,5 +1,6 @@
 var shell = require('shelljs');
 
+
 module.exports = function(grunt) {
 
   // Project configuration.
@@ -115,7 +116,16 @@ module.exports = function(grunt) {
         target: 'docs'
       },
       generate: {}
-    }
+    },
+
+    // flatdoc
+    flatdoc: {
+      dist: {
+        options: {
+          folder: 'docs/flatdoc'
+        }
+      },
+    },
   });
 
   // Load NPM tasks to be used here
@@ -124,6 +134,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-wp-i18n');
   grunt.loadNpmTasks('grunt-checktextdomain');
   grunt.loadNpmTasks('grunt-phpdocumentor');
+  grunt.loadNpmTasks('grunt-flatdoc');
+
 
   grunt.registerTask(
     'langUpdate', [
@@ -134,5 +146,7 @@ module.exports = function(grunt) {
     ]
   );
   grunt.registerTask('travis', ['lintPHP']);
+
+  grunt.registerTask('docs', ['phpdocumentor', 'flatdoc']);
 
 };

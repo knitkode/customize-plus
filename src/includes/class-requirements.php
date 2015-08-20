@@ -16,12 +16,26 @@
  */
 class PWPcp_Requirements {
 
+	/**
+	 * Minimum php version supported
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
 	public static $min_php_version = '5.2.4';
 
+	/**
+	 * Minimum WordPress version supported
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
 	public static $min_wp_version = '4.1.1';
 
 	/**
-	 * [$incompatible_plugins description]
+	 * List of incompatible plugins
+	 *
+	 * @since 0.0.1
 	 * @var array
 	 */
 	public static $incompatible_plugins = array(
@@ -49,6 +63,7 @@ class PWPcp_Requirements {
 	/**
 	 * Check PHP version
 	 *
+	 * @since 0.0.1
 	 */
 	public static function php() {
 		$php = phpversion();
@@ -64,6 +79,8 @@ class PWPcp_Requirements {
 
 	/**
 	 * Check WordPress version
+	 *
+	 * @since 0.0.1
 	 */
 	public static function wp() {
 		$wp = get_bloginfo( 'version' );
@@ -81,8 +98,9 @@ class PWPcp_Requirements {
 	}
 
 	/**
-	 * [check_plugins_incompatibilities description]
-	 * @return [type] [description]
+	 * Check plugin incompatibilities
+	 *
+	 * @since 0.0.1
 	 */
 	public static function check_plugins_incompatibilities() {
 		$deactivated_plugins = array();
@@ -113,10 +131,15 @@ class PWPcp_Requirements {
 	}
 
 	/**
-	 * [deactivate_plugin description]
-	 * @param  [type] $probable_file  [description]
-	 * @param  [type] $probable_title [description]
-	 * @return [type]                 [description]
+	 * Deactivate plugin
+	 *
+	 * @since 0.0.1
+	 * @param  string  $probable_file  Probable file name of the plugin to search.
+	 * @param  string  $probable_title Probable title of the plugin to search for.
+	 * @param  boolean $deep_search    Whether to execute a deep search through
+	 *                                 all the active plugins based on the plugin
+	 *                                 title.
+	 * @return int Either `1` (success) or `0` (failure)
 	 */
 	public static function deactivate_plugin( $probable_file, $probable_title, $deep_search = false ) {
 		if ( is_plugin_active( $probable_file ) ) {

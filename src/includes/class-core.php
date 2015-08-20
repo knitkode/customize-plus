@@ -44,9 +44,10 @@ if ( ! class_exists( 'PWPcp' ) ):
 		}
 
 		/**
-		 * [init description]
-		 * @link(http://geertdedeckere.be/article/loading-wordpress-language-files-the-right-way, link)
-		 * @return [type] [description]
+		 * Init
+		 * {@link(http://geertdedeckere.be/article/loading-wordpress-language-files-the-right-way, link)}
+		 *
+		 * @since  0.0.1
 		 */
 		public static function init() {
 			// The "plugin_locale" filter is also used in load_plugin_textdomain()
@@ -59,7 +60,9 @@ if ( ! class_exists( 'PWPcp' ) ):
 
 		/**
 		 * Add plugin actions links
-		 * @param array $links Links array in which we would prepend our link.
+		 *
+		 * @since  0.0.1
+		 * @param  array $links Links array in which we would prepend our link.
 		 * @return array Processed links.
 		 */
 		public static function actions_links( $links ) {
@@ -69,7 +72,10 @@ if ( ! class_exists( 'PWPcp' ) ):
 
 		/**
 		 * Add plugin meta links
-		 * @param array $links Links array in which we would prepend our link.
+		 *
+		 * @since  0.0.1
+		 * @param  array  $links Links array in which we would prepend our link.
+		 * @param  string $file  Plugin file name
 		 */
 		public static function meta_links( $links, $file ) {
 			// Check plugin
@@ -83,16 +89,18 @@ if ( ! class_exists( 'PWPcp' ) ):
 		}
 
 		/**
-		 * [activation description]
-		 * @return [type] [description]
+		 * Activation
+		 *
+		 * @since  0.0.1
 		 */
 		public static function activation() {
 			do_action( 'PWPcp/activation' );
 		}
 
 		/**
-		 * [deactivation description]
-		 * @return [type] [description]
+		 * Deactivation
+		 *
+		 * @since  0.0.1
 		 */
 		public static function deactivation() {
 			do_action( 'PWPcp/deactivation' );

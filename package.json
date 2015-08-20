@@ -84,7 +84,8 @@
     "validator": "~3.28.0",
     "gulp-watch": "~4.1.1",
     "gulp-include": "~1.1.1",
-    "gulp-sequence": "~0.3.2"
+    "gulp-sequence": "~0.3.2",
+    "grunt-flatdoc": "~0.1.5"
   },
   "engines": {
     "node": ">=0.10.0"

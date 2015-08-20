@@ -35,7 +35,6 @@ if ( ! class_exists( 'PWPcp_Admin_About' ) ):
 		 *
 		 * @since  0.0.1
 		 * @uses   PWPcp_Admin->add_subpages To add the page tab
-		 * @return void
 		 */
 		public function add_menu_subpage() {
 			if ( class_exists( 'PWPcp_Admin' ) ) {
@@ -51,7 +50,8 @@ if ( ! class_exists( 'PWPcp_Admin_About' ) ):
 		/**
 		 * Add some general styling to the admin area.
 		 *
-		 * @since BuddyPress (1.6.0)
+		 * @since 0.0.1
+		 * @param string $hook The page hook
 		 */
 		public static function enqueue_scripts( $hook ) {
 			$settings_page_prefix = 'settings_page_PWPcp-';
@@ -69,7 +69,6 @@ if ( ! class_exists( 'PWPcp_Admin_About' ) ):
 		 * The view for this subpage tab.
 		 *
 		 * @since  0.0.1
-		 * @return void
 		 */
 		public function get_view() {
 		?>

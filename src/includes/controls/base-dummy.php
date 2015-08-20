@@ -31,12 +31,15 @@ class PWPcp_Customize_Control_Dummy extends WP_Customize_Control {
 	 * presence of the <li> micro template in the _wpCustomizeSettings JSON. // @@tobecareful let's the changes in WP API, they'll probably fix this \\
 	 *
 	 * @since 0.0.1
+	 * @override
 	 */
 	protected function render() {}
 
 	/**
-	 * [content_template description]
-	 * @return [type] [description]
+	 * Content template
+	 *
+	 * @since 0.0.1
+	 * @override
 	 */
 	public function content_template() {
 		ob_start( 'pwpcp_compress_html' ); ?>

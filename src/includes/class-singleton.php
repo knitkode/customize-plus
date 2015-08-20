@@ -11,7 +11,6 @@
  * @version    Release: pkgVersion
  * @link       http://pluswp.com/customize-plus
  */
-
 abstract class PWPcp_Singleton {
 
 	/**
@@ -34,9 +33,11 @@ abstract class PWPcp_Singleton {
 	}
 
 	/**
-	 * PHP 5.2 version support
+	 * Get called class
 	 *
-	 * @link( http://stackoverflow.com/q/7902586/1938970 )
+	 * PHP 5.2 version support
+	 * {@link(http://stackoverflow.com/q/7902586/1938970, source)}
+	 *
 	 * @since 0.0.1
 	 */
 	private static function get_called_class() {
