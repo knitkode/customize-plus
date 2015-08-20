@@ -54,7 +54,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				'pwpcp_textarea' => 'PWPcp_Customize_Control_Textarea',
 				'pwpcp_toggle' => 'PWPcp_Customize_Control_Toggle',
 			),
-			'settings' => array(),
+			'settings' => array(
+				'pwpcp_dummy' => 'PWPcp_Customize_Setting_Dummy',
+			),
 		);
 
 		/**
@@ -498,8 +500,8 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				// add setting to WordPress
 				$wp_customize->add_setting( $field_id, $setting_args );
 			} else {
-				// if no settings args are passed then use the Dummy Setting Class with a dummy id
-				$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, 'pwpcp-dummy-setting' ) );
+				// if no settings args are passed then use the Dummy Setting Class
+				$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $field_id ) );
 			}
 
 			// check if a custom type/class has been specified

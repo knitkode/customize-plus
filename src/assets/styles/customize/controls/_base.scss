@@ -165,31 +165,3 @@
     padding-right: $WPcustomize--section-padding-horizontal;
   }
 }
-
-/**
- * When markdown on control's descriptions and titles is enabled
- * it automatically wraps a simple text in a `<p>`, so we need to
- * remove the margin to it.
- */
-.pwpcp-markdown-supported {
-  // .customize-control-description {
-  //   font-style: normal;
-  // }
-
-  .customize-control-title > p,
-  .customize-control-description p:first-child {
-    margin: 0;
-  }
-
-  // code style (both in control titles and descriptions)
-  .pwpcp-control code {
-    font-size: 12px;
-    font-weight: normal;
-  }
-
-  // code style in control descriptions
-  .pwpcp-control .description code {
-    font-style: normal;
-    color: #c7254e; // same as Bootstrap
-  }
-}

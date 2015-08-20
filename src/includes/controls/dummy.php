@@ -23,6 +23,14 @@ class PWPcp_Customize_Control_Dummy extends WP_Customize_Control {
 	public $type = 'pwpcp_dummy';
 
 	/**
+	 * Markdown.
+	 *
+	 * @since 0.0.1
+	 * @var string
+	 */
+	public $markdown = '';
+
+	/**
 	 * Render
 	 *
 	 * The wrapper for this control can always be the same, we create it
@@ -36,6 +44,24 @@ class PWPcp_Customize_Control_Dummy extends WP_Customize_Control {
 	protected function render() {}
 
 	/**
+	 * To JSON
+	 *
+	 * @since  0.0.1
+	 */
+	public function to_json() {
+		parent::to_json();
+
+		if ( ! $this->description ) {
+			unset( $this->json['description'] );
+		}
+		unset( $this->json['content'] );
+
+		if ( $this->markdown ) {
+			$this->json['markdown'] = $this->markdown;
+		}
+	}
+
+	/**
 	 * Content template
 	 *
 	 * @since 0.0.1
@@ -43,9 +69,22 @@ class PWPcp_Customize_Control_Dummy extends WP_Customize_Control {
 	 */
 	public function content_template() {
 		ob_start( 'pwpcp_compress_html' ); ?>
-		<# if (data.label) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
-		<# if (data.description) { #><span class="description customize-control-description">{{{ data.description }}}</span><# } #>
+		<# if (data.label) { #><span class="customize-control-title">{{{ marked(data.label) }}}</span><# } #>
+		<# if (data.description) { #><span class="description customize-control-description">{{{ marked(data.description) }}}</span><# } #>
+		<# if (data.markdown) { #><div class="description customize-control-markdown">{{{ marked(data.markdown) }}}</div><# } #>
 		<?php ob_end_flush();
+	}
+
+	/**
+	 * Sanitization callback
+	 *
+	 * @since 0.0.1
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	public static function sanitize_callback( $value, $setting ) {
+		return null;
 	}
 }
 

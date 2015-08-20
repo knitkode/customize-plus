@@ -2177,6 +2177,88 @@ return array(
 	),
 	array(
 		'subject' => 'section',
+		'id' => 'section-presentation',
+		'title' => __( 'Presentation controls', 'textDomain' ),
+		'description' => __( 'These controls are all tight to a dummy setting, their only purpose is to show some content between a control and the other.', 'textDomain' ),
+		'dashicon' => 105,
+		'fields' => array(
+			'pwpcp-dummy' => array(
+				'control' => array(
+					'label' => __( 'Dummy', 'i18n' ),
+					'description' => __( 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam consequatur sit fugit mollitia magni similique, nesciunt culpa maxime cupiditate debitis sed, facere odit, optio officiis architecto, ab veritatis id omnis.', 'i18n' ),
+					'type' => 'pwpcp_dummy',
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'pwpcp-dummy' => array(
+	'control' => array(
+		'label' => __( 'Dummy default', 'i18n' ),
+		'description' => __( 'Some text as you like', 'i18n' ),
+		'type' => 'pwpcp_dummy',
+	),
+),
+```",
+					),
+				),
+			),
+			'pwpcp-dummy-markdown' => array(
+				'control' => array(
+					'type' => 'pwpcp_dummy',
+					'markdown' => "
+# Image
+
+![sample image](http://lorempixel.com/g/270/180/city/)
+
+## Base
+`pwpcp_section`
+
+### Features
+- icons for sections, in the same fashion as WordPress native icons for panels.
+- reset all section values to the factory state or to the initial session value, prompt for a confirmation.
+
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
+# Controls
+All controls setting are required by default, set `'optional' => true` to allow a setting to be empty.
+
+* text / email / url
+* textarea / wp_editor (light)
+* number
+* toggle / switch / checkbox
+* radio / radio image / buttonset
+* multicheck
+* slider
+* color / alpha / palette / transparent
+* font family / font weight
+* select / dropdown / selectize / multiselect
+* sortable (todo)
+* tags / sortable tags
+* dynamic color (**Premium**)
+* dynamic size (**Premium**)
+
+### WordPress native controls
+You can use WordPress default controls as you can see in the demo, in this case you are in charge to handle the sanitization, defininig a 'sanitization_callback'
+",
+					'guide' => array(
+						'title' => __( 'See Code', 'i18n' ),
+						'text' => "```php
+'pwpcp-dummy' => array(
+	'control' => array(
+		'type' => 'pwpcp_dummy',
+		'markdown' => 'a lot of text and markdown.'
+	),
+),
+```",
+					),
+				),
+			),
+		),
+	),
+	array(
+		'subject' => 'section',
 		'id' => 'section-wordpress',
 		'title' => __( 'WordPress controls', 'textDomain' ),
 		'type' => 'pwpcp_section',

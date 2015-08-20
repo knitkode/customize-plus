@@ -57,11 +57,11 @@
   api.controls = {};
 
   //= include customize/controls/base.js
-    // include customize/controls/base-dummy.js
   //= include customize/controls/base-input.js
   //= include customize/controls/base-radio.js
   //= include customize/controls/buttonset.js
   //= include customize/controls/color.js
+  //= include customize/controls/dummy.js
   //= include customize/controls/font-family.js
   //= include customize/controls/multicheck.js
   //= include customize/controls/number.js

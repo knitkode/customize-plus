@@ -20,11 +20,11 @@
 global $wp_customize;
 
 //= include controls/base.php
-	// include controls/base-dummy.php
 //= include controls/base-input.php
 //= include controls/base-radio.php
 //= include controls/buttonset.php
 //= include controls/color.php
+//= include controls/dummy.php
 //= include controls/font-family.php
 //= include controls/multicheck.php
 //= include controls/number.php
@@ -38,4 +38,4 @@ global $wp_customize;
 //= include controls/text.php
 //= include controls/textarea.php
 //= include controls/toggle.php
-	// include setting--dummy.php
+//= include settings/dummy.php
