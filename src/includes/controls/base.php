@@ -295,6 +295,21 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	protected function js_tpl() {}
 
 	/**
+	 * Sanitization base callback
+	 *
+	 * Used as a default callback on thirdy part controls, like the WordPress
+	 * native ones
+	 *
+	 * @since 0.0.1
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	public static function sanitize_base_callback( $value, $setting ) {
+		return wp_kses_post( $value );
+	}
+
+	/**
 	 * Sanitization callback
 	 *
 	 * All control's specific sanitizations pass from this function which

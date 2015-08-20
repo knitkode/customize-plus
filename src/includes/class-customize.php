@@ -494,7 +494,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 						$setting_args['sanitize_callback'] = $control_type_class . '::sanitize_callback';
 					// otherwise use a default function
 					} else {
-						$setting_args['sanitize_callback'] = 'PWPcp_Customize_Control_Base::sanitize_callback';
+						$setting_args['sanitize_callback'] = 'PWPcp_Customize_Control_Base::sanitize_base_callback';
 					}
 				}
 				// add setting to WordPress
