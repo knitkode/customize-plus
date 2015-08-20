@@ -501,7 +501,12 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				$wp_customize->add_setting( $field_id, $setting_args );
 			} else {
 				// if no settings args are passed then use the Dummy Setting Class
-				$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $field_id ) );
+				if ( class_exists( 'PWPcp_Customize_Setting_Dummy' ) ) {
+					$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $field_id ) );
+				// or the plain WordPress API->behavior
+				} else {
+					$wp_customize->add_setting( $field_id );
+				}
 			}
 
 			// check if a custom type/class has been specified
