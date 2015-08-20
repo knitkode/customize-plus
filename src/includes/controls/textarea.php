@@ -59,7 +59,6 @@ class PWPcp_Customize_Control_Textarea extends PWPcp_Customize_Control_Base {
 		<label>
 			<?php $this->js_tpl_header(); ?><# var a = data.attrs; #>
 			<textarea class="pwpcp-textarea" <# for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> rows="4"><?php // filled through js ?></textarea>
-			<div class="pwpcp-input-feedback"></div>
 		</label>
 		<?php
 	}

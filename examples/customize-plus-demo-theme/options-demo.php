@@ -481,7 +481,7 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Size Dynamic', 'i18n' ),
+					'label' => __( 'Size Dynamic 1', 'i18n' ),
 					'description' => __( '(active role)', 'i18n' ),
 					'type' => 'pwpcp_size_dynamic',
 					'guide' => array(
@@ -493,7 +493,7 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Size Dynamic', 'i18n' ),
+		'label' => __( 'Size Dynamic 1', 'i18n' ),
 		'type' => 'pwpcp_size_dynamic',
 	),
 ),
@@ -507,9 +507,10 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Size Dynamic', 'i18n' ),
+					'label' => __( 'Size Dynamic 2', 'i18n' ),
 					'description' => __( '(passive role)', 'i18n' ),
 					'type' => 'pwpcp_size_dynamic',
+					'units' => array( 'px', '%' ),
 					'guide' => array(
 						'title' => __( 'See Code (Premium control)', 'i18n' ),
 						'text' => "```php
@@ -519,8 +520,9 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Size Dynamic', 'i18n' ),
+		'label' => __( 'Size Dynamic 2', 'i18n' ),
 		'type' => 'pwpcp_size_dynamic',
+		'units' => array( 'px', '%' ),
 	),
 ),
 ```",
@@ -533,7 +535,7 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Size Dynamic (hide dynamic tab)', 'i18n' ),
+					'label' => __( 'Size Dynamic (hide dynamic tab) 3', 'i18n' ),
 					'description' => __( '(active role)', 'i18n' ),
 					'type' => 'pwpcp_size_dynamic',
 					'hideDynamic' => true,
@@ -546,7 +548,7 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Size Dynamic (hide dynamic tab)', 'i18n' ),
+		'label' => __( 'Size Dynamic (hide dynamic tab)  3', 'i18n' ),
 		'type' => 'pwpcp_size_dynamic',
 		'hideDynamic' => true,
 	),
@@ -561,7 +563,7 @@ return array(
 					'transport' => 'recompileAndPost',
 				),
 				'control' => array(
-					'label' => __( 'Size Dynamic (hide dynamic tab)', 'i18n' ),
+					'label' => __( 'Size Dynamic (hide dynamic tab) 4', 'i18n' ),
 					'description' => __( '(passive role)', 'i18n' ),
 					'type' => 'pwpcp_size_dynamic',
 					'hideDynamic' => true,
@@ -574,7 +576,7 @@ return array(
 		'transport' => 'recompileAndPost',
 	),
 	'control' => array(
-		'label' => __( 'Size Dynamic (hide dynamic tab)', 'i18n' ),
+		'label' => __( 'Size Dynamic (hide dynamic tab) 4', 'i18n' ),
 		'type' => 'pwpcp_size_dynamic',
 		'hideDynamic' => true,
 	),

@@ -168,7 +168,7 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
       },
       move: function (tinycolor) {
         var color = tinycolor ? tinycolor.toString() : 'transparent';
-        self.setting.set(color);
+        self._apply(color);
       },
       change: function (tinycolor) {
         if (!tinycolor) {

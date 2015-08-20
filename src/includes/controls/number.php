@@ -74,12 +74,10 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
     $number_extracted = PWPcp_Sanitize::extract_number( $value, $control );
 
     if ( $number_extracted ) {
-  		$value = $number_extracted;
+  		return PWPcp_Sanitize::number( $number_extracted, $control );
   	} else {
       return $setting->default;
   	}
-
-    return PWPcp_Sanitize::number( $value, $control );
 	}
 }
 

@@ -12,7 +12,7 @@
 // export to our API and to WordPress API
 api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.extend({
   /**
-   * Let's consider '44' be equal to 44.
+   * Let's consider '44' to be equal to 44.
    * @override
    */
   softenize: function (value) {
@@ -28,7 +28,7 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
     var number = '';
 
     if (params.units) {
-      unit = this._extractUnit(newValue);
+      unit = this._extractFirstUnit(newValue);
       if (!unit || params.units.indexOf(unit) === -1) {
         errorMsg = api.l10n['vInvalidUnit'];
       }
@@ -36,7 +36,7 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
 
     // validate number with the api.controls.Number method
     number = api.controls.Number.prototype.validate.call(this,
-      this._extractNumber(newValue));
+      this._extractFirstNumber(newValue));
 
     if (number.error) {
       errorMsg += ' ' + number.msg;
@@ -56,7 +56,7 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
    */
   syncUIFromAPI: function (value) {
     if (value !== this._getValueFromUI()) {
-      this._apply(value, 'API');
+      this._applyPartialValue(value, 'API');
     }
   },
   /**
@@ -98,7 +98,7 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
       $inputUnits.on('click', function () {
         $inputUnits.removeClass('pwpcp-current');
         this.className += ' pwpcp-current';
-        self._apply({ _unit: this.value });
+        self._setPartialValue({ _unit: this.value });
       });
     }
 
@@ -106,32 +106,32 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
     inputNumber.onchange = function () {
       var value = this.value;
       $inputSlider.slider('value', value);
-      self._apply({ _number: value });
+      self._setPartialValue({ _number: value });
     };
 
     // Init Slider
     var sliderOptions = params.attrs || {};
     $inputSlider.slider(_.extend(sliderOptions, {
-      value: self._extractNumber(),
+      value: self._extractFirstNumber(),
       slide: function(event, ui) {
         inputNumber.value = ui.value;
-        self._apply({ _number: ui.value });
+        self._setPartialValue({ _number: ui.value });
       },
       change: function(event, ui) {
         // trigger change effect only on user input, @see
         // https://forum.jquery.com/topic/setting-a-sliders-value-without-triggering-the-change-event
         if (event.originalEvent) {
-          self._apply({ _number: ui.value });
+          self._setPartialValue({ _number: ui.value });
         }
       }
     }));
   },
   /**
-   * Extract unit from value
+   * Extract first found unit from value
    * @param  {?string} value [description]
-   * @return {?string}        [description]
+   * @return {?string}       [description]
    */
-  _extractUnit: function (value) {
+  _extractFirstUnit: function (value) {
     var valueOrigin = value || this.setting();
     var matchesUnit = Regexes._extractUnit.exec(valueOrigin);
     if (matchesUnit && matchesUnit[1]) {
@@ -140,11 +140,11 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
     return null;
   },
   /**
-   * Extract number from value
+   * Extract first number found in value
    * @param  {?string|number} value [description]
    * @return {?string}              [description]
    */
-  _extractNumber: function (value) {
+  _extractFirstNumber: function (value) {
     var valueOrigin = value || this.setting();
     var matchesNumber = Regexes._extractNumber.exec(valueOrigin);
     if (matchesNumber && matchesNumber[0]) {
@@ -168,20 +168,23 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
     if (this.params.units) {
       if (value && value._unit) {
         output += value._unit;
-      }
+      } else {
         output += this.__$inputUnits.filter('.pwpcp-current').val();
       }
+    }
     return output;
   },
   /**
    * Update UI control
    *
    * Reflect a programmatic setting change on the UI.
+   * @param {?string} value Optional, the value from where to extract number and unit,
+   *                        uses `this.setting()` if a `null` value is passed.
    */
-  _updateUIcustomControl: function () {
+  _updateUIcustomControl: function (value) {
     var params = this.params;
-    var number = this._extractNumber();
-    var unit = this._extractUnit();
+    var number = this._extractFirstNumber(value);
+    var unit = this._extractFirstUnit(value);
 
     // update number input
     this.__inputNumber.value = number;
@@ -195,8 +198,9 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
     }
   },
   /**
-   * Apply, wrap the `setting.set()` function
-   * doing some additional stuff.
+   * Set partial value
+   *
+   * Wrap the `setting.set()` function doing some additional stuff.
    *
    * @private
    * @param  {string} value
@@ -204,7 +208,7 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
    *                        picker, dynamic fields, expr field) or from the
    *                        API (on programmatic value change).
    */
-  _apply: function (value, from) {
+  _setPartialValue: function (value, from) {
     if (from === 'API') {
       this._updateUIcustomControl();
     } else {

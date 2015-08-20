@@ -210,6 +210,32 @@ class PWPcp_Sanitize {
 	}
 
 	/**
+	 * Extract first unit
+   * It returns the first matched, so the units are sorted by popularity (approx)
+   * @see Slider._extractFirstUnit Js corresponding method
+   * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
+	 * @param  [type] $input [description]
+	 * @return [type]        [description]
+	 */
+	public static function extract_first_unit( $input ) {
+		preg_match( '/(px|%|em|rem|vh|vw|vmin|vmax|cm|mm|in|pt|pc|ch|ex)/', $input, $matches );
+		return ! empty( $matches ) ? $matches[0] : false;
+	}
+
+	/**
+	 * Extract first number
+	 * (both integers or float)
+	 * @see Slider._extractFirstNumber Js corresponding method
+   * @see http://stackoverflow.com/a/17885985/1938970
+	 * @param  [type] $input [description]
+	 * @return [type]        [description]
+	 */
+	public static function extract_first_number( $input ) {
+		preg_match( '/(\+|-)?((\d+(\.\d+)?)|(\.\d+))/', $input, $matches );
+		return ! empty( $matches ) ? $matches[0] : false;
+	}
+
+	/**
 	 * Extract unit (like `px`, `em`, `%`, etc.) from control->units property
 	 *
 	 * @since  0.0.1

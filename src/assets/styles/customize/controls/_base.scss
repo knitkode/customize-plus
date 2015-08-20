@@ -65,6 +65,15 @@
       color: $state--danger-color;
       font-size: 11px;
     }
+
+    input,
+    textarea,
+    select,
+    .selectize-input,
+    .selectize-dropdown {
+      border-color: $state--danger-border;
+      box-shadow: $state--danger-box-shadow;
+    }
   }
 }
 

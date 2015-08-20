@@ -161,14 +161,14 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 				return $setting->default;
 			}
 		}
-		else if ( ! $control->disallowTransparent && 'transparent' === $value ) {
+		else if ( 'transparent' === $value && ! $control->disallowTransparent ) {
 			return $value;
 		}
-		else if ( $control->allowAlpha && PWPcp_Sanitize::color_rgba( $value ) ) {
-			return PWPcp_Sanitize::color_rgba( $value );
+		else if ( ( $output = PWPcp_Sanitize::color_rgba( $value ) ) && $control->allowAlpha ) {
+			return $output;
 		}
-		else if ( PWPcp_Sanitize::color_hex( $value ) ) {
-			return PWPcp_Sanitize::color_hex( $value );
+		else if ( $output = PWPcp_Sanitize::color_hex( $value ) ) {
+			return $output;
 		}
 		else {
 			return $setting->default;

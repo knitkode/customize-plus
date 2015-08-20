@@ -4,30 +4,32 @@
  * Control Textarea class
  *
  * @constructor
- * @augments api.controls.BaseInput
  * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
+wpApi.controlConstructor.pwpcp_textarea = api.controls.Base.extend({
+  /**
+   * @override
+   */
+  sanitize: function (newValue) {
+    if (!this.params.allowHTML && !this.params.wp_editor) {
+      return _.escape(newValue);
+    } else {
+      return newValue;
+    }
+  },
   /**
    * @override
    */
   validate: function (newValue) {
     if (_.isString(newValue)) {
-      if (!this.params.allowHTML && !this.params.wp_editor) {
-        return _.escape(newValue);
-      } else {
-        return newValue;
-      }
+      return newValue;
     } else {
       return { error: true };
     }
   },
   /**
-   * Update input value if the setting is changed programmatically.
-   * Use TyinMCE API if needed.
-   *
    * @override
    */
   onInit: function () {
@@ -52,20 +54,19 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
    * @override
    */
   syncUIFromAPI: function (value) {
-    // here value can be undefined if it doesn't pass the validate function
     var lastValue;
     var wpEditorInstance;
     if (this.params.wp_editor) {
       wpEditorInstance = tinyMCE.get(this._wpEditorID);
       lastValue = wpEditorInstance.getContent();
     } else {
-      lastValue = this.__input.value;
+      lastValue = this.__textarea.value;
     }
     if (value && lastValue !== value) {
       if (this.params.wp_editor) {
         wpEditorInstance.setContent(value);
       } else {
-        this.__input.value = value;
+        this.__textarea.value = value;
       }
     }
   },
@@ -73,12 +74,25 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
    * @override
    */
   ready: function () {
-    this.__input = this._container.getElementsByTagName('textarea')[0];
-    this.__inputFeedback = this._container.getElementsByClassName('pwpcp-input-feedback')[0];
+    this.__textarea = this._container.getElementsByTagName('textarea')[0];
 
-    this._syncAndListen(); // method of parent class
-
-    this._maybeInitWpEditor();
+    // params.wp_editor can be either a boolean or an object with options
+    if (this.params.wp_editor) {
+      this._initWpEditor();
+    } else {
+      this._syncAndListen();
+    }
+  },
+  /**
+   * Sync textarea and listen for changes
+   */
+  _syncAndListen: function () {
+    var self = this;
+    $(self.__textarea)
+      .val(self.setting())
+      .on('change keyup paste', function () {
+        self.setting.set(this.value);
+      });
   },
   /**
    * Maybe init wp_editor.
@@ -93,26 +107,19 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
    * prepended to the body and we get rid of the doubled `dashicons-css`
    * included in the response, which creates layout problems.
    */
-  _maybeInitWpEditor: function () {
-    // params.wp_editor can be either a boolean or an object with options
-    if (this.params.wp_editor) {
-
-      this._onValidateSuccess = _.constant;
-      this._onValidateError = _.constant;
-
-      if (!api.tinyMCEload) {
-        api.tinyMCEload = $.post(window.ajaxurl, {
-          'action': 'pwpcp_load_wp_editor',
-          'load': 1
-        }, function (response) {
-          $('body').prepend('<div id="pwpcp_tinymce_dummy" style="display:none">' + response + '</div>');
-          // remove dashicons-css added by tinymce,
-          // it interferes with the already loaded dashicons style
-          $('#pwpcp_tinymce_dummy').find('#dashicons-css').remove();
-        });
-      }
-      api.tinyMCEload.then(this._onTinymceAvailable.bind(this));
+  _initWpEditor: function () {
+    if (!api.tinyMCEload) {
+      api.tinyMCEload = $.post(window.ajaxurl, {
+        'action': 'pwpcp_load_wp_editor',
+        'load': 1
+      }, function (response) {
+        $('body').prepend('<div id="pwpcp_tinymce_dummy" style="display:none">' + response + '</div>');
+        // remove dashicons-css added by tinymce,
+        // it interferes with the already loaded dashicons style
+        $('#pwpcp_tinymce_dummy').find('#dashicons-css').remove();
+      });
     }
+    api.tinyMCEload.then(this._onTinymceAvailable.bind(this));
   },
   /**
    * Callback executed once the wp_edito with TinyMCE has been loaded.
@@ -124,7 +131,7 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
   _onTinymceAvailable: function () {
     // dynamically set id on textarea, then use it as a target for wp_editor
     var id = this._wpEditorID;
-    this.__input.id = id;
+    this.__textarea.id = id;
 
     if (this._wpEditorTplInjected) {
       this._initTinyMCE();
@@ -159,7 +166,7 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.BaseInput.extend({
     // remove inline stylesheets, we don't need them again
     var templateCleaned = template.replace(/<link.*\/>/g, '');
 
-    $(this.__input).replaceWith(templateCleaned);
+    $(this.__textarea).replaceWith(templateCleaned);
 
     this._wpEditorTplInjected = true;
 
