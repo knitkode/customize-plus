@@ -259,7 +259,7 @@ api.controls.Base = wpApi.Control.extend({
 
     // and empty the DOM from the container deferred
     // the slide out animation of the section doesn't freeze
-    _.defer(function () { // @@todo it breaks with search? \\
+    _.defer(function () {
       // due to the timeout we need to be sure that the section is not expanded
       if (!wpApi.section(this.section.get()).expanded.get()) {
 

@@ -68,7 +68,7 @@ class PWPcp_Customize_Control_Dummy extends WP_Customize_Control {
 	 * @override
 	 */
 	public function content_template() {
-		ob_start( 'pwpcp_compress_html' ); ?>
+		ob_start( 'PWPcp_Utils::compress_html' ); ?>
 		<# if (data.label) { #><span class="customize-control-title">{{{ marked(data.label) }}}</span><# } #>
 		<# if (data.description) { #><span class="description customize-control-description">{{{ marked(data.description) }}}</span><# } #>
 		<# if (data.markdown) { #><div class="description customize-control-markdown">{{{ marked(data.markdown) }}}</div><# } #>

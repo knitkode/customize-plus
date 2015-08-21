@@ -139,7 +139,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 				self::init( $customizer_settings );
 
 			} else {
-				// @@todo error report doing_it_wrong ? \\
+				wp_die( __( 'Customize Plus: `PWPcp-customize` `theme_support` must be an array.', 'pkgTextdomain' ) );
 			}
 		}
 
@@ -161,7 +161,6 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 					if ( isset( $configuration['prefix'] ) ) {
 						return sanitize_key( $configuration['prefix'] );
 					} else {
-						// @@todo use doing_it_wrong ? \\
 						wp_die( __( 'Customize Plus: no `prefix` given.', 'pkgTextdomain' ) );
 					}
 				case 'customize_tree':
@@ -169,11 +168,9 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 						if ( is_array( $configuration[ 'customize_tree' ] ) ) {
 							return $configuration[ 'customize_tree' ];
 						} else {
-							// @@todo use doing_it_wrong ? \\
 							wp_die( __( 'Customize Plus: `customize_tree` must be an array.', 'pkgTextdomain' ) );
 						}
 					} else {
-						// @@todo use doing_it_wrong ? \\
 						wp_die( __( 'Customize Plus: no `customize_tree` array given.', 'pkgTextdomain' ) );
 					}
 					break;
@@ -182,7 +179,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 						if ( is_array( $configuration[ 'styles' ] ) ) {
 							return $configuration[ 'styles' ];
 						} else {
-							wp_die( __( 'Customize Plus: `styles` must be an array.', 'pkgTextdomain' ) ); // @@todo use doing_it_wrong ? \\
+							wp_die( __( 'Customize Plus: `styles` must be an array.', 'pkgTextdomain' ) );
 						}
 					}
 					break;
@@ -267,7 +264,6 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 						self::set_settings_default_from_section( $component );
 					}
 				} else {
-					// echo '<pre>' . var_dump( self::$customize_tree ) . '</pre>';
 					wp_die( __( 'Customize Plus: `customize_tree` root components need a `subject` value.', 'pkgTextdomain' ) );
 				}
 			}
@@ -300,7 +296,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 							self::$settings_defaults[ $setting['id'] ] = $setting['default'];
 						}
 						else {
-							// @@todo throw error here, a default is required \\
+							wp_die( __( 'Customize Plus: every setting must have a `default` value.', 'pkgTextdomain' ) ); // @@doubt \\
 						}
 					}
 				}
