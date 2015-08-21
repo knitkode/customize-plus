@@ -24,11 +24,11 @@
     #@{varName}:after {
       .cssValueHighlighter(@@varName);
     }
-    .-((@i - 1));
-} .-;
+}
 
-.-(@i: length(@varNamesColors)) when (@i > 0) {
-    @name: extract(@varNamesColors, @i);
+
+.-(@j: length(@varNamesColors)) when (@j > 0) {
+    @name: extract(@varNamesColors, @j);
     @varName: ~'color-dynamic-@{name}';
     #@{varName} {
       background: @@varName;
@@ -36,5 +36,5 @@
     #@{varName}:after {
       .cssValueHighlighter(@@varName);
     }
-    .-((@i - 1));
+    .-((@j - 1));
 } .-;
