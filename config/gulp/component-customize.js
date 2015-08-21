@@ -97,10 +97,6 @@ var adminScriptsLibraries = [
   PATHS.src.bower + 'validator-js/validator.js',
   PATHS.src.bower + 'marked/lib/marked.js', // @@doubt, not sure if always include this, or maybe use https://github.com/SimonWaldherr/micromarkdown.js\\
   PATHS.src.scripts + 'vendor-custom/highlight.pack.js', // include highlight.js custom build
-  PATHS.src.bower + 'mousetrap/mousetrap.js',
-  PATHS.src.bower + 'mousetrap/plugins/bind-dictionary/mousetrap-bind-dictionary.js',
-  PATHS.src.bower + 'mousetrap/plugins/global-bind/mousetrap-global-bind.js',
-  PATHS.src.bower + 'mousetrap/plugins/pause/mousetrap-pause.js',
   PATHS.src.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme...
   PATHS.src.bower + 'webui-popover/dist/jquery.webui-popover.js',
   PATHS.src.bower + 'selectize/dist/js/standalone/selectize.js',
