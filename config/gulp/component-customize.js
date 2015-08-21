@@ -112,7 +112,7 @@ gulp.task('_customize-scripts-admin-unminified', function() {
   var stream = streamqueue({ objectMode: true });
   stream.queue(gulp.src(adminScriptsLibraries));
   stream.queue(gulp.src(PATHS.src.scripts + 'customize.js')
-    .pipe(/*$.if(CONFIG.isDist, */$.header(CONFIG.credits, { pkg: pkg }))/*)*/
+    .pipe($.header(CONFIG.credits, { pkg: pkg }))
     .pipe($.include())
     // .pipe($.if(argv.docs, $.jsdoc('./docs')))
   );
@@ -133,8 +133,10 @@ gulp.task('_customize-scripts-admin-minified', function() {
   stream.queue(gulp.src(PATHS.src.scripts + 'customize.js')
     .pipe($.include())
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', '')))
-    .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
-    .pipe(/*$.if(CONFIG.isDist,*/ $.header(CONFIG.credits, { pkg: pkg }))/*)*/
+    // Disable minification here, is doen through a bash script that runs the
+    // uglify CLI which has more options, like `mangle-regex`
+    // .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
+    .pipe($.header(CONFIG.credits, { pkg: pkg }))
   );
   return stream.done()
     .pipe($.concat('customize.min.js', PLUGINS.concat))
