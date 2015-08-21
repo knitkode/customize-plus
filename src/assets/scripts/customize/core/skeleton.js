@@ -41,22 +41,6 @@ var Skeleton = (function () {
       }
     },
     /**
-     * Inflate template rendered  from php.
-     * For cross browser solution see http://stackoverflow.com/a/10381402/1938970
-     * @param  {string} layoutId     The id of the script template
-     * @param  {HTMLelement} wrapper The element where to append the template
-     */
-    inflate: function (layoutId, wrapper) {
-      var temp = document.createElement('div');
-      var tpl = document.getElementById(layoutId);
-      if (tpl) {
-        temp.innerHTML = tpl.innerHTML;
-        wrapper.appendChild(temp.firstElementChild || temp.firstChild);
-      } else {
-        // @@todo API error handling, template doesn't exist \\
-      }
-    },
-    /**
      * Check if the WordPress sidebar has a scrollbar and toggle class on it.
      *
      * @link http://stackoverflow.com/a/4814526/1938970
