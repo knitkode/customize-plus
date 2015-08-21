@@ -145,10 +145,10 @@ api.controls.Base = wpApi.Control.extend({
   /**
    * On validation error (optionally override it in subclasses)
    * @abstract
-   * @param  {object<string,boolean|string>} errorObject `{ error: true, msg: string }`
+   * @param  {object<string,boolean|string>} error `{ error: true, msg: string }`
    */
-  _onValidateError: function (errorObject) {
-    var msg = errorObject.msg || api.l10n['vInvalid'];
+  _onValidateError: function (error) {
+    var msg = error && error.msg ? error.msg : api.l10n['vInvalid'];
     this._container.classList.add('pwpcp-error');
     this._container.setAttribute('data-pwpcp-msg', msg);
   },
