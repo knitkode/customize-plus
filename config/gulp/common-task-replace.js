@@ -34,7 +34,7 @@ gulp.task('_build-replace-words', function () {
     .pipe($.if(CONFIG.isDist, $.replace('pkgTextdomain', pkg.name + '-i18n', options)))
     .pipe($.if(CONFIG.isDist, $.replace('pkgConfigStartYear', pkg.config.startYear, options)))
     .pipe($.if(CONFIG.isDist, $.replace('pkgConfigEndYear', pkgConfigEndYear, options)))
-    // delete all code annotations, regex matches: ' // @@ ....single/multi line content \\'
+    // delete all code annotations, regex matches: ' // @@ ....single/multi line content \\
     .pipe($.if(CONFIG.isDist, $.replace(/(\s?\/\/\s@@(?:(?!\\\\)[\s\S])*\s\\\\)/g, '', options)))
     .pipe(gulp.dest(PATHS.build.root));
 });
