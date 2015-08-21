@@ -21,7 +21,7 @@ module.exports = {
   },
   uglify: {
     preserveComments: 'some', // --comments
-    // toplevel: true,
+    toplevel: true,
     mangle: true, // --mangle
     compress: {
       drop_console: true, // --compress drop_console=true
