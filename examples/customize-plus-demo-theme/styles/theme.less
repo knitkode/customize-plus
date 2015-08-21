@@ -1,9 +1,35 @@
 @charset "UTF-8";
 
-.color {
-  box-shadow:
-    0 0 1px @size-dynamic-active @color-dynamic-active,
-    4px 4px 1px @size-dynamic-passive @color-dynamic-passive,
-    6px 6px 1px @size-dynamic-hidetab-active @color-dynamic-hidetab-active,
-    8px 6px 1px @size-dynamic-hidetab-passive @color-dynamic-hidetab-passive !important;
+// .color {
+//   box-shadow:
+//     0 0 1px @size-dynamic-active @color-dynamic-active,
+//     4px 4px 1px @size-dynamic-passive @color-dynamic-passive,
+//     6px 6px 1px @size-dynamic-hidetab-active @color-dynamic-hidetab-active,
+//     8px 6px 1px @size-dynamic-hidetab-passive @color-dynamic-hidetab-passive !important;
+// }
+
+#size-dynamic-active:after {
+  content: @{size-dynamic-active};
+}
+#size-dynamic-passive:after {
+  content: @{size-dynamic-passive};
+}
+#size-dynamic-hidetab-active:after {
+  content: @{size-dynamic-hidetab-active};
+}
+#size-dynamic-hidetab-passive:after {
+  content: @{size-dynamic-hidetab-passive};
+}
+
+#color-dynamic-active {
+  background: @color-dynamic-active;
+}
+#color-dynamic-passive {
+  background: @color-dynamic-passive;
+}
+#color-dynamic-hidetab-active {
+  background: @color-dynamic-hidetab-active;
+}
+#color-dynamic-hidetab-passive {
+  background: @color-dynamic-hidetab-passive;
 }

@@ -137,9 +137,6 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 					);
 				}
 				self::init( $customizer_settings );
-
-			} else {
-				wp_die( __( 'Customize Plus: `PWPcp-customize` `theme_support` must be an array.', 'pkgTextdomain' ) );
 			}
 		}
 
