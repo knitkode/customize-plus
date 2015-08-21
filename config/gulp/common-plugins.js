@@ -30,14 +30,14 @@ module.exports = {
       }
     }
   },
-  uglifyCustomScripts: { // @@todo see readme... \\
+  uglifyCustomScripts: { // @@temp see readme... \\
     mangleProps: true, // --mangle-props
     mangleRegex: '/^_/', // --mangle-regex='/^_/'
     reserveDomprops: true // --reserve-domprops
     // --name-cache .tmp/uglify-cache.json
   },
   concat: {
-    newLine: '\n\n'
+    newLine: '\n\n\n'
   },
   autoprefixer: 'last 2 version',
   jsonEditor: {
