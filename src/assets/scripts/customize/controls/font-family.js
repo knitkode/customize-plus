@@ -17,13 +17,7 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
     // treat value only if it's a string (unlike the php function)
     // because here we always have to get a string.
     if (typeof value === 'string') {
-      var fontFamiliesSanitized = [];
-      var fontFamilies = value.split(',');
-      for (var i = 0, l = fontFamilies.length; i < l; i++) {
-        var _fontFamilyUnquoted = fontFamilies[i].replace(/'/g, '').replace(/"/g, '');
-        fontFamiliesSanitized.push('\'' + _fontFamilyUnquoted.trim() + '\'');
-      }
-      return fontFamiliesSanitized.join(',');
+      return value;
     } else {
       return { error: true };
     }
@@ -31,9 +25,21 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
   /**
    * @override
    */
+  sanitize: function (value) {
+    var fontFamiliesSanitized = [];
+    var fontFamilies = value.split(',');
+    for (var i = 0, l = fontFamilies.length; i < l; i++) {
+      var _fontFamilyUnquoted = fontFamilies[i].replace(/'/g, '').replace(/"/g, '');
+      fontFamiliesSanitized.push('\'' + _fontFamilyUnquoted.trim() + '\'');
+    }
+    return fontFamiliesSanitized.join(',');
+  },
+  /**
+   * @override
+   */
   syncUIFromAPI: function (value) {
     if (value !== this.input.value) {
-      this._updateUI(this._sanitize(value));
+      this._updateUI(value);
     }
   },
   /**
@@ -70,7 +76,7 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
     }
 
     if (value) {
-      this.input.value = value;
+      this.input.value = value || setting();
     }
 
     // init selectize plugin

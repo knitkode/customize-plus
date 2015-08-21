@@ -344,7 +344,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				$panel_args['theme_supports'] = $panel['theme_supports'];
 			}
 			// dashicon (custom): optional
-			if ( isset( $panel['icon'] ) ) {
+			if ( isset( $panel['dashicon'] ) ) {
 				self::add_css_panel_dashicon( $panel_id, $panel['dashicon'] );
 			}
 			// get type if specified
