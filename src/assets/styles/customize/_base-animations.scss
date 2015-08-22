@@ -13,7 +13,7 @@
  * Anyway let's disable it for now. Try something like this url to test:
  * http://localhost/WPlayground/wp-admin/customize.php?autofocus[control]=jumbotron-font-size
  */
-$animate-sidebar-with-transforms-if-possible: true;
+$animate-sidebar-with-transforms-if-possible: false;
 
 @if ( $animate-sidebar-with-transforms-if-possible ) {
 
