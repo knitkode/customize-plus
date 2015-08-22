@@ -68,7 +68,7 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
     this._setDOMelements();
     this._initSliderAndBindInputs();
     // update UI with current values (wait for the slider to be initialized)
-    this._updateUIcustomControl();
+    this._updateUIcustomControl(this.setting());
   },
   /**
    * Set DOM element as control properties
@@ -210,7 +210,7 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
    */
   _setPartialValue: function (value, from) {
     if (from === 'API') {
-      this._updateUIcustomControl();
+      this._updateUIcustomControl(value);
     } else {
       this.setting.set(this._getValueFromUI(value));
     }
