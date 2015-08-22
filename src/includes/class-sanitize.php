@@ -246,7 +246,7 @@ class PWPcp_Sanitize {
 	public static function extract_size_unit( $input, $control ) {
 		if ( is_array( $control->units ) ) {
 			foreach ( $control->units as $unit ) {
-				if ( false != strpos( $input, $unit ) ) {
+				if ( strpos( $input, $unit ) ) {
 					return $unit;
 				}
 			}

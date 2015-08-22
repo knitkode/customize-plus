@@ -57,11 +57,13 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 			$this->json['attrs'] = $this->input_attrs;
 
 			// allowFloat also if input_attrs['step'] is a float number
-			if ( $this->allowFloat ||
-				( isset(  $this->input_attrs['step'] ) && is_float( $this->input_attrs['step'] ) )
-			) {
+			if ( isset( $this->input_attrs['step'] ) && is_float( $this->input_attrs['step'] ) ) {
 				$this->json['allowFloat'] = true;
 			}
+		}
+
+		if ( $this->allowFloat ) {
+			$this->json['allowFloat'] = true;
 		}
 
 		if ( ! empty( $this->units ) ) {
@@ -127,6 +129,7 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	protected static function sanitize( $value, $setting, $control ) {
 		$number = PWPcp_Sanitize::extract_number( $value, $control );
 		$unit = PWPcp_Sanitize::extract_size_unit( $value, $control );
+
 		// if it is a slider without unit
 		if ( empty( $control->units ) && $number ) {
 			return PWPcp_Sanitize::number( $number, $control );
