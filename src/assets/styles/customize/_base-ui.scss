@@ -3,6 +3,9 @@
  *
  */
 .pwpcpui {
+  /**
+   * Label
+   */
   &-label {
     display: block;
     margin-bottom: 2px;
@@ -10,11 +13,78 @@
     font-size: 11px;
   }
 
-  // toggle button within controls (used in color and dynamic controls)
+  /**
+   * Toggle button
+   *
+   * Used for toggle button within controls (i.e. in color and dynamic controls)
+   */
   &-toggle {
     @include ui-toggle();
   }
 
+  /**
+   * Header toggle
+   *
+   * Buttons on the top left bar in the 'customize', almost exactly copied from
+   * `.customize-controls-close`, and hover state of `.control-panel-back:focus
+   * , .control-panel-back:hover, .customize-controls-close:focus,
+   * .customize-controls-close:hover`. // @@wptight-css \\
+   */
+  &-header-toggle {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $toggle--width; // custom code
+    height: $WPcustomize--header-height;
+    padding: 0;
+    border: 0;
+    border-right: 1px solid #ddd;
+    background: #eee;
+    color: #444;
+    cursor: pointer;
+    transition: color .1s ease-in-out,background .1s ease-in-out;
+    user-select: none;
+
+     &:focus,
+     &:hover {
+      background: #ddd;
+      border-color: #ccc;
+      color: #000;
+      outline: 0;
+    }
+
+    // custom code, icon in the middle, no matter the button size
+    &:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font: 400 22px dashicons;
+      line-height: $WPcustomize--header-height;
+    }
+
+    @media (max-width: $WPcustomize--breakpoint-float) {
+      // hide toggle when, on small screens, the current view is the preview
+      // keep it in the media query because when resizing the browser from
+      // small to large WordPress doesn't remove the `preview-only` class
+      // even if it doesn't apply anymore
+      // @@wpapichange \\
+      .preview-only & {
+        display: none;
+      }
+    }
+  }
+  // // active status used by Search and Tools
+  // // @@note extend placeholder doesn't work well with libsass \\
+  // %pwpcpui-header-toggle-active {
+  //   box-shadow: inset 0 0 0 30px rgba(0,0,0,.075);
+  // }
+
+  /**
+   * Alerts
+   */
   &-alert {
     border: 1px solid transparent;
     padding: 10px 15px;
@@ -34,6 +104,117 @@
 
     p {
       margin: 5px 0;
+    }
+  }
+
+  /**
+   * Textarea
+   */
+  &-textarea {
+    width: 100%;
+    resize: vertical;
+  }
+
+  /**
+   * Button Icon
+   *
+   * A button only made of an `<i>`. Used i.e. in the Screenpreview.
+   *
+   * Markup:
+   * ```html
+   * <i class="dashicon ..glyph..">
+   * ```
+   */
+  &-btn-icon {
+    display: inline-block;
+    cursor: pointer;
+    color: $WPcustomize--collapse-sidebar-color;
+    padding: $screenpreview--btn-padding-horizontal 5px $WPcustomize--collapse-sidebar-bottom;
+    color: inherit;
+    opacity: .5;
+
+    &.pwpcp-active,
+    &.pwpcp-active:hover {
+      opacity: 1;
+    }
+
+    &.pwpcp-current,
+    &.pwpcp-current:hover {
+      opacity: 1;
+      cursor: default;
+    }
+  }
+
+  /**
+   * Control button
+   *
+   * Shared style applied to button which are common for all the controls and
+   * that are meant to be used as additional control specific content. Used for
+   * the `extras` menu and `guide` button. Buttons using this class should add
+   * their specific class to determine their position inside the control area.
+   */
+  &-control-btn {
+    z-index: 3;
+    position: absolute;
+    width: $control--btn-size;
+    height: $control--btn-size;
+    line-height: $control--btn-size + 1; // @@tofix weird bug \\
+    font-size: $control--btn-icon-fontsize;
+    color: $control--btn-color;
+    opacity: 0;
+    transition: opacity .18s ease, color .18s ease;
+    cursor: pointer;
+
+    .pwpcp-control:hover & {
+      opacity: 1;
+    }
+  }
+
+
+  /**
+   * Input group (like size control).
+   * Adapted from Bootstrap 3.3
+   *
+   * Markup:
+   * ```html
+   * <div class="pwpcpui-input-group">
+   *   <input type="text" class="pwpcp-input">
+   *   <span class="pwpcpui-input-group-btn">
+   *     <button class="button button-small pwpcp-btn" type="button"><?php _e( 'Do', 'pkgtextdomain' ); ?></button>
+   *   </span>
+   * </div>
+   * ```
+   */
+  &-input-group {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+
+    input.pwpcp-input {
+      display: table-cell;
+      position: relative;
+      z-index: 2;
+      float: left;
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    &-btn {
+      display: table-cell;
+      position: relative;
+      font-size: 0;
+      white-space: nowrap;
+      width: 1%;
+      vertical-align: middle;
+    }
+
+    .button-small.pwpcp-btn {
+      height: auto; // @@wptight-css-override of: .wp-core-ui.wp-customizer .button {} \\
+      padding: 3px 5px; // @@wptight-css from: input {} \\
+      // padding: 6px 10px; // @@wptight-css from: input[type=text] {} \\
+      line-height: 18px; // @@wptight-css from: .customize-control input[type=text] {} \\
+      margin-left: -1px;
+      border-radius: 0 3px 3px 0;
     }
   }
 }
