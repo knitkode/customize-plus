@@ -70,6 +70,7 @@ gulp.task('_base-images', function() {
  */
 gulp.task('_base-styles', ['_base-images'], function() {
   return gulp.src(PATHS.src.styles + '*.scss')
+    .pipe($.include())
     .pipe($.sass())
     .on('error', utilErrors)
     .pipe($.base64({
