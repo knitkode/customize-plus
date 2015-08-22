@@ -9,13 +9,11 @@
     "$",
     "_",
     "validator",
-    "Mousetrap",
     "wp",
     "wpApi",
     "wpApiIsReady",
     "PWPcp",
     "api",
-    "l10n",
     "$window",
     "$document",
     "body"
