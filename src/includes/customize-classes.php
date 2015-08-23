@@ -19,23 +19,23 @@
  */
 global $wp_customize;
 
-//= include controls/base.php
-//= include controls/base-input.php
-//= include controls/base-radio.php
-//= include controls/buttonset.php
-//= include controls/color.php
-//= include controls/dummy.php
-//= include controls/font-family.php
-//= include controls/multicheck.php
-//= include controls/number.php
-//= include controls/radio.php
-//= include controls/radio-image.php
-//= include controls/select.php
-//= include controls/font-weight.php
-//= include controls/slider.php
-//= include controls/sortable.php
-//= include controls/tags.php
-//= include controls/text.php
-//= include controls/textarea.php
-//= include controls/toggle.php
-//= include settings/dummy.php
+//= require controls/base.php
+//= require controls/base-input.php
+//= require controls/base-radio.php
+//= require controls/buttonset.php
+//= require controls/color.php
+//= require controls/dummy.php
+//= require controls/font-family.php
+//= require controls/multicheck.php
+//= require controls/number.php
+//= require controls/radio.php
+//= require controls/radio-image.php
+//= require controls/select.php
+//= require controls/font-weight.php
+//= require controls/slider.php
+//= require controls/sortable.php
+//= require controls/tags.php
+//= require controls/text.php
+//= require controls/textarea.php
+//= require controls/toggle.php
+//= require settings/dummy.php

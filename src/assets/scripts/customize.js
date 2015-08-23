@@ -39,15 +39,15 @@
     wpApiIsReady = true;
   });
 
-  //= include customize/core/markdown.js
-  //= include customize/core/wptight.js
-  //= include customize/core/regexes.js
-  //= include customize/core/validators.js
-  //= include customize/core/utils.js
-  //= include customize/core/skeleton.js
-  //= include customize/core/notices.js
-  //= include customize/core/tabs.js
-  //= include customize/core/tooltips.js
+  //= require customize/core/markdown.js
+  //= require customize/core/wptight.js
+  //= require customize/core/regexes.js
+  //= require customize/core/validators.js
+  //= require customize/core/utils.js
+  //= require customize/core/skeleton.js
+  //= require customize/core/notices.js
+  //= require customize/core/tabs.js
+  //= require customize/core/tooltips.js
 
   /**
    * Collect here controls prototypes
@@ -56,25 +56,25 @@
    */
   api.controls = {};
 
-  //= include customize/controls/base.js
-  //= include customize/controls/base-input.js
-  //= include customize/controls/base-radio.js
-  //= include customize/controls/buttonset.js
-  //= include customize/controls/color.js
-  //= include customize/controls/dummy.js
-  //= include customize/controls/font-family.js
-  //= include customize/controls/multicheck.js
-  //= include customize/controls/number.js
-  //= include customize/controls/radio.js
-  //= include customize/controls/radio-image.js
-  //= include customize/controls/select.js
-  //= include customize/controls/font-weight.js
-  //= include customize/controls/slider.js
-  //= include customize/controls/sortable.js
-  //= include customize/controls/tags.js
-  //= include customize/controls/text.js
-  //= include customize/controls/textarea.js
-  //= include customize/controls/toggle.js
+  //= require customize/controls/base.js
+  //= require customize/controls/base-input.js
+  //= require customize/controls/base-radio.js
+  //= require customize/controls/buttonset.js
+  //= require customize/controls/color.js
+  //= require customize/controls/dummy.js
+  //= require customize/controls/font-family.js
+  //= require customize/controls/multicheck.js
+  //= require customize/controls/number.js
+  //= require customize/controls/radio.js
+  //= require customize/controls/radio-image.js
+  //= require customize/controls/select.js
+  //= require customize/controls/font-weight.js
+  //= require customize/controls/slider.js
+  //= require customize/controls/sortable.js
+  //= require customize/controls/tags.js
+  //= require customize/controls/text.js
+  //= require customize/controls/textarea.js
+  //= require customize/controls/toggle.js
 
   console.log('customize.js controls initialization took ' + (performance.now() - t) + ' ms.');
 
@@ -92,6 +92,6 @@
     console.log('customize.js core initialization took ' + (performance.now() - t) + ' ms.');
   });
 
-  //= include customize/temp.js
+  //= require customize/temp.js
 
 })(window, document, jQuery, _, wp, PWPcp, validator);
