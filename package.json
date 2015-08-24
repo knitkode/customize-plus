@@ -1,7 +1,7 @@
 {
   "name": "customize-plus",
   "version": "0.0.1",
-  "description": "Empower and extend the WordPress customize.",
+  "description": "Enhance and extend the WordPress Customize.",
   "config": {
     "namePretty": "Customize Plus",
     "nameShort": "PWPcp",
@@ -9,7 +9,7 @@
   },
   "homepage": "http://pluswp.com/customize-plus",
   "author": {
-    "name": "kuus",
+    "name": "PlusWP",
     "email": "dev@pluswp.com",
     "url": "http://pluswp.com/"
   },

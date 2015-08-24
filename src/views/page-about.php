@@ -2,7 +2,7 @@
 	<div class="pwpcp-logo"></div>
 	<h1>Customize Plus</h1>
 	<div class="about-text">
-		<p class="description"><?php _e( 'Empower and extend the WordPress customize.', 'pkgTextDomain' ); ?></p>
+		<p class="description"><?php _e( 'Enhance and extend the WordPress Customize.', 'pkgTextDomain' ); ?></p>
 		<ul class="subsubsub" style="margin: 20px 0;">
 			<li><a href="http://pluswp.com/"><?php _e( 'Project homepage', 'pkgTextDomain' ); ?></a> |</li>
 			<li><a href="http://pluswp.com/"><?php _e( 'Documentation', 'pkgTextDomain' ); ?></a> |</li>
