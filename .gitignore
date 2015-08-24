@@ -26,6 +26,7 @@ node_modules
 bower_components
 .sass-cache
 .tmp
+.publish
 
 # OS and other
 .DS_Store
