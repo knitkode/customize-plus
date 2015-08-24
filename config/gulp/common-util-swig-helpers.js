@@ -14,7 +14,7 @@ module.exports.phpArray = function (input) {
     return input;
   }
   return JSON.stringify(input)
-    .replace(/"/g, "'") // replace double quotes with single quotes
+    .replace(/"/g, '\'') // replace double quotes with single quotes
     .replace(/,/g, ', ') // put a space after the comma
     .replace('[', 'array( ') // replace the brackets with the php array syntax (open)
     .replace(']', ' )'); // replace the brackets with the php array syntax (close)
@@ -73,4 +73,4 @@ module.exports.phpQuotes = function (input, type) {
   } else {
     return input;
   }
-}
+};
