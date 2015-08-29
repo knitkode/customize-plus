@@ -11,14 +11,18 @@
 // });
 var del = require('del');
 
-gulp.task('_build-clean', function (cb) {
+gulp.task('_release-clean', function (cb) {
   del([ global.PATHS.build.root + '/**/*' ], cb);
 });
 
-gulp.task('_build-copy', function () {
+gulp.task('_release-copy', function () {
   return gulp.src('**/*', { cwd: global.PATHS.src.root })
     .pipe(gulp.dest(global.PATHS.build.root));
 });
+
+gulp.task('release', [
+  '_release-prepare' // task specific to each single project
+]);
 
 // @public
 // gulp.task('release', ['build']);
