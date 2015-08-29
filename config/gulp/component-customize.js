@@ -27,7 +27,6 @@ gulp.task('build-customize', [
 gulp.task('watch-customize', function() {
   gulp.watch('./src/bower.json', ['build-customize']);
   gulp.watch(PATHS.src.scripts + '**/*.js', ['_customize-scripts']);
-
 });
 
 /**
@@ -170,7 +169,6 @@ gulp.task('codestyle-trial', function() {
   return gulp.src('**/*.js', { cwd: PATHS.src.scripts })
     .pipe($.trimlines(PLUGINS.trimlines))
     .pipe($.jscs(PLUGINS.jscs))
-    .on('error', function () {})
     // .pipe($.replace('var DEBUG = true;', 'var DEBUG = api.DEBUG || true;'))
     .pipe(gulp.dest(PATHS.src.scripts));
 });
