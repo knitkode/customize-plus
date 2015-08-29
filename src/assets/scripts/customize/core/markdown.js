@@ -1,4 +1,4 @@
-/* global marked */
+/* global marked, hljs */
 
 /**
  * Markdown init (with marked.js)
@@ -6,8 +6,8 @@
  */
 (function () {
 
-  // bail fi marked is not available on window
-  if (!marked) {
+  // bail if marked is not available on window
+  if (!marked || !hljs) {
     return;
   }
 
@@ -25,7 +25,7 @@
    * @param  {string} text
    * @return {string}
    */
-  markedRenderer.link = function(href, title, text) {
+  markedRenderer.link = function (href, title, text) {
     var external = /^https?:\/\/.+$/.test(href);
     var newWindow = external || title === 'newWindow';
     var out = '<a href="' + href + '"';
@@ -44,7 +44,7 @@
   marked.setOptions({
     // anchorTargetBlank: true,
     renderer: markedRenderer,
-    highlight: function (code, lang, callback) {
+    highlight: function (code) {
       return hljs.highlightAuto(code).value;
     }
   });

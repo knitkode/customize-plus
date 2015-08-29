@@ -43,5 +43,9 @@ module.exports = {
   jsonEditor: {
     'indent_char': ' ',
     'indent_size': 2
+  },
+  // https://www.npmjs.com/package/gulp-trimlines
+  trimlines: {
+    leading: false
   }
 };
