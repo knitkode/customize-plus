@@ -114,7 +114,8 @@ gulp.task('_customize-scripts-admin-unminified', function() {
   stream.queue(gulp.src(PATHS.src.scripts + 'customize.js')
     .pipe($.header(CONFIG.credits, { pkg: pkg }))
     .pipe($.include())
-    .pipe($.trimlines(PLUGINS.trimlines))
+    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = api.DEBUG || true;')))
     // .pipe($.if(argv.docs, $.jsdoc('./docs')))
   );
   return stream.done()
@@ -135,10 +136,10 @@ gulp.task('_customize-scripts-admin-minified', function() {
   stream.queue(gulp.src(adminScriptsLibraries));
     // .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify))));
   stream.queue(gulp.src(PATHS.src.scripts + 'customize.js')
+    .pipe($.header(CONFIG.credits, { pkg: pkg }))
     .pipe($.include())
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', '')))
     // .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
-    .pipe($.header(CONFIG.credits, { pkg: pkg }))
   );
   return stream.done()
     .pipe($.concat('customize.min.js', PLUGINS.concat))
@@ -168,7 +169,8 @@ gulp.task('_customize-scripts-preview', function() {
 gulp.task('codestyle-trial', function() {
   return gulp.src('**/*.js', { cwd: PATHS.src.scripts })
     .pipe($.trimlines(PLUGINS.trimlines))
-    .pipe($.jscs({ fix: true }))
+    .pipe($.jscs(PLUGINS.jscs))
+    .on('error', function () {})
     // .pipe($.replace('var DEBUG = true;', 'var DEBUG = api.DEBUG || true;'))
     .pipe(gulp.dest(PATHS.src.scripts));
 });

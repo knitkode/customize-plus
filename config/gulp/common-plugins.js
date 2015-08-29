@@ -47,5 +47,10 @@ module.exports = {
   // https://www.npmjs.com/package/gulp-trimlines
   trimlines: {
     leading: false
+  },
+  // http://jscs.info/overview#options
+  jscs: {
+    configPath: '.jscsrc',
+    fix: true
   }
 };
