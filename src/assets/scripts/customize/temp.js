@@ -4,16 +4,16 @@
  * Temporary js to inject at the bottom
  */
 if (DEBUG) {
-  wpApi.bind( 'ready', function() {
+  wpApi.bind('ready', function() {
     console.log('wp API ready');
   });
-  wpApi.bind( 'save', function() {
+  wpApi.bind('save', function() {
     console.log('wp API saving ...');
   });
-  wpApi.bind( 'saved', function() {
+  wpApi.bind('saved', function() {
     console.log('wp API saved !');
   });
-  wpApi.bind( 'activated', function() {
+  wpApi.bind('activated', function() {
     console.log('wp API activated ????');
   });
 }
