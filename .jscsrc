@@ -3,6 +3,7 @@
   "excludeFiles": [
     "**/vendor/**",
     "**/*.min.js",
+    "**/bower_components/**",
     "**/node_modules/**"
   ]
 }
