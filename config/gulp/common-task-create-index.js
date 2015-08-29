@@ -14,7 +14,7 @@ var folders = require('./common-util-get-folders');
  * @link(https://github.com/gulpjs/gulp/blob/master/docs/recipes/running-task-steps-per-folder.md)
  * @link(http://stackoverflow.com/a/30348965/1938970, source(if file exists))
  */
-gulp.task('_build-create-index', function() {
+gulp.task('_build-create-index', function () {
   var fileName = 'index.php';
   var fileContent = '<?php // Silence is golden';
   var indexPaths = [path.join(PATH_BUILD_BASE, fileName)];
