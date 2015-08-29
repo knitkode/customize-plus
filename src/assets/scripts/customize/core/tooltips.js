@@ -1,19 +1,13 @@
-/* global Utils */
+/* global Utils, marked */
 
 /**
  * Tooltips
  * with additional content regarding controls
  *
+ * @libraries marked
  * @requires Utils
  */
 var Tooltips = (function () {
-
-  /**
-   * Hold reference to marked js plugin,
-   * it might be not here.
-   * @type {function()}
-   */
-  var marked = window.marked;
 
   /**
    * Common options for both "help" and "guide" tooltips.
@@ -189,17 +183,31 @@ var Tooltips = (function () {
 
   // @public API
   return {
+    /**
+     * Init
+     */
     init: function () {
       _initGuides();
       // Init bootstrap tooltips
       // $('.pwpcp-tip').tooltip();
     },
+    /**
+     * Create helpers on each of the given HTML elements
+     * @param  {array<HTMLelements} elements The DOM elements where to add a
+     *                                       helper
+     */
     createHelpers: function (elements) {
       for (var i = elements.length - 1; i >= 0; i--) {
         _createHelperInsideControl($(elements[i]));
       }
     },
+    /**
+     * @inheritDoc
+     */
     createGuide: _createGuideForControl,
+    /**
+     * @inheritDoc
+     */
     destroyGuide: _destroyGuideOfControl
   };
 })();

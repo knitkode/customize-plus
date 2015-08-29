@@ -9,7 +9,6 @@
  * @augments wp.customize.Class
  * @requires Regexes
  */
-// export to our API and to WordPress API
 api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.extend({
   /**
    * Let's consider '44' to be equal to 44.

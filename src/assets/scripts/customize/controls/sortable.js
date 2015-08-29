@@ -6,7 +6,6 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-// export to our API and to WordPress API
 api.controls.Sortable = wpApi.controlConstructor.pwpcp_sortable = api.controls.Base.extend({
   /**
    * @override

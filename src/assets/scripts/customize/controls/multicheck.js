@@ -1,5 +1,3 @@
-/* global Utils */
-
 /**
  * Control Multicheck
  *

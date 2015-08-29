@@ -1,4 +1,4 @@
-/* global Utils, tinycolor */
+/* global tinycolor */
 
 /**
  * Load spectrum only on demand
@@ -14,9 +14,8 @@ $.fn.spectrum.load = false;
  * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
- * @requires Utils
+ * @libraries tinycolor
  */
-// export to our API and to WordPress API
 api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.extend({
   /**
    * Use tinycolor (included in spectrum.js) to always convert colors to their

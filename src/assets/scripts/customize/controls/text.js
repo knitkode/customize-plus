@@ -1,6 +1,9 @@
+/* global Utils */
+
 /**
  * Control Text class
  *
+ * @requires Utils
  * @constructor
  * @augments api.controls.BaseInput
  * @augments api.controls.Base

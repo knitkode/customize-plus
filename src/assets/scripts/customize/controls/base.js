@@ -11,7 +11,6 @@
  * @class
  * @augments wp.customize.Control
  */
-// export to our API
 api.controls.Base = wpApi.Control.extend({
   /**
    * Tweak the initialize methods.
@@ -221,8 +220,8 @@ api.controls.Base = wpApi.Control.extend({
         // this.params.template = frag;
         // _container.appendChild(frag);
 
-        console.log('%c renderContent of ' + this.params.type + '(' + this.id +
-         ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+        if (DEBUG) console.log('%c renderContent of ' + this.params.type + '(' +
+          this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
     }
   },
@@ -276,8 +275,8 @@ api.controls.Base = wpApi.Control.extend({
         // there are many DOM elements to remove, investigate here \\
         container.innerHTML = '';
 
-        console.log('%c deflate of ' + this.params.type + '(' + this.id + ') took '
-         + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
+        if (DEBUG) console.log('%c deflate of ' + this.params.type + '(' + this.id +
+          ') took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
 
         // flag control that it's not rendered
         this.rendered = false;
@@ -304,15 +303,15 @@ api.controls.Base = wpApi.Control.extend({
     if (DEBUG) var t = performance.now();
     if (!this.params.template) {
       this.renderContent();
-      // console.log('%c inflate DOM of ' + this.params.type + ' took ' +
-      //   (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+      // if (DEBUG) console.log('%c inflate DOM of ' + this.params.type +
+      //   ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       this.rendered = true;
       this.ready();
     } else {
       if (!this.rendered) {
         this._container.innerHTML = this.params.template;
-        // console.log('%c inflate DOM of ' + this.params.type + ' took ' +
-        //   (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+        // if (DEBUG) console.log('%c inflate DOM of ' + this.params.type +
+        //   ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
       this.rendered = true;
       this.ready();
@@ -328,8 +327,8 @@ api.controls.Base = wpApi.Control.extend({
     // `_validateWrap` method above)
     this._onValidateSuccess();
 
-    console.log('%c inflate of ' + this.params.type + ' took ' +
-      (performance.now() - t) + ' ms.', 'background: #D2FFF1');
+    if (DEBUG) console.log('%c inflate of ' + this.params.type +
+      ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
   },
   /**
    * Softenize

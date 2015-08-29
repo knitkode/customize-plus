@@ -3,36 +3,50 @@
 /**
  * Skeleton element wrappers
  *
+ * @libraries Modernizr
  * @requires WpTight
  */
 var Skeleton = (function () {
-  var _wpSidebar;
 
   /**
-   * Init
+   * @type {HTMLelement}
    */
-  function _init () {
-    _wpSidebar = WpTight.el.sidebar[0];
-  }
+  var _wpSidebar;
 
   // @public API
   return {
+    /**
+     * Init
+     */
     init: function () {
-      _init();
+      _wpSidebar = WpTight.el.sidebar[0];
       // set elements as properties
       this.$loader = $('#pwpcp-loader');
       this.title = document.getElementById('pwpcp-title');
       this.text = document.getElementById('pwpcp-text');
     },
+    /**
+     * Trigger loading UI state (changes based on added css class)
+     */
     loading: function () {
       body.classList.add('pwpcp-loading');
     },
+    /**
+     * Remove loading UI state
+     */
     loaded: function () {
       body.classList.remove('pwpcp-loading');
     },
+    /**
+     * Show 'full page' loader
+     */
     show: function () {
       this.$loader.show();
     },
+    /**
+     * Hide 'full page' loader, use jQuery animation if the browser supports
+     * WebWorkers (this is related to the Premium Compiler component)
+     */
     hide: function () {
       if (Modernizr.webworkers) {
         this.$loader.fadeOut();
@@ -44,11 +58,10 @@ var Skeleton = (function () {
      * Check if the WordPress sidebar has a scrollbar and toggle class on it.
      *
      * @link http://stackoverflow.com/a/4814526/1938970
-     *
-     * @return {boolean} [description]
      */
     hasScrollbar: function () {
-      body.classList.toggle('pwpcp-has-scrollbar', _wpSidebar.scrollHeight > _wpSidebar.clientHeight);
+      body.classList.toggle('pwpcp-has-scrollbar',
+        _wpSidebar.scrollHeight > _wpSidebar.clientHeight);
     }
   };
 })();

@@ -6,7 +6,6 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-// export to our API
 api.controls.BaseInput = api.controls.Base.extend({
   /**
    * Sync UI with value coming from API, a programmatic change like a reset.

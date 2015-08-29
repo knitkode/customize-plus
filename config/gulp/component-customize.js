@@ -103,14 +103,6 @@ var adminScriptsLibraries = [
   PATHS.src.bower + 'spectrum/spectrum.js'
 ];
 
-gulp.task('tt', function() {
-  return gulp.src('**/*.js', { cwd: PATHS.src.scripts })
-    .pipe($.trimlines(PLUGINS.trimlines))
-    .pipe($.jscs({ fix: true }))
-    .pipe($.replace('var DEBUG = true;', 'var DEBUG = api.DEBUG || false;'))
-    .pipe(gulp.dest(PATHS.src.scripts));
-});
-
 /**
  * Scripts | Admin custom scripts unminified (outside iframe)
  *
@@ -167,4 +159,16 @@ gulp.task('_customize-scripts-preview', function() {
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.scripts));
+});
+
+/**
+ * Codestyle Trial
+ *
+ */
+gulp.task('codestyle-trial', function() {
+  return gulp.src('**/*.js', { cwd: PATHS.src.scripts })
+    .pipe($.trimlines(PLUGINS.trimlines))
+    .pipe($.jscs({ fix: true }))
+    // .pipe($.replace('var DEBUG = true;', 'var DEBUG = api.DEBUG || true;'))
+    .pipe(gulp.dest(PATHS.src.scripts));
 });

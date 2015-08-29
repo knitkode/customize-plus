@@ -3,6 +3,7 @@
 /**
  * Control Tags class
  *
+ * @requires Utils
  * @constructor
  * @augments api.controls.Base
  * @augments wp.customize.Control

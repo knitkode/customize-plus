@@ -15,7 +15,10 @@
  * @augments wp.customize.Class
  */
 api.controls.Dummy = wpApi.controlConstructor.pwpcp_dummy = wpApi.Control.extend({
-  initialize: function( id, options ) {
+  /**
+   * @override
+   */
+  initialize: function (id, options) {
     var control = this;
     // var settings;
 

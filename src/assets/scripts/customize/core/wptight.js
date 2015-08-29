@@ -39,8 +39,6 @@ var WpTight = (function () {
       el.info = $('#customize-info');
       /** @type {jQuery} */
       el.customizeControls = $('#customize-theme-controls').find('ul').first();
-      // /** @type {jQuery} */
-      // el.btnSave = $('#save');
     },
     /**
      * The suffix appended to the styles ids by WordPress when enqueuing them

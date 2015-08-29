@@ -7,7 +7,6 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-// export to our API and to WordPress API
 api.controls.Number = wpApi.controlConstructor.pwpcp_number = api.controls.BaseInput.extend({
   /**
    * @override

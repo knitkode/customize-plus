@@ -1,7 +1,6 @@
 /**
  * Utils
  *
- * @requires Regexes
  */
 var Utils = (function () {
 

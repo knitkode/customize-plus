@@ -76,7 +76,7 @@
   //= require customize/controls/textarea.js
   //= require customize/controls/toggle.js
 
-  console.log('customize.js controls initialization took ' + (performance.now() - t) + ' ms.');
+  if (DEBUG) console.log('customize.js controls initialization took ' + (performance.now() - t) + ' ms.');
 
   /**
    * Core initialization
@@ -89,7 +89,7 @@
     Tabs.init();
     Tooltips.init();
     Notices.init();
-    console.log('customize.js core initialization took ' + (performance.now() - t) + ' ms.');
+    if (DEBUG) console.log('customize.js core initialization took ' + (performance.now() - t) + ' ms.');
   });
 
   //= require customize/temp.js

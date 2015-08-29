@@ -102,7 +102,7 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
       setting.set(this.value);
     })
     .on('item_remove', function (e,b) {
-      console.log(this, e, b);
+      if (DEBUG) console.log(this, e, b);
     });
   }
 });
