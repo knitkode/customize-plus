@@ -71,7 +71,8 @@ gulp.task('build', sequence([
     'build-base',
     'build-customize'
   ],
-  '_build-replace-words'
+  '_build-replace-words',
+  '_build-create-index'
 ));
 
 // @public
@@ -89,7 +90,7 @@ require('./config/gulp');
 
 
  // @@temp \\
-var jsdoc = require("gulp-jsdoc");
+var jsdoc = require('gulp-jsdoc');
 gulp.task('docs-js', function () {
   gulp.src('./build/assets/customize.js')
     .pipe(jsdoc('./docs-js'));

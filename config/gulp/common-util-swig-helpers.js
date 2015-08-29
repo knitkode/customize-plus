@@ -1,6 +1,3 @@
-var validator = require('validator');
-
-
 /**
  * SWIG filter: phpArray
  * Transform a javascript array
@@ -45,7 +42,8 @@ module.exports.phpQuotes = function (input, type) {
   var translatable = (typeof type != 'undefined') ? toTranslate.indexOf(type.toString()) !== -1 : false;
 
   // if it is a number and it's not a label or so
-  if (validator.isNumeric(input) && !translatable) {
+  var isNumeric = /^[-+]?[0-9]+$/;
+  if (isNumeric.test(input) && !translatable) {
     return input; // return number without quotes
 
   // if it is a string
