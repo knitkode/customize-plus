@@ -1,8 +1,8 @@
 /* jshint node: true */
 'use strict';
 
-var gulp = require( 'gulp' );
-var sequence = require( 'gulp-sequence' );
+var gulp = require('gulp');
+var sequence = require('gulp-sequence');
 
 /**
  * Paths
@@ -37,7 +37,7 @@ var PATHS = {
  * Paths to Premium Plugin version
  * @type {Object}
  */
-PATHS = require( 'util' )._extend( PATHS, {
+PATHS = require('util')._extend(PATHS, {
   /** @type {Object} */
   toPremium: {
     files: [
@@ -73,7 +73,7 @@ global.PATHS = PATHS;
 
 
 // @access public
-gulp.task( 'build', sequence([
+gulp.task('build', sequence([
     'build-base',
     'build-customize'
   ]
@@ -82,13 +82,13 @@ gulp.task( 'build', sequence([
 ) );
 
 // @access public
-gulp.task( 'watch', [
+gulp.task('watch', [
   'watch-base',
   'watch-customize'
 ]);
 
 // @access public
-gulp.task( 'modernizr', ['_customize-modernizr']);
+gulp.task('modernizr', ['_customize-modernizr']);
 
 
 // Require the gulp folder with all the tasks, don't change this

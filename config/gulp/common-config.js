@@ -15,5 +15,5 @@ module.exports = {
     ' */'
   ].join('\n'),
   argv: require('minimist')(process.argv.slice(2)),
-  isDist: !!require('minimist')(process.argv.slice(2)).dist, // read --dist arg (i.e. `gulp build --dist`)
+  isDist: !!require('minimist')(process.argv.slice(2)).dist // read --dist arg (i.e. `gulp build --dist`)
 };
