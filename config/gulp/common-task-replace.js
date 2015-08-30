@@ -10,7 +10,7 @@ var CONFIG = require('./common-config');
  *
  */
 // @access public
-gulp.task('_build-replace-words', function () {
+gulp.task('_release-replace-words', function () {
   var options = { skipBinary: true };
   var pkg = require('../../package.json');
   var pkgConfigEndYear = (new Date().getFullYear() > pkg.config.startYear) ? new Date().getFullYear() : '';
@@ -31,7 +31,7 @@ gulp.task('_build-replace-words', function () {
     .pipe($.if(CONFIG.isDist, $.replace('pkgLicenseType', pkg.license.type, options)))
     .pipe($.if(CONFIG.isDist, $.replace('pkgLicenseUrl', pkg.license.url, options)))
     .pipe($.if(CONFIG.isDist, $.replace('pkgConfigTags', tags.join(', '), options)))
-    .pipe($.if(CONFIG.isDist, $.replace('pkgTextdomain', pkg.name + '-i18n', options)))
+    .pipe($.if(CONFIG.isDist, $.replace('pkgTextdomain', pkg.config.textDomain, options)))
     .pipe($.if(CONFIG.isDist, $.replace('pkgConfigStartYear', pkg.config.startYear, options)))
     .pipe($.if(CONFIG.isDist, $.replace('pkgConfigEndYear', pkgConfigEndYear, options)))
     // delete all code annotations, regex matches: ' // @@ ....single/multi line content \\
