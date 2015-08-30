@@ -9,7 +9,7 @@ var CONFIG = require('./common-config');
  * Replace words task
  *
  */
-// @public
+// @access public
 gulp.task('_build-replace-words', function () {
   var options = { skipBinary: true };
   var pkg = require('../../package.json');

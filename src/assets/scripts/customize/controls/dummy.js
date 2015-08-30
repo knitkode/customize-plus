@@ -10,11 +10,14 @@
  * method.
  *
  * @see wp-admin/js/customize-controls.js#732
+ *
+ * @class wp.customize.controlConstructor.pwpcp_dummy
+ * @alias api.controls.Dummy
  * @constructor
- * @augments wp.customize.Control
+ * @extends wp.customize.Control
  * @augments wp.customize.Class
  */
-api.controls.Dummy = wpApi.controlConstructor.pwpcp_dummy = wpApi.Control.extend({
+wpApi.controlConstructor.pwpcp_dummy = api.controls.Dummy = wpApi.Control.extend({
   /**
    * @override
    */

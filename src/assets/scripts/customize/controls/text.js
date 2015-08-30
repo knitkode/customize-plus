@@ -3,16 +3,18 @@
 /**
  * Control Text class
  *
- * @requires Utils
+ * @class wp.customize.controlConstructor.pwpcp_text
  * @constructor
- * @augments api.controls.BaseInput
+ * @extends api.controls.BaseInput
  * @augments api.controls.Base
  * @augments wp.customize.Control
- * @augments wp.customize.Class
+ * @augments wp.customize.Classnds
+ * @requires api.Utils
  */
 wpApi.controlConstructor.pwpcp_text = api.controls.BaseInput.extend({
   /**
    * @override
+   * @inheritdoc api.controls.Base.validate
    */
   validate: function (value) {
     var attrs = this.params.attrs;

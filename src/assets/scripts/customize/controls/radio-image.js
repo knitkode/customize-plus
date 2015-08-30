@@ -1,8 +1,9 @@
 /**
  * Control Radio Image
  *
+ * @class wp.customize.controlConstructor.pwpcp_radio_image
  * @constructor
- * @augments api.controls.BaseRadio
+ * @extends api.controls.BaseRadio
  * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class

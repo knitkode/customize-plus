@@ -13,7 +13,7 @@ var pkg = require('../../package.json');
 /**
  * Build
  *
- * @public
+ * @access public
  */
 gulp.task('build-customize', [
   '_customize-scripts'
@@ -22,7 +22,7 @@ gulp.task('build-customize', [
 /**
  * Watch
  *
- * @public
+ * @access public
  */
 gulp.task('watch-customize', function() {
   gulp.watch('./src/bower.json', ['build-customize']);
@@ -32,7 +32,7 @@ gulp.task('watch-customize', function() {
 /**
  * Scripts | Collect tasks
  *
- * @private
+ * @access private
  */
 gulp.task('_customize-scripts', [
   '_customize-scripts-admin-libs',
@@ -43,7 +43,7 @@ gulp.task('_customize-scripts', [
 /**
  * Scripts | Admin libraries
  *
- * @private
+ * @access private
  */
 gulp.task('_customize-scripts-admin-libs', function() {
   // Customize scripts admin libraries (outside iframe)
@@ -59,7 +59,7 @@ gulp.task('_customize-scripts-admin-libs', function() {
 /**
  * Scripts | Modernizr custom build
  *
- * @private
+ * @access private
  */
 gulp.task('_customize-modernizr', function() {
   // modernizr does weird stuff, exclude it from build, just rebuild it on demand
@@ -73,7 +73,7 @@ gulp.task('_customize-modernizr', function() {
     .pipe($.if(rebuild, $.modernizr(modernizrOpts)))
     .pipe($.if(rebuild, $.rename('modernizr-custom.js')))
     .pipe($.if(rebuild, $.uglify({ preserveComments: function (node, comment) {
-      // @link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/
+      // {@link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/}
       // just keep the comment with License
       // this regex should work but it doesn't: /[\s\S]*\/\*\![\s\S]*(license)/gi
       if (/license/gi.test(comment.value)) {
@@ -86,7 +86,7 @@ gulp.task('_customize-modernizr', function() {
 /**
  * Scripts | Admin custom scripts (outside iframe)
  *
- * @private
+ * @access private
  */
 gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-unminified', '_customize-scripts-admin-minified']);
 
@@ -105,7 +105,7 @@ var adminScriptsLibraries = [
 /**
  * Scripts | Admin custom scripts unminified (outside iframe)
  *
- * @private
+ * @access private
  */
 gulp.task('_customize-scripts-admin-unminified', function() {
   var stream = streamqueue({ objectMode: true });
@@ -128,7 +128,7 @@ gulp.task('_customize-scripts-admin-unminified', function() {
  * Disable minification here, is doen through a bash script that runs the
  * uglify CLI which has more options, like `mangle-regex`
  *
- * @private
+ * @access private
  */
 gulp.task('_customize-scripts-admin-minified', function() {
   var stream = streamqueue({ objectMode: true });
@@ -148,7 +148,7 @@ gulp.task('_customize-scripts-admin-minified', function() {
 /**
  * Scripts | Preview (inside iframe)
  *
- * @private
+ * @access private
  */
 gulp.task('_customize-scripts-preview', function() {
   return gulp.src(PATHS.src.scripts + 'customize-preview.js')
@@ -167,6 +167,7 @@ gulp.task('_customize-scripts-preview', function() {
  */
 gulp.task('codestyle-trial', function() {
   return gulp.src('**/*.js', { cwd: PATHS.src.scripts })
+    .pipe($.include())
     .pipe($.trimlines(PLUGINS.trimlines))
     .pipe($.jscs(PLUGINS.jscs))
     // .pipe($.replace('var DEBUG = true;', 'var DEBUG = api.DEBUG || true;'))

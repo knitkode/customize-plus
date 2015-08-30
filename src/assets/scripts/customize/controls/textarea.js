@@ -3,10 +3,12 @@
 /**
  * Control Textarea class
  *
+ * @class wp.customize.controlConstructor.pwpcp_textarea
  * @constructor
- * @augments api.controls.Base
+ * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ * @requires tinyMCE
  */
 wpApi.controlConstructor.pwpcp_textarea = api.controls.Base.extend({
   /**

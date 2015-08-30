@@ -11,7 +11,7 @@ var jeditor = require('gulp-json-editor');
 /**
  * Build
  *
- * @public
+ * @access public
  */
 gulp.task('sync-with-premium', [
    // if fs.exists('premium-folder')
@@ -23,7 +23,7 @@ gulp.task('sync-with-premium', [
 /**
  * Watch
  *
- * @public
+ * @access public
  */
 gulp.task('watch-sync-with-premium', function() {
   // gulp.watch('./src/bower.json', ['build-customize']);
@@ -33,7 +33,7 @@ gulp.task('watch-sync-with-premium', function() {
 /**
  * Files
  *
- * @private
+ * @access private
  */
 gulp.task('_sync-with-premium-files', function() {
   return gulp.src(PATHS.toPremium.files, { base: PATHS.src.root })
@@ -43,7 +43,7 @@ gulp.task('_sync-with-premium-files', function() {
 /**
  * Bower
  *
- * @private
+ * @access private
  */
 gulp.task('_sync-with-premium-bower', function() {
   var freeBower = require('../../' + PATHS.src.root + 'bower.json');
@@ -59,7 +59,7 @@ gulp.task('_sync-with-premium-bower', function() {
 /**
  * Composer
  *
- * @private
+ * @access private
  */
 gulp.task('_sync-with-premium-composer', function() {
   var freeBower = require('../../' + PATHS.src.root + 'composer.json');

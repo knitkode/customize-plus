@@ -8,8 +8,10 @@
  * then remove the DOM when the section is collapsed
  *
  * @see PHP class PWPcp_Customize_Control_Base.
- * @class
- * @augments wp.customize.Control
+ *
+ * @class api.controls.Base
+ * @extends wp.customize.Control
+ * @augments wp.customize.Class
  */
 api.controls.Base = wpApi.Control.extend({
   /**
@@ -117,6 +119,7 @@ api.controls.Base = wpApi.Control.extend({
    * if it pass the check call the control specific abstract `validate` method.
    *
    * // @@doubt not sure whether this should be private or not \\
+   * @access private
    * @param  {string} newValue
    * @return {string} The newValue validated or the last setting value.
    */
@@ -144,6 +147,7 @@ api.controls.Base = wpApi.Control.extend({
   /**
    * On validation error (optionally override it in subclasses)
    * @abstract
+   * @access private
    * @param  {object<string,boolean|string>} error `{ error: true, msg: string }`
    */
   _onValidateError: function (error) {
@@ -154,6 +158,7 @@ api.controls.Base = wpApi.Control.extend({
   /**
    * On validation success (optionally override it in subclasses)
    * @abstract
+   * @access private
    */
   _onValidateSuccess: function () {
     this._container.classList.remove('pwpcp-error');
@@ -266,7 +271,7 @@ api.controls.Base = wpApi.Control.extend({
         // if (DEBUG) var t = performance.now();
 
         // Super fast empty DOM element
-        // @link(http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/20)
+        // {@link http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/20}
         // while (container.lastChild) {
         //   container.removeChild(container.lastChild);
         // }
@@ -337,7 +342,7 @@ api.controls.Base = wpApi.Control.extend({
    *
    * @abstract
    * @static
-   * @private
+   * @access private
    * @param  {?} value Could be the original, the current, or the initial
    *                   session value
    * @return {string} The 'normalized' value passed as an argument.
@@ -351,6 +356,7 @@ api.controls.Base = wpApi.Control.extend({
    * Manage the initialization of control guides.
    *
    * @use Tooltips
+   * @access private
    * @return {void}
    */
   _guide: function () {
@@ -362,6 +368,7 @@ api.controls.Base = wpApi.Control.extend({
    * Destroy guides on control deflate
    *
    * @use Tooltips
+   * @access private
    * @return {void}
    */
   _destroyGuide: function () {
@@ -373,6 +380,7 @@ api.controls.Base = wpApi.Control.extend({
    * Manage the initialization of control helpers
    *
    * @use Tooltips
+   * @access private
    * @return {void}
    */
   _help: function () {
@@ -387,6 +395,7 @@ api.controls.Base = wpApi.Control.extend({
   /**
    * Manage the extras dropdown menu of the control.
    *
+   * @access private
    */
   _extras: function () {
     var self = this;
@@ -578,8 +587,7 @@ api.controls.Base = wpApi.Control.extend({
 /**
  * Fix autofocus
  *
- * This is needed if autofocus is set to one
- * of our 'post-rendered' custom controls
+ * This is needed if autofocus is set to one of our 'post-rendered' controls
  */
 wpApi.bind('ready', function () {
   try {

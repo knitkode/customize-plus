@@ -1,8 +1,9 @@
 /**
  * Control Base Radio class
  *
+ * @class api.controls.BaseRadio
  * @constructor
- * @augments api.controls.Base
+ * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */

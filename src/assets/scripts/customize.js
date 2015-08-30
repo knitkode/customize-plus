@@ -10,7 +10,7 @@
 
   if (DEBUG) {
     // shim for Opera
-    window.performance = window.performance || { now: function(){} };
+    window.performance = window.performance || { now: function() {} };
     var t = performance.now();
   }
 
@@ -35,7 +35,7 @@
 
   /** @type {boolean} */
   var wpApiIsReady = false;
-  wpApi.bind('ready', function () {
+  wpApi.bind('ready', function() {
     wpApiIsReady = true;
   });
 
@@ -89,7 +89,7 @@
     Tabs.init();
     Tooltips.init();
     Notices.init();
-    if (DEBUG) console.log('customize.js core initialization took ' + (performance.now() - t) + ' ms.');
+    if (DEBUG) console.log( 'customize.js core initialization took ' + (performance.now() - t) + ' ms.');
   });
 
   //= require customize/temp.js

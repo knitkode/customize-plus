@@ -2,7 +2,7 @@
 
 /**
  * Load spectrum only on demand
- * @link(https://github.com/bgrins/spectrum/issues/112)
+ * {@link https://github.com/bgrins/spectrum/issues/112}
  * @type {Boolean}
  */
 $.fn.spectrum.load = false;
@@ -10,13 +10,15 @@ $.fn.spectrum.load = false;
 /**
  * Control Color class
  *
+ * @class wp.customize.controlConstructor.pwpcp_color
+ * @alias api.controls.Color
  * @constructor
- * @augments api.controls.Base
+ * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
- * @libraries tinycolor
+ * @requires tinycolor
  */
-api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.extend({
+wpApi.controlConstructor.pwpcp_color = api.controls.Color = api.controls.Base.extend({
   /**
    * Use tinycolor (included in spectrum.js) to always convert colors to their
    * rgb value, so to have the same output result when the input is `red` or
@@ -134,7 +136,7 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
   /**
    * Get Spectrum plugin options
    *
-   * @link(https://bgrins.github.io/spectrum/, spectrum API)
+   * {@link https://bgrins.github.io/spectrum/ spectrum API}
    * @param  {Object} options Options that override the defaults (optional)
    * @return {Object} The spectrum plugin options
    */
@@ -192,7 +194,7 @@ api.controls.Color = wpApi.controlConstructor.pwpcp_color = api.controls.Base.ex
    * Apply, wrap the `setting.set()` function
    * doing some additional stuff.
    *
-   * @private
+   * @access private
    * @param  {string} value
    * @param  {string} from  Where the value come from (could be from the UI:
    *                        picker, dynamic fields, expr field) or from the

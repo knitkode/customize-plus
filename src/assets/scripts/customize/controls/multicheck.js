@@ -1,8 +1,9 @@
 /**
  * Control Multicheck
  *
+ * @class wp.customize.controlConstructor.pwpcp_multicheck
  * @constructor
- * @augments api.controls.Base
+ * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
@@ -103,7 +104,8 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
    * Get sorted value, reaading checkboxes status from the DOM
    *
    * @param {boolean} jsonize Whether to stringify the array or not
-   * @return {array|JSONized array}
+   * @return {array|string} It could be a normal array or a JSONized one based
+   *                        on the argument `jsonize`.
    */
   _getValueFromUI: function (jsonize) {
     var valueSorted = [];

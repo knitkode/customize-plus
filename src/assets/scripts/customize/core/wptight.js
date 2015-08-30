@@ -4,11 +4,11 @@
  * We can put some logic in private functions to grab the
  * right things in case WordPress change stuff across versions
  *
- * @type {Object}
+ * @class api.WpTight
  */
 var WpTight = (function () {
 
-  // @public API
+  // @access public
   return {
     /**
      * Init

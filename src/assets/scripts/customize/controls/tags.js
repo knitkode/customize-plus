@@ -3,11 +3,12 @@
 /**
  * Control Tags class
  *
- * @requires Utils
+ * @class wp.customize.controlConstructor.pwpcp_tags
  * @constructor
- * @augments api.controls.Base
+ * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ * @requires api.Utils
  */
 wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
   /**

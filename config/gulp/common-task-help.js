@@ -2,5 +2,5 @@
 /* jshint node: true */
 'use strict';
 
-// @public
+// @access public
 gulp.task('help', require('gulp-task-listing'));

@@ -1,6 +1,7 @@
 /**
  * Utils
  *
+ * @class api.Utils
  */
 var Utils = (function () {
 
@@ -10,7 +11,7 @@ var Utils = (function () {
   /**
    * Is it an absolute URL?
    *
-   * @link(http://stackoverflow.com/a/19709846/1938970)
+   * {@link http://stackoverflow.com/a/19709846/1938970}
    * @param  {String}  url The URL to test
    * @return {Boolean}     Whether is absolute or relative
    */
@@ -59,7 +60,7 @@ var Utils = (function () {
     return _cleanUrlFromMultipleSlashes(finalUrl);
   }
 
-  // @public API
+  // @access public
   return {
     /**
      * To Boolean
@@ -74,7 +75,7 @@ var Utils = (function () {
     },
     /**
      * Strip HTML from input
-     * @link(http://stackoverflow.com/q/5002111/1938970)
+     * {@link http://stackoverflow.com/q/5002111/1938970}
      * @param  {string} input
      * @return {string}
      */
@@ -221,13 +222,12 @@ var Utils = (function () {
       if (value === '') {
         return true;
       } else {
-        // if it's a jsonized value try to parse it and
+        // if it's a jsonized value try to parse it
         try {
-          // if it-s a jsonized value try to parse it
           value = JSON.parse(value);
         } catch(e) {}
 
-        // see if we have an empty array or an empty object
+        // and then see if we have an empty array or an empty object
         if ((_.isArray(value) || _.isObject(value)) && _.isEmpty(value)) {
           return true;
         }

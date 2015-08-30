@@ -75,7 +75,6 @@
     "gulp-imagemin": "~2.0.0",
     "imagemin-pngquant": "~4.0.0",
     "gulp-modernizr": "0.0.0",
-    "gulp-jsdoc": "~0.1.4",
     "gulp-footer": "~1.0.5",
     "gulp-data": "~1.1.1",
     "gulp-swig": "~0.7.4",
@@ -86,7 +85,12 @@
     "grunt-flatdoc": "~0.1.5",
     "del": "~1.2.1",
     "gulp-jscs": "~2.0.0",
-    "gulp-trimlines": "~1.0.0"
+    "gulp-trimlines": "~1.0.0",
+    "gulp-jsdoc": "~0.1.4",
+    "gulp-docco": "0.0.4",
+    "gulp-grunt": "~0.5.2",
+    "grunt-jsduck": "~1.0.1",
+    "grunt-mkdir": "~0.1.2"
   },
   "engines": {
     "node": ">=0.10.0"

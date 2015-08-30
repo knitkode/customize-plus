@@ -4,8 +4,9 @@
  * Tooltips
  * with additional content regarding controls
  *
- * @libraries marked
- * @requires Utils
+ * @class api.Tooltips
+ * @requires marked
+ * @requires api.Utils
  */
 var Tooltips = (function () {
 
@@ -181,7 +182,7 @@ var Tooltips = (function () {
     };
   }
 
-  // @public API
+  // @access public
   return {
     /**
      * Init
@@ -193,7 +194,7 @@ var Tooltips = (function () {
     },
     /**
      * Create helpers on each of the given HTML elements
-     * @param  {array<HTMLelements} elements The DOM elements where to add a
+     * @param  {array<HTMLelement>} elements The DOM elements where to add a
      *                                       helper
      */
     createHelpers: function (elements) {
@@ -202,11 +203,11 @@ var Tooltips = (function () {
       }
     },
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     createGuide: _createGuideForControl,
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     destroyGuide: _destroyGuideOfControl
   };

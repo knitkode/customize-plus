@@ -3,8 +3,9 @@
 /**
  * Skeleton element wrappers
  *
- * @libraries Modernizr
- * @requires WpTight
+ * @class api.Skeleton
+ * @requires Modernizr
+ * @requires api.WpTight
  */
 var Skeleton = (function () {
 
@@ -13,7 +14,7 @@ var Skeleton = (function () {
    */
   var _wpSidebar;
 
-  // @public API
+  // @access public
   return {
     /**
      * Init
@@ -57,7 +58,7 @@ var Skeleton = (function () {
     /**
      * Check if the WordPress sidebar has a scrollbar and toggle class on it.
      *
-     * @link http://stackoverflow.com/a/4814526/1938970
+     * {@link http://stackoverflow.com/a/4814526/1938970}
      */
     hasScrollbar: function () {
       body.classList.toggle('pwpcp-has-scrollbar',

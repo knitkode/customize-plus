@@ -24,7 +24,7 @@ gulp.task('release', [
   '_release-prepare' // task specific to each single project
 ]);
 
-// @public
+// @access public
 // gulp.task('release', ['build']);
 
 // test

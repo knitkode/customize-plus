@@ -2,5 +2,5 @@
 /* jshint node: true */
 'use strict';
 
-// @public
+// @access public
 gulp.task('default', ['build', 'watch']);

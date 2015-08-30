@@ -11,8 +11,8 @@ var folders = require('./common-util-get-folders');
  * Put an index file in each folder of the built project
  * without overriding a possible already existing one.
  *
- * @link(https://github.com/gulpjs/gulp/blob/master/docs/recipes/running-task-steps-per-folder.md)
- * @link(http://stackoverflow.com/a/30348965/1938970, source(if file exists))
+ * {@link https://github.com/gulpjs/gulp/blob/master/docs/recipes/running-task-steps-per-folder.md}
+ * {@link http://stackoverflow.com/a/30348965/1938970, source(if file exists)}
  */
 gulp.task('_release-create-index', function () {
   var fileName = 'index.php';

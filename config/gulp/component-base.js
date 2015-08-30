@@ -12,14 +12,14 @@ var pkg = require('../../package.json');
 /**
  * Build
  *
- * @public
+ * @access public
  */
 gulp.task('build-base', ['_base-root', '_base-styles', '_base-php', '_base-vendor']);
 
 /**
  * Watch
  *
- * @public
+ * @access public
  */
 gulp.task('watch-base', function() {
   gulp.watch(PATHS.src.root + '*.*', ['_base-root']);
@@ -32,7 +32,7 @@ gulp.task('watch-base', function() {
 /**
  * Root (files in the root folder)
  *
- * @private
+ * @access private
  */
 gulp.task('_base-root', function() {
   return gulp.src([PATHS.src.root + '*.php', PATHS.src.root + 'composer.json'])
@@ -42,7 +42,7 @@ gulp.task('_base-root', function() {
 /**
  * Images
  *
- * @private
+ * @access private
  */
 gulp.task('_base-images', function() {
   return gulp.src([
@@ -66,7 +66,7 @@ gulp.task('_base-images', function() {
  *
  * Inline svg images in CSS file.
  *
- * @private
+ * @access private
  */
 gulp.task('_base-styles', ['_base-images'], function() {
   return gulp.src(PATHS.src.styles + '*.scss')
@@ -95,7 +95,7 @@ gulp.task('_base-styles', ['_base-images'], function() {
  *
  * Customize classes php group classes in one file
  *
- * @private
+ * @access private
  */
 gulp.task('_base-php', function() {
   return gulp.src(PATHS.src.includes + '*.php')
@@ -109,7 +109,7 @@ gulp.task('_base-php', function() {
  *
  * Collect needed vendor files
  *
- * @private
+ * @access private
  */
 gulp.task('_base-vendor', function() {
   return gulp.src([

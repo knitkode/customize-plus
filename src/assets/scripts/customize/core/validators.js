@@ -3,7 +3,8 @@
 /**
  * Validator
  *
- * Extends https://github.com/chriso/validator.js
+ * Extends {@link https://github.com/chriso/validator.js}
+ * @requires api.Regexes
  */
 (function() {
 
@@ -12,7 +13,7 @@
    *
    * Heavily inspired by formvalidation.js
    * by Nguyen Huu Phuoc, aka @nghuuphuoc and contributors
-   * @link(https://github.com/formvalidation/)
+   * {@link https://github.com/formvalidation/}
    *
    * @type {Object}
    */
@@ -236,8 +237,8 @@
   /**
    * Is Multiple of
    *
-   * Take a look at the @link(http://stackoverflow.com/q/12429362/1938970,
-   * stackoverflow question) about this topic. This solution is an ok
+   * Take a look at the {@link http://stackoverflow.com/q/12429362/1938970
+   * stackoverflow question} about this topic. This solution is an ok
    * compromise. We use `Math.abs` to convert negative number to positive
    * otherwise the minor comparison would always return true for negative
    * numbers.

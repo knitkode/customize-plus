@@ -1,8 +1,9 @@
 /**
  * Font Family Control
  *
+ * @class wp.customize.controlConstructor.pwpcp_font_family
  * @constructor
- * @augments api.controls.Base
+ * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */

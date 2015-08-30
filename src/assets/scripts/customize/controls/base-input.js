@@ -1,8 +1,9 @@
 /**
  * Control Base Input class
  *
+ * @class api.controls.BaseInput
  * @constructor
- * @augments api.controls.Base
+ * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */

@@ -1,12 +1,14 @@
 /**
  * Control Select class
  *
+ * @class wp.customize.controlConstructor.pwpcp_select
+ * @alias api.controls.Select
  * @constructor
- * @augments api.controls.Base
+ * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-api.controls.Select = wpApi.controlConstructor.pwpcp_select = api.controls.Base.extend({
+wpApi.controlConstructor.pwpcp_select = api.controls.Select = api.controls.Base.extend({
   /**
    * override
    */

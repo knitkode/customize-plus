@@ -1,12 +1,14 @@
 /**
  * Control Sortable
  *
+ * @class wp.customize.controlConstructor.pwpcp_sortable
+ * @alias api.controls.Sortable
  * @constructor
- * @augments api.controls.Base
+ * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-api.controls.Sortable = wpApi.controlConstructor.pwpcp_sortable = api.controls.Base.extend({
+wpApi.controlConstructor.pwpcp_sortable = api.controls.Sortable = api.controls.Base.extend({
   /**
    * @override
    */

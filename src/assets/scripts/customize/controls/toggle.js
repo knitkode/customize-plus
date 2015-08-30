@@ -3,11 +3,12 @@
 /**
  * Control Toggle
  *
+ * @class wp.customize.controlConstructor.pwpcp_toggle
  * @constructor
- * @augments api.controls.Base
+ * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
- * @requires Utils
+ * @requires api.Utils
  */
 wpApi.controlConstructor.pwpcp_toggle = api.controls.Base.extend({
   /**

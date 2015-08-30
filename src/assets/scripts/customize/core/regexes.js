@@ -4,6 +4,8 @@
 /**
  * Regexes
  *
+ * @class api.Regexes
+ *
  * It might be that we need a regex that match of available words,
  * in that case it might be that we want to define the words in an
  * array (maybe coming from php?). So for array to regex conversion
@@ -18,7 +20,7 @@ var Regexes = {
    * so that it would later on be more easily parsable by our validation
    * regexes. Use this as follow: `string.replace(Regexes.whitespaces, '')`.
    *
-   * @link http://stackoverflow.com/a/5963202/1938970
+   * {@link http://stackoverflow.com/a/5963202/1938970}
    *
    * @const
    * @type {RegExp}
@@ -40,7 +42,7 @@ var Regexes = {
    * expression, so it's gentle with whitespace. It capture the number
    * (`amount`) but not to use it.
    *
-   * @link http://regex101.com/r/wC5aO9/3
+   * {@link http://regex101.com/r/wC5aO9/3}
    *
    * @const
    * @type {RegExp}
@@ -52,7 +54,7 @@ var Regexes = {
    * This works only after having stripped all whitespaces,
    * it capture three groups: 'functionName', varName', 'amount'
    *
-   * @link http://regex101.com/r/nC7iA2/2
+   * {@link http://regex101.com/r/nC7iA2/2}
    *
    * @const
    * @type {RegExp}
@@ -64,7 +66,7 @@ var Regexes = {
    * This just checks if the user input looks like a single variable,
    * so it's gentle with whitespace.
    *
-   * @link https://regex101.com/r/aP9mJ1/1
+   * {@link https://regex101.com/r/aP9mJ1/1}
    *
    * @const
    * @type {RegExp}
@@ -76,7 +78,7 @@ var Regexes = {
    * This works only after having stripped all whitespaces,
    * it capture one group: the `varName'
    *
-   * @link https://regex101.com/r/aO6fI9/2
+   * {@link https://regex101.com/r/aO6fI9/2}
    *
    * @const
    * @type {RegExp}

@@ -1,7 +1,5 @@
 {
   "preset": "wordpress",
-  disallowMultipleLineBreaks: null,
-  disallowMixedSpacesAndTabs: true,
   "excludeFiles": [
     "**/vendor/**",
     "**/*.min.js",

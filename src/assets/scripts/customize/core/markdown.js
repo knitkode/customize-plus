@@ -13,7 +13,7 @@
 
   /**
    * Custom marked renderer
-   * @link(https://github.com/chjj/marked/pull/451#issuecomment-49976076, source)
+   * {@link https://github.com/chjj/marked/pull/451#issuecomment-49976076 source}
    * @type {marked}
    */
   var markedRenderer = new marked.Renderer();

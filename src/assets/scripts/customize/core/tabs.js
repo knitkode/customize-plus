@@ -5,7 +5,8 @@
  *
  * Manage tabbed content inside controls
  *
- * @requires Screenpreview
+ * @class api.Tabs
+ * @requires api.Screenpreview
  */
 var Tabs = (function () {
 
@@ -77,7 +78,7 @@ var Tabs = (function () {
     });
   }
 
-  // @public API
+  // @access public
   return {
     init: _init,
     /**

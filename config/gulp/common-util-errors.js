@@ -6,7 +6,7 @@ var notify = require('gulp-notify');
 /**
  * It handles errors
  *
- * @public
+ * @access public
  */
 module.exports = function() {
 

@@ -3,13 +3,15 @@
 /**
  * Control Slider
  *
+ * @class wp.customize.controlConstructor.pwpcp_slider
+ * @alias api.controls.Slider
  * @constructor
- * @augments api.controls.Base
+ * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
- * @requires Regexes
+ * @requires api.Regexes
  */
-api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.extend({
+wpApi.controlConstructor.pwpcp_slider = api.controls.Slider = api.controls.Base.extend({
   /**
    * Let's consider '44' to be equal to 44.
    * @override
@@ -201,7 +203,7 @@ api.controls.Slider = wpApi.controlConstructor.pwpcp_slider = api.controls.Base.
    *
    * Wrap the `setting.set()` function doing some additional stuff.
    *
-   * @private
+   * @access private
    * @param  {string} value
    * @param  {string} from  Where the value come from (could be from the UI:
    *                        picker, dynamic fields, expr field) or from the

@@ -3,7 +3,8 @@
 /**
  * Notices
  *
- * @requires WpTight
+ * @class api.Notices
+ * @requires api.WpTight
  */
 var Notices = (function () {
 
@@ -20,7 +21,7 @@ var Notices = (function () {
     // return _$tpl;
   }
 
-  // @public API
+  // @access public
   return {
     init: function () {
       _create();

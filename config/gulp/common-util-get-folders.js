@@ -7,8 +7,8 @@ var path = require('path');
 /**
  * Get folders
  *
- * @link(http://stackoverflow.com/a/23398200/1938970, source)
- * @public
+ * {@link http://stackoverflow.com/a/23398200/1938970 source}
+ * @access public
  */
 module.exports = function (dir) {
   return fs.readdirSync(dir)
