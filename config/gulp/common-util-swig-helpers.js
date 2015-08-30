@@ -51,7 +51,7 @@ module.exports.phpQuotes = function (input, type) {
 
     // return i18n string for WordPress
     if (translatable) {
-      return '__( \'' + input + '\', \'pkgTextdomain\' )';
+      return '__( \'' + input + '\' )';
     }
 
     // return unquoted php flagged string
