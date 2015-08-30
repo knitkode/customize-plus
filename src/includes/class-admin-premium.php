@@ -40,7 +40,7 @@ if ( ! class_exists( 'PWPcp_Admin_Premium' ) ):
 			if ( class_exists( 'PWPcp_Admin' ) ) {
 				PWPcp_Admin::get_instance()->add_subpages( array(
 					'about' => array(
-						'title' => __( 'About', 'pkgTextDomain' ),
+						'title' => __( 'About' ),
 						'view' => array( $this, 'get_view' )
 					) )
 				);

@@ -101,8 +101,8 @@ if ( ! class_exists( 'PWPcp_Admin' ) && class_exists( 'PWPcp_Singleton' ) ):
 
 			add_submenu_page(
 				self::MENU_PAGE,
-				__( 'Customize Plus', 'pkgTextDomain' ),
-				__( 'Customize Plus', 'pkgTextDomain' ),
+				__( 'Customize Plus' ),
+				__( 'Customize Plus' ),
 				'manage_options',
 				self::PARENT_HOOK,
 				array( $this, 'get_view' )
@@ -114,7 +114,7 @@ if ( ! class_exists( 'PWPcp_Admin' ) && class_exists( 'PWPcp_Singleton' ) ):
 				$hooks[] = add_submenu_page(
 					self::MENU_PAGE,
 					$subpage_args['title'],
-					__( 'Customize Plus', 'pkgTextDomain' ),
+					__( 'Customize Plus' ),
 					'manage_options',
 					self::PARENT_HOOK . 'tab=' . sanitize_key( $subpage_id ),
 					'__return_null'

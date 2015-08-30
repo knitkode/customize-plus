@@ -68,7 +68,7 @@ class PWPcp_Requirements {
 	public static function php() {
 		$php = phpversion();
 		load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( PWPcp_PLUGIN_FILE ) ), '/languages/' );
-		$msg = sprintf( __( '<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your PHP version (%s).<br />Reccomended PHP version &ndash; %s (or higher).</p><a href="%s">&larr; Return to the plugins screen</a>', 'pkgTextDomain' ), '<b>Customize Plus</b>', $php, self::$min_php_version, network_admin_url( 'plugins.php?deactivate=true' ), $_SERVER['REQUEST_URI'] . '&continue=true', ' style="float:right;font-weight:bold"' );
+		$msg = sprintf( __( '<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your PHP version (%s).<br />Reccomended PHP version &ndash; %s (or higher).</p><a href="%s">&larr; Return to the plugins screen</a>' ), '<b>Customize Plus</b>', $php, self::$min_php_version, network_admin_url( 'plugins.php?deactivate=true' ), $_SERVER['REQUEST_URI'] . '&continue=true', ' style="float:right;font-weight:bold"' );
 
 		// PHP version is too low
 		if ( version_compare( self::$min_php_version, $php, '>' ) ) {
@@ -85,7 +85,7 @@ class PWPcp_Requirements {
 	public static function wp() {
 		$wp = get_bloginfo( 'version' );
 		load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( PWPcp_PLUGIN_FILE ) ), '/languages/' );
-		$msg = sprintf( __( '<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your version of WordPress (%s).<br />Reccomended WordPress version &ndash; %s (or higher).</p><a href="%s">&larr; Return to the plugins screen</a> <a href="%s"%s>Continue and activate anyway &rarr;</a>', 'pkgTextDomain' ), '<b>Customize Plus</b>', $wp, self::$min_wp_version, network_admin_url( 'plugins.php?deactivate=true' ), $_SERVER['REQUEST_URI'] . '&continue=true', ' style="float:right;font-weight:bold"' );
+		$msg = sprintf( __( '<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your version of WordPress (%s).<br />Reccomended WordPress version &ndash; %s (or higher).</p><a href="%s">&larr; Return to the plugins screen</a> <a href="%s"%s>Continue and activate anyway &rarr;</a>' ), '<b>Customize Plus</b>', $wp, self::$min_wp_version, network_admin_url( 'plugins.php?deactivate=true' ), $_SERVER['REQUEST_URI'] . '&continue=true', ' style="float:right;font-weight:bold"' );
 		// Check Forced activation
 		if ( isset( $_GET['continue'] ) ) {
 			return;
@@ -124,7 +124,7 @@ class PWPcp_Requirements {
 					$count = count( $deactivated_plugins );
 					$last_plugin = array_pop( $deactivated_plugins ); // Pop off last name to prep for readability.
 					$imploded    = empty( $deactivated_plugins ) ? '<b>' . $last_plugin . '</b>' : '<b>' . ( implode( ', ', $deactivated_plugins ) . '</b> and <b>' . $last_plugin . '</b>.' );
-					echo sprintf( '<div id="message" class="updated" style="border-color: #ffba00;"><p>%1$s<br><em>%2$s</em></p></div>', _n( sprintf( __( 'The plugin %1$s has been deactivated because is not compatible with %2$s.', 'pkgTextDomain' ), $imploded, $self_title ), sprintf( __( 'The plugins %1$s has been deactivated because they are not compatible with %2$s.', 'pkgTextDomain' ), $imploded, $self_title ), $count, 'pkgTextDomain' ), _n( sprintf( __( 'If you need to use it deactivate %s first.', 'pkgTextDomain' ), $self_title ), sprintf( __( 'If you need to use them deactivate %s first.', 'pkgTextDomain' ), $self_title ), $count, 'pkgTextDomain' ) );
+					echo sprintf( '<div id="message" class="updated" style="border-color: #ffba00;"><p>%1$s<br><em>%2$s</em></p></div>', _n( sprintf( __( 'The plugin %1$s has been deactivated because is not compatible with %2$s.' ), $imploded, $self_title ), sprintf( __( 'The plugins %1$s has been deactivated because they are not compatible with %2$s.' ), $imploded, $self_title ), $count, 'pkgTextDomain' ), _n( sprintf( __( 'If you need to use it deactivate %s first.' ), $self_title ), sprintf( __( 'If you need to use them deactivate %s first.' ), $self_title ), $count, 'pkgTextDomain' ) );
 				}, 90 );
 			}
 		}

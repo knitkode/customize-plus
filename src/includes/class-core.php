@@ -24,9 +24,9 @@ if ( ! class_exists( 'PWPcp' ) ):
 		 */
 		public function __construct() {
 			// Translate plugin meta
-			__( 'pkgNamePretty', 'pkgTextDomain' );
-			__( 'pkgAuthorName', 'pkgTextDomain' );
-			__( 'pkgDescription', 'pkgTextDomain' );
+			__( 'pkgNamePretty' );
+			__( 'pkgAuthorName' );
+			__( 'pkgDescription' );
 
 			if ( is_admin() ) {
 				// Add plugin actions links
@@ -66,7 +66,7 @@ if ( ! class_exists( 'PWPcp' ) ):
 		 * @return array Processed links.
 		 */
 		public static function actions_links( $links ) {
-			$links[] = '<a href="' . add_query_arg( array( 'page' => 'customize-plus', 'tab' => 'about' ), admin_url( 'options-general.php' ) ) . '">' . esc_html__( 'About', 'pkgTextDomain' ) . '</a>';
+			$links[] = '<a href="' . add_query_arg( array( 'page' => 'customize-plus', 'tab' => 'about' ), admin_url( 'options-general.php' ) ) . '">' . esc_html__( 'About' ) . '</a>';
 			return $links;
 		}
 
