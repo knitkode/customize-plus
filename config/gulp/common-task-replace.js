@@ -31,7 +31,7 @@ gulp.task('_release-replace-words', function () {
     .pipe($.replace('pkgLicenseType', pkg.license.type, options))
     .pipe($.replace('pkgLicenseUrl', pkg.license.url, options))
     .pipe($.replace('pkgConfigTags', tags.join(', '), options))
-    .pipe($.replace('pkgTextdomain', pkg.config.textDomain, options))
+    .pipe($.replace('pkgTextDomain', pkg.config.textDomain, options))
     .pipe($.replace('pkgConfigStartYear', pkg.config.startYear, options))
     .pipe($.replace('pkgConfigEndYear', pkgConfigEndYear, options))
     // delete all code annotations, regex matches: ' // @@ ....single/multi line content \\
