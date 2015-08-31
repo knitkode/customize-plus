@@ -17,9 +17,8 @@ var pathMoFiles = [
 
 // @access public
 gulp.task('release', sequence([
-  '_release-prepare',
-  '_release-lang',
-  '_release-lang-mo'
+  'release-prepare',
+  'release-lang'
 ]));
 
 // @access public
@@ -27,22 +26,22 @@ gulp.task('release-clean', function () {
   del.sync(PATHS.build.root + '/**');
 });
 
-// @access private
-gulp.task('_release-prepare', ['_release-replace-words', '_release-create-index']);
+// @access public
+gulp.task('release-prepare', ['_release-replace-words', '_release-create-index']);
 
-// @access private
-gulp.task('_release-lang', ['grunt-lang']);
-
-// @access private
-gulp.task('_release-lang-mo_rename', function () {
-  return gulp.src(pathMoFiles)
-    .pipe($.rename({ prefix: pkg.config.textDomain + '-' }))
-    .pipe(gulp.dest('./build/languages/'));
+// @access public
+gulp.task('release-lang', ['_release-lang-mo_rename'], function () {
+  del.sync(pathMoFiles);
 });
 
 // @access private
-gulp.task('_release-lang-mo', ['_release-lang-mo_rename'], function () {
-  del.sync(pathMoFiles);
+gulp.task('_release-lang-prepare', ['_release-replace-words'], sequence(['grunt-lang']));
+
+// @access private
+gulp.task('_release-lang-mo_rename', ['_release-lang-prepare'], function () {
+  return gulp.src(pathMoFiles)
+    .pipe($.rename({ prefix: pkg.config.textDomain + '-' }))
+    .pipe(gulp.dest('./build/languages/'));
 });
 
 /**

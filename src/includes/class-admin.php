@@ -143,7 +143,7 @@ if ( ! class_exists( 'PWPcp_Admin' ) && class_exists( 'PWPcp_Singleton' ) ):
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 			if ( 'settings_page_' . self::PARENT_HOOK === $hook ) {
-				wp_enqueue_style( 'PWPcp-admin', plugins_url( "assets/admin{$min}.css", PWPcp_PLUGIN_FILE ), array( 'dashicons' ), PWPcp_PLUGIN_VERSION );
+				wp_enqueue_style( 'PWPcp-admin', plugins_url( "assets/admin{$min}.css", PWPCP_PLUGIN_FILE ), array( 'dashicons' ), PWPCP_PLUGIN_VERSION );
 				// wp_style_add_data( 'PWPcp-admin', 'rtl', true );
 				if ( $min ) {
 					wp_style_add_data( 'PWPcp-admin', 'suffix', $min );

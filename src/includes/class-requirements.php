@@ -67,12 +67,12 @@ class PWPcp_Requirements {
 	 */
 	public static function php() {
 		$php = phpversion();
-		load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( PWPcp_PLUGIN_FILE ) ), '/languages/' );
+		load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( PWPCP_PLUGIN_FILE ) ), '/languages/' );
 		$msg = sprintf( __( '<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your PHP version (%s).<br />Reccomended PHP version &ndash; %s (or higher).</p><a href="%s">&larr; Return to the plugins screen</a>' ), '<b>Customize Plus</b>', $php, self::$min_php_version, network_admin_url( 'plugins.php?deactivate=true' ), $_SERVER['REQUEST_URI'] . '&continue=true', ' style="float:right;font-weight:bold"' );
 
 		// PHP version is too low
 		if ( version_compare( self::$min_php_version, $php, '>' ) ) {
-			deactivate_plugins( plugin_basename( PWPcp_PLUGIN_FILE ) );
+			deactivate_plugins( plugin_basename( PWPCP_PLUGIN_FILE ) );
 			wp_die( $msg );
 		}
 	}
@@ -84,7 +84,7 @@ class PWPcp_Requirements {
 	 */
 	public static function wp() {
 		$wp = get_bloginfo( 'version' );
-		load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( PWPcp_PLUGIN_FILE ) ), '/languages/' );
+		load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( PWPCP_PLUGIN_FILE ) ), '/languages/' );
 		$msg = sprintf( __( '<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your version of WordPress (%s).<br />Reccomended WordPress version &ndash; %s (or higher).</p><a href="%s">&larr; Return to the plugins screen</a> <a href="%s"%s>Continue and activate anyway &rarr;</a>' ), '<b>Customize Plus</b>', $wp, self::$min_wp_version, network_admin_url( 'plugins.php?deactivate=true' ), $_SERVER['REQUEST_URI'] . '&continue=true', ' style="float:right;font-weight:bold"' );
 		// Check Forced activation
 		if ( isset( $_GET['continue'] ) ) {
@@ -92,7 +92,7 @@ class PWPcp_Requirements {
 		}
 		// PHP version is too low
 		elseif ( version_compare( self::$min_wp_version, $wp, '>' ) ) {
-			deactivate_plugins( plugin_basename( PWPcp_PLUGIN_FILE ) );
+			deactivate_plugins( plugin_basename( PWPCP_PLUGIN_FILE ) );
 			wp_die( $msg );
 		}
 	}

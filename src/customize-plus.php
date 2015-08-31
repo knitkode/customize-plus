@@ -25,19 +25,19 @@
  * Domain Path:       /languages
  */
 
-define( 'PWPcp_PLUGIN_FILE', __FILE__ );
-define( 'PWPcp_PLUGIN_VERSION', '0.0.1' );
-define( 'PWPcp_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'PWPcp_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'PWPCP_PLUGIN_FILE', __FILE__ );
+define( 'PWPCP_PLUGIN_VERSION', '0.0.1' );
+define( 'PWPCP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'PWPCP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-require_once( PWPcp_PLUGIN_DIR . 'includes/class-requirements.php' );
-require_once( PWPcp_PLUGIN_DIR . 'includes/class-utils.php' );
-require_once( PWPcp_PLUGIN_DIR . 'includes/class-sanitize.php' );
-require_once( PWPcp_PLUGIN_DIR . 'includes/class-singleton.php' );
-require_once( PWPcp_PLUGIN_DIR . 'includes/class-core.php' );
-require_once( PWPcp_PLUGIN_DIR . 'includes/class-customize.php' );
-require_once( PWPcp_PLUGIN_DIR . 'includes/class-theme.php' );
+require_once( PWPCP_PLUGIN_DIR . 'includes/class-requirements.php' );
+require_once( PWPCP_PLUGIN_DIR . 'includes/class-utils.php' );
+require_once( PWPCP_PLUGIN_DIR . 'includes/class-sanitize.php' );
+require_once( PWPCP_PLUGIN_DIR . 'includes/class-singleton.php' );
+require_once( PWPCP_PLUGIN_DIR . 'includes/class-core.php' );
+require_once( PWPCP_PLUGIN_DIR . 'includes/class-customize.php' );
+require_once( PWPCP_PLUGIN_DIR . 'includes/class-theme.php' );
 if ( is_admin() ) {
-	require_once( PWPcp_PLUGIN_DIR . 'includes/class-admin.php' );
-	require_once( PWPcp_PLUGIN_DIR . 'includes/class-admin-about.php' );
+	require_once( PWPCP_PLUGIN_DIR . 'includes/class-admin.php' );
+	require_once( PWPCP_PLUGIN_DIR . 'includes/class-admin-about.php' );
 }

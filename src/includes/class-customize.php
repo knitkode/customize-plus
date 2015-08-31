@@ -126,7 +126,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		public static function enqueue_css_admin() {
 			do_action( 'PWPcp/customize/enqueue_css_admin_pre', 'PWPcp-customize' );
 
-			wp_enqueue_style( 'PWPcp-customize', plugins_url( 'assets/customize'.self::$min.'.css', PWPcp_PLUGIN_FILE ), array( 'dashicons' ), PWPcp_PLUGIN_VERSION );
+			wp_enqueue_style( 'PWPcp-customize', plugins_url( 'assets/customize'.self::$min.'.css', PWPCP_PLUGIN_FILE ), array( 'dashicons' ), PWPCP_PLUGIN_VERSION );
 			wp_add_inline_style( 'PWPcp-customize', self::$css_icons );
 
 			do_action( 'PWPcp/customize/enqueue_css_admin_post', 'PWPcp-customize' );
@@ -143,7 +143,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		public static function enqueue_js_admin() {
 			do_action( 'PWPcp/customize/enqueue_js_admin_pre', 'PWPcp-customize' );
 
-			wp_register_script( 'PWPcp-customize', plugins_url( 'assets/customize'.self::$min.'.js', PWPcp_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery', 'jquery-ui-slider' ), PWPcp_PLUGIN_VERSION, false );
+			wp_register_script( 'PWPcp-customize', plugins_url( 'assets/customize'.self::$min.'.js', PWPCP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery', 'jquery-ui-slider' ), PWPCP_PLUGIN_VERSION, false );
 			wp_localize_script( 'PWPcp-customize', 'PWPcp', array(
 					'components' => apply_filters( 'PWPcp/customize/js_components', array() ),
 					'constants' => self::get_js_constants(),
@@ -223,7 +223,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 
 			do_action( 'PWPcp/customize/preview_init' );
 
-			wp_enqueue_script( 'PWPcp-customize-preview', plugins_url( 'assets/customize-preview'.self::$min.'.js', PWPcp_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), PWPcp_PLUGIN_VERSION, true );
+			wp_enqueue_script( 'PWPcp-customize-preview', plugins_url( 'assets/customize-preview'.self::$min.'.js', PWPCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), PWPCP_PLUGIN_VERSION, true );
 		}
 
 		/**
@@ -246,7 +246,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function enqueue_js_shim() {
-			wp_enqueue_script( 'es5-shim', plugins_url( 'assets/es5-shim'.self::$min.'.js', PWPcp_PLUGIN_FILE ), array(), PWPcp_PLUGIN_VERSION );
+			wp_enqueue_script( 'es5-shim', plugins_url( 'assets/es5-shim'.self::$min.'.js', PWPCP_PLUGIN_FILE ), array(), PWPCP_PLUGIN_VERSION );
 			wp_script_add_data( 'es5-shim', 'conditional', 'if lt IE 9' );
 		}
 
@@ -260,7 +260,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function register_custom_classes() {
-			require_once( PWPcp_PLUGIN_DIR . 'includes/customize-classes.php' );
+			require_once( PWPCP_PLUGIN_DIR . 'includes/customize-classes.php' );
 
 			do_action( 'PWPcp/customize/register_custom_classes', __CLASS__ );
 

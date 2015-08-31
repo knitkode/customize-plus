@@ -30,7 +30,7 @@ if ( ! class_exists( 'PWPcp' ) ):
 
 			if ( is_admin() ) {
 				// Add plugin actions links
-				add_filter( 'plugin_action_links_' . plugin_basename( PWPcp_PLUGIN_FILE ), array( __CLASS__, 'actions_links' ), -10 );
+				add_filter( 'plugin_action_links_' . plugin_basename( PWPCP_PLUGIN_FILE ), array( __CLASS__, 'actions_links' ), -10 );
 
 				// Add plugin meta links
 				add_filter( 'plugin_row_meta', array( __CLASS__, 'meta_links' ), 10, 2 );
@@ -39,8 +39,8 @@ if ( ! class_exists( 'PWPcp' ) ):
 			add_action( 'plugins_loaded', array( __CLASS__, 'init' ) );
 			// add_action( 'init', array( __CLASS__, 'register' ) );
 			// add_action( 'init', array( __CLASS__, 'update' ), 20 );
-			register_activation_hook( PWPcp_PLUGIN_FILE, array( __CLASS__, 'activation' ) );
-			register_activation_hook( PWPcp_PLUGIN_FILE, array( __CLASS__, 'deactivation' ) );
+			register_activation_hook( PWPCP_PLUGIN_FILE, array( __CLASS__, 'activation' ) );
+			register_activation_hook( PWPCP_PLUGIN_FILE, array( __CLASS__, 'deactivation' ) );
 		}
 
 		/**
@@ -55,7 +55,7 @@ if ( ! class_exists( 'PWPcp' ) ):
 
 			// Make plugin available for translation
 			load_textdomain( 'pkgTextDomain', WP_LANG_DIR . '/customize-plus/pkgTextDomain-' . $locale . '.mo' );
-			load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( PWPcp_PLUGIN_FILE ) ) . '/languages/' );
+			load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( PWPCP_PLUGIN_FILE ) ) . '/languages/' );
 		}
 
 		/**
@@ -79,7 +79,7 @@ if ( ! class_exists( 'PWPcp' ) ):
 		 */
 		public static function meta_links( $links, $file ) {
 			// Check plugin
-			if ( $file === plugin_basename( PWPcp_PLUGIN_FILE ) ) {
+			if ( $file === plugin_basename( PWPCP_PLUGIN_FILE ) ) {
 				unset( $links[2] );
 				$links[] = '<a href="http://gndev.info/shortcodes-ultimate/" target="_blank">' . __( 'Project homepage', 'su' ) . '</a>';
 				$links[] = '<a href="http://wordpress.org/support/plugin/shortcodes-ultimate/" target="_blank">' . __( 'Support forum', 'su' ) . '</a>';

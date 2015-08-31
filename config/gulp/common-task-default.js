@@ -9,6 +9,7 @@ gulp.task('default', ['build', 'watch']);
 gulp.task('all',  $.shell.task([
   'gulp release-clean',
   'gulp build --dist',
-  'gulp release',
+  'gulp release-lang',
+  'gulp release-prepare',
   'gulp deploy'
 ]));
