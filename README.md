@@ -24,9 +24,9 @@ Support
 ---------------
 This is a developer's portal and should _not_ be used for support. Please visit the [support forums](https://pluswp.com/support).
 
-Otherwise you can also try to see if someone is in our [chat room](https://gitter.im/PlusWp):
+Otherwise you can also try to see if someone is in our [chat room](https://gitter.im/PlusWP/chat):
 
-[![Gitter Chat](http://img.shields.io/badge/GITTER-JOIN%20CHAT-1DCE73.svg)](https://gitter.im/PlusWp)
+[![Gitter Chat](http://img.shields.io/badge/GITTER-JOIN%20CHAT-1DCE73.svg)](https://gitter.im/PlusWP/chat)
 
 
 Contribute
