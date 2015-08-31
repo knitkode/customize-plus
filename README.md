@@ -22,7 +22,7 @@ If you find an issue, please let us know [here](https://github.com/PlusWP/custom
 
 Support
 ---------------
-This is a developer's portal and should _not_ be used for support. Please visit the [support forums](https://pluswp.com/support).
+This is a developer's portal and should **not** be used for support. Please visit the [support forums](https://pluswp.com/support).
 
 Otherwise you can also try to see if someone is in our [chat room](https://gitter.im/PlusWP/chat):
 
