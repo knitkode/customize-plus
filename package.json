@@ -21,7 +21,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "gulp": "^3.8.11",
+    "gulp": "^3.9.0",
     "gulp-autoprefixer": "^0.0.6",
     "gulp-cache": "~0.1.11",
     "gulp-changed": "~1.0.0",
@@ -83,14 +83,15 @@
     "gulp-include": "~1.1.1",
     "gulp-sequence": "~0.3.2",
     "grunt-flatdoc": "~0.1.5",
-    "del": "~1.2.1",
+    "del": "~2.0.0",
     "gulp-jscs": "~2.0.0",
     "gulp-trimlines": "~1.0.0",
     "gulp-jsdoc": "~0.1.4",
     "gulp-docco": "0.0.4",
     "gulp-grunt": "~0.5.2",
     "grunt-jsduck": "~1.0.1",
-    "grunt-mkdir": "~0.1.2"
+    "grunt-mkdir": "~0.1.2",
+    "gulp-gh-pages": "~0.5.2"
   },
   "engines": {
     "node": ">=0.10.0"

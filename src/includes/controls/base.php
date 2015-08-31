@@ -247,7 +247,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 				</div>
 			<# } #>
 			<# if (data.guide) { #>
-				<i class="pwpcp-guide pwpcpui-control-btn dashicons dashicons-editor-help" title="<?php _e( 'Click to show some help', 'pkgTextdomain' ); ?>"></i>
+				<i class="pwpcp-guide pwpcpui-control-btn dashicons dashicons-editor-help" title="<?php _e( 'Click to show some help' ); ?>"></i>
 			<# } #>
 		<?php
 	}
@@ -278,9 +278,9 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 			<div class="pwpcp-extras">
 				<i class="pwpcp-extras-btn pwpcpui-control-btn dashicons dashicons-admin-generic"></i>
 				<ul class="pwpcp-extras-list">
-					<li class="pwpcp-extras-reset_last"><?php _e( 'Reset to initial session value', 'pkgTextdomain' ); ?></li>
-					<li class="pwpcp-extras-reset"><?php _e( 'Reset to factory value', 'pkgTextdomain' ); ?></li>
-					<li class="pwpcp-extras-hide"><?php _e( 'Hide this control', 'pkgTextdomain' ); ?></li>
+					<li class="pwpcp-extras-reset_last"><?php _e( 'Reset to initial session value' ); ?></li>
+					<li class="pwpcp-extras-reset"><?php _e( 'Reset to factory value' ); ?></li>
+					<li class="pwpcp-extras-hide"><?php _e( 'Hide this control' ); ?></li>
 				</ul>
 			</div>
 		<?php

@@ -39,7 +39,7 @@ module.exports.phpQuotes = function (input, type) {
     'data-tip_text',
     'tip_text'
   ];
-  var translatable = (typeof type != 'undefined') ? toTranslate.indexOf(type.toString()) !== -1 : false;
+  var translatable = type ? toTranslate.indexOf(type.toString()) !== -1 : false;
 
   // if it is a number and it's not a label or so
   var isNumeric = /^[-+]?[0-9]+$/;

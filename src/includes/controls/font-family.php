@@ -88,7 +88,7 @@ class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 		</label>
 		<!-- <label>
 			<input class="pwpcp-font-google-toggle" type="checkbox" value="0">
-			<?php _e( 'Enable Google fonts', 'pkgTextdomain' ); ?>
+			<?php _e( 'Enable Google fonts' ); ?>
 		</label> -->
 		<input class="pwpcp-selectize" type="text" value="{{ data.value }}" required>
 		<?php

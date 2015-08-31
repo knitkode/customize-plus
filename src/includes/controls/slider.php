@@ -112,7 +112,7 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	 */
 	public function get_l10n() {
 		return array(
-			'vInvalidUnit' => __( 'The CSS unit is invalid.', 'pkgTextdomain' ),
+			'vInvalidUnit' => __( 'The CSS unit is invalid.' ),
 		);
 	}
 

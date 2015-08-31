@@ -158,17 +158,17 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 					if ( isset( $configuration['prefix'] ) ) {
 						return sanitize_key( $configuration['prefix'] );
 					} else {
-						wp_die( __( 'Customize Plus: no `prefix` given.', 'pkgTextdomain' ) );
+						wp_die( __( 'Customize Plus: no `prefix` given.' ) );
 					}
 				case 'customize_tree':
 					if ( isset( $configuration[ 'customize_tree' ] ) ) {
 						if ( is_array( $configuration[ 'customize_tree' ] ) ) {
 							return $configuration[ 'customize_tree' ];
 						} else {
-							wp_die( __( 'Customize Plus: `customize_tree` must be an array.', 'pkgTextdomain' ) );
+							wp_die( __( 'Customize Plus: `customize_tree` must be an array.' ) );
 						}
 					} else {
-						wp_die( __( 'Customize Plus: no `customize_tree` array given.', 'pkgTextdomain' ) );
+						wp_die( __( 'Customize Plus: no `customize_tree` array given.' ) );
 					}
 					break;
 				case 'styles':
@@ -176,7 +176,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 						if ( is_array( $configuration[ 'styles' ] ) ) {
 							return $configuration[ 'styles' ];
 						} else {
-							wp_die( __( 'Customize Plus: `styles` must be an array.', 'pkgTextdomain' ) );
+							wp_die( __( 'Customize Plus: `styles` must be an array.' ) );
 						}
 					}
 					break;
@@ -261,7 +261,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 						self::set_settings_default_from_section( $component );
 					}
 				} else {
-					wp_die( __( 'Customize Plus: `customize_tree` root components need a `subject` value.', 'pkgTextdomain' ) );
+					wp_die( __( 'Customize Plus: `customize_tree` root components need a `subject` value.' ) );
 				}
 			}
 		}
@@ -293,7 +293,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 							self::$settings_defaults[ $setting['id'] ] = $setting['default'];
 						}
 						else {
-							wp_die( __( 'Customize Plus: every setting must have a `default` value.', 'pkgTextdomain' ) ); // @@doubt \\
+							wp_die( __( 'Customize Plus: every setting must have a `default` value.' ) ); // @@doubt \\
 						}
 					}
 				}

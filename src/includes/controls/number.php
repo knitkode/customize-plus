@@ -52,11 +52,11 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
 	 */
 	public function get_l10n() {
 		return array(
-			'vNotNumber' => __( 'The value is not a number.', 'pkgTextdomain' ),
-			'vNoFloat' => __( 'The value must be an integer.', 'pkgTextdomain' ),
-			'vNumberLow' => __( 'The number is too low.', 'pkgTextdomain' ),
-			'vNumberHigh' => __( 'The number is too high.', 'pkgTextdomain' ),
-			'vNumberStep' => __( 'The value must be a multiple of', 'pkgTextdomain' ),
+			'vNotNumber' => __( 'The value is not a number.' ),
+			'vNoFloat' => __( 'The value must be an integer.' ),
+			'vNumberLow' => __( 'The number is too low.' ),
+			'vNumberHigh' => __( 'The number is too high.' ),
+			'vNumberStep' => __( 'The value must be a multiple of' ),
 		);
 	}
 

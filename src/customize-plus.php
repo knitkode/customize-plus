@@ -21,7 +21,7 @@
  * Author URI:        http://pluswp.com
  * License:           GPLv2 or later (license.txt)
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       pkgTextdomain
+ * Text Domain:       pkgTextDomain
  * Domain Path:       /languages
  */
 

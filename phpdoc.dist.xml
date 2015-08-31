@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-    <title>Customize Plus</title>
+    <title>PlusWP Check</title>
     <parser>
         <target>docs</target>
         <encoding>utf8</encoding>
@@ -34,4 +34,4 @@
         <directory>build</directory>
         <ignore>vendor/*</ignore>
     </files>
-</phpdoc>
+</phpdoc>c>

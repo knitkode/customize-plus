@@ -82,13 +82,13 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 	 */
 	public function get_l10n() {
 		return array(
-			'cancelText' => __( 'Cancel', 'pkgTextdomain' ),
-			'chooseText' => __( 'Choose', 'pkgTextdomain' ),
-			'clearText' => __( 'Clear selection', 'pkgTextdomain' ),
-			'noColorSelectedText' => __( 'No color selected', 'pkgTextdomain' ),
-			'togglePaletteMoreText' => __( 'Show color picker', 'pkgTextdomain' ),
-			'togglePaletteLessText' => __( 'Hide color picker', 'pkgTextdomain' ),
-			'vNotInPalette' => __( 'Color not in the allowed palette.', 'pkgTextdomain' ),
+			'cancelText' => __( 'Cancel' ),
+			'chooseText' => __( 'Choose' ),
+			'clearText' => __( 'Clear selection' ),
+			'noColorSelectedText' => __( 'No color selected' ),
+			'togglePaletteMoreText' => __( 'Show color picker' ),
+			'togglePaletteLessText' => __( 'Hide color picker' ),
+			'vNotInPalette' => __( 'Color not in the allowed palette.' ),
 		);
 	}
 
@@ -129,7 +129,7 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 		<?php $this->js_tpl_header(); ?>
 		<span class="pwpcpcolor-current pwpcpcolor-current-bg"></span>
 		<span class="pwpcpcolor-current pwpcpcolor-current-overlay" style="background:{{data.valueCSS}}"></span>
-		<a href="javascript:void(0)" class="pwpcpui-toggle pwpcpcolor-toggle"><?php _e( 'Select Color', 'pkgTextdomain' ) ?></a>
+		<a href="javascript:void(0)" class="pwpcpui-toggle pwpcpcolor-toggle"><?php _e( 'Select Color' ) ?></a>
 		<div class="pwpcp-expander">
 			<input class="pwpcpcolor-input" type="text">
 		</div>

@@ -31,9 +31,9 @@ class PWPcp_Customize_Control_Text extends PWPcp_Customize_Control_Base_Input {
 	 */
 	public function get_l10n() {
 		return array(
-			'vTooLong' => __( 'The value is too long.', 'pkgTextdomain' ),
-			'vInvalidUrl' => __( 'Invalid url.', 'pkgTextdomain' ),
-			'vInvalidEmail' => __( 'Invalid email.', 'pkgTextdomain' ),
+			'vTooLong' => __( 'The value is too long.' ),
+			'vInvalidUrl' => __( 'Invalid url.' ),
+			'vInvalidEmail' => __( 'Invalid email.' ),
 		);
 	}
 

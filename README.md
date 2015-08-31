@@ -3,7 +3,7 @@
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)]()
 [![GitHub release](https://img.shields.io/github/release/PlusWP/customize-plus.svg)]()
 [![Build Status](https://scrutinizer-ci.com/g/PlusWP/customize-plus/badges/build.png?b=master)](https://scrutinizer-ci.com/g/PlusWP/customize-plus/build-status/master)
-[![Codacy Badge](https://api.codacy.com/project/badge/d249bfc8bd0c45599c537cb59ec86cb9)](https://www.codacy.com/app/kuus/customize-plus)
+[![Codacy Badge](https://api.codacy.com/project/badge/13e6f4eb577b4480a617de3e8f1fe254)](https://www.codacy.com/app/kuus/customize-plus)
 [![Quality](https://scrutinizer-ci.com/g/PlusWP/customize-plus/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/PlusWP/customize-plus/?branch=master)
 [![devDependency Status](https://david-dm.org/PlusWP/customize-plus/dev-status.svg)](https://david-dm.org/PlusWP/customize-plus#info=devDependencies)
 
@@ -51,7 +51,7 @@ We use [Transifex](https://www.transifex.com) to manage translations. **Anyone**
 
 Donate
 ---------------
-[![Gratipay](https://img.shields.io/gratipay/PlusWP.svg)]()
+[![Gratipay](https://img.shields.io/gratipay/PlusWP.svg)](https://gratipay.com/PlusWP)
 
 
 License
