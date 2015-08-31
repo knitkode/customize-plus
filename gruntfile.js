@@ -73,7 +73,7 @@ module.exports = function (grunt) {
        command: 'tx push -s'
       },
       txpull: {
-        command: 'tx pull -a --minimum-perc=5'
+        command: 'tx pull -a --minimum-perc=1'
       }
     },
 

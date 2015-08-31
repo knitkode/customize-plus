@@ -18,6 +18,7 @@ var pathMoFiles = [
 // @access public
 gulp.task('release', sequence([
   '_release-prepare',
+  '_release-lang',
   '_release-lang-mo'
 ]));
 
@@ -33,8 +34,8 @@ gulp.task('_release-prepare', ['_release-replace-words', '_release-create-index'
 gulp.task('_release-lang', ['grunt-lang']);
 
 // @access private
-gulp.task('_release-lang-mo_rename', ['_release-lang'], function () {
-  gulp.src(pathMoFiles)
+gulp.task('_release-lang-mo_rename', function () {
+  return gulp.src(pathMoFiles)
     .pipe($.rename({ prefix: pkg.config.textDomain + '-' }))
     .pipe(gulp.dest('./build/languages/'));
 });
