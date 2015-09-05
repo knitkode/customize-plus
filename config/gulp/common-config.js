@@ -10,7 +10,7 @@ module.exports = {
     '/*!',
     ' * <%= pkg.config.namePretty %> v<%= pkg.version %> (<%= pkg.homepage %>)',
     ' * <%= pkg.description %>',
-    ' * Copyright <%= pkg.config.startYear %><% if (new Date().getFullYear() > pkg.config.startYear) { %>-<%= new Date().getFullYear() %><% } %> <%= pkg.author.name %> <<%= pkg.author.email %>> (<%= pkg.author.url %>)',
+    ' * Copyright (c) <%= pkg.config.startYear %><% if (new Date().getFullYear() > pkg.config.startYear) { %>-<%= new Date().getFullYear() %><% } %> <%= pkg.author.name %> <<%= pkg.author.email %>> (<%= pkg.author.url %>)',
     ' * <%= pkg.license.type %> (<%= pkg.license.url %>)',
     ' */'
   ].join('\n'),
