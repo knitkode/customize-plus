@@ -8,7 +8,6 @@ var pkg = require('../../package.json');
 var fs = require('fs');
 var path = require('path');
 var folders = require('./common-util-get-folders');
-var sequence = require('gulp-sequence');
 var del = require('del');
 var pathMoFiles = [
   './build/languages/*.mo',
@@ -16,7 +15,7 @@ var pathMoFiles = [
 ];
 
 // @access public
-gulp.task('release', sequence([
+gulp.task('release', $.sequence([
   'release-prepare',
   'release-lang'
 ]));
@@ -35,7 +34,7 @@ gulp.task('release-lang', ['_release-lang-mo_rename'], function () {
 });
 
 // @access private
-gulp.task('_release-lang-prepare', ['_release-replace-words'], sequence(['grunt-lang']));
+gulp.task('_release-lang-prepare', ['_release-replace-words'], $.sequence(['grunt-lang']));
 
 // @access private
 gulp.task('_release-lang-mo_rename', ['_release-lang-prepare'], function () {
