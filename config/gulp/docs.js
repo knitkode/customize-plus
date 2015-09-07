@@ -1,15 +1,14 @@
-/* global gulp, $ */
+/* global gulp, $, PLUGINS */
 /* jshint node: true */
 'use strict';
 
 var PATHS = global.PATHS;
-var PLUGINS = require('./common-plugins');
-
 var pathsScriptsToDocument = [
   PATHS.src.scripts + '**/*.js',
   '!' + PATHS.src.scripts + 'vendor-custom/**/*.js'
 ];
 var pathsScriptsReadyToDocument = './docs/js/scripts-to-document/**/*.js';
+
 
 /**
  * Docs

@@ -1,10 +1,8 @@
-/* global gulp, $ */
+/* global gulp, $, CONFIG, PLUGINS */
 /* jshint node: true */
 'use strict';
 
 var PATHS = global.PATHS;
-var CONFIG = require('./common-config');
-var PLUGINS = require('./common-plugins');
 var streamqueue = require('streamqueue');
 var extend = require('util')._extend;
 var pkg = require('../../package.json');

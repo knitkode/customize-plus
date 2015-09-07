@@ -1,13 +1,12 @@
-/* global gulp, $ */
+/* global gulp, $, CONFIG, PLUGINS */
 /* jshint node: true */
 'use strict';
 
 var PATHS = global.PATHS;
-var CONFIG = require('./common-config');
-var PLUGINS = require('./common-plugins');
-var utilErrors = require('./common-util-errors');
+var utilErrors = require('../common/gulp/util-errors');
 var pngquant = require('imagemin-pngquant');
 var pkg = require('../../package.json');
+
 
 /**
  * Build
