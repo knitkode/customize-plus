@@ -45,7 +45,7 @@
     "gulp-ignore": "~1.2.1",
     "merge-stream": "~0.1.6",
     "streamqueue": "~0.1.1",
-    "gulp-sass": "~1.2.0",
+    "gulp-sass": "~2.0.4",
     "gulp-zip": "~2.0.2",
     "conventional-changelog": "0.0.11",
     "minimist": "~1.1.0",
