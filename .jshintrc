@@ -1,21 +1,13 @@
 {
   "extends": ".jshintrc-base",
-  "globalstrict": false,
-  "maxlen": 110,
-  "browser": true,
-  "devel": true,
   "predef": [
-    "jQuery",
-    "$",
-    "_",
-    "validator",
-    "wp",
     "wpApi",
     "wpApiIsReady",
     "PWPcp",
     "api",
     "$window",
     "$document",
-    "body"
+    "body",
+    "validator"
   ]
 }
