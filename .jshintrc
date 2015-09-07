@@ -1,5 +1,5 @@
 {
-  "extends": "dev-lib/.jshintrc-base",
+  "extends": "config/common/.jshintrc-base",
   "predef": [
     "wpApi",
     "wpApiIsReady",

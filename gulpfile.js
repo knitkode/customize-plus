@@ -90,7 +90,7 @@ gulp.task('modernizr', ['_customize-modernizr']);
 
 
 // Require the gulp folder with all the tasks, don't change this
-require('./config/dev-lib/gulp');
+require('./config/common/gulp');
 
 // Add all the gruntfile tasks to gulp, don't change this
 require('gulp-grunt')(require('gulp'));
