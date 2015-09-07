@@ -34,4 +34,4 @@
         <directory>build</directory>
         <ignore>*/vendor/*</ignore>
     </files>
-</phpdoc>c>
+</phpdoc>
