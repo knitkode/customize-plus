@@ -77,9 +77,7 @@ gulp.task('build', sequence([
     'build-base',
     'build-customize'
   ]
-  // '_release-replace-words',
-  // '_release-create-index'
-) );
+));
 
 // @access public
 gulp.task('watch', [
@@ -92,7 +90,7 @@ gulp.task('modernizr', ['_customize-modernizr']);
 
 
 // Require the gulp folder with all the tasks, don't change this
-require('./config/gulp');
+require('./config/dev-lib/gulp');
 
 // Add all the gruntfile tasks to gulp, don't change this
 require('gulp-grunt')(require('gulp'));

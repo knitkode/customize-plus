@@ -6,11 +6,9 @@
   "noempty": true,
   "nonew": true,
   "trailing": true,
-  "maxlen": 200,
   "boss": true,
   "eqnull": true,
   "expr": true,
-  "globalstrict": true,
   "laxbreak": true,
   "loopfunc": true,
   "sub": true,
@@ -20,8 +18,16 @@
   "quotmark": true,
   "eqeqeq": true,
   "curly": false,
+  "globalstrict": false,
+  "maxlen": 110,
+  "devel": true,
+  "browser": true,
   "globals": {
     "DEBUG": false,
-    "performance": false
+    "performance": false,
+    "_": false,
+    "Backbone": false,
+    "jQuery": false,
+    "wp": false
   }
 }
