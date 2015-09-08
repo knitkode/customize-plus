@@ -278,8 +278,9 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 			<div class="pwpcp-extras">
 				<i class="pwpcp-extras-btn pwpcpui-control-btn dashicons dashicons-admin-generic"></i>
 				<ul class="pwpcp-extras-list">
-					<li class="pwpcp-extras-reset_last"><?php _e( 'Reset to initial session value' ); ?></li>
-					<li class="pwpcp-extras-reset"><?php _e( 'Reset to factory value' ); ?></li>
+					<li class="pwpcp-extras-reset_last"><?php _e( 'Reset to last saved value' ); ?></li>
+					<li class="pwpcp-extras-reset_initial"><?php _e( 'Reset to initial session value' ); ?></li>
+					<li class="pwpcp-extras-reset_factory"><?php _e( 'Reset to factory value' ); ?></li>
 					<li class="pwpcp-extras-hide"><?php _e( 'Hide this control' ); ?></li>
 				</ul>
 			</div>

@@ -15,8 +15,7 @@
  * a wrapper, needed to bind the `mouseenter`, `mouseleave`
  * events on only one DOM element.
  */
-.pwpcp-extras {
-}
+.pwpcp-extras {}
 
 /**
  * Toggle button
@@ -111,13 +110,13 @@
 }
 
 .pwpcp-extras {
-  &-undo:before {
-    content: "\f171";
-  }
   &-reset_last:before {
+    content: "\f474";
+  }
+  &-reset_initial:before {
     content: "\f321";
   }
-  &-reset:before {
+  &-reset_factory:before {
     content: "\f308";
   }
   &-hide:before {

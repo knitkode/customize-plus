@@ -140,19 +140,23 @@ var Utils = (function () {
     /**
      * Reset control -> setting value to the value according
      * to the given mode argument
+     * @static
      * @param  {Control} control  The control whose setting has to be reset
      * @param  {string} resetType Either `'initial'` or `'factory'`
      * @return {boolean}          Whether the reset has succeded
      */
     resetControl: function (control, resetType) {
-      if (control.params.type === 'pwpcp_dummy') {
+      var params = control.params;
+      if (params.type === 'pwpcp_dummy') {
         return true;
       }
       var value;
-      if (resetType === 'initial') {
-        value = control.params.vInitial;
+      if (resetType === 'last' && !_.isUndefined(params.vLast)) {
+        value = params.vLast;
+      } else if (resetType === 'initial') {
+        value = params.vInitial;
       } else if (resetType === 'factory') {
-        value = control.params.vFactory;
+        value = params.vFactory;
       }
       if (value) {
         control.setting.set(value);
@@ -168,15 +172,18 @@ var Utils = (function () {
      * @return {boolean}          Whether the reset has succeded
      */
     _isResetNeeded: function (control, resetType) {
-      if (!control.pwpcp || control.params.type === 'pwpcp_dummy') {
+      var params = control.params;
+      if (!control.pwpcp || params.type === 'pwpcp_dummy') {
         return false;
       }
       var _softenize = control.softenize;
       var value = _softenize(control.setting());
-      if (resetType === 'initial') {
-        return value !== _softenize(control.params.vInitial);
+      if (resetType === 'last' && !_.isUndefined(params.vLast)) {
+        return value !== _softenize(params.vLast);
+      } else if (resetType === 'initial') {
+        return value !== _softenize(params.vInitial);
       } else if (resetType === 'factory') {
-        return value !== _softenize(control.params.vFactory);
+        return value !== _softenize(params.vFactory);
       }
     },
     /**

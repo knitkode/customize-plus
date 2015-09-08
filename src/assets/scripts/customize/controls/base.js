@@ -30,6 +30,7 @@ api.controls.Base = wpApi.Control.extend({
 
     _.extend(control, options || {});
 
+    // set control id
     control.id = id;
 
     // add a flag so that we are able to recognize our
@@ -61,34 +62,34 @@ api.controls.Base = wpApi.Control.extend({
     control.active = new wpApi.Value();
     control.activeArgumentsQueue = [];
 
-    control.active.bind( function ( active ) {
+    control.active.bind(function (active) {
       var args = control.activeArgumentsQueue.shift();
-      args = $.extend( {}, control.defaultActiveArguments, args );
-      control.onChangeActive( active, args );
-    } );
+      args = $.extend({}, control.defaultActiveArguments, args);
+      control.onChangeActive(active, args);
+    });
 
-    control.section.set( control.params.section );
-    control.priority.set( isNaN( control.params.priority ) ? 10 : control.params.priority );
-    control.active.set( control.params.active );
+    control.section.set(control.params.section);
+    control.priority.set(isNaN(control.params.priority) ? 10 : control.params.priority);
+    control.active.set(control.params.active);
 
-    wpApi.utils.bubbleChildValueChanges( control, [ 'section', 'priority', 'active' ] );
+    wpApi.utils.bubbleChildValueChanges(control, ['section', 'priority', 'active']);
 
     // Associate this control with its settings when they are created
-    settings = $.map( control.params.settings, function( value ) {
+    settings = $.map(control.params.settings, function(value) {
       return value;
     });
 
-    wpApi.apply( wpApi, settings.concat( function () {
+    wpApi.apply(wpApi, settings.concat(function () {
       control.settings = {};
-      for ( var key in control.params.settings ) {
-        control.settings[ key ] = wpApi( control.params.settings[ key ] );
+      for (var key in control.params.settings) {
+        control.settings[key] = wpApi(control.params.settings[key]);
       }
 
       control.setting = control.settings['default'] || null;
 
       // embed controls only when the parent section get clicked to keep the DOM light,
       // to make this work all data can't be stored in the DOM, which is good
-      wpApi.section( control.section.get(), function ( section ) {
+      wpApi.section(control.section.get(), function (section) {
         section.expanded.bind(function (expanded) {
           if (expanded) {
             control.inflate();
@@ -97,7 +98,7 @@ api.controls.Base = wpApi.Control.extend({
           }
         });
       });
-    }) );
+    }));
 
     // an @abstract method to override
     control.onInit();
@@ -124,7 +125,7 @@ api.controls.Base = wpApi.Control.extend({
    * @return {string} The newValue validated or the last setting value.
    */
   _validateWrap: function (newValue) {
-    if ( !this.params.optional && Utils._isSettingValueEmpty(newValue)) {
+    if (!this.params.optional && Utils._isSettingValueEmpty(newValue)) {
       this._onValidateError({ error: true, msg: api.l10n['vRequired'] });
       this._currentValueHasError = true;
       return this.setting();
@@ -399,21 +400,24 @@ api.controls.Base = wpApi.Control.extend({
    */
   _extras: function () {
     var self = this;
+    var params = this.params;
     /**
      * Reference to abstract method different in various control's subclasses
      * @type {function(*)}
      */
-    var _maybeSoftenizeValue = this.softenize;
+    var _softenize = this.softenize;
     // constants
-    var CLASS_RESET_FACTORY = 'pwpcp-extras-reset';
     var CLASS_RESET_LAST = ' pwpcp-extras-reset_last';
+    var CLASS_RESET_INITIAL = ' pwpcp-extras-reset_initial';
+    var CLASS_RESET_FACTORY = 'pwpcp-extras-reset_factory';
     var CLASS_DISABLED = ' pwpcp-disabled';
     // DOM
     var container = this._container;
     var area = container.getElementsByClassName('pwpcp-extras')[0];
     var toggle = container.getElementsByClassName('pwpcp-extras-btn')[0];
-    var btnResetLast = container.getElementsByClassName('pwpcp-extras-reset_last')[0];
-    var btnResetFactory = container.getElementsByClassName('pwpcp-extras-reset')[0];
+    var btnResetLast = container.getElementsByClassName(CLASS_RESET_LAST)[0];
+    var btnResetInitial = container.getElementsByClassName(CLASS_RESET_INITIAL)[0];
+    var btnResetFactory = container.getElementsByClassName(CLASS_RESET_FACTORY)[0];
     var btnHide = container.getElementsByClassName('pwpcp-extras-hide')[0];
     // value variables, uses closure
     var setting = this.setting;
@@ -427,11 +431,20 @@ api.controls.Base = wpApi.Control.extend({
       container.classList.remove('pwpcp-extras-open');
     };
     /**
-     * Reset setting to the value at the beginning of the session.
+     * Reset setting to the last saved value
      * It closes the `extras` dropdown.
      *
      */
     var _resetLastValue = function () {
+      Utils._forceSettingSet(setting, params.vLast);
+      _closeExtras();
+    };
+    /**
+     * Reset setting to the value at the beginning of the session.
+     * It closes the `extras` dropdown.
+     *
+     */
+    var _resetInitialValue = function () {
       Utils._forceSettingSet(setting, initialValue);
       _closeExtras();
     };
@@ -446,18 +459,32 @@ api.controls.Base = wpApi.Control.extend({
       _closeExtras();
     };
     /**
-     * Enable button responsible for: resetting to initial value
+     * Enable button responsible for: resetting to last saved value
      */
-    var _enableBtnInitial = function () {
+    var _enableBtnLast = function () {
       btnResetLast.className = CLASS_RESET_LAST;
       btnResetLast.onclick = _resetLastValue;
     };
     /**
      * Disable button responsible for: resetting to initial value
      */
-    var _disableBtnInitial = function () {
+    var _disableBtnLast = function () {
       btnResetLast.className = CLASS_RESET_LAST + CLASS_DISABLED;
       btnResetLast.onclick = '';
+    };
+    /**
+     * Enable button responsible for: resetting to initial value
+     */
+    var _enableBtnInitial = function () {
+      btnResetInitial.className = CLASS_RESET_INITIAL;
+      btnResetInitial.onclick = _resetInitialValue;
+    };
+    /**
+     * Disable button responsible for: resetting to initial value
+     */
+    var _disableBtnInitial = function () {
+      btnResetInitial.className = CLASS_RESET_INITIAL + CLASS_DISABLED;
+      btnResetInitial.onclick = '';
     };
     /**
      * Enable button responsible for: resetting to factory / theme-default value
@@ -487,14 +514,23 @@ api.controls.Base = wpApi.Control.extend({
         return;
       }
 
-      var currentValue = _maybeSoftenizeValue( setting.get() );
+      var currentValue = _softenize(setting());
+      var lastValue = params.vLast;
 
-      if (currentValue === _maybeSoftenizeValue( initialValue )) {
+      // the last saved value is not always there like the others, we don't put
+      // it in the big json through php, to save bytes, in the end. We check
+      // here if the last value is `undefined`
+      if (_.isUndefined(lastValue) || currentValue === _softenize(lastValue)) {
+        _disableBtnLast();
+      } else {
+        _enableBtnLast();
+      }
+      if (currentValue === _softenize(initialValue)) {
         _disableBtnInitial();
       } else {
         _enableBtnInitial();
       }
-      if (currentValue === _maybeSoftenizeValue( factoryValue )) {
+      if (currentValue === _softenize(factoryValue)) {
         _disableBtnFactory();
       } else {
         _enableBtnFactory();
@@ -597,5 +633,22 @@ wpApi.bind('ready', function () {
     }
   } catch(e) {
     console.warn('Fix autofocus', e);
+  }
+});
+
+/**
+ * Save last saved value on each control instance on `saved` hook. With this in
+ * the extras menu users will be able to reset the setting value to the last
+ * saved value.
+ */
+wpApi.bind('save', function () {
+  for (var controlId in wpApi.settings.controls) {
+    var control = wpApi.control(controlId);
+    if (control) { // @@doubt, probably unneeded check \\
+      if (control.setting['_dirty']) { // whitelisted from uglify mangle regex private names \\
+        console.log(control.id, 'is dirty on save with value:', control.setting());
+        control.params.vLast = control.setting();
+      }
+    }
   }
 });
