@@ -5,10 +5,9 @@
  *
  * pkgDescription
  *
- * This plugin was built on top of a mix of WordPress-Plugin-Skeleton by Ian Dunn
- * (see {@link https://github.com/iandunn/WordPress-Plugin-Skeleton here} for details)
- * and WordPress-Plugin-Boilerplate (see {@link
- * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/ here} for details).
+ * This plugin was built on top of a mix of WordPress-Plugin-Skeleton by Ian
+ * Dunn (see {@link http://git.io/vZ05r here} for details) and WordPress-Plugin
+ * Boilerplate (see {@link http://git.io/vZ056 here} for details).
  *
  * @package           Customize_Plus
  *

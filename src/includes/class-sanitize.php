@@ -94,7 +94,7 @@ class PWPcp_Sanitize {
 	/**
 	 * Sanitize CSS
 	 *
-	 * @link(https://github.com/WPTRT/code-examples/blob/master/customizer/sanitization-callbacks.php#L27, source)
+	 * @link(http://git.io/vZ05N, source)
 	 * @param string $input CSS to sanitize.
 	 * @return string Sanitized CSS.
 	 */
@@ -105,7 +105,7 @@ class PWPcp_Sanitize {
 	/**
 	 * Sanitize image
 	 *
-	 * @link(https://github.com/WPTRT/code-examples/blob/master/customizer/sanitization-callbacks.php#L141, source)
+	 * @link(http://git.io/vZ05p, source)
 	 * @param string               $image   Image filename.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @return string The image filename if the extension is allowed; otherwise, the setting default.
@@ -130,7 +130,7 @@ class PWPcp_Sanitize {
 	/**
 	 * HTML sanitization callback example.
 	 *
-	 * @link(https://github.com/WPTRT/code-examples/blob/master/customizer/sanitization-callbacks.php#L120, source)
+	 * @link(http://git.io/vZ0dv, source)
 	 * @param string $html HTML to sanitize.
 	 * @return string Sanitized HTML.
 	 */
@@ -141,7 +141,7 @@ class PWPcp_Sanitize {
 	/**
 	 * No-HTML sanitization callback example.
 	 *
-	 * @link(https://github.com/WPTRT/code-examples/blob/master/customizer/sanitization-callbacks.php#L179, source)
+	 * @link(http://git.io/vZ0dL, source)
 	 * @since  0.0.1
 	 * @param string $nohtml The no-HTML content to sanitize.
 	 * @return string Sanitized no-HTML content.

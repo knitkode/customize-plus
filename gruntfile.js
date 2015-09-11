@@ -44,7 +44,7 @@ module.exports = function (grunt) {
             'x-poedit-keywordslist': true
           },
           updateTimestamp: true,
-          // from https://github.com/easydigitaldownloads/Easy-Digital-Downloads/blob/master/Gruntfile.js#L52
+          // from http://git.io/vZ05R
           processPot: function (pot, options) {
             // pot.headers['report-msgid-bugs-to'] = '<%= pkg.repository.url %>/issues';
             // pot.headers['last-translator'] = 'WP-Translations (http://wp-translations.org/)';
