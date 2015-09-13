@@ -124,12 +124,18 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
    * @param  {boolean} bindAsWell Bind on change?
    */
   _syncCheckboxes: function (bindAsWell) {
-    var valueAsArray = JSON.parse(this.setting());
+    var valueAsArray = [];
+    try {
+      valueAsArray = JSON.parse(this.setting());
+    } catch(e) {
+      console.warn('Control->Multicheck: setting value of ' + this.id +
+        ' is not a valid json array', this.setting());
+    }
     for (var i = 0, l = this.__inputs.length; i < l; i++) {
       var input = this.__inputs[i];
       input.checked = valueAsArray.indexOf(input.value) !== -1;
       if (bindAsWell) {
-        input.onchange = function (event) {
+        input.onchange = function () {
           this.setting.set(this._getValueFromUI());
         }.bind(this);
       }

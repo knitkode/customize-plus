@@ -6,12 +6,26 @@
  * Manage tabbed content inside controls
  *
  * @class api.Tabs
- * @requires api.Screenpreview
+ * @requires api.components.Screenpreview
  */
 var Tabs = (function () {
 
+  /**
+   * Class name for a selected tab
+   * @type {string}
+   */
   var CLASS_TAB_SELECTED = 'selected';
+
+  /**
+   * Tab selector (for jQuery)
+   * @type {string}
+   */
   var SELECTOR_TAB = '.pwpcp-tab';
+
+  /**
+   * Tab content selector (for jQuery)
+   * @type {String}
+   */
   var SELECTOR_TAB_CONTENT = '.pwpcp-tab-content';
 
   /**
@@ -51,15 +65,22 @@ var Tabs = (function () {
 
       // if this tabbed area is related to the screenpreview then notify it
       if (isScreenPicker) {
+        // we might not have the Screenpreview component enabled
         try {
           api.components.Screenpreview.change(true, target);
         } catch(e) {
-          console.warn('Tabs tried to use screenpreview, which is undefined.', e);
+          console.warn('Tabs tried to use Screenpreview, which is undefined.', e);
         }
       }
     });
   }
 
+  /**
+   * Update Screen Picker Tabs
+   * @param  {int|string} size   The size to which update the tabs
+   * @param  {jQuery} $container An element to use as context to look for
+   *                             screen pickers UI DOM
+   */
   function _updateScreenPickerTabs (size, $container) {
     var $screenPickers = $('.pwpcp-screen-picker', $container);
     $screenPickers.each(function () {
@@ -93,7 +114,8 @@ var Tabs = (function () {
      * Sync the tabs within the given container
      * with current Screenpreview size
      *
-     * @param {jQuery} $container A container with tabbed areas (probably a control container)
+     * @param {jQuery} $container A container with tabbed areas (probably a
+     *                            control container)
      */
     syncSize: function ($container) {
       _updateScreenPickerTabs(Screenpreview.getSize(), $container);

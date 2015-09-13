@@ -4,14 +4,19 @@
  * Control Base class
  *
  * Change a bit the default Customizer Control class.
- * Render controls content on demand when their section is expanded
- * then remove the DOM when the section is collapsed
+ * Render controls content on demand when their section is expanded then remove
+ * the DOM when the section is collapsed. Since we override the `initialize`
+ * and `renderContent` methods keep an eye on
+ * @link(http://git.io/vZ6Yq, WordPress source code).
  *
  * @see PHP class PWPcp_Customize_Control_Base.
  *
  * @class api.controls.Base
  * @extends wp.customize.Control
  * @augments wp.customize.Class
+ * @requires api.Skeleton
+ * @requires api.Utils
+ * @requires api.Tooltips
  */
 api.controls.Base = wpApi.Control.extend({
   /**
@@ -209,15 +214,15 @@ api.controls.Base = wpApi.Control.extend({
     var templateSelector = 'customize-control-' + this.params.type + '-content';
 
     // Replace the container element's content with the control.
-    if ( document.getElementById( 'tmpl-' + templateSelector ) ) {
-      template = wp.template( templateSelector );
-      if ( template && _container ) {
+    if (document.getElementById('tmpl-' + templateSelector)) {
+      template = wp.template(templateSelector);
+      if (template && _container) {
 
         /* jshint funcscope: true */
         if (DEBUG) var t = performance.now();
 
         // render and store it in the params
-        this.params.template = _container.innerHTML = template( this.params ).trim();
+        this.params.template = _container.innerHTML = template(this.params).trim();
 
         // var frag = document.createDocumentFragment();
         // var tplNode = document.createElement('div');
@@ -288,7 +293,6 @@ api.controls.Base = wpApi.Control.extend({
         this.rendered = false;
       }
     }.bind(this));
-
   },
   /**
    * Inflate
@@ -300,11 +304,11 @@ api.controls.Base = wpApi.Control.extend({
    * `rendered` on the control instance to indicate whether the control is
    * rendered or not.
    *
-   * @param  {boolean} shouldWeResolveEmbeddedDeferred Sometimes (i.e. for the
-   *                                                   `control.focus()` method)
-   *                                                   we need to resolve embed
+   * @param  {boolean} shouldResolveEmbeddedDeferred Sometimes (i.e. for the
+   *                                                 `control.focus()` method)
+   *                                                 we need to resolve embed
    */
-  inflate: function (shouldWeResolveEmbeddedDeferred) {
+  inflate: function (shouldResolveEmbeddedDeferred) {
     /* jshint funcscope: true */
     if (DEBUG) var t = performance.now();
     if (!this.params.template) {
@@ -322,7 +326,7 @@ api.controls.Base = wpApi.Control.extend({
       this.rendered = true;
       this.ready();
     }
-    if (shouldWeResolveEmbeddedDeferred) {
+    if (shouldResolveEmbeddedDeferred) {
       this.deferred.embedded.resolve();
     }
     this._guide();
@@ -642,13 +646,8 @@ wpApi.bind('ready', function () {
  * saved value.
  */
 wpApi.bind('save', function () {
-  for (var controlId in wpApi.settings.controls) {
-    var control = wpApi.control(controlId);
-    if (control) { // @@doubt, probably unneeded check \\
-      if (control.setting['_dirty']) { // whitelisted from uglify mangle regex private names \\
-        console.log(control.id, 'is dirty on save with value:', control.setting());
-        control.params.vLast = control.setting();
-      }
-    }
-  }
+  Utils._eachDirtyControl(function (control) {
+    console.log(control.id, 'is dirty on save with value:', control.setting());
+    control.params.vLast = control.setting();
+  });
 });
