@@ -41,7 +41,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * @since 0.0.1
 		 * @var string
 		 */
-		public static $options_prefix = '';
+		public static $settings_prefix = '';
 
 		/**
 		 * The theme customize tree array.
@@ -210,7 +210,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 */
 		private static function init( $theme ) {
 
-			self::$options_prefix = $theme['prefix'];
+			self::$settings_prefix = $theme['prefix'];
 			self::$images_base_url = $theme['images_base_url'];
 			self::$docs_base_url = $theme['docs_base_url'];
 			self::$customize_tree = $theme['customize_tree'];

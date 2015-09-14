@@ -26,7 +26,7 @@ wpApi.controlConstructor.pwpcp_dummy = api.controls.Dummy = wpApi.Control.extend
     // var settings;
 
     control.params = {};
-    $.extend( control, options || {} );
+    $.extend(control, options || {});
     control.id = id;
     // control.selector = '#customize-control-' + id.replace( /\]/g, '' )
     //  .replace( /\[/g, '-' );
@@ -45,14 +45,14 @@ wpApi.controlConstructor.pwpcp_dummy = api.controls.Dummy = wpApi.Control.extend
      * let's keep it simple, keep the following code here in the initialization method
      */
 
-    // // build a fake setting object, just to don't break normal API usage like
-    // // looping through all `wp.customize.controls` and bind each `control.setting`
+    // build a fake setting object, just to don't break normal API usage like
+    // looping through all `wp.customize.controls` and bind each `control.setting`
     control.settings = control.params.settings = control.setting = {
       bind: function () {}
     };
 
-    // // always priority ten is just fine, no need to check
-    // // if we have passed it in the params
+    // always priority ten is just fine, no need to check
+    // if we have passed it in the params
     control.priority.set(10);
 
     // the wrapper for this control can always be the same, we create it in js
@@ -73,17 +73,17 @@ wpApi.controlConstructor.pwpcp_dummy = api.controls.Dummy = wpApi.Control.extend
     }
     /* end custom code */
 
-    control.active.bind( function ( active ) {
+    control.active.bind(function (active) {
       var args = control.activeArgumentsQueue.shift();
-      args = $.extend( {}, control.defaultActiveArguments, args );
-      control.onChangeActive( active, args );
+      args = $.extend({}, control.defaultActiveArguments, args);
+      control.onChangeActive(active, args);
     } );
 
-    control.section.set( control.params.section );
+    control.section.set(control.params.section);
     // control.priority.set( isNaN( control.params.priority ) ? 10 : control.params.priority );
-    control.active.set( control.params.active );
+    control.active.set(control.params.active);
 
-    wpApi.utils.bubbleChildValueChanges( control, [ 'section', 'priority', 'active' ] );
+    wpApi.utils.bubbleChildValueChanges(control, ['section', 'priority', 'active']);
 
     // // Associate this control with its settings when they are created
     // settings = $.map( control.params.settings, function( value ) {
@@ -91,20 +91,27 @@ wpApi.controlConstructor.pwpcp_dummy = api.controls.Dummy = wpApi.Control.extend
     // });
     // wpApi.apply( wpApi, settings.concat( function () {
     //   var key;
-
     //   control.settings = {};
     //   for ( key in control.params.settings ) {
     //     control.settings[ key ] = wpApi( control.params.settings[ key ] );
     //   }
-
     //   control.setting = control.settings['default'] || null;
-
     //   control.embed();
     // }) );
 
-    control.embed();
+    // // embed controls only when the parent section get clicked to keep the DOM light,
+    // // to make this work all data can't be stored in the DOM, which is good
+    // wpApi.section(control.section.get(), function (section) {
+    //   section.expanded.bind(function (expanded) {
+    //     if (expanded) {
+    //       control.embed();
+    //     }
+    //   });
+    // });
 
-    control.deferred.embedded.done( function () {
+    // control.embed();
+
+    control.deferred.embedded.done(function () {
       control.ready();
     });
   }

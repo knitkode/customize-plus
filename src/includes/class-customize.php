@@ -162,6 +162,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 */
 		public static function get_js_constants() {
 			$required = array(
+				'SETTINGS_PREFIX' => PWPcp_Theme::$settings_prefix,
 				'THEME_URL' => get_stylesheet_directory_uri(),
 				'IMAGES_BASE_URL' => PWPcp_Theme::$images_base_url,
 				'DOCS_BASE_URL' => PWPcp_Theme::$docs_base_url,
@@ -318,8 +319,8 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		private static function add_panel_from_tree( $panel, $priority ) {
 			global $wp_customize;
 
-			// dynamically get panel_id with options_prefix
-			$panel_id = PWPcp_Theme::$options_prefix . '-' . $panel['id'];
+			// dynamically get panel_id with settings_prefix
+			$panel_id = PWPcp_Theme::$settings_prefix . '-' . $panel['id'];
 
 			// create panel args array
 			$panel_args = array();
@@ -485,7 +486,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				// If 'option' is used as setting type its value will be stored in an entry in
 				// {prefix}_options table.
 				if ( isset( $setting_args['type'] ) && 'option' == $setting_args['type'] ) {
-					$field_id = PWPcp_Theme::$options_prefix . '[' . $field_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
+					$field_id = PWPcp_Theme::$settings_prefix . '[' . $field_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
 				}
 				// add sanitize callback function from control class, if none is defined
 				if ( ! isset( $setting_args['sanitize_callback'] ) ) {

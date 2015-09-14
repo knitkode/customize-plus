@@ -5,8 +5,17 @@
  */
 var Utils = (function () {
 
+  /** @type {String} */
   var _IMAGES_BASE_URL = api.constants['IMAGES_BASE_URL'];
+
+  /** @type {String} */
   var _DOCS_BASE_URL = api.constants['DOCS_BASE_URL'];
+
+  /** @type {String} */
+  var _SETTINGS_PREFIX = api.constants['SETTINGS_PREFIX'];
+
+  /** @type {RegExp} */
+  var regexSettingApi = new RegExp(_SETTINGS_PREFIX + '\\[.*\\]');
 
   /**
    * Is it an absolute URL?
@@ -262,6 +271,23 @@ var Utils = (function () {
           }
         }
       }
+    },
+    /**
+     * Is the control's setting using the `theme_mods` API?
+     * @param  {string}  controlId The control id
+     * @return {Boolean}
+     */
+    _isThemeModApi: function (controlId) {
+      return !regexSettingApi.test(controlId);
+    },
+    /**
+     * Is the control's setting using the `settings` API?
+     * It is when the control id is structured as: `themeprefix[setting-id]`
+     * @param  {string}  controlId The control id
+     * @return {Boolean}
+     */
+    _isSettingApi: function (controlId) {
+      return regexSettingApi.test(controlId);
     },
     /**
      * Selectize render option function
