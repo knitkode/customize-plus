@@ -74,28 +74,9 @@ var Utils = (function () {
   // @access public
   return {
     /**
-     * To Boolean
-     * '0' or '1' to boolean
-     *
-     * @method
-     * @param  {strin|number} value
-     * @return {boolean}
-     */
-    _toBoolean: function (value) {
-      return typeof value === 'boolean' ? value : !!parseInt(value, 10);
-    },
-    /**
-     * Strip HTML from input
-     * {@link http://stackoverflow.com/q/5002111/1938970}
-     * @param  {string} input
-     * @return {string}
-     */
-    stripHTML: function (input) {
-      return $(document.createElement('div')).html(input).text();
-    },
-    /**
      * Get image url
      *
+     * @static
      * @param  {String} url The image URL, relative or absolute
      * @return {String}     The absolute URL of the image
      */
@@ -105,6 +86,7 @@ var Utils = (function () {
     /**
      * Get docs url
      *
+     * @static
      * @param  {String} url The docs URL, relative or absolute
      * @return {String}     The absolute URL of the docs
      */
@@ -114,7 +96,9 @@ var Utils = (function () {
     /**
      * Bind a link element or directly link to a specific control to focus
      *
-     * @method
+     * @static
+     * @param  {HTMLelement} linkEl The link DOM element `<a>`
+     * @param  {string} controlId   The control id to link to
      */
     linkControl: function (linkEl, controlId) {
       var controlToFocus = wpApi.control(controlId);
@@ -178,6 +162,7 @@ var Utils = (function () {
     },
     /**
      * Check if the given type of reset is needed for a specific control
+     * @static
      * @param  {Control} control  The control which need to be checked
      * @param  {string} resetType Either `'initial'` or `'factory'`
      * @return {boolean}          Whether the reset has succeded
@@ -221,6 +206,7 @@ var Utils = (function () {
      * value and then re-setting the setting to the desired value, in this way
      * the callbacks are fired and the UI get back in sync.
      *
+     * @static
      * @param  {wp.customize.Setting} setting
      * @param  {string} value
      */
@@ -232,6 +218,7 @@ var Utils = (function () {
      * Is setting value (`control.setting()`) empty?
      * Used to check if required control's settings have instead an empty value
      * @see php class method `PWPcp_Sanitize::is_setting_value_empty()`
+     * @static
      * @param  {string}  value
      * @return {Boolean}
      */
@@ -270,6 +257,7 @@ var Utils = (function () {
     },
     /**
      * Is the control's setting using the `theme_mods` API?
+     * @static
      * @param  {string}  controlId The control id
      * @return {Boolean}
      */
@@ -279,6 +267,7 @@ var Utils = (function () {
     /**
      * Is the control's setting using the `settings` API?
      * It is when the control id is structured as: `themeprefix[setting-id]`
+     * @static
      * @param  {string}  controlId The control id
      * @return {Boolean}
      */
@@ -286,9 +275,48 @@ var Utils = (function () {
       return regexSettingApi.test(controlId);
     },
     /**
+     * To Boolean
+     * '0' or '1' to boolean
+     *
+     * @static
+     * @param  {strin|number} value
+     * @return {boolean}
+     */
+    _toBoolean: function (value) {
+      return typeof value === 'boolean' ? value : !!parseInt(value, 10);
+    },
+    /**
+     * Strip HTML from input
+     * {@link http://stackoverflow.com/q/5002111/1938970}
+     * @static
+     * @param  {string} input
+     * @return {string}
+     */
+    _stripHTML: function (input) {
+      return $(document.createElement('div')).html(input).text();
+    },
+    /**
+     * Escape HTML
+     * @static
+     * @param  {string} text Text with maybe html in it.
+     * @return {string}      Text with escaped html.
+     */
+    _htmlEscape: function (text) {
+      var escapes = {
+        '<': '&lt;',
+        '>': '&gt;',
+        '&': '&amp;',
+        '"': '&quot;'
+      };
+      return text.replace(/[<>"&]/g, function (c) {
+        return escapes[c];
+      });
+    },
+    /**
      * Selectize render option function
      *
      * @abstract
+     * @static
      * @param  {Object} item     The selectize option object representation.
      * @param  {function} escape Selectize escape function.
      * @return {string}          The option template.
@@ -302,6 +330,7 @@ var Utils = (function () {
      * Selectize render option function
      *
      * @abstract
+     * @static
      * @param  {Object} item     The selectize option object representation.
      * @param  {function} escape Selectize escape function.
      * @return {string}          The option template.
