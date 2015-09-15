@@ -15,7 +15,7 @@
   }
 
   // Set default speed of jQuery animations
-  $.fx.speeds['_default'] = 180; // whitelisted from uglify mangle regex private names \\
+  $.fx.speeds['_default'] = 180; // whitelisted from uglify \\
 
   /**
    * Reusable variables as globals in each included file

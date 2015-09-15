@@ -646,8 +646,10 @@ wpApi.bind('ready', function () {
  * saved value.
  */
 wpApi.bind('save', function () {
-  Utils._eachDirtyControl(function (control) {
-    console.log(control.id, 'is dirty on save with value:', control.setting());
-    control.params.vLast = control.setting();
+  Utils._eachControl(function (control) {
+    if (control.setting['_dirty']) { // whitelisted from uglify \\
+      console.log(control.id, 'is dirty on save with value:', control.setting());
+      control.params.vLast = control.setting();
+    }
   });
 });

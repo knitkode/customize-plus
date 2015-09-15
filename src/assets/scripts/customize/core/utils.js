@@ -225,8 +225,7 @@ var Utils = (function () {
      * @param  {string} value
      */
     _forceSettingSet: function (setting, value, dummyValue) {
-      // whitelisted from uglify mangle regex private names \\
-      setting['_value'] = dummyValue || 'dummy';
+      setting['_value'] = dummyValue || 'dummy'; // whitelisted from uglify \\
       setting.set(value);
     },
     /**
@@ -255,20 +254,17 @@ var Utils = (function () {
       }
     },
     /**
-     * Each dirty control execute callback with control as argument
+     * Each control execute callback with control as argument
      * @static
      * @param {function} callback
-     * @return {[type]} [description]
      */
-    _eachDirtyControl: function (callback) {
+    _eachControl: function (callback) {
       var wpApiControl = wpApi.control;
       for (var controlId in wpApi.settings.controls) {
         var control = wpApiControl(controlId);
-        if (control) { // @@doubt, probably unneeded check \\
-          // whitelisted from uglify mangle regex private names \\
-          if (control.setting['_dirty']) {
-            callback(control);
-          }
+        // @@doubt, probably unneeded check, @@hacky dummy exception \\
+        if (control && control.params.type !== 'pwpcp_dummy') {
+          callback(control);
         }
       }
     },

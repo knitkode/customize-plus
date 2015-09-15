@@ -32,7 +32,7 @@ wpApi.controlConstructor.pwpcp_color = api.controls.Color = api.controls.Base.ex
   softenize: function (value) {
     try {
       var anyColor = tinycolor(value);
-      if (!anyColor['_format']) { // whitelisted from uglify mangle regex private names \\
+      if (!anyColor['_format']) { // whitelisted from uglify \\
         return value;
       } else {
         return anyColor.toRgbString();
