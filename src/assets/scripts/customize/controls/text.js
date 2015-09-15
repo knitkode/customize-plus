@@ -36,7 +36,7 @@ wpApi.controlConstructor.pwpcp_text = api.controls.BaseInput.extend({
     // text
     else {
       // always strip HTML
-      value = Utils.stripHTML(value);
+      value = Utils._stripHTML(value);
     }
 
     if (errorMsg) {

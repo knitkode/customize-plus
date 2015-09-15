@@ -27,7 +27,7 @@ wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
           newValue = newValue.slice(0, maxItems);
         }
       }
-      return Utils.stripHTML(newValue.join(','));
+      return Utils._stripHTML(newValue.join(','));
     }
     return { error: true };
   },
