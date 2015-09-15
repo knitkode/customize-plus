@@ -222,13 +222,13 @@ api.controls.Base = wpApi.Control.extend({
         if (DEBUG) var t = performance.now();
 
         // render and store it in the params
-        this.params.template = _container.innerHTML = template(this.params).trim();
+        this.template = _container.innerHTML = template(this.params).trim();
 
         // var frag = document.createDocumentFragment();
         // var tplNode = document.createElement('div');
         // tplNode.innerHTML = template( this.params ).trim();
         // frag.appendChild(tplNode);
-        // this.params.template = frag;
+        // this.template = frag;
         // _container.appendChild(frag);
 
         if (DEBUG) console.log('%c renderContent of ' + this.params.type + '(' +
@@ -257,8 +257,8 @@ api.controls.Base = wpApi.Control.extend({
 
     var container = this._container;
 
-    if (!this.params.template) {
-      this.params.template = container.innerHTML.trim();
+    if (!this.template) {
+      this.template = container.innerHTML.trim();
     }
 
     // call the abstract method
@@ -311,7 +311,7 @@ api.controls.Base = wpApi.Control.extend({
   inflate: function (shouldResolveEmbeddedDeferred) {
     /* jshint funcscope: true */
     if (DEBUG) var t = performance.now();
-    if (!this.params.template) {
+    if (!this.template) {
       this.renderContent();
       // if (DEBUG) console.log('%c inflate DOM of ' + this.params.type +
       //   ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
@@ -319,7 +319,7 @@ api.controls.Base = wpApi.Control.extend({
       this.ready();
     } else {
       if (!this.rendered) {
-        this._container.innerHTML = this.params.template;
+        this._container.innerHTML = this.template;
         // if (DEBUG) console.log('%c inflate DOM of ' + this.params.type +
         //   ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
