@@ -158,7 +158,8 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Get javascript constants
 		 *
 		 * @since  0.0.1
-		 * @return array The required plus the additional constants, added through hook.
+		 * @return array The required plus the additional constants, added through
+		 *               hook.
 		 */
 		public static function get_js_constants() {
 			$required = array(
@@ -175,14 +176,16 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Get javascript localized strings
 		 *
 		 * @since  0.0.1
-		 * @return array The required plus the additional localized strings, added through hook.
+		 * @return array The required plus the additional localized strings, added
+		 *               through hook.
 		 */
 		public static function get_js_l10n() {
 			$required = array(
-				'introTitle' => __( 'Customize Plus' ),
-				'introText' => __( 'Welcome to Customize Plus' ),
+				'introTitle' => 'Customize Plus',
+				/* translators %s is the Plugin name */
+				'introText' => sprintf( __( 'Welcome to %s' ), 'Customize Plus' ),
 				'back' => __( 'Back' ),
-				'pluginName' => __( 'Customize Plus' ),
+				'pluginName' => 'Customize Plus',
 				'tools' => __( 'Tools' ),
 				'vRequired' => __( 'A value is required' ),
 				'vInvalid' => __( 'Invalid value' ),
@@ -198,16 +201,22 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * `js` object `PWPcp.l10n`
 		 *
 		 * @since  0.0.1
-		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer
 		 */
 		public static function add_controls_js_vars() {
 			global $wp_customize;
 			foreach ( $wp_customize->controls() as $control ) {
 				if ( method_exists( $control, 'get_l10n' ) ) {
-					self::$controls_l10n = array_merge( self::$controls_l10n, $control->get_l10n() );
+					self::$controls_l10n = array_merge(
+						self::$controls_l10n,
+						$control->get_l10n()
+					);
 				}
 				if ( method_exists( $control, 'get_constants' ) ) {
-					self::$controls_constants = array_merge( self::$controls_constants, $control->get_constants() );
+					self::$controls_constants = array_merge(
+						self::$controls_constants,
+						$control->get_constants()
+					);
 				}
 			}
 		}
@@ -222,9 +231,16 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 */
 		public static function enqueue_js_preview() {
 
-			do_action( 'PWPcp/customize/preview_init' );
+			do_action( 'PWPcp/customize/enqueue_js_preview_pre' );
 
-			wp_enqueue_script( 'PWPcp-customize-preview', plugins_url( 'assets/customize-preview'.self::$min.'.js', PWPCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), PWPCP_PLUGIN_VERSION, true );
+			wp_register_script( 'PWPcp-customize-preview', plugins_url( 'assets/customize-preview'.self::$min.'.js', PWPCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), PWPCP_PLUGIN_VERSION, true );
+			wp_localize_script( 'PWPcp-customize-preview', 'PWPcp', array(
+					'constants' => self::get_js_constants(),
+					'l10n' => self::get_js_l10n(),
+				) );
+			wp_enqueue_script( 'PWPcp-customize-preview' );
+
+			do_action( 'PWPcp/customize/enqueue_js_preview_post' );
 		}
 
 		/**
@@ -311,10 +327,11 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Add panel declared in the Customizer tree.
 		 *
 		 * @since  0.0.1
-		 * @param  array $panel    The panel array as defined by the theme developers.
-		 * @param  int   $priority This incremental number is used by WordPress to calculate
-		 *                         the order at which the panel are inserted in the UI.
-		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
+		 * @param  array $panel    The panel array as defined by the theme
+		 * @param  int   $priority This incremental number is used by WordPress to
+		 *                         calculate the order at which the panel are
+		 *                         inserted in the UI.
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer
 		 */
 		private static function add_panel_from_tree( $panel, $priority ) {
 			global $wp_customize;
@@ -384,12 +401,13 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Add section declared in the Customizer tree.
 		 *
 		 * @since  0.0.1
-		 * @param  string $panel_id The id of the parent panel when the section is nested
-		 *                          inside a panel.
-		 * @param  array  $section  The section array as defined by the theme developers.
-		 * @param  int    $priority This incremental number is used by WordPress to calculate
-		 *                         the order at which the section are inserted in the UI.
-		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
+		 * @param  string $panel_id The id of the parent panel when the section is
+		 *                          nested inside a panel.
+		 * @param  array  $section  The section array as defined by the theme
+		 * @param  int    $priority This incremental number is used by WordPress to
+		 *                          calculate the order at which the section are
+		 *                          inserted in the UI.
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer
 		 */
 		private static function add_section_from_tree( $panel_id, $section, $priority ) {
 			global $wp_customize;
@@ -457,15 +475,15 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 *
 		 * @since  0.0.1
 		 * @param  string $section_id The id of the parent section (required).
-		 * @param  array  $field_id   The section id as defined by the theme developers.
-		 * @param  array  $field_args The section array as defined by the theme developers.
-		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer instance
+		 * @param  array  $field_id   The section id as defined by the theme
+		 * @param  array  $field_args The section array as defined by the theme
+		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer
 		 */
 		private static function tree_add_field( $section_id, $field_id, $field_args ) {
 			global $wp_customize;
 
+			// manage control first
 			$control_args = $field_args['control'];
-			$setting_args = isset( $field_args['setting'] ) ? $field_args['setting'] : null;
 
 			// augment control args array with section id
 			$control_args['section'] = $section_id;
@@ -480,15 +498,26 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				$control_type_class = null;
 			}
 
+			// then add setting
+			$setting_args = isset( $field_args['setting'] ) ? $field_args['setting'] : null;
+
+			// by default the setting id is the same as the control, so the field id
+			$setting_id = $field_id;
+
 			if ( $setting_args ) {
-				// Check if 'option' or 'theme_mod' is used to store option
-				// If nothing is set, $wp_customize->add_setting method will default use 'theme_mod'
-				// If 'option' is used as setting type its value will be stored in an entry in
-				// {prefix}_options table.
-				if ( isset( $setting_args['type'] ) && 'option' == $setting_args['type'] ) {
-					$field_id = PWPcp_Theme::$settings_prefix . '[' . $field_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
+				// this allow to use a different id for the setting than the default
+				// one, that is the shared between the setting and its related control
+				if ( isset( $setting_args['id'] ) ) {
+					$setting_id = $setting_args['id'];
 				}
-				// add sanitize callback function from control class, if none is defined
+				// check if 'option' or 'theme_mod' is used to store option. If nothing
+				// is set, $wp_customize->add_setting method will default use 'theme_mod'
+				// If 'option' is used as setting type its value will be stored in an
+				// entry in {prefix}_options table.
+				if ( isset( $setting_args['type'] ) && 'option' === $setting_args['type'] ) {
+					$setting_id = PWPcp_Theme::$settings_prefix . '[' . $setting_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
+				}
+				// if not set  add sanitize callback function from control class
 				if ( ! isset( $setting_args['sanitize_callback'] ) ) {
 					// use sanitize_callback method on control class if it exists
 					if ( class_exists( $control_type_class ) && method_exists( $control_type_class, 'sanitize_callback' ) ) {
@@ -499,29 +528,33 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 					}
 				}
 				// add setting to WordPress
-				$wp_customize->add_setting( $field_id, $setting_args );
+				$wp_customize->add_setting( $setting_id, $setting_args );
+			// if no settings args are passed
 			} else {
-				// if no settings args are passed then use the Dummy Setting Class
+				// then use the Dummy Setting Class
 				if ( class_exists( 'PWPcp_Customize_Setting_Dummy' ) ) {
-					$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $field_id ) );
-				// or the plain WordPress API->behavior
+					$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $setting_id ) );
+				// or the plain WordPress API behavior
 				} else {
-					$wp_customize->add_setting( $field_id );
+					$wp_customize->add_setting( $setting_id );
 				}
 			}
+
+			// finally add control
+			$control_id = $setting_id; // @@doubt, maybe do something different... \\
 
 			// check if a custom type/class has been specified
 			if ( $control_type_class ) {
 				// if the class exists use it
 				if ( class_exists( $control_type_class ) ) {
-					$wp_customize->add_control( new $control_type_class( $wp_customize, $field_id, $control_args ) );
+					$wp_customize->add_control( new $control_type_class( $wp_customize, $control_id, $control_args ) );
 				// if the desired class doesn't exist report the error
 				} else {
 					wp_die( sprintf( __( 'Customize Plus: missing class %s for control type %s.' ), '<code>' . $control_type_class . '</code>', '<code><b>' . $control_type . '</b></code>' ) );
 				}
 			// if the desired control type is not specified use the plain WordPress API
 			} else {
-				$wp_customize->add_control( $field_id, $control_args );
+				$wp_customize->add_control( $control_id, $control_args );
 			}
 		}
 

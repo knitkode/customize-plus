@@ -279,18 +279,24 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		private static function set_settings_default_from_section ( $section ) {
 			if ( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
 				foreach ( $section['fields'] as $field_id => $field_args ) {
-					if ( isset( $field_args['setting'] ) ) {
-						$setting = $field_args['setting'];
+					$setting_args = isset( $field_args['setting'] ) ? $field_args['setting'] : null;
 
-						// this allow to use a different id for the setting than the default one
-						// (which is the shared between the setting and its related control)
-						if ( ! isset( $setting['id'] ) ) {
-							$setting['id'] = $field_id;
+					if ( $setting_args ) {
+
+						$setting_id = $field_id;
+
+						// set custom id, @see the PWPcp_Customize class
+						if ( isset( $setting_args['id'] ) ) {
+							$setting_id = $setting_args['id'];
+						}
+						// 'option' or 'theme_mod', @see the PWPcp_Customize class
+						if ( isset( $setting_args['type'] ) && 'option' === $setting_args['type'] ) {
+							$setting_id = PWPcp_Theme::$settings_prefix . '[' . $setting_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
 						}
 
-						if ( isset( $setting['default'] ) ) {
+						if ( isset( $setting_args['default'] ) ) {
 							// set default value on options defaults
-							self::$settings_defaults[ $setting['id'] ] = $setting['default'];
+							self::$settings_defaults[ $setting_id ] = $setting_args['default'];
 						}
 						else {
 							wp_die( __( 'Customize Plus: every setting must have a `default` value.' ) ); // @@doubt \\
@@ -319,6 +325,25 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
+		 * Safe get option with default fallback
+		 *
+		 * @since  0.0.1
+		 * @param string $opt_name
+		 * @return ?
+		 */
+		public static function get_option( $opt_name ) {
+			$full_id = self::$settings_prefix . '[' . $opt_name . ']';
+			$option_array = get_option( self::$settings_prefix );
+			if ( $option_array && isset( $option_array[ $opt_name ] ) ) {
+				return $option_array[ $opt_name ];
+			} else if ( isset( self::$settings_defaults[ $full_id ] ) ) {
+				return self::$settings_defaults[ $full_id ];
+			} else {
+				return null; // @@tocheck \\
+			}
+		}
+
+		/**
 		 * Get theme mods
 		 *
 		 * Get all theme mods with default values as fallback. Initially the
@@ -343,3 +368,16 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 	PWPcp_Theme::get_instance();
 
 endif;
+
+// @@doubt \\
+function pwp_get_theme_mod ( $opt_name ) {
+	return PWPcp_Theme::get_theme_mod( $opt_name );
+}
+
+function pwp_get_option ( $opt_name ) {
+	return PWPcp_Theme::get_option( $opt_name );
+}
+
+function pwp_get_theme_mods () {
+	return PWPcp_Theme::get_theme_mods();
+}

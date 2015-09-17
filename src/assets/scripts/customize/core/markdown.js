@@ -28,7 +28,7 @@
   markedRenderer.link = function (href, title, text) {
     var external = /^https?:\/\/.+$/.test(href);
     var newWindow = external || title === 'newWindow';
-    var out = '<a href="' + href + '"';
+    var out = '<a href="' + href + '" tabindex="-1"';
     if (newWindow) {
       out += ' target="_blank"';
     }
