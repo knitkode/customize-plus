@@ -164,17 +164,18 @@ class PWPcp_Sanitize {
 		// first try to compare it to an empty string
 		if ( $value === '' ) {
 			return true;
-		} else {
-			// if it's a jsonized value try to parse it and
-			$value_parsed = json_decode( $value );
-			if ( $value_parsed ) {
-				// see if we have an empty array or an empty object
-				if ( is_array( $value_parsed ) && empty( $value_parsed ) ) {
-					return true;
-				}
-			}
-			return false;
 		}
+
+		// if it's a jsonized value try to parse it and
+		$value_parsed = json_decode( $value );
+		if ( $value_parsed ) {
+			// see if we have an empty array or an empty object
+			if ( is_array( $value_parsed ) && empty( $value_parsed ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

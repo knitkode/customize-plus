@@ -12,10 +12,10 @@ var Utils = (function () {
   var _DOCS_BASE_URL = api.constants['DOCS_BASE_URL'];
 
   /** @type {String} */
-  var _SETTINGS_PREFIX = api.constants['SETTINGS_PREFIX'];
+  var _OPTIONS_PREFIX = api.constants['OPTIONS_PREFIX'];
 
   /** @type {RegExp} */
-  var regexSettingApi = new RegExp(_SETTINGS_PREFIX + '\\[.*\\]');
+  var regexSettingApi = new RegExp(_OPTIONS_PREFIX + '\\[.*\\]');
 
   /**
    * Is it an absolute URL?

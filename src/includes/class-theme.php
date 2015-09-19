@@ -35,13 +35,13 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 *
 		 * Themes are required to declare this using through
 		 * `add_theme_support( 'PWPcp-customize' )`.
-		 * This is also the name of the DB entry under which options are
-		 * stored if `'type' => 'option'` is used for the Customizer settings.
+		 * This is also the name of the DB entry under which options are stored if
+		 * `'type' => 'option'` is used for the Customizer settings.
 		 *
 		 * @since 0.0.1
 		 * @var string
 		 */
-		public static $settings_prefix = '';
+		public static $options_prefix = '';
 
 		/**
 		 * The theme customize tree array.
@@ -88,16 +88,24 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		/**
 		 * Theme settings default values
 		 *
-		 * It acts like a store with the default values of theme settings (`theme_mods`)
-		 * extracted from the `tree` array declared by the theme through
-		 * `add_theme_support( 'PWPcp-customize' )`. The current theme or this plugin
-		 * can use this array to safely retrieve options without having to write the
-		 * default values to the db.
+		 * It acts like a store with the default values of theme settings
+		 * (`theme_mods`) extracted from the `tree` array declared by the theme
+		 * through `add_theme_support( 'PWPcp-customize' )`. The current theme or
+		 * this plugin can use this array to safely retrieve options without having
+		 * to write the default values to the db.
 		 *
 		 * @since 0.0.1
 		 * @var array
 		 */
 		public static $settings_defaults = array();
+
+		/**
+		 * Store the settings which are managed by the Options API
+		 *
+		 * @since 0.0.1
+		 * @var array
+		 */
+		public static $settings_options_api = array();
 
 		/**
 		 * Constructor
@@ -112,9 +120,10 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * Configure theme
 		 *
 		 * Check the theme support declared by the current theme,
-		 * validate the settings declared and bootstrap the Customize with the given settings.
-		 * A filter for wach setting declared by the theme is automatically created, allowing
-		 * developers to override these settings values through child themes or plugins.
+		 * validate the settings declared and bootstrap the Customize with the
+		 * given settings. A filter for wach setting declared by the theme is
+		 * automatically created, allowing developers to override these settings
+		 * values through child themes or plugins.
 		 *
 		 * @since  0.0.1
 		 */
@@ -145,11 +154,14 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * `add_theme_support( 'PWPcp-customize' )`, and display error messages.
 		 *
 		 * @since  0.0.1
-		 * @param  string $key           One of the allowed keys for the configuration array.
-		 * @param  array  $configuration The `theme_support( 'PWPcp-customize' )` array.
+		 * @param  string $key           One of the allowed keys for the
+		 *                               configuration array.
+		 * @param  array  $configuration The `theme_support( 'PWPcp-customize' )`
+		 *                               array.
 		 * @uses   esc_url               The url get sanitized, just to be sure
-		 * @uses   trailingslashit       Append always last slash to url, so it's cleaner for devs
-		 *         											 when defining their customize tree.
+		 * @uses   trailingslashit       Append always last slash to url, so it's
+		 *         											 cleaner for devs when defining their
+		 *         											 customize tree.
 		 * @return string|array
 		 */
 		private static function validate_theme_support( $key, $configuration ) {
@@ -158,17 +170,20 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 					if ( isset( $configuration['prefix'] ) ) {
 						return sanitize_key( $configuration['prefix'] );
 					} else {
-						wp_die( __( 'Customize Plus: no `prefix` given.' ) );
+						/* translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code) */
+						wp_die( sprintf( __( '%1$s no %2$s given.' ), 'Customize Plus', '`prefix`' ) );
 					}
 				case 'customize_tree':
 					if ( isset( $configuration[ 'customize_tree' ] ) ) {
 						if ( is_array( $configuration[ 'customize_tree' ] ) ) {
 							return $configuration[ 'customize_tree' ];
 						} else {
-							wp_die( __( 'Customize Plus: `customize_tree` must be an array.' ) );
+							/* translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code) */
+							wp_die( sprintf( __( '%1$s %2$s must be an array.' ), 'Customize Plus', '`customize_tree`' ) );
 						}
 					} else {
-						wp_die( __( 'Customize Plus: no `customize_tree` array given.' ) );
+						/* translators: %1$s is 'Plugin_Name: ', %2$s is the object (code) */
+						wp_die( sprintf( __( '%1$s no %2$s array given.' ), 'Customize Plus', '`customize_tree`' ) );
 					}
 					break;
 				case 'styles':
@@ -176,7 +191,8 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 						if ( is_array( $configuration[ 'styles' ] ) ) {
 							return $configuration[ 'styles' ];
 						} else {
-							wp_die( __( 'Customize Plus: `styles` must be an array.' ) );
+							/* translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code) */
+							wp_die( sprintf( __( '%1$s %2$s must be an array.' ), 'Customize Plus', '`styles`' ) );
 						}
 					}
 					break;
@@ -200,7 +216,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * Initialize Customize Plus Theme
+		 * Initialize theme
 		 *
 		 * Set some static validated properties and bootstrap the Compiler
 		 * component if it exists and it's enabled.
@@ -210,7 +226,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 */
 		private static function init( $theme ) {
 
-			self::$settings_prefix = $theme['prefix'];
+			self::$options_prefix = $theme['prefix'];
 			self::$images_base_url = $theme['images_base_url'];
 			self::$docs_base_url = $theme['docs_base_url'];
 			self::$customize_tree = $theme['customize_tree'];
@@ -261,7 +277,8 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 						self::set_settings_default_from_section( $component );
 					}
 				} else {
-					wp_die( __( 'Customize Plus: `customize_tree` root components need a `subject` value.' ) );
+					/* translators: %1$s is 'Plugin_Name: ', %2$s and %3$s pieces of code */
+					wp_die( sprintf( __( '%1$s %2$s root components need a %3$s value.' ), 'Customize Plus', '`customize_tree`', '`subject`' ) );
 				}
 			}
 		}
@@ -269,12 +286,13 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		/**
 		 * Get settings default values from section.
 		 *
-		 * Loop through the section fields (setting + control) and store the settings
-		 * default values. We don't check for the existence of theme, because a default
-		 * value, with Customize Plus is always required.
+		 * Loop through the section fields (setting + control) and store the
+		 * settings default values. We don't check for the their existence them,
+		 * because a default value is always required.
 		 *
 		 * @since  0.0.1
-		 * @param  Array $section The section array as defined by the theme developers.
+		 * @param  array $section The section array as defined by the theme
+		 *                        developers
 		 */
 		private static function set_settings_default_from_section ( $section ) {
 			if ( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
@@ -291,7 +309,8 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 						}
 						// 'option' or 'theme_mod', @see the PWPcp_Customize class
 						if ( isset( $setting_args['type'] ) && 'option' === $setting_args['type'] ) {
-							$setting_id = PWPcp_Theme::$settings_prefix . '[' . $setting_id . ']'; // @@tobecareful this is tight to customize-component-import.js \\
+							array_push( self::$settings_options_api, $setting_id );
+							$setting_id = PWPcp_Theme::$options_prefix . '[' . $setting_id . ']';
 						}
 
 						if ( isset( $setting_args['default'] ) ) {
@@ -299,7 +318,8 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 							self::$settings_defaults[ $setting_id ] = $setting_args['default'];
 						}
 						else {
-							wp_die( __( 'Customize Plus: every setting must have a `default` value.' ) ); // @@doubt \\
+							/* translators: %1$s is 'Plugin_Name: ', %2$s is the type of value (code) */
+							wp_die( sprintf( __( '%1$s every setting must have a %2$s value.' ), 'Customize Plus', '`default`' ) );
 						}
 					}
 				}
@@ -307,10 +327,24 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * Get theme mod
+		 * Get option id
+		 * Since its simplicity and possible overuse in many loops this function is
+		 * not actually used, but 'inlined' in other functions, it's here just for
+		 * reference.
+		 * @abstract
+		 * @param  string $opt_name The simple setting id (without theme prefix)
+		 * @return string The real setting id (with theme prefix)
+		 */
+		public static function get_option_id ( $opt_name ) {
+			return self::$options_prefix . '[' . ( $opt_name ) . ']';
+		}
+
+		/**
+		 * Safe `get_theme_mod` with default fallback
 		 *
 		 * Get theme mod with default value as fallback, we'll need this safe
 		 * theme_mod in one of our sanitization functions.
+		 * This is the same as using the global function `pwp_get_theme_mod`
 		 *
 		 * @since  0.0.1
 		 * @param [type]  $opt_name [description]
@@ -325,15 +359,17 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * Safe get option with default fallback
+		 * Safe `get_option` with default fallback
+		 *
+		 * This is the same as using the global function `pwp_get_option`
 		 *
 		 * @since  0.0.1
 		 * @param string $opt_name
 		 * @return ?
 		 */
 		public static function get_option( $opt_name ) {
-			$full_id = self::$settings_prefix . '[' . $opt_name . ']';
-			$option_array = get_option( self::$settings_prefix );
+			$full_id = self::$options_prefix . '[' . ( $opt_name ) . ']';
+			$option_array = get_option( self::$options_prefix );
 			if ( $option_array && isset( $option_array[ $opt_name ] ) ) {
 				return $option_array[ $opt_name ];
 			} else if ( isset( self::$settings_defaults[ $full_id ] ) ) {
@@ -344,7 +380,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		}
 
 		/**
-		 * Get theme mods
+		 * Safe `get_theme_mods` with default fallbacks
 		 *
 		 * Get all theme mods with default values as fallback. Initially the
 		 * `theme_mods` are empty, so check for it.
@@ -369,15 +405,43 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 
 endif;
 
-// @@doubt \\
+/**
+ * Export useful functions to global namespace // @@doubt not sure if provide
+ * these functions, and whther do it this way or with `call_user_func` \\
+ * @since 0.0.1
+ */
+
+/**
+ * Safe `get_theme_mod` with default fallback
+ * @param  string $opt_name The setting id
+ * @return ?
+ */
 function pwp_get_theme_mod ( $opt_name ) {
 	return PWPcp_Theme::get_theme_mod( $opt_name );
 }
 
+/**
+ * Safe `get_option` with default fallback
+ * @param  string $opt_name The simple setting id (without theme prefix)
+ * @return ?
+ */
 function pwp_get_option ( $opt_name ) {
 	return PWPcp_Theme::get_option( $opt_name );
 }
 
+/**
+ * Safe `get_theme_mods` with default fallbacks
+ * @return array
+ */
 function pwp_get_theme_mods () {
 	return PWPcp_Theme::get_theme_mods();
+}
+
+/**
+ * Get option id
+ * @param  string $opt_name The simple setting id (without theme prefix)
+ * @return string The real setting id (with theme prefix)
+ */
+function pwp_get_option_id ( $opt_name ) {
+	return PWPcp_Theme::$options_prefix . '[' . ( $opt_name ) . ']';
 }

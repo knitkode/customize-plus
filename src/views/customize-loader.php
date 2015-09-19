@@ -6,7 +6,7 @@
 				<h1 id="pwpcp-title" class="pwpcp-text"><?php _e( 'Import done' ); ?></h1>
 				<h3 id="pwpcp-text" class="pwpcp-text"><?php _e( 'All options have been succesfully imported and saved' ); ?></h3>
 			<?php else : ?>
-				<h1 id="pwpcp-title" class="pwpcp-text"><?php _e( 'Customize Plus' ); ?></h1>
+				<h1 id="pwpcp-title" class="pwpcp-text"><?php echo 'Customize Plus'; ?></h1>
 				<h3 id="pwpcp-text" class="pwpcp-text"></h3>
 			<?php endif; ?>
 			<div class="pwpcp-text">

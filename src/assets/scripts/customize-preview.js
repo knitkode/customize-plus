@@ -43,14 +43,14 @@
 
   /**
    * Get option id
-   * GIven a simple setting id saved through the WordPress Settings API it
+   * Given a simple option id (saved through the WordPress Settings API) it
    * returns the real id with the right theme prefix
-   * @param  {String} settingId The setting id in its short form
+   * @param  {String} key The option id in its short form
    * @return {String} The actual setting id as saved in the database under a
    *                  common namespace (theme settings prefix)
    */
-  api.getOptionId = function (settingId) {
-    return constants.SETTINGS_PREFIX + '[' + settingId + ']';
+  api.getOptionId = function (key) {
+    return constants.OPTIONS_PREFIX + '[' + key + ']';
   };
 
 })(window, jQuery, wp, PWPcp);
