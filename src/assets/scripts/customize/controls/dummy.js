@@ -109,7 +109,7 @@ wpApi.controlConstructor.pwpcp_dummy = api.controls.Dummy = wpApi.Control.extend
     //   });
     // });
 
-    // control.embed();
+    control.embed();
 
     control.deferred.embedded.done(function () {
       control.ready();
