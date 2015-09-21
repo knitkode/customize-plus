@@ -15,7 +15,7 @@ var Utils = (function () {
   var _OPTIONS_PREFIX = api.constants['OPTIONS_PREFIX'];
 
   /** @type {RegExp} */
-  var regexSettingApi = new RegExp(_OPTIONS_PREFIX + '\\[.*\\]');
+  var regexOptionsApi = new RegExp(_OPTIONS_PREFIX + '\\[.*\\]');
 
   /**
    * Is it an absolute URL?
@@ -261,18 +261,19 @@ var Utils = (function () {
      * @param  {string}  controlId The control id
      * @return {Boolean}
      */
-    _isThemeModApi: function (controlId) {
-      return !regexSettingApi.test(controlId);
+    _isThemeModsApi: function (controlId) {
+      return !regexOptionsApi.test(controlId);
     },
     /**
-     * Is the control's setting using the `settings` API?
-     * It is when the control id is structured as: `themeprefix[setting-id]`
+     * Is the control's setting using the `options` API?
+     * Deduced by checking that the control id is structured as:
+     * `themeprefix[setting-id]`
      * @static
      * @param  {string}  controlId The control id
      * @return {Boolean}
      */
-    _isSettingApi: function (controlId) {
-      return regexSettingApi.test(controlId);
+    _isOptionsApi: function (controlId) {
+      return regexOptionsApi.test(controlId);
     },
     /**
      * To Boolean
