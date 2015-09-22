@@ -102,35 +102,40 @@ var Utils = (function () {
      */
     linkControl: function (linkEl, controlId) {
       var controlToFocus = wpApi.control(controlId);
-      var innerLink = function () {
-        try {
-          // try this so it become possible to use this function even
-          // with WordPress native controls which don't have this method
-          controlToFocus.inflate(true);
-
-          // always deactivate search, it could be that we click on this
-          // link from a search result try/catch because search is not
-          // always enabled
-          api.components.Search.deactivate();
-        } catch(e) {
-          console.warn('Utils->linkControl: failed attempt to deactivate Search', e);
-        }
-
-        controlToFocus.focus();
-        controlToFocus.container.addClass('pwpcp-control-focused');
-        setTimeout(function () {
-          controlToFocus.container.removeClass('pwpcp-control-focused');
-        }, 2000);
-      };
 
       // be sure there is the control and update dynamic color message text
       if (controlToFocus) {
         if (linkEl) {
-          linkEl.onclick = innerLink;
+          linkEl.onclick = function () {
+            Utils.focus(controlToFocus);
+          }
         } else {
-          innerLink();
+          Utils.focus(controlToFocus);
         }
       }
+    },
+    /**
+     * Wrap WordPress control focus with some custom stuff
+     * @param {wp.customize.control} control
+     */
+    focus: function (control) {
+      try {
+        // try this so it become possible to use this function even
+        // with WordPress native controls which don't have this method
+        control.inflate(true);
+
+        // always deactivate search, it could be that we click on this
+        // link from a search result try/catch because search is not
+        // always enabled
+        api.components.Search.deactivate();
+      } catch(e) {
+        console.warn('Utils->linkControl: failed attempt to deactivate Search', e);
+      }
+      control.focus();
+      control.container.addClass('pwpcp-control-focused');
+      setTimeout(function () {
+        control.container.removeClass('pwpcp-control-focused');
+      }, 2000);
     },
     /**
      * Reset control -> setting value to the value according
