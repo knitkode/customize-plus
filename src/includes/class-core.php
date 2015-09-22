@@ -23,9 +23,7 @@ if ( ! class_exists( 'PWPcp' ) ):
 		 * @since 0.0.1
 		 */
 		public function __construct() {
-			// Translate plugin meta
-			__( 'pkgNamePretty' );
-			__( 'pkgAuthorName' );
+			// translate plugin meta
 			__( 'pkgDescription' );
 
 			if ( is_admin() ) {
@@ -89,7 +87,7 @@ if ( ! class_exists( 'PWPcp' ) ):
 		}
 
 		/**
-		 * Activation
+		 * Activation hook
 		 *
 		 * @since  0.0.1
 		 */
@@ -98,7 +96,7 @@ if ( ! class_exists( 'PWPcp' ) ):
 		}
 
 		/**
-		 * Deactivation
+		 * Deactivation hook
 		 *
 		 * @since  0.0.1
 		 */

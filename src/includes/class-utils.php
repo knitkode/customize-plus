@@ -50,4 +50,4 @@ class PWPcp_Utils {
 }
 
 // add ajax action
-add_action( 'wp_ajax_pwpcp_load_wp_editor', 'PWPcp_Utils::load_wp_editor' );
+add_action( 'wp_ajax_PWPcp/utils/load_wp_editor', 'PWPcp_Utils::load_wp_editor' );

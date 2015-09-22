@@ -112,7 +112,7 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.Base.extend({
   _initWpEditor: function () {
     if (!api.tinyMCEload) {
       api.tinyMCEload = $.post(window.ajaxurl, {
-        'action': 'pwpcp_load_wp_editor',
+        'action': 'PWPcp/utils/load_wp_editor',
         'load': 1
       }, function (response) {
         $('body').prepend('<div id="pwpcp_tinymce_dummy" style="display:none">' + response + '</div>');
@@ -139,7 +139,7 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.Base.extend({
       this._initTinyMCE();
     } else {
       $.post(window.ajaxurl, {
-        'action': 'pwpcp_load_wp_editor',
+        'action': 'PWPcp/utils/load_wp_editor',
         'id': id
       }, this._onWpEditorLoaded.bind(this));
     }

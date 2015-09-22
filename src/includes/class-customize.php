@@ -145,8 +145,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 
 			wp_register_script( 'PWPcp-customize', plugins_url( 'assets/customize'.self::$min.'.js', PWPCP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery', 'jquery-ui-slider' ), PWPCP_PLUGIN_VERSION, false );
 			wp_localize_script( 'PWPcp-customize', 'PWPcp', array(
-					'components' => apply_filters( 'PWPcp/customize/js_components', array() ),
+					'components' => apply_filters( 'PWPcp/customize/get_js_components', array() ),
 					'constants' => self::get_js_constants(),
+					'settings' => self::get_js_settings(),
 					'l10n' => self::get_js_l10n(),
 				) );
 			wp_enqueue_script( 'PWPcp-customize' );
@@ -168,8 +169,25 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				'IMAGES_BASE_URL' => PWPcp_Theme::$images_base_url,
 				'DOCS_BASE_URL' => PWPcp_Theme::$docs_base_url,
 			);
-			$additional = (array) apply_filters( 'PWPcp/customize/js_constants', array() );
+			$additional = (array) apply_filters( 'PWPcp/customize/get_js_constants', array() );
 			return array_merge( $required, self::$controls_constants, $additional );
+		}
+
+		/**
+		 * Get Customize global settings
+		 *
+		 * @since  0.0.1
+		 * @return array The required plus the additional settings added through
+		 *               hook.
+		 */
+		public static function get_js_settings() {
+			if ( class_exists( 'PWPcpp' ) ) {
+				$required = PWPcpp::get_options();
+			} else {
+				$required = array();
+			}
+			$additional = (array) apply_filters( 'PWPcp/customize/get_js_settings', array() );
+			return array_merge( $required, $additional );
 		}
 
 		/**
@@ -190,7 +208,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				'vRequired' => __( 'A value is required' ),
 				'vInvalid' => __( 'Invalid value' ),
 			);
-			$additional = (array) apply_filters( 'PWPcp/customize/js_l10n', array() );
+			$additional = (array) apply_filters( 'PWPcp/customize/get_js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );
 		}
 
