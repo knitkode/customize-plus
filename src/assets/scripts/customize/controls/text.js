@@ -1,5 +1,3 @@
-/* global Utils */
-
 /**
  * Control Text class
  *
@@ -36,7 +34,7 @@ wpApi.controlConstructor.pwpcp_text = api.controls.BaseInput.extend({
     // text
     else {
       // always strip HTML
-      value = Utils._stripHTML(value);
+      value = api.Utils._stripHTML(value);
     }
 
     if (errorMsg) {
