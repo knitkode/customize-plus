@@ -281,7 +281,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 					<li class="pwpcp-extras-reset_last"><?php _e( 'Reset to last saved value' ); ?></li>
 					<li class="pwpcp-extras-reset_initial"><?php _e( 'Reset to initial session value' ); ?></li>
 					<li class="pwpcp-extras-reset_factory"><?php _e( 'Reset to factory value' ); ?></li>
-					<li class="pwpcp-extras-hide"><?php _e( 'Hide this control' ); ?></li>
+					<?php do_action( 'PWPcp/controls/base/js_tpl_extras/add_list_items' ); ?>
 				</ul>
 			</div>
 		<?php

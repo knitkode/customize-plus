@@ -28,6 +28,7 @@
   markedRenderer.link = function (href, title, text) {
     var external = /^https?:\/\/.+$/.test(href);
     var newWindow = external || title === 'newWindow';
+    // links are always skipped from the tab index
     var out = '<a href="' + href + '" tabindex="-1"';
     if (newWindow) {
       out += ' target="_blank"';
@@ -48,6 +49,7 @@
       return hljs.highlightAuto(code).value;
     }
   });
-  $(body).addClass('pwpcp-markdown-supported');
+
+  body.classList.add('pwpcp-markdown-supported');
 
 })();

@@ -95,7 +95,6 @@ var adminScriptsLibraries = [
   PATHS.src.bower + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\
   PATHS.src.scripts + 'vendor-custom/highlight.pack.js', // include highlight.js custom build
   PATHS.src.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme... \\
-  PATHS.src.bower + 'webui-popover/dist/jquery.webui-popover.js',
   PATHS.src.bower + 'selectize/dist/js/standalone/selectize.js',
   PATHS.src.bower + 'spectrum/spectrum.js'
 ];
@@ -105,18 +104,25 @@ var adminScriptsLibraries = [
  *
  * @access private
  */
-gulp.task('_customize-scripts-admin-unminified', function() {
+gulp.task('_customize-scripts-admin-unminified-base', function() {
   var stream = streamqueue({ objectMode: true });
   stream.queue(gulp.src(adminScriptsLibraries));
-  stream.queue(gulp.src(PATHS.src.scripts + 'customize.js')
-    .pipe($.header(CONFIG.credits, { pkg: pkg }))
+  stream.queue(gulp.src(PATHS.src.scripts + 'customize-base.js')
     .pipe($.include())
     .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = api.DEBUG || true;')))
-    // .pipe($.if(argv.docs, $.jsdoc('./docs')))
+    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
   );
   return stream.done()
-    .pipe($.concat('customize.js', PLUGINS.concat))
+    .pipe($.concat('customize-base.js', PLUGINS.concat))
+    .pipe(gulp.dest(PATHS.build.scripts));
+});
+gulp.task('_customize-scripts-admin-unminified', ['_customize-scripts-admin-unminified-base'], function() {
+  return gulp.src(PATHS.src.scripts + 'customize.js')
+    .pipe($.include())
+    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
+    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
 
@@ -128,18 +134,26 @@ gulp.task('_customize-scripts-admin-unminified', function() {
  *
  * @access private
  */
-gulp.task('_customize-scripts-admin-minified', function() {
+gulp.task('_customize-scripts-admin-minified-base', function() {
   var stream = streamqueue({ objectMode: true });
   stream.queue(gulp.src(adminScriptsLibraries));
     // .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify))));
-  stream.queue(gulp.src(PATHS.src.scripts + 'customize.js')
-    .pipe($.header(CONFIG.credits, { pkg: pkg }))
+  stream.queue(gulp.src(PATHS.src.scripts + 'customize-base.js')
     .pipe($.include())
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', '')))
+    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
     // .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
   );
   return stream.done()
-    .pipe($.concat('customize.min.js', PLUGINS.concat))
+    .pipe($.concat('customize-base.min.js', PLUGINS.concat))
+    .pipe(gulp.dest(PATHS.build.scripts));
+});
+gulp.task('_customize-scripts-admin-minified', ['_customize-scripts-admin-minified-base'], function() {
+  return gulp.src(PATHS.src.scripts + 'customize.js')
+    .pipe($.include())
+    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
+    .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
 
@@ -153,7 +167,7 @@ gulp.task('_customize-scripts-preview', function() {
     .pipe($.concat('customize-preview.js', PLUGINS.concat))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
     .pipe(gulp.dest(PATHS.build.scripts))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', '')))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.scripts));
@@ -168,6 +182,6 @@ gulp.task('codestyle-trial', function() {
     .pipe($.include())
     .pipe($.trimlines(PLUGINS.trimlines))
     .pipe($.jscs(PLUGINS.jscs))
-    // .pipe($.replace('var DEBUG = true;', 'var DEBUG = api.DEBUG || true;'))
+    // .pipe($.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;'))
     .pipe(gulp.dest(PATHS.src.scripts));
 });

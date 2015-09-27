@@ -2,7 +2,6 @@
   "name": "customize-plus",
   "private": true,
   "dependencies": {
-    "webui-popover": "~1.1.5",
     "jquery-ui-slider-pips": "~1.7.2",
     "es5-shim": "~4.1.0",
     "polyfill-classList": "git@github.com:eligrey/classList.js.git#2014-12-13",

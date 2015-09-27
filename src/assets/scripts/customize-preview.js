@@ -1,10 +1,10 @@
 /* jshint unused: false */
 
-(function (window, $, wp, api) {
+(function (window, document, $, wp, api) {
   'use strict';
 
   // be sure to have what we need, bail otherwise
-  if (!api || !wp) {
+  if (!wp || !api) {
     return;
   }
   var wpApi = wp.customize;
@@ -53,4 +53,4 @@
     return constants.OPTIONS_PREFIX + '[' + key + ']';
   };
 
-})(window, jQuery, wp, PWPcp);
+})(window, document, jQuery, wp, PWPcp);

@@ -1,5 +1,3 @@
-/* global Regexes */
-
 /**
  * Control Slider
  *
@@ -134,7 +132,7 @@ wpApi.controlConstructor.pwpcp_slider = api.controls.Slider = api.controls.Base.
    */
   _extractFirstUnit: function (value) {
     var valueOrigin = value || this.setting();
-    var matchesUnit = Regexes._extractUnit.exec(valueOrigin);
+    var matchesUnit = api.Regexes._extractUnit.exec(valueOrigin);
     if (matchesUnit && matchesUnit[1]) {
       return matchesUnit[1];
     }
@@ -147,7 +145,7 @@ wpApi.controlConstructor.pwpcp_slider = api.controls.Slider = api.controls.Base.
    */
   _extractFirstNumber: function (value) {
     var valueOrigin = value || this.setting();
-    var matchesNumber = Regexes._extractNumber.exec(valueOrigin);
+    var matchesNumber = api.Regexes._extractNumber.exec(valueOrigin);
     if (matchesNumber && matchesNumber[0]) {
       return matchesNumber[0];
     }

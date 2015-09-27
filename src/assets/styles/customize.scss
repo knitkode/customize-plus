@@ -7,7 +7,6 @@
 @import "vendor-custom/spinner";
 //=require ../bower_components/highlight/styles/github.css
 @import "vendor-custom/toggle-switch";
-@import "vendor-custom/webui-popover";
 @import "vendor-custom/jquery-ui.structure";
 @import "vendor-custom/jquery-ui.theme";
 @import "vendor-custom/jquery-ui.slider-pips";
@@ -26,9 +25,6 @@
 
 // customize - core
 @import "customize/core/tabs";
-@import "customize/core/guides";
-// @import "customize/core/tips";
-@import "customize/core/notices";
 
 // customize - controls
 @import "customize/controls/base";

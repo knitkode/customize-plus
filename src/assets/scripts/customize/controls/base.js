@@ -1,4 +1,4 @@
-/* global Skeleton, Utils, Tooltips */
+/* global Skeleton, Utils */
 
 /**
  * Control Base class
@@ -16,7 +16,6 @@
  * @augments wp.customize.Class
  * @requires api.Skeleton
  * @requires api.Utils
- * @requires api.Tooltips
  */
 api.controls.Base = wpApi.Control.extend({
   /**
@@ -264,9 +263,6 @@ api.controls.Base = wpApi.Control.extend({
     // call the abstract method
     this.onDeflate();
 
-    // destroy guides to free up DOM
-    this._destroyGuide(this);
-
     // and empty the DOM from the container deferred
     // the slide out animation of the section doesn't freeze
     _.defer(function () {
@@ -329,8 +325,6 @@ api.controls.Base = wpApi.Control.extend({
     if (shouldResolveEmbeddedDeferred) {
       this.deferred.embedded.resolve();
     }
-    this._guide();
-    this._help();
     this._extras();
     // errors get resetted because on ready we fill the values in the UI with
     // the value of `this.setting()` which can never be not valid (see the
@@ -354,48 +348,6 @@ api.controls.Base = wpApi.Control.extend({
    */
   softenize: function (value) {
     return value;
-  },
-  /**
-   * Guide
-   *
-   * Manage the initialization of control guides.
-   *
-   * @use Tooltips
-   * @access private
-   * @return {void}
-   */
-  _guide: function () {
-    if (this.params.guide && Tooltips) {
-      Tooltips.createGuide(this);
-    }
-  },
-  /**
-   * Destroy guides on control deflate
-   *
-   * @use Tooltips
-   * @access private
-   * @return {void}
-   */
-  _destroyGuide: function () {
-    if (this.params.guide && Tooltips) {
-      Tooltips.destroyGuide(this);
-    }
-  },
-  /**
-   * Manage the initialization of control helpers
-   *
-   * @use Tooltips
-   * @access private
-   * @return {void}
-   */
-  _help: function () {
-    if (!Tooltips) {
-      return;
-    }
-    var helpers = this._container.getElementsByClassName('pwpcp-help');
-    if (helpers) {
-      Tooltips.createHelpers(helpers);
-    }
   },
   /**
    * Manage the extras dropdown menu of the control.
@@ -422,7 +374,6 @@ api.controls.Base = wpApi.Control.extend({
     var btnResetLast = container.getElementsByClassName(CLASS_RESET_LAST)[0];
     var btnResetInitial = container.getElementsByClassName(CLASS_RESET_INITIAL)[0];
     var btnResetFactory = container.getElementsByClassName(CLASS_RESET_FACTORY)[0];
-    var btnHide = container.getElementsByClassName('pwpcp-extras-hide')[0];
     // value variables, uses closure
     var setting = this.setting;
     var initialValue = this.params.vInitial;
@@ -577,48 +528,6 @@ api.controls.Base = wpApi.Control.extend({
             container.classList.remove('pwpcp-extras-open');
           }
         }, 200);
-      };
-    }
-
-    /**
-     * Set on the hide_controls control a duplicate free
-     * array with the current control id merged in.
-     *
-     * // @@todo, maybe don't use union here but use it in the `_validate`
-     * method of the hide_controls control. \\
-     */
-    if (btnHide) {
-      // var self = this;
-      btnHide.onclick = function () {
-        // @@tobecareful this is tight to class-customize.php $setting_control_id =
-        // PWPcp::$OPTIONToHideS_PREFIX . '[' . $field_key . ']'; \\
-        var controlToHide = wpApi.control('pwpcp[hide-controls]');
-        if (controlToHide) {
-          controlToHide.setting.set(_.union(controlToHide.setting(), [self.id]));
-          var secondsTimeout = 5;
-          container.innerHTML =
-            '<a class="pwpcp-hide-undo">' +
-              'Undo hide control <span class="pwpcp-timer">' + secondsTimeout + 's</span>' +
-            '</a>';
-          var btnHideUndo = container.getElementsByClassName('pwpcp-hide-undo')[0];
-          var secondsEl = container.getElementsByClassName('pwpcp-timer')[0];
-          var timerHideUndo = setInterval(function () {
-            secondsTimeout--;
-            secondsEl.innerHTML = secondsTimeout + 's'; // @@ie8-textContent would be enough \\
-            if (secondsTimeout === 0) {
-              btnHideUndo.parentNode.removeChild(btnHideUndo);
-              clearInterval(timerHideUndo);
-            }
-          }, 1000);
-          // Undo hide control handler
-          btnHideUndo.onclick = function () {
-            clearInterval(timerHideUndo);
-            btnHideUndo.parentNode.removeChild(btnHideUndo);
-            self.inflate();
-            _closeExtras();
-            controlToHide.setting.set(_.without(controlToHide.setting(), [self.id]));
-          };
-        }
       };
     }
   }
