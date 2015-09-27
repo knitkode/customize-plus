@@ -1,5 +1,3 @@
-/* global Utils */
-
 /**
  * Control Toggle
  *
@@ -30,14 +28,14 @@ wpApi.controlConstructor.pwpcp_toggle = api.controls.Base.extend({
    * @override
    */
   validate: function (newValue) {
-    return Utils._toBoolean(newValue) ? 1 : 0;
+    return api.Utils._toBoolean(newValue) ? 1 : 0;
   },
   /**
    * @override
    */
   syncUIFromAPI: function (value) {
-    var valueClean = Utils._toBoolean(value);
-    var inputStatus = Utils._toBoolean(this.__input.checked);
+    var valueClean = api.Utils._toBoolean(value);
+    var inputStatus = api.Utils._toBoolean(this.__input.checked);
     if (inputStatus !== valueClean) {
       this.__input.checked = valueClean;
     }
@@ -49,7 +47,7 @@ wpApi.controlConstructor.pwpcp_toggle = api.controls.Base.extend({
     this.__input = this._container.getElementsByTagName('input')[0];
 
     // sync input value on ready
-    this.__input.checked = Utils._toBoolean(this.setting());
+    this.__input.checked = api.Utils._toBoolean(this.setting());
 
     // bind input on ready
     this.__input.onchange = function (event) {

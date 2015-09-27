@@ -1,5 +1,3 @@
-/* global Utils */
-
 /**
  * Control Tags class
  *
@@ -27,7 +25,7 @@ wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
           newValue = newValue.slice(0, maxItems);
         }
       }
-      return Utils._stripHTML(newValue.join(','));
+      return api.Utils._stripHTML(newValue.join(','));
     }
     return { error: true };
   },
