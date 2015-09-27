@@ -3,6 +3,9 @@
 var DEBUG = true;
 
 if (DEBUG) {
+  DEBUG = {
+    performances: false
+  };
   // shim for Opera
   window.performance = window.performance || { now: function() {} };
   var t = performance.now();

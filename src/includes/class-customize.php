@@ -267,7 +267,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Get view loader
 		 *
 		 * Get view for fullscreen loader (used later on also by other components
-		 * like the 'importer')
+		 * like 'Import')
 		 *
 		 * @since  0.0.1
 		 */

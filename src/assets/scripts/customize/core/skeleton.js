@@ -9,9 +9,7 @@
  */
 var Skeleton = (function () {
 
-  /**
-   * @type {HTMLelement}
-   */
+  /** @type {HTMLelement} */
   var _wpSidebar;
 
   // @access public
@@ -21,10 +19,15 @@ var Skeleton = (function () {
      */
     init: function () {
       _wpSidebar = WpTight.el.sidebar[0];
+
       // set elements as properties
-      this.$loader = $('#pwpcp-loader');
+      this.$loader = $(document.getElementById('pwpcp-loader'));
       this.title = document.getElementById('pwpcp-title');
       this.text = document.getElementById('pwpcp-text');
+
+      // the first time the iframe preview has loaded hide the skeleton loader,
+      // take advantage of the underscore `once` utility
+      wpApi.previewer.bind('newIframe', _.once(Skeleton.hide.bind(this)));
     },
     /**
      * Trigger loading UI state (changes based on added css class)
@@ -67,29 +70,5 @@ var Skeleton = (function () {
   };
 })();
 
-// @@todo ............................................................................. \\
 // export to public API
 api.Skeleton = Skeleton;
-
-var previewer = wpApi.Previewer;
-
-var customizeFirstLoad = true;
-
-wpApi.Previewer = previewer.extend({
-  refresh: function() {
-    // call the 'parent' method
-    previewer.prototype.refresh.apply(this);
-
-    // on iframe loaded
-    this.loading.done(function () {
-
-      // the first load is handled in the Compiler already
-      // where we wait for the less callback on compile done
-      if (customizeFirstLoad) {
-        Skeleton.hide();
-      } else {
-        customizeFirstLoad = false;
-      }
-    });
-  }
-});

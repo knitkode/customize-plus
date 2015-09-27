@@ -218,7 +218,7 @@ api.controls.Base = wpApi.Control.extend({
       if (template && _container) {
 
         /* jshint funcscope: true */
-        if (DEBUG) var t = performance.now();
+        if (DEBUG.performances) var t = performance.now();
 
         // render and store it in the params
         this.template = _container.innerHTML = template(this.params).trim();
@@ -230,7 +230,7 @@ api.controls.Base = wpApi.Control.extend({
         // this.template = frag;
         // _container.appendChild(frag);
 
-        if (DEBUG) console.log('%c renderContent of ' + this.params.type + '(' +
+        if (DEBUG.performances) console.log('%c renderContent of ' + this.params.type + '(' +
           this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
     }
@@ -252,7 +252,7 @@ api.controls.Base = wpApi.Control.extend({
    */
   deflate: function () {
     /* jshint funcscope: true */
-    if (DEBUG) var t = performance.now();
+    // if (DEBUG) var t = performance.now();
 
     var container = this._container;
 
@@ -270,7 +270,7 @@ api.controls.Base = wpApi.Control.extend({
       if (!wpApi.section(this.section.get()).expanded.get()) {
 
         /* jshint funcscope: true */
-        // if (DEBUG) var t = performance.now();
+        if (DEBUG.performances) var t = performance.now();
 
         // Super fast empty DOM element
         // {@link http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/20}
@@ -282,7 +282,7 @@ api.controls.Base = wpApi.Control.extend({
         // there are many DOM elements to remove, investigate here \\
         container.innerHTML = '';
 
-        if (DEBUG) console.log('%c deflate of ' + this.params.type + '(' + this.id +
+        if (DEBUG.performances) console.log('%c deflate of ' + this.params.type + '(' + this.id +
           ') took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
 
         // flag control that it's not rendered
@@ -306,18 +306,18 @@ api.controls.Base = wpApi.Control.extend({
    */
   inflate: function (shouldResolveEmbeddedDeferred) {
     /* jshint funcscope: true */
-    if (DEBUG) var t = performance.now();
+    // if (DEBUG) var t = performance.now();
     if (!this.template) {
       this.renderContent();
-      // if (DEBUG) console.log('%c inflate DOM of ' + this.params.type +
-      //   ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+      if (DEBUG.performances) console.log('%c inflate DOM of ' + this.params.type +
+        ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       this.rendered = true;
       this.ready();
     } else {
       if (!this.rendered) {
         this._container.innerHTML = this.template;
-        // if (DEBUG) console.log('%c inflate DOM of ' + this.params.type +
-        //   ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+        if (DEBUG.performances) console.log('%c inflate DOM of ' + this.params.type +
+          ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
       this.rendered = true;
       this.ready();
@@ -331,7 +331,7 @@ api.controls.Base = wpApi.Control.extend({
     // `_validateWrap` method above)
     this._onValidateSuccess();
 
-    if (DEBUG) console.log('%c inflate of ' + this.params.type +
+    if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
       ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
   },
   /**
@@ -508,7 +508,6 @@ api.controls.Base = wpApi.Control.extend({
           _onExtrasOpen();
         }
         if (DEBUG) {
-          // console.log('%c Control[' + self.id + '] ' + self, 'background: #78DFFF;');
           console.info('Control[' + self.id + '] ', self);
         }
       };
@@ -557,7 +556,7 @@ wpApi.bind('ready', function () {
 wpApi.bind('save', function () {
   Utils._eachControl(function (control) {
     if (control.setting['_dirty']) { // whitelisted from uglify \\
-      console.log(control.id, 'is dirty on save with value:', control.setting());
+      // console.log(control.id, 'is dirty on save with value:', control.setting());
       control.params.vLast = control.setting();
     }
   });

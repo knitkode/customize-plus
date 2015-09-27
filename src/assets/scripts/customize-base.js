@@ -6,6 +6,7 @@
 //= require customize/core/setup-jquery.js
 //= require customize/core/setup-markdown.js
 
+//= require customize/core/previewer.js
 //= require customize/core/wptight.js
 //= require customize/core/regexes.js
 //= require customize/core/validators.js
@@ -21,11 +22,11 @@
  * Core initialization
  */
 $document.ready(function() {
-  if (DEBUG) var t = performance.now();
+  if (DEBUG.performances) var t = performance.now();
   WpTight.init();
   Skeleton.init();
   Tabs.init();
-  if (DEBUG) console.log( 'Customize.js Base (onReady start->end) took ' + (performance.now() - t) + ' ms.');
+  if (DEBUG.performances) console.log( 'Customize.js Base (ready start->end) took ' + (performance.now() - t) + ' ms.');
 });
 
 //= require customize/temp.js
