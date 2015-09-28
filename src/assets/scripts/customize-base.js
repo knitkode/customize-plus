@@ -6,7 +6,6 @@
 //= require customize/core/setup-jquery.js
 //= require customize/core/setup-markdown.js
 
-//= require customize/core/previewer.js
 //= require customize/core/wptight.js
 //= require customize/core/regexes.js
 //= require customize/core/validators.js

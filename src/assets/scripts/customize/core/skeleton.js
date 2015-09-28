@@ -27,7 +27,7 @@ var Skeleton = (function () {
 
       // the first time the iframe preview has loaded hide the skeleton loader,
       // take advantage of the underscore `once` utility
-      wpApi.previewer.bind('newIframe', _.once(Skeleton.hide.bind(this)));
+      wpApi.previewer.targetWindow.bind(_.once(Skeleton.hide.bind(this)));
     },
     /**
      * Trigger loading UI state (changes based on added css class)

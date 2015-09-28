@@ -19,9 +19,6 @@
 //   wpApi.previewer.bind('url', function () {
 //     console.log("wpApi.previewer.bind('url'", this, arguments);
 //   });
-//   wpApi.previewer.bind('newIframe', function () {
-//     console.log("wpApi.previewer.bind('newIframe'", this, arguments);
-//   });
 // }
 
 /**
