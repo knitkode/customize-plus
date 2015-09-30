@@ -16,6 +16,14 @@
 class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 	/**
+	 * Whether this control is optional, that is when it is allowed to be empty.
+	 *
+	 * @since 0.0.1
+	 * @var boolean
+	 */
+	public $optional = false;
+
+	/**
 	 * The control divider data, optional
 	 *
 	 * @since 0.0.1
@@ -25,6 +33,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 	/**
 	 * The control guide data, optional. It displays some help in a popover.
+	 * @premium A Customize Plus Premium feature.
 	 *
 	 * @since 0.0.1
 	 * @var array
@@ -32,17 +41,10 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	public $guide;
 
 	/**
-	 * Whether this control is optional, that is when it is allowed to be empty.
-	 *
-	 * @since 0.0.1
-	 * @var boolean
-	 */
-	public $optional = false;
-
-	/**
 	 * Whether this control is advanced or normal, users and developers will be
 	 * able to hide or show the advanced controls.
 	 *
+	 * @premium A Customize Plus Premium feature.
 	 * @since 0.0.1
 	 * @var boolean
 	 */
@@ -71,19 +73,22 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 			$this->json['div'] = $this->divider;
 		}
 
-		// add guide if any
-		if ( $this->guide ) {
-			$this->json['guide'] = $this->guide;
-		}
-
 		// set control setting as optional
 		if ( $this->optional ) {
 			$this->json['optional'] = true;
 		}
 
-		// add advanced flag if specified
-		if ( $this->advanced ) {
-			$this->json['advanced'] = true;
+		// @premium A Customize Plus Premium features.
+		if ( class_exists( 'PWPcpp' ) ) {
+			// add guide if any
+			if ( $this->guide ) {
+				$this->json['guide'] = $this->guide;
+			}
+
+			// add advanced flag if specified
+			if ( $this->advanced ) {
+				$this->json['advanced'] = true;
+			}
 		}
 
 		// remove description if not specified, save bytes...
@@ -223,6 +228,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	public function content_template() {
 		ob_start( 'PWPcp_Utils::compress_html' ); // @@doubt does this make the page load slower? \\
 		$this->js_tpl_divider();
+		$this->js_tpl_guide();
 		 // this wrapper is needed to make the Extras menu play nice when divider
 		 // is there, because of the absolute positioning
 		echo '<# if (data.div) { #><div class="pwpcp-control-wrap"><# } #>';
@@ -250,6 +256,22 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 				<i class="pwpcp-guide pwpcpui-control-btn dashicons dashicons-editor-help" title="<?php _e( 'Click to show some help' ); ?>"></i>
 			<# } #>
 		<?php
+	}
+
+	/**
+	 * Subclasses can have their own 'guid' template overriding this method
+	 *
+	 * @premium A Customize Plus Premium feature.
+	 * @since 0.0.1
+	 */
+	protected function js_tpl_guide() {
+		if ( class_exists( 'PWPcpp' ) ) {
+		?>
+			<# if (data.guide) { #>
+				<i class="pwpcp-guide pwpcpui-control-btn dashicons dashicons-editor-help" title="<?php _e( 'Click to show some help' ); ?>"></i>
+			<# } #>
+		<?php
+		}
 	}
 
 	/**
