@@ -54,12 +54,12 @@ var Tabs = (function () {
         var $panelInputs = $('input, .ui-slider-handle', panel);
         if (panel.getAttribute(tabAttrName) === target) {
           panel.classList.add(CLASS_TAB_SELECTED);
-          // reset manual tabindex to normal browser behavior
-          $panelInputs.attr('tabindex', '0');
+          // reset manual tabIndex to normal browser behavior
+          $panelInputs.attr('tabIndex', '0');
         } else {
           panel.classList.remove(CLASS_TAB_SELECTED);
           // exclude hidden `<input>` fields from keyboard navigation
-          $panelInputs.attr('tabindex', '-1');
+          $panelInputs.attr('tabIndex', '-1');
         }
       }
 
