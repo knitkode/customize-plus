@@ -426,7 +426,7 @@ class PWPcp_Sanitize {
 					array_push( $input_sanitized, $key );
 				}
 			}
-			return json_encode( $input_sanitized );
+			return wp_json_encode( $input_sanitized );
 		} else {
 			return $setting->default;
 		}

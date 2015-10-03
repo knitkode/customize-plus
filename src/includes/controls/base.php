@@ -329,7 +329,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
  	 * @return string The sanitized value.
  	 */
 	public static function sanitize_base_callback( $value, $setting ) {
-		return wp_kses_post( $value );
+		return wp_kses_post( $value, array() );
 	}
 
 	/**
