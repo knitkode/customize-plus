@@ -108,7 +108,7 @@ var Utils = (function () {
         if (linkEl) {
           linkEl.onclick = function () {
             Utils.focus(controlToFocus);
-          }
+          };
         } else {
           Utils.focus(controlToFocus);
         }
