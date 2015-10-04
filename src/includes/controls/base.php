@@ -252,9 +252,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 						if (data.div.text) { #><span class="description customize-control-description">{{{ data.div.text }}}</span><# } #>
 				</div>
 			<# } #>
-			<# if (data.guide) { #>
-				<i class="pwpcp-guide pwpcpui-control-btn dashicons dashicons-editor-help" title="<?php _e( 'Click to show some help' ); ?>"></i>
-			<# } #>
+			<?php $this->js_tpl_guide(); ?>
 		<?php
 	}
 
