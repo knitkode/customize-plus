@@ -21,4 +21,29 @@
     width: 100%;
     resize: vertical;
   }
+
+  /**
+   * Control button
+   *
+   * Shared style applied to button which are common for all the controls and
+   * that are meant to be used as additional control specific content. Used for
+   * the `extras` menu and `guide` button. Buttons using this class should add
+   * their specific class to determine their position inside the control area.
+   */
+  &-control-btn {
+    z-index: 3;
+    position: absolute;
+    width: $control--btn-size;
+    height: $control--btn-size;
+    line-height: $control--btn-size + 1; // @@tofix weird bug \\
+    font-size: $control--btn-icon-fontsize;
+    color: $control--btn-color;
+    opacity: 0;
+    transition: opacity .18s ease, color .18s ease;
+    cursor: pointer;
+
+    .pwpcp-control:hover & {
+      opacity: 1;
+    }
+  }
 }

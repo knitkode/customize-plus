@@ -128,9 +128,7 @@ var Utils = (function () {
         // link from a search result try/catch because search is not
         // always enabled
         api.components.Search.deactivate();
-      } catch(e) {
-        console.warn('Utils->linkControl: failed attempt to deactivate Search', e);
-      }
+      } catch(e) {}
       control.focus();
       control.container.addClass('pwpcp-control-focused');
       setTimeout(function () {
