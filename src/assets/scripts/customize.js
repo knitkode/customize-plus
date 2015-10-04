@@ -3,6 +3,9 @@
 
 //= require customize/core/setup-globals.js
 
+//= require customize/controls/base-input.js
+//= require customize/controls/base-radio.js
+
 //= require customize/controls/buttonset.js
 //= require customize/controls/color.js
 //= require customize/controls/dummy.js

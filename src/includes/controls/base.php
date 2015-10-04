@@ -252,7 +252,6 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 						if (data.div.text) { #><span class="description customize-control-description">{{{ data.div.text }}}</span><# } #>
 				</div>
 			<# } #>
-			<?php $this->js_tpl_guide(); ?>
 		<?php
 	}
 

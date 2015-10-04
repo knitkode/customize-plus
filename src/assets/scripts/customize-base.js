@@ -14,8 +14,6 @@
 //= require customize/core/tabs.js
 
 //= require customize/controls/base.js
-//= require customize/controls/base-input.js
-//= require customize/controls/base-radio.js
 
 /**
  * Core initialization
