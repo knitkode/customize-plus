@@ -34,6 +34,8 @@ var WpTight = (function () {
       /** @type {jQuery} */
       el.header = $('#customize-header-actions');
       /** @type {jQuery} */
+      el.close = el.header.find('.customize-controls-close');
+      /** @type {jQuery} */
       el.sidebar = $('.wp-full-overlay-sidebar-content');
       /** @type {jQuery} */
       el.info = $('#customize-info');
