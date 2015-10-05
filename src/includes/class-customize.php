@@ -331,6 +331,12 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		private static function register_tree() {
 			$priority = 0;
 
+			if ( ! class_exists( 'PWPcp_Theme' ) ) {
+				return;
+			}
+
+			do_action( 'PWPcp/customize/modify_tree', PWPcp_Theme::get_instance() );
+
 			foreach ( PWPcp_Theme::$customize_tree as $component ) {
 				$priority++;
 
