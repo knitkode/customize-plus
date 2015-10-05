@@ -407,7 +407,7 @@ endif;
 
 /**
  * Export useful functions to global namespace // @@doubt not sure if provide
- * these functions, and whther do it this way or with `call_user_func` \\
+ * these functions, and whether do it this way or with `call_user_func` \\
  * @since 0.0.1
  */
 

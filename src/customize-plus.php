@@ -40,3 +40,5 @@ if ( is_admin() ) {
 	require_once( PWPCP_PLUGIN_DIR . 'includes/class-admin.php' );
 	require_once( PWPCP_PLUGIN_DIR . 'includes/class-admin-about.php' );
 }
+
+do_action( 'PWPcp/after_requires' );
