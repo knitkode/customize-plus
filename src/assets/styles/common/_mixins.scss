@@ -23,39 +23,3 @@
     color: $WPcustomize--btn-color-hover;
   }
 }
-
-// %ui-toggle--active {
-@mixin ui-toggle--active() {
-  background: $WPcustomize--btn-bg-active;
-  color: $WPcustomize--btn-color-active;
-  &:hover,
-  &:focus {
-    background: darken($WPcustomize--btn-bg-active, 4%);
-  }
-}
-
-// %ui-toggle--expanded {
-@mixin ui-toggle--expanded() {
-  background: $WPcustomize--btn-bg-activetoggle;
-  box-shadow: $WPcustomize--btn-box-shadow-activetoggle;
-  &:hover,
-  &:focus {
-    background: darken($WPcustomize--btn-bg-activetoggle, 4%);
-  }
-}
-
-// alert
-@mixin ui-alert( $accent-color ) {
-  background: lighten($accent-color, 7.5%);
-  border-color: darken($accent-color, 5%);
-  color: darken($accent-color, 80%);
-}
-
-// Panels/Sections description areas in customise
-// @@wptight-css #customize-controls .customize-info .customize-panel-description {}
-@mixin WPcustomize--container-description() {
-  color: #555;
-  background: #fff;
-  padding: 12px 15px;
-  border-top: 1px solid #ddd;
-}
