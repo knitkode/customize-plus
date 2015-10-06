@@ -29,17 +29,12 @@ api.controls.Base = wpApi.Control.extend({
     var settings;
     var advancedClass;
 
-    // add default params object
     control.params = {};
-
-    _.extend(control, options || {});
-
-    // set control id
+    _.extend( control, options || {} );
     control.id = id;
 
-    // add a flag so that we are able to recognize our
-    // custom controls, let's keep it short, so we need
-    // only to check `if (control.pwpcp)`
+    // add a flag so that we are able to recognize our custom controls, let's
+    // keep it short, so we need only to check `if (control.pwpcp)`
     control.pwpcp = 1;
 
     // control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
@@ -51,7 +46,7 @@ api.controls.Base = wpApi.Control.extend({
     container.className = 'customize-control pwpcp-control customize-control-'
       + control.params.type + advancedClass;
 
-    control.container = $(container); // @@tobecareful check render() in PWPcp_Customize_Control_Base \\
+    control.container = $(container);
 
     // save a reference of the raw DOM node, we're gonna use it more
     // than the jquety object `container` (which we can't change, because it's
@@ -204,6 +199,7 @@ api.controls.Base = wpApi.Control.extend({
   /**
    * Render the control from its JS template, if it exists.
    *
+   * @override
    */
   renderContent: function () {
     var template;
