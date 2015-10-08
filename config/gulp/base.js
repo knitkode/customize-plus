@@ -68,9 +68,9 @@ gulp.task('_base-images', function() {
  * @access private
  */
 gulp.task('_base-styles', ['_base-images'], function() {
-  var banner = CONFIG.isDist ? $.template.precompile(CONFIG.credits, { pkg: pkg }) : '';
+  var banner = CONFIG.isDist ? require('lodash.template')(CONFIG.credits)({ pkg: pkg }) : '';
   return gulp.src(PATHS.src.styles + '*.scss')
-    .pipe($.if(CONFIG.isDist, $.replace('//- Customize Plus Banner', banner)))
+    .pipe($.if(CONFIG.isDist, $.replace(CONFIG.creditsPlaceholder, banner)))
     .pipe($.include())
     .pipe($.sass())
     .on('error', utilErrors)
