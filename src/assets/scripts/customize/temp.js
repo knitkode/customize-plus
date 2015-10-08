@@ -21,12 +21,6 @@
 //   });
 // }
 
-/**
- * Get the prototype of a control
- * and call the 'super/parent' method
- */
-// var ControlColor = api.controls.Color.prototype;
-// ControlColor.ready.apply(this, arguments);
 
 // // from: https://make.wordpress.org/core/2014/10/27/toward-a-complete-javascript-api-for-the-customizer/
 // wpApi.section.each(function ( section ) {
@@ -35,18 +29,3 @@
 //   }
 // });
 //
-
-
-/**
- * Tests, snippets to use in the JS Console when developing the Customize
- *
- */
-// var dirtyCustomized = {};
-// wp.customize.each( function ( value, key ) {
-//   if ( value._dirty ) {
-//     dirtyCustomized[ key ] = value();
-//   }
-// });
-// console.log('changed (dirty) options: (' + Object.keys(dirtyCustomized).length + ') ', dirtyCustomized)
-
-// 'total number of options: ' + _.uniq(Object.keys(wp.customize.get())).length
