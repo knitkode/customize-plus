@@ -46,4 +46,49 @@
       opacity: 1;
     }
   }
+
+  /**
+   * Vertically align content (wrapper)
+   */
+  &-midpoint-wrap {
+    text-align: center;
+    vertical-align: middle;
+    height: 100%;
+
+    &:before {
+      content: '';
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  /**
+   * Vertically align content
+   */
+  &-midpoint {
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  /**
+   * Visibility
+   */
+  &-hidden {
+    display: none;
+  }
+
+  /**
+   * Hint (light texts)
+   */
+  &-hint {
+    color: #666;
+  }
+
+  /**
+   * Sub hint (lighter texts)
+   */
+  &-subhint {
+    color: #bbb;
+  }
 }

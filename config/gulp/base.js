@@ -81,11 +81,11 @@ gulp.task('_base-styles', ['_base-images'], function() {
     }))
     // })))
     .pipe($.autoprefixer(PLUGINS.autoprefixer))
+    .pipe($.if(CONFIG.isDist, $.replace('//- Customize Plus Banner', $.template(CONFIG.credits, { pkg: pkg })))
     .pipe(gulp.dest(PATHS.build.styles))
-    .pipe($.rename({ suffix: '.min' }))
     .pipe($.if(CONFIG.isDist, $.combineMediaQueries()))
     .pipe($.if(CONFIG.isDist, $.minifyCss()))
-    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.styles));
 });
 

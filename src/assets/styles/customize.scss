@@ -1,7 +1,6 @@
-// generic
+// common
 @import "common/variables";
 @import "common/mixins";
-@import "common/utils";
 
 // customize - vendors
 @import "vendor-custom/spinner";
@@ -16,14 +15,14 @@
 @import "vendor-custom/spectrum";
 @import "vendor-custom/spectrum-custom";
 
-// customize - base
-@import "customize/base";
-@import "customize/base-animations";
-@import "customize/base-icons";
-@import "customize/base-scrollbars";
-@import "customize/base-ui";
+//- Customize Plus Banner
 
 // customize - core
+@import "customize/core/base";
+@import "customize/core/animations";
+@import "customize/core/icons";
+@import "customize/core/scrollbars";
+@import "customize/core/ui";
 @import "customize/core/tabs";
 
 // customize - controls

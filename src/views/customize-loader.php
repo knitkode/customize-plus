@@ -1,6 +1,6 @@
 <div id="pwpcp-loader" class="wp-full-overlay-main pwpcp-full-overlay">
-	<div class="pwpcp-u-midpoint-wrap">
-		<div class="pwpcp-u-midpoint">
+	<div class="pwpcpui-midpoint-wrap">
+		<div class="pwpcpui-midpoint">
 			<img src="<?php echo esc_url( plugins_url( 'assets/images/logo-white.png', PWPCP_PLUGIN_FILE ) ); ?>">
 			<?php if ( isset ( $_GET['pwpcp_import'] ) ): // input var okay ?>
 				<h1 id="pwpcp-title" class="pwpcp-text"><?php _e( 'Import done' ); ?></h1>
