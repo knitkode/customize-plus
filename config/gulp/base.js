@@ -70,6 +70,7 @@ gulp.task('_base-images', function() {
 gulp.task('_base-styles', ['_base-images'], function() {
   var banner = CONFIG.isDist ? $.template.precompile(CONFIG.credits, { pkg: pkg }) : '';
   return gulp.src(PATHS.src.styles + '*.scss')
+    .pipe($.if(CONFIG.isDist, $.replace('//- Customize Plus Banner', banner)))
     .pipe($.include())
     .pipe($.sass())
     .on('error', utilErrors)
@@ -82,7 +83,6 @@ gulp.task('_base-styles', ['_base-images'], function() {
     }))
     // })))
     .pipe($.autoprefixer(PLUGINS.autoprefixer))
-    .pipe($.if(CONFIG.isDist, $.replace('//- Customize Plus Banner', banner)))
     .pipe(gulp.dest(PATHS.build.styles))
     .pipe($.if(CONFIG.isDist, $.combineMediaQueries()))
     .pipe($.if(CONFIG.isDist, $.minifyCss()))
