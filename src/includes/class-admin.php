@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'PWPcp_Admin' ) && class_exists( 'PWPcp_Singleton' ) ):
+if ( class_exists( 'PWPcp_Singleton' ) ):
 	/**
 	 * Short description for class
 	 *
