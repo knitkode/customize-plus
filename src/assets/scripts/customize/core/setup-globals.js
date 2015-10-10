@@ -1,3 +1,4 @@
+
 // this is needed to don't break js while developing,
 // it gets stripped out during minification
 var DEBUG = true;
@@ -9,6 +10,9 @@ if (DEBUG) {
   // shim for Opera
   window.performance = window.performance || { now: function() {} };
   var t = performance.now();
+
+  // useful to play in the console
+  window.wpApi = wp.customize;
 }
 
 // be sure to have what we need, bail otherwise
