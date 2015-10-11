@@ -38,38 +38,38 @@ class PWPcp_Customize_Control_Text extends PWPcp_Customize_Control_Base_Input {
 	}
 
 	/**
-   * Sanitize
-   *
-   * @since 0.0.1
-   * @override
-   * @param string               $value   The value to sanitize.
-   * @param WP_Customize_Setting $setting Setting instance.
-   * @param WP_Customize_Control $control Control instance.
-   * @return string The sanitized value.
-   */
-  protected static function sanitize( $value, $setting, $control ) {
+	 * Sanitize
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param string               $value   The value to sanitize.
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return string The sanitized value.
+	 */
+	protected static function sanitize( $value, $setting, $control ) {
 		$input_attrs = $control->input_attrs;
 
 		$input_type = isset( $input_attrs['type'] ) ? $input_attrs['type'] : 'text';
 
-    // url
-    if ( 'url' === $input_type ) {
-      $value = esc_url_raw( $value );
-    }
-    // email
-    else if ( 'email' === $input_type ) {
-      $value = sanitize_email( $value );
-    }
-    // text
-    else {
-    	$value = wp_strip_all_tags( $value );
-    }
-    // max length
+		// url
+		if ( 'url' === $input_type ) {
+			$value = esc_url_raw( $value );
+		}
+		// email
+		else if ( 'email' === $input_type ) {
+			$value = sanitize_email( $value );
+		}
+		// text
+		else {
+			$value = wp_strip_all_tags( $value );
+		}
+		// max length
 		if ( isset( $input_attrs['maxlength'] ) && strlen( $value ) > $input_attrs['maxlength'] ) {
-      return $setting->default;
-    }
+			return $setting->default;
+		}
 
-    return $value;
+		return $value;
 	}
 }
 

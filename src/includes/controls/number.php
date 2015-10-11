@@ -66,18 +66,18 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
 	 * @since 0.0.1
 	 * @override
 	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
- 	 */
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return string The sanitized value.
+	 */
 	protected static function sanitize( $value, $setting, $control ) {
-    $number_extracted = PWPcp_Sanitize::extract_number( $value, $control );
+		$number_extracted = PWPcp_Sanitize::extract_number( $value, $control );
 
-    if ( $number_extracted ) {
-  		return PWPcp_Sanitize::number( $number_extracted, $control );
-  	} else {
-      return $setting->default;
-  	}
+		if ( $number_extracted ) {
+			return PWPcp_Sanitize::number( $number_extracted, $control );
+		} else {
+			return $setting->default;
+		}
 	}
 }
 

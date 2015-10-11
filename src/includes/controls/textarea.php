@@ -69,22 +69,22 @@ class PWPcp_Customize_Control_Textarea extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 * @override
 	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
- 	 */
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return string The sanitized value.
+	 */
 	protected static function sanitize( $value, $setting, $control ) {
-    // always cast to string
-    $value = (string) $value;
+		// always cast to string
+		$value = (string) $value;
 
 		$html_is_allowed = $control->allowHTML || $control->wp_editor;
 
-    if ( $html_is_allowed ) {
-    	return wp_kses_post( $value );
-    } else {
-    	return wp_strip_all_tags( $value );
-    }
-    return $value;
+		if ( $html_is_allowed ) {
+			return wp_kses_post( $value );
+		} else {
+			return wp_strip_all_tags( $value );
+		}
+		return $value;
 	}
 }
 

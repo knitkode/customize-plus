@@ -212,9 +212,9 @@ class PWPcp_Sanitize {
 
 	/**
 	 * Extract first unit
-   * It returns the first matched, so the units are sorted by popularity (approx)
-   * @see Slider._extractFirstUnit Js corresponding method
-   * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
+	 * It returns the first matched, so the units are sorted by popularity (approx)
+	 * @see Slider._extractFirstUnit Js corresponding method
+	 * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
 	 * @param  [type] $input [description]
 	 * @return [type]        [description]
 	 */
@@ -227,7 +227,7 @@ class PWPcp_Sanitize {
 	 * Extract first number
 	 * (both integers or float)
 	 * @see Slider._extractFirstNumber Js corresponding method
-   * @see http://stackoverflow.com/a/17885985/1938970
+	 * @see http://stackoverflow.com/a/17885985/1938970
 	 * @param  [type] $input [description]
 	 * @return [type]        [description]
 	 */
