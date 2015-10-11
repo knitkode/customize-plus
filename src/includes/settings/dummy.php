@@ -26,10 +26,6 @@ class PWPcp_Customize_Setting_Dummy extends WP_Customize_Setting {
 
 	protected function update( $value ) {}
 
-	protected function _update_theme_mod( $value ) {}
-
-	protected function _update_option( $value ) {}
-
 	public function value() {}
 
 	public function js_value() {
