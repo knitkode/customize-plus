@@ -86,7 +86,16 @@ gulp.task('_customize-modernizr', function() {
  *
  * @access private
  */
-gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-unminified', '_customize-scripts-admin-minified']);
+gulp.task('_customize-scripts-admin',
+  [
+    '_customize-scripts-admin-unminified',
+    '_customize-scripts-admin-minified'
+  ], function () {
+    return gulp.src('')
+      .pipe($.if(CONFIG.isDist, $.shell([
+        './config/uglify--customize.sh'
+      ], { cwd: '../roots' })));
+});
 
 var adminScriptsLibraries = [
   PATHS.src.bower + 'polyfill-classList/classList.js', // @@ie9 @@ie8 \\
