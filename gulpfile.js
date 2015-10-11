@@ -2,7 +2,6 @@
 'use strict';
 
 var gulp = require('gulp');
-var sequence = require('gulp-sequence');
 
 /**
  * Paths
@@ -73,11 +72,7 @@ global.PATHS = PATHS;
 
 
 // @access public
-gulp.task('build', sequence([
-    'build-base',
-    'build-customize'
-  ]
-));
+gulp.task('build', ['build-base', 'build-customize']);
 
 // @access public
 gulp.task('watch', [

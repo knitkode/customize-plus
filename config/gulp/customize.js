@@ -93,7 +93,7 @@ gulp.task('_customize-scripts-admin',
   ], function () {
     return gulp.src('')
       .pipe($.if(CONFIG.isDist, $.shell([
-        './config/uglify--customize.sh'
+        './config/uglify--customize.sh',
       ], { cwd: '../roots' })));
 });
 

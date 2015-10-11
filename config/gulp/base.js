@@ -79,7 +79,7 @@ gulp.task('_base-styles', ['_base-images'], function() {
       baseDir: PATHS.src.assets,
       extensions: ['svg', 'png'],
       maxImageSize: 8 * 1024,
-      debug: true
+      debug: false
     }))
     // })))
     .pipe($.autoprefixer(PLUGINS.autoprefixer))
