@@ -21,7 +21,6 @@
 $document.ready(function() {
   if (DEBUG.performances) var t = performance.now();
   WpTight.init();
-  Skeleton.init();
   Tabs.init();
   if (DEBUG.performances) console.log( 'Customize.js Base (ready start->end) took ' + (performance.now() - t) + ' ms.');
 });

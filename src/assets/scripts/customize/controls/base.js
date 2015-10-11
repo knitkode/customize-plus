@@ -454,8 +454,6 @@ api.controls.Base = wpApi.Control.extend({
      * for each control in the `extras` menu.
      */
     var _onExtrasOpen = function () {
-      Skeleton.hasScrollbar(); // on open check if we have a scrollbar
-
       // if the control current value is not valid enable both reset buttons
       if (self._currentValueHasError) {
         _enableBtnInitial();

@@ -1,16 +1,24 @@
-/* global Modernizr, WpTight */
+/* global Modernizr */
 
 /**
  * Skeleton element wrappers
  *
  * @class api.Skeleton
  * @requires Modernizr
- * @requires api.WpTight
  */
 var Skeleton = (function () {
 
-  /** @type {HTMLelement} */
-  var _wpSidebar;
+  /** @type {jQuery} */
+  var _$deferredDom = $.Deferred();
+
+  /**
+   * Hide loader and ubnid itself
+   * (we could also take advantage of the underscore `once` utility)
+   */
+  function _hideLoaderPreview () {
+    Skeleton.hide('preview');
+    wpApi.previewer.targetWindow.unbind(_hideLoaderPreview);
+  }
 
   // @access public
   return {
@@ -18,16 +26,25 @@ var Skeleton = (function () {
      * Init
      */
     init: function () {
-      _wpSidebar = WpTight.el.sidebar[0];
+      $document.ready(this._initOnDomReady.bind(this));
+    },
+    /**
+     * Init on DOM ready
+     */
+    _initOnDomReady: function () {
 
       // set elements as properties
-      this.$loader = $(document.getElementById('pwpcp-loader'));
+      this._loader = document.getElementById('pwpcp-loader-preview');
+      this.$loader = $(this._loader);
       this.title = document.getElementById('pwpcp-title');
       this.text = document.getElementById('pwpcp-text');
+      this._loaderSidebar = document.getElementById('pwpcp-loader-sidebar');
+      this.$loaderSidebar = $(this._loaderSidebar);
 
-      // the first time the iframe preview has loaded hide the skeleton loader,
-      // take advantage of the underscore `once` utility
-      wpApi.previewer.targetWindow.bind(_.once(Skeleton.hide.bind(this)));
+      _$deferredDom.resolve();
+
+      // the first time the iframe preview has loaded hide the skeleton loader
+      wpApi.previewer.targetWindow.bind(_hideLoaderPreview);
     },
     /**
      * Trigger loading UI state (changes based on added css class)
@@ -44,31 +61,46 @@ var Skeleton = (function () {
     /**
      * Show 'full page' loader
      */
-    show: function () {
-      this.$loader.show();
+    show: function (what) {
+      _$deferredDom.done(function () {
+        if (!what || what === 'preview') {
+          this._loader.style.display = 'block';
+        }
+        if (!what || what === 'sidebar') {
+          this._loaderSidebar.style.display = 'block';
+        }
+      }.bind(this));
     },
     /**
-     * Hide 'full page' loader, use jQuery animation if the browser supports
+     * Hide loaders overlays, use jQuery animation if the browser supports
      * WebWorkers (this is related to the Premium Compiler component)
+     * @param {String} what What to hide: 'preview' or 'sidebar' (pass nothing
+     *                      to hide both)
      */
-    hide: function () {
-      if (Modernizr.webworkers) {
-        this.$loader.fadeOut();
-      } else {
-        this.$loader.hide();
-      }
-    },
-    /**
-     * Check if the WordPress sidebar has a scrollbar and toggle class on it.
-     *
-     * {@link http://stackoverflow.com/a/4814526/1938970}
-     */
-    hasScrollbar: function () {
-      body.classList.toggle('pwpcp-has-scrollbar',
-        _wpSidebar.scrollHeight > _wpSidebar.clientHeight);
+    hide: function (what) {
+      _$deferredDom.done(function () {
+        var shouldFade = Modernizr.webworkers;
+        if (!what || what === 'preview') {
+          if (shouldFade) {
+            this.$loader.fadeOut();
+          } else {
+            this._loader.style.display = 'none';
+          }
+        }
+        if (!what || what === 'sidebar') {
+          if (shouldFade) {
+            this.$loaderSidebar.fadeOut();
+          } else {
+            this._loaderSidebar.style.display = 'none';
+          }
+        }
+      }.bind(this));
     }
   };
 })();
+
+// Initialize
+Skeleton.init();
 
 // export to public API
 api.Skeleton = Skeleton;
