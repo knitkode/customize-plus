@@ -74,7 +74,7 @@
     "gulp-replace": "~0.4.0",
     "gulp-sass": "~2.0.4",
     "gulp-sequence": "~0.3.2",
-    "gulp-shell": "~0.2.10",
+    "gulp-shell": "~0.4.3",
     "gulp-strip-debug": "~0.3.0",
     "gulp-swig": "~0.7.4",
     "gulp-tag-version": "~1.1.0",
@@ -91,7 +91,6 @@
     "path": "~0.11.14",
     "phplint": "~0.1.1",
     "run-sequence": "~0.3.6",
-    "shelljs": "~0.3.0",
     "streamqueue": "~0.1.1"
   },
   "engines": {
