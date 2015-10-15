@@ -30,6 +30,7 @@ wpApi.controlConstructor.pwpcp_slider = api.controls.Slider = api.controls.Base.
       unit = this._extractFirstUnit(newValue);
       if (!unit || params.units.indexOf(unit) === -1) {
         errorMsg = api.l10n['vInvalidUnit'];
+        unit = params.units[0];
       }
     }
 
@@ -133,8 +134,8 @@ wpApi.controlConstructor.pwpcp_slider = api.controls.Slider = api.controls.Base.
   _extractFirstUnit: function (value) {
     var valueOrigin = value || this.setting();
     var matchesUnit = api.Regexes._extractUnit.exec(valueOrigin);
-    if (matchesUnit && matchesUnit[1]) {
-      return matchesUnit[1];
+    if (matchesUnit && matchesUnit[0]) {
+      return matchesUnit[0];
     }
     return null;
   },
