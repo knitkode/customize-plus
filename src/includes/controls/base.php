@@ -63,7 +63,8 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 		parent::to_json();
 
 		// add setting factory value
-		$this->json['vFactory'] = $this->setting->default;
+		// @@todo remove sprintf @see track https://core.trac.wordpress.org/ticket/34290#ticket \\
+		$this->json['vFactory'] = sprintf( $this->setting->default );
 
 		// add setting initial value
 		$this->json['vInitial'] = $this->value();

@@ -527,11 +527,12 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 			// then add setting
 			$setting_args = isset( $field_args['setting'] ) ? $field_args['setting'] : null;
 
-			// @@todo weird bug, @see track https://core.trac.wordpress.org/ticket/34290#ticket \\
+			// @@todo remove the following 3 lines
+			// @see track https://core.trac.wordpress.org/ticket/34290#ticket \\
 			// % symbols get stripped out, we need to replace it with a double one \\
-			// if ( isset( $setting_args['default'] ) ) {
-			// 	$setting_args['default'] = str_replace( '%', '%%', $setting_args['default'] );
-			// }
+			if ( isset( $setting_args['default'] ) ) {
+				$setting_args['default'] = str_replace( '%', '%%', $setting_args['default'] );
+			}
 
 			// by default the setting id is the same as the control, so the field id
 			$setting_id = $field_id;
