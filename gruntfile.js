@@ -166,9 +166,9 @@ module.exports = function (grunt) {
     // makepot
     'makepot',
     // push pot on Transifex
-    'shell:txpush',
+    // 'shell:txpush', // @@temp disabled for now \\
     // pull from Transifex
-    'shell:txpull',
+    // 'shell:txpull', // @@temp disabled for now \\
     // create .mo files
     'potomo'
   ]);
