@@ -8,13 +8,16 @@ $WP--bg: #f1f1f1 !default;
 $WP--border-radius: 3px !default;
 $WP--input-height: 27px;
 $WP--input-height-md: 31px;
+$WP--focus-box-shadow-rgb: rgb(30, 140, 190);
+$WP--focus-box-shadow-opacity: .8;
+$WP--focus-box-shadow-color: rgba($WP--focus-box-shadow-rgb, $WP--focus-box-shadow-opacity);
 $WP--select-border-color: #ddd;
 $WP--select-border-color-focus: #5b9dd9;
 $WP--select-box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
-$WP--select-box-shadow-focus: 0 0 2px rgba(30,140,190,.8);
+$WP--select-box-shadow-focus: 0 0 2px $WP--focus-box-shadow-color;
 $WP--link-color: #0099d5; // #0074a2;
 $WP--link-color-hover: #2ea2cc;
-$WP--link-box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30,140,190,.8);
+$WP--link-box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px $WP--focus-box-shadow-color;
 $WP--dashicons-size: 20px;
 
 // WordPress Customize variables
@@ -27,7 +30,7 @@ $WPcustomize--header-height: 45px;
 $WPcustomize--footer-height: 45px;
 $WPcustomize--btnback-width: $WPcustomize--header-height + 3;
 $WPcustomize--container-toggle-size: 40px;
-$WPcustomize--container-toggle-shadow-focus: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30,140,190,.8);
+$WPcustomize--container-toggle-shadow-focus: 0 0 0 1px #5b9dd9, 0 0 2px 1px $WP--focus-box-shadow-color;
 $WPcustomize--container-toggle-color: #555;
 $WPcustomize--container-toggle-color-focus: #0073aa;
 $WPcustomize--sidebar-bg: #eee;
@@ -52,6 +55,7 @@ $WPcustomize--btn-border-radius: $WP--border-radius;
 $WPcustomize--btn-box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0,0,0,.08);
 $WPcustomize--btn-box-shadow-focus: $WP--link-box-shadow;
 $WPcustomize--btn-box-shadow-activetoggle: inset 0 2px 2px rgba(0,0,0,.08), 0 1px 0 rgba(0,0,0,.08); // we made this up
+$WPcustomize--btn-box-shadow-activetoggle-focus: 0 1px 0 rgba(0,0,0,.08), inset 0 0 2px 1px $WP--focus-box-shadow-color; // we made this up
 
 /**
  * Variables: Customize Plus

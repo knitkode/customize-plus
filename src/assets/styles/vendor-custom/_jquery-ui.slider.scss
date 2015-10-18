@@ -5,7 +5,7 @@
 .pwpcp-slider.ui-slider.ui-slider-horizontal {
   position: relative;
   margin-top: 6px;
-  height: $plugin--slider-handle-size + ($plugin--slider-handle-border-width * 2);
+  height: $plugin--slider-handle-size + ($plugin--slider-handle-border-width * 2) + 4px; // 4px is the space for the box shadow
   border: 0;
   background: 0;
   cursor: pointer;
@@ -21,7 +21,7 @@
   }
 
   .ui-slider-handle {
-    top: 0;
+    top: 2px; // 2px is the space for the box shadow
     width: $plugin--slider-handle-size;
     height: $plugin--slider-handle-size;
     border-radius: $plugin--slider-handle-size + ($plugin--slider-handle-border-width * 2);
@@ -37,6 +37,7 @@
     }
     &:focus {
       outline: none;
+      box-shadow: $WP--link-box-shadow;
     }
 
     .ui-slider:hover & {
