@@ -35,9 +35,8 @@ $WPcustomize--container-toggle-color: #555;
 $WPcustomize--container-toggle-color-focus: #0073aa;
 $WPcustomize--sidebar-bg: #eee;
 $WPcustomize--iframe-bg: #eee;
-$WPcustomize--collapse-sidebar-bottom: 12px;
+$WPcustomize--collapse-sidebar-btn-color: #656a6f;
 $WPcustomize--collapse-sidebar-marginleft: 15px;
-$WPcustomize--collapse-sidebar-color: #777;
 $WPcustomize--breakpoint-float: 640px;
 $WPcustomize--breakpoint-md: 782px; // some input fields get bigger here
 $WPcustomize--btn-height: 22px; // @@wptight-css from .wp-color-result {} \\
@@ -112,7 +111,7 @@ $control--btn-color-active: #333;
 
 // Customize Plus component: Screenpreview
 $screenpreview--btn-padding-top: 5px;
-$screenpreview--btn-padding-horizontal: 4px;
+$screenpreview--btn-padding-horizontal: 7px;
 $screenpreview--device-margin-vertical: 20px;
 // these variables should be the same as in the theme bootstrap less variables (screen-sm, etc.)
 $screen--md-width: 992px;
