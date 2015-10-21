@@ -2,15 +2,10 @@
  * Banner for free plugin
  *
  */
-(function () {
+api._banner = (function () {
+
   /** @type {String} The id of the banner container */
   var _id = _getRandomId(14);
-
-  /** @type {String} The id of the css style */
-  var _idStyle= _id + 's';
-
-  /** @type {String} The id of the dismiss button */
-  var _idBtn = _id + 'b';
 
   /** @type {String} CSS underscore template */
   var _inlineStyleTpl = _.template(
@@ -173,9 +168,13 @@
    * Append banner, then show it
    */
   function _append () {
-    var existingStyle = document.getElementById(_idStyle);
+    // mechanism to prevent banner from showing in Customize Plus Premium
+    if (!api._banner) {
+      return;
+    }
+    var existingStyle = document.getElementById(_id + 's');
     var style = existingStyle || document.createElement('style');
-    style.id = _idStyle;
+    style.id = _id + 's';
     style.innerHTML = _inlineStyleTpl({ id: _id });
     if (!existingStyle) {
       var head = document.getElementsByTagName('head')[0];
