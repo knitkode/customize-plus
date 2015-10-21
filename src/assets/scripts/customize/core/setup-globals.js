@@ -36,12 +36,6 @@ var body = document.getElementsByTagName('body')[0];
 /** @type {Object} */
 var wpApi = wp.customize;
 
-/** @type {boolean} */
-var wpApiIsReady = false;
-wpApi.bind('ready', function() {
-  wpApiIsReady = true;
-});
-
 /**
  * Collect here controls prototypes
  *
