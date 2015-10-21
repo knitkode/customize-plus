@@ -30,7 +30,7 @@
     '}' +
     // container - decoration
     '#<%- id %>:before {' +
-      'content: "\\f488";' +
+      'content: "\\f101";' +
       'font-family: dashicons;' +
       'font-size: 62px;' +
       'position: absolute;' +
@@ -79,11 +79,22 @@
       'font-family: dashicons;' +
       'font-size: 20px;' +
       'font-style: normal;' +
-      'color: #FCE2A7;' + // skin2: #999
+      'color: #acc;' + // skin2: #999
+    '}' +
+    // list item - upgrade
+    '#<%- id %>u {' +
+      'padding-left: 50px;' +
+      'padding: 10px 10px 10px 37px;' +
+      'background: lightseagreen;' +
+      'margin-bottom: 12px;' +
     '}' +
     // list icon - upgrade
     '#<%- id %>u:before {' +
       'content: "\\f313";' +
+      'color: #FCE2A7;' +
+      'font-size: 44px;' +
+      'top: 7px;' +
+      'left: -12px;' +
     '}' +
     // list icon - donate
     '#<%- id %>d:before {' +
@@ -188,7 +199,7 @@
       setTimeout(_hide, 600);
       return;
     }
-    $('#' + _id).animate({ 'margin-bottom': '-400px' }, function () {
+    $('#' + _id).animate({ 'margin-bottom': -($('#' + _id).width()) }, function () {
       _isVisible = false;
       setTimeout(_show, 10000 * Math.max(1, _dismissActions));
       if (callback) {
@@ -204,7 +215,7 @@
     if (_isVisible) {
       return;
     }
-    $('#' + _id).animate({ 'margin-bottom': '0' }, function () {
+    $('#' + _id).animate({ 'margin-bottom': '0px' }, function () {
       _isVisible = true;
       setTimeout(_hide, 10000);
     });
