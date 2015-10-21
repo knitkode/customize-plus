@@ -18,7 +18,7 @@
     '#<%- id %> {' +
       'z-index: 1;' +
       'position: absolute;' +
-      'bottom: 60px;' + // @@temp 45px without compiler \\
+      'bottom: 45px;' +
       'left: 0;' +
       'right: 0;' +
       // 'margin-bottom: 0 !important;' + // @@totest for development purpose only \\
@@ -45,21 +45,39 @@
       'font-weight: 100;' +
       'color: #fff;' + // skin2: none
     '}' +
-    // close button
-    '#<%- id %>b {' +
-      'position: absolute;' +
-      'top: 10px;' +
-      'right: 2px;' +
+    // button
+    '.<%- id %>b {' +
       'background: 0;' +
       'border: none;' +
       'font-size: 22px;' +
       'color: #cfffff;' + // skin2: #999
       'cursor: pointer' +
     '}' +
-    // button
-    '#<%- id %>b:before {' +
-      'content: "\\f335";' +
+    '.<%- id %>b:focus {' +
+      'outline: none;' +
+    '}' +
+    '.<%- id %>b:before {' +
       'font-family: dashicons;' +
+    '}' +
+    // button contract
+    '#<%- id %>c {' +
+      'position: absolute;' +
+      'top: 10px;' +
+      'right: 2px;' +
+    '}' +
+    '#<%- id %>c:before {' +
+      'content: "\\f347";' +
+    '}' +
+    // button expand
+    '#<%- id %>e {' +
+      'position: absolute;' +
+      'top: -25px;' +
+      'right: 2px;' +
+      'background: #0073aa;' +
+      'border-radius: 50px 50px 0 0;' +
+    '}' +
+    '#<%- id %>e:before {' +
+      'content: "\\f343";' +
     '}' +
     // links
     '#<%- id %> a {' +
@@ -123,6 +141,12 @@
   /** @type {Boolean} Flag if banner is hovered */
   var _isHovering = false;
 
+  /** @type {HTMLelement} */
+  var _btnExpand;
+
+  /** @type {HTMLelement} */
+  var _btnContract;
+
   /**
    * Get random id
    *
@@ -161,7 +185,8 @@
 
     $('#customize-controls').append(
       '<div id="' + _id + '" style="margin-bottom:-400px">' +
-        '<button id="' + _idBtn + '"></button>' +
+        '<button class="' + _id + 'b" id="' + _id + 'c" style="display:none"></button>' +
+        '<button class="' + _id + 'b" id="' + _id + 'e" style="display:none"></button>' +
         '<h1 class="' + _id + 'h">Hello,</h1>' +
         'your WordPress Customize is using the <a href="http://pluswp.com/customize-plus" target="_blank">Customize Plus</a> plugin, a free software, you may consider one of the following action:' +
         '<ul>' +
@@ -182,26 +207,39 @@
       _isHovering = false;
     };
 
-    var btn = document.getElementById(_idBtn);
-    btn.onclick = _dismiss;
+    _btnContract = document.getElementById(_id + 'c');
+    _btnContract.onclick = _hide;
+    _btnExpand = document.getElementById(_id + 'e');
+    _btnExpand.onclick = _show;
+    // _btnDismiss = document.getElementById(_id + '');
+    // btnDismiss.onclick = _dismiss;
 
     _show();
   }
 
   /**
    * Hide banner
+   * @param  {?Object} event
    */
-  function _hide (callback) {
-    if (!_isVisible) {
-      return;
+  function _hide (event, callback) {
+    if (event) {
+      event.preventDefault();
     }
-    if (_isHovering) {
-      setTimeout(_hide, 600);
-      return;
-    }
-    $('#' + _id).animate({ 'margin-bottom': -($('#' + _id).width()) }, function () {
-      _isVisible = false;
-      setTimeout(_show, 10000 * Math.max(1, _dismissActions));
+    // if (!_isVisible) {
+    //   return;
+    // }
+    // if (_isHovering) {
+    //   setTimeout(_hide, 600);
+    //   return;
+    // }
+    var $container = $('#' + _id);
+    $container.animate({
+      'margin-bottom': -($container.outerHeight() + 45)
+    }, function () { // 45 is the height of the sidebar footer
+      // _isVisible = false;
+      _btnExpand.style.display = 'block';
+      _btnContract.style.display = 'none';
+      // setTimeout(_show, 10000 * Math.max(1, _dismissActions));
       if (callback) {
         callback();
       }
@@ -210,14 +248,21 @@
 
   /**
    * Show banner
+   * @param  {?Object} event
    */
-  function _show () {
-    if (_isVisible) {
-      return;
+  function _show (event) {
+    if (event) {
+      event.preventDefault();
     }
+    // if (_isVisible) {
+    //   return;
+    // }
+    _btnExpand.style.display = 'none';
+
     $('#' + _id).animate({ 'margin-bottom': '0px' }, function () {
-      _isVisible = true;
-      setTimeout(_hide, 10000);
+      // _isVisible = true;
+      _btnContract.style.display = 'block';
+      // setTimeout(_hide, 10000);
     });
   }
 
@@ -232,7 +277,7 @@
     var el = document.getElementById(_id);
     if (el) {
       _dismissActions++;
-      _hide(function () {
+      _hide(null, function () {
         el.parentNode.removeChild(el);
       });
     }
