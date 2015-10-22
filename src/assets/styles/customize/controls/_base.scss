@@ -111,10 +111,10 @@
 //   // on search active we have multple accordion-section visible
 //   // at the same time so we have to target the overall sidebar inner area
 //   // to trigger the hover higlight in the right way
-//   .pwpcp-search-active #customize-theme-controls:hover & {
+//   .pwpcp-searching #customize-theme-controls:hover & {
 //     opacity: .8;
 //   }
-//   .pwpcp-search-active #customize-theme-controls &:hover {
+//   .pwpcp-searching #customize-theme-controls &:hover {
 //     opacity: 1;
 //   }
 // }
@@ -141,11 +141,12 @@
 }
 
 /**
- * Reset our control custom style on the Nave Menus WordPress native panel.
- * Add also generic class to apply on panel `ul` container
- * to reset the control style.
+ * Reset our control custom style on the Nav Menus and Widgets WordPress native
+ * panels. Add also generic class to apply on panel `ul` container to reset the
+ * control style.
  */
 .pwpcp-panel--reset-control-style,
+#accordion-panel-widgets,
 #accordion-panel-nav_menus {
   .customize-control {
     padding: 0;

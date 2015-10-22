@@ -2,7 +2,6 @@
   "extends": "config/common/.jshintrc-base",
   "predef": [
     "wpApi",
-    "wpApiIsReady",
     "PWPcp",
     "api",
     "$window",
