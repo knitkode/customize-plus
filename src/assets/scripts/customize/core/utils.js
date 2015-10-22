@@ -124,10 +124,10 @@ var Utils = (function () {
         // with WordPress native controls which don't have this method
         control.inflate(true);
 
-        // always deactivate search, it could be that we click on this
+        // always disable search, it could be that we click on this
         // link from a search result try/catch because search is not
         // always enabled
-        api.components.Search.deactivate();
+        api.components.Search.disable();
       } catch(e) {}
       control.focus();
       control.container.addClass('pwpcp-control-focused');
