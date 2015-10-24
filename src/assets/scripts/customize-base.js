@@ -15,9 +15,6 @@
 
 //= require customize/controls/base.js
 
-/**
- * Core initialization
- */
 $document.ready(function() {
   if (DEBUG.performances) var t = performance.now();
   WpTight.init();
