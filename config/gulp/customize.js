@@ -120,7 +120,7 @@ gulp.task('_customize-scripts-admin-unminified-base', function() {
     .pipe($.include())
     .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
   );
   return stream.done()
     .pipe($.concat('customize-base.js', PLUGINS.concat))
@@ -131,7 +131,7 @@ gulp.task('_customize-scripts-admin-unminified', ['_customize-scripts-admin-unmi
     .pipe($.include())
     .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
     .pipe(gulp.dest(PATHS.build.scripts));
 });
 
@@ -150,7 +150,7 @@ gulp.task('_customize-scripts-admin-minified-base', function() {
   stream.queue(gulp.src(PATHS.src.scripts + 'customize-base.js')
     .pipe($.include())
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
     // .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
   );
   return stream.done()
@@ -161,7 +161,7 @@ gulp.task('_customize-scripts-admin-minified', ['_customize-scripts-admin-minifi
   return gulp.src(PATHS.src.scripts + 'customize.js')
     .pipe($.include())
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
@@ -176,7 +176,7 @@ gulp.task('_customize-scripts-preview', function() {
     .pipe($.concat('customize-preview.js', PLUGINS.concat))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
     .pipe(gulp.dest(PATHS.build.scripts))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.scripts));
@@ -191,6 +191,6 @@ gulp.task('codestyle-trial', function() {
     .pipe($.include())
     .pipe($.trimlines(PLUGINS.trimlines))
     .pipe($.jscs(PLUGINS.jscs))
-    // .pipe($.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;'))
+    // .pipe($.replace('var DEBUG = true;', '')) // or var DEBUG = !!api.DEBUG;
     .pipe(gulp.dest(PATHS.src.scripts));
 });
