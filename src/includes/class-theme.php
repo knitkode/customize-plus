@@ -131,7 +131,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 
 			$theme_support = get_theme_support( 'PWPcp-customize' );
 
-			// Themes should provide an array of options
+			// themes should provide an array of options
 			if ( is_array( $theme_support ) ) {
 				$theme_support = array_shift( $theme_support );
 				$prefix = self::validate_theme_support( 'prefix', $theme_support );
