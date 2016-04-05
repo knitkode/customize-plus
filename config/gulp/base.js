@@ -3,8 +3,6 @@
 'use strict';
 
 var PATHS = global.PATHS;
-var utilErrors = require('../common/gulp/util-errors');
-var pngquant = require('imagemin-pngquant');
 var pkg = require('../../package.json');
 
 
@@ -49,14 +47,7 @@ gulp.task('_base-images', function() {
       '!' + PATHS.src.images + '*.svg', // svg are inlined in css
       '!' + PATHS.src.images + '*.dev*' // exclude dev images (kind of sketches)
     ])
-    // @@temp disabled for now, too slow while developing, we should fix it \\
-    // .pipe($.if(CONFIG.isDist, $.cached(
-    //   $.imagemin({
-    //     progressive: true,
-    //     svgoPlugins: [{removeViewBox: false}],
-    //     use: [pngquant()]
-    //   })
-    // )))
+    .pipe($.cache($.imagemin(PLUGINS.imagemin)))
     .pipe(gulp.dest(PATHS.build.images));
 });
 
@@ -72,8 +63,11 @@ gulp.task('_base-styles', ['_base-images'], function() {
   return gulp.src(PATHS.src.styles + '*.scss')
     .pipe($.if(CONFIG.isDist, $.replace(CONFIG.creditsPlaceholder, banner)))
     .pipe($.include())
-    .pipe($.sass())
-    .on('error', utilErrors)
+    .pipe($.sass.sync(PLUGINS.sass).on('error', $.sass.logError))
+    .pipe($.postcss([
+      require('autoprefixer')(PLUGINS.autoprefixer),
+      require('css-mqpacker')(PLUGINS.cssMqpacker)
+    ]))
     .pipe($.base64({
     // .pipe($.if(CONFIG.isDist, $.base64({
       baseDir: PATHS.src.assets,
@@ -82,10 +76,8 @@ gulp.task('_base-styles', ['_base-images'], function() {
       debug: false
     }))
     // })))
-    .pipe($.autoprefixer(PLUGINS.autoprefixer))
     .pipe(gulp.dest(PATHS.build.styles))
-    .pipe($.if(CONFIG.isDist, $.combineMediaQueries()))
-    .pipe($.if(CONFIG.isDist, $.minifyCss()))
+    .pipe($.if(CONFIG.isDist, $.cssnano()))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.styles));
 });
