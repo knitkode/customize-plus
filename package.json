@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.3.3",
-    "conventional-changelog": "^0.0.11",
+    "conventional-changelog": "^1.0.0",
     "css-mqpacker": "^4.0.0",
     "del": "^2.0.0",
     "grunt": "^0.4.5",
