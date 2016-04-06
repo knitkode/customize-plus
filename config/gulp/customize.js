@@ -138,7 +138,7 @@ gulp.task('_customize-scripts-admin-unminified', ['_customize-scripts-admin-unmi
 /**
  * Scripts | Admin custom scripts minified (outside iframe)
  *
- * Disable minification here, is doen through a bash script that runs the
+ * Disable minification here, is done through a bash script that runs the
  * uglify CLI which has more options, like `mangle-regex`
  *
  * @access private
