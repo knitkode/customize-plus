@@ -71,7 +71,7 @@ class PWPcp_Admin_About {
 	 */
 	public function get_view() {
 	?>
-		//= include ../views/page-about.php
+		//=include ../views/page-about.php
 	<?php
 	}
 }

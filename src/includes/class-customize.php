@@ -273,7 +273,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 */
 		public static function get_view_loader() { // @@wptight-layout \\
 			?>
-			//= include '../views/customize-loader.php'
+			//=include '../views/customize-loader.php'
 			<?php
 		}
 
