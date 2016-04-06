@@ -145,7 +145,7 @@ gulp.task('_customize-scripts-admin-unminified', ['_customize-scripts-admin-unmi
  */
 gulp.task('_customize-scripts-admin-minified-base', function() {
   var stream = streamqueue({ objectMode: true });
-  stream.queue(gulp.src(adminScriptsLibraries))
+  stream.queue(gulp.src(adminScriptsLibraries));
     // .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)));
   stream.queue(gulp.src(PATHS.src.scripts + 'customize-base.js')
     .pipe($.include())
