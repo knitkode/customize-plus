@@ -94,7 +94,7 @@ gulp.task('_customize-scripts-admin',
     return gulp.src('')
       .pipe($.if(CONFIG.isDist, $.shell([
         './config/uglify--customize.sh',
-      ], { cwd: '../roots' })));
+      ], { cwd: '../roots', quiet: true })));
 });
 
 var adminScriptsLibraries = [
