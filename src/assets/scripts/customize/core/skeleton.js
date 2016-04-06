@@ -36,8 +36,9 @@ var Skeleton = (function () {
       // set elements as properties
       this._loader = document.getElementById('pwpcp-loader-preview');
       this.$loader = $(this._loader);
-      this.title = document.getElementById('pwpcp-title');
-      this.text = document.getElementById('pwpcp-text');
+      this.img = document.getElementById('pwpcp-loader-img');
+      this.title = document.getElementById('pwpcp-loader-title');
+      this.text = document.getElementById('pwpcp-loader-text');
       this._loaderSidebar = document.getElementById('pwpcp-loader-sidebar');
       this.$loaderSidebar = $(this._loaderSidebar);
 

@@ -158,7 +158,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 */
 		public function get_view() {
 		?>
-			//= include ../views/page-admin.php
+			//=include ../views/page-admin.php
 		<?php
 		}
 	}

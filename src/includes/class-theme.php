@@ -131,7 +131,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 
 			$theme_support = get_theme_support( 'PWPcp-customize' );
 
-			// Themes should provide an array of options
+			// themes should provide an array of options
 			if ( is_array( $theme_support ) ) {
 				$theme_support = array_shift( $theme_support );
 				$prefix = self::validate_theme_support( 'prefix', $theme_support );
@@ -235,7 +235,6 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 			self::set_settings_defaults();
 
 			// register theme styles to compiler if enabled
-			// @@todo use theme supports api here... \\
 			if ( class_exists( 'PWPcpp' ) ) {
 				if ( $theme['styles'] && /*PWPcpp::get_option_with_default( 'compiler' ) &&*/ class_exists( 'PWPcpp_Component_Compiler' ) ) {
 					PWPcpp_Component_Compiler::register_styles( $theme['styles'], self::$customize_tree );
