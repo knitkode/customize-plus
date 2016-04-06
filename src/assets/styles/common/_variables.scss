@@ -22,6 +22,7 @@ $WP--dashicons-size: 20px;
 
 // WordPress Customize variables
 $WPcustomize--overlay-z-index: 500000;
+$WPcustomize--container-meta-margin_bottom: 15px;
 $WPcustomize--section-padding-horizontal: 12px; // @@wptight-cs from .accordion-section-content {} \\
 $WPcustomize--control-margin-vertical: 12px;
 $WPcustomize--sidebar-width: 300px;
@@ -67,10 +68,13 @@ $code--color: #c7254e; // same as Bootstrap
 $code--font-size: 12px;
 $toggle--width: 30px;
 $input--hover-color: #333;
-$state--danger-bg: #fff9f9;
-$state--danger-border: #c00;
+$state--danger-base: #FFD4D4;
+$state--success-base: #D8FFCD;
+$state--info-base: #CDEBFF;
+$state--danger-bg: #ffeeee;
+$state--danger-border: #eb9b9b;
 $state--danger-box-shadow: 0 0 4px #c00;
-$state--danger-color: #c00;
+$state--danger-color: #3b0000;
 
 // Customize UI: Popovers
 $popover--bg: #fff;
