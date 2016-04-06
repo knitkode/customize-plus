@@ -86,6 +86,6 @@
     "path": "^0.11.14",
     "phplint": "^0.1.1",
     "run-sequence": "^0.3.6",
-    "streamqueue": "^0.1.1"
+    "streamqueue": "^1.1.1"
   }
 }

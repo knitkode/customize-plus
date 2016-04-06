@@ -1,7 +1,6 @@
+//=include customize/tpl-begin.js
 
-//=require customize/tpl-begin.js
-
-//=require customize/core/setup-globals.js
+//=include customize/core/setup-globals.js
 
 //=require customize/controls/base-input.js
 //=require customize/controls/base-radio.js
@@ -23,4 +22,4 @@
 //=require customize/controls/textarea.js
 //=require customize/controls/toggle.js
 
-//=require customize/tpl-end.js
+//=include customize/tpl-end.js

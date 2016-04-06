@@ -1,7 +1,6 @@
+//=include customize/tpl-begin.js
 
-//=require customize/tpl-begin.js
-
-//=require customize/core/setup-globals.js
+//=include customize/core/setup-globals.js
 
 //=require customize/core/setup-jquery.js
 //=require customize/core/setup-markdown.js
@@ -24,4 +23,4 @@ $document.ready(function() {
 
 //=require customize/temp.js
 
-//=require customize/tpl-end.js
+//=include customize/tpl-end.js

@@ -3,7 +3,7 @@
 'use strict';
 
 var PATHS = global.PATHS;
-var streamqueue = require('streamqueue');
+var StreamQueue = require('streamqueue');
 var extend = require('util')._extend;
 var pkg = require('../../package.json');
 
@@ -45,7 +45,7 @@ gulp.task('_customize-scripts', [
  */
 gulp.task('_customize-scripts-admin-libs', function() {
   // Customize scripts admin libraries (outside iframe)
-  var stream = streamqueue({ objectMode: true });
+  var stream = new StreamQueue({ objectMode: true });
   stream.queue(gulp.src([
     PATHS.src.bower + 'es5-shim/es5-shim.min.js'
   ]));
@@ -88,8 +88,8 @@ gulp.task('_customize-modernizr', function() {
  */
 gulp.task('_customize-scripts-admin',
   [
-    '_customize-scripts-admin-unminified',
-    '_customize-scripts-admin-minified'
+    '_customize-scripts-admin_base',
+    '_customize-scripts-admin_main'
   ], function () {
     return gulp.src('')
       .pipe($.if(CONFIG.isDist, $.shell([
@@ -109,60 +109,40 @@ var adminScriptsLibraries = [
 ];
 
 /**
- * Scripts | Admin custom scripts unminified (outside iframe)
- *
- * @access private
- */
-gulp.task('_customize-scripts-admin-unminified-base', function() {
-  var stream = streamqueue({ objectMode: true });
-  stream.queue(gulp.src(adminScriptsLibraries));
-  stream.queue(gulp.src(PATHS.src.scripts + 'customize-base.js')
-    .pipe($.include())
-    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
-    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
-  );
-  return stream.done()
-    .pipe($.concat('customize-base.js', PLUGINS.concat))
-    .pipe(gulp.dest(PATHS.build.scripts));
-});
-gulp.task('_customize-scripts-admin-unminified', ['_customize-scripts-admin-unminified-base'], function() {
-  return gulp.src(PATHS.src.scripts + 'customize.js')
-    .pipe($.include())
-    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
-    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
-    .pipe(gulp.dest(PATHS.build.scripts));
-});
-
-/**
- * Scripts | Admin custom scripts minified (outside iframe)
+ * Scripts | Admin custom scripts (outside iframe)
  *
  * Disable minification here, is done through a bash script that runs the
  * uglify CLI which has more options, like `mangle-regex`
  *
  * @access private
  */
-gulp.task('_customize-scripts-admin-minified-base', function() {
-  var stream = streamqueue({ objectMode: true });
+gulp.task('_customize-scripts-admin_base', function() {
+  var stream = new StreamQueue({ objectMode: true });
   stream.queue(gulp.src(adminScriptsLibraries));
-    // .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)));
   stream.queue(gulp.src(PATHS.src.scripts + 'customize-base.js')
     .pipe($.include())
+    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
-    // .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG')))
   );
   return stream.done()
-    .pipe($.concat('customize-base.min.js', PLUGINS.concat))
+    .pipe($.concat('customize-base.js', PLUGINS.concat))
+    .pipe(gulp.dest(PATHS.build.scripts))
+    .pipe($.rename({ suffix: '.min' }))
+    // .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = !!api.DEBUG;', '')))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
-gulp.task('_customize-scripts-admin-minified', ['_customize-scripts-admin-minified-base'], function() {
+gulp.task('_customize-scripts-admin_main', function() {
   return gulp.src(PATHS.src.scripts + 'customize.js')
     .pipe($.include())
+    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
+    .pipe(gulp.dest(PATHS.build.scripts))
     .pipe($.rename({ suffix: '.min' }))
+    // .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = !!api.DEBUG;', '')))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
 
