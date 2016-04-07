@@ -8,7 +8,6 @@
   //=require customize/controls/buttonset.js
   //=require customize/controls/color.js
   //=require customize/controls/content.js
-  //=require customize/controls/dummy.js
   //=require customize/controls/font-family.js
   //=require customize/controls/multicheck.js
   //=require customize/controls/number.js

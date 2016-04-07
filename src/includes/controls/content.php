@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Content extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_control';
+	public $type = 'pwpcp_content';
 
 	/**
 	 * Markdown.
@@ -55,23 +55,24 @@ class PWPcp_Customize_Control_Content extends PWPcp_Customize_Control_Base {
 	 * @override
 	 */
 	public function content_template() {
-		ob_start( 'PWPcp_Utils::compress_html' ); ?>
-		<# if (data.label) { #><span class="customize-control-title"><# if (marked) { #>{{{ marked(data.label) }}}<# } else { #>{{{ data.label }}}<# } #></span><# } #>
-		<# if (data.description) { #><span class="description customize-control-description"><# if (marked) { #>{{{ marked(data.description) }}}<# } else { #>{{{ data.description }}}<# } #></span><# } #>
-		<# if (marked && data.markdown) { #><div class="description customize-control-markdown">{{{ marked(data.markdown) }}}</div><# } #>
-		<?php ob_end_flush();
+		ob_start( 'PWPcp_Utils::compress_html' );
+		$this->js_tpl_guide();
+		$this->js_tpl();
+		ob_end_flush();
 	}
 
 	/**
-	 * Sanitization callback
+	 * Content control js template
 	 *
 	 * @since 0.0.1
-	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @return string The sanitized value.
- 	 */
-	public static function sanitize_callback( $value, $setting ) {
-		return null;
+	 * @override
+	 */
+	protected function js_tpl() {
+		?>
+		<# if (data.label) { #><span class="customize-control-title"><# if (marked) { #>{{{ marked(data.label) }}}<# } else { #>{{{ data.label }}}<# } #></span><# } #>
+		<# if (data.description) { #><span class="description customize-control-description"><# if (marked) { #>{{{ marked(data.description) }}}<# } else { #>{{{ data.description }}}<# } #></span><# } #>
+		<# if (marked && data.markdown) { #><div class="description customize-control-markdown">{{{ marked(data.markdown) }}}</div><# } #>
+		<?php
 	}
 }
 

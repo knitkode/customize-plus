@@ -78,7 +78,10 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 		// add setting factory value
 		// @@todo remove sprintf @see track https://core.trac.wordpress.org/ticket/34290#ticket \\
-		$this->json['vFactory'] = sprintf( $this->setting->default );
+
+		if ( is_object( $this->setting ) ) {
+			$this->json['vFactory'] = sprintf( $this->setting->default );
+		}
 
 		// add setting initial value
 		$this->json['vInitial'] = $this->value();
