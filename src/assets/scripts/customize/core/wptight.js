@@ -8,6 +8,52 @@
  */
 var WpTight = (function () {
 
+  /**
+   * The id of the WordPress core css with the color schema
+   *
+   * @private
+   * @internal
+   * @type {String}
+   */
+  var _colorSchemaCssId = 'colors-css';
+
+  /**
+   * The WordPress color schema useful selectors
+   *
+   * @private
+   * @internal
+   * @type {Object}
+   */
+  var _colorSchemaSelectors = {
+    _primary: '.wp-core-ui .wp-ui-primary',
+    _textPrimary: '.wp-core-ui .wp-ui-text-primary',
+    _linksPrimary: '#adminmenu .wp-submenu .wp-submenu-head',
+    _highlight: '.wp-core-ui .wp-ui-highlight',
+    _textHighlight: '.wp-core-ui .wp-ui-text-highlight',
+    _linksHighlight: '#adminmenu a',
+    _notificationColor: '.wp-core-ui .wp-ui-text-notification'
+  };
+
+  /**
+   * Get WordPress Admin colors
+   *
+   * @abstract
+   * @return {object}
+   */
+  function _getWpAdminColors () {
+    var stylesheet = Utils._getStylesheetById(_colorSchemaCssId);
+    var schema = _colorSchemaSelectors;
+    var output = {};
+    for (var key in schema) {
+      if (schema.hasOwnProperty(key)) {
+        var selector = schema[key];
+        var rules = Utils._getRulesFromStylesheet(stylesheet, selector);
+        output[key] = Utils._getCssRulesContent(rules, selector);
+      }
+    }
+    return output;
+  }
+
   // @access public
   return {
     /**
@@ -48,7 +94,15 @@ var WpTight = (function () {
      *
      * @type {string}
      */
-    cssSuffix: '-css'
+    cssSuffix: '-css',
+    /**
+     * WordPress Admin colors
+     *
+     * @private
+     * @internal
+     * @type {object}
+     */
+    _colorSchema: _getWpAdminColors()
   };
 })();
 
