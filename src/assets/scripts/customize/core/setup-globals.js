@@ -1,4 +1,3 @@
-
 // be sure to have what we need, bail otherwise
 if (!wp || !api) {
   return;
