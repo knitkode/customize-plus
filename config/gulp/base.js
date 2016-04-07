@@ -77,7 +77,7 @@ gulp.task('_base-styles', ['_base-images'], function() {
     }))
     // })))
     .pipe(gulp.dest(PATHS.build.styles))
-    .pipe($.if(CONFIG.isDist, $.cssnano()))
+    .pipe($.if(CONFIG.isDist, $.cssnano(PLUGINS.cssnano)))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.styles));
 });
