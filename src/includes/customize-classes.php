@@ -24,6 +24,7 @@ global $wp_customize;
 //=require controls/base-radio.php
 //=require controls/buttonset.php
 //=require controls/color.php
+//=require controls/content.php
 //=require controls/dummy.php
 //=require controls/font-family.php
 //=require controls/multicheck.php
