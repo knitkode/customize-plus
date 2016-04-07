@@ -51,6 +51,20 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	public $advanced = false;
 
 	/**
+	 * Whether this control is searchable by the Search tool.
+	 *
+	 * // @@tobecareful for readibility here is 'searchable' and not
+	 * 'unsearchable', but in the `params` json is reversed, so that the
+	 * `control.params` object get another property only if a control is not
+	 * searchable (which should happen less often than otherwise...). \\
+	 *
+	 * @premium A Customize Plus Premium feature.
+	 * @since 0.0.1
+	 * @var boolean
+	 */
+	public $searchable = true;
+
+	/**
 	 * Change parent method adding more default data shared by all the controls
 	 * (add them only if needed to save bytes on the huge `_wpCustomizeSettings`
 	 * JSON on load). In the end call an abstract method to add stuff here from
@@ -89,6 +103,11 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 			// add advanced flag if specified
 			if ( $this->advanced ) {
 				$this->json['advanced'] = true;
+			}
+
+			// add unsearchable flag if specified
+			if ( ! $this->searchable ) {
+				$this->json['unsearchable'] = true;
 			}
 		}
 

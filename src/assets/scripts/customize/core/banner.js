@@ -8,8 +8,6 @@ api._banner = true;
 
   var adminColors = WpTight._colorSchema;
 
-  console.log(adminColors);
-
   /** @type {String} The id of the banner container */
   var _ID = _getRandomId(14);
 
