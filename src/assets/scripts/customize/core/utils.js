@@ -342,6 +342,63 @@ var Utils = (function () {
     _selectizeRenderColor: function (item, escape) {
       return '<div class="pwpcpcolor-selectOption" style="border-color:' +
         escape(item.valueCSS) + '">' + escape(item.label) + '</div>';
+    },
+    /**
+     * Get stylesheet by Node id
+     *
+     * @abstract
+     * @static
+     * @param  {string} nodeId
+     * @return {?HTMLelement}
+     */
+    _getStylesheetById: function (nodeId) {
+      var stylesheets = document.styleSheets;
+      try {
+        for (var i = 0, l = stylesheets.length; i < l; i++) {
+          if (stylesheets[i].ownerNode.id === nodeId) {
+            return stylesheets[i];
+          }
+        }
+      } catch(e) {
+        return null;
+      }
+    },
+    /**
+     * Get rules from stylesheet for the given selector
+     *
+     * @abstract
+     * @static
+     * @param  {HTMLelement} stylesheet
+     * @param  {string} selector
+     * @return {string}
+     */
+    _getRulesFromStylesheet: function (stylesheet, selector) {
+      var output = '';
+      if (stylesheet) {
+        var rules = stylesheet.rules || stylesheet.cssRules;
+        for (var i = 0, l = rules.length; i < l; i++) {
+          if (rules[i].selectorText === selector) {
+            output += (rules[i].cssText) ? ' ' + rules[i].cssText : ' ' + rules[i].style.cssText;
+          }
+        }
+      }
+      return output;
+    },
+    /**
+     * Get CSS (property/value pairs) from the given rules.
+     *
+     * Basically it just clean the `rules` string removing the selector and
+     * the brackets.
+     *
+     * @param  {string} rules
+     * @param  {string} selector
+     * @return {string}
+     */
+    _getCssRulesContent: function (rules, selector) {
+      var regex = new RegExp(selector, 'g');
+      var output = rules.replace(regex, '');
+      output = output.replace(/({|})/g, '');
+      return output.trim();
     }
   };
 })();

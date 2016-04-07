@@ -4,7 +4,7 @@
 
 var PATHS = global.PATHS;
 var StreamQueue = require('streamqueue');
-var extend = require('util')._extend;
+var extend = require('deep-extend');
 var pkg = require('../../package.json');
 
 
@@ -33,7 +33,7 @@ gulp.task('watch-customize', function() {
  * @access private
  */
 gulp.task('_customize-scripts', [
-  '_customize-scripts-admin-libs',
+  '_customize-scripts-admin_libs',
   '_customize-scripts-admin',
   '_customize-scripts-preview'
 ]);
@@ -43,7 +43,7 @@ gulp.task('_customize-scripts', [
  *
  * @access private
  */
-gulp.task('_customize-scripts-admin-libs', function() {
+gulp.task('_customize-scripts-admin_libs', function() {
   // Customize scripts admin libraries (outside iframe)
   var stream = new StreamQueue({ objectMode: true });
   stream.queue(gulp.src([
@@ -90,12 +90,7 @@ gulp.task('_customize-scripts-admin',
   [
     '_customize-scripts-admin_base',
     '_customize-scripts-admin_main'
-  ], function () {
-    return gulp.src('')
-      .pipe($.if(CONFIG.isDist, $.shell([
-        './config/uglify--customize.sh',
-      ], { cwd: '../roots', quiet: true })));
-});
+  ]);
 
 var adminScriptsLibraries = [
   PATHS.src.bower + 'polyfill-classList/classList.js', // @@ie9 @@ie8 \\
@@ -121,28 +116,28 @@ gulp.task('_customize-scripts-admin_base', function() {
   stream.queue(gulp.src(adminScriptsLibraries));
   stream.queue(gulp.src(PATHS.src.scripts + 'customize-base.js')
     .pipe($.include())
-    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
+    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG')))
+    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
   );
   return stream.done()
     .pipe($.concat('customize-base.js', PLUGINS.concat))
     .pipe(gulp.dest(PATHS.build.scripts))
     .pipe($.rename({ suffix: '.min' }))
-    // .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = !!api.DEBUG;', '')))
+    .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
 gulp.task('_customize-scripts-admin_main', function() {
   return gulp.src(PATHS.src.scripts + 'customize.js')
     .pipe($.include())
-    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
-    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
+    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
     .pipe(gulp.dest(PATHS.build.scripts))
     .pipe($.rename({ suffix: '.min' }))
-    // .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = !!api.DEBUG;', '')))
+    .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
 
