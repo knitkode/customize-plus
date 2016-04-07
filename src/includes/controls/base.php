@@ -125,19 +125,6 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
-	 * Add value to JSON if truthy on this object
-	 *
-	 * @deprecated 0.0.1
-	 * @since 0.0.1
-	 * @param string $key The name of the property
-	 */
-	protected function add_to_json_if_set( $key = '' ) {
-		if ( $this->$key ) {
-			$this->json[ $key ] = $this->$key;
-		}
-	}
-
-	/**
 	 * Add booleans parameters to JSON
 	 *
 	 * Utility method to easily add truthy values to the control JSON data,
