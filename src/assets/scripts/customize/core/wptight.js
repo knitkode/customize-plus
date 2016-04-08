@@ -80,6 +80,10 @@ var WpTight = (function () {
       /** @type {jQuery} */
       el.header = $('#customize-header-actions');
       /** @type {jQuery} */
+      el.footer = $('#customize-footer-actions');
+      /** @type {jQuery} */
+      el.devices = el.footer.find('.devices');
+      /** @type {jQuery} */
       el.close = el.header.find('.customize-controls-close');
       /** @type {jQuery} */
       el.sidebar = $('.wp-full-overlay-sidebar-content');
