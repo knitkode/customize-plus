@@ -253,7 +253,7 @@ var Utils = (function () {
       for (var controlId in wpApi.settings.controls) {
         var control = wpApiControl(controlId);
         // @@doubt, probably unneeded check \\
-        if (control && !control.setting) {
+        if (control && control.setting) {
           callback(control);
         }
       }

@@ -67,7 +67,7 @@ var Tabs = (function () {
       if (isScreenPicker) {
         // we might not have the Screenpreview component enabled
         try {
-          api.components.Screenpreview.change(true, target);
+          api.components.Screenpreview.setDevice(target);
         } catch(e) {
           console.warn('Tabs tried to use Screenpreview, which is undefined.', e);
         }
