@@ -55,7 +55,7 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.Base.extend({
   /**
    * @override
    */
-  syncUIFromAPI: function (value) {
+  syncUI: function (value) {
     var lastValue;
     var wpEditorInstance;
     if (this.params.wp_editor) {

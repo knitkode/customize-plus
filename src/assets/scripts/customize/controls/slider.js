@@ -54,7 +54,7 @@ wpApi.controlConstructor.pwpcp_slider = api.controls.Slider = api.controls.Base.
   /**
    * @override
    */
-  syncUIFromAPI: function (value) {
+  syncUI: function (value) {
     if (value !== this._getValueFromUI()) {
       this._setPartialValue(value, 'API');
     }

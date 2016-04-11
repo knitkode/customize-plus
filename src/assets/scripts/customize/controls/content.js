@@ -18,7 +18,7 @@ wpApi.controlConstructor.pwpcp_content = api.controls.Content = api.controls.Bas
   _onValidateSuccess: function () {},
   validate: function () {},
   sanitize: function () {},
-  syncUIFromAPI: function () {},
+  syncUI: function () {},
   softenize: function () {},
   _extras: function () {}
 });

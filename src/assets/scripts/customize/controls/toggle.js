@@ -33,7 +33,7 @@ wpApi.controlConstructor.pwpcp_toggle = api.controls.Base.extend({
   /**
    * @override
    */
-  syncUIFromAPI: function (value) {
+  syncUI: function (value) {
     var valueClean = api.Utils._toBoolean(value);
     var inputStatus = api.Utils._toBoolean(this.__input.checked);
     if (inputStatus !== valueClean) {

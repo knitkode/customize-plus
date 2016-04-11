@@ -38,7 +38,7 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
   /**
    * @override
    */
-  syncUIFromAPI: function (value) {
+  syncUI: function (value) {
     if (value !== this.input.value) {
       this._updateUI(value);
     }

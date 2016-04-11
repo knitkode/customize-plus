@@ -42,7 +42,7 @@ wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
   /**
    * @override
    */
-  syncUIFromAPI: function (value) {
+  syncUI: function (value) {
     var selectize = this.__input.selectize;
     if (selectize && selectize.getValue() !== value) {
       this.__input.value = value;

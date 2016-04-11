@@ -108,7 +108,7 @@ api.controls.Base = wpApi.Control.extend({
       // change on the UI, only if the control is rendered
       control.setting.bind(function (value) {
         if (control.rendered) {
-          control.syncUIFromAPI.call(control, value);
+          control.syncUI.call(control, value);
         }
       });
     }
@@ -191,7 +191,7 @@ api.controls.Base = wpApi.Control.extend({
    * @param {string} value The new setting value.
    */
   /* jshint unused: false */
-  syncUIFromAPI: function (value) {},
+  syncUI: function (value) {},
   /**
    * Triggered when the control has been initialized
    *

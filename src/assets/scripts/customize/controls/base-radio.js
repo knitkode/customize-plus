@@ -24,7 +24,7 @@ api.controls.BaseRadio = api.controls.Base.extend({
   /**
    * @override
    */
-  syncUIFromAPI: function () {
+  syncUI: function () {
     this._syncRadios();
   },
   /**

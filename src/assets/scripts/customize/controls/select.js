@@ -53,7 +53,7 @@ wpApi.controlConstructor.pwpcp_select = api.controls.Select = api.controls.Base.
   /**
    * @override
    */
-  syncUIFromAPI: function () {
+  syncUI: function () {
     this._syncOptions();
   },
   /**
