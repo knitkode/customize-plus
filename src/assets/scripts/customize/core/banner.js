@@ -14,20 +14,21 @@ api._banner = true;
   var adminColors = WpTight._colorSchema;
 
   /** @type {String} The id of the banner container */
-  var _ID = _getRandomId(14);
+  var _ID = _getRandomId(18);
 
-  /** @type {String} CSS underscore template */
+  /** @type {Function} CSS underscore template */
   var _inlineStyleTpl = _.template(
     // container (style on id)
     '#<%- id %> {' +
       'z-index: 11;' +
-      'position: absolute;' +
+      'position: fixed;' +
+      'width: 300px;' +
+      'top: 123px;' +
       'bottom: 45px;' +
       'left: 0;' +
       'right: 0;' +
-      // 'margin-bottom: 0 !important;' + // @@totest for development purpose only \\
+      'box-sizing: border-box;' +
       'padding: 12px 20px;' +
-      'box-shadow: 0 -10px 32px -10px rgba(0,0,0,.4);' +
       'border-top: 1px solid #ccc;' +
       'background: #23282d;' +
       'color: #eee;' +
@@ -74,21 +75,31 @@ api._banner = true;
       'right: 2px;' +
     '}' +
     '#<%- id %>c:before {' +
-      'content: "\\f347";' +
+      'content: "\\f343";' +
     '}' +
     // button expand
     '#<%- id %>e {' +
       'position: absolute;' +
-      'top: -79px;' +
-      'right: 0;' +
+      'top: 40px;' +
+      'right: 8px;' +
+      'width: 25px;' +
+      'height: 25px;' +
+      'border-radius: 100%;' +
       'background: #23282d;' +
       adminColors._primary +
     '}' +
     '#<%- id %>e:before {' +
-      'content: "\\f343";' +
+      'content: "\\f347";' +
+      'font-size: 18px;' +
+      'display: block;' +
+      'margin-left: -2px;' +
     '}' +
     // links
-    '#<%- id %> a {' +
+    '.<%- id %>a {' +
+      'color: #eee;' +
+      adminColors._linksPrimary +
+    '}' +
+    '.<%- id %>a {' +
       'color: #fff;' +
       adminColors._linksPrimary +
     '}' +
@@ -99,7 +110,8 @@ api._banner = true;
       'min-height: 24px;' +
     '}' +
     // list items icons
-    '.<%- id %>i:before {' +
+    '.<%- id %>i:before,' +
+    '#<%- id %>ua:before {' +
       'position: absolute;' +
       'top: -1px;' +
       'left: 0;' +
@@ -119,14 +131,20 @@ api._banner = true;
       'display: block;' +
       'padding-left: 50px;' +
       'padding: 10px 10px 10px 37px;' +
+      'font-weight: bold;' +
+      'font-size: 14px;' +
+      'transition: all .18s ease;' +
       'background: #0073aa;' +
       'color: #fff;' +
       adminColors._highlight +
     '}' +
     '#<%- id %>ua:hover {' +
+      'box-shadow: 0 6px 10px rgba(0,0,0,.3);' +
+      'transform: scale(1.02);' +
+      'text-decoration: underline;' +
     '}' +
     // list icon - upgrade
-    '#<%- id %>u:before {' +
+    '#<%- id %>ua:before {' +
       'content: "\\f313";' +
       'font-size: 44px;' +
       'top: 7px;' +
@@ -152,6 +170,27 @@ api._banner = true;
     '}'
   );
 
+  /** @type {Function} underscore template */
+  var _tplBtn = _.template(
+    '<button class="<%- id %>b" id="<%- id %>e" style="display:none"></button>'
+  );
+
+  /** @type {Function} underscore template */
+  var _tpl = _.template(
+    '<div id="<%- id %>" style="display:none">' +
+      '<button class="<%- id %>b" id="<%- id %>c" style="display:none"></button>' +
+      '<h1 class="<%- id %>h">Hello,</h1>' +
+      'your WordPress Customize is using the <a class="<%- id %>a" href="http://pluswp.com/customize-plus" target="_blank">Customize Plus</a> plugin, a free software, you may consider one of the following action:' +
+      '<ul>' +
+        '<li class="<%- id %>i " id="<%- id %>u"><a id="<%- id %>ua" href="http://pluswp.com/customize-plus-premium?plugin=true1&banner=01" target="_blank">Upgrade to premium and add great features to this page <br>Learn more &raquo;</a></li>' + // @@todo click tracking \\
+        '<li class="<%- id %>i" id="<%- id %>d"><a class="<%- id %>a" href="https://wordpress.org/" target="_blank">Donate</a></li>' +
+        '<li class="<%- id %>i" id="<%- id %>r"><a class="<%- id %>a" href="https://wordpress.org/" target="_blank">Rate the plugin</a></li>' +
+        '<li class="<%- id %>i" id="<%- id %>t"><a class="<%- id %>a" href="https://twitter.com/" target="_blank">Share on twitter</a></li>' +
+        '<li class="<%- id %>i" id="<%- id %>f"><a class="<%- id %>a" href="https://facebook.com/" target="_blank">Share on facebook</a></li>' +
+      '</ul>' +
+    '</div>'
+  );
+
   /** @type {HTMLelement} */
   var __btnExpand;
 
@@ -173,27 +212,25 @@ api._banner = true;
    */
   function _getRandomId (length) {
     var text = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
+    var possible = 'abcdefghijklmnopqrstuvwxyz_-';
     for ( var i=0; i < length; i++ )
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
   }
 
   /**
-   * Init appending the banner after a certain time
+   * Init the banner, we can wait a little because the banner
+   * should not show up immediately
    */
   function _init () {
-    setTimeout(_append, 3000);
+    setTimeout(_createStyle, 1000);
+    setTimeout(_createTemplate, 3000);
   }
 
   /**
-   * Append banner, then show it
+   * Append inline style to head
    */
-  function _append () {
-    // mechanism to prevent banner from showing in Customize Plus Premium
-    if (!api._banner) {
-      return;
-    }
+  function _createStyle () {
     var existingStyle = document.getElementById(_ID + 's');
     var style = existingStyle || document.createElement('style');
     style.id = _ID + 's';
@@ -203,21 +240,14 @@ api._banner = true;
       style.appendChild(document.createTextNode(''));
       head.appendChild(style);
     }
-    WpTight.el.controls.append(
-      '<div id="' + _ID + '" style="margin-bottom:-400px">' +
-        '<button class="' + _ID + 'b" id="' + _ID + 'c" style="display:none"></button>' +
-        '<button class="' + _ID + 'b" id="' + _ID + 'e" style="display:none"></button>' +
-        '<h1 class="' + _ID + 'h">Hello,</h1>' +
-        'your WordPress Customize is using the <a href="http://pluswp.com/customize-plus" target="_blank">Customize Plus</a> plugin, a free software, you may consider one of the following action:' +
-        '<ul>' +
-          '<li class="' + _ID + 'i " id="' + _ID + 'u"><a id="' + _ID + 'ua" href="http://pluswp.com/customize-plus-premium?plugin=true1&banner=01" target="_blank">Upgrade to premium and add great features to this page <br>Learn more &raquo;</a></li>' + // @@todo click tracking \\
-          '<li class="' + _ID + 'i" id="' + _ID + 'd"><a href="https://wordpress.org/" target="_blank">Donate</a></li>' +
-          '<li class="' + _ID + 'i" id="' + _ID + 'r"><a href="https://wordpress.org/" target="_blank">Rate the plugin</a></li>' +
-          '<li class="' + _ID + 'i" id="' + _ID + 't"><a href="https://twitter.com/" target="_blank">Share on twitter</a></li>' +
-          '<li class="' + _ID + 'i" id="' + _ID + 'f"><a href="https://facebook.com/" target="_blank">Share on facebook</a></li>' +
-        '</ul>' +
-      '</div>'
-    );
+  }
+
+  /**
+   * Append banner, then show it
+   */
+  function _createTemplate () {
+    WpTight.el.themeControls.before(_tpl({ id: _ID }));
+    WpTight.el.info.append(_tplBtn({ id: _ID }));
 
     __container = document.getElementById(_ID);
     __$container = $(__container);
@@ -240,9 +270,7 @@ api._banner = true;
     if (event) {
       event.preventDefault();
     }
-    __$container.animate({
-      'margin-bottom': -(__$container.outerHeight() + 45)
-    }, function () { // 45 is the height of the sidebar footer
+    $('#' + _ID).slideUp(function () {
       __btnExpand.style.display = 'block';
       __btnContract.style.display = 'none';
       if (callback) {
@@ -261,7 +289,7 @@ api._banner = true;
     }
     __btnExpand.style.display = 'none';
 
-    $('#' + _ID).animate({ 'margin-bottom': '0px' }, function () {
+    $('#' + _ID).slideDown(function () {
       __btnContract.style.display = 'block';
     });
   }
@@ -269,6 +297,12 @@ api._banner = true;
   /**
    * Init on document ready
    */
-  $document.ready(_init);
+  $document.ready(function () {
+    // mechanism to prevent banner from showing in Customize Plus Premium
+    if (!api._banner) {
+      return;
+    }
+    _init();
+  });
 
 })();
