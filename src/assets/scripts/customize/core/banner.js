@@ -1,11 +1,16 @@
+/* global WpTight */
+
 /**
  * Banner for free plugin
  *
+ * @requires api.WpTight
  */
+/** @type {Boolean} */
 api._banner = true;
 
 (function () {
 
+  /** @type {Object} */
   var adminColors = WpTight._colorSchema;
 
   /** @type {String} The id of the banner container */
@@ -106,16 +111,19 @@ api._banner = true;
     '}' +
     // list item - upgrade
     '#<%- id %>u {' +
+      'padding: 0;' +
+      'margin-bottom: 12px;' +
+    '}' +
+    // list item - upgrade link
+    '#<%- id %>ua {' +
+      'display: block;' +
       'padding-left: 50px;' +
       'padding: 10px 10px 10px 37px;' +
-      'margin-bottom: 12px;' +
-      'color: #fff;' +
       'background: #0073aa;' +
+      'color: #fff;' +
       adminColors._highlight +
     '}' +
-    // list item - upgrade
-    '#<%- id %>u a {' +
-      adminColors._linksHighlight +
+    '#<%- id %>ua:hover {' +
     '}' +
     // list icon - upgrade
     '#<%- id %>u:before {' +
@@ -143,15 +151,6 @@ api._banner = true;
       'content: "\\f304";' + // 237, 301-302 (twitter), 304-305 (facebook)
     '}'
   );
-
-  /** @type {Number} Keep the count of the dismiss actions by the user */
-  var _dismissActions = 0;
-
-  /** @type {Boolean} Flag if banner is visible */
-  var _isVisible = false;
-
-  /** @type {Boolean} Flag if banner is hovered */
-  var _isHovering = false;
 
   /** @type {HTMLelement} */
   var __btnExpand;
@@ -211,7 +210,7 @@ api._banner = true;
         '<h1 class="' + _ID + 'h">Hello,</h1>' +
         'your WordPress Customize is using the <a href="http://pluswp.com/customize-plus" target="_blank">Customize Plus</a> plugin, a free software, you may consider one of the following action:' +
         '<ul>' +
-          '<li class="' + _ID + 'i "id="' + _ID + 'u"><a href="http://pluswp.com/customize-plus-premium" target="_blank">Upgrade to premium</a> and add great features to this page <br><a href="http://pluswp.com/customize-plus-premium?learn_more=1" target="_blank">Learn more &raquo;</a></li>' + // @@todo click tracking \\
+          '<li class="' + _ID + 'i " id="' + _ID + 'u"><a id="' + _ID + 'ua" href="http://pluswp.com/customize-plus-premium?plugin=true1&banner=01" target="_blank">Upgrade to premium and add great features to this page <br>Learn more &raquo;</a></li>' + // @@todo click tracking \\
           '<li class="' + _ID + 'i" id="' + _ID + 'd"><a href="https://wordpress.org/" target="_blank">Donate</a></li>' +
           '<li class="' + _ID + 'i" id="' + _ID + 'r"><a href="https://wordpress.org/" target="_blank">Rate the plugin</a></li>' +
           '<li class="' + _ID + 'i" id="' + _ID + 't"><a href="https://twitter.com/" target="_blank">Share on twitter</a></li>' +
@@ -222,12 +221,6 @@ api._banner = true;
 
     __container = document.getElementById(_ID);
     __$container = $(__container);
-    __container.onmouseover = function () {
-      _isHovering = true;
-    };
-    __container.onmouseout = function () {
-      _isHovering = false;
-    };
 
     __btnContract = document.getElementById(_ID + 'c');
     __btnContract.onclick = _hide;
@@ -247,20 +240,11 @@ api._banner = true;
     if (event) {
       event.preventDefault();
     }
-    // if (!_isVisible) {
-    //   return;
-    // }
-    // if (_isHovering) {
-    //   setTimeout(_hide, 600);
-    //   return;
-    // }
     __$container.animate({
       'margin-bottom': -(__$container.outerHeight() + 45)
     }, function () { // 45 is the height of the sidebar footer
-      // _isVisible = false;
       __btnExpand.style.display = 'block';
       __btnContract.style.display = 'none';
-      // setTimeout(_show, 10000 * Math.max(1, _dismissActions));
       if (callback) {
         callback();
       }
@@ -275,33 +259,11 @@ api._banner = true;
     if (event) {
       event.preventDefault();
     }
-    // if (_isVisible) {
-    //   return;
-    // }
     __btnExpand.style.display = 'none';
 
     $('#' + _ID).animate({ 'margin-bottom': '0px' }, function () {
-      // _isVisible = true;
       __btnContract.style.display = 'block';
-      // setTimeout(_hide, 10000);
     });
-  }
-
-  /**
-   * Dismiss banner
-   * @param  {?Object} event
-   */
-  function _dismiss (event) {
-    if (event) {
-      event.preventDefault();
-    }
-    var el = document.getElementById(_ID);
-    if (el) {
-      _dismissActions++;
-      _hide(null, function () {
-        el.parentNode.removeChild(el);
-      });
-    }
   }
 
   /**
