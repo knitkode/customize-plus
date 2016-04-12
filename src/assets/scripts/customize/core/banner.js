@@ -74,9 +74,8 @@ api._banner = true;
     // button expand
     '#<%- id %>e {' +
       'position: absolute;' +
-      'top: -25px;' +
-      'right: 2px;' +
-      'border-radius: 50px 50px 0 0;' +
+      'top: -79px;' +
+      'right: 0;' +
       'background: #23282d;' +
       adminColors._primary +
     '}' +
