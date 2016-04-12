@@ -38,7 +38,7 @@ class PWPcp_Customize_Control_Radio_Image extends PWPcp_Customize_Control_Base_R
 			<input id="{{ id }}" class="pwpcp-radio-image" type="radio" value="{{ val }}" name="_customize-pwpcp_radio_image-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
 			<label class="{{helpClass}}"{{{ helpAttrs }}} for="{{ id }}">
 				<# var imgUrl = choice.img_custom ? '<?php echo esc_url( PWPcp_Theme::$images_base_url ); ?>' + choice.img_custom : '<?php echo esc_url( PWPCP_PLUGIN_URL . 'assets/images/' ); ?>' + choice.img + '.png'; #>
-				<img class="pwpcpui-tip" src="{{ imgUrl }}" title="{{{ label }}}">
+				<img class="pwpcpui-hint--top" src="{{ imgUrl }}" title="{{{label}}}" data-hint="{{{ label }}}">
 			</label>
 		<?php
 	}
