@@ -39,7 +39,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				// Customize Plus controls
 				'pwpcp_buttonset' => 'PWPcp_Customize_Control_Buttonset',
 				'pwpcp_color' => 'PWPcp_Customize_Control_Color',
-				'pwpcp_dummy' => 'PWPcp_Customize_Control_Dummy',
+				'pwpcp_content' => 'PWPcp_Customize_Control_Content',
 				'pwpcp_font_family' => 'PWPcp_Customize_Control_Font_Family',
 				'pwpcp_font_weight' => 'PWPcp_Customize_Control_Font_Weight',
 				'pwpcp_multicheck' => 'PWPcp_Customize_Control_Multicheck',
@@ -54,9 +54,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				'pwpcp_textarea' => 'PWPcp_Customize_Control_Textarea',
 				'pwpcp_toggle' => 'PWPcp_Customize_Control_Toggle',
 			),
-			'settings' => array(
-				'pwpcp_dummy' => 'PWPcp_Customize_Setting_Dummy',
-			),
+			'settings' => array(),
 		);
 
 		/**
@@ -564,13 +562,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				$wp_customize->add_setting( $setting_id, $setting_args );
 			// if no settings args are passed
 			} else {
-				// then use the Dummy Setting Class
-				if ( class_exists( 'PWPcp_Customize_Setting_Dummy' ) ) {
-					$wp_customize->add_setting( new PWPcp_Customize_Setting_Dummy( $wp_customize, $setting_id ) );
-				// or the plain WordPress API behavior
-				} else {
-					$wp_customize->add_setting( $setting_id );
-				}
+				// a setting-less control, pass empty array,
+				// @see https://make.wordpress.org/core/2016/03/10/customizer-improvements-in-4-5/
+				$control_args['settings'] = array();
 			}
 
 			// finally add control

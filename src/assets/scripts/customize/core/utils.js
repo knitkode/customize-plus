@@ -145,7 +145,7 @@ var Utils = (function () {
      */
     resetControl: function (control, resetType) {
       var params = control.params;
-      if (params.type === 'pwpcp_dummy') {
+      if (!control.setting) {
         return true;
       }
       var value;
@@ -172,7 +172,7 @@ var Utils = (function () {
      */
     _isResetNeeded: function (control, resetType) {
       var params = control.params;
-      if (!control.pwpcp || params.type === 'pwpcp_dummy') {
+      if (!control.pwpcp || !control.setting) {
         return false;
       }
       var _softenize = control.softenize;
@@ -252,8 +252,8 @@ var Utils = (function () {
       var wpApiControl = wpApi.control;
       for (var controlId in wpApi.settings.controls) {
         var control = wpApiControl(controlId);
-        // @@doubt, probably unneeded check, @@hacky dummy exception \\
-        if (control && control.params.type !== 'pwpcp_dummy') {
+        // @@doubt, probably unneeded check \\
+        if (control && control.setting) {
           callback(control);
         }
       }

@@ -48,7 +48,10 @@ gulp.task('_base-images', function() {
       '!' + PATHS.src.images + '*.dev*' // exclude dev images (kind of sketches)
     ])
     .pipe($.cache($.imagemin(PLUGINS.imagemin)))
-    .pipe(gulp.dest(PATHS.build.images));
+    .pipe($.if(function (file) {
+      // for the props of `file` see http://stackoverflow.com/a/33245138/1938970
+      return !file.relative.match(/^_/); // exclude `private` images
+    }, gulp.dest(PATHS.build.images)));
 });
 
 /**
@@ -60,6 +63,7 @@ gulp.task('_base-images', function() {
  */
 gulp.task('_base-styles', ['_base-images'], function() {
   var banner = CONFIG.isDist ? require('lodash.template')(CONFIG.credits)({ pkg: pkg }) : '';
+  PLUGINS.base64.baseDir = PATHS.src.assets;
   return gulp.src(PATHS.src.styles + '*.scss')
     .pipe($.if(CONFIG.isDist, $.replace(CONFIG.creditsPlaceholder, banner)))
     .pipe($.include())
@@ -68,14 +72,7 @@ gulp.task('_base-styles', ['_base-images'], function() {
       require('autoprefixer')(PLUGINS.autoprefixer),
       require('css-mqpacker')(PLUGINS.cssMqpacker)
     ]))
-    .pipe($.base64({
-    // .pipe($.if(CONFIG.isDist, $.base64({
-      baseDir: PATHS.src.assets,
-      extensions: ['svg', 'png'],
-      maxImageSize: 8 * 1024,
-      debug: false
-    }))
-    // })))
+    .pipe($.base64(PLUGINS.base64))
     .pipe(gulp.dest(PATHS.build.styles))
     .pipe($.if(CONFIG.isDist, $.cssnano(PLUGINS.cssnano)))
     .pipe($.rename({ suffix: '.min' }))

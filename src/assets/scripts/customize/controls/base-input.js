@@ -13,7 +13,7 @@ api.controls.BaseInput = api.controls.Base.extend({
    * @override
    * @param {string} value The new setting value.
    */
-  syncUIFromAPI: function (value) {
+  syncUI: function (value) {
     // here value can be undefined if it doesn't pass the validate function
     if (value && this.__input.value !== value) {
       this.__input.value = value;

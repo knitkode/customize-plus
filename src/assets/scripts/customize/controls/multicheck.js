@@ -35,7 +35,7 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
   /**
    * @override
    */
-  syncUIFromAPI: function (value) {
+  syncUI: function (value) {
     if (value !== this._getValueFromUI(true)) {
       this._syncCheckboxes();
 

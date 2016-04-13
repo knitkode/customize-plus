@@ -40,7 +40,7 @@ wpApi.controlConstructor.pwpcp_sortable = api.controls.Sortable = api.controls.B
   /**
    * @override
    */
-  syncUIFromAPI: function (value) {
+  syncUI: function (value) {
     if (value !== this.params.lastValue) {
       this._reorder();
       this.params.lastValue = value;

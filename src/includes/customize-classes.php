@@ -24,7 +24,7 @@ global $wp_customize;
 //=require controls/base-radio.php
 //=require controls/buttonset.php
 //=require controls/color.php
-//=require controls/dummy.php
+//=require controls/content.php
 //=require controls/font-family.php
 //=require controls/multicheck.php
 //=require controls/number.php
@@ -38,4 +38,3 @@ global $wp_customize;
 //=require controls/text.php
 //=require controls/textarea.php
 //=require controls/toggle.php
-//=require settings/dummy.php

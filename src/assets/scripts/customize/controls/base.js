@@ -83,33 +83,35 @@ api.controls.Base = wpApi.Control.extend({
       for (var key in control.params.settings) {
         control.settings[key] = wpApi(control.params.settings[key]);
       }
-
       control.setting = control.settings['default'] || null;
-
-      // embed controls only when the parent section get clicked to keep the DOM light,
-      // to make this work all data can't be stored in the DOM, which is good
-      wpApi.section(control.section()).expanded.bind(function (expanded) {
-        if (expanded) {
-          control.inflate();
-        } else {
-          control.deflate();
-        }
-      });
     }));
+
+    // embed controls only when the parent section get clicked to keep the DOM light,
+    // to make this work all data can't be stored in the DOM, which is good
+    wpApi.section(control.section()).expanded.bind(function (expanded) {
+      if (expanded) {
+        control.inflate();
+      } else {
+        control.deflate();
+      }
+    });
 
     // an @abstract method to override
     control.onInit();
 
-    // Add custom validation function overriding the empty function from WP API.
-    this.setting.validate = this._validateWrap.bind(this);
+    // controls can be setting-less from 4.5
+    if (control.setting) {
+      // Add custom validation function overriding the empty function from WP API.
+      control.setting.validate = control._validateWrap.bind(control);
 
-    // bind setting change to control method to reflect a programmatic
-    // change on the UI, only if the control is rendered
-    this.setting.bind(function (value) {
-      if (this.rendered) {
-        this.syncUIFromAPI.call(this, value);
-      }
-    }.bind(this));
+      // bind setting change to control method to reflect a programmatic
+      // change on the UI, only if the control is rendered
+      control.setting.bind(function (value) {
+        if (control.rendered) {
+          control.syncUI.call(control, value);
+        }
+      });
+    }
   },
   /**
    * Validate wrap function.
@@ -189,7 +191,7 @@ api.controls.Base = wpApi.Control.extend({
    * @param {string} value The new setting value.
    */
   /* jshint unused: false */
-  syncUIFromAPI: function (value) {},
+  syncUI: function (value) {},
   /**
    * Triggered when the control has been initialized
    *
@@ -547,7 +549,7 @@ wpApi.bind('ready', function () {
  */
 wpApi.bind('save', function () {
   Utils._eachControl(function (control) {
-    if (control.setting['_dirty']) { // whitelisted from uglify \\
+    if (control.setting && control.setting['_dirty']) { // whitelisted from uglify \\
       // console.log(control.id, 'is dirty on save with value:', control.setting());
       control.params.vLast = control.setting();
     }

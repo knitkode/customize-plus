@@ -36,6 +36,7 @@ $WPcustomize--container-toggle-color: #555;
 $WPcustomize--container-toggle-color-focus: #0073aa;
 $WPcustomize--sidebar-bg: #eee;
 $WPcustomize--iframe-bg: #eee;
+$WPcustomize--iframe_devices-bg: #191e23;
 $WPcustomize--collapse-sidebar-btn-color: #656a6f;
 $WPcustomize--collapse-sidebar-marginleft: 15px;
 $WPcustomize--breakpoint-float: 640px;
@@ -113,22 +114,16 @@ $control--btn-icon-fontsize: 15px;
 $control--btn-color: #aaa;
 $control--btn-color-active: #333;
 
-// Customize Plus component: Screenpreview
-$screenpreview--btn-padding-top: 5px;
-$screenpreview--btn-padding-horizontal: 7px;
-$screenpreview--device-margin-vertical: 20px;
-// these variables should be the same as in the theme bootstrap less variables (screen-sm, etc.)
-$screen--md-width: 992px;
-$screen--md-height: 615px;
-$screen--sm-width: 576px;
-$screen--sm-height: 768px;
-$screen--xs-width: 300px;
-$screen--xs-height: 480px;
-
 // Customize Plus component: Compiler
 $compiler--feedback-height: 25px;
-$compiler--feedback-bottom: $WPcustomize--footer-height - 7;
+$compiler--feedback-bottom: $WPcustomize--footer-height;
 
 // Customize Plus component: Editor
 $editor--buttons-height: 25px;
 $editor--dropdown-height: 34px;
+
+// Customize Plus component: Resizer
+$resizer--handle-width: 5px;
+
+// Customize Plus component: Screenpreview
+$screenpreview--preview-transition_time: .4s;

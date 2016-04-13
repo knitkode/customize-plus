@@ -75,7 +75,7 @@ wpApi.controlConstructor.pwpcp_color = api.controls.Color = api.controls.Base.ex
   /**
    * @override
    */
-  syncUIFromAPI: function (value) {
+  syncUI: function (value) {
     this._apply(value, 'API');
   },
   /**
