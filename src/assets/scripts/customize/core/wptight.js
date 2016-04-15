@@ -13,7 +13,7 @@ var WpTight = (function () {
    *
    * @private
    * @internal
-   * @type {String}
+   * @type {string}
    */
   var _colorSchemaCssId = 'colors-css';
 
@@ -69,27 +69,27 @@ var WpTight = (function () {
        */
       var el = this.el = {};
 
-      /** @type {jQuery} */
+      /** @type {JQuery} */
       el.container = $('.wp-full-overlay');
-      /** @type {jQuery} */
+      /** @type {JQuery} */
       el.controls = $('#customize-controls');
-      /** @type {jQuery} */
+      /** @type {JQuery} */
       el.themeControls = $('#customize-theme-controls');
-      /** @type {jQuery} */
+      /** @type {JQuery} */
       el.preview = $('#customize-preview');
-      /** @type {jQuery} */
+      /** @type {JQuery} */
       el.header = $('#customize-header-actions');
-      /** @type {jQuery} */
+      /** @type {JQuery} */
       el.footer = $('#customize-footer-actions');
-      /** @type {jQuery} */
+      /** @type {JQuery} */
       el.devices = el.footer.find('.devices');
-      /** @type {jQuery} */
+      /** @type {JQuery} */
       el.close = el.header.find('.customize-controls-close');
-      /** @type {jQuery} */
+      /** @type {JQuery} */
       el.sidebar = $('.wp-full-overlay-sidebar-content');
-      /** @type {jQuery} */
+      /** @type {JQuery} */
       el.info = $('#customize-info');
-      /** @type {jQuery} */
+      /** @type {JQuery} */
       el.customizeControls = $('#customize-theme-controls').find('ul').first();
     },
     /**

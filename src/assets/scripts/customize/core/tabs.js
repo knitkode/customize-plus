@@ -24,7 +24,7 @@ var Tabs = (function () {
 
   /**
    * Tab content selector (for jQuery)
-   * @type {String}
+   * @type {string}
    */
   var SELECTOR_TAB_CONTENT = '.pwpcp-tab-content';
 
@@ -78,7 +78,7 @@ var Tabs = (function () {
   /**
    * Update Screen Picker Tabs
    * @param  {int|string} size   The size to which update the tabs
-   * @param  {jQuery} $container An element to use as context to look for
+   * @param  {JQuery} $container An element to use as context to look for
    *                             screen pickers UI DOM
    */
   function _updateScreenPickerTabs (size, $container) {
@@ -114,7 +114,7 @@ var Tabs = (function () {
      * Sync the tabs within the given container
      * with current Screenpreview size
      *
-     * @param {jQuery} $container A container with tabbed areas (probably a
+     * @param {JQuery} $container A container with tabbed areas (probably a
      *                            control container)
      */
     syncSize: function ($container) {

@@ -5,13 +5,13 @@
  */
 var Utils = (function () {
 
-  /** @type {String} */
+  /** @type {string} */
   var _IMAGES_BASE_URL = api.constants['IMAGES_BASE_URL'];
 
-  /** @type {String} */
+  /** @type {string} */
   var _DOCS_BASE_URL = api.constants['DOCS_BASE_URL'];
 
-  /** @type {String} */
+  /** @type {string} */
   var _OPTIONS_PREFIX = api.constants['OPTIONS_PREFIX'];
 
   /** @type {RegExp} */
@@ -21,7 +21,7 @@ var Utils = (function () {
    * Is it an absolute URL?
    *
    * {@link http://stackoverflow.com/a/19709846/1938970}
-   * @param  {String}  url The URL to test
+   * @param  {string}  url The URL to test
    * @return {Boolean}     Whether is absolute or relative
    */
   function _isAbsoluteUrl (url) {
@@ -35,8 +35,8 @@ var Utils = (function () {
    *
    * Strips possible multiple slashes caused by the string concatenation or dev errors
    *
-   * @param  {String} url
-   * @return {String}
+   * @param  {string} url
+   * @return {string}
    */
   function _cleanUrlFromMultipleSlashes (url) {
     // @@todo move to Regexes modules and create tests \\
@@ -49,9 +49,9 @@ var Utils = (function () {
    * If an absolute URL is passed we just strip multiple slashes,
    * if a relative URL is passed we also prepend the right base url.
    *
-   * @param  {String} url
-   * @param  {String} type
-   * @return {String}
+   * @param  {string} url
+   * @param  {string} type
+   * @return {string}
    */
   function _getCleanUrl (url, type) {
     // return the absolute url
@@ -77,8 +77,8 @@ var Utils = (function () {
      * Get image url
      *
      * @static
-     * @param  {String} url The image URL, relative or absolute
-     * @return {String}     The absolute URL of the image
+     * @param  {string} url The image URL, relative or absolute
+     * @return {string}     The absolute URL of the image
      */
     getImageUrl: function (url) {
       return _getCleanUrl(url, 'img');
@@ -87,8 +87,8 @@ var Utils = (function () {
      * Get docs url
      *
      * @static
-     * @param  {String} url The docs URL, relative or absolute
-     * @return {String}     The absolute URL of the docs
+     * @param  {string} url The docs URL, relative or absolute
+     * @return {string}     The absolute URL of the docs
      */
     getDocsUrl: function (url) {
       return _getCleanUrl(url, 'docs');

@@ -346,8 +346,8 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * This is the same as using the global function `pwp_get_theme_mod`
 		 *
 		 * @since  0.0.1
-		 * @param [type]  $opt_name [description]
-		 * @return [type]           [description]
+		 * @param string  $opt_name
+		 * @return ?string
 		 */
 		public static function get_theme_mod( $opt_name ) {
 			if ( isset( self::$settings_defaults[ $opt_name ] ) ) {

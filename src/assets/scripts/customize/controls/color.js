@@ -100,9 +100,9 @@ wpApi.controlConstructor.pwpcp_color = api.controls.Color = api.controls.Base.ex
 
     /** @type {HTMLElement} */
     this.__preview = container.getElementsByClassName('pwpcpcolor-current-overlay')[0];
-    /** @type {jQuery} */
+    /** @type {JQuery} */
     this.__$picker = $(container.getElementsByClassName('pwpcpcolor-input')[0]);
-    /** @type {jQuery} */
+    /** @type {JQuery} */
     this.__$expander = $(container.getElementsByClassName('pwpcp-expander')[0]).hide();
 
     self._updateUIpreview(self.setting());

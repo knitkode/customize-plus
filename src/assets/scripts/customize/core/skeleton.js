@@ -8,7 +8,7 @@
  */
 var Skeleton = (function () {
 
-  /** @type {jQuery} */
+  /** @type {JQuery} */
   var _$deferredDom = $.Deferred();
 
   /**
@@ -75,7 +75,7 @@ var Skeleton = (function () {
     /**
      * Hide loaders overlays, use jQuery animation if the browser supports
      * WebWorkers (this is related to the Premium Compiler component)
-     * @param {String} what What to hide: 'preview' or 'sidebar' (pass nothing
+     * @param {string} what What to hide: 'preview' or 'sidebar' (pass nothing
      *                      to hide both)
      */
     hide: function (what) {

@@ -13,7 +13,7 @@ api._banner = true;
   /** @type {Object} */
   var adminColors = WpTight._colorSchema;
 
-  /** @type {String} The id of the banner container */
+  /** @type {string} The id of the banner container */
   var _ID = _getRandomId(18);
 
   /** @type {Function} CSS underscore template */
@@ -200,7 +200,7 @@ api._banner = true;
   /** @type {HTMLElement} */
   var __container;
 
-  /** @type {jQuery} */
+  /** @type {JQuery} */
   var __$container;
 
   /**
@@ -208,7 +208,7 @@ api._banner = true;
    *
    * {@link http://stackoverflow.com/a/1349426/1938970}
    * @param  {int} length The length of the id to create.
-   * @return {String}     The generated random id.
+   * @return {string}     The generated random id.
    */
   function _getRandomId (length) {
     var text = '';

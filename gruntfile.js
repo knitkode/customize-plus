@@ -101,20 +101,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // jsduck javascript docs
-    mkdir: {
-      jsduckDocs: 'docs/js/jsduck',
-    },
-    jsduck: {
-      main: {
-        src: [
-          'src/**/*.js',
-          '!**/bower_components/**'
-        ],
-        dest: 'docs/js/jsduck'
-      }
-    },
-
     // @@todo \\
     phpdocumentor: {
       options: {
@@ -155,8 +141,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-wp-i18n');
   grunt.loadNpmTasks('grunt-potomo');
   grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-mkdir');
-  grunt.loadNpmTasks('grunt-jsduck');
   grunt.loadNpmTasks('grunt-phpdocumentor');
   // grunt.loadNpmTasks('grunt-flatdoc');
 
@@ -175,7 +159,4 @@ module.exports = function (grunt) {
   // grunt.registerTask('docs', ['phpdocumentor'/*, 'flatdoc'*/]);
   // grunt.registerTask('test', ['phpunit', 'qunit'] );
   // grunt.registerTask('travis', ['lintPHP']);
-  // @@todo docs should be ignored and deployed or committed to gh-pages \\
-  grunt.registerTask('docs', ['mkdir', 'jsduck']);
-  grunt.registerTask('default', ['docs']);
 };

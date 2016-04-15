@@ -23,10 +23,10 @@ if (DEBUG) {
 /**
  * Reusable variables as globals in each included file
  */
-/** @type {jQuery} */
+/** @type {JQuery} */
 var $window = $(window);
 
-/** @type {jQuery} */
+/** @type {JQuery} */
 var $document = $(document);
 
 /** @type {HTMLElement} */
