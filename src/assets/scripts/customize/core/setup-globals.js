@@ -29,7 +29,7 @@ var $window = $(window);
 /** @type {jQuery} */
 var $document = $(document);
 
-/** @type {HTMLelement} */
+/** @type {HTMLElement} */
 var body = document.getElementsByTagName('body')[0];
 
 /** @type {Object} */

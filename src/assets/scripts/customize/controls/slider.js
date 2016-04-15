@@ -75,7 +75,7 @@ wpApi.controlConstructor.pwpcp_slider = api.controls.Slider = api.controls.Base.
    */
   _setDOMelements: function () {
     var container = this._container;
-    /** @type {HTMLelement} */
+    /** @type {HTMLElement} */
     this.__inputNumber = container.getElementsByClassName('pwpcp-slider-number')[0];
     /** @type {jQuery} */
     this.__$inputUnits = $(container.getElementsByClassName('pwpcp-unit'));

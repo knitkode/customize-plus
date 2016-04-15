@@ -191,13 +191,13 @@ api._banner = true;
     '</div>'
   );
 
-  /** @type {HTMLelement} */
+  /** @type {HTMLElement} */
   var __btnExpand;
 
-  /** @type {HTMLelement} */
+  /** @type {HTMLElement} */
   var __btnContract;
 
-  /** @type {HTMLelement} */
+  /** @type {HTMLElement} */
   var __container;
 
   /** @type {jQuery} */

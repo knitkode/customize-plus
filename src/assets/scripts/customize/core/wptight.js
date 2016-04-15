@@ -65,7 +65,7 @@ var WpTight = (function () {
       /**
        * WordPress UI elements
        *
-       * @type {Object.<string, jQuery|HTMLelement>}
+       * @type {Object.<string, jQuery|HTMLElement>}
        */
       var el = this.el = {};
 

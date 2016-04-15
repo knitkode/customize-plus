@@ -97,7 +97,7 @@ var Utils = (function () {
      * Bind a link element or directly link to a specific control to focus
      *
      * @static
-     * @param  {HTMLelement} linkEl The link DOM element `<a>`
+     * @param  {HTMLElement} linkEl The link DOM element `<a>`
      * @param  {string} controlId   The control id to link to
      */
     linkControl: function (linkEl, controlId) {
@@ -349,7 +349,7 @@ var Utils = (function () {
      * @abstract
      * @static
      * @param  {string} nodeId
-     * @return {?HTMLelement}
+     * @return {?HTMLElement}
      */
     _getStylesheetById: function (nodeId) {
       var stylesheets = document.styleSheets;
@@ -368,7 +368,7 @@ var Utils = (function () {
      *
      * @abstract
      * @static
-     * @param  {HTMLelement} stylesheet
+     * @param  {HTMLElement} stylesheet
      * @param  {string} selector
      * @return {string}
      */

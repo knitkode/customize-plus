@@ -93,12 +93,12 @@ wpApi.controlConstructor.pwpcp_color = api.controls.Color = api.controls.Base.ex
    */
   ready: function () {
     var self = this;
-    /** @type {HTMLelement} */
+    /** @type {HTMLElement} */
     var container = this._container;
-    /** @type {HTMLelement} */
+    /** @type {HTMLElement} */
     var btnCustom = container.getElementsByClassName('pwpcpui-toggle')[0];
 
-    /** @type {HTMLelement} */
+    /** @type {HTMLElement} */
     this.__preview = container.getElementsByClassName('pwpcpcolor-current-overlay')[0];
     /** @type {jQuery} */
     this.__$picker = $(container.getElementsByClassName('pwpcpcolor-input')[0]);
