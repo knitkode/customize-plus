@@ -5,6 +5,8 @@
 var PATHS = global.PATHS;
 var pathsScriptsToDocument = [
   PATHS.src.scripts + '**/*.js',
+  '!' + PATHS.src.scripts + 'temp.js',
+  '!' + PATHS.src.scripts + '**/tpl-*.js',
   '!' + PATHS.src.scripts + 'vendor-custom/**/*.js'
 ];
 var pathsScriptsReadyToDocument = './docs/js/scripts-to-document/**/*.js';
@@ -15,7 +17,7 @@ var pathsScriptsReadyToDocument = './docs/js/scripts-to-document/**/*.js';
  *
  * @access public
  */
-gulp.task('docs', [/*'_docs-docco', '_docs-jsdoc',*/ '_docs-jsduck']);
+gulp.task('docs', ['_docs-docco', '_docs-jsdoc', '_docs-jsduck']);
 
 /**
  * Docs Prepare Scripts
@@ -24,7 +26,7 @@ gulp.task('docs', [/*'_docs-docco', '_docs-jsdoc',*/ '_docs-jsduck']);
  */
 gulp.task('_docs-prepare-scripts', function() {
   return gulp.src(pathsScriptsToDocument)
-    .pipe($.trimlines(PLUGINS.trimlines))
+    // .pipe($.trimlines(PLUGINS.trimlines))
     .pipe($.include())
     .pipe(gulp.dest('./docs/js/scripts-to-document'));
 });
@@ -54,10 +56,13 @@ gulp.task('_docs-jsdoc', ['_docs-prepare-scripts'], function() {
 });
 
 /**
- * Docs -> jsduck (through grunt)
+ * Docs -> jsduck
  *
  * @access private
  */
 gulp.task('_docs-jsduck', ['_docs-prepare-scripts'], function() {
-  return gulp.start('grunt-docs');
+  var GJSDuck = require('gulp-jsduck');
+  var gjsduck = new GJSDuck(['--out', 'docs/js/jsduck']);
+  return gulp.src(pathsScriptsReadyToDocument)
+        .pipe(gjsduck.doc());
 });
