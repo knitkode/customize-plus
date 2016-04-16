@@ -3,13 +3,13 @@
  *
  */
 .customize-control-pwpcp_radio_image {
+  overflow-x: hidden; // because the hint tooltips overflow on the sides
 
-  label {
-    margin-right: 3px;
-  }
+  label {}
 
   // Make the image highlightable
   img {
+    margin-right: 3px;
     border: 1px solid transparent;
     opacity: .4;
 
@@ -27,7 +27,8 @@
  */
 input[type=radio].pwpcp-radio-image {
   position: absolute;
-  opacity: 0;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
 
   // Checked state
   &:checked + label img {

@@ -66,16 +66,17 @@ input[type=number].pwpcp-slider-number {
 .pwpcp-unit,
 input[type=text].pwpcp-unit {
   display: inline-block;
-  padding: 3px 3px;
+  width: 24px;
+  height: 28px;
+  line-height: 28px;
   margin-right: -1px;
+  padding: 0 3px;
   border: 1px solid darken($control--bg, 7.5%);
   background: $WPcustomize--btn-bg;
   box-shadow: $WPcustomize--btn-box-shadow;
   font-size: 11px;
-  cursor: pointer;
-  width: 24px;
   text-align: center;
-  line-height: 14px;
+  cursor: pointer;
 
   &:last-child {
     border-right-width: 1px;
@@ -88,7 +89,7 @@ input[type=text].pwpcp-unit {
 
   &.pwpcp-current {
     float: left;
-    padding: 3px 0;
+    padding: 0;
     border-color: transparent;
     background: transparent;
     box-shadow: none;

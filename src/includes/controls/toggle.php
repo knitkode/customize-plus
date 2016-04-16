@@ -29,11 +29,15 @@ class PWPcp_Customize_Control_Toggle extends PWPcp_Customize_Control_Checkbox {
 	 */
 	protected function js_tpl() {
 		?>
-		<label>
-			<# if (data.label) { #>
-				<span class="customize-control-title">{{{ data.label }}}</span>
-				<input type="checkbox" name="_customize-pwpcp_toggle-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> <# if (data.value) { #>checked<# } #>>
-				<# } if (data.description) { #>{{{ data.description }}}<# } #>
+		<# if (data.label) { #><div class="customize-control-title">{{{ data.label }}}</div><# } #>
+		<# if (data.description) { #><div class="description customize-control-description">{{{ data.description }}}</div><# } #>
+		<label class="switch-light pwpcpui-switch<# if (data.attrs.label_0 || data.attrs.label_1) { #> pwpcpui-switch__labelled<# } #>" onclick="">
+		  <input type="checkbox" name="_customize-pwpcp_toggle-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> <# if (data.value) { #>checked<# } #>>
+		  <span>
+		    <span><# if (data.attrs.label_1) { #>{{{data.attrs.label_1}}}<# } #></span>
+		    <span><# if (data.attrs.label_0) { #>{{{data.attrs.label_0}}}<# } #></span>
+		    <a></a>
+		  </span>
 		</label>
 		<?php
 	}

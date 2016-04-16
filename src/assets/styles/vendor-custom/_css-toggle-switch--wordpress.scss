@@ -1,0 +1,182 @@
+/*! CSS Toggle Switches Theme for WordPress by PlusWP */
+
+$toggle--width: 50px;
+$toggle--height: $WPcustomize--input-checkbox-height;
+$toggle--border-radius: 2px; // 16px;
+$toggle--bg: darken($WPcustomize--btn-bg, 10%);
+$toggle--bg-checked: darken($toggle--bg, 10%);
+$toggle--dragger-size: $toggle--height + 6;
+$toggle--dragger-border-radius: 2px; // 100%;
+$toggle--dragger-bg: #fafafa;
+
+$toggle_labelled--width: 100px;
+$toggle_labelled--color: $WPcustomize--btn-color;
+$toggle_labelled--color-checked: darken($toggle--bg-checked, 50%);
+
+$toggle--transition_time: .28s;
+$toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
+
+/**
+ * Toggle custom theme
+ */
+.pwpcpui-switch.switch-light {
+  overflow: visible;
+  width: $toggle--width;
+  min-height: $toggle--height + ($toggle--dragger-size - $toggle--height);
+
+  // element: outer span
+  > span {
+    overflow: visible;
+    position: relative;
+    top: (($toggle--dragger-size - $toggle--height) / 2);
+    height: $toggle--height;
+    min-height: $toggle--height;
+    border-radius: $toggle--border-radius;
+    background: $toggle--bg;
+    box-shadow: inset rgba(0, 0, 0, 0.1) 0 1px 0;
+    transition: all $toggle--transition_time ease;
+
+    // element: inner span (labels)
+    > span {
+      position: absolute;
+      clip: rect(0 0 0 0);
+    }
+
+    // element: active check
+    > a {
+      top: -(($toggle--dragger-size - $toggle--height) / 2);
+      width: $toggle--dragger-size;
+      height: $toggle--dragger-size;
+      right: 58%;
+      border-radius: $toggle--dragger-border-radius;
+      border: 1px solid $WP--select-border-color;
+      background: $toggle--dragger-bg;
+      box-shadow:
+        0 0px 2px 0 rgba(0, 0, 0, .14),
+        0 1px 2px -2px rgba(0, 0, 0, .2),
+        0 0px 4px 0 rgba(0, 0, 0, .12);
+
+      transition: right $toggle--transition_time $toggle--transition_function;
+    }
+  }
+
+  // state: checked
+  input:checked {
+    ~ span {
+      background: $toggle--bg-checked;
+    }
+  }
+
+  // state: focused
+  input:focus {
+    ~ span a {
+      border-color: $WP--select-border-color-focus;
+      box-shadow: $WP--select-box-shadow-focus;
+    }
+    ~ span a,
+    + label {
+      outline: 0;
+    }
+  }
+}
+
+.switch-light.pwpcpui-switch__labelled {
+  width: $toggle_labelled--width;
+
+  // element: outer span
+  > span {
+
+    // element: inner span (labels)
+    > span {
+      position: relative;
+      clip: inherit;
+      opacity: 0;
+      line-height: $toggle--height;
+      color: $toggle_labelled--color;
+      font-size: 75%;
+      text-transform: uppercase;
+      transition: opacity $toggle--transition_time;
+
+      &:last-of-type {
+        opacity: 1;
+      }
+    }
+
+    // element: active check
+    > a {
+      width: 50%;
+      right: 50%;
+      border-radius: $toggle--border-radius;
+      border-radius: 0;
+      background: $toggle--dragger-bg;
+    }
+  }
+
+  // state: checked
+  input:checked {
+    ~ span {
+      background-color: $toggle--bg-checked;
+    }
+    ~ span span:first-of-type {
+      color: $toggle_labelled--color-checked;
+      opacity: 1;
+    }
+    ~ span span:last-of-type {
+      opacity: 0;
+    }
+  }
+}
+
+/**
+ * Buttonset custom theme
+ */
+.pwpcpui-switch.switch-toggle {
+  border: 1px solid $WPcustomize--btn-border-color;
+  box-shadow: $WPcustomize--btn-box-shadow;
+  background-color: $WPcustomize--btn-bg;
+
+  &:hover {
+    border: 1px solid lighten($WPcustomize--btn-border-color-hover, 5%);
+  }
+
+  // element: label, makes the button background
+  label {
+    color: $WPcustomize--btn-color;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $WP--select-border-color;
+    white-space: nowrap; // @@doubt not sure if it's good to ellipse here for usability \\
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:hover {
+      background-color: $WPcustomize--btn-bg-hover;
+    }
+  }
+
+  // element: active check
+  a {
+    background-color: $WPcustomize--btn-bg-active;
+    box-shadow: $WPcustomize--btn-box-shadow-activetoggle;
+    transition: none;
+  }
+
+  // state: checked
+  input:checked + label {
+    color: $WPcustomize--btn-color-active;
+    cursor: default;
+
+    &:hover {
+      background-color: $WPcustomize--btn-bg-active;
+      box-shadow: $WPcustomize--btn-box-shadow-activetoggle;
+    }
+  }
+
+  // state: focus
+  input:focus + label,
+  input:focus + label:hover {
+    border-color: $WP--select-border-color-focus;
+    box-shadow: $WP--select-box-shadow-focus;
+    outline: 0;
+  }
+}
