@@ -1,0 +1,17 @@
+/**
+ * Control Checkbox
+ *
+ */
+.customize-control-pwpcp_checkbox {
+  label {
+    display: block;
+
+    &:hover {
+      color: $input--hover-color;
+
+      input[type=checkbox] {
+        border-color: $input--hover-color;
+      }
+    }
+  }
+}

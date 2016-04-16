@@ -1,17 +1,6 @@
 /**
- * Control Toggle/Switch
+ * Control Toggle
  *
  */
 .customize-control-pwpcp_toggle {
-  label {
-    display: block;
-    
-    &:hover {
-      color: $input--hover-color;
-
-      input[type=checkbox] {
-        border-color: $input--hover-color;
-      }
-    }
-  }
 }

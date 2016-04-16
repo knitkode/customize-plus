@@ -1,6 +1,6 @@
 <?php // @partial
 /**
- * Toggle Control custom class
+ * Checkbox Control custom class
  *
  * @since  0.0.1
  *
@@ -12,7 +12,7 @@
  * @version    Release: pkgVersion
  * @link       http://pluswp.com/customize-plus
  */
-class PWPcp_Customize_Control_Toggle extends PWPcp_Customize_Control_Checkbox {
+class PWPcp_Customize_Control_Checkbox extends PWPcp_Customize_Control_Base {
 
 	/**
 	 * Control type.
@@ -20,7 +20,16 @@ class PWPcp_Customize_Control_Toggle extends PWPcp_Customize_Control_Checkbox {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_toggle';
+	public $type = 'pwpcp_checkbox';
+
+	/**
+	 * Refresh the parameters passed to the JavaScript via JSON.
+	 *
+	 * @since 0.0.1
+	 */
+	protected function add_to_json() {
+		$this->json['attrs'] = $this->input_attrs;
+	}
 
 	/**
 	 * Render a JS template for the content of the text control.
@@ -37,9 +46,24 @@ class PWPcp_Customize_Control_Toggle extends PWPcp_Customize_Control_Checkbox {
 		</label>
 		<?php
 	}
+
+	/**
+	 * Sanitize
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param string               $value   The value to sanitize.
+ 	 * @param WP_Customize_Setting $setting Setting instance.
+ 	 * @param WP_Customize_Control $control Control instance.
+ 	 * @return string The sanitized value.
+ 	 */
+	protected static function sanitize( $value, $setting, $control ) {
+		$filtered = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
+		return $filtered ? 1 : 0;
+	}
 }
 
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Toggle' );
+$wp_customize->register_control_type( 'PWPcp_Customize_Control_Checkbox' );

@@ -6,6 +6,7 @@
   //=require customize/controls/base-radio.js
 
   //=require customize/controls/buttonset.js
+  //=require customize/controls/checkbox.js
   //=require customize/controls/color.js
   //=require customize/controls/content.js
   //=require customize/controls/font-family.js

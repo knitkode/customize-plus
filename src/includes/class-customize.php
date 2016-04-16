@@ -38,6 +38,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				'header' => 'WP_Customize_Header_Image_Control',
 				// Customize Plus controls
 				'pwpcp_buttonset' => 'PWPcp_Customize_Control_Buttonset',
+				'pwpcp_checkbox' => 'PWPcp_Customize_Control_Checkbox',
 				'pwpcp_color' => 'PWPcp_Customize_Control_Color',
 				'pwpcp_content' => 'PWPcp_Customize_Control_Content',
 				'pwpcp_font_family' => 'PWPcp_Customize_Control_Font_Family',

@@ -23,6 +23,7 @@ global $wp_customize;
 //=require controls/base-input.php
 //=require controls/base-radio.php
 //=require controls/buttonset.php
+//=require controls/checkbox.php
 //=require controls/color.php
 //=require controls/content.php
 //=require controls/font-family.php
