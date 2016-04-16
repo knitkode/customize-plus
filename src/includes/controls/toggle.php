@@ -34,8 +34,8 @@ class PWPcp_Customize_Control_Toggle extends PWPcp_Customize_Control_Checkbox {
 		<label class="switch-light pwpcpui-switch<# if (data.attrs.label_0 || data.attrs.label_1) { #> pwpcpui-switch__labelled<# } #>" onclick="">
 		  <input type="checkbox" name="_customize-pwpcp_toggle-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> <# if (data.value) { #>checked<# } #>>
 		  <span>
-		    <span><# if (data.attrs.label_1) { #>{{{data.attrs.label_1}}}<# } #></span>
 		    <span><# if (data.attrs.label_0) { #>{{{data.attrs.label_0}}}<# } #></span>
+		    <span><# if (data.attrs.label_1) { #>{{{data.attrs.label_1}}}<# } #></span>
 		    <a></a>
 		  </span>
 		</label>

@@ -11,7 +11,7 @@ $toggle--dragger-bg: #fafafa;
 
 $toggle_labelled--width: 100px;
 $toggle_labelled--color: $WPcustomize--btn-color;
-$toggle_labelled--color-checked: darken($toggle--bg-checked, 50%);
+$toggle_labelled--color-checked: darken($toggle--bg-checked, 60%);
 
 $toggle--transition_time: .28s;
 $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
@@ -90,15 +90,16 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
     > span {
       position: relative;
       clip: inherit;
-      opacity: 0;
       line-height: $toggle--height;
-      color: $toggle_labelled--color;
       font-size: 75%;
       text-transform: uppercase;
       transition: opacity $toggle--transition_time;
+      color: $toggle_labelled--color-checked;
+      opacity: 1;
 
       &:last-of-type {
-        opacity: 1;
+        color: $toggle_labelled--color;
+        opacity: .6;
       }
     }
 
@@ -118,11 +119,10 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
       background-color: $toggle--bg-checked;
     }
     ~ span span:first-of-type {
-      color: $toggle_labelled--color-checked;
-      opacity: 1;
+      opacity: .6;
     }
     ~ span span:last-of-type {
-      opacity: 0;
+      opacity: 1;
     }
   }
 }
