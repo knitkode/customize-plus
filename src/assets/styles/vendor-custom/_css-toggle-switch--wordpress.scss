@@ -111,6 +111,13 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
       top: -15%;
       transition: right $toggle--transition_time $toggle--transition_function;
     }
+
+  }
+
+  // state: active
+  a:active,
+  span:active ~ a {
+    box-shadow: $WPcustomize--btn-box-shadow-activetoggle-focus;
   }
 
   // state: checked
@@ -207,10 +214,17 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
 
     // element: active check
     > a {
-      width: 100%;
-      right: 0;
-      @include toggle--dragger('reset');
+      display: none;
     }
+  }
+
+  // state: active
+  > span > span:active {
+    box-shadow: $WPcustomize--btn-box-shadow-activetoggle-focus;
+  }
+  a:active,
+  span:active ~ a {
+    box-shadow: none !important;
   }
 
   // state: checked
