@@ -43,6 +43,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				'pwpcp_content' => 'PWPcp_Customize_Control_Content',
 				'pwpcp_font_family' => 'PWPcp_Customize_Control_Font_Family',
 				'pwpcp_font_weight' => 'PWPcp_Customize_Control_Font_Weight',
+				'pwpcp_icon' => 'PWPcp_Customize_Control_Icon',
 				'pwpcp_multicheck' => 'PWPcp_Customize_Control_Multicheck',
 				'pwpcp_number' => 'PWPcp_Customize_Control_Number',
 				'pwpcp_radio' => 'PWPcp_Customize_Control_Radio',

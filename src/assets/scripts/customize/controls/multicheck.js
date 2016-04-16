@@ -7,7 +7,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_multicheck = api.controls.Base.extend({
+wpApi.controlConstructor.pwpcp_multicheck = api.controls.Multicheck = api.controls.Base.extend({
   /**
    * @override
    * @return {string|object<string,boolean>} A JSONified Array

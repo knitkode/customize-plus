@@ -1,0 +1,58 @@
+/**
+ * Control Icon
+ *
+ */
+.customize-control-pwpcp_icon {
+  .selectize-input {
+    overflow: visible !important; // don't hide hints tooltips
+  }
+}
+
+/**
+ * Selectize option
+ */
+[data-selectable].pwpcp-icon-selectOption {
+  display: inline-block;
+  box-sizing: border-box;
+  width: percentage(1/7);
+  padding: 10px;
+  overflow: visible;
+  text-align: center;
+  opacity: .8;
+
+  &.active {
+    opacity: 1;
+    color: #000;
+    box-shadow: $WPcustomize--btn-box-shadow-focus;
+  }
+}
+.selectize-control.plugin-remove_button .pwpcp-icon-selectOption {
+  padding: 10px !important;
+}
+
+/**
+ * Selectize option header
+ */
+.pwpcp-icon-selectHeader {
+  margin: 4px 10px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+  text-align: center;
+  color: #888;
+
+  .optgroup:first-child & {
+    border-top: 0;
+  }
+}
+
+/**
+ * The remove button has to be less evident to don't interfere with the icon
+ * visualization
+ */
+.selectize-control.plugin-remove_button [data-value] .remove {
+  border-left-color: #eee;
+  color: #999;
+  &:hover {
+    color: #333;
+  }
+}

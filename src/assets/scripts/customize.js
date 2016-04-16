@@ -10,6 +10,7 @@
   //=require customize/controls/color.js
   //=require customize/controls/content.js
   //=require customize/controls/font-family.js
+  //=require customize/controls/icon.js
   //=require customize/controls/multicheck.js
   //=require customize/controls/number.js
   //=require customize/controls/radio.js

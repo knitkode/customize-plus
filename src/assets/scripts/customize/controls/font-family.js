@@ -27,19 +27,19 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
    * @override
    */
   sanitize: function (value) {
-    var fontFamiliesSanitized = [];
-    var fontFamilies = value.split(',');
-    for (var i = 0, l = fontFamilies.length; i < l; i++) {
-      var _fontFamilyUnquoted = fontFamilies[i].replace(/'/g, '').replace(/"/g, '');
-      fontFamiliesSanitized.push('\'' + _fontFamilyUnquoted.trim() + '\'');
+    var sanitized = [];
+    var singleValues = value.split(',');
+    for (var i = 0, l = singleValues.length; i < l; i++) {
+      var valueUnquoted = singleValues[i].replace(/'/g, '').replace(/"/g, '');
+      sanitized.push('\'' + valueUnquoted.trim() + '\'');
     }
-    return fontFamiliesSanitized.join(',');
+    return sanitized.join(',');
   },
   /**
    * @override
    */
   syncUI: function (value) {
-    if (value !== this.input.value) {
+    if (value !== this.__input.value) {
       this._updateUI(value);
     }
   },
@@ -49,15 +49,15 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
    * @override
    */
   onDeflate: function () {
-    if (this.input  && this.input.selectize) {
-      this.input.selectize.destroy();
+    if (this.__input  && this.__input.selectize) {
+      this.__input.selectize.destroy();
     }
   },
   /**
    * @override
    */
   ready: function () {
-    this.input = this._container.getElementsByClassName('pwpcp-selectize')[0];
+    this.__input = this._container.getElementsByClassName('pwpcp-selectize')[0];
     this.fontFamilies = api.constants['font_families'].map(function (fontFamilyName) {
       return { item: fontFamilyName };
     });
@@ -72,16 +72,14 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
     var setting = this.setting;
 
     // if there is an instance of selectize destroy it
-    if (this.input.selectize) {
-      this.input.selectize.destroy();
+    if (this.__input.selectize) {
+      this.__input.selectize.destroy();
     }
 
-    if (value) {
-      this.input.value = value || setting();
-    }
+    this.__input.value = value || setting();
 
     // init selectize plugin
-    $(this.input).selectize({
+    $(this.__input).selectize({
       plugins: ['drag_drop','remove_button'],
       delimiter: ',',
       maxItems: 10,
