@@ -17,6 +17,7 @@ $toggle_labels--font-size: 9px; // 75%;
 $toggle_labels--color: $WPcustomize--btn-color;
 $toggle_labels--color-checked: darken($toggle--bg-checked, 60%);
 $toggle_labels--opacity-unchecked_text: .6;
+$toggle_labels--offset-dragger: 2px;
 
 $toggle--transition_time: .28s;
 $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
@@ -42,9 +43,12 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
     margin: 0;
     @include toggle--dragger($mode);
   } @else {
-    padding: 5px $toggle_labels--padding-horizontal 5px;
-    margin-top: -3px; // -(($toggle--dragger-size - $toggle--height) / 2);
-    margin-bottom: -5px;
+    padding:
+      ($toggle_labels--padding-vertical + $toggle_labels--offset-dragger)
+      $toggle_labels--padding-horizontal
+      ($toggle_labels--padding-vertical + $toggle_labels--offset-dragger);
+    margin-top: -$toggle_labels--offset-dragger;
+    margin-bottom: -$toggle_labels--offset-dragger;
     border: 1px solid $WP--select-border-color;
     @include toggle--dragger($mode);
   }
