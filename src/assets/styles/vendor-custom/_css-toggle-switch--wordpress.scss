@@ -8,13 +8,69 @@ $toggle--bg-checked: darken($toggle--bg, 10%);
 $toggle--dragger-size: $toggle--height + 6;
 $toggle--dragger-border-radius: 2px; // 100%;
 $toggle--dragger-bg: #fafafa;
+$toggle--dragger-box-shadow: 0 0px 2px 0 rgba(0, 0, 0, .14), 0 1px 2px -2px rgba(0, 0, 0, .2), 0 0px 4px 0 rgba(0, 0, 0, .12);
 
-$toggle_labelled--width: 100px;
-$toggle_labelled--color: $WPcustomize--btn-color;
-$toggle_labelled--color-checked: darken($toggle--bg-checked, 60%);
+$toggle_labels--min-width: 100px;
+$toggle_labels--padding-vertical: 3px;
+$toggle_labels--padding-horizontal: 10px;
+$toggle_labels--font-size: 10px; // 75%;
+$toggle_labels--color: $WPcustomize--btn-color;
+$toggle_labels--color-checked: darken($toggle--bg-checked, 60%);
+$toggle_labels--opacity-unchecked_text: .6;
 
 $toggle--transition_time: .28s;
 $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
+
+/**
+ * Mixin with shared styles
+ */
+@mixin toggle--dragger( $mode: 'do' ) {
+  @if $mode == 'reset' {
+    border-color: transparent;
+    background: 0;
+    box-shadow: none;
+  } @else {
+    border-radius: $toggle--dragger-border-radius;
+    background: $toggle--dragger-bg;
+    box-shadow: $toggle--dragger-box-shadow;
+  }
+}
+
+@mixin toggle--labelsauto-dragger( $mode: 'do' ) {
+  @if $mode == 'reset' {
+    padding: $toggle_labels--padding-vertical $toggle_labels--padding-horizontal;
+    margin: 0;
+    @include toggle--dragger($mode);
+  } @else {
+    padding: 5px $toggle_labels--padding-horizontal 5px;
+    margin-top: -3px; // -(($toggle--dragger-size - $toggle--height) / 2);
+    margin-bottom: -5px;
+    border: 1px solid $WP--select-border-color;
+    @include toggle--dragger($mode);
+  }
+}
+
+@mixin toggle--label() {
+  position: relative;
+  padding: $toggle_labels--padding-vertical $toggle_labels--padding-horizontal;
+  line-height: 1;
+  clip: inherit;
+  font-size: $toggle_labels--font-size;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity $toggle--transition_time;
+  color: $toggle_labels--color-checked;
+  opacity: 1;
+}
+
+@mixin toggle--label-wrapper-reset() {
+  height: auto;
+  width: 100%;
+  float: left;
+  min-height: 0;
+}
 
 /**
  * Toggle custom theme
@@ -44,18 +100,11 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
 
     // element: active check
     > a {
-      top: -(($toggle--dragger-size - $toggle--height) / 2);
+      @include toggle--dragger();
       width: $toggle--dragger-size;
-      height: $toggle--dragger-size;
       right: 58%;
-      border-radius: $toggle--dragger-border-radius;
-      border: 1px solid $WP--select-border-color;
-      background: $toggle--dragger-bg;
-      box-shadow:
-        0 0px 2px 0 rgba(0, 0, 0, .14),
-        0 1px 2px -2px rgba(0, 0, 0, .2),
-        0 0px 4px 0 rgba(0, 0, 0, .12);
-
+      height: 130%;
+      top: -15%;
       transition: right $toggle--transition_time $toggle--transition_function;
     }
   }
@@ -71,7 +120,7 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
   input:focus {
     ~ span a {
       border-color: $WP--select-border-color-focus;
-      box-shadow: $WP--select-box-shadow-focus;
+      box-shadow: $WPcustomize--btn-box-shadow-focus;
     }
     ~ span a,
     + label {
@@ -80,26 +129,24 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
   }
 }
 
-.switch-light.pwpcpui-switch__labelled {
-  width: $toggle_labelled--width;
+/**
+ * Toggle custom theme, with labels
+ */
+.switch-light.pwpcpui-switch__labels {
+  min-width: $toggle_labels--min-width;
 
   // element: outer span
   > span {
+    @include toggle--label-wrapper-reset();
 
     // element: inner span (labels)
     > span {
-      position: relative;
-      clip: inherit;
-      line-height: $toggle--height;
-      font-size: 75%;
-      text-transform: uppercase;
-      transition: opacity $toggle--transition_time;
-      color: $toggle_labelled--color-checked;
-      opacity: 1;
+      @include toggle--label();
+      max-width: 50%;
 
       &:last-of-type {
-        color: $toggle_labelled--color;
-        opacity: .6;
+        color: $toggle_labels--color;
+        opacity: $toggle_labels--opacity-unchecked_text;
       }
     }
 
@@ -108,8 +155,6 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
       width: 50%;
       right: 50%;
       border-radius: $toggle--border-radius;
-      border-radius: 0;
-      background: $toggle--dragger-bg;
     }
   }
 
@@ -119,11 +164,79 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
       background-color: $toggle--bg-checked;
     }
     ~ span span:first-of-type {
-      opacity: .6;
+      opacity: $toggle_labels--opacity-unchecked_text;
     }
     ~ span span:last-of-type {
       opacity: 1;
     }
+  }
+}
+
+/**
+ * Toggle custom theme, with labels of dynamic width
+ */
+.switch-light.pwpcpui-switch__labelsauto {
+  display: inline-block;
+  width: auto;
+  min-width: $toggle_labels--min-width;
+  max-width: 100%;
+
+  // element: outer span
+  > span {
+    display: inline-block;
+    @include toggle--label-wrapper-reset();
+
+    // element: inner span (labels)
+    > span {
+      @include toggle--label();
+      width: auto;
+
+      &:first-of-type {
+        @include toggle--labelsauto-dragger();
+      }
+
+      &:last-of-type {
+        color: $toggle_labels--color;
+        opacity: $toggle_labels--opacity-unchecked_text;
+      }
+    }
+
+    // element: active check
+    > a {
+      width: 100%;
+      right: 0;
+      @include toggle--dragger('reset');
+    }
+  }
+
+  // state: checked
+  input:checked {
+    ~ span {
+      background-color: $toggle--bg-checked;
+    }
+    ~ span span:first-of-type {
+      opacity: $toggle_labels--opacity-unchecked_text;
+      @include toggle--labelsauto-dragger('reset');
+    }
+    ~ span span:last-of-type {
+      opacity: 1;
+      @include toggle--labelsauto-dragger();
+    }
+  }
+
+  // state: focused
+  input:focus ~ span a {
+    border-color: transparent;
+    box-shadow: none;
+  }
+  input:focus ~ span span:first-of-type,
+  input:checked:focus ~ span span:last-of-type {
+    border-color: $WP--select-border-color-focus;
+    box-shadow: $WP--select-box-shadow-focus;
+  }
+  input:checked:focus ~ span span:first-of-type {
+    border-color: transparent;
+    box-shadow: none;
   }
 }
 
