@@ -39,10 +39,9 @@ class PWPcp_Customize_Control_Checkbox extends PWPcp_Customize_Control_Base {
 	protected function js_tpl() {
 		?>
 		<label>
-			<# if (data.label) { #>
-				<span class="customize-control-title">{{{ data.label }}}</span>
-				<input type="checkbox" name="_customize-pwpcp_toggle-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> <# if (data.value) { #>checked<# } #>>
-				<# } if (data.description) { #>{{{ data.description }}}<# } #>
+			<# if (data.label) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
+			<input type="checkbox" name="_customize-pwpcp_toggle-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> <# if (data.value) { #>checked<# } #>>
+			<# if (data.description) { #>{{{ data.description }}}<# } #>
 		</label>
 		<?php
 	}
