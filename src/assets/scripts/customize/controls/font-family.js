@@ -58,7 +58,7 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
    */
   ready: function () {
     this.__input = this._container.getElementsByClassName('pwpcp-selectize')[0];
-    this.fontFamilies = api.constants['font_families'].map(function (fontFamilyName) {
+    this._fontFamilies = api.constants['font_families'].map(function (fontFamilyName) {
       return { item: fontFamilyName };
     });
     this._updateUI();
@@ -85,7 +85,7 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
       maxItems: 10,
       persist: false,
       hideSelected: true,
-      options: this.fontFamilies,
+      options: this._fontFamilies,
       labelField: 'item',
       valueField: 'item',
       sortField: 'item',
@@ -95,6 +95,10 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
           value: input,
           text: input.replace(/'/g, '') // remove quotes from UI only
         };
+      },
+      render: {
+        item: this._selectizeRenderItemAndOption,
+        option: this._selectizeRenderItemAndOption
       }
     })
     .on('change', function () {
@@ -103,5 +107,17 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
     .on('item_remove', function (e,b) {
       if (DEBUG) console.log(this, e, b);
     });
+  },
+  /**
+   * Selectize render item and option function
+   *
+   * @static
+   * @param  {Object} data     The selectize option object representation.
+   * @param  {function} escape Selectize escape function.
+   * @return {string}          The option template.
+   */
+  _selectizeRenderItemAndOption: function (data, escape) {
+    var value = escape(data.item);
+    return '<div style="font-family:' + value + '">' + value.replace(/'/g, '').replace(/"/g, '') + '</div>';
   }
 });

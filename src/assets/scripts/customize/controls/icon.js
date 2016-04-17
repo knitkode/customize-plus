@@ -143,7 +143,7 @@ wpApi.controlConstructor.pwpcp_icon = api.controls.Icon = api.controls.Base.exte
     })
     .on('change', function () {
       setting.set(this.value);
-    })
+    });
   },
   /**
    * Selectize render item function
@@ -182,8 +182,7 @@ wpApi.controlConstructor.pwpcp_icon = api.controls.Icon = api.controls.Base.exte
    * @return {string}          The option template.
    */
   _selectizeRenderGroupHeader: function (data, escape) {
-    return '<div class="pwpcp-icon-selectHeader">' + escape(data.label) +
-      '</div>';
+    return '<div class="pwpcp-icon-selectHeader">' + escape(data.label) + '</div>';
   },
   /**
    * Get icon class name

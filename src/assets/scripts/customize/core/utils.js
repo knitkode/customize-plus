@@ -321,13 +321,13 @@ var Utils = (function () {
      *
      * @abstract
      * @static
-     * @param  {Object} item     The selectize option object representation.
+     * @param  {Object} data     The selectize option object representation.
      * @param  {function} escape Selectize escape function.
      * @return {string}          The option template.
      */
-    _selectizeRenderSize: function (item, escape) {
+    _selectizeRenderOptionSize: function (data, escape) {
       return '<div class="pwpcpsize-selectOption">' +
-          '<i>' + escape(item.valueCSS) + '</i> ' + escape(item.label) +
+          '<i>' + escape(data.valueCSS) + '</i> ' + escape(data.label) +
         '</div>';
     },
     /**
@@ -335,13 +335,13 @@ var Utils = (function () {
      *
      * @abstract
      * @static
-     * @param  {Object} item     The selectize option object representation.
+     * @param  {Object} data     The selectize option object representation.
      * @param  {function} escape Selectize escape function.
      * @return {string}          The option template.
      */
-    _selectizeRenderColor: function (item, escape) {
+    _selectizeRenderOptionColor: function (data, escape) {
       return '<div class="pwpcpcolor-selectOption" style="border-color:' +
-        escape(item.valueCSS) + '">' + escape(item.label) + '</div>';
+        escape(data.valueCSS) + '">' + escape(data.label) + '</div>';
     },
     /**
      * Get stylesheet by Node id
