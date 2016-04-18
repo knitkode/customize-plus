@@ -294,7 +294,6 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 			<# } if (data.description) { #>
 				<div class="description customize-control-description"><# if (marked) { #>{{{ marked(data.description) }}}<# } else { #>{{{ data.description }}}<# } #></div>
 			<# } #>
-			<div class="pwpcpui-spinner"></div>
 		<?php
 	}
 
