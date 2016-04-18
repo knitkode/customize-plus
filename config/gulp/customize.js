@@ -63,7 +63,7 @@ gulp.task('_customize-modernizr', function() {
   // modernizr does weird stuff, exclude it from build, just rebuild it on demand
   var rebuild = true;
   var modernizrOpts = extend(PLUGINS.modernizr, {
-    'tests' : [ 'cssanimations', 'csstransforms', 'filereader', 'webworkers' ]
+    'tests' : [ 'cssanimations', 'csstransforms', 'filereader', 'svg', 'webworkers' ]
   });
   // the src path is just needed by gulp but we don't want gulp-modernizr to
   // automatically look for tests to do, we just defined them here above
