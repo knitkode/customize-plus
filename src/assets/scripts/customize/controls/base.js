@@ -90,7 +90,7 @@ api.controls.Base = wpApi.Control.extend({
     // to make this work all data can't be stored in the DOM, which is good
     wpApi.section(control.section()).expanded.bind(function (expanded) {
       if (expanded) {
-        control.inflate();
+        _.defer(control.inflate.bind(control));
       } else {
         control.deflate();
       }
@@ -302,22 +302,20 @@ api.controls.Base = wpApi.Control.extend({
    */
   inflate: function (shouldResolveEmbeddedDeferred) {
     /* jshint funcscope: true */
-    // if (DEBUG) var t = performance.now();
+    if (DEBUG.performances) var t = performance.now();
     if (!this.template) {
       this.renderContent();
       if (DEBUG.performances) console.log('%c inflate DOM of ' + this.params.type +
         ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
-      this.rendered = true;
-      this.ready();
     } else {
       if (!this.rendered) {
         this._container.innerHTML = this.template;
         if (DEBUG.performances) console.log('%c inflate DOM of ' + this.params.type +
           ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
-      this.rendered = true;
-      this.ready();
     }
+    this.rendered = true;
+    this.ready();
     if (shouldResolveEmbeddedDeferred) {
       this.deferred.embedded.resolve();
     }
