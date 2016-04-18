@@ -6,6 +6,17 @@
 .pwpcpui {
 
   /**
+   * Alternative small and simple spinner, three rounded squares in a row
+   * from http://preloaders.net/en/rectangular
+   */
+  &-spinner {
+    display: inline-block;
+    width: 45px;
+    height: 14px;
+    background: url(images/_spinner.gif) center no-repeat;
+  }
+
+  /**
    * Toggle button
    *
    * Used for toggle button within controls (i.e. in color and dynamic controls)
