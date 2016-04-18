@@ -36,10 +36,10 @@
   border-color: transparent;
   border-style: solid;
   border-width: 1px 0;
-  transition: background .18s ease;
+  transition: background-color .18s ease;
 
   &:hover {
-    background: $control--bg-hover;
+    background-color: $control--bg-hover;
     border-color: darken($control--bg-hover, 1%);
   }
 
