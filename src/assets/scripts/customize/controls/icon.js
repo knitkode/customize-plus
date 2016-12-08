@@ -155,7 +155,7 @@ wpApi.controlConstructor.pwpcp_icon = api.controls.Icon = api.controls.Base.exte
    */
   _selectizeRenderItem: function (data, escape) {
     var value = data.id;
-    return '<div class="pwpcpui-hint--top" data-hint="' + escape(value) + '">' +
+    return '<div class="pwpcpui-tooltip--top" title="' + escape(value) + '">' +
         '<i class="' + escape(this._getIconClassName(value)) + '"></i>' +
       '</div>';
   },
@@ -169,7 +169,7 @@ wpApi.controlConstructor.pwpcp_icon = api.controls.Icon = api.controls.Base.exte
    */
   _selectizeRenderOption: function (data, escape) {
     var value = data.id;
-    return '<div class="pwpcp-icon-selectOption pwpcpui-hint--top" data-hint="' + escape(value) + '">' +
+    return '<div class="pwpcp-icon-selectOption pwpcpui-tooltip--top" title="' + escape(value) + '">' +
         '<i class="' + escape(this._getIconClassName(value)) + '"></i>' +
       '</div>';
   },

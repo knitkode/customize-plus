@@ -27,8 +27,9 @@ $WPcustomize--section-padding-horizontal: 12px; // @@wptight-cs from .accordion-
 $WPcustomize--control-margin-vertical: 12px;
 $WPcustomize--sidebar-width: 300px;
 $WPcustomize--sidebar-inner-width: $WPcustomize--sidebar-width - ($WPcustomize--section-padding-horizontal * 2);
-$WPcustomize--header-height: 45px;
 $WPcustomize--footer-height: 45px;
+$WPcustomize--header-height: 45px;
+$WPcustomize--headertoggle-borderwidth: 4px;
 $WPcustomize--btnback-width: $WPcustomize--header-height + 3;
 $WPcustomize--container-toggle-size: 40px;
 $WPcustomize--container-toggle-shadow-focus: 0 0 0 1px #5b9dd9, 0 0 2px 1px $WP--focus-box-shadow-color;
@@ -130,6 +131,7 @@ $compiler--feedback-bottom: $WPcustomize--footer-height;
 // Customize Plus component: Editor
 $editor--buttons-height: 25px;
 $editor--dropdown-height: 34px;
+$editor--expanded-zindex: 999999;
 
 // Customize Plus component: Resizer
 $resizer--handle-width: 5px;

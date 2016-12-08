@@ -10,7 +10,8 @@
  * so they are fullwidth in the sidebar, allowing a nice highlighting
  * in various situation like `:hover` or `.focus()`
  */
-#customize-theme-controls .accordion-section-content {
+#customize-theme-controls .accordion-section-content,
+#customize-theme-controls .customize-pane-child.accordion-section-content {
   padding: 0;
 }
 .customize-section-title {
