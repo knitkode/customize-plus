@@ -4,13 +4,13 @@
 
 // customize - vendors
 @import "vendor-custom/spinner";
-//=require ../bower_components/highlight/styles/github.css
 @import "vendor-custom/css-toggle-switch";
 @import "vendor-custom/css-toggle-switch--wordpress";
 @import "vendor-custom/jquery-ui.structure";
 @import "vendor-custom/jquery-ui.theme";
 @import "vendor-custom/jquery-ui.slider-pips";
 @import "vendor-custom/jquery-ui.slider";
+@import "vendor-custom/jquery-ui.tooltip";
 //=require ../bower_components/selectize/dist/css/selectize.css
 @import "vendor-custom/selectize-custom";
 @import "vendor-custom/spectrum";

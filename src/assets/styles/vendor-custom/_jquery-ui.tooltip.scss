@@ -1,0 +1,39 @@
+/**
+ * jQuery UI tooltips custom style
+ *
+ * The default style is considered to apply to the tooltip positioned
+ * on `top center`
+ */
+.ui-tooltip {
+  z-index: $tooltip--zindex;
+  position: absolute;
+  padding: 3px 8px;
+  background: $tooltip--bg;
+  color: $tooltip--color;
+  max-width: $tooltip--maxwidth;
+  font-size: $tooltip--fontsize;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -($tooltip--arrowsize / 2);
+    width: 0;
+    height: 0;
+    background: transparent;
+    border: $tooltip--arrowsize solid transparent;
+    border-top-color: $tooltip--bg;
+    z-index: $tooltip--zindex + 1;
+  }
+
+  // position bottom
+  &.bottom {
+
+    &::before {
+      top: -($tooltip--arrowsize * 2);
+      border-bottom-color: $tooltip--bg;
+      border-top-color: transparent;
+    }
+  }
+}

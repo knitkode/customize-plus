@@ -12,6 +12,7 @@
   //=require customize/core/banner.js
   //=require customize/core/skeleton.js
   //=require customize/core/tabs.js
+  //=require customize/core/tooltips.js
 
   //=require customize/controls/base.js
 
@@ -19,6 +20,7 @@
     if (DEBUG.performances) var t = performance.now();
     WpTight.init();
     Tabs.init();
+    Tooltips.init();
     if (DEBUG.performances) console.log( 'Customize.js Base (ready start->end) took ' + (performance.now() - t) + ' ms.');
   });
 

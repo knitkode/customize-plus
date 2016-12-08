@@ -78,6 +78,14 @@ $state--danger-border: #eb9b9b;
 $state--danger-box-shadow: 0 0 4px #c00;
 $state--danger-color: #3b0000;
 
+// Customize UI: Tooltips
+$tooltip--zindex: 1000000;
+$tooltip--maxwidth: 300px;
+$tooltip--bg: #383838;
+$tooltip--color: white;
+$tooltip--arrowsize: 5px;
+$tooltip--fontsize: 12px;
+
 // Customize UI: Popovers
 $popover--bg: #fff;
 $popover--box-shadow-distance: 0 10px;

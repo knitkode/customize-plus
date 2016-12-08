@@ -100,6 +100,20 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		private static $min = '';
 
 		/**
+		 * JavaScript core dependencies
+		 *
+		 * @since  0.0.1
+		 * @var array
+		 */
+		const JS_BASE_DEPENDECIES = array(
+			'json2',
+			'underscore',
+			'jquery',
+			'jquery-ui-tooltip',
+			'jquery-ui-slider'
+		);
+
+		/**
 		 * Constructor
 		 *
 		 * @since  0.0.1
@@ -143,7 +157,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		public static function enqueue_js_admin() {
 			do_action( 'PWPcp/customize/enqueue_js_admin_pre', 'PWPcp-customize' );
 
-			wp_register_script( 'PWPcp-customize-base', plugins_url( 'assets/customize-base'.self::$min.'.js', PWPCP_PLUGIN_FILE ), array( 'json2', 'underscore', 'jquery', 'jquery-ui-slider' ), PWPCP_PLUGIN_VERSION, false );
+			wp_register_script( 'PWPcp-customize-base', plugins_url( 'assets/customize-base'.self::$min.'.js', PWPCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, PWPCP_PLUGIN_VERSION, false );
 			wp_localize_script( 'PWPcp-customize-base', 'PWPcp', array(
 					'components' => apply_filters( 'PWPcp/customize/get_js_components', array() ),
 					'constants' => self::get_js_constants(),
