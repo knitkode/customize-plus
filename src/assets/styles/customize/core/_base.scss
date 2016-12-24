@@ -24,7 +24,6 @@
   display: block;
 }
 
-
 /**
  * Overflow fix.
  *
@@ -38,8 +37,9 @@
  * to attach them to the body (which is not a very common
  * feature in those js libraries...).
  */
-.accordion-section-content {
-  overflow: visible; // @@override \\
+#customize-theme-controls .customize-pane-child.open {
+  min-height: 100%;
+  overflow-y: visible;
 }
 
 /**
