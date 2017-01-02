@@ -23,6 +23,9 @@
   padding-left: $control--spacing-left;
   padding-right: $control--spacing-right;
 }
+.customize-section-description-container+#customize-control-custom_css:last-child {
+  margin-bottom: 0; // @@wptight-css override { margin-bottom: -12px; } \\
+}
 
 /**
  * Control changes, class applied on `<li>` container of each of our custom
