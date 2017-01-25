@@ -331,8 +331,8 @@ api.controls.Base = wpApi.Control.extend({
     // `_validateWrap` method above)
     this._onValidateSuccess();
 
-    if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
-      ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
+    // if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
+    //   ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
   },
   /**
    * Softenize
