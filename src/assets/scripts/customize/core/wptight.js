@@ -112,6 +112,7 @@ var WpTight = (function () {
      */
     _customizeQueryParamsKeys: [
       'changeset_uuid', // e.g. e6ba8e82-e628-4d6e-b7b4-39a480bc043c
+      'customize_snapshot_uuid' // e.g. 52729bb7-9686-496e-90fa-7170405a5502
     ]
   };
 })();
