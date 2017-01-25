@@ -89,10 +89,16 @@ api.controls.Base = wpApi.Control.extend({
     // embed controls only when the parent section get clicked to keep the DOM light,
     // to make this work all data can't be stored in the DOM, which is good
     wpApi.section(control.section()).expanded.bind(function (expanded) {
-      if (expanded) {
+      // @@doubt \\
+      // either deflate and re-inflate dom each time...
+      // if (expanded) {
+      //   _.defer(control.inflate.bind(control));
+      // } else {
+      //   control.deflate();
+      // }
+      // ...or just do it the first time a control is expanded
+      if (expanded && !control.rendered) {
         _.defer(control.inflate.bind(control));
-      } else {
-        control.deflate();
       }
     });
 
