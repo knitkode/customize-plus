@@ -106,7 +106,13 @@ var WpTight = (function () {
      * @internal
      * @type {object}
      */
-    _colorSchema: _getWpAdminColors()
+    _colorSchema: _getWpAdminColors(),
+    /**
+     * WordPress query parameters used in the customize app url
+     */
+    _customizeQueryParamsKeys: [
+      'changeset_uuid', // e.g. e6ba8e82-e628-4d6e-b7b4-39a480bc043c
+    ]
   };
 })();
 

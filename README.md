@@ -56,7 +56,13 @@ Donate
 
 License
 ---------------
- [![License](https://img.shields.io/badge/license-GPL--2.0%2B-blue.svg)](https://github.com/PlusWP/customize-plus--theme/blob/master/license.txt) [![PlusWP](https://img.shields.io/badge/%C2%A9PlusWP-2015-blue.svg)](http://pluswp.com)
+ [![License](https://img.shields.io/badge/license-GPL--3.0%2B-blue.svg)](https://github.com/PlusWP/customize-plus--theme/blob/master/license.txt) [![PlusWP](https://img.shields.io/badge/%C2%A9PlusWP-2015-blue.svg)](http://pluswp.com)
+
+Unless otherwise specified, all the plugin files are licensed under GNU General Public License version 3, see file license.txt. The exceptions to this license are as follows:
+
+- Bootstrap by Twitter http://twitter.github.com/bootstrap/ is licensed under the GPL-compatible [http://www.apache.org/licenses/LICENSE-2.0 Apache License v2.0]
+- modernizr.js is dual licensed under the BSD and MIT licenses
+- // @@todo, grabbed from https://github.com/presscustomizr/customizr#licenses \\
 
 
 ---------------
