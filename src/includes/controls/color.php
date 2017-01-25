@@ -129,7 +129,7 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 		<?php $this->js_tpl_header(); ?>
 		<span class="pwpcpcolor-current pwpcpcolor-current-bg"></span>
 		<span class="pwpcpcolor-current pwpcpcolor-current-overlay" style="background:{{data.valueCSS}}"></span>
-		<a href="javascript:void(0)" class="pwpcpui-toggle pwpcpcolor-toggle"><?php _e( 'Select Color' ) ?></a>
+		<button class="pwpcpui-toggle pwpcpcolor-toggle"><?php _e( 'Select Color' ) ?></button>
 		<div class="pwpcp-expander">
 			<input class="pwpcpcolor-input" type="text">
 		</div>
