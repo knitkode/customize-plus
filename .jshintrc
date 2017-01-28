@@ -1,12 +1,4 @@
 {
   "extends": "config/common/.jshintrc-base",
-  "predef": [
-    "wpApi",
-    "PWPcp",
-    "api",
-    "$window",
-    "$document",
-    "body",
-    "validator"
-  ]
+  "esnext": true
 }

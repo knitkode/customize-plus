@@ -111,11 +111,85 @@ var adminScriptsLibraries = [
  *
  * @access private
  */
-gulp.task('_customize-scripts-admin_base', function() {
+const rollup = require('rollup').rollup;
+const buble  = require('rollup-plugin-buble');
+// const resolve  = require('rollup-plugin-node-resolve');
+// const commonjs  = require('rollup-plugin-commonjs');
+
+const rollupOpts = {
+  external: [
+    'window',
+    'document',
+    'jquery',
+    'underscore',
+    'wp',
+    'PWPcp',
+    'modernizr',
+    'validator',
+    'mousetrap',
+    'swal',
+    'toastr',
+    'marked',
+  ],
+  plugins: [
+    // resolve({
+    //   jsnext: true,
+    //   main: true,
+    //   browser: true,
+    // }),
+    // commonjs(),
+    buble(),
+    // eslint({
+    //   exclude: [
+    //     'src/styles/**',
+    //   ]
+    // })
+  ]
+}
+
+const rollupOptsWrite = {
+  format: 'iife',
+  // exports: [],
+  // moduleName: 'api',
+  indent: '  ',
+  intro: 'var DEBUG = true;',
+  globals: {
+    window: 'window',
+    document: 'document',
+    jquery: 'jQuery',
+    underscore: '_',
+    wp: 'wp',
+    PWPcp: 'PWPcp',
+    modernizr: 'Modernizr',
+    validator: 'validator',
+    mousetrap: 'Mousetrap',
+    swal: 'swal',
+    toastr: 'toastr',
+    marked: 'marked'
+  },
+  namedFunctionExpressions: false,
+  // interop: false, // @@todo try with this \\
+  banner: '// banner test',
+  footer: '// footer test',
+  format: 'iife',
+};
+
+gulp.task('_customize-scripts-admin_base-rollup', () => {
+  return rollup(extend(rollupOpts, { entry: PATHS.src.scripts + 'customize-base.js' })).then((bundle) => {
+    return bundle.write(extend(rollupOptsWrite, { dest: '.tmp/customize-base.js' }));
+  });
+});
+
+gulp.task('_customize-scripts-admin_main-rollup', () => {
+  return rollup(extend(rollupOpts, { entry: PATHS.src.scripts + 'customize.js' })).then((bundle) => {
+    return bundle.write(extend(rollupOptsWrite, { dest: '.tmp/customize.js' }));
+  });
+});
+
+gulp.task('_customize-scripts-admin_base', ['_customize-scripts-admin_base-rollup'], function() {
   var stream = new StreamQueue({ objectMode: true });
   stream.queue(gulp.src(adminScriptsLibraries));
-  stream.queue(gulp.src(PATHS.src.scripts + 'customize-base.js')
-    .pipe($.include())
+  stream.queue(gulp.src('.tmp/customize-base.js')
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
     .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
@@ -128,12 +202,10 @@ gulp.task('_customize-scripts-admin_base', function() {
     .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
-gulp.task('_customize-scripts-admin_main', function() {
-  return gulp.src(PATHS.src.scripts + 'customize.js')
-    .pipe($.include())
+gulp.task('_customize-scripts-admin_main', ['_customize-scripts-admin_main-rollup'], function() {
+  return gulp.src('.tmp/customize.js')
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
     .pipe(gulp.dest(PATHS.build.scripts))
     .pipe($.rename({ suffix: '.min' }))
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = !!api.DEBUG;', '')))
@@ -148,6 +220,9 @@ gulp.task('_customize-scripts-admin_main', function() {
  */
 gulp.task('_customize-scripts-preview', function() {
   return gulp.src(PATHS.src.scripts + 'customize-preview.js')
+    // .pipe($.sourcemaps.init())
+    // .pipe($.buble())
+    // .pipe($.sourcemaps.write('.'))
     .pipe($.concat('customize-preview.js', PLUGINS.concat))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
     .pipe(gulp.dest(PATHS.build.scripts))
@@ -155,17 +230,4 @@ gulp.task('_customize-scripts-preview', function() {
     .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.scripts));
-});
-
-/**
- * Codestyle Trial
- *
- */
-gulp.task('codestyle-trial', function() {
-  return gulp.src('**/*.js', { cwd: PATHS.src.scripts })
-    .pipe($.include())
-    .pipe($.trimlines(PLUGINS.trimlines))
-    .pipe($.jscs(PLUGINS.jscs))
-    // .pipe($.replace('var DEBUG = true;', '')) // or var DEBUG = !!api.DEBUG;
-    .pipe(gulp.dest(PATHS.src.scripts));
 });
