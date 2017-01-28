@@ -1,3 +1,8 @@
+import _ from 'underscore';
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+// import ControlBase from './base';
+
 /**
  * Control Multicheck
  *
@@ -7,7 +12,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_multicheck = api.controls.Multicheck = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * @override
    * @return {string|object<string,boolean>} A JSONified Array
@@ -142,3 +147,5 @@ wpApi.controlConstructor.pwpcp_multicheck = api.controls.Multicheck = api.contro
     }
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_multicheck'] = api.controls.Multicheck = Control;

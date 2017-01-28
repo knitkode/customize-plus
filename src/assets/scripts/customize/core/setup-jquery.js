@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 /**
  * Set default speed of jQuery animations
  */

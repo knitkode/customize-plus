@@ -1,3 +1,8 @@
+import $ from 'jquery';
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+// import ControlBase from './base';
+
 /**
  * Font Family Control
  *
@@ -7,7 +12,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * @override
    * @see php `PWPcp_Sanitize::font_families`
@@ -121,3 +126,5 @@ wpApi.controlConstructor.pwpcp_font_family = api.controls.Base.extend({
     return '<div style="font-family:' + value + '">' + value.replace(/'/g, '').replace(/"/g, '') + '</div>';
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_font_family'] = api.controls.FontFamily = Control;

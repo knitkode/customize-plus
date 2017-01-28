@@ -1,9 +1,14 @@
+import $ from 'jquery';
+import _ from 'underscore';
+import { api } from './api';
+import { $document, body, $readyDOM } from './globals';
+
 /**
  * Tooltips
  *
  * Manage tooltips using jQuery UI Tooltip
  *
- * @class api.Tooltips
+ * @class api.core.Tooltips
  * @requires jQueryUI.Tooltip
  */
 var Tooltips = (function () {
@@ -77,5 +82,7 @@ var Tooltips = (function () {
   };
 })();
 
+$readyDOM.then(Tooltips.init.bind(Tooltips));
+
 // export to public API
-api.Tooltips = Tooltips;
+export default api.core.Tooltips = Tooltips;

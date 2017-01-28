@@ -1,29 +1,16 @@
-//=include customize/tpl-begin.js
+import './customize/core/api';
+import './customize/core/globals';
 
-  //=include customize/core/setup-globals.js
+import './customize/core/setup-jquery';
+import './customize/core/setup-markdown';
 
-  //=require customize/core/setup-jquery.js
-  //=require customize/core/setup-markdown.js
+import './customize/core/regexes';
+import './customize/core/utils';
+import './customize/core/validators';
+import './customize/core/wptight';
+import './customize/core/banner';
+import './customize/core/skeleton';
+import './customize/core/tabs';
+import './customize/core/tooltips';
 
-  //=require customize/core/regexes.js
-  //=require customize/core/utils.js
-  //=require customize/core/validators.js
-  //=require customize/core/wptight.js
-  //=require customize/core/banner.js
-  //=require customize/core/skeleton.js
-  //=require customize/core/tabs.js
-  //=require customize/core/tooltips.js
-
-  //=require customize/controls/base.js
-
-  $document.ready(function() {
-    if (DEBUG.performances) var t = performance.now();
-    WpTight.init();
-    Tabs.init();
-    Tooltips.init();
-    if (DEBUG.performances) console.log( 'Customize.js Base (ready start->end) took ' + (performance.now() - t) + ' ms.');
-  });
-
-  //=require customize/temp.js
-
-//=include customize/tpl-end.js
+import './customize/controls/base';

@@ -1,3 +1,7 @@
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+import ControlBaseRadio from './base-radio';
+
 /**
  * Control Radio
  *
@@ -8,4 +12,6 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_radio = api.controls.BaseRadio;
+let Control = ControlBaseRadio;
+
+export default wpApi.controlConstructor['pwpcp_radio'] = api.controls.Radio = Control;

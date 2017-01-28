@@ -1,15 +1,18 @@
-/* global Modernizr */
+import $ from 'jquery';
+import Modernizr from 'modernizr';
+import { api } from './api';
+import { body, $readyDOM, wpApi } from './globals';
 
 /**
  * Skeleton element wrappers
  *
- * @class api.Skeleton
+ * @class api.core.Skeleton
  * @requires Modernizr
  */
 var Skeleton = (function () {
 
   /** @type {JQuery} */
-  var _$deferredDom = $.Deferred();
+  var _$deferredDom = $.Deferred(); // @@todo to check if I still need it, see $reaadyDOM \\
 
   /**
    * Hide loader and ubnid itself
@@ -26,7 +29,7 @@ var Skeleton = (function () {
      * Init
      */
     init: function () {
-      $document.ready(this._initOnDomReady.bind(this));
+      $readyDOM.then(this._initOnDomReady.bind(this));
     },
     /**
      * Init on DOM ready
@@ -104,4 +107,4 @@ var Skeleton = (function () {
 Skeleton.init();
 
 // export to public API
-api.Skeleton = Skeleton;
+export default api.core.Skeleton = Skeleton;

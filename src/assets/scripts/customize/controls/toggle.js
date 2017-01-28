@@ -1,3 +1,7 @@
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+import ControlCheckbox from './checkbox';
+
 /**
  * Control Toggle
  *
@@ -7,6 +11,7 @@
  * @augments wp.customize.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
- * @requires api.Utils
  */
-wpApi.controlConstructor.pwpcp_toggle = api.controls.Checkbox;
+let Control = ControlCheckbox;
+
+export default wpApi.controlConstructor['pwpcp_toggle'] = api.controls.Toggle = Control;

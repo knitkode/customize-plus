@@ -1,3 +1,8 @@
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+import Utils from '../core/utils';
+import ControlBaseInput from './base-input';
+
 /**
  * Control Text class
  *
@@ -7,9 +12,9 @@
  * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Classnds
- * @requires api.Utils
+ * @requires api.core.Utils
  */
-wpApi.controlConstructor.pwpcp_text = api.controls.BaseInput.extend({
+let Control = ControlBaseInput.extend({
   /**
    * @override
    * @inheritdoc api.controls.Base.validate
@@ -34,7 +39,7 @@ wpApi.controlConstructor.pwpcp_text = api.controls.BaseInput.extend({
     // text
     else {
       // always strip HTML
-      value = api.Utils._stripHTML(value);
+      value = Utils._stripHTML(value);
     }
 
     if (errorMsg) {
@@ -47,3 +52,5 @@ wpApi.controlConstructor.pwpcp_text = api.controls.BaseInput.extend({
     }
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_text'] = api.controls.Text = Control;

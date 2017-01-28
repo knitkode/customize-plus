@@ -1,10 +1,11 @@
-/* global Regexes */
+import validator from 'validator';
+import Regexes from './regexes';
 
 /**
  * Validator
  *
  * Extends {@link https://github.com/chriso/validator.js}
- * @requires api.Regexes
+ * @requires api.core.Regexes
  */
 (function() {
 

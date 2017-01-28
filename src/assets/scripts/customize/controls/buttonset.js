@@ -1,3 +1,7 @@
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+import ControlBaseRadio from './base-radio';
+
 /**
  * Control Buttonset
  *
@@ -8,4 +12,4 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_buttonset = api.controls.BaseRadio;
+wpApi.controlConstructor['pwpcp_buttonset'] = ControlBaseRadio;

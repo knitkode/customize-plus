@@ -1,4 +1,8 @@
-/* global tinyMCE */
+import $ from 'jquery';
+import _ from 'underscore';
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+// import ControlBase from './base';
 
 /**
  * Control Textarea class
@@ -10,7 +14,7 @@
  * @augments wp.customize.Class
  * @requires tinyMCE
  */
-wpApi.controlConstructor.pwpcp_textarea = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * @override
    */
@@ -48,7 +52,7 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.Base.extend({
       // it might be that this method is called too soon, even before tinyMCE
       // has been loaded, so try it and don't break.
       try {
-        tinyMCE.remove('#' + this._wpEditorID);
+        window.tinyMCE.remove('#' + this._wpEditorID);
       } catch(e) {}
     }
   },
@@ -59,7 +63,7 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.Base.extend({
     var lastValue;
     var wpEditorInstance;
     if (this.params.wp_editor) {
-      wpEditorInstance = tinyMCE.get(this._wpEditorID);
+      wpEditorInstance = window.tinyMCE.get(this._wpEditorID);
       lastValue = wpEditorInstance.getContent();
     } else {
       lastValue = this.__textarea.value;
@@ -212,6 +216,8 @@ wpApi.controlConstructor.pwpcp_textarea = api.controls.Base.extend({
 
     // in this way we make sure the required options can't be overwritten
     // by developers when declaring wp_editor support through an array of opts
-    tinyMCE.init(_.extend(options, optionsRequired));
+    window.tinyMCE.init(_.extend(options, optionsRequired));
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_textarea'] = api.controls.Textarea = Control;

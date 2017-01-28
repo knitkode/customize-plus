@@ -1,10 +1,10 @@
-/* exported: Regexes */
+import { api } from './api';
 /* jshint maxlen: 1000 */
 
 /**
  * Regexes
  *
- * @class api.Regexes
+ * @class api.core.Regexes
  *
  * It might be that we need a regex that match of available words,
  * in that case it might be that we want to define the words in an
@@ -12,7 +12,7 @@
  * do: `new RegExp(MY_VAR.join('|'), 'g')`. See {@link
  * http://stackoverflow.com/q/28280920/1938970 stackoverflow}.
  */
-var Regexes = {
+const Regexes = {
   /**
    * Whitespaces global match
    *
@@ -113,4 +113,4 @@ var Regexes = {
 };
 
 // export to public API
-api.Regexes = Regexes;
+export default api.core.Regexes = Regexes;

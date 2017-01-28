@@ -1,3 +1,9 @@
+import $ from 'jquery';
+import _ from 'underscore';
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+// import ControlBase from './base';
+
 /**
  * Control Select class
  *
@@ -8,7 +14,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_select = api.controls.Select = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * override
    */
@@ -112,3 +118,5 @@ wpApi.controlConstructor.pwpcp_select = api.controls.Select = api.controls.Base.
     }
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_select'] = api.controls.Select = Control;

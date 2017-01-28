@@ -1,27 +1,24 @@
-//=include customize/tpl-begin.js
+import './customize/core/api';
+import './customize/core/globals';
 
-  //=include customize/core/setup-globals.js
+import './customize/controls/base-input';
+import './customize/controls/base-radio';
 
-  //=require customize/controls/base-input.js
-  //=require customize/controls/base-radio.js
-
-  //=require customize/controls/buttonset.js
-  //=require customize/controls/checkbox.js
-  //=require customize/controls/color.js
-  //=require customize/controls/content.js
-  //=require customize/controls/font-family.js
-  //=require customize/controls/icon.js
-  //=require customize/controls/multicheck.js
-  //=require customize/controls/number.js
-  //=require customize/controls/radio.js
-  //=require customize/controls/radio-image.js
-  //=require customize/controls/select.js
-  //=require customize/controls/font-weight.js
-  //=require customize/controls/slider.js
-  //=require customize/controls/sortable.js
-  //=require customize/controls/tags.js
-  //=require customize/controls/text.js
-  //=require customize/controls/textarea.js
-  //=require customize/controls/toggle.js
-
-//=include customize/tpl-end.js
+import './customize/controls/buttonset';
+import './customize/controls/checkbox';
+import './customize/controls/color';
+import './customize/controls/content';
+import './customize/controls/font-family';
+import './customize/controls/icon';
+import './customize/controls/multicheck';
+import './customize/controls/number';
+import './customize/controls/radio';
+import './customize/controls/radio-image';
+import './customize/controls/select';
+import './customize/controls/font-weight';
+import './customize/controls/slider';
+import './customize/controls/sortable';
+import './customize/controls/tags';
+import './customize/controls/text';
+import './customize/controls/textarea';
+import './customize/controls/toggle';

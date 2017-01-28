@@ -1,3 +1,6 @@
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+
 /**
  * Control Content class
  *
@@ -7,7 +10,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_content = api.controls.Content = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * Some methods are not needed here
    *
@@ -22,3 +25,5 @@ wpApi.controlConstructor.pwpcp_content = api.controls.Content = api.controls.Bas
   softenize: function () {},
   _extras: function () {}
 });
+
+export default wpApi.controlConstructor['pwpcp_content'] = api.controls.Content = Control;

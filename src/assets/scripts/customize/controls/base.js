@@ -1,4 +1,9 @@
-/* global Skeleton, Utils */
+import $ from 'jquery';
+import _ from 'underscore';
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+import Skeleton from '../core/skeleton';
+import Utils from '../core/utils';
 
 /**
  * Control Base class
@@ -14,8 +19,8 @@
  * @class api.controls.Base
  * @extends wp.customize.Control
  * @augments wp.customize.Class
- * @requires api.Skeleton
- * @requires api.Utils
+ * @requires api.core.Skeleton
+ * @requires api.core.Utils
  */
 api.controls.Base = wpApi.Control.extend({
   /**
@@ -559,3 +564,5 @@ wpApi.bind('save', function () {
     }
   });
 });
+
+export default api.controls.Base;

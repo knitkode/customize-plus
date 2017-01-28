@@ -1,3 +1,7 @@
+import $ from 'jquery';
+import _ from 'underscore';
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
 /* global tinycolor */
 
 /**
@@ -18,7 +22,7 @@ $.fn.spectrum.load = false;
  * @augments wp.customize.Class
  * @requires tinycolor
  */
-wpApi.controlConstructor.pwpcp_color = api.controls.Color = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * Use tinycolor (included in spectrum.js) to always convert colors to their
    * rgb value, so to have the same output result when the input is `red` or
@@ -217,3 +221,5 @@ wpApi.controlConstructor.pwpcp_color = api.controls.Color = api.controls.Base.ex
     }
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_color'] = api.controls.Color = Control;

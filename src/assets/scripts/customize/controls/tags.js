@@ -1,3 +1,10 @@
+import $ from 'jquery';
+import _ from 'underscore';
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+import Utils from '../core/utils';
+// import ControlBase from './base';
+
 /**
  * Control Tags class
  *
@@ -6,9 +13,9 @@
  * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
- * @requires api.Utils
+ * @requires api.core.Utils
  */
-wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * @override
    */
@@ -25,7 +32,7 @@ wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
           newValue = newValue.slice(0, maxItems);
         }
       }
-      return api.Utils._stripHTML(newValue.join(','));
+      return Utils._stripHTML(newValue.join(','));
     }
     return { error: true };
   },
@@ -89,3 +96,5 @@ wpApi.controlConstructor.pwpcp_tags = api.controls.Base.extend({
     $(this.__input).selectize(options);
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_tags'] = api.controls.Tags = Control;

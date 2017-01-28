@@ -1,3 +1,7 @@
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+import ControlSelect from './select';
+
 /**
  * Control Font Weight
  *
@@ -8,4 +12,6 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_font_weight = api.controls.Select;
+let Control = ControlSelect;
+
+export default wpApi.controlConstructor['pwpcp_font_weight'] = api.controls.FontWeight = Control;

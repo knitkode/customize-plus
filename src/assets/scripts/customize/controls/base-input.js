@@ -1,3 +1,7 @@
+import $ from 'jquery';
+import { api } from '../core/api';
+// import ControlBase from './base';
+
 /**
  * Control Base Input class
  *
@@ -7,7 +11,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-api.controls.BaseInput = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
@@ -34,3 +38,5 @@ api.controls.BaseInput = api.controls.Base.extend({
       });
   }
 });
+
+export default api.controls.BaseInput = Control;

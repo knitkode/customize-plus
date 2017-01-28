@@ -1,3 +1,8 @@
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+import Utils from '../core/utils';
+// import ControlBase from './base';
+
 /**
  * Control Checkbox
  *
@@ -8,7 +13,7 @@
  * @augments wp.customize.Class
  * @requires api.Utils
  */
-wpApi.controlConstructor.pwpcp_checkbox = api.controls.Checkbox = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * Normalize setting for soft comparison
    *
@@ -28,14 +33,14 @@ wpApi.controlConstructor.pwpcp_checkbox = api.controls.Checkbox = api.controls.B
    * @override
    */
   validate: function (newValue) {
-    return api.Utils._toBoolean(newValue) ? 1 : 0;
+    return Utils._toBoolean(newValue) ? 1 : 0;
   },
   /**
    * @override
    */
   syncUI: function (value) {
-    var valueClean = api.Utils._toBoolean(value);
-    var inputStatus = api.Utils._toBoolean(this.__input.checked);
+    var valueClean = Utils._toBoolean(value);
+    var inputStatus = Utils._toBoolean(this.__input.checked);
     if (inputStatus !== valueClean) {
       this.__input.checked = valueClean;
     }
@@ -47,7 +52,7 @@ wpApi.controlConstructor.pwpcp_checkbox = api.controls.Checkbox = api.controls.B
     this.__input = this._container.getElementsByTagName('input')[0];
 
     // sync input value on ready
-    this.__input.checked = api.Utils._toBoolean(this.setting());
+    this.__input.checked = Utils._toBoolean(this.setting());
 
     // bind input on ready
     this.__input.onchange = function (event) {
@@ -57,3 +62,5 @@ wpApi.controlConstructor.pwpcp_checkbox = api.controls.Checkbox = api.controls.B
     }.bind(this);
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_checkbox'] = api.controls.Checkbox = Control;

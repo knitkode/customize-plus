@@ -1,9 +1,11 @@
-/* global WpTight */
+import { api } from './api';
+import WpTight from './wptight';
+import { $document } from './globals';
 
 /**
  * Banner for free plugin
  *
- * @requires api.WpTight
+ * @requires api.core.WpTight
  */
 /** @type {Boolean} */
 api._banner = true;

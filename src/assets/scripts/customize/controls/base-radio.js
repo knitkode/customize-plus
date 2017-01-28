@@ -1,3 +1,7 @@
+import _ from 'underscore';
+import { api } from '../core/api';
+// import ControlBase from './base';
+
 /**
  * Control Base Radio class
  *
@@ -7,7 +11,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-api.controls.BaseRadio = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * @override
    */
@@ -54,3 +58,5 @@ api.controls.BaseRadio = api.controls.Base.extend({
     }
   }
 });
+
+export default api.controls.BaseRadio = Control;

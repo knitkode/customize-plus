@@ -1,3 +1,7 @@
+import $ from 'jquery';
+import Modernizr from 'modernizr';
+import { api } from './api';
+import { $document, $readyDOM, wpApi } from './globals';
 /* global Screenpreview */
 
 /**
@@ -5,7 +9,7 @@
  *
  * Manage tabbed content inside controls
  *
- * @class api.Tabs
+ * @class api.core.Tabs
  * @requires api.components.Screenpreview
  */
 var Tabs = (function () {
@@ -118,10 +122,17 @@ var Tabs = (function () {
      *                            control container)
      */
     syncSize: function ($container) {
-      _updateScreenPickerTabs(Screenpreview.getSize(), $container);
+      // we might not have the Screenpreview component enabled
+      try {
+        _updateScreenPickerTabs(api.components.Screenpreview.getSize(), $container);
+      } catch(e) {
+        console.warn('Tabs tried to use Screenpreview, which is undefined.', e);
+      }
     }
   };
 })();
 
+$readyDOM.then(Tabs.init.bind(Tabs));
+
 // export to public API
-api.Tabs = Tabs;
+export default api.core.Tabs = Tabs;

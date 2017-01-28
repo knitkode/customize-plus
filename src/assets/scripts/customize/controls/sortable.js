@@ -1,3 +1,8 @@
+import _ from 'underscore';
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+// import ControlBase from './base';
+
 /**
  * Control Sortable
  *
@@ -8,7 +13,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_sortable = api.controls.Sortable = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * @override
    */
@@ -97,3 +102,5 @@ wpApi.controlConstructor.pwpcp_sortable = api.controls.Sortable = api.controls.B
     this.container.sortable('refresh');
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_sortable'] = api.controls.Sortable = Control;

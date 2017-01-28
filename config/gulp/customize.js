@@ -130,6 +130,7 @@ const rollupOpts = {
     'swal',
     'toastr',
     'marked',
+    'hljs',
   ],
   plugins: [
     // resolve({
@@ -165,7 +166,8 @@ const rollupOptsWrite = {
     mousetrap: 'Mousetrap',
     swal: 'swal',
     toastr: 'toastr',
-    marked: 'marked'
+    marked: 'marked',
+    hljs: 'hljs',
   },
   namedFunctionExpressions: false,
   // interop: false, // @@todo try with this \\
@@ -192,7 +194,6 @@ gulp.task('_customize-scripts-admin_base', ['_customize-scripts-admin_base-rollu
   stream.queue(gulp.src('.tmp/customize-base.js')
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
-    .pipe($.if(CONFIG.isDist, $.trimlines(PLUGINS.trimlines)))
   );
   return stream.done()
     .pipe($.concat('customize-base.js', PLUGINS.concat))

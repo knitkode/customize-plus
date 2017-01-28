@@ -1,3 +1,8 @@
+import validator from 'validator';
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+import ControlBaseInput from './base-input';
+
 /**
  * Control Number
  *
@@ -9,7 +14,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_number = api.controls.Number = api.controls.BaseInput.extend({
+let Control = ControlBaseInput.extend({
   /**
    * @override
    */
@@ -56,3 +61,5 @@ wpApi.controlConstructor.pwpcp_number = api.controls.Number = api.controls.BaseI
     }
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_number'] = api.controls.Number = Control;

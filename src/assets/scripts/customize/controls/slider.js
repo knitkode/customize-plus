@@ -1,3 +1,10 @@
+import $ from 'jquery';
+import _ from 'underscore';
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+import Regexes from '../core/regexes';
+// import ControlBase from './base';
+
 /**
  * Control Slider
  *
@@ -7,9 +14,9 @@
  * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
- * @requires api.Regexes
+ * @requires api.core.Regexes
  */
-wpApi.controlConstructor.pwpcp_slider = api.controls.Slider = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * Let's consider '44' to be equal to 44.
    * @override
@@ -133,7 +140,7 @@ wpApi.controlConstructor.pwpcp_slider = api.controls.Slider = api.controls.Base.
    */
   _extractFirstUnit: function (value) {
     var valueOrigin = value || this.setting();
-    var matchesUnit = api.Regexes._extractUnit.exec(valueOrigin);
+    var matchesUnit = Regexes._extractUnit.exec(valueOrigin);
     if (matchesUnit && matchesUnit[0]) {
       return matchesUnit[0];
     }
@@ -146,7 +153,7 @@ wpApi.controlConstructor.pwpcp_slider = api.controls.Slider = api.controls.Base.
    */
   _extractFirstNumber: function (value) {
     var valueOrigin = value || this.setting();
-    var matchesNumber = api.Regexes._extractNumber.exec(valueOrigin);
+    var matchesNumber = Regexes._extractNumber.exec(valueOrigin);
     if (matchesNumber && matchesNumber[0]) {
       return matchesNumber[0];
     }
@@ -216,3 +223,5 @@ wpApi.controlConstructor.pwpcp_slider = api.controls.Slider = api.controls.Base.
     }
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_slider'] = api.controls.Slider = Control;

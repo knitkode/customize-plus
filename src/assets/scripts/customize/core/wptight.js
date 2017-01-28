@@ -1,10 +1,15 @@
+import $ from 'jquery';
+import { api } from './api';
+import Utils from './utils';
+import { $readyDOM } from './globals';
+
 /**
  * WordPress Tight
  *
  * We can put some logic in private functions to grab the
  * right things in case WordPress change stuff across versions
  *
- * @class api.WpTight
+ * @class api.core.WpTight
  */
 var WpTight = (function () {
 
@@ -117,5 +122,7 @@ var WpTight = (function () {
   };
 })();
 
+$readyDOM.then(WpTight.init.bind(WpTight));
+
 // export to public API
-api.WpTight = WpTight;
+export default api.core.WpTight = WpTight;

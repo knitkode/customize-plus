@@ -1,3 +1,9 @@
+import $ from 'jquery';
+import _ from 'underscore';
+import { api } from '../core/api';
+import { wpApi } from '../core/globals';
+// import ControlBase from './base';
+
 /**
  * Control Icon
  *
@@ -7,7 +13,7 @@
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor.pwpcp_icon = api.controls.Icon = api.controls.Base.extend({
+let Control = api.controls.Base.extend({
   /**
    * @override
    * @see php `PWPcp_Sanitize::font_families`
@@ -194,3 +200,5 @@ wpApi.controlConstructor.pwpcp_icon = api.controls.Icon = api.controls.Base.exte
     return iconsSetName + ' ' + iconsSetName + '-' + icon;
   }
 });
+
+export default wpApi.controlConstructor['pwpcp_icon'] = api.controls.Icon = Control;

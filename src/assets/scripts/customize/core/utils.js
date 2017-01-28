@@ -1,7 +1,12 @@
+import $ from 'jquery';
+import _ from 'underscore';
+import { api } from './api';
+import { body, wpApi } from './globals';
+
 /**
  * Utils
  *
- * @class api.Utils
+ * @class api.core.Utils
  */
 var Utils = (function () {
 
@@ -404,4 +409,4 @@ var Utils = (function () {
 })();
 
 // export to public API
-api.Utils = Utils;
+export default api.core.Utils = Utils;
