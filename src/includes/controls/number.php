@@ -92,6 +92,10 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
 	 * @return mixed
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
+		// value comes as a string, this is a generic way to coerce it to a number
+		// either int or float, @see http://bit.ly/2kh6mx9
+		$value = $value + 0;
+
 		if ( ! is_int( $value ) && ! is_float( $value ) ) {
 			$validity->add( 'wrong_number', __( 'The value must be a number.' ) );
 		}
