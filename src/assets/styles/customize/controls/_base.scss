@@ -63,12 +63,12 @@
   }
 
   &.pwpcp-error {
-    background: $state--danger-bg;
+    // background: $state--danger-bg;
 
-    &:after {
-      color: $state--danger-color;
-      font-size: 11px;
-    }
+    // &:after {
+    //   color: $state--danger-color;
+    //   font-size: 11px;
+    // }
 
     input,
     textarea,

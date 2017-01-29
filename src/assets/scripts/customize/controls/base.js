@@ -209,13 +209,18 @@ api.controls.Base = wpApi.Control.extend({
    * On validation error (optionally override it in subclasses)
    * @abstract
    * @access private
-   * @param  {object<string,boolean|string>} error `{ error: true, msg: string }`
+   * @param  {Object<string,boolean|string>} error `{ error: true, msg: string }`
    */
   _onValidateError: function (error) {
     var msg = error && error.msg ? error.msg : api.l10n['vInvalid'];
     this._container.classList.add('pwpcp-error');
-    this._container.setAttribute('data-pwpcp-msg', msg);
-    this.notifications.add('ciao');
+    // this._container.setAttribute('data-pwpcp-msg', msg);
+    if (!this._currentErrorMsg || msg !== this._currentErrorMsg) {
+      this.setting.notifications.add( 'error', new wpApi.Notification(
+        'error', { type: 'error', message: msg }
+      ));
+    }
+    this._currentErrorMsg = msg;
   },
   /**
    * On validation success (optionally override it in subclasses)
@@ -224,7 +229,9 @@ api.controls.Base = wpApi.Control.extend({
    */
   _onValidateSuccess: function () {
     this._container.classList.remove('pwpcp-error');
-    this._container.removeAttribute('data-pwpcp-msg');
+    // this._container.removeAttribute('data-pwpcp-msg');
+    this.setting.notifications.remove('error');
+    this._currentErrorMsg = false;
   },
   /**
    * Validate
