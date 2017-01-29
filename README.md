@@ -15,6 +15,11 @@ Todo
 - control text_decoration, in the same way as font_weight control
 
 
+Caveats
+---------------
+- Textarea control with the `wp_editor` enabled conflicts with the feature plugin [Customize Posts](@@todo)
+
+
 Bugs
 ---------------
 If you find an issue, please let us know [here](https://github.com/PlusWP/customize-plus/issues?state=open), thanks!
