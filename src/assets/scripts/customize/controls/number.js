@@ -45,7 +45,7 @@ let Control = ControlBaseInput.extend({
           errorMsg += Utils._sprintf(api.l10n['vNumberHigh'], attrs.max) + ' ';
         }
         if (attrs.step && !validator.isMultipleOf(value, attrs.step)) {
-          errorMsg += Utils._sprintf(api.l10n['vNumberStep'], attrs.step) + ' ' + attrs.step;
+          errorMsg += Utils._sprintf(api.l10n['vNumberStep'], attrs.step) + ' ';
         }
       }
     }
