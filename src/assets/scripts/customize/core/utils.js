@@ -305,6 +305,27 @@ var Utils = (function () {
       return $(document.createElement('div')).html(input).text();
     },
     /**
+     * Contains HTML?
+     *
+     * It tries to use the DOMParser object (see Browser compatibility table
+     * [here](mzl.la/2kh7HEl)), otherwise it just.
+     * Solution inspired by this [stackerflow answer](http://bit.ly/2k6uFLI)
+     *
+     * // @@unused \\
+     * @param  {string}  str
+     * @return {Boolean}
+     */
+    _containsHTML: function (str) {
+      if (window.DOMParser) {
+        try {
+          var doc = new window.DOMParser().parseFromString(str, 'text/html');
+          return Array.from(doc.body.childNodes).some(node => node.nodeType === 1);
+        } catch (e) {}
+      } else {
+        return false;
+      }
+    }
+    /**
      * Selectize render option function
      *
      * @abstract
