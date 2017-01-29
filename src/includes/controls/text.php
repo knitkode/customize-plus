@@ -48,9 +48,9 @@ class PWPcp_Customize_Control_Text extends PWPcp_Customize_Control_Base_Input {
 	 * @return string The sanitized value.
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		$input_attrs = $control->input_attrs;
+		$attrs = $control->input_attrs;
 
-		$input_type = isset( $input_attrs['type'] ) ? $input_attrs['type'] : 'text';
+		$input_type = isset( $attrs['type'] ) ? $attrs['type'] : 'text';
 
 		// url
 		if ( 'url' === $input_type ) {
@@ -65,11 +65,43 @@ class PWPcp_Customize_Control_Text extends PWPcp_Customize_Control_Base_Input {
 			$value = wp_strip_all_tags( $value );
 		}
 		// max length
-		if ( isset( $input_attrs['maxlength'] ) && strlen( $value ) > $input_attrs['maxlength'] ) {
+		if ( isset( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
 			return $setting->default;
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Validate
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	protected static function validate( $validity, $value, $setting, $control ) {
+		$attrs = $control->input_attrs;
+
+		$input_type = isset( $attrs['type'] ) ? $attrs['type'] : 'text';
+
+		// url
+		if ( 'url' === $input_type && filter_var( $value, FILTER_VALIDATE_URL) === FALSE) {
+	    $validity->add( 'wrong_text', __( 'Invalid URL.' ) );
+		}
+		// email
+		if ( 'email' === $input_type && ! is_email( $value ) ) {
+			$validity->add( 'wrong_text', __( 'Invalid email.' ) );
+		}
+		// max length
+		if ( isset( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
+			$validity->add( 'wrong_text', __( sprintf ( 'The text must be shorter than %s.', $attrs['maxlength'] ) ) );
+		}
+
+		return $validity;
 	}
 }
 

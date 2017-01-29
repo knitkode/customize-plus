@@ -124,4 +124,19 @@ abstract class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Contro
 	protected static function sanitize( $value, $setting, $control ) {
 		return PWPcp_Sanitize::string_in_choices( $value, $setting, $control );
 	}
+
+	/**
+	 * Validate
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	protected static function validate( $validity, $value, $setting, $control ) {
+		return PWPcp_Validate::string_in_choices( $validity, $value, $setting, $control );
+	}
 }

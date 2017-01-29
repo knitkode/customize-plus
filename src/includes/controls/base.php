@@ -325,21 +325,6 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	protected function js_tpl() {}
 
 	/**
-	 * Sanitization base callback
-	 *
-	 * Used as a default callback on thirdy part controls, like the WordPress
-	 * native ones
-	 *
-	 * @since 0.0.1
-	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @return string The sanitized value.
- 	 */
-	public static function sanitize_base_callback( $value, $setting ) {
-		return wp_kses( $value, array() );
-	}
-
-	/**
 	 * Sanitization callback
 	 *
 	 * All control's specific sanitizations pass from this function which
@@ -362,7 +347,11 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 		if ( $control && ! $control->optional && PWPcp_Sanitize::is_setting_value_empty( $value ) ) {
 			return $setting->default;
 		} else {
-			return $control::sanitize( $value, $setting, $control ); // @@doubt, $control used to be `self` \\
+			if ( method_exists( $control, 'sanitize' ) ) {
+				return $control::sanitize( $value, $setting, $control ); // @@doubt, $control used to be `self` \\
+			} else {
+				return wp_kses( $value, array() );
+			}
 		}
 	}
 
@@ -380,6 +369,53 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return wp_kses_post( $value );
+	}
+
+	/**
+	 * Validation callback
+	 *
+	 * All control's specific validation pass from this function which
+	 * always check if the value satisfy the `optional` attribute and then
+	 * delegates additional and specific validation to the class that
+	 * inherits from this, which needs to override the static method `validate`.
+	 * The control instance is always passed to that method in addition to the
+	 * value and the setting instance.
+	 *
+	 * @see http://bit.ly/2kzgHlm
+	 *
+	 * @since 0.0.1
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @return mixed
+ 	 */
+	public static function validate_callback( $validity, $value, $setting ) {
+		$control = $setting->manager->get_control( $setting->id );
+
+		if ( $control && ! $control->optional && PWPcp_Sanitize::is_setting_value_empty( $value ) ) {
+			$validity->add( 'required', __( 'You must supply a value.' ) );
+		} else {
+			if ( method_exists( $control, 'validate' ) ) {
+				return $control::validate( $validity, $value, $setting, $control );;
+			}
+		}
+		return $validity;
+	}
+
+	/**
+	 * Validate
+	 *
+	 * Class specific validation, method to override in subclasses.
+	 *
+	 * @since 0.0.1
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	protected static function validate( $validity, $value, $setting, $control ) {
+		return $validity;
 	}
 
 	/**

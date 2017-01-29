@@ -571,7 +571,18 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 						$setting_args['sanitize_callback'] = $control_type_class . '::sanitize_callback';
 					// otherwise use a default function
 					} else {
-						$setting_args['sanitize_callback'] = 'PWPcp_Customize_Control_Base::sanitize_base_callback';
+						$setting_args['sanitize_callback'] = 'PWPcp_Customize_Control_Base::sanitize_callback';
+					}
+				}
+
+				// if not set add validate callback function from control class
+				if ( ! isset( $setting_args['validate_callback'] ) ) {
+					// use validate_callback method on control class if it exists
+					if ( class_exists( $control_type_class ) && method_exists( $control_type_class, 'validate_callback' ) ) {
+						$setting_args['validate_callback'] = $control_type_class . '::validate_callback';
+					// otherwise use a default function
+					} else {
+						$setting_args['validate_callback'] = 'PWPcp_Customize_Control_Base::validate_callback';
 					}
 				}
 				// add setting to WordPress

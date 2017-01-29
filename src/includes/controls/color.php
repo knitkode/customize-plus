@@ -174,6 +174,38 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 			return $setting->default;
 		}
 	}
+
+	/**
+	 * Validate
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	protected static function validate( $validity, $value, $setting, $control ) {
+		if ( $control->showPaletteOnly &&
+			! $control->togglePaletteOnly &&
+			is_array( $control->palette )
+		) {
+			$palette_flatten = PWPcp_Sanitize::array_flatten( $control->palette, 1 );
+			$palette_normalized = array_map( 'PWPcp_Sanitize::hex_to_rgb', $palette_flatten );
+			$value_normalized = PWPcp_Sanitize::hex_to_rgb( $value );
+			if ( ! PWPcp_Sanitize::in_array_r( $value_normalized, $palette_normalized ) ) {
+				$validity->add( 'wrong_color', __( 'The color is not in the palette.' ) );
+			}
+		}
+		if ( 'transparent' === $value && $control->disallowTransparent ) {
+			$validity->add( 'wrong_color', __( 'Transparent is not allowed for this setting.' ) );
+		}
+		if ( ( $output = PWPcp_Sanitize::color_rgba( $value ) ) && ! $control->allowAlpha ) {
+			$validity->add( 'wrong_color', __( 'RGBA color is not allowed for this setting.' ) );
+		}
+		return $validity;
+	}
 }
 
 /**

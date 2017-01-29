@@ -65,6 +65,7 @@ api.controls.Base = wpApi.Control.extend({
     control.priority = new wpApi.Value();
     control.active = new wpApi.Value();
     control.activeArgumentsQueue = [];
+    control.notifications = new wpApi.Values({ defaultConstructor: wpApi.Notification });
 
     control.active.bind(function (active) {
       var args = control.activeArgumentsQueue.shift();
@@ -83,13 +84,62 @@ api.controls.Base = wpApi.Control.extend({
       return value;
     });
 
-    wpApi.apply(wpApi, settings.concat(function () {
+    if ( 0 === settings.length ) {
+      control.setting = null;
       control.settings = {};
-      for (var key in control.params.settings) {
-        control.settings[key] = wpApi(control.params.settings[key]);
-      }
-      control.setting = control.settings['default'] || null;
-    }));
+      control.embed();
+    } else {
+      wpApi.apply(wpApi, settings.concat(function () {
+        control.settings = {};
+        for (var key in control.params.settings) {
+          control.settings[key] = wpApi(control.params.settings[key]);
+        }
+        control.setting = control.settings['default'] || null;
+
+        // Add setting notifications to the control notification.
+        _.each( control.settings, function( setting ) {
+          setting.notifications.bind( 'add', function( settingNotification ) {
+            var controlNotification, code, params;
+            code = setting.id + ':' + settingNotification.code;
+            params = _.extend(
+              {},
+              settingNotification,
+              {
+                setting: setting.id
+              }
+            );
+            controlNotification = new wpApi.Notification( code, params );
+            control.notifications.add( controlNotification.code, controlNotification );
+          } );
+          setting.notifications.bind( 'remove', function( settingNotification ) {
+            control.notifications.remove( setting.id + ':' + settingNotification.code );
+          } );
+        } );
+
+        control.embed();
+      }));
+
+    }
+
+    // After the control is embedded on the page, invoke the "ready" method.
+    control.deferred.embedded.done( function () {
+      /*
+       * Note that this debounced/deferred rendering is needed for two reasons:
+       * 1) The 'remove' event is triggered just _before_ the notification is actually removed.
+       * 2) Improve performance when adding/removing multiple notifications at a time.
+       */
+      var debouncedRenderNotifications = _.debounce( function renderNotifications() {
+        control.renderNotifications();
+      } );
+      control.notifications.bind( 'add', function( notification ) {
+        wp.a11y.speak( notification.message, 'assertive' );
+        debouncedRenderNotifications();
+      } );
+      control.notifications.bind( 'remove', debouncedRenderNotifications );
+      control.renderNotifications();
+
+      // control.ready();
+    });
 
     // embed controls only when the parent section get clicked to keep the DOM light,
     // to make this work all data can't be stored in the DOM, which is good
@@ -165,6 +215,7 @@ api.controls.Base = wpApi.Control.extend({
     var msg = error && error.msg ? error.msg : api.l10n['vInvalid'];
     this._container.classList.add('pwpcp-error');
     this._container.setAttribute('data-pwpcp-msg', msg);
+    this.notifications.add('ciao');
   },
   /**
    * On validation success (optionally override it in subclasses)

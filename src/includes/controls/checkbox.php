@@ -60,6 +60,25 @@ class PWPcp_Customize_Control_Checkbox extends PWPcp_Customize_Control_Base {
 		$filtered = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 		return $filtered ? 1 : 0;
 	}
+
+	/**
+	 * Validate
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	protected static function validate( $validity, $value, $setting, $control ) {
+		$filtered = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
+		if ( $filtered != 0 && $filtered != 1 ) {
+			$validity->add( 'wrong', __( 'The checkbox should be either checked or unchecked.' ) );
+		}
+		return $validity;
+	}
 }
 
 /**

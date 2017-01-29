@@ -101,6 +101,39 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 			return PWPcp_Sanitize::string_in_choices( $value, $setting, $control );
 		}
 	}
+
+	/**
+	 * Validate
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	protected static function validate( $validity, $value, $setting, $control ) {
+		$selectize = $control->selectize;
+		if ( isset( $selectize['maxItems'] ) ) {
+			$max_items = filter_var( $selectize['maxItems'], FILTER_SANITIZE_NUMBER_INT );
+		} else {
+			$max_items = null;
+		}
+		if ( is_numeric( $max_items ) && $max_items > 1 ) {
+			$input_decoded = json_decode( $value );
+			foreach ( $input_decoded as $key ) {
+				if ( ! isset( $control->choices[ $key ] ) ) {
+					$validity->add( 'wrong', sprintf( __( 'The value %s is not selectable.' ), $key ) );
+				}
+			}
+		} else {
+			if ( ! isset( $control->choices[ $value ] ) ) {
+				$validity->add( 'not_a_choice', __( 'The value is not an allowed selection.' ) );
+			}
+		}
+		return $validity;
+	}
 }
 
 /**

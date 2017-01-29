@@ -79,6 +79,46 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
 			return $setting->default;
 		}
 	}
+
+	/**
+	 * Validate
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	protected static function validate( $validity, $value, $setting, $control ) {
+		if ( ! is_int( $value ) && ! is_float( $value ) ) {
+			$validity->add( 'wrong_number', __( 'The value must be a number.' ) );
+		}
+
+		if ( is_float( $value ) && ! $control->allowFloat ) {
+			$validity->add( 'wrong_number', __( 'The number can not be a float.' ) );
+		}
+
+		$attrs = $control->input_attrs;
+
+		if ( $attrs ) {
+			// if doesn't respect the step given
+			if ( isset( $attrs['step'] ) && $value % $attrs['step'] != 0 ) {
+				$validity->add( 'wrong_number', sprintf( __( 'The number must be a multiple of %s.' ), $attrs['step'] ) );
+			}
+			// if it's lower than the minimum
+			if ( isset( $attrs['min'] ) && $value < $attrs['min'] ) {
+				$validity->add( 'wrong_number', sprintf( __( 'The number must be a higher than %s.' ), $attrs['min'] ) );
+			}
+			// if it's higher than the maxmimum
+			if ( isset( $attrs['max'] ) && $value > $attrs['max'] ) {
+				$validity->add( 'wrong_number', sprintf( __( 'The number must be a lower than %s.' ), $attrs['max'] ) );
+			}
+		}
+
+		return $validity;
+	}
 }
 
 /**

@@ -141,6 +141,29 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 			return $setting->default;
 		}
 	}
+
+	/**
+	 * Validate
+	 *
+	 * @since 0.0.1
+	 * @override
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	protected static function validate( $validity, $value, $setting, $control ) {
+		$number = PWPcp_Sanitize::extract_number( $value, $control );
+		$unit = PWPcp_Sanitize::extract_size_unit( $value, $control );
+
+		// if it needs a unit
+		if ( ! empty( $control->units ) && ! $unit ) {
+			$validity->add( 'missing_unit', __( 'A unit must be specified.' ) );
+		}
+
+		return $validity;
+	}
 }
 
 /**

@@ -31,6 +31,7 @@ define( 'PWPCP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 require_once( PWPCP_PLUGIN_DIR . 'includes/class-requirements.php' );
 require_once( PWPCP_PLUGIN_DIR . 'includes/class-utils.php' );
+require_once( PWPCP_PLUGIN_DIR . 'includes/class-validate.php' );
 require_once( PWPCP_PLUGIN_DIR . 'includes/class-sanitize.php' );
 require_once( PWPCP_PLUGIN_DIR . 'includes/class-singleton.php' );
 require_once( PWPCP_PLUGIN_DIR . 'includes/class-core.php' );
