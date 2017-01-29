@@ -1,6 +1,7 @@
 import validator from 'validator';
 import { api } from '../core/api';
 import { wpApi } from '../core/globals';
+import Utils from '../core/utils';
 import ControlBaseInput from './base-input';
 
 /**
@@ -38,13 +39,13 @@ let Control = ControlBaseInput.extend({
     else {
       if (attrs) {
         if (attrs.min && value < attrs.min) {
-          errorMsg += api.l10n['vNumberLow'] + ' ';
+          errorMsg += Utils._sprintf(api.l10n['vNumberLow'], attrs.min) + ' ';
         }
         if (attrs.max && value > attrs.max) {
-          errorMsg += api.l10n['vNumberHigh'] + ' ';
+          errorMsg += Utils._sprintf(api.l10n['vNumberHigh'], attrs.max) + ' ';
         }
         if (attrs.step && !validator.isMultipleOf(value, attrs.step)) {
-          errorMsg += api.l10n['vNumberStep'] + ' ' + attrs.step;
+          errorMsg += Utils._sprintf(api.l10n['vNumberStep'], attrs.step) + ' ' + attrs.step;
         }
       }
     }

@@ -54,9 +54,9 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
 		return array(
 			'vNotNumber' => __( 'The value is not a number.' ),
 			'vNoFloat' => __( 'The value must be an integer.' ),
-			'vNumberLow' => __( 'The number is too low.' ),
-			'vNumberHigh' => __( 'The number is too high.' ),
-			'vNumberStep' => __( 'The value must be a multiple of' ),
+			'vNumberLow' => __( 'The number must be higher than %s.' ),
+			'vNumberHigh' => __( 'The number must be lower than %s.' ),
+			'vNumberStep' => __( 'The value must be a multiple of %s.' ),
 		);
 	}
 

@@ -404,7 +404,7 @@ var Utils = (function () {
       var output = rules.replace(regex, '');
       output = output.replace(/({|})/g, '');
       return output.trim();
-    }
+    },
     /*!
      * Spinft, PHP to js implementation
      * @credits http://locutus.io/php/strings/sprintf/
