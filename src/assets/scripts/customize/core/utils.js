@@ -305,23 +305,6 @@ var Utils = (function () {
       return $(document.createElement('div')).html(input).text();
     },
     /**
-     * Escape HTML
-     * @static
-     * @param  {string} text Text with maybe html in it.
-     * @return {string}      Text with escaped html.
-     */
-    _htmlEscape: function (text) {
-      var escapes = {
-        '<': '&lt;',
-        '>': '&gt;',
-        '&': '&amp;',
-        '"': '&quot;'
-      };
-      return text.replace(/[<>"&]/g, function (c) {
-        return escapes[c];
-      });
-    },
-    /**
      * Selectize render option function
      *
      * @abstract
