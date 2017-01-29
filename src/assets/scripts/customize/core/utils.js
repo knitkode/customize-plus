@@ -324,7 +324,7 @@ var Utils = (function () {
       } else {
         return false;
       }
-    }
+    },
     /**
      * Selectize render option function
      *
