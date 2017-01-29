@@ -58,9 +58,9 @@
  * to add or change the `data-pwpcp-msg` and optionally add a status class.
  */
 .customize-control {
-  &[data-pwpcp-msg]:after {
-    content: attr(data-pwpcp-msg);
-  }
+  // &[data-pwpcp-msg]:after {
+  //   content: attr(data-pwpcp-msg);
+  // }
 
   &.pwpcp-error {
     // background: $state--danger-bg;
