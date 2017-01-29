@@ -29,6 +29,8 @@ let Control = api.controls.Base.extend({
    * @override
    */
   validate: function (newValue) {
+    // @@todo block here if it contains html, otherwise the textarea get crazy
+    // escaping it while you type \\
     if (_.isString(newValue)) {
       return newValue;
     } else {
@@ -69,6 +71,12 @@ let Control = api.controls.Base.extend({
       lastValue = this.__textarea.value;
     }
     if (value && lastValue !== value) {
+      // additional check to prevent the textarea content to be escaped
+      // while you type if html is not allowed
+      if (!this.params.allowHTML && !this.params.wp_editor
+          && _.escape(lastValue) === value) {
+        return;
+      }
       if (this.params.wp_editor) {
         wpEditorInstance.setContent(value);
       } else {
