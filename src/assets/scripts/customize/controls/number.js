@@ -36,7 +36,10 @@ let Control = ControlBaseInput.extend({
 
     }
     if (!params.allowFloat) {
-      if (validator.isFloat(value)) {
+
+      // @@tobecareful, `isDecimal` is the same as `isFloat`? See the validator
+      // library because `isFloat` returns true both for `2` and for `2.11` \\
+      if (validator.isDecimal(value)) {
         errorMsg += api.l10n['vNoFloat'] + ' ';
       } else if (!validator.isInt(value)) {
         errorMsg += api.l10n['vNotAnInteger'] + ' ';
