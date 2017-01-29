@@ -266,28 +266,4 @@ import Regexes from './regexes';
     return result < 1e-5;
   });
 
-  validator.extend('is_int',
-  /**
-   * Is int (php js)
-   * @see http://phpjs.org/functions/is_int/
-   * @param  {?}  mixed_var
-   * @return {boolean}
-   */
-  function is_int(mixed_var) {
-    var number = Number(mixed_var);
-    return number === +number && isFinite(number) && number % 1 === 0;
-  });
-
-  validator.extend('is_float',
-  /**
-   * Is float (php js)
-   * @see http://phpjs.org/functions/is_float/
-   * @param  {?}  mixed_var
-   * @return {boolean}
-   */
-  function is_float(mixed_var) {
-    var number = Number(mixed_var);
-    return +number === number && (!isFinite(number) || number % 1 !== 0);
-  });
-
 })();

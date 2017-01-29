@@ -52,8 +52,9 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
 	 */
 	public function get_l10n() {
 		return array(
-			'vNotNumber' => __( 'The value is not a number.' ),
-			'vNoFloat' => __( 'The value must be an integer.' ),
+			'vNotAnumber' => __( 'The value is not a number.' ),
+			'vNoFloat' => __( 'The value must be an integer, not a float.' ),
+			'vNotAnInteger' => __( 'The value must be an integer number.' ),
 			'vNumberLow' => __( 'The number must be higher than %s.' ),
 			'vNumberHigh' => __( 'The number must be lower than %s.' ),
 			'vNumberStep' => __( 'The value must be a multiple of %s.' ),

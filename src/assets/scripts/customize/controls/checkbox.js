@@ -47,6 +47,8 @@ let Control = api.controls.Base.extend({
   },
   /**
    * @override
+   *
+   * // @@doubt I could use `validator.toBoolean` \\
    */
   ready: function () {
     this.__input = this._container.getElementsByTagName('input')[0];

@@ -68,6 +68,7 @@ Unless otherwise specified, all the plugin files are licensed under GNU General 
 - Bootstrap by Twitter http://twitter.github.com/bootstrap/ is licensed under the GPL-compatible [http://www.apache.org/licenses/LICENSE-2.0 Apache License v2.0]
 - modernizr.js is dual licensed under the BSD and MIT licenses
 - // @@todo, grabbed from https://github.com/presscustomizr/customizr#licenses \\
+- [validator.js](https://github.com/chriso/validator.js) is licensed under MIT
 
 
 ---------------
