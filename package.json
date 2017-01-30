@@ -24,7 +24,8 @@
   },
   "files": [
     "src/scripts",
-    "src/styles"
+    "src/styles",
+    "src/images"
   ],
   "dependencies": {
     "pluswp-vendor": "gitlab:pluswp/pluswp-vendor.git",

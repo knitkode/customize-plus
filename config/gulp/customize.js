@@ -47,7 +47,6 @@ gulp.task('_customize-scripts-admin_libs', function() {
   // Customize scripts admin libraries (outside iframe)
   var stream = new StreamQueue({ objectMode: true });
   stream.queue(gulp.src([
-    PATHS.src.npm + 'es5-shim/es5-shim.min.js'
   ]));
   return stream.done()
     .pipe($.if(CONFIG.isDist, $.stripDebug()))
@@ -93,6 +92,7 @@ gulp.task('_customize-scripts-admin',
   ]);
 
 var adminScriptsLibraries = [
+  PATHS.src.npm + 'es5-shim/es5-shim.min.js', // @@ie9 @@ie8 \\
   PATHS.src.npm + 'classlist.js/classList.js', // @@ie9 @@ie8 \\
   PATHS.src.npm + 'pluswp-vendor/cp/modernizr-custom.js',
   PATHS.src.npm + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\

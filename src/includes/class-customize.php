@@ -89,7 +89,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * @since  0.0.1
 		 * @var string
 		 */
-		private static $css_icons = '';
+		public static $css_icons = '';
 
 		/**
 		 * Whether `SCRIPT_DEBUG` is enabled
@@ -132,7 +132,6 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 
 			add_action( 'customize_register', array( __CLASS__, 'register_custom_classes' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_css_admin' ) );
-			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_js_shim' ) );
 			add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'enqueue_js_admin' ) );
 			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_view_loader' ) );
 			add_action( 'customize_controls_enqueue_scripts', array( __CLASS__, 'add_controls_js_vars' ) );
@@ -149,8 +148,11 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		public static function enqueue_css_admin() {
 			do_action( 'PWPcp/customize/enqueue_css_admin_pre', 'PWPcp-customize' );
 
-			wp_enqueue_style( 'PWPcp-customize', plugins_url( 'assets/customize'.self::$min.'.css', PWPCP_PLUGIN_FILE ), array( 'dashicons' ), PWPCP_PLUGIN_VERSION );
-			wp_add_inline_style( 'PWPcp-customize', self::$css_icons );
+			if ( ! class_exists( 'PWPcpp_Customize' ) ) {
+
+				wp_enqueue_style( 'PWPcp-customize', plugins_url( 'assets/customize'.self::$min.'.css', PWPCP_PLUGIN_FILE ), array( 'dashicons' ), PWPCP_PLUGIN_VERSION );
+				wp_add_inline_style( 'PWPcp-customize', self::$css_icons );
+			}
 
 			do_action( 'PWPcp/customize/enqueue_css_admin_post', 'PWPcp-customize' );
 		}
@@ -311,16 +313,6 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 			?>
 			//=include '../views/customize-loader.php'
 			<?php
-		}
-
-		/**
-		 * Enqueue ECMA script 5 shim for old browsers
-		 *
-		 * @since  0.0.1
-		 */
-		public static function enqueue_js_shim() {
-			wp_enqueue_script( 'es5-shim', plugins_url( 'assets/es5-shim'.self::$min.'.js', PWPCP_PLUGIN_FILE ), array(), PWPCP_PLUGIN_VERSION );
-			wp_script_add_data( 'es5-shim', 'conditional', 'if lt IE 9' );
 		}
 
 		/**
