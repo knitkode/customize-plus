@@ -69,7 +69,6 @@ $WPcustomize--btn-box-shadow-activetoggle-focus: 0 1px 0 rgba(0,0,0,.08), inset 
 $base--logo-bg: #464646;
 $code--color: #c7254e; // same as Bootstrap
 $code--font-size: 12px;
-$toggle--width: 30px;
 $input--hover-color: #333;
 $state--danger-base: #FFD4D4;
 $state--success-base: #D8FFCD;
@@ -103,10 +102,9 @@ $plugin--select-input-disabled-bg: #f4f4f4;
 $plugin--select-option-padding: 6px;
 $plugin--select-option-highlight-bg: #5897fb;
 
+// Customize UI: slider (plugins related values)
 $plugin--slider-handle-size: $WPcustomize--input-checkbox-height;
 $plugin--slider-handle-border-width: 1px;
-
-$plugin--ace-bg-color: #272822;
 
 // Customize Plus Controls
 $control--color-light: #999;
@@ -123,18 +121,3 @@ $control--btn-size: $WP--dashicons-size;
 $control--btn-icon-fontsize: 15px;
 $control--btn-color: #aaa;
 $control--btn-color-active: #333;
-
-// Customize Plus component: Compiler
-$compiler--feedback-height: 25px;
-$compiler--feedback-bottom: $WPcustomize--footer-height;
-
-// Customize Plus component: Editor
-$editor--buttons-height: 25px;
-$editor--dropdown-height: 34px;
-$editor--expanded-zindex: 999999;
-
-// Customize Plus component: Resizer
-$resizer--handle-width: 5px;
-
-// Customize Plus component: Screenpreview
-$screenpreview--preview-transition_time: .4s;
