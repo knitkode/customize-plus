@@ -63,7 +63,7 @@ gulp.task('_base-images', function() {
  */
 gulp.task('_base-styles', ['_base-images'], function() {
   var banner = CONFIG.isDist ? require('lodash.template')(CONFIG.credits)({ pkg: pkg }) : '';
-  PLUGINS.base64.baseDir = PATHS.src.assets;
+  PLUGINS.base64.baseDir = PATHS.src.root;
   return gulp.src(PATHS.src.styles + '*.scss')
     .pipe($.if(CONFIG.isDist, $.replace(CONFIG.creditsPlaceholder, banner)))
     .pipe($.include())
