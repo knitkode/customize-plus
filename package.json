@@ -22,9 +22,10 @@
   "engines": {
     "node": ">0.12.0"
   },
-  "files": {
-
-  },
+  "files": [
+    "./src/scripts/**/*",
+    "./src/styles",
+  ],
   "dependencies": {
     "classlist.js": "git://github.com/eligrey/classList.js.git",
     "css-toggle-switch": "^4.0.2",
