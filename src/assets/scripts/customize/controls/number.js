@@ -1,7 +1,9 @@
-import validator from 'validator';
+import sprintf from 'locutus/php/strings/sprintf';
+import is_float from 'locutus/php/var/is_float';
+import isInt from 'validator/lib/isInt';
+import { isMultipleOf } from '../core/validators';
 import { api } from '../core/api';
 import { wpApi } from '../core/globals';
-import Utils from '../core/utils';
 import ControlBaseInput from './base-input';
 
 /**
@@ -16,6 +18,17 @@ import ControlBaseInput from './base-input';
  * @augments wp.customize.Class
  */
 let Control = ControlBaseInput.extend({
+  /**
+   * We just neet to convert the value to string for the check, for the rest
+   * is the same as in the base input control
+   *
+   * @override
+   */
+  syncUI: function (value) {
+    if (value && this.__input.value !== value.toString()) {
+      this.__input.value = value;
+    }
+  },
   /**
    * @override
    */
@@ -36,24 +49,21 @@ let Control = ControlBaseInput.extend({
 
     }
     if (!params.allowFloat) {
-
-      // @@tobecareful, `isDecimal` is the same as `isFloat`? See the validator
-      // library because `isFloat` returns true both for `2` and for `2.11` \\
-      if (validator.isDecimal(value)) {
+      if (is_float(value)) {
         errorMsg += api.l10n['vNoFloat'] + ' ';
-      } else if (!validator.isInt(value)) {
+      } else if (!isInt(value.toString())) {
         errorMsg += api.l10n['vNotAnInteger'] + ' ';
       }
     }
     if (attrs) {
       if (attrs.min && value < attrs.min) {
-        errorMsg += Utils._sprintf(api.l10n['vNumberLow'], attrs.min) + ' ';
+        errorMsg += sprintf(api.l10n['vNumberLow'], attrs.min) + ' ';
       }
       if (attrs.max && value > attrs.max) {
-        errorMsg += Utils._sprintf(api.l10n['vNumberHigh'], attrs.max) + ' ';
+        errorMsg += sprintf(api.l10n['vNumberHigh'], attrs.max) + ' ';
       }
-      if (attrs.step && !validator.isMultipleOf(value, attrs.step)) {
-        errorMsg += Utils._sprintf(api.l10n['vNumberStep'], attrs.step) + ' ';
+      if (attrs.step && !isMultipleOf(value.toString(), attrs.step)) {
+        errorMsg += sprintf(api.l10n['vNumberStep'], attrs.step) + ' ';
       }
     }
 

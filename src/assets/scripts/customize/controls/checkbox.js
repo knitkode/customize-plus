@@ -1,6 +1,6 @@
 import { api } from '../core/api';
 import { wpApi } from '../core/globals';
-import Utils from '../core/utils';
+import { numberToBoolean } from '../core/validators';
 // import ControlBase from './base';
 
 /**
@@ -11,7 +11,6 @@ import Utils from '../core/utils';
  * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
- * @requires api.Utils
  */
 let Control = api.controls.Base.extend({
   /**
@@ -33,28 +32,26 @@ let Control = api.controls.Base.extend({
    * @override
    */
   validate: function (newValue) {
-    return Utils._toBoolean(newValue) ? 1 : 0;
+    return numberToBoolean(newValue) ? 1 : 0;
   },
   /**
    * @override
    */
   syncUI: function (value) {
-    var valueClean = Utils._toBoolean(value);
-    var inputStatus = Utils._toBoolean(this.__input.checked);
+    var valueClean = numberToBoolean(value);
+    var inputStatus = numberToBoolean(this.__input.checked);
     if (inputStatus !== valueClean) {
       this.__input.checked = valueClean;
     }
   },
   /**
    * @override
-   *
-   * // @@doubt I could use `validator.toBoolean` \\
    */
   ready: function () {
     this.__input = this._container.getElementsByTagName('input')[0];
 
     // sync input value on ready
-    this.__input.checked = Utils._toBoolean(this.setting());
+    this.__input.checked = numberToBoolean(this.setting());
 
     // bind input on ready
     this.__input.onchange = function (event) {

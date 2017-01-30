@@ -23,7 +23,7 @@ gulp.task('build-customize', [
  * @access public
  */
 gulp.task('watch-customize', function() {
-  gulp.watch('./src/bower.json', ['build-customize']);
+  gulp.watch('./package.json', ['build-customize']);
   gulp.watch(PATHS.src.scripts + '**/*.js', ['_customize-scripts']);
 });
 
@@ -47,7 +47,7 @@ gulp.task('_customize-scripts-admin_libs', function() {
   // Customize scripts admin libraries (outside iframe)
   var stream = new StreamQueue({ objectMode: true });
   stream.queue(gulp.src([
-    PATHS.src.bower + 'es5-shim/es5-shim.min.js'
+    PATHS.src.npm + 'es5-shim/es5-shim.min.js'
   ]));
   return stream.done()
     .pipe($.if(CONFIG.isDist, $.stripDebug()))
@@ -93,14 +93,14 @@ gulp.task('_customize-scripts-admin',
   ]);
 
 var adminScriptsLibraries = [
-  PATHS.src.bower + 'polyfill-classList/classList.js', // @@ie9 @@ie8 \\
+  PATHS.src.npm + 'classList.js/classList.js', // @@ie9 @@ie8 \\
   PATHS.src.scripts + 'vendor-custom/modernizr-custom.js', // include modernizr custom build
-  PATHS.src.bower + 'validator-js/validator.js',
-  PATHS.src.bower + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\
+  // PATHS.src.npm + 'validator/validator.js', // use es6 imports
+  PATHS.src.npm + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\
   PATHS.src.scripts + 'vendor-custom/highlight.pack.js', // include highlight.js custom build
-  PATHS.src.bower + 'jquery-ui-slider-pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme... \\
-  PATHS.src.bower + 'selectize/dist/js/standalone/selectize.js',
-  PATHS.src.bower + 'spectrum/spectrum.js'
+  PATHS.src.npm + 'jQuery-ui-Slider-Pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme... \\
+  PATHS.src.npm + 'selectize/dist/js/standalone/selectize.js',
+  PATHS.src.npm + 'spectrum-colorpicker/spectrum.js'
 ];
 
 /**
@@ -113,8 +113,8 @@ var adminScriptsLibraries = [
  */
 const rollup = require('rollup').rollup;
 const buble  = require('rollup-plugin-buble');
-// const resolve  = require('rollup-plugin-node-resolve');
-// const commonjs  = require('rollup-plugin-commonjs');
+const resolve  = require('rollup-plugin-node-resolve');
+const commonjs  = require('rollup-plugin-commonjs');
 
 const rollupOpts = {
   external: [
@@ -125,7 +125,6 @@ const rollupOpts = {
     'wp',
     'PWPcp',
     'modernizr',
-    'validator',
     'mousetrap',
     'swal',
     'toastr',
@@ -133,12 +132,14 @@ const rollupOpts = {
     'hljs',
   ],
   plugins: [
-    // resolve({
-    //   jsnext: true,
-    //   main: true,
-    //   browser: true,
-    // }),
-    // commonjs(),
+    resolve({
+      jsnext: true,
+      main: true,
+      browser: true,
+    }),
+    commonjs({
+      include: 'node_modules/**'
+    }),
     buble(),
     // eslint({
     //   exclude: [
@@ -162,7 +163,6 @@ const rollupOptsWrite = {
     wp: 'wp',
     PWPcp: 'PWPcp',
     modernizr: 'Modernizr',
-    validator: 'validator',
     mousetrap: 'Mousetrap',
     swal: 'swal',
     toastr: 'toastr',
@@ -171,8 +171,8 @@ const rollupOptsWrite = {
   },
   namedFunctionExpressions: false,
   // interop: false, // @@todo try with this \\
-  banner: '// banner test',
-  footer: '// footer test',
+  // banner: '// banner test',
+  // footer: '// footer test',
   format: 'iife',
 };
 

@@ -162,7 +162,8 @@ api.controls.Base = wpApi.Control.extend({
 
     // controls can be setting-less from 4.5
     if (control.setting) {
-      // Add custom validation function overriding the empty function from WP API.
+      // Add custom validation function overriding the empty function from WP
+      // API in `customize-controls.js`, in the constructor `api.Value`
       control.setting.validate = control._validateWrap.bind(control);
 
       // bind setting change to control method to reflect a programmatic

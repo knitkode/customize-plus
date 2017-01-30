@@ -14,13 +14,27 @@
     "email": "dev@pluswp.com",
     "url": "http://pluswp.com/"
   },
-  "license": "GPL-2.0+",
+  "license": "SEE LICENSE IN license.txt",
   "private": false,
   "repository": {
     "url": "https://github.com/PlusWP/customize-plus"
   },
   "engines": {
     "node": ">0.12.0"
+  },
+  "files": {
+
+  },
+  "dependencies": {
+    "classlist.js": "git://github.com/eligrey/classList.js.git",
+    "css-toggle-switch": "^4.0.2",
+    "es5-shim": "~4.5.9",
+    "jQuery-ui-Slider-Pips": "git://github.com/simeydotme/jQuery-ui-Slider-Pips.git",
+    "locutus": "^2.0.6",
+    "marked": "~0.3.6",
+    "selectize": "~0.12.4",
+    "spectrum-colorpicker": "~1.8.0",
+    "validator": "~6.2.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.3",
@@ -60,7 +74,6 @@
     "gulp-imagemin": "^2.4.0",
     "gulp-include": "^2.1.0",
     "gulp-jsdoc": "^0.1.4",
-    "gulp-jsduck": "^0.3.1",
     "gulp-json-editor": "^2.2.1",
     "gulp-load-plugins": "^1.2.0",
     "gulp-modernizr": "0.0.0",
@@ -85,6 +98,8 @@
     "phplint": "^0.1.1",
     "rollup": "^0.41.4",
     "rollup-plugin-buble": "^0.15.0",
+    "rollup-plugin-commonjs": "^7.0.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
     "run-sequence": "^0.3.6",
     "streamqueue": "^1.1.1"
   }

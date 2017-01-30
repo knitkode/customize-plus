@@ -11,11 +11,11 @@ var PATHS = {
   /** @type {Object} */
   src: {
     root: './src/',
+    npm: './node_modules/',
     vendor: './src/vendor/',
     includes: './src/includes/',
     views: './src/views/',
     assets: './src/assets/',
-    bower: './src/assets/bower_components/',
     images: './src/assets/images/',
     scripts: './src/assets/scripts/',
     styles: './src/assets/styles/'

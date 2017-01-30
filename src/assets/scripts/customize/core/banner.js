@@ -8,7 +8,7 @@ import { $document } from './globals';
  * @requires api.core.WpTight
  */
 /** @type {Boolean} */
-api._banner = true;
+api.core._banner = true;
 
 (function () {
 
@@ -301,7 +301,7 @@ api._banner = true;
    */
   $document.ready(function () {
     // mechanism to prevent banner from showing in Customize Plus Premium
-    if (!api._banner) {
+    if (!api.core._banner) {
       return;
     }
     _init();

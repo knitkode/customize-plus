@@ -109,7 +109,30 @@ const Regexes = {
    * @const
    * @type {RegExp}
    */
-  _extractNumber: /(\+|-)?((\d+(\.\d+)?)|(\.\d+))/
+  _extractNumber: /(\+|-)?((\d+(\.\d+)?)|(\.\d+))/,
+  /**
+   * Detects if the shape of the string is that of a setting saved or to be
+   * saved through the options API, e.g. `mytheme[a_setting_id]``
+   *
+   * @type {RegExp}
+   */
+  _optionsApi: new RegExp(api.constants['OPTIONS_PREFIX'] + '\\[.*\\]'),
+  /**
+   * Helps to understand if a url is absolute or relative
+   *
+   * @@todo test
+   * @const
+   * @type {RegExp}
+   */
+  _absoluteUrl: /^(?:[a-z]+:)?\/\//i,
+  /**
+   * Multiple slashes
+   *
+   * @@todo test
+   * @const
+   * @type {RegExp}
+   */
+  _multipleSlashes: /[a-z-A-Z-0-9_]{1}(\/\/+)/g
 };
 
 // export to public API

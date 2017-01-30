@@ -1,3 +1,5 @@
+import isURL from 'validator/lib/isURL';
+import isEmail from 'validator/lib/isEmail';
 import { api } from '../core/api';
 import { wpApi } from '../core/globals';
 import Utils from '../core/utils';
@@ -29,11 +31,11 @@ let Control = ControlBaseInput.extend({
       errorMsg += api.l10n['vTooLong'];
     }
     // url
-    if (inputType === 'url' && !validator.isURL(value)) {
+    if (inputType === 'url' && !isURL(value)) {
       errorMsg += api.l10n['vInvalidUrl'];
     }
     // email
-    else if (inputType === 'email' && !validator.isEmail(value)) {
+    else if (inputType === 'email' && !isEmail(value)) {
       errorMsg += api.l10n['vInvalidEmail'];
     }
     // text
