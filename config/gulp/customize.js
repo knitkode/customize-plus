@@ -66,7 +66,7 @@ gulp.task('_customize-modernizr', function() {
   });
   // the src path is just needed by gulp but we don't want gulp-modernizr to
   // automatically look for tests to do, we just defined them here above
-  return gulp.src(PATHS.src.scripts + 'customize.js')
+  return gulp.src(PATHS.src.scripts + 'customize/index.js')
     .pipe($.if(rebuild, $.modernizr(modernizrOpts)))
     .pipe($.if(rebuild, $.rename('modernizr-custom.js')))
     .pipe($.if(rebuild, $.uglify({ preserveComments: function (node, comment) {
@@ -85,36 +85,6 @@ gulp.task('_customize-modernizr', function() {
  *
  * @access private
  */
-gulp.task('_customize-scripts-admin',
-  [
-    '_customize-scripts-admin_base',
-    '_customize-scripts-admin_main'
-  ]);
-
-var adminScriptsLibraries = [
-  PATHS.src.npm + 'es5-shim/es5-shim.min.js', // @@ie9 @@ie8 \\
-  PATHS.src.npm + 'classlist.js/classList.js', // @@ie9 @@ie8 \\
-  PATHS.src.npm + 'pluswp-vendor/cp/modernizr-custom.js',
-  PATHS.src.npm + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\
-  PATHS.src.npm + 'pluswp-vendor/cp/highlight.pack.js',
-  PATHS.src.npm + 'jQuery-ui-Slider-Pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme... \\
-  PATHS.src.npm + 'selectize/dist/js/standalone/selectize.js',
-  PATHS.src.npm + 'spectrum-colorpicker/spectrum.js',
-];
-
-/**
- * Scripts | Admin custom scripts (outside iframe)
- *
- * Disable minification here, is done through a bash script that runs the
- * uglify CLI which has more options, like `mangle-regex`
- *
- * @access private
- */
-const rollup = require('rollup').rollup;
-const buble  = require('rollup-plugin-buble');
-const resolve  = require('rollup-plugin-node-resolve');
-const commonjs  = require('rollup-plugin-commonjs');
-
 const rollupOpts = {
   external: [
     'window',
@@ -131,15 +101,15 @@ const rollupOpts = {
     'hljs',
   ],
   plugins: [
-    resolve({
+    require('rollup-plugin-node-resolve')({
       jsnext: true,
       main: true,
       browser: true,
     }),
-    commonjs({
+    require('rollup-plugin-commonjs')({
       include: 'node_modules/**'
     }),
-    buble(),
+    require('rollup-plugin-buble')(),
     // eslint({
     //   exclude: [
     //     'src/styles/**',
@@ -175,37 +145,32 @@ const rollupOptsWrite = {
   format: 'iife',
 };
 
-gulp.task('_customize-scripts-admin_base-rollup', () => {
-  return rollup(extend(rollupOpts, { entry: PATHS.src.scripts + 'customize-base.js' })).then((bundle) => {
-    return bundle.write(extend(rollupOptsWrite, { dest: '.tmp/customize-base.js' }));
-  });
+gulp.task('_customize-scripts-admin-rollup', () => {
+  return require('rollup').rollup(extend(rollupOpts, {
+      entry: PATHS.src.scripts + 'customize/index.js'
+    })).then((bundle) => {
+      return bundle.write(extend(rollupOptsWrite, { dest: '.tmp/customize.js' }));
+    });
 });
 
-gulp.task('_customize-scripts-admin_main-rollup', () => {
-  return rollup(extend(rollupOpts, { entry: PATHS.src.scripts + 'customize.js' })).then((bundle) => {
-    return bundle.write(extend(rollupOptsWrite, { dest: '.tmp/customize.js' }));
-  });
-});
-
-gulp.task('_customize-scripts-admin_base', ['_customize-scripts-admin_base-rollup'], function() {
+gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-rollup'], function() {
   var stream = new StreamQueue({ objectMode: true });
-  stream.queue(gulp.src(adminScriptsLibraries));
-  stream.queue(gulp.src('.tmp/customize-base.js')
+  stream.queue(gulp.src([
+    PATHS.src.npm + 'es5-shim/es5-shim.min.js', // @@ie9 @@ie8 \\
+    PATHS.src.npm + 'classlist.js/classList.js', // @@ie9 @@ie8 \\
+    PATHS.src.npm + 'pluswp-vendor/cp/modernizr-custom.js',
+    PATHS.src.npm + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\
+    PATHS.src.npm + 'pluswp-vendor/cp/highlight.pack.js',
+    PATHS.src.npm + 'jQuery-ui-Slider-Pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme... \\
+    PATHS.src.npm + 'selectize/dist/js/standalone/selectize.js',
+    PATHS.src.npm + 'spectrum-colorpicker/spectrum.js',
+  ]));
+  stream.queue(gulp.src('.tmp/customize.js')
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
     .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
   );
   return stream.done()
-    .pipe($.concat('customize-base.js', PLUGINS.concat))
-    .pipe(gulp.dest(PATHS.build.scripts))
-    .pipe($.rename({ suffix: '.min' }))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = !!api.DEBUG;', '')))
-    .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
-    .pipe(gulp.dest(PATHS.build.scripts));
-});
-gulp.task('_customize-scripts-admin_main', ['_customize-scripts-admin_main-rollup'], function() {
-  return gulp.src('.tmp/customize.js')
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
-    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe($.concat('customize.js', PLUGINS.concat))
     .pipe(gulp.dest(PATHS.build.scripts))
     .pipe($.rename({ suffix: '.min' }))
     .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = !!api.DEBUG;', '')))
