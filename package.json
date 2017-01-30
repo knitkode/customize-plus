@@ -28,15 +28,15 @@
   ],
   "dependencies": {
     "pluswp-vendor": "gitlab:pluswp/pluswp-vendor.git",
-    "classlist.js": "git://github.com/eligrey/classList.js.git",
+    "classlist.js": "github:eligrey/classList.js.git",
     "css-toggle-switch": "^4.0.2",
-    "es5-shim": "~4.5.9",
-    "jQuery-ui-Slider-Pips": "git://github.com/simeydotme/jQuery-ui-Slider-Pips.git",
+    "es5-shim": "^4.5.9",
+    "jQuery-ui-Slider-Pips": "github:simeydotme/jQuery-ui-Slider-Pips.git",
     "locutus": "^2.0.6",
-    "marked": "~0.3.6",
-    "selectize": "~0.12.4",
-    "spectrum-colorpicker": "~1.8.0",
-    "validator": "~6.2.1"
+    "marked": "^0.3.6",
+    "selectize": "^0.12.4",
+    "spectrum-colorpicker": "^1.8.0",
+    "validator": "^6.2.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.3",
