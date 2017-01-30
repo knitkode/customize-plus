@@ -23,8 +23,8 @@
     "node": ">0.12.0"
   },
   "files": [
-    "./src/scripts/**/*",
-    "./src/styles"
+    "src/scripts/**/*",
+    "src/styles"
   ],
   "dependencies": {
     "classlist.js": "git://github.com/eligrey/classList.js.git",
