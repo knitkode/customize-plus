@@ -93,7 +93,7 @@ gulp.task('_customize-scripts-admin',
   ]);
 
 var adminScriptsLibraries = [
-  PATHS.src.npm + 'classList.js/classList.js', // @@ie9 @@ie8 \\
+  PATHS.src.npm + 'classlist.js/classList.js', // @@ie9 @@ie8 \\
   PATHS.src.npm + 'pluswp-vendor/cp/modernizr-custom.js',
   PATHS.src.npm + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\
   PATHS.src.npm + 'pluswp-vendor/cp/highlight.pack.js',

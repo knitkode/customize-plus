@@ -289,7 +289,5 @@ export function numberToBoolean (value) {
   return typeof value === 'boolean' ? value : !!parseInt(value, 10);
 }
 
-let Validators = { isHexColor, isRgbaColor };
-
 // export to public API
-export default api.core.Validators = Validators;
+// export default api.core.Validators = Validators;

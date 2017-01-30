@@ -1,5 +1,3 @@
-import window from 'window';
-import document from 'document';
 import $ from 'jquery';
 import _ from 'underscore';
 import wp from 'wp';
