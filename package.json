@@ -24,7 +24,7 @@
   },
   "files": [
     "./src/scripts/**/*",
-    "./src/styles",
+    "./src/styles"
   ],
   "dependencies": {
     "classlist.js": "git://github.com/eligrey/classList.js.git",
