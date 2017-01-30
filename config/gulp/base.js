@@ -66,7 +66,6 @@ gulp.task('_base-styles', ['_base-images'], function() {
   PLUGINS.base64.baseDir = PATHS.src.root;
   return gulp.src(PATHS.src.styles + '*.scss')
     .pipe($.if(CONFIG.isDist, $.replace(CONFIG.creditsPlaceholder, banner)))
-    .pipe($.include())
     .pipe($.sass.sync(PLUGINS.sass).on('error', $.sass.logError))
     .pipe($.postcss([
       require('autoprefixer')(PLUGINS.autoprefixer),
