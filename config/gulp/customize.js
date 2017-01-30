@@ -94,10 +94,9 @@ gulp.task('_customize-scripts-admin',
 
 var adminScriptsLibraries = [
   PATHS.src.npm + 'classList.js/classList.js', // @@ie9 @@ie8 \\
-  PATHS.src.scripts + 'vendor-custom/modernizr-custom.js', // include modernizr custom build
-  // PATHS.src.npm + 'validator/validator.js', // use es6 imports
+  PATHS.src.npm + 'pluswp-vendor/cp/modernizr-custom.js',
   PATHS.src.npm + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\
-  PATHS.src.scripts + 'vendor-custom/highlight.pack.js', // include highlight.js custom build
+  PATHS.src.npm + 'pluswp-vendor/cp/highlight.pack.js',
   PATHS.src.npm + 'jQuery-ui-Slider-Pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme... \\
   PATHS.src.npm + 'selectize/dist/js/standalone/selectize.js',
   PATHS.src.npm + 'spectrum-colorpicker/spectrum.js',
