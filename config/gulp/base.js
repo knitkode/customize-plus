@@ -73,6 +73,7 @@ gulp.task('_base-styles', ['_base-images'], function() {
       require('css-mqpacker')(PLUGINS.cssMqpacker)
     ]))
     .pipe($.base64(PLUGINS.base64))
+    .pipe($.if(CONFIG.isDist, $.replace(CONFIG.creditsPlaceholder, banner)))
     .pipe(gulp.dest(PATHS.build.styles))
     .pipe($.if(CONFIG.isDist, $.cssnano(PLUGINS.cssnano)))
     .pipe($.rename({ suffix: '.min' }))
