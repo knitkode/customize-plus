@@ -100,7 +100,7 @@ var adminScriptsLibraries = [
   PATHS.src.scripts + 'vendor-custom/highlight.pack.js', // include highlight.js custom build
   PATHS.src.npm + 'jQuery-ui-Slider-Pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme... \\
   PATHS.src.npm + 'selectize/dist/js/standalone/selectize.js',
-  PATHS.src.npm + 'spectrum-colorpicker/spectrum.js'
+  PATHS.src.npm + 'spectrum-colorpicker/spectrum.js',
 ];
 
 /**

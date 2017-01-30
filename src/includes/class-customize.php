@@ -100,6 +100,15 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		private static $min = '';
 
 		/**
+		 * Data from the server will be exposed on a global object on window
+		 * with this name.
+		 *
+		 * @since  0.0.1
+		 * @var string
+		 */
+		const JS_API_NAMESPACE = 'PWPcp';
+
+		/**
 		 * JavaScript core dependencies
 		 *
 		 * @since  0.0.1
@@ -157,18 +166,31 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		public static function enqueue_js_admin() {
 			do_action( 'PWPcp/customize/enqueue_js_admin_pre', 'PWPcp-customize' );
 
-			wp_register_script( 'PWPcp-customize-base', plugins_url( 'assets/customize-base'.self::$min.'.js', PWPCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, PWPCP_PLUGIN_VERSION, false );
-			wp_localize_script( 'PWPcp-customize-base', 'PWPcp', array(
-					'components' => apply_filters( 'PWPcp/customize/get_js_components', array() ),
-					'constants' => self::get_js_constants(),
-					'settings' => self::get_js_settings(),
-					'l10n' => self::get_js_l10n(),
-				) );
-			wp_enqueue_script( 'PWPcp-customize-base' );
+			if ( ! class_exists( 'PWPcpp_Customize' ) ) {
 
-			wp_enqueue_script( 'PWPcp-customize', plugins_url( 'assets/customize'.self::$min.'.js', PWPCP_PLUGIN_FILE ), array( 'PWPcp-customize-base' ), PWPCP_PLUGIN_VERSION, false );
+				wp_register_script( 'PWPcp-customize-base', plugins_url( 'assets/customize-base'.self::$min.'.js', PWPCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, PWPCP_PLUGIN_VERSION, false );
+				wp_localize_script( 'PWPcp-customize-base', self::JS_API_NAMESPACE, self::get_script_localization() );
+				wp_enqueue_script( 'PWPcp-customize-base' );
+
+				wp_enqueue_script( 'PWPcp-customize', plugins_url( 'assets/customize'.self::$min.'.js', PWPCP_PLUGIN_FILE ), array( 'PWPcp-customize-base' ), PWPCP_PLUGIN_VERSION, false );
+			}
 
 			do_action( 'PWPcp/customize/enqueue_js_admin_post', 'PWPcp-customize' );
+		}
+
+		/**
+		 * Get script localization
+		 *
+		 * @since 0.0.1
+		 * @return array
+		 */
+		public static function get_script_localization () {
+			return array(
+				'components' => apply_filters( 'PWPcp/customize/get_js_components', array() ),
+				'constants' => self::get_js_constants(),
+				'settings' => self::get_js_settings(),
+				'l10n' => self::get_js_l10n(),
+			);
 		}
 
 		/**

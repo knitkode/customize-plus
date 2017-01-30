@@ -27,6 +27,7 @@
     "src/styles"
   ],
   "dependencies": {
+    "pluswp-vendor": "gitlab:pluswp/pluswp-vendor.git",
     "classlist.js": "git://github.com/eligrey/classList.js.git",
     "css-toggle-switch": "^4.0.2",
     "es5-shim": "~4.5.9",
