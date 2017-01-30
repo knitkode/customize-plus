@@ -7,7 +7,7 @@ var gulp = require('gulp');
  * Paths
  * @type {Object}
  */
-var PATHS = {
+global.PATHS = {
   /** @type {Object} */
   src: {
     root: './src/',
@@ -18,7 +18,7 @@ var PATHS = {
     assets: './src/assets/',
     images: './src/assets/images/',
     scripts: './src/assets/scripts/',
-    styles: './src/assets/styles/'
+    styles: './src/assets/styles/',
   },
   /** @type {Object} */
   build: {
@@ -28,48 +28,9 @@ var PATHS = {
     assets: './build/assets/',
     images: './build/assets/images/',
     styles: './build/assets/',
-    scripts: './build/assets/'
+    scripts: './build/assets/',
   }
 };
-
-/**
- * Paths to Premium Plugin version
- * @type {Object}
- */
-PATHS = require('util')._extend(PATHS, {
-  /** @type {Object} */
-  toPremium: {
-    files: [
-
-      // includes
-      PATHS.src.includes + '**/*.php',
-
-      // '!' + PATHS.src.includes + '**/.*.php',
-      // views
-      PATHS.src.views + '*.php',
-
-      // images
-      PATHS.src.images + '*.*',
-
-      // scripts
-      PATHS.src.scripts + '**/*.js',
-      '!' + PATHS.src.scripts + 'customize.js',
-
-      // styles
-      PATHS.src.styles + '**/*.scss',
-      '!' + PATHS.src.styles + 'admin.scss',
-      '!' + PATHS.src.styles + 'customize.scss'
-    ],
-
-    // destination
-    src: {
-      root: '../customize-plus-premium-synced/src/'
-    }
-  }
-});
-
-global.PATHS = PATHS;
-
 
 // @access public
 gulp.task('build', ['build-base', 'build-customize']);
