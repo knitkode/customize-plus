@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import { api } from './api';
-import { body, wpApi } from './globals';
+import { api, wpApi, body } from './globals';
 import Regexes from './regexes';
 
 /**

@@ -1,5 +1,4 @@
-import { api } from '../core/api';
-import { wpApi } from '../core/globals';
+import { api, wpApi } from '../core/globals';
 import ControlCheckbox from './checkbox';
 
 /**

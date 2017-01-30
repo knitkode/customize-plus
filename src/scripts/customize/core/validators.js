@@ -1,6 +1,6 @@
 import isHexColor from 'validator/lib/isHexColor';
 import matches from 'validator/lib/matches';
-import { api } from './api';
+// import { api } from './globals';
 import Regexes from './regexes';
 
 /**

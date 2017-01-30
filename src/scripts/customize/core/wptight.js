@@ -1,7 +1,6 @@
 import $ from 'jquery';
-import { api } from './api';
+import { api, $readyDOM } from './globals';
 import Utils from './utils';
-import { $readyDOM } from './globals';
 
 /**
  * WordPress Tight

@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import { api } from '../core/api';
+import { api } from '../core/globals';
 // import ControlBase from './base';
 
 /**

@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import Modernizr from 'modernizr';
-import { api } from './api';
-import { body, $readyDOM, wpApi } from './globals';
+import { api, wpApi, body, $readyDOM } from './globals';
 
 /**
  * Skeleton element wrappers

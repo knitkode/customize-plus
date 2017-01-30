@@ -2,8 +2,7 @@ import sprintf from 'locutus/php/strings/sprintf';
 import is_float from 'locutus/php/var/is_float';
 import isInt from 'validator/lib/isInt';
 import { isMultipleOf } from '../core/validators';
-import { api } from '../core/api';
-import { wpApi } from '../core/globals';
+import { api, wpApi } from '../core/globals';
 import ControlBaseInput from './base-input';
 
 /**

@@ -1,7 +1,6 @@
 import isURL from 'validator/lib/isURL';
 import isEmail from 'validator/lib/isEmail';
-import { api } from '../core/api';
-import { wpApi } from '../core/globals';
+import { api, wpApi } from '../core/globals';
 import Utils from '../core/utils';
 import ControlBaseInput from './base-input';
 

@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import { api } from './api';
-import { $document, body, $readyDOM } from './globals';
+import { api, $document, body, $readyDOM } from './globals';
 
 /**
  * Tooltips

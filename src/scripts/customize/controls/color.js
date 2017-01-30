@@ -1,8 +1,7 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import isHexColor from 'validator/lib/isHexColor';
-import { api } from '../core/api';
-import { wpApi } from '../core/globals';
+import { api, wpApi } from '../core/globals';
 import { isRgbaColor } from '../core/validators';
 /* global tinycolor */
 

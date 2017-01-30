@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api } from './globals';
 /* jshint maxlen: 1000 */
 
 /**

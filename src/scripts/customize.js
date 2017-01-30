@@ -1,4 +1,3 @@
-import './customize/core/api';
 import './customize/core/globals';
 
 import './customize/controls/base-input';

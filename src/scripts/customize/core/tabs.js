@@ -1,8 +1,6 @@
 import $ from 'jquery';
 import Modernizr from 'modernizr';
-import { api } from './api';
-import { $document, $readyDOM, wpApi } from './globals';
-/* global Screenpreview */
+import { api, wpApi, $document, $readyDOM } from './globals';
 
 /**
  * Tabs

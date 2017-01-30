@@ -1,22 +1,21 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import wp from 'wp';
+import pluginApi from 'PWPcp';
 
-// be sure to have what we need, bail otherwise
-if (!wp) {
-  throw new Error('Missing crucial object `wp`');
-}
+/** @type {Object} It collects core components */
+pluginApi.core = pluginApi.core || {};
 
-// var DEBUG = true; is injected through rollup
-if (DEBUG) {
-  DEBUG = {
-    performances: false,
-    compiler: false
-  };
-  // shim for Opera // @@todo remove these two lines \\
-  window.performance = window.performance || { now: function(){} };
-  // var t = performance.now();
-}
+/** @type {Object} It collects additional components */
+pluginApi.components = pluginApi.components || {};
+
+/** @type {Object} It collects controls, sections and panels prototypes */
+pluginApi.controls = pluginApi.controls || {};
+pluginApi.sections = pluginApi.sections || {};
+pluginApi.panels = pluginApi.panels || {};
+
+// exports Customize Plus API
+export var api = pluginApi;
 
 /** @type {jQuery} */
 export const $window = $(window);
@@ -50,7 +49,28 @@ const _readyDOM = (fn) => {
 }
 _readyDOM(() => { $readyDOM.resolve(); });
 
+// @@todo \\
+// var DEBUG = true; is injected through rollup
 if (DEBUG) {
-  // it gets twice in the console 'cause this code is in all customize scripts
   $ready.done(() => { console.log('global $ready.done()'); });
+
+  DEBUG = {
+    performances: false,
+    compiler: false
+  };
+  // shim for Opera // @@todo remove these two lines \\
+  window.performance = window.performance || { now: function(){} };
+  // var t = performance.now();
+
+  // just an alias
+  window.api = pluginApi;
 }
+
+// // be sure to have what we need, bail otherwise
+// if (!wp) {
+//   throw new Error('Missing crucial object `wp`');
+
+// // be sure to have what we need, bail otherwise
+// if (!pluginApi) {
+//   throw new Error('Missing crucial object `PWPcp`');
+// }

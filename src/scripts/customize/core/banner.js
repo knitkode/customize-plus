@@ -1,8 +1,7 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import { api } from './api';
+import { api, $document } from './globals';
 import WpTight from './wptight';
-import { $document } from './globals';
 
 /**
  * Banner for free plugin

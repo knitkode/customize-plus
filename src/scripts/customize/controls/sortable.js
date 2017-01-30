@@ -1,6 +1,5 @@
 import _ from 'underscore';
-import { api } from '../core/api';
-import { wpApi } from '../core/globals';
+import { api, wpApi } from '../core/globals';
 // import ControlBase from './base';
 
 /**
