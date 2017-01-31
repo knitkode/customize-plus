@@ -1,3 +1,4 @@
+import window from 'window';
 import isHexColor from 'validator/lib/isHexColor';
 import matches from 'validator/lib/matches';
 // import { api } from './globals';

@@ -1,3 +1,4 @@
+import document from 'document';
 import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi, body } from './globals';

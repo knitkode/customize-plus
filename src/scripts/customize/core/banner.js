@@ -1,6 +1,7 @@
+import document from 'document';
 import $ from 'jquery';
 import _ from 'underscore';
-import { api, $document } from './globals';
+import { api, $readyDOM } from './globals';
 import WpTight from './wptight';
 
 /**
@@ -300,7 +301,7 @@ api.core._banner = true;
   /**
    * Init on document ready
    */
-  $document.ready(function () {
+  $readyDOM.then(function () {
     // mechanism to prevent banner from showing in Customize Plus Premium
     if (!api.core._banner) {
       return;

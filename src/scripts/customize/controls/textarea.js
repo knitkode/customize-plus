@@ -1,3 +1,4 @@
+import window from 'window';
 import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';

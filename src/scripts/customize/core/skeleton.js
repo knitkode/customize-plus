@@ -1,3 +1,4 @@
+import document from 'document';
 import $ from 'jquery';
 import Modernizr from 'modernizr';
 import { api, wpApi, body, $readyDOM } from './globals';

@@ -1,3 +1,4 @@
+import document from 'document';
 import $ from 'jquery';
 import { api, wpApi, $document, $readyDOM } from './globals';
 
