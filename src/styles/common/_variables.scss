@@ -19,6 +19,11 @@ $WP--link-color: #0099d5; // #0074a2;
 $WP--link-color-hover: #2ea2cc;
 $WP--link-box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px $WP--focus-box-shadow-color;
 $WP--dashicons-size: 20px;
+$WP--notice-bg: #fff;
+$WP--notice-border--error: #DC3232;
+$WP--notice-border--success: #46B450;
+$WP--notice-border--warning: #FFBA00;
+$WP--notice-border--info: #72DFFF; // I made this up
 
 // WordPress Customize variables
 $WPcustomize--overlay-z-index: 500000;
@@ -43,22 +48,23 @@ $WPcustomize--collapse-sidebar-marginleft: 15px;
 $WPcustomize--breakpoint-float: 640px;
 $WPcustomize--breakpoint-md: 782px; // some input fields get bigger here
 $WPcustomize--input-checkbox-height: 16px;
+$WPcustomize--color: #555d66;
 $WPcustomize--btn-height: 22px; // @@wptight-css from .wp-color-result {} \\
 $WPcustomize--btn-padding-horizontal: 9px;
 $WPcustomize--btn-bg: #f7f7f7;
 $WPcustomize--btn-bg-hover: #fafafa;
-$WPcustomize--btn-bg-active: #e8e8e8; // we made this up
-$WPcustomize--btn-bg-activetoggle: #e0e0e0; // we made this up
+$WPcustomize--btn-bg-active: #e8e8e8; // I made this up
+$WPcustomize--btn-bg-activetoggle: #e0e0e0; // I made this up
 $WPcustomize--btn-color: #555;
 $WPcustomize--btn-color-hover: #222;
-$WPcustomize--btn-color-active: #444; // we made this up
+$WPcustomize--btn-color-active: #444; // I made this up
 $WPcustomize--btn-border-color: #ccc;
 $WPcustomize--btn-border-color-hover: #999;
 $WPcustomize--btn-border-radius: $WP--border-radius;
 $WPcustomize--btn-box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0,0,0,.08);
 $WPcustomize--btn-box-shadow-focus: $WP--link-box-shadow;
-$WPcustomize--btn-box-shadow-activetoggle: inset 0 2px 2px rgba(0,0,0,.08), 0 1px 0 rgba(0,0,0,.08); // we made this up
-$WPcustomize--btn-box-shadow-activetoggle-focus: 0 1px 0 rgba(0,0,0,.08), inset 0 0 2px 1px $WP--focus-box-shadow-color; // we made this up
+$WPcustomize--btn-box-shadow-activetoggle: inset 0 2px 2px rgba(0,0,0,.08), 0 1px 0 rgba(0,0,0,.08); // I made this up
+$WPcustomize--btn-box-shadow-activetoggle-focus: 0 1px 0 rgba(0,0,0,.08), inset 0 0 2px 1px $WP--focus-box-shadow-color; // I made this up
 
 /**
  * Variables: Customize Plus

@@ -62,8 +62,9 @@ if (DEBUG) {
   window.performance = window.performance || { now: function(){} };
   // var t = performance.now();
 
-  // just an alias
+  // just useful aliases for debugging
   window.api = pluginApi;
+  window.wpApi = wpApi;
 }
 
 // // be sure to have what we need, bail otherwise
