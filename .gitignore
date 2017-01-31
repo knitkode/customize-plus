@@ -23,6 +23,7 @@ vendor
 
 # Front-end and packages folders
 node_modules
+bower_components
 .sass-cache
 .tmp
 .publish
