@@ -94,9 +94,6 @@ const rollupOpts = {
     'wp',
     'PWPcp',
     'modernizr',
-    'mousetrap',
-    'swal',
-    'toastr',
     'marked',
     'hljs',
   ],
@@ -120,8 +117,6 @@ const rollupOpts = {
 
 const rollupOptsWrite = {
   format: 'iife',
-  // exports: [],
-  // moduleName: 'api',
   indent: '  ',
   intro: 'var DEBUG = true;',
   globals: {
@@ -132,17 +127,11 @@ const rollupOptsWrite = {
     wp: 'wp',
     PWPcp: 'PWPcp',
     modernizr: 'Modernizr',
-    mousetrap: 'Mousetrap',
-    swal: 'swal',
-    toastr: 'toastr',
     marked: 'marked',
     hljs: 'hljs',
   },
   namedFunctionExpressions: false,
-  // interop: false, // @@todo try with this \\
-  // banner: '// banner test',
-  // footer: '// footer test',
-  format: 'iife',
+  interop: false,
 };
 
 gulp.task('_customize-scripts-admin-rollup', () => {
@@ -159,8 +148,8 @@ gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-rollup'], funct
     PATHS.src.npm + 'es5-shim/es5-shim.min.js', // @@ie9 @@ie8 \\
     PATHS.src.npm + 'classlist.js/classList.js', // @@ie9 @@ie8 \\
     PATHS.src.npm + 'pluswp-vendor/cp/modernizr-custom.js',
-    PATHS.src.npm + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\
     PATHS.src.npm + 'pluswp-vendor/cp/highlight.pack.js',
+    PATHS.src.npm + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\
     PATHS.src.npm + 'jQuery-ui-Slider-Pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme... \\
     PATHS.src.npm + 'selectize/dist/js/standalone/selectize.js',
     PATHS.src.npm + 'spectrum-colorpicker/spectrum.js',

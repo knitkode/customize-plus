@@ -1,3 +1,5 @@
+import marked from 'marked';
+import hljs from 'hljs';
 import { body } from './globals';
 
 /**
