@@ -7,11 +7,11 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     PlusWP <dev@pluswp.com> (http://pluswp.com)
+ * @author     PlusWP <dev@pluswp.com> (httpS://pluswp.com)
  * @copyright  2015 PlusWP (kunderi kuus)
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
- * @link       http://pluswp.com/customize-plus
+ * @link       httpS://pluswp.com/customize-plus
  */
 class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
@@ -78,7 +78,6 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 		// add setting factory value
 		// @@todo remove sprintf @see track https://core.trac.wordpress.org/ticket/34290#ticket \\
-
 		if ( is_object( $this->setting ) ) {
 			$this->json['vFactory'] = sprintf( $this->setting->default );
 		}

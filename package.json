@@ -8,11 +8,11 @@
     "textDomain": "pwpcp",
     "startYear": 2014
   },
-  "homepage": "http://pluswp.com/customize-plus",
+  "homepage": "httpS://pluswp.com/customize-plus",
   "author": {
     "name": "PlusWP",
     "email": "dev@pluswp.com",
-    "url": "http://pluswp.com/"
+    "url": "httpS://pluswp.com/"
   },
   "license": "SEE LICENSE IN license.txt",
   "private": false,
@@ -20,7 +20,7 @@
     "url": "https://github.com/PlusWP/customize-plus"
   },
   "engines": {
-    "node": ">0.12.0"
+    "node": ">=4"
   },
   "files": [
     "src/scripts",

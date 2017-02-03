@@ -65,19 +65,19 @@ let Control = api.controls.Base.extend({
    * @override
    */
   ready: function () {
-    var selectize = this.params.selectize || false;
+    var selectizeOpts = this.params.selectize || false;
     var setting = this.setting;
 
     this.__select = this._container.getElementsByTagName('select')[0];
     this.__options = this._container.getElementsByTagName('option');
 
     // use selectize
-    if (selectize) {
+    if (selectizeOpts) {
       var options = _.extend({
         onChange: function (value) {
           setting.set(value);
         }
-      }, selectize);
+      }, selectizeOpts);
       $(this.__select).selectize(options);
     // or use normal DOM API
     } else {

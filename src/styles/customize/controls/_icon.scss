@@ -2,9 +2,33 @@
  * Control Icon
  *
  */
+
+$control-icon--skin1: true;
+
 .customize-control-pwpcp_icon {
   .selectize-input {
-    overflow: visible !important; // don't hide hints tips
+    @if $control-icon--skin1 {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+  }
+}
+
+/**
+ * Selectize item
+ */
+.selectize-control .selectize-input > div.pwpcp-icon-selectItem {
+  @if $control-icon--skin1 {
+    padding: 9px !important;
+    background: #fff;
+    border: 0;
+
+    > .remove {
+      width: 100%;
+      height: 100%;
+      color: transparent; // hide the `x` to close
+    }
   }
 }
 

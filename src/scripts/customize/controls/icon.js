@@ -22,6 +22,10 @@ let Control = api.controls.Base.extend({
   validate: function (value) {
     // treat value only if it's a string (unlike the php function)
     // because here we always have to get a string.
+
+    if (!_.isArray(value)) {
+      return { error: true };
+    }
     if (typeof value === 'string') {
       return value;
     } else {
@@ -30,14 +34,24 @@ let Control = api.controls.Base.extend({
   },
   /**
    * @override
+   * @return {array|string}
    */
   sanitize: function (value) {
-    var sanitized = [];
-    var singleValues = value.split(',');
-    for (var i = 0, l = singleValues.length; i < l; i++) {
-      sanitized.push(singleValues[i].trim());
+    if (!_.isArray(value)) {
+      value.toString().split(',');
     }
-    return sanitized.join(',');
+    var sanitized = [];
+    for (var i = 0, l = value.length; i < l; i++) {
+      sanitized.push(value[i].trim());
+    }
+    // if the array has more than one element return an array
+    if (sanitized.length > 1) {
+      return sanitized;
+      // @@doubt or return a string even here? like `a,b,c`
+      // return sanitized.join(',');
+    }
+    // or if it's just one element return a simple string
+    return sanitized[0];
   },
   /**
    * @override
@@ -62,9 +76,9 @@ let Control = api.controls.Base.extend({
    */
   ready: function () {
     this.__input = this._container.getElementsByClassName('pwpcp-selectize')[0];
-    this.__iconSet = this._getIconsSet();
+    this._iconSet = this._getIconsSet();
 
-    var selectizeStuff = this._getSelectizeDataFromIconsSet(api.constants[this.__iconSet]);
+    var selectizeStuff = this._getSelectizeDataFromIconsSet(api.constants[this._iconSet]);
     this._iconOptions = selectizeStuff._options;
     this._iconGroups = selectizeStuff._groups;
 
@@ -75,7 +89,7 @@ let Control = api.controls.Base.extend({
    * @return {String} [description]
    */
   _getIconsSet: function () {
-    var choices = this.params.choices;
+    const choices = this.params.choices;
     if (_.isString(choices)) {
       return choices;
     }
@@ -128,10 +142,9 @@ let Control = api.controls.Base.extend({
     // init selectize plugin
     $(this.__input).selectize({
       plugins: ['drag_drop','remove_button'],
-      delimiter: ',',
-      // maxItems: 10,
-      persist: false,
-      hideSelected: true,
+      maxItems: null,
+      // persist: false,
+      // hideSelected: true,
       options: this._iconOptions,
       optgroups: this._iconGroups,
       optgroupField: 'group',
@@ -144,10 +157,11 @@ let Control = api.controls.Base.extend({
         item: this._selectizeRenderItem.bind(this),
         option: this._selectizeRenderOption.bind(this),
         optgroup_header: this._selectizeRenderGroupHeader.bind(this),
+      },
+      onChange: function (value) {
+        console.log(value);
+        setting.set(value);
       }
-    })
-    .on('change', function () {
-      setting.set(this.value);
     });
   },
   /**
@@ -160,7 +174,7 @@ let Control = api.controls.Base.extend({
    */
   _selectizeRenderItem: function (data, escape) {
     var value = data.id;
-    return '<div class="pwpcpui-tooltip--top" title="' + escape(value) + '">' +
+    return '<div class="pwpcp-icon-selectItem pwpcpui-tooltip--top" title="' + escape(value) + '">' +
         '<i class="' + escape(this._getIconClassName(value)) + '"></i>' +
       '</div>';
   },
@@ -195,7 +209,7 @@ let Control = api.controls.Base.extend({
    * @return {[type]}      [description]
    */
   _getIconClassName: function (icon) {
-    var iconsSetName = this.__iconSet;
+    var iconsSetName = this._iconSet;
     return iconsSetName + ' ' + iconsSetName + '-' + icon;
   }
 });

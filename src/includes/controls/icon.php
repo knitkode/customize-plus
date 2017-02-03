@@ -6,11 +6,11 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     PlusWP <dev@pluswp.com> (http://pluswp.com)
+ * @author     PlusWP <dev@pluswp.com> (httpS://pluswp.com)
  * @copyright  2015 PlusWP (kunderi kuus)
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
- * @link       http://pluswp.com/customize-plus
+ * @link       httpS://pluswp.com/customize-plus
  */
 class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
 
@@ -371,6 +371,15 @@ class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
 		if ( is_string( $this->choices ) && in_array( $this->choices, $this->icons_set ) ) {
 			$this->json['choices'] = $this->choices;
 		}
+		// @@doubt support multiple icon sets?
+		// if ( is_array( $this->choices ) ) {
+		// 	$this->json['choices'] = array();
+		// 	foreach ( $this->choices as $icon_set_code => $icon_set_label ) {
+		// 		if ( in_array( $icon_set_code, $this->icons_set ) ) {
+		// 			array_push( $this->json['choices'], $icon_set_code );
+		// 		}
+		// 	}
+		// } \\
 	}
 
 	/**
@@ -383,8 +392,9 @@ class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
 		<label>
 			<?php $this->js_tpl_header(); ?>
 		</label>
-		<input class="pwpcp-selectize" type="text" value="{{ data.value }}" required>
-		<div class="pwpcp-icon-wrap"><?php // filled through js ?></div>
+		<!-- <input class="pwpcp-selectize" type="text" value="{{ data.value }}" placeholder="Search by name..."> -->
+		<select class="pwpcp-selectize" value="{{ data.value }}" placeholder="Search by name..." name="icon[]" multiple><option value="">Search icon by name...</option></select>
+		<!-- <div class="pwpcp-icon-wrap"><?php // filled through js ?></div> -->
 		<?php
 	}
 
