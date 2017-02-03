@@ -61,7 +61,7 @@ Donate
 
 License
 ---------------
- [![License](https://img.shields.io/badge/license-GPL--3.0%2B-blue.svg)](https://github.com/PlusWP/customize-plus--theme/blob/master/license.txt) [![PlusWP](https://img.shields.io/badge/%C2%A9PlusWP-2015-blue.svg)](httpS://pluswp.com)
+ [![License](https://img.shields.io/badge/license-GPL--3.0%2B-blue.svg)](https://github.com/PlusWP/customize-plus--theme/blob/master/license.txt) [![PlusWP](https://img.shields.io/badge/%C2%A9PlusWP-2015-blue.svg)](https://pluswp.com)
 
 Unless otherwise specified, all the plugin files are licensed under GNU General Public License version 3, see file license.txt. The exceptions to this license are as follows:
 
@@ -72,4 +72,4 @@ Unless otherwise specified, all the plugin files are licensed under GNU General 
 
 
 ---------------
-:registered: PlusWP 2015 | [pluswp.com](httpS://pluswp.com) | dev@pluswp.com
+:registered: PlusWP 2015 | [pluswp.com](https://pluswp.com) | dev@pluswp.com

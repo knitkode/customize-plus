@@ -13,11 +13,11 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Customize Plus
- * Plugin URI:        httpS://pluswp.com/customize-plus
+ * Plugin URI:        https://pluswp.com/customize-plus
  * Description:       pkgDescription
  * Version:           pkgVersion
  * Author:            PlusWP
- * Author URI:        httpS://pluswp.com
+ * Author URI:        https://pluswp.com
  * License:           GPLv2 or later (license.txt)
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       pkgTextDomain

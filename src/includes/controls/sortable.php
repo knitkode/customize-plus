@@ -6,11 +6,11 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     PlusWP <dev@pluswp.com> (httpS://pluswp.com)
+ * @author     PlusWP <dev@pluswp.com> (https://pluswp.com)
  * @copyright  2015 PlusWP (kunderi kuus)
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
- * @link       httpS://pluswp.com/customize-plus
+ * @link       https://pluswp.com/customize-plus
  */
 class PWPcp_Customize_Control_Sortable extends PWPcp_Customize_Control_Base_Radio {
 
