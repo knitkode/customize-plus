@@ -6,7 +6,7 @@
  * @package    Customize_Plus
  * @subpackage Core
  * @author     PlusWP <dev@pluswp.com> (https://pluswp.com)
- * @copyright  2015 PlusWP (kunderi kuus)
+ * @copyright  2017 PlusWP
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://pluswp.com/customize-plus
