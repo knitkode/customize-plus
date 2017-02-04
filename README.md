@@ -3,8 +3,8 @@
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)]()
 [![GitHub release](https://img.shields.io/github/release/PlusWP/customize-plus.svg)]()
 [![Build Status](https://scrutinizer-ci.com/g/PlusWP/customize-plus/badges/build.png?b=master)](https://scrutinizer-ci.com/g/PlusWP/customize-plus/build-status/master)
-[![Quality](https://scrutinizer-ci.com/g/PlusWP/customize-plus/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/PlusWP/customize-plus/?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/13e6f4eb577b4480a617de3e8f1fe254)](https://www.codacy.com/app/kuus/customize-plus)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/PlusWP/customize-plus/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/PlusWP/customize-plus/?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/39ed6cc3d19b4d2da947c5f2375d8eab)](https://www.codacy.com/app/PlusWP/customize-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=PlusWP/customize-plus&amp;utm_campaign=Badge_Grade)
 [![devDependency Status](https://david-dm.org/PlusWP/customize-plus/dev-status.svg)](https://david-dm.org/PlusWP/customize-plus#info=devDependencies)
 
 > Enhance and extend the WordPress Customize.
@@ -61,7 +61,7 @@ Donate
 
 License
 ---------------
- [![License](https://img.shields.io/badge/license-GPL--3.0%2B-blue.svg)](https://github.com/PlusWP/customize-plus--theme/blob/master/license.txt) [![PlusWP](https://img.shields.io/badge/%C2%A9PlusWP-2015-blue.svg)](https://pluswp.com)
+ [![License](https://img.shields.io/badge/license-GPL--3.0%2B-blue.svg)](https://github.com/PlusWP/customize-plus--theme/blob/master/license.txt) [![PlusWP](https://img.shields.io/badge/%C2%A9PlusWP-2017-blue.svg)](https://pluswp.com)
 
 Unless otherwise specified, all the plugin files are licensed under GNU General Public License version 3, see file license.txt. The exceptions to this license are as follows:
 
@@ -72,4 +72,4 @@ Unless otherwise specified, all the plugin files are licensed under GNU General 
 
 
 ---------------
-:registered: PlusWP 2015 | [pluswp.com](https://pluswp.com) | dev@pluswp.com
+:registered: PlusWP 2017 | [pluswp.com](https://pluswp.com) | dev@pluswp.com
