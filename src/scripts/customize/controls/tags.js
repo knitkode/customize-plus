@@ -77,9 +77,10 @@ let Control = api.controls.Base.extend({
    * Init selectize on text input
    */
   _initSelectize: function () {
-    var setting = this.setting;
-    var selectize = this.params.selectize || {};
-    var options = _.extend({
+    const setting = this.setting;
+    const selectizeOpts = this.params.selectize || {};
+
+    $(this.__input).selectize(_.extend({
       persist: false,
       create: function (input) {
         return {
@@ -90,9 +91,7 @@ let Control = api.controls.Base.extend({
       onChange: function (value) {
         setting.set(value);
       }
-    }, selectize);
-
-    $(this.__input).selectize(options);
+    }, selectizeOpts));
   }
 });
 

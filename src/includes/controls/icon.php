@@ -23,6 +23,34 @@ class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
 	public $type = 'pwpcp_icon';
 
 	/**
+	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
+	 *
+	 * @since 0.0.1
+	 * @var boolean|array
+	 */
+	protected $selectize = array();
+
+	/**
+	 * Selectize allowed options
+	 *
+	 * Sanitize methods must be class methods of `PWPcp_Sanitize` or global
+	 * functions
+	 *
+	 * @since 0.0.1
+	 * @var array
+	 */
+	public static $selectize_allowed_options = array(
+		'plugins' => array(
+			'drag_drop' => 'js_in_array',
+			'remove_button' => 'js_in_array'
+		),
+		'maxItems' => 'js_number_or_null',
+		'persist' => 'js_bool',
+		'hideSelected' => 'js_bool',
+		'sortField' => 'js_string'
+	);
+
+	/**
 	 * Icons set
 	 *
 	 * @since 0.0.1
@@ -370,6 +398,9 @@ class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
 	protected function add_to_json() {
 		if ( is_string( $this->choices ) && in_array( $this->choices, $this->icons_set ) ) {
 			$this->json['choices'] = $this->choices;
+		}
+		if ( ! empty( $this->selectize ) ) {
+			$this->json['selectize'] = PWPcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
 		}
 		// @@doubt support multiple icon sets?
 		// if ( is_array( $this->choices ) ) {

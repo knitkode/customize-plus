@@ -20,13 +20,16 @@ class PWPcp_Sanitize {
 	 * @param  array   $array The array to test
 	 * @return boolean
 	 */
-	public static function is_assoc(array $array) {
+	public static function is_assoc( $array ) {
+		if ( ! is_array( $array ) ) {
+			return false;
+		}
 		// Keys of the array
-		$keys = array_keys($array);
+		$keys = array_keys( $array );
 
 		// If the array keys of the keys match the keys, then the array must
 		// not be associative (e.g. the keys array looked like {0:0, 1:1...}).
-		return array_keys($keys) !== $keys;
+		return array_keys( $keys ) !== $keys;
 	}
 
 	/**
@@ -434,72 +437,149 @@ class PWPcp_Sanitize {
 
 	/**
 	 * Sanitize options for a js plugin
+	 *
 	 * @param  array $options
 	 * @param  array $allowed_options
+	 * @param  array $sanitized_options For 'recursion'
 	 * @return array|null
 	 */
-	public static function js_options( $options, $allowed_options ) {
+	public static function js_options( $options, $allowed_options, $sanitized_options = array() ) {
 		if ( ! is_array( $options) ) {
 			return null;
 		}
-		$sanitized_options = array();
 
 		foreach ( $options as $key_deep1 => $value_deep1 ) {
 			if ( isset( $allowed_options[ $key_deep1 ] ) ) {
-
-				$sanitized_value = null;
-
-				// if it's a string just check if it's a function name and call it
-				if ( is_string( $value_deep1 ) ) {
-					$sanitize_function = $allowed_options[ $key_deep1 ];
-					if ( function_exists( $sanitize_function ) ) {
-						$sanitized_value = call_user_func_array( $sanitize_function, $allowed_options ); // $sanitize_function( $value_deep1 );
-					}
-				// if it's an array of nested options use recursion
+				// if it's an associative array of nested options
+				if ( self::is_assoc( $value_deep1 ) ) {
+					$sanitized_options[ $key_deep1 ] = self::js_options( $value_deep1, $allowed_options[ $key_deep1 ] );
+				// if it's a flat array loop through it
 				} else if ( is_array( $value_deep1 ) ) {
-					foreach ( $value_deep1 as $key_deep2 => $value_deep2) {
-						$sanitized_value = self::js_options( $value_deep1, $allowed_options[ $key_deep1 ] );
+					foreach ( $value_deep1 as $value_deep2 ) {
+						$sanitized_options = self::js_option( $value_deep2, $key_deep1, $allowed_options[ $key_deep1 ], $sanitized_options );
 					}
-				}
-				if ( $sanitized_value ) {
-					$sanitized_options[ $key_deep1 ] = $sanitized_value;
+				// if it's a string a number o whatever just check if it's a function name and call it
+				} else {
+					$sanitized_options = self::js_option( $value_deep1, $key_deep1, $allowed_options, $sanitized_options );
 				}
 			}
+			// wp_die( 'cp_api', sprintf( __( 'Customize Plus | API error: option %s is not allowed.' ), $key_deep1 ) ); // @@todo api error \\
 		}
 
 		return $sanitized_options;
 	}
 
-	public static function js_number_or_null( $input, $parent_array = array() ) {
+	/**
+	 * Sanitization for a single js option
+	 *
+	 * @since 0.0.1
+	 * @param  mixed $option_value
+	 * @param  string $option_key
+	 * @param  array $allowed
+	 * @param  array $sanitized
+	 * @return array
+	 */
+	private static function js_option( $option_value, $option_key, $allowed, $sanitized ) {
+		$given_sanitizer = null;
+		$sanitized_value = null;
+		$sanitizer = null;
+
+		if ( isset( $allowed[ $option_key ] ) ) {
+			$given_sanitizer = $allowed[ $option_key ];
+			$args = array();
+		}
+		if ( isset( $allowed[ $option_value ] ) ) {
+			$given_sanitizer = $allowed[ $option_value ];
+			$args = array_keys( $allowed );
+		}
+
+		if ( ! $given_sanitizer ) {
+			return $sanitized;
+		}
+
+		// allow the use of global functions to sanitize
+		if ( function_exists( $given_sanitizer ) ) {
+			$sanitizer = $given_sanitizer;
+		}
+		// otherwise check on this class methods
+		if ( method_exists( 'PWPcp_Sanitize', $given_sanitizer ) ) {
+			$sanitizer = 'PWPcp_Sanitize::' . $given_sanitizer;
+		}
+		// if we can sanitize it let's do it
+		if ( $sanitizer ) {
+			$sanitized_value = call_user_func_array( $sanitizer, array( $option_value, $args ) );
+		}
+
+		if ( $given_sanitizer === 'js_in_array' ) {
+			if ( ! isset( $sanitized[ $option_key ] ) || ( isset( $sanitized[ $option_key ] ) && ! is_array( $sanitized[ $option_key ] ) ) ) {
+				$sanitized[ $option_key ] = array();
+			}
+			array_push( $sanitized[ $option_key ], $sanitized_value );
+		} else {
+			$sanitized[ $option_key ] = $sanitized_value;
+		}
+
+		return $sanitized;
+	}
+
+	/**
+	 * Sanitization for js value: ?number
+	 *
+	 * @since 0.0.1
+	 * @param  mixed $input
+	 * @return ?number
+	 */
+	public static function js_number_or_null( $input ) {
 		if ( is_numeric( $input ) ) {
 			// The input might comes as a string, this is a generic way to coerce it
 			// to a number either int or float, @see http://bit.ly/2kh6mx9
 			$input = $input + 0;
 
 			return $input;
-		} else {
-			return new WP_Error( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be numeric.' ), $input, $list ) );
 		}
+		return null;
+		// wp_die( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be numeric.' ), $input ) ); // @@todo api error \\
 	}
 
-	public static function js_in_array_keys ( $input, $parent_array ) {
-		if ( in_array( $input, $parent_array ) ) {
+	/**
+	 * Sanitization for js value: in array
+	 *
+	 * @since 0.0.1
+	 * @param  mixed $input
+	 * @return ?mixed
+	 */
+	public static function js_in_array ( $input, $list = array() ) {
+		if ( in_array( $input, $list ) ) {
 			return $input;
 		}
-		return new WP_Error( 'cp_api', sprintf( __( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input, $parent_array ) );
+		// wp_die( 'cp_api', sprintf( __( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input,  // @@todo api error \\implode( ', ', $list ) ) );
 	}
 
-	public static function js_bool ( $input, $parent_array = array() ) {
+	/**
+	 * Sanitization for js value: boolean
+	 *
+	 * @since 0.0.1
+	 * @param  mixed $input
+	 * @return ?bool
+	 */
+	public static function js_bool ( $input ) {
 		if ( is_bool( $input ) ) {
 			return $input;
 		}
-		return new WP_Error( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be a boolean.' ), $input ) );
+		// wp_die( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be a boolean.' ), $input ) ); // @@todo api error \\
 	}
 
-	public static function js_string ( $input, $parent_array = array() ) {
+	/**
+	 * Sanitization for js value: string
+	 *
+	 * @since 0.0.1
+	 * @param  mixed $input
+	 * @return ?string
+	 */
+	public static function js_string ( $input ) {
 		if ( is_string( $input ) ) {
 			return $input;
 		}
-		return new WP_Error( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be a string.' ), $input ) );
+		// wp_die( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be a string.' ), $input ) ); // @@todo api error \\
 	}
 }

@@ -31,12 +31,33 @@ class PWPcp_Customize_Control_Tags extends PWPcp_Customize_Control_Base {
 	protected $selectize = array();
 
 	/**
+	 * Selectize allowed options
+	 *
+	 * Sanitize methods must be class methods of `PWPcp_Sanitize` or global
+	 * functions
+	 *
+	 * @since 0.0.1
+	 * @var array
+	 */
+	public static $selectize_allowed_options = array(
+		'plugins' => array(
+			'restore_on_backspace' => 'js_in_array',
+			'drag_drop' => 'js_in_array',
+			'remove_button' => 'js_in_array'
+		),
+		'maxItems' => 'js_number_or_null',
+		'persist' => 'js_bool',
+	);
+
+	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
 	 *
 	 * @since 0.0.1
 	 */
 	protected function add_to_json() {
-		$this->json['selectize'] = $this->selectize;
+		if ( ! empty( $this->selectize ) ) {
+			$this->json['selectize'] = PWPcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
+		}
 	}
 
 	/**

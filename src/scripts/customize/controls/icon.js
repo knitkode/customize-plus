@@ -131,6 +131,7 @@ let Control = api.controls.Base.extend({
    */
   _updateUI: function (value) {
     var setting = this.setting;
+    const selectizeOpts = this.params.selectize || {};
 
     // if there is an instance of selectize destroy it
     if (this.__input.selectize) {
@@ -140,11 +141,9 @@ let Control = api.controls.Base.extend({
     this.__input.value = value || setting();
 
     // init selectize plugin
-    $(this.__input).selectize({
+    $(this.__input).selectize(_.extend({
       plugins: ['drag_drop','remove_button'],
       maxItems: null,
-      // persist: false,
-      // hideSelected: true,
       options: this._iconOptions,
       optgroups: this._iconGroups,
       optgroupField: 'group',
@@ -162,7 +161,7 @@ let Control = api.controls.Base.extend({
         console.log(value);
         setting.set(value);
       }
-    });
+    }, selectizeOpts));
   },
   /**
    * Selectize render item function

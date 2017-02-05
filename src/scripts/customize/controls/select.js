@@ -73,12 +73,11 @@ let Control = api.controls.Base.extend({
 
     // use selectize
     if (selectizeOpts) {
-      let options = _.extend({
+      $(this.__select).selectize(_.extend({
         onChange: function (value) {
           setting.set(value);
         }
-      }, selectizeOpts);
-      $(this.__select).selectize(options);
+      }, selectizeOpts));
     // or use normal DOM API
     } else {
       this.__select.onchange = function () {

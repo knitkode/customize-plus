@@ -33,19 +33,22 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	/**
 	 * Selectize allowed options
 	 *
+	 * Sanitize methods must be class methods of `PWPcp_Sanitize` or global
+	 * functions
+	 *
 	 * @since 0.0.1
 	 * @var array
 	 */
 	public static $selectize_allowed_options = array(
 		'plugins' => array(
-			'restore_on_backspace' => 'PWPcp_Sanitize::js_in_array_keys',
-			'drag_drop' => 'PWPcp_Sanitize::js_in_array_keys',
-			'remove_button' => 'PWPcp_Sanitize::js_in_array_keys'
+			'restore_on_backspace' => 'js_in_array',
+			'drag_drop' => 'js_in_array',
+			'remove_button' => 'js_in_array'
 		),
-		'maxItems' => 'PWPcp_Sanitize::js_number_or_null', // number|null,
-		'persist' => 'PWPcp_Sanitize::js_bool',
-		'hideSelected' => 'PWPcp_Sanitize::js_bool',
-		'sortField' => 'PWPcp_Sanitize::js_string',
+		'maxItems' => 'js_number_or_null',
+		'persist' => 'js_bool',
+		'hideSelected' => 'js_bool',
+		'sortField' => 'js_string'
 	);
 
 	/**
@@ -144,14 +147,19 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 		}
 		if ( is_numeric( $max_items ) && $max_items > 1 ) {
 			$input_decoded = json_decode( $value );
-			foreach ( $input_decoded as $key ) {
-				if ( ! isset( $control->choices[ $key ] ) ) {
-					$validity->add( 'wrong', sprintf( __( 'The value %s is not selectable.' ), $key ) );
+
+			if ( is_array( $input_decoded ) ) {
+				foreach ( $input_decoded as $key ) {
+					if ( ! isset( $control->choices[ $key ] ) ) {
+						$validity->add( 'wrong', sprintf( __( 'The value %s is not selectable.' ), $key ) );
+					}
 				}
+			} else {
+				$validity->add( 'wrong', sprintf( __( 'The value %s must be a well formed array.' ), $value ) );
 			}
 		} else {
 			if ( ! isset( $control->choices[ $value ] ) ) {
-				$validity->add( 'not_a_choice', __( 'The value is not an allowed selection.' ) );
+				$validity->add( 'not_a_choice', sprintf( __( 'The value %s is not an allowed selection.' ), $value ) );
 			}
 		}
 		return $validity;
