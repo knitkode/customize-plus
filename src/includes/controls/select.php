@@ -31,6 +31,24 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	protected $selectize = false;
 
 	/**
+	 * Selectize allowed options
+	 *
+	 * @since 0.0.1
+	 * @var array
+	 */
+	public static $selectize_allowed_options = array(
+		'plugins' => array(
+			'restore_on_backspace' => 'PWPcp_Sanitize::js_in_array_keys',
+			'drag_drop' => 'PWPcp_Sanitize::js_in_array_keys',
+			'remove_button' => 'PWPcp_Sanitize::js_in_array_keys'
+		),
+		'maxItems' => 'PWPcp_Sanitize::js_number_or_null', // number|null,
+		'persist' => 'PWPcp_Sanitize::js_bool',
+		'hideSelected' => 'PWPcp_Sanitize::js_bool',
+		'sortField' => 'PWPcp_Sanitize::js_string',
+	);
+
+	/**
 	 * Add values to JSON params
 	 *
 	 * @since 0.0.1
@@ -39,7 +57,11 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 		parent::add_to_json();
 
 		if ( $this->selectize ) {
-			$this->json['selectize'] = $this->selectize;
+			if ( is_array( $this->selectize ) ) {
+				$this->json['selectize'] = PWPcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
+			} else {
+				$this->json['selectize'] = true;
+			}
 		}
 	}
 

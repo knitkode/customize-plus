@@ -87,9 +87,13 @@ gulp.task('_base-styles', ['_base-images'], function() {
  * @access private
  */
 gulp.task('_base-php', function() {
-  return gulp.src(PATHS.src.includes + '*.php')
-    .pipe($.include())
-    .pipe($.replace(/<\?php\s\/\/\s@partial/g, '')) // remove extra `<?php // @partial`
+  // on `--dist` exclude `includes/**/*` subfolders
+  var path = CONFIG.isDist ? PATHS.src.includes + '*.php' : PATHS.src.includes + '**/*.php';
+  return gulp.src(path)
+    // transform php `require` in gulp-include `require` to inline php files in one file
+    .pipe($.if(CONFIG.isDist, $.replace("require ( PWPCP_PLUGIN_DIR . 'includes/", '//=require ')))
+    .pipe($.if(CONFIG.isDist, $.include()))
+    .pipe($.if(CONFIG.isDist, $.replace(/<\?php\s\/\/\s@partial/g, ''))) // remove extra `<?php // @partial`
     .pipe(gulp.dest(PATHS.build.includes));
 });
 

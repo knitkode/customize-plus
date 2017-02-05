@@ -19,24 +19,24 @@
  */
 global $wp_customize;
 
-//=require controls/base.php
-//=require controls/base-input.php
-//=require controls/base-radio.php
-//=require controls/buttonset.php
-//=require controls/checkbox.php
-//=require controls/color.php
-//=require controls/content.php
-//=require controls/font-family.php
-//=require controls/icon.php
-//=require controls/multicheck.php
-//=require controls/number.php
-//=require controls/radio.php
-//=require controls/radio-image.php
-//=require controls/select.php
-//=require controls/font-weight.php
-//=require controls/slider.php
-//=require controls/sortable.php
-//=require controls/tags.php
-//=require controls/text.php
-//=require controls/textarea.php
-//=require controls/toggle.php
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/base.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/base-input.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/base-radio.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/buttonset.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/checkbox.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/color.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/content.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/font-family.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/icon.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/multicheck.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/number.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/radio.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/radio-image.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/select.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/font-weight.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/slider.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/sortable.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/tags.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/text.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/textarea.php' );
+require ( PWPCP_PLUGIN_DIR . 'includes/controls/toggle.php' );

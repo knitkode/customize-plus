@@ -59,8 +59,7 @@ class PWPcp_Admin_About {
 			$settings_page_prefix . 'about',
 		);
 		if ( in_array( $hook, $settings_pages ) ) {
-			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-			wp_enqueue_style( 'PWPcp-admin', plugins_url( "assets/admin{$min}.css", PWPCP_PLUGIN_FILE ), array( 'dashicons' ), PWPCP_PLUGIN_VERSION );
+			wp_enqueue_style( 'PWPcp-admin', PWPcp_Utils::get_asset( 'admin', 'css', PWPCP_PLUGIN_FILE ), array( 'dashicons' ), PWPCP_PLUGIN_VERSION );
 		}
 	}
 

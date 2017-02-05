@@ -47,6 +47,24 @@ class PWPcp_Utils {
 	public static function compress_html( $buffer ) {
 		return preg_replace( '/\s+/', ' ', str_replace( array( "\n", "\r", "\t" ), '', $buffer ) );
 	}
+
+	/**
+	 * Get asset file, minified or unminified
+	 *
+	 * @param  string $filename
+	 * @param  string $type
+	 * @param  string $base_url
+	 * @param  string $ext
+	 * @return string
+	 */
+	public static function get_asset( $filename, $type, $base_url, $ext = '' ) {
+		if ( ! $ext ) {
+			$ext = $type;
+		}
+		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		return plugins_url( "assets/$type/$filename$min.$ext", $base_url );
+	}
 }
 
 // add ajax action

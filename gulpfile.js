@@ -24,9 +24,10 @@ global.PATHS = {
     root: './build/',
     vendor: './build/vendor/',
     includes: './build/includes/',
+    assets: './build/assets/',
     images: './build/assets/images/',
-    styles: './build/assets/',
-    scripts: './build/assets/',
+    styles: './build/assets/css',
+    scripts: './build/assets/js',
   }
 };
 

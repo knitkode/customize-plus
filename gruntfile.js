@@ -73,11 +73,11 @@ module.exports = function (grunt) {
     // Generate MO files.
     potomo: {
       dist: {
-        options: {
-          poDel: true
-        },
+        // options: {
+        //   poDel: true
+        // },
         files: [{
-          src: ['*.po'],
+          src: ['*.pot'],
           expand: true,
           cwd: 'build/languages/',
           dest: 'build/languages/',

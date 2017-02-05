@@ -18,7 +18,7 @@ class PWPcp_Sanitize {
 	 * @link(http://stackoverflow.com/a/14669600/1938970, source)
 	 * @since  0.0.1
 	 * @param  array   $array The array to test
-	 * @return boolean        Whether is associative or not
+	 * @return boolean
 	 */
 	public static function is_assoc(array $array) {
 		// Keys of the array
@@ -430,5 +430,76 @@ class PWPcp_Sanitize {
 		} else {
 			return $setting->default;
 		}
+	}
+
+	/**
+	 * Sanitize options for a js plugin
+	 * @param  array $options
+	 * @param  array $allowed_options
+	 * @return array|null
+	 */
+	public static function js_options( $options, $allowed_options ) {
+		if ( ! is_array( $options) ) {
+			return null;
+		}
+		$sanitized_options = array();
+
+		foreach ( $options as $key_deep1 => $value_deep1 ) {
+			if ( isset( $allowed_options[ $key_deep1 ] ) ) {
+
+				$sanitized_value = null;
+
+				// if it's a string just check if it's a function name and call it
+				if ( is_string( $value_deep1 ) ) {
+					$sanitize_function = $allowed_options[ $key_deep1 ];
+					if ( function_exists( $sanitize_function ) ) {
+						$sanitized_value = call_user_func_array( $sanitize_function, $allowed_options ); // $sanitize_function( $value_deep1 );
+					}
+				// if it's an array of nested options use recursion
+				} else if ( is_array( $value_deep1 ) ) {
+					foreach ( $value_deep1 as $key_deep2 => $value_deep2) {
+						$sanitized_value = self::js_options( $value_deep1, $allowed_options[ $key_deep1 ] );
+					}
+				}
+				if ( $sanitized_value ) {
+					$sanitized_options[ $key_deep1 ] = $sanitized_value;
+				}
+			}
+		}
+
+		return $sanitized_options;
+	}
+
+	public static function js_number_or_null( $input, $parent_array = array() ) {
+		if ( is_numeric( $input ) ) {
+			// The input might comes as a string, this is a generic way to coerce it
+			// to a number either int or float, @see http://bit.ly/2kh6mx9
+			$input = $input + 0;
+
+			return $input;
+		} else {
+			return new WP_Error( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be numeric.' ), $input, $list ) );
+		}
+	}
+
+	public static function js_in_array_keys ( $input, $parent_array ) {
+		if ( in_array( $input, $parent_array ) ) {
+			return $input;
+		}
+		return new WP_Error( 'cp_api', sprintf( __( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input, $parent_array ) );
+	}
+
+	public static function js_bool ( $input, $parent_array = array() ) {
+		if ( is_bool( $input ) ) {
+			return $input;
+		}
+		return new WP_Error( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be a boolean.' ), $input ) );
+	}
+
+	public static function js_string ( $input, $parent_array = array() ) {
+		if ( is_string( $input ) ) {
+			return $input;
+		}
+		return new WP_Error( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be a string.' ), $input ) );
 	}
 }

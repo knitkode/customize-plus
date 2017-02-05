@@ -18,8 +18,8 @@ let Control = api.controls.Base.extend({
    * override
    */
   validate: function (rawNewValue) {
-    var choices = this.params.choices;
-    var newValue;
+    const choices = this.params.choices;
+    let newValue;
     // it could come as a stringified array through a programmatic change
     // of the setting (i.e. from a a reset action)
     try {
@@ -29,9 +29,9 @@ let Control = api.controls.Base.extend({
     }
     // validate array of values
     if (_.isArray(newValue) && this.params.selectize) {
-      var validatedArray = [];
-      for (var i = 0, l = newValue.length; i < l; i++) {
-        var item = newValue[i];
+      let validatedArray = [];
+      for (let i = 0, l = newValue.length; i < l; i++) {
+        let item = newValue[i];
         if (choices.hasOwnProperty(item)) {
           validatedArray.push(item);
         }
@@ -65,15 +65,15 @@ let Control = api.controls.Base.extend({
    * @override
    */
   ready: function () {
-    var selectizeOpts = this.params.selectize || false;
-    var setting = this.setting;
+    const selectizeOpts = this.params.selectize || false;
+    const setting = this.setting;
 
     this.__select = this._container.getElementsByTagName('select')[0];
     this.__options = this._container.getElementsByTagName('option');
 
     // use selectize
     if (selectizeOpts) {
-      var options = _.extend({
+      let options = _.extend({
         onChange: function (value) {
           setting.set(value);
         }
@@ -91,13 +91,16 @@ let Control = api.controls.Base.extend({
   },
   /**
    * Sync options and maybe bind change event
+   *
    * We need to be fast here, use vanilla js.
-   * We do a comparison with two equals `==`
-   * because sometimes we want to compare `500` to `'500'`
-   * (like in the font-weight dropdown) and return true from that.
+   * We do a comparison with two equals `==` because sometimes we want to
+   * compare `500` to `'500'` (like in the font-weight dropdown) and return
+   * true from that.
+   * // @@doubt We could use `.toString()` on the two values to compare, not
+   * if those value can be `null` or `undefined`, probably they can \\
    */
   _syncOptions: function () {
-    var value = this.setting();
+    const value = this.setting();
 
     // use selectize
     if (this.params.selectize) {
@@ -110,8 +113,8 @@ let Control = api.controls.Base.extend({
     }
     // or use normal DOM API
     else {
-      for (var i = 0, l = this.__options.length; i < l; i++) {
-        var option = this.__options[i];
+      for (let i = this.__options.length; i--;) {
+        let option = this.__options[i];
         option.selected = (value == option.value);
       }
     }

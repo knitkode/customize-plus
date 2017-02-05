@@ -392,7 +392,6 @@ class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
 		<label>
 			<?php $this->js_tpl_header(); ?>
 		</label>
-		<!-- <input class="pwpcp-selectize" type="text" value="{{ data.value }}" placeholder="Search by name..."> -->
 		<select class="pwpcp-selectize" value="{{ data.value }}" placeholder="Search by name..." name="icon[]" multiple><option value="">Search icon by name...</option></select>
 		<!-- <div class="pwpcp-icon-wrap"><?php // filled through js ?></div> -->
 		<?php

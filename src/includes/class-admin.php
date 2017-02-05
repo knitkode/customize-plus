@@ -140,14 +140,9 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * @param string $hook The page hook
 		 */
 		public function enqueue_scripts( $hook ) {
-			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
 			if ( 'settings_page_' . self::PARENT_HOOK === $hook ) {
-				wp_enqueue_style( 'PWPcp-admin', plugins_url( "assets/admin{$min}.css", PWPCP_PLUGIN_FILE ), array( 'dashicons' ), PWPCP_PLUGIN_VERSION );
+				wp_enqueue_style( 'PWPcp-admin', PWPcp_Utils::get_asset( 'admin', 'css', PWPCP_PLUGIN_FILE ), array( 'dashicons' ), PWPCP_PLUGIN_VERSION );
 				// wp_style_add_data( 'PWPcp-admin', 'rtl', true );
-				if ( $min ) {
-					wp_style_add_data( 'PWPcp-admin', 'suffix', $min );
-				}
 			}
 		}
 
