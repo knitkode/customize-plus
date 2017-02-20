@@ -63,13 +63,22 @@ License
 ---------------
  [![License](https://img.shields.io/badge/license-GPL--3.0%2B-blue.svg)](https://github.com/PlusWP/customize-plus--theme/blob/master/license.txt) [![PlusWP](https://img.shields.io/badge/%C2%A9PlusWP-2017-blue.svg)](https://pluswp.com)
 
-Unless otherwise specified, all the plugin files are licensed under GNU General Public License version 3, see file license.txt. The exceptions to this license are as follows:
+Unless otherwise specified, all the plugin files are licensed under GNU General Public License version 3, see file license.txt. The exceptions to this license are as follows*:
 
-- Bootstrap by Twitter http://twitter.github.com/bootstrap/ is licensed under the GPL-compatible [http://www.apache.org/licenses/LICENSE-2.0 Apache License v2.0]
-- modernizr.js is dual licensed under the BSD and MIT licenses
-- // @@todo, grabbed from https://github.com/presscustomizr/customizr#licenses \\
-- [validator.js](https://github.com/chriso/validator.js) is licensed under MIT
+The MIT License (MIT)
 
+- [es5-shim](https://github.com/es-shims/es5-shim/) by [Kristopher Michael Kowal](http://codi.sh/) and [contributors](https://github.com/es-shims/es5-shim/graphs/contributors) is licensed under the [MIT License](https://github.com/es-shims/es5-shim/blob/master/LICENSE)
+- [classList.js](https://github.com/eligrey/classList.js/) by [Eli Grey](https://eligrey.com/) is [dedicated to the public domain](https://github.com/eligrey/classList.js/blob/master/LICENSE.md)
+- [Modernizr](https://github.com/Modernizr/Modernizr/) by Faruk Ates, Paul Irish, Alex Sexton, Ryan Seddon, Patrick Kettner, Stu Cox, Richard Herrera is licensed under the [MIT License](https://opensource.org/licenses/MIT)
+- [Highlight.js](https://github.com/isagalaev/highlight.js/) by [Ivan Sagalaev](mailto:maniac@softwaremaniacs.org) and [contributors](https://github.com/isagalaev/highlight.js/blob/master/AUTHORS.en.txt) is released under the [BSD License](https://github.com/isagalaev/highlight.js/blob/master/LICENSE).
+- [marked.js](https://github.com/chjj/marked) by [Christopher Jeffrey](https://github.com/chjj/) is licensed under the [MIT License](https://github.com/chjj/marked/blob/master/LICENSE)
+- [jQuery-ui-Slider-Pips](https://github.com/simeydotme/jQuery-ui-Slider-Pips) by [Simon Goellner](http://simey.me) is licensed under the [MIT License](http://opensource.org/licenses/MIT)
+- [selectize.js](https://github.com/selectize/selectize.js/) by [Brian Reavis](http://thirdroute.com/) is licensed under [Apache v2.0](https://github.com/selectize/selectize.js/blob/master/LICENSE)
+- [spectrum](https://github.com/bgrins/spectrum/) by [Brian Grinstead](http://briangrinstead.com) is licensed under the [MIT License](https://github.com/bgrins/spectrum/blob/master/LICENSE)
+- [validator.js](https://github.com/chriso/validator.js) by [Chris O'Hara](https://github.com/chriso) is licensed under [MIT](https://github.com/chriso/validator.js/blob/master/LICENSE)
+
+// @@todo check css libraries \\
+* All plugins included in Customize Plus adopt a GPL-compatible license as required by the WordPress.org [plugins guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/#the-guidelines)
 
 ---------------
 :registered: PlusWP 2017 | [pluswp.com](https://pluswp.com) | dev@pluswp.com
