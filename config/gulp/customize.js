@@ -147,8 +147,8 @@ gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-rollup'], funct
   stream.queue(gulp.src([
     PATHS.src.npm + 'es5-shim/es5-shim.min.js', // @@ie9 @@ie8 \\
     PATHS.src.npm + 'classlist.js/classList.js', // @@ie9 @@ie8 \\
-    PATHS.src.npm + 'pluswp-vendor/cp/modernizr-custom.js',
-    PATHS.src.npm + 'pluswp-vendor/cp/highlight.pack.js',
+    PATHS.src.npm + 'knitkode-vendor/cp/modernizr-custom.js',
+    PATHS.src.npm + 'knitkode-vendor/cp/highlight.pack.js',
     PATHS.src.npm + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\
     PATHS.src.npm + 'jQuery-ui-Slider-Pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme... \\
     PATHS.src.npm + 'selectize/dist/js/standalone/selectize.js',

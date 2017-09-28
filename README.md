@@ -1,11 +1,11 @@
-# Customize Plus [![by PlusWP](https://img.shields.io/badge/by-PlusWP-lightgrey.svg?style=social)]()
+# Customize Plus [![by Knitkode](https://img.shields.io/badge/by-Knitkode-lightgrey.svg?style=social)]()
 
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)]()
-[![GitHub release](https://img.shields.io/github/release/PlusWP/customize-plus.svg)]()
-[![Build Status](https://scrutinizer-ci.com/g/PlusWP/customize-plus/badges/build.png?b=master)](https://scrutinizer-ci.com/g/PlusWP/customize-plus/build-status/master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/PlusWP/customize-plus/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/PlusWP/customize-plus/?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/39ed6cc3d19b4d2da947c5f2375d8eab)](https://www.codacy.com/app/PlusWP/customize-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=PlusWP/customize-plus&amp;utm_campaign=Badge_Grade)
-[![devDependency Status](https://david-dm.org/PlusWP/customize-plus/dev-status.svg)](https://david-dm.org/PlusWP/customize-plus#info=devDependencies)
+[![GitHub release](https://img.shields.io/github/release/knitkode/customize-plus.svg)]()
+[![Build Status](https://scrutinizer-ci.com/g/knitkode/customize-plus/badges/build.png?b=master)](https://scrutinizer-ci.com/g/knitkode/customize-plus/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/knitkode/customize-plus/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/knitkode/customize-plus/?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/39ed6cc3d19b4d2da947c5f2375d8eab)](https://www.codacy.com/app/knitkode/customize-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=knitkode/customize-plus&amp;utm_campaign=Badge_Grade)
+[![devDependency Status](https://david-dm.org/knitkode/customize-plus/dev-status.svg)](https://david-dm.org/knitkode/customize-plus#info=devDependencies)
 
 > Enhance and extend the WordPress Customize.
 
@@ -22,28 +22,28 @@ Caveats
 
 Bugs
 ---------------
-If you find an issue, please let us know [here](https://github.com/PlusWP/customize-plus/issues?state=open), thanks!
+If you find an issue, please let us know [here](https://github.com/knitkode/customize-plus/issues?state=open), thanks!
 
 
 Support
 ---------------
-This is a developer's portal and should **not** be used for support. Please visit the [support forums](https://pluswp.com/support).
+This is a developer's portal and should **not** be used for support. Please visit the [support forums](https://knitkode.com/support).
 
-Otherwise you can also try to see if someone is in our [chat room](https://gitter.im/PlusWP/chat):
+Otherwise you can also try to see if someone is in our [chat room](https://gitter.im/knitkode/chat):
 
-[![Gitter Chat](http://img.shields.io/badge/GITTER-JOIN%20CHAT-1DCE73.svg)](https://gitter.im/PlusWP/chat)
+[![Gitter Chat](http://img.shields.io/badge/GITTER-JOIN%20CHAT-1DCE73.svg)](https://gitter.im/knitkode/chat)
 
 
 Contribute
 ---------------
-Anyone is welcome to contribute. Please read the [guidelines for contributing](https://github.com/PlusWP/customize-plus/blob/master/CONTRIBUTING.md) to this repository.
+Anyone is welcome to contribute. Please read the [guidelines for contributing](https://github.com/knitkode/customize-plus/blob/master/CONTRIBUTING.md) to this repository.
 
 There are various ways you can contribute:
 
-1. Raise an [issue](https://github.com/PlusWP/customize-plus/issues) on GitHub
+1. Raise an [issue](https://github.com/knitkode/customize-plus/issues) on GitHub
 2. Send a [Pull Request](https://help.github.com/articles/creating-a-pull-request/) with your bug fixes and/or new features
 3. Translate this project into [different languages](https://www.transifex.com/projects/p/customize-plus/)
-4. Provide feedback and suggestions on [enhancements](https://github.com/PlusWP/customize-plus/issues?direction=desc&labels=Enhancement&page=1&sort=created&state=open)
+4. Provide feedback and suggestions on [enhancements](https://github.com/knitkode/customize-plus/issues?direction=desc&labels=Enhancement&page=1&sort=created&state=open)
 
 
 Translations
@@ -51,17 +51,17 @@ Translations
 
 We use [Transifex](https://www.transifex.com) to manage translations. **Anyone** may [sign up](https://www.transifex.com/signup/) for free and contribute. If you know another language any little help is appreciated. Thank you!
 
-[Check this project on Transifex](https://www.transifex.com/PlusWP/customize-plus/)
+[Check this project on Transifex](https://www.transifex.com/knitkode/customize-plus/)
 
 
 Donate
 ---------------
-[![Gratipay](https://img.shields.io/gratipay/PlusWP.svg)](https://gratipay.com/PlusWP)
+[![Gratipay](https://img.shields.io/gratipay/knitkode.svg)](https://gratipay.com/knitkode)
 
 
 License
 ---------------
- [![License](https://img.shields.io/badge/license-GPL--3.0%2B-blue.svg)](https://github.com/PlusWP/customize-plus--theme/blob/master/license.txt) [![PlusWP](https://img.shields.io/badge/%C2%A9PlusWP-2017-blue.svg)](https://pluswp.com)
+ [![License](https://img.shields.io/badge/license-GPL--3.0%2B-blue.svg)](https://github.com/knitkode/customize-plus--theme/blob/master/license.txt) [![Knitkode](https://img.shields.io/badge/%C2%A9Knitkode-2017-blue.svg)](https://knitkode.com)
 
 Unless otherwise specified, all the plugin files are licensed under GNU General Public License version 3, see file license.txt. The exceptions to this license are as follows*:
 
@@ -81,4 +81,4 @@ The MIT License (MIT)
 * All plugins included in Customize Plus adopt a GPL-compatible license as required by the WordPress.org [plugins guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/#the-guidelines)
 
 ---------------
-:registered: PlusWP 2017 | [pluswp.com](https://pluswp.com) | dev@pluswp.com
+:registered: Knitkode 2017 | [knitkode.com](https://knitkode.com) | dev@knitkode.com

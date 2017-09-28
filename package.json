@@ -8,16 +8,16 @@
     "textDomain": "pwpcp",
     "startYear": 2014
   },
-  "homepage": "https://pluswp.com/customize-plus",
+  "homepage": "https://knitkode.com/customize-plus",
   "author": {
-    "name": "PlusWP",
-    "email": "dev@pluswp.com",
-    "url": "https://pluswp.com/"
+    "name": "Knitkode",
+    "email": "dev@knitkode.com",
+    "url": "https://knitkode.com/"
   },
   "license": "SEE LICENSE IN license.txt",
   "private": false,
   "repository": {
-    "url": "https://github.com/PlusWP/customize-plus"
+    "url": "https://github.com/knitkode/customize-plus"
   },
   "engines": {
     "node": ">=4"
@@ -28,7 +28,7 @@
     "src/images"
   ],
   "dependencies": {
-    "pluswp-vendor": "gitlab:pluswp/pluswp-vendor.git",
+    "knitkode-vendor": "gitlab:knitkode/knitkode-vendor.git",
     "classlist.js": "github:eligrey/classList.js.git",
     "css-toggle-switch": "^4.0.2",
     "es5-shim": "^4.5.9",

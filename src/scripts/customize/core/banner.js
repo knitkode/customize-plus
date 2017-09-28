@@ -184,9 +184,9 @@ api.core._banner = true;
     '<div id="<%- id %>" style="display:none">' +
       '<button class="<%- id %>b" id="<%- id %>c" style="display:none"></button>' +
       '<h1 class="<%- id %>h">Hello,</h1>' +
-      'your WordPress Customize is using the <a class="<%- id %>a" href="https://pluswp.com/customize-plus" target="_blank">Customize Plus</a> plugin, a free software, you may consider one of the following action:' +
+      'your WordPress Customize is using the <a class="<%- id %>a" href="https://knitkode.com/customize-plus" target="_blank">Customize Plus</a> plugin, a free software, you may consider one of the following action:' +
       '<ul>' +
-        '<li class="<%- id %>i " id="<%- id %>u"><a id="<%- id %>ua" href="https://pluswp.com/customize-plus-premium?plugin=true1&banner=01" target="_blank">Upgrade to premium and add great features to this page <br>Learn more &raquo;</a></li>' + // @@todo click tracking \\
+        '<li class="<%- id %>i " id="<%- id %>u"><a id="<%- id %>ua" href="https://knitkode.com/customize-plus-premium?plugin=true1&banner=01" target="_blank">Upgrade to premium and add great features to this page <br>Learn more &raquo;</a></li>' + // @@todo click tracking \\
         '<li class="<%- id %>i" id="<%- id %>d"><a class="<%- id %>a" href="https://wordpress.org/" target="_blank">Donate</a></li>' +
         '<li class="<%- id %>i" id="<%- id %>r"><a class="<%- id %>a" href="https://wordpress.org/" target="_blank">Rate the plugin</a></li>' +
         '<li class="<%- id %>i" id="<%- id %>t"><a class="<%- id %>a" href="https://twitter.com/" target="_blank">Share on twitter</a></li>' +

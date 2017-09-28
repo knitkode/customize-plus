@@ -1,4 +1,4 @@
-Copyright (c) 2014-2017 PlusWP <dev@pluswp.com> (https://pluswp.com/)
+Copyright (c) 2014-2017 Knitkode <dev@knitkode.com> (https://knitkode.com/)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -694,4 +694,4 @@ Public License instead of this License.  But first, please read
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 The source code for any program binaries that are included with Customize Plus
-can be freely obtained at the following URL: https://github.com/PlusWP/customize-plus
+can be freely obtained at the following URL: https://github.com/knitkode/customize-plus

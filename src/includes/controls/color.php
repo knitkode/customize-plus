@@ -13,11 +13,11 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     PlusWP <dev@pluswp.com> (https://pluswp.com)
- * @copyright  2017 PlusWP
+ * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 Knitkode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
- * @link       https://pluswp.com/customize-plus
+ * @link       https://knitkode.com/customize-plus
  */
 class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 

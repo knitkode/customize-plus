@@ -1,5 +1,5 @@
 === Customize Plus ===
-Tags: PlusWP, Customize
+Tags: Knitkode, Customize
 Requires at least: 4.3
 Tested up to: 4.3
 Stable tag: 1.0.0
@@ -28,7 +28,7 @@ e.g.
 
 1. From your WordPress Admin Dashboard go to: Plugins > Add New
 1. Search for "Customize Plus"
-1. Locate the "Customize Plus" plugin by PlusWP and click the Install Now button.
+1. Locate the "Customize Plus" plugin by Knitkode and click the Install Now button.
 1. Activate the plugin labeled "Customize Plus".
 1. You're done!
 

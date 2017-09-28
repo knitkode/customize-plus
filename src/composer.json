@@ -1,22 +1,22 @@
 {
-  "name": "pluswp/customize-plus",
+  "name": "knitkode/customize-plus",
   "description": "Add premium features to the WordPress customize.",
   "type": "wordpress-plugin",
   "keywords": [
     "customize",
     "tool"
   ],
-  "homepage": "https://pluswp.com/customize-plus",
+  "homepage": "https://knitkode.com/customize-plus",
   "license": "GPL-2.0+",
   "authors": [{
-    "name": "PlusWP",
-    "homepage": "https://pluswp.com/"
+    "name": "Knitkode",
+    "homepage": "https://knitkode.com/"
   }],
   "support": {
-    "forum": "https://pluswp.com/customize-plus/support/",
-    "issues": "https://github.com/PlusWP/customize-plus/issues",
-    "wiki": "https://github.com/PlusWP/customize-plus/wiki",
-    "source": "https://github.com/PlusWP/customize-plus/"
+    "forum": "https://knitkode.com/customize-plus/support/",
+    "issues": "https://github.com/knitkode/customize-plus/issues",
+    "wiki": "https://github.com/knitkode/customize-plus/wiki",
+    "source": "https://github.com/knitkode/customize-plus/"
   },
   "require": {
     "php": ">=5.2.4"
