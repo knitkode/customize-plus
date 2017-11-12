@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Font_Weight extends PWPcp_Customize_Control_Select {
+class KKcp_Customize_Control_Font_Weight extends KKcp_Customize_Control_Select {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Font_Weight extends PWPcp_Customize_Control_Select
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_font_weight';
+	public $type = 'kkcp_font_weight';
 
 	/**
 	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
@@ -68,4 +68,4 @@ class PWPcp_Customize_Control_Font_Weight extends PWPcp_Customize_Control_Select
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Font_Weight' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Font_Weight' );

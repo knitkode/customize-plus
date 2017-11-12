@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input {
+class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_number';
+	public $type = 'kkcp_number';
 
 	/**
 	 * Float numbers allowed
@@ -72,10 +72,10 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
 	 * @return string The sanitized value.
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		$number_extracted = PWPcp_Sanitize::extract_number( $value, $control );
+		$number_extracted = KKcp_Sanitize::extract_number( $value, $control );
 
 		if ( $number_extracted ) {
-			return PWPcp_Sanitize::number( $number_extracted, $control );
+			return KKcp_Sanitize::number( $number_extracted, $control );
 		} else {
 			return $setting->default;
 		}
@@ -125,4 +125,4 @@ class PWPcp_Customize_Control_Number extends PWPcp_Customize_Control_Base_Input 
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Number' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Number' );

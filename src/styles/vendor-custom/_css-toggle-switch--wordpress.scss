@@ -1,6 +1,6 @@
 /*!
  * CSS Toggle Switches: WordPress Customize Theme
- * @author Knitkode <dev@knitkode.com> (https://knitkode.com)
+ * @author KnitKode <dev@knitkode.com> (https://knitkode.com)
  */
 
 $toggle--width: 50px;
@@ -82,7 +82,7 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
 /**
  * Toggle custom theme
  */
-.pwpcpui-switch.switch-light {
+.kkcpui-switch.switch-light {
   overflow: visible;
   width: $toggle--width;
   min-height: $toggle--height + ($toggle--dragger-size - $toggle--height);
@@ -146,7 +146,7 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
 /**
  * Toggle custom theme, with labels
  */
-.switch-light.pwpcpui-switch__labels {
+.switch-light.kkcpui-switch__labels {
   min-width: $toggle_labels--min-width;
 
   // element: outer span
@@ -189,7 +189,7 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
 /**
  * Toggle custom theme, with labels of dynamic width
  */
-.switch-light.pwpcpui-switch__labelsauto {
+.switch-light.kkcpui-switch__labelsauto {
   display: inline-block;
   width: auto;
   min-width: $toggle_labels--min-width;
@@ -264,7 +264,7 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
 /**
  * Buttonset custom theme
  */
-.pwpcpui-switch.switch-toggle {
+.kkcpui-switch.switch-toggle {
   border: 1px solid $WPcustomize--btn-border-color;
   box-shadow: $WPcustomize--btn-box-shadow;
   background-color: $WPcustomize--btn-bg;

@@ -15,7 +15,7 @@ import Utils from '../core/utils';
  * and `renderContent` methods keep an eye on
  * @link(http://git.io/vZ6Yq, WordPress source code).
  *
- * @see PHP class PWPcp_Customize_Control_Base.
+ * @see PHP class KKcp_Customize_Control_Base.
  *
  * @class api.controls.Base
  * @extends wp.customize.Control
@@ -40,16 +40,16 @@ api.controls.Base = wpApi.Control.extend({
     control.id = id;
 
     // add a flag so that we are able to recognize our custom controls, let's
-    // keep it short, so we need only to check `if (control.pwpcp)`
-    control.pwpcp = 1;
+    // keep it short, so we need only to check `if (control.kkcp)`
+    control.kkcp = 1;
 
     // control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
     // control.templateSelector = 'customize-control-' + control.params.type + '-content';
-    advancedClass = control.params.advanced ? ' pwpcp-control-advanced' : '';
+    advancedClass = control.params.advanced ? ' kkcp-control-advanced' : '';
 
     var container = document.createElement('li');
     container.id = 'customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
-    container.className = 'customize-control pwpcp-control customize-control-'
+    container.className = 'customize-control kkcp-control customize-control-'
       + control.params.type + advancedClass;
 
     control.container = $(container);
@@ -215,8 +215,8 @@ api.controls.Base = wpApi.Control.extend({
    */
   _onValidateError: function (error) {
     var msg = error && error.msg ? error.msg : api.l10n['vInvalid'];
-    this._container.classList.add('pwpcp-error');
-    // this._container.setAttribute('data-pwpcp-msg', msg);
+    this._container.classList.add('kkcp-error');
+    // this._container.setAttribute('data-kkcp-msg', msg);
     if (!this._currentErrorMsg || msg !== this._currentErrorMsg) {
       this.setting.notifications.add( 'error', new wpApi.Notification(
         'error', { type: 'error', message: msg }
@@ -230,8 +230,8 @@ api.controls.Base = wpApi.Control.extend({
    * @access private
    */
   _onValidateSuccess: function () {
-    this._container.classList.remove('pwpcp-error');
-    // this._container.removeAttribute('data-pwpcp-msg');
+    this._container.classList.remove('kkcp-error');
+    // this._container.removeAttribute('data-kkcp-msg');
     this.setting.notifications.remove('error');
     this._currentErrorMsg = false;
   },
@@ -428,14 +428,14 @@ api.controls.Base = wpApi.Control.extend({
      */
     var _softenize = this.softenize;
     // constants
-    var CLASS_RESET_LAST = ' pwpcp-extras-reset_last';
-    var CLASS_RESET_INITIAL = ' pwpcp-extras-reset_initial';
-    var CLASS_RESET_FACTORY = 'pwpcp-extras-reset_factory';
-    var CLASS_DISABLED = ' pwpcp-disabled';
+    var CLASS_RESET_LAST = ' kkcp-extras-reset_last';
+    var CLASS_RESET_INITIAL = ' kkcp-extras-reset_initial';
+    var CLASS_RESET_FACTORY = 'kkcp-extras-reset_factory';
+    var CLASS_DISABLED = ' kkcp-disabled';
     // DOM
     var container = this._container;
-    var area = container.getElementsByClassName('pwpcp-extras')[0];
-    var toggle = container.getElementsByClassName('pwpcp-extras-btn')[0];
+    var area = container.getElementsByClassName('kkcp-extras')[0];
+    var toggle = container.getElementsByClassName('kkcp-extras-btn')[0];
     var btnResetLast = container.getElementsByClassName(CLASS_RESET_LAST)[0];
     var btnResetInitial = container.getElementsByClassName(CLASS_RESET_INITIAL)[0];
     var btnResetFactory = container.getElementsByClassName(CLASS_RESET_FACTORY)[0];
@@ -448,7 +448,7 @@ api.controls.Base = wpApi.Control.extend({
 
     // handlers
     var _closeExtras = function () {
-      container.classList.remove('pwpcp-extras-open');
+      container.classList.remove('kkcp-extras-open');
     };
     /**
      * Reset setting to the last saved value
@@ -566,7 +566,7 @@ api.controls.Base = wpApi.Control.extend({
       }
       toggle.onclick = function () {
         isOpen = !isOpen;
-        container.classList.toggle('pwpcp-extras-open', isOpen);
+        container.classList.toggle('kkcp-extras-open', isOpen);
         if (isOpen) {
           _onExtrasOpen();
         }
@@ -579,7 +579,7 @@ api.controls.Base = wpApi.Control.extend({
     if (area) {
       area.onmouseenter = function () {
         isOpen = true;
-        container.classList.add('pwpcp-extras-open');
+        container.classList.add('kkcp-extras-open');
         _onExtrasOpen();
       };
       area.onmouseleave = function () {
@@ -587,7 +587,7 @@ api.controls.Base = wpApi.Control.extend({
         // don't close immediately, wait a bit and see if the mouse is still out of the area
         setTimeout(function () {
           if (!isOpen) {
-            container.classList.remove('pwpcp-extras-open');
+            container.classList.remove('kkcp-extras-open');
           }
         }, 200);
       };

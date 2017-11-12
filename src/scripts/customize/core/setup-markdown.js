@@ -52,6 +52,6 @@ import { body } from './globals';
     }
   });
 
-  body.classList.add('pwpcp-markdown-supported');
+  body.classList.add('kkcp-markdown-supported');
 
 })();

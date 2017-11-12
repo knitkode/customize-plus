@@ -7,13 +7,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Base extends WP_Customize_Control {
+class KKcp_Customize_Control_Base extends WP_Customize_Control {
 
 	/**
 	 * Whether this control is optional, that is when it is allowed to be empty.
@@ -96,7 +96,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 		}
 
 		// @premium A Customize Plus Premium features.
-		if ( class_exists( 'PWPcpp' ) ) {
+		if ( class_exists( 'KKcpp' ) ) {
 			// add guide if any
 			if ( $this->guide ) {
 				$this->json['guide'] = $this->guide;
@@ -235,12 +235,12 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since 0.0.1
 	 */
 	public function content_template() {
-		ob_start( 'PWPcp_Utils::compress_html' );
+		ob_start( 'KKcp_Utils::compress_html' );
 		$this->js_tpl_divider();
 		$this->js_tpl_guide();
 		 // this wrapper is needed to make the Extras menu play nice when divider
 		 // is there, because of the absolute positioning
-		echo '<# if (data.div) { #><div class="pwpcp-control-wrap"><# } #>';
+		echo '<# if (data.div) { #><div class="kkcp-control-wrap"><# } #>';
 			$this->js_tpl_extras();
 			$this->js_tpl();
 		// see comment above
@@ -256,7 +256,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	protected function js_tpl_divider() {
 		?>
 			<# if (data.div) { #>
-				<div class="pwpcp-control-divider">
+				<div class="kkcp-control-divider">
 					<# if (data.div.title) { #><span class="customize-control-title">{{{ data.div.title }}}</span><# }
 						if (data.div.text) { #><span class="description customize-control-description">{{{ data.div.text }}}</span><# } #>
 				</div>
@@ -271,10 +271,10 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since 0.0.1
 	 */
 	protected function js_tpl_guide() {
-		if ( class_exists( 'PWPcpp' ) ) {
+		if ( class_exists( 'KKcpp' ) ) {
 		?>
 			<# if (data.guide) { #>
-				<i class="pwpcp-guide pwpcpui-control-btn dashicons dashicons-editor-help" title="<?php _e( 'Click to show some help' ); ?>"></i>
+				<i class="kkcp-guide kkcpui-control-btn dashicons dashicons-editor-help" title="<?php _e( 'Click to show some help' ); ?>"></i>
 			<# } #>
 		<?php
 		}
@@ -303,13 +303,13 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	 */
 	protected function js_tpl_extras() {
 		?>
-			<div class="pwpcp-extras">
-				<i class="pwpcp-extras-btn pwpcpui-control-btn dashicons dashicons-admin-generic"></i>
-				<ul class="pwpcp-extras-list">
-					<li class="pwpcp-extras-reset_last"><?php _e( 'Reset to last saved value' ); ?></li>
-					<li class="pwpcp-extras-reset_initial"><?php _e( 'Reset to initial session value' ); ?></li>
-					<li class="pwpcp-extras-reset_factory"><?php _e( 'Reset to factory value' ); ?></li>
-					<?php do_action( 'PWPcp/controls/base/js_tpl_extras/add_list_items' ); ?>
+			<div class="kkcp-extras">
+				<i class="kkcp-extras-btn kkcpui-control-btn dashicons dashicons-admin-generic"></i>
+				<ul class="kkcp-extras-list">
+					<li class="kkcp-extras-reset_last"><?php _e( 'Reset to last saved value' ); ?></li>
+					<li class="kkcp-extras-reset_initial"><?php _e( 'Reset to initial session value' ); ?></li>
+					<li class="kkcp-extras-reset_factory"><?php _e( 'Reset to factory value' ); ?></li>
+					<?php do_action( 'KKcp/controls/base/js_tpl_extras/add_list_items' ); ?>
 				</ul>
 			</div>
 		<?php
@@ -343,7 +343,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 
 		$value = trim( $value );
 
-		if ( $control && ! $control->optional && PWPcp_Sanitize::is_setting_value_empty( $value ) ) {
+		if ( $control && ! $control->optional && KKcp_Sanitize::is_setting_value_empty( $value ) ) {
 			return $setting->default;
 		} else {
 			if ( method_exists( $control, 'sanitize' ) ) {
@@ -391,7 +391,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	public static function validate_callback( $validity, $value, $setting ) {
 		$control = $setting->manager->get_control( $setting->id );
 
-		if ( $control && ! $control->optional && PWPcp_Sanitize::is_setting_value_empty( $value ) ) {
+		if ( $control && ! $control->optional && KKcp_Sanitize::is_setting_value_empty( $value ) ) {
 			$validity->add( 'required', __( 'You must supply a value.' ) );
 		} else {
 			if ( method_exists( $control, 'validate' ) ) {
@@ -420,7 +420,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * Get localized strings for current controls.
 	 * Allows control classes to add localized strings accessible on our main
-	 * `js` object `PWPcp.l10n`.
+	 * `js` object `KKcp.l10n`.
 	 * @abstract
 	 * @since  0.0.1
 	 * @return array
@@ -432,7 +432,7 @@ class PWPcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * Get js constants for current controls.
 	 * Allows control classes to add its specific constants variables on our
-	 * main `js` object `PWPcp.l10n`.
+	 * main `js` object `KKcp.l10n`.
 	 * @abstract
 	 * @since  0.0.1
 	 * @return array

@@ -3,7 +3,7 @@
  * This 'module' is extended in the Premium version of Customize Plus
  *
  */
-.pwpcpui {
+.kkcpui {
 
   /**
    * Alternative small and simple spinner, three rounded squares in a row
@@ -53,7 +53,7 @@
     transition: opacity .18s ease, color .18s ease;
     cursor: pointer;
 
-    .pwpcp-control:hover & {
+    .kkcp-control:hover & {
       opacity: 1;
     }
   }

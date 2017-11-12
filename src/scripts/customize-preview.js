@@ -27,7 +27,7 @@
     if (!value || !selector) {
       return;
     }
-    var idFinal = 'pwpcp-style-' + id;
+    var idFinal = 'kkcp-style-' + id;
     var css = selector + '{' + property + ':' + value + '};';
     var oldCSS = document.getElementById(idFinal);
     if (oldCSS) {
@@ -53,4 +53,4 @@
     return constants.OPTIONS_PREFIX + '[' + key + ']';
   };
 
-})(window, document, jQuery, wp, PWPcp);
+})(window, document, jQuery, wp, KKcp);

@@ -126,9 +126,9 @@ var Utils = (function () {
         api.components.Search.disable();
       } catch(e) {}
       control.focus();
-      control.container.addClass('pwpcp-control-focused');
+      control.container.addClass('kkcp-control-focused');
       setTimeout(function () {
-        control.container.removeClass('pwpcp-control-focused');
+        control.container.removeClass('kkcp-control-focused');
       }, 2000);
     },
     /**
@@ -168,7 +168,7 @@ var Utils = (function () {
      */
     _isResetNeeded: function (control, resetType) {
       var params = control.params;
-      if (!control.pwpcp || !control.setting) {
+      if (!control.kkcp || !control.setting) {
         return false;
       }
       var _softenize = control.softenize;
@@ -216,7 +216,7 @@ var Utils = (function () {
     /**
      * Is setting value (`control.setting()`) empty?
      * Used to check if required control's settings have instead an empty value
-     * @see php class method `PWPcp_Sanitize::is_setting_value_empty()`
+     * @see php class method `KKcp_Sanitize::is_setting_value_empty()`
      * @static
      * @param  {string}  value
      * @return {Boolean}
@@ -294,7 +294,7 @@ var Utils = (function () {
      * @return {string}          The option template.
      */
     _selectizeRenderOptionSize: function (data, escape) {
-      return '<div class="pwpcpsize-selectOption">' +
+      return '<div class="kkcpsize-selectOption">' +
           '<i>' + escape(data.valueCSS) + '</i> ' + escape(data.label) +
         '</div>';
     },
@@ -308,7 +308,7 @@ var Utils = (function () {
      * @return {string}          The option template.
      */
     _selectizeRenderOptionColor: function (data, escape) {
-      return '<div class="pwpcpcolor-selectOption" style="border-color:' +
+      return '<div class="kkcpcolor-selectOption" style="border-color:' +
         escape(data.valueCSS) + '">' + escape(data.label) + '</div>';
     },
     /**

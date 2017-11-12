@@ -7,13 +7,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Admin
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Admin_About {
+class KKcp_Admin_About {
 
 	/**
 	 * Constructor
@@ -33,11 +33,11 @@ class PWPcp_Admin_About {
 	 * Add subpage tab to our plugin submenu page
 	 *
 	 * @since  0.0.1
-	 * @uses   PWPcp_Admin->add_subpages To add the page tab
+	 * @uses   KKcp_Admin->add_subpages To add the page tab
 	 */
 	public function add_menu_subpage() {
-		if ( class_exists( 'PWPcp_Admin' ) ) {
-			PWPcp_Admin::get_instance()->add_subpages( array(
+		if ( class_exists( 'KKcp_Admin' ) ) {
+			KKcp_Admin::get_instance()->add_subpages( array(
 				'about' => array(
 					'title' => __( 'About' ),
 					'view' => array( $this, 'get_view' )
@@ -53,13 +53,13 @@ class PWPcp_Admin_About {
 	 * @param string $hook The page hook
 	 */
 	public static function enqueue_scripts( $hook ) {
-		$settings_page_prefix = 'settings_page_PWPcp-';
+		$settings_page_prefix = 'settings_page_KKcp-';
 		$settings_pages = array(
 			$settings_page_prefix . 'welcome',
 			$settings_page_prefix . 'about',
 		);
 		if ( in_array( $hook, $settings_pages ) ) {
-			wp_enqueue_style( 'PWPcp-admin', PWPcp_Utils::get_asset( 'admin', 'css', PWPCP_PLUGIN_FILE ), array( 'dashicons' ), PWPCP_PLUGIN_VERSION );
+			wp_enqueue_style( 'KKcp-admin', KKcp_Utils::get_asset( 'admin', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
 		}
 	}
 
@@ -76,4 +76,4 @@ class PWPcp_Admin_About {
 }
 
 // Instantiate
-new PWPcp_Admin_About;
+new KKcp_Admin_About;

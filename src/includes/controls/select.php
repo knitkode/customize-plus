@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio {
+class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_select';
+	public $type = 'kkcp_select';
 
 	/**
 	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
@@ -33,7 +33,7 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	/**
 	 * Selectize allowed options
 	 *
-	 * Sanitize methods must be class methods of `PWPcp_Sanitize` or global
+	 * Sanitize methods must be class methods of `KKcp_Sanitize` or global
 	 * functions
 	 *
 	 * @since 0.0.1
@@ -61,7 +61,7 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 
 		if ( $this->selectize ) {
 			if ( is_array( $this->selectize ) ) {
-				$this->json['selectize'] = PWPcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
+				$this->json['selectize'] = KKcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
 			} else {
 				$this->json['selectize'] = true;
 			}
@@ -88,7 +88,7 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 	 */
 	protected function js_tpl_above_choices () {
 		?>
-			<select name="_customize-pwpcp_select-{{ data.id }}">
+			<select name="_customize-kkcp_select-{{ data.id }}">
 		<?php
 	}
 
@@ -121,9 +121,9 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 			$max_items = null;
 		}
 		if ( is_numeric( $max_items ) && $max_items > 1 ) {
-			return PWPcp_Sanitize::array_in_choices( $value, $setting, $control );
+			return KKcp_Sanitize::array_in_choices( $value, $setting, $control );
 		} else {
-			return PWPcp_Sanitize::string_in_choices( $value, $setting, $control );
+			return KKcp_Sanitize::string_in_choices( $value, $setting, $control );
 		}
 	}
 
@@ -169,4 +169,4 @@ class PWPcp_Customize_Control_Select extends PWPcp_Customize_Control_Base_Radio 
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Select' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Select' );

@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Text extends PWPcp_Customize_Control_Base_Input {
+class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Text extends PWPcp_Customize_Control_Base_Input {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_text';
+	public $type = 'kkcp_text';
 
 	/**
 	 * Get localized strings
@@ -108,4 +108,4 @@ class PWPcp_Customize_Control_Text extends PWPcp_Customize_Control_Base_Input {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Text' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Text' );

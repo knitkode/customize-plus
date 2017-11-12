@@ -22,13 +22,13 @@ var Tabs = (function () {
    * Tab selector (for jQuery)
    * @type {string}
    */
-  var SELECTOR_TAB = '.pwpcp-tab';
+  var SELECTOR_TAB = '.kkcp-tab';
 
   /**
    * Tab content selector (for jQuery)
    * @type {string}
    */
-  var SELECTOR_TAB_CONTENT = '.pwpcp-tab-content';
+  var SELECTOR_TAB_CONTENT = '.kkcp-tab-content';
 
   /**
    * Uses event delegation so we are able to bind our 'temporary'
@@ -36,10 +36,10 @@ var Tabs = (function () {
    */
   function _init () {
     $document.on('click', SELECTOR_TAB, function() {
-      var area = this.parentNode.parentNode; // pwpcptoimprove \\
-      var tabs = area.getElementsByClassName('pwpcp-tab');
-      var panels = area.getElementsByClassName('pwpcp-tab-content');
-      var isScreenPicker = area.classList.contains('pwpcp-screen-picker');
+      var area = this.parentNode.parentNode; // kkcptoimprove \\
+      var tabs = area.getElementsByClassName('kkcp-tab');
+      var panels = area.getElementsByClassName('kkcp-tab-content');
+      var isScreenPicker = area.classList.contains('kkcp-screen-picker');
       var tabAttrName = isScreenPicker ? 'data-screen' : 'data-tab';
       var target = this.getAttribute(tabAttrName);
 
@@ -84,7 +84,7 @@ var Tabs = (function () {
    *                             screen pickers UI DOM
    */
   function _updateScreenPickerTabs (size, $container) {
-    var $screenPickers = $('.pwpcp-screen-picker', $container);
+    var $screenPickers = $('.kkcp-screen-picker', $container);
     $screenPickers.each(function () {
       var $area = $(this);
       var $tabs = $area.find(SELECTOR_TAB);

@@ -5,7 +5,7 @@ import { api, wpApi } from '../core/globals';
 /**
  * Font Family Control
  *
- * @class wp.customize.controlConstructor.pwpcp_font_family
+ * @class wp.customize.controlConstructor.kkcp_font_family
  * @constructor
  * @extends api.controls.Base
  * @augments wp.customize.Control
@@ -14,7 +14,7 @@ import { api, wpApi } from '../core/globals';
 let Control = api.controls.Base.extend({
   /**
    * @override
-   * @see php `PWPcp_Sanitize::font_families`
+   * @see php `KKcp_Sanitize::font_families`
    * @param  {string|array} value [description]
    * @return {string}       [description]
    */
@@ -61,7 +61,7 @@ let Control = api.controls.Base.extend({
    * @override
    */
   ready: function () {
-    this.__input = this._container.getElementsByClassName('pwpcp-selectize')[0];
+    this.__input = this._container.getElementsByClassName('kkcp-selectize')[0];
     this._fontFamilies = api.constants['font_families'].map(function (fontFamilyName) {
       return { item: fontFamilyName };
     });
@@ -126,4 +126,4 @@ let Control = api.controls.Base.extend({
   }
 });
 
-export default wpApi.controlConstructor['pwpcp_font_family'] = api.controls.FontFamily = Control;
+export default wpApi.controlConstructor['kkcp_font_family'] = api.controls.FontFamily = Control;

@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Sortable extends PWPcp_Customize_Control_Base_Radio {
+class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Sortable extends PWPcp_Customize_Control_Base_Radi
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_sortable';
+	public $type = 'kkcp_sortable';
 
 	/**
 	 * Enqueue libraries
@@ -67,7 +67,7 @@ class PWPcp_Customize_Control_Sortable extends PWPcp_Customize_Control_Base_Radi
 	 */
 	protected function js_tpl_choice_ui() {
 		?>
-			<div class="pwpcp-sortable" title="{{ val }}" data-value="{{ val }}" class="{{helpClass}}"{{{ helpAttrs }}}>{{{ label }}}</div>
+			<div class="kkcp-sortable" title="{{ val }}" data-value="{{ val }}" class="{{helpClass}}"{{{ helpAttrs }}}>{{{ label }}}</div>
 		<?php
 	}
 
@@ -82,7 +82,7 @@ class PWPcp_Customize_Control_Sortable extends PWPcp_Customize_Control_Base_Radi
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return PWPcp_Sanitize::array_in_choices( $value, $setting, $control );
+		return KKcp_Sanitize::array_in_choices( $value, $setting, $control );
 	}
 
 	/**
@@ -97,11 +97,11 @@ class PWPcp_Customize_Control_Sortable extends PWPcp_Customize_Control_Base_Radi
 	 * @return mixed
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		return PWPcp_Validate::array_in_choices( $validity, $value, $setting, $control );
+		return KKcp_Validate::array_in_choices( $validity, $value, $setting, $control );
 	}
 }
 
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Sortable' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Sortable' );

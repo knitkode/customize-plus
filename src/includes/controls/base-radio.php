@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-abstract class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Control_Base {
+abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_Base {
 
 	/**
 	 * Add basic parameters passed to the JavaScript via JSON
@@ -77,7 +77,7 @@ abstract class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Contro
 			} else {
 				label = choice.label;
 				if (choice.help) {
-					helpClass = 'pwpcp-help';
+					helpClass = 'kkcp-help';
 					helpAttrs = ' data-help=' + choice.help;
 					if (choice.help_title) helpAttrs += ' data-title=' + choice.help_title;
 					if (choice.help_img) helpAttrs += ' data-img=' + choice.help_img;
@@ -122,7 +122,7 @@ abstract class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Contro
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return PWPcp_Sanitize::string_in_choices( $value, $setting, $control );
+		return KKcp_Sanitize::string_in_choices( $value, $setting, $control );
 	}
 
 	/**
@@ -137,6 +137,6 @@ abstract class PWPcp_Customize_Control_Base_Radio extends PWPcp_Customize_Contro
 	 * @return mixed
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		return PWPcp_Validate::string_in_choices( $validity, $value, $setting, $control );
+		return KKcp_Validate::string_in_choices( $validity, $value, $setting, $control );
 	}
 }

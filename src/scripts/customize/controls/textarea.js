@@ -7,7 +7,7 @@ import { api, wpApi } from '../core/globals';
 /**
  * Control Textarea class
  *
- * @class wp.customize.controlConstructor.pwpcp_textarea
+ * @class wp.customize.controlConstructor.kkcp_textarea
  * @constructor
  * @extends api.controls.Base
  * @augments wp.customize.Control
@@ -124,13 +124,13 @@ let Control = api.controls.Base.extend({
   _initWpEditor: function () {
     if (!api.tinyMCEload) {
       api.tinyMCEload = $.post(window.ajaxurl, {
-        'action': 'PWPcp/utils/load_wp_editor',
+        'action': 'KKcp/utils/load_wp_editor',
         'load': 1
       }, function (response) {
-        $('body').prepend('<div id="pwpcp_tinymce_dummy" style="display:none">' + response + '</div>');
+        $('body').prepend('<div id="kkcp_tinymce_dummy" style="display:none">' + response + '</div>');
         // remove dashicons-css added by tinymce,
         // it interferes with the already loaded dashicons style
-        $('#pwpcp_tinymce_dummy').find('#dashicons-css').remove();
+        $('#kkcp_tinymce_dummy').find('#dashicons-css').remove();
       });
     }
     api.tinyMCEload.then(this._onTinymceAvailable.bind(this));
@@ -151,7 +151,7 @@ let Control = api.controls.Base.extend({
       this._initTinyMCE();
     } else {
       $.post(window.ajaxurl, {
-        'action': 'PWPcp/utils/load_wp_editor',
+        'action': 'KKcp/utils/load_wp_editor',
         'id': id
       }, this._onWpEditorLoaded.bind(this));
     }
@@ -228,4 +228,4 @@ let Control = api.controls.Base.extend({
   }
 });
 
-export default wpApi.controlConstructor['pwpcp_textarea'] = api.controls.Textarea = Control;
+export default wpApi.controlConstructor['kkcp_textarea'] = api.controls.Textarea = Control;

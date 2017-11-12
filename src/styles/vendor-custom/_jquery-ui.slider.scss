@@ -1,9 +1,9 @@
 /*!
  * jQuery UI Slider: WordPress Customize Theme
- * @author Knitkode <dev@knitkode.com> (https://knitkode.com)
+ * @author KnitKode <dev@knitkode.com> (https://knitkode.com)
  */
 
-.pwpcp-slider.ui-slider.ui-slider-horizontal {
+.kkcp-slider.ui-slider.ui-slider-horizontal {
   position: relative;
   margin-top: 6px;
   height: $plugin--slider-handle-size + ($plugin--slider-handle-border-width * 2) + 4px; // 4px is the space for the box shadow
@@ -67,9 +67,9 @@
 
 /*!
  * jQuery UI Slider Pips: WordPress Customize Theme
- * @author Knitkode <dev@knitkode.com> (https://knitkode.com)
+ * @author KnitKode <dev@knitkode.com> (https://knitkode.com)
  */
-.pwpcp-slider.ui-slider-pips {
+.kkcp-slider.ui-slider-pips {
 
   .ui-slider-label {
     color: #ccc !important;

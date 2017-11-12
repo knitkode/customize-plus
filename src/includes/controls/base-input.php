@@ -7,13 +7,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-abstract class PWPcp_Customize_Control_Base_Input extends PWPcp_Customize_Control_Base {
+abstract class KKcp_Customize_Control_Base_Input extends KKcp_Customize_Control_Base {
 
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
@@ -33,7 +33,7 @@ abstract class PWPcp_Customize_Control_Base_Input extends PWPcp_Customize_Contro
 		?>
 		<label>
 			<?php $this->js_tpl_header(); ?><# var a = data.attrs; #>
-			<input type="{{ a.type || data.type.replace('pwpcp_','') }}" value="<?php // filled through js ?>" <# for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #>>
+			<input type="{{ a.type || data.type.replace('kkcp_','') }}" value="<?php // filled through js ?>" <# for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #>>
 		</label>
 		<?php
 	}

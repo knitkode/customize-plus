@@ -3,7 +3,7 @@ import document from 'document';
 import $ from 'jquery';
 import _ from 'underscore';
 import wp from 'wp';
-import pluginApi from 'PWPcp';
+import pluginApi from 'KKcp';
 
 /** @type {Object} It collects core components */
 pluginApi.core = pluginApi.core || {};
@@ -75,5 +75,5 @@ if (DEBUG) {
 
 // // be sure to have what we need, bail otherwise
 // if (!pluginApi) {
-//   throw new Error('Missing crucial object `PWPcp`');
+//   throw new Error('Missing crucial object `KKcp`');
 // }

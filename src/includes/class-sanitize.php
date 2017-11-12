@@ -5,13 +5,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Sanitize {
+class KKcp_Sanitize {
 
 	/**
 	 * Is an associative array or not
@@ -158,7 +158,7 @@ class PWPcp_Sanitize {
 	 * Used to check if required control's settings have instead an empty value
 	 *
 	 * @since  0.0.1
-	 * @see php class method `PWPcp_Sanitize::is_setting_value_empty()`
+	 * @see php class method `KKcp_Sanitize::is_setting_value_empty()`
 	 * @param  string  $value A setting value
 	 * @return boolean 				Whether the setting value has to be considered
 	 *                        empty, or not set.
@@ -502,8 +502,8 @@ class PWPcp_Sanitize {
 			$sanitizer = $given_sanitizer;
 		}
 		// otherwise check on this class methods
-		if ( method_exists( 'PWPcp_Sanitize', $given_sanitizer ) ) {
-			$sanitizer = 'PWPcp_Sanitize::' . $given_sanitizer;
+		if ( method_exists( 'KKcp_Sanitize', $given_sanitizer ) ) {
+			$sanitizer = 'KKcp_Sanitize::' . $given_sanitizer;
 		}
 		// if we can sanitize it let's do it
 		if ( $sanitizer ) {

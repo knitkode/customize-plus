@@ -7,7 +7,7 @@ import ControlBaseInput from './base-input';
 /**
  * Control Text class
  *
- * @class wp.customize.controlConstructor.pwpcp_text
+ * @class wp.customize.controlConstructor.kkcp_text
  * @constructor
  * @extends api.controls.BaseInput
  * @augments api.controls.Base
@@ -54,4 +54,4 @@ let Control = ControlBaseInput.extend({
   }
 });
 
-export default wpApi.controlConstructor['pwpcp_text'] = api.controls.Text = Control;
+export default wpApi.controlConstructor['kkcp_text'] = api.controls.Text = Control;

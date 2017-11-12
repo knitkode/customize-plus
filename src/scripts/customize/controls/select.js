@@ -6,7 +6,7 @@ import { api, wpApi } from '../core/globals';
 /**
  * Control Select class
  *
- * @class wp.customize.controlConstructor.pwpcp_select
+ * @class wp.customize.controlConstructor.kkcp_select
  * @alias api.controls.Select
  * @constructor
  * @extends api.controls.Base
@@ -120,4 +120,4 @@ let Control = api.controls.Base.extend({
   }
 });
 
-export default wpApi.controlConstructor['pwpcp_select'] = api.controls.Select = Control;
+export default wpApi.controlConstructor['kkcp_select'] = api.controls.Select = Control;

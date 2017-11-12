@@ -5,13 +5,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Validate {
+class KKcp_Validate {
 
 	/**
 	 * Array in choices

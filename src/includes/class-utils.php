@@ -5,13 +5,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Utils {
+class KKcp_Utils {
 
 	/**
 	 * Load editor through ajax call
@@ -19,7 +19,7 @@ class PWPcp_Utils {
 	 * @since  0.0.1
 	 */
 	public static function load_wp_editor() {
-		$id = isset( $_POST['id'] ) ? sanitize_key( $_POST['id'] ) : 'pwpcp_tinymce_dummy';
+		$id = isset( $_POST['id'] ) ? sanitize_key( $_POST['id'] ) : 'kkcp_tinymce_dummy';
 		$load = isset( $_POST['load'] ) ? true : false;
 		wp_editor( '', $id, array(
 			'teeny' => true,
@@ -68,4 +68,4 @@ class PWPcp_Utils {
 }
 
 // add ajax action
-add_action( 'wp_ajax_PWPcp/utils/load_wp_editor', 'PWPcp_Utils::load_wp_editor' );
+add_action( 'wp_ajax_KKcp/utils/load_wp_editor', 'KKcp_Utils::load_wp_editor' );

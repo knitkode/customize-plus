@@ -4,7 +4,7 @@ import ControlBaseRadio from './base-radio';
 /**
  * Control Radio Image
  *
- * @class wp.customize.controlConstructor.pwpcp_radio_image
+ * @class wp.customize.controlConstructor.kkcp_radio_image
  * @constructor
  * @extends api.controls.BaseRadio
  * @augments api.controls.Base
@@ -13,4 +13,4 @@ import ControlBaseRadio from './base-radio';
  */
 let Control = ControlBaseRadio;
 
-export default wpApi.controlConstructor['pwpcp_radio_image'] = api.controls.RadioImage = Control;
+export default wpApi.controlConstructor['kkcp_radio_image'] = api.controls.RadioImage = Control;

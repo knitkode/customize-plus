@@ -1,23 +1,23 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( class_exists( 'PWPcp_Singleton' ) ):
+if ( class_exists( 'KKcp_Singleton' ) ):
 
 	/**
 	 * Contains methods for customizing the theme customization screen.
 	 *
 	 * @package    Customize_Plus
 	 * @subpackage Customize
-	 * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
-	 * @copyright  2017 Knitkode
+	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+	 * @copyright  2017 KnitKode
 	 * @license    GPL-2.0+
 	 * @version    Release: pkgVersion
 	 * @link       https://knitkode.com/customize-plus
 	 */
-	class PWPcp_Theme extends PWPcp_Singleton {
+	class KKcp_Theme extends KKcp_Singleton {
 
 		/**
 		 * Allowed array keys for themes to use through
-		 * `add_theme_support( 'PWPcp-customize' )`.
+		 * `add_theme_support( 'KKcp-customize' )`.
 		 *
 		 * @since 0.0.1
 		 * @var array
@@ -34,7 +34,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * The unique theme prefix identifier
 		 *
 		 * Themes are required to declare this using through
-		 * `add_theme_support( 'PWPcp-customize' )`.
+		 * `add_theme_support( 'KKcp-customize' )`.
 		 * This is also the name of the DB entry under which options are stored if
 		 * `'type' => 'option'` is used for the Customizer settings.
 		 *
@@ -47,7 +47,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * The theme customize tree array.
 		 *
 		 * Themes pass all their organized customizer setup through
-		 * `add_theme_support( 'PWPcp-customize' )`.
+		 * `add_theme_support( 'KKcp-customize' )`.
 		 *
 		 * @since 0.0.1
 		 * @var array
@@ -58,7 +58,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * Images base url
 		 *
 		 * This is either defined by the theme through
-		 * `add_theme_support( 'PWPcp-customize' )`, or set by default to
+		 * `add_theme_support( 'KKcp-customize' )`, or set by default to
 		 * `get_stylesheet_directory_uri`.
 		 * This url will be prendeded to the images `src` used in the Customizer
 		 * for stuff like 'guides', 'helpers' and 'radio_images' controls.
@@ -74,7 +74,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 * Docs base url
 		 *
 		 * This optional property is defined by the theme through
-		 * `add_theme_support( 'PWPcp-customize' )`.
+		 * `add_theme_support( 'KKcp-customize' )`.
 		 * This url will be prendeded in the Customizer to the
 		 * `guides => array( 'docs' => '{url}' )` value where defined.
 		 * The value always pass through the `trailingslashit` WordPress function
@@ -90,7 +90,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 *
 		 * It acts like a store with the default values of theme settings
 		 * (`theme_mods`) extracted from the `tree` array declared by the theme
-		 * through `add_theme_support( 'PWPcp-customize' )`. The current theme or
+		 * through `add_theme_support( 'KKcp-customize' )`. The current theme or
 		 * this plugin can use this array to safely retrieve options without having
 		 * to write the default values to the db.
 		 *
@@ -129,7 +129,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 */
 		public static function configure() {
 
-			$theme_support = get_theme_support( 'PWPcp-customize' );
+			$theme_support = get_theme_support( 'KKcp-customize' );
 
 			// themes should provide an array of options
 			if ( is_array( $theme_support ) ) {
@@ -141,7 +141,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 
 					// automatically create hooks for child themes or whatever
 					$customizer_settings[ $key ] = apply_filters(
-						$prefix . '/PWPcp/theme/' . $key,
+						$prefix . '/KKcp/theme/' . $key,
 						self::validate_theme_support( $key, $theme_support )
 					);
 				}
@@ -151,12 +151,12 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 
 		/**
 		 * Validate the values passed by the theme developer through
-		 * `add_theme_support( 'PWPcp-customize' )`, and display error messages.
+		 * `add_theme_support( 'KKcp-customize' )`, and display error messages.
 		 *
 		 * @since  0.0.1
 		 * @param  string $key           One of the allowed keys for the
 		 *                               configuration array.
-		 * @param  array  $configuration The `theme_support( 'PWPcp-customize' )`
+		 * @param  array  $configuration The `theme_support( 'KKcp-customize' )`
 		 *                               array.
 		 * @uses   esc_url               The url get sanitized, just to be sure
 		 * @uses   trailingslashit       Append always last slash to url, so it's
@@ -235,9 +235,9 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 			self::set_settings_defaults();
 
 			// register theme styles to compiler if enabled
-			if ( class_exists( 'PWPcpp' ) ) {
-				if ( $theme['styles'] && /*PWPcpp::get_option_with_default( 'compiler' ) &&*/ class_exists( 'PWPcpp_Component_Compiler' ) ) {
-					PWPcpp_Component_Compiler::register_styles( $theme['styles'], self::$customize_tree );
+			if ( class_exists( 'KKcpp' ) ) {
+				if ( $theme['styles'] && /*KKcpp::get_option_with_default( 'compiler' ) &&*/ class_exists( 'KKcpp_Component_Compiler' ) ) {
+					KKcpp_Component_Compiler::register_styles( $theme['styles'], self::$customize_tree );
 				}
 			}
 
@@ -245,11 +245,11 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 			 * Pass all default settings values to the hook, so themes can use them
 			 * to create a safe get_theme_mod in case they need it.
 			 *
-			 * @hook 'PWPcp/theme/is_configured' for themes,
+			 * @hook 'KKcp/theme/is_configured' for themes,
 			 * @param array An array containing the default value for each setting
 			 *              declared in the customize tree
 			 */
-			do_action( 'PWPcp/theme/is_configured', self::$settings_defaults );
+			do_action( 'KKcp/theme/is_configured', self::$settings_defaults );
 		}
 
 		/**
@@ -302,14 +302,14 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 
 						$setting_id = $field_id;
 
-						// set custom id, @see the PWPcp_Customize class
+						// set custom id, @see the KKcp_Customize class
 						if ( isset( $setting_args['id'] ) ) {
 							$setting_id = $setting_args['id'];
 						}
-						// 'option' or 'theme_mod', @see the PWPcp_Customize class
+						// 'option' or 'theme_mod', @see the KKcp_Customize class
 						if ( isset( $setting_args['type'] ) && 'option' === $setting_args['type'] ) {
 							array_push( self::$settings_options_api, $setting_id );
-							$setting_id = PWPcp_Theme::$options_prefix . '[' . $setting_id . ']';
+							$setting_id = KKcp_Theme::$options_prefix . '[' . $setting_id . ']';
 						}
 
 						if ( isset( $setting_args['default'] ) ) {
@@ -343,7 +343,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 *
 		 * Get theme mod with default value as fallback, we'll need this safe
 		 * theme_mod in one of our sanitization functions.
-		 * This is the same as using the global function `pwp_get_theme_mod`
+		 * This is the same as using the global function `kk_get_theme_mod`
 		 *
 		 * @since  0.0.1
 		 * @param string  $opt_name
@@ -360,7 +360,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		/**
 		 * Safe `get_option` with default fallback
 		 *
-		 * This is the same as using the global function `pwp_get_option`
+		 * This is the same as using the global function `kk_get_option`
 		 *
 		 * @since  0.0.1
 		 * @param string $opt_name
@@ -400,7 +400,7 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 	}
 
 	// Instantiate
-	PWPcp_Theme::get_instance();
+	KKcp_Theme::get_instance();
 
 endif;
 
@@ -415,8 +415,8 @@ endif;
  * @param  string $opt_name The setting id
  * @return ?
  */
-function pwp_get_theme_mod ( $opt_name ) {
-	return PWPcp_Theme::get_theme_mod( $opt_name );
+function kk_get_theme_mod ( $opt_name ) {
+	return KKcp_Theme::get_theme_mod( $opt_name );
 }
 
 /**
@@ -424,16 +424,16 @@ function pwp_get_theme_mod ( $opt_name ) {
  * @param  string $opt_name The simple setting id (without theme prefix)
  * @return ?
  */
-function pwp_get_option ( $opt_name ) {
-	return PWPcp_Theme::get_option( $opt_name );
+function kk_get_option ( $opt_name ) {
+	return KKcp_Theme::get_option( $opt_name );
 }
 
 /**
  * Safe `get_theme_mods` with default fallbacks
  * @return array
  */
-function pwp_get_theme_mods () {
-	return PWPcp_Theme::get_theme_mods();
+function kk_get_theme_mods () {
+	return KKcp_Theme::get_theme_mods();
 }
 
 /**
@@ -441,6 +441,6 @@ function pwp_get_theme_mods () {
  * @param  string $opt_name The simple setting id (without theme prefix)
  * @return string The real setting id (with theme prefix)
  */
-function pwp_get_option_id ( $opt_name ) {
-	return PWPcp_Theme::$options_prefix . '[' . ( $opt_name ) . ']';
+function kk_get_option_id ( $opt_name ) {
+	return KKcp_Theme::$options_prefix . '[' . ( $opt_name ) . ']';
 }

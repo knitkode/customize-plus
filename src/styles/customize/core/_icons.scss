@@ -12,7 +12,7 @@
  */
 $icons-opacity: .4;
 
-@mixin pwpcp-icon ( $icon_code ) {
+@mixin kkcp-icon ( $icon_code ) {
   content: "#{$icon_code}";
   position: relative;
   top: 4px;
@@ -30,12 +30,12 @@ $icons-opacity: .4;
 
   // Widgets Customizer (plugin embedded in core)
   &-widgets > h3:before, &-widgets .panel-title:before {
-    @include pwpcp-icon('\f116');
+    @include kkcp-icon('\f116');
   }
 
   // Menu Customizer Plugin (it will probably be embedded in core) // @@pluginsupport \\
   &-menus > h3:before, &-menus .panel-title:before {
-    @include pwpcp-icon('\f333');
+    @include kkcp-icon('\f333');
   }
 }
 
@@ -47,7 +47,7 @@ $icons-opacity: .4;
   // Customize Posts Plugin // @@pluginsupport \\
   // https://wordpress.org/plugins/customize-posts/
   &-posts > h3:before {
-    @include pwpcp-icon('\f464');
+    @include kkcp-icon('\f464');
   }
 }
 

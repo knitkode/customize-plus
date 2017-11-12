@@ -5,8 +5,8 @@
  * of each of our custom controls.
  *
  */
-.pwpcp-control,
-.pwpcp-control-wrap {
+.kkcp-control,
+.kkcp-control-wrap {
   position: relative;
 }
 
@@ -15,20 +15,20 @@
  * a wrapper, needed to bind the `mouseenter`, `mouseleave`
  * events on only one DOM element.
  */
-.pwpcp-extras {}
+.kkcp-extras {}
 
 /**
  * Toggle button
  *
- * @use `.pwpcpui-control-btn`
+ * @use `.kkcpui-control-btn`
  */
-.pwpcp-extras-btn {
+.kkcp-extras-btn {
   top: $control--spacing-top;
   left: 1px;
 
   // the button needs to slightly change the position
   // if it inside the control-wrap (when we have dividers...)
-  .pwpcp-control-wrap & {
+  .kkcp-control-wrap & {
     top: 0;
     left: -$control--spacing-left - 1;
   }
@@ -36,7 +36,7 @@
   /**
    * Open state
    */
-  .pwpcp-extras-open & {
+  .kkcp-extras-open & {
     color: $control--btn-color-active;
     opacity: 1;
   }
@@ -46,7 +46,7 @@
  * List inside extras menu
  *
  */
-.pwpcp-extras-list {
+.kkcp-extras-list {
   z-index: 11; // @@wptight-css we need to overtake .iris-picker .iris-square-handle { z-index: 10 } \\
   display: none;
   position: absolute;
@@ -63,18 +63,18 @@
 
   // the button needs to slightly change the position
   // if it inside the control-wrap (when we have dividers...)
-  .pwpcp-control-wrap & {
+  .kkcp-control-wrap & {
     top: $control--btn-size + 3px;
     left: 0;
   }
 
   // the menus shrinks a bit when the scrollbar is visible
-  .pwpcp-has-scrollbar & {
+  .kkcp-has-scrollbar & {
     width: $WPcustomize--sidebar-inner-width - 16 - 20; // scrollbar width // @@temp -20 to e sure to don't overflow \\
   }
 
   // displayment is class based
-  .pwpcp-extras-open & {
+  .kkcp-extras-open & {
     display: block;
   }
 
@@ -95,7 +95,7 @@
       cursor: pointer;
     }
 
-    &.pwpcp-disabled {
+    &.kkcp-disabled {
       cursor: default;
       opacity: .5;
     }
@@ -109,7 +109,7 @@
   }
 }
 
-.pwpcp-extras {
+.kkcp-extras {
   &-reset_last:before {
     content: "\f474";
   }
@@ -128,7 +128,7 @@
  * Undo action (with timer) after having hided a control
  *
  */
-.pwpcp-hide-undo {
+.kkcp-hide-undo {
   display: block;
   padding: 6px 0;
   text-align: center;
@@ -139,7 +139,7 @@
     margin-right: 3px;
   }
 }
-.pwpcp-timer {
+.kkcp-timer {
   color: #888;
   &:before {
     content: "... ";

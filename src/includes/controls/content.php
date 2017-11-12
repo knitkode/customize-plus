@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Content extends PWPcp_Customize_Control_Base {
+class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Content extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_content';
+	public $type = 'kkcp_content';
 
 	/**
 	 * Markdown.
@@ -55,7 +55,7 @@ class PWPcp_Customize_Control_Content extends PWPcp_Customize_Control_Base {
 	 * @override
 	 */
 	public function content_template() {
-		ob_start( 'PWPcp_Utils::compress_html' );
+		ob_start( 'KKcp_Utils::compress_html' );
 		$this->js_tpl_guide();
 		$this->js_tpl();
 		ob_end_flush();
@@ -79,4 +79,4 @@ class PWPcp_Customize_Control_Content extends PWPcp_Customize_Control_Base {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Content' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Content' );

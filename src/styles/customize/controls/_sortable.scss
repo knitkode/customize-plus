@@ -2,14 +2,14 @@
  * Control Sortable
  *
  */
-.customize-control-pwpcp_sortable {
+.customize-control-kkcp_sortable {
   // hide overflow while dragging
   &.ui-sortable {
     overflow-x: hidden;
   }
 }
 
-.pwpcp-sortable {
+.kkcp-sortable {
   padding: 4px 7px;
   border-bottom: 1px solid darken($WPcustomize--sidebar-bg, 7.5%);
   margin-bottom: 4px;

@@ -7,8 +7,8 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
@@ -19,24 +19,24 @@
  */
 global $wp_customize;
 
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/base.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/base-input.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/base-radio.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/buttonset.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/checkbox.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/color.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/content.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/font-family.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/icon.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/multicheck.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/number.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/radio.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/radio-image.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/select.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/font-weight.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/slider.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/sortable.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/tags.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/text.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/textarea.php' );
-require ( PWPCP_PLUGIN_DIR . 'includes/controls/toggle.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/base.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/base-input.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/base-radio.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/buttonset.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/checkbox.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/color.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/content.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/font-family.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/icon.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/multicheck.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/number.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/radio.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/radio-image.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/select.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/font-weight.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/slider.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/sortable.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/tags.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/text.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/textarea.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/toggle.php' );

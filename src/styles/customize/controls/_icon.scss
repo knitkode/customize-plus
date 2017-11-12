@@ -5,7 +5,7 @@
 
 $control-icon--skin1: true;
 
-.customize-control-pwpcp_icon {
+.customize-control-kkcp_icon {
   .selectize-input {
     @if $control-icon--skin1 {
       background: transparent;
@@ -18,7 +18,7 @@ $control-icon--skin1: true;
 /**
  * Selectize item
  */
-.selectize-control .selectize-input > div.pwpcp-icon-selectItem {
+.selectize-control .selectize-input > div.kkcp-icon-selectItem {
   @if $control-icon--skin1 {
     padding: 9px !important;
     background: #fff;
@@ -35,7 +35,7 @@ $control-icon--skin1: true;
 /**
  * Selectize option
  */
-[data-selectable].pwpcp-icon-selectOption {
+[data-selectable].kkcp-icon-selectOption {
   display: inline-block;
   box-sizing: border-box;
   width: percentage(1/7);
@@ -50,14 +50,14 @@ $control-icon--skin1: true;
     box-shadow: $WPcustomize--btn-box-shadow-focus;
   }
 }
-.selectize-control.plugin-remove_button .pwpcp-icon-selectOption {
+.selectize-control.plugin-remove_button .kkcp-icon-selectOption {
   padding: 10px !important;
 }
 
 /**
  * Selectize option header
  */
-.pwpcp-icon-selectHeader {
+.kkcp-icon-selectHeader {
   margin: 4px 10px;
   padding-top: 8px;
   border-top: 1px solid #eee;

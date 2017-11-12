@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Textarea extends PWPcp_Customize_Control_Base {
+class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Textarea extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_textarea';
+	public $type = 'kkcp_textarea';
 
 	/**
 	 * Allow HTML inside textarea (default = `false`)
@@ -58,7 +58,7 @@ class PWPcp_Customize_Control_Textarea extends PWPcp_Customize_Control_Base {
 		?>
 		<label>
 			<?php $this->js_tpl_header(); ?><# var a = data.attrs; #>
-			<textarea class="pwpcpui-textarea" <# for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> rows="4"><?php // filled through js ?></textarea>
+			<textarea class="kkcpui-textarea" <# for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> rows="4"><?php // filled through js ?></textarea>
 		</label>
 		<?php
 	}
@@ -91,4 +91,4 @@ class PWPcp_Customize_Control_Textarea extends PWPcp_Customize_Control_Base {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Textarea' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Textarea' );

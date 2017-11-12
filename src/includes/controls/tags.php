@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Tags extends PWPcp_Customize_Control_Base {
+class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Tags extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_tags';
+	public $type = 'kkcp_tags';
 
 	/**
 	 * Selectize options
@@ -33,7 +33,7 @@ class PWPcp_Customize_Control_Tags extends PWPcp_Customize_Control_Base {
 	/**
 	 * Selectize allowed options
 	 *
-	 * Sanitize methods must be class methods of `PWPcp_Sanitize` or global
+	 * Sanitize methods must be class methods of `KKcp_Sanitize` or global
 	 * functions
 	 *
 	 * @since 0.0.1
@@ -56,7 +56,7 @@ class PWPcp_Customize_Control_Tags extends PWPcp_Customize_Control_Base {
 	 */
 	protected function add_to_json() {
 		if ( ! empty( $this->selectize ) ) {
-			$this->json['selectize'] = PWPcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
+			$this->json['selectize'] = KKcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
 		}
 	}
 
@@ -102,4 +102,4 @@ class PWPcp_Customize_Control_Tags extends PWPcp_Customize_Control_Base {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Tags' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Tags' );

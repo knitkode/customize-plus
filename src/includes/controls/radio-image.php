@@ -9,13 +9,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Radio_Image extends PWPcp_Customize_Control_Base_Radio {
+class KKcp_Customize_Control_Radio_Image extends KKcp_Customize_Control_Base_Radio {
 
 	/**
 	 * Control type.
@@ -23,7 +23,7 @@ class PWPcp_Customize_Control_Radio_Image extends PWPcp_Customize_Control_Base_R
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_radio_image';
+	public $type = 'kkcp_radio_image';
 
 	/**
 	 * Render template for choice displayment.
@@ -35,10 +35,10 @@ class PWPcp_Customize_Control_Radio_Image extends PWPcp_Customize_Control_Base_R
 	 */
 	protected function js_tpl_choice_ui() {
 		?>
-			<input id="{{ id }}" class="pwpcp-radio-image" type="radio" value="{{ val }}" name="_customize-pwpcp_radio_image-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
+			<input id="{{ id }}" class="kkcp-radio-image" type="radio" value="{{ val }}" name="_customize-kkcp_radio_image-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
 			<label class="{{helpClass}}" {{{ helpAttrs }}} for="{{ id }}">
-				<# var imgUrl = choice.img_custom ? '<?php echo esc_url( PWPcp_Theme::$images_base_url ); ?>' + choice.img_custom : '<?php echo esc_url( PWPCP_PLUGIN_URL . 'assets/images/' ); ?>' + choice.img + '.png'; #>
-				<img class="pwpcpui-tooltip--top" src="{{ imgUrl }}" title="{{{label}}}">
+				<# var imgUrl = choice.img_custom ? '<?php echo esc_url( KKcp_Theme::$images_base_url ); ?>' + choice.img_custom : '<?php echo esc_url( KKCP_PLUGIN_URL . 'assets/images/' ); ?>' + choice.img + '.png'; #>
+				<img class="kkcpui-tooltip--top" src="{{ imgUrl }}" title="{{{label}}}">
 			</label>
 		<?php
 	}
@@ -47,4 +47,4 @@ class PWPcp_Customize_Control_Radio_Image extends PWPcp_Customize_Control_Base_R
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Radio_Image' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Radio_Image' );

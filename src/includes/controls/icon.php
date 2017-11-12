@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
+class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_icon';
+	public $type = 'kkcp_icon';
 
 	/**
 	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
@@ -33,7 +33,7 @@ class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
 	/**
 	 * Selectize allowed options
 	 *
-	 * Sanitize methods must be class methods of `PWPcp_Sanitize` or global
+	 * Sanitize methods must be class methods of `KKcp_Sanitize` or global
 	 * functions
 	 *
 	 * @since 0.0.1
@@ -400,7 +400,7 @@ class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
 			$this->json['choices'] = $this->choices;
 		}
 		if ( ! empty( $this->selectize ) ) {
-			$this->json['selectize'] = PWPcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
+			$this->json['selectize'] = KKcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
 		}
 		// @@doubt support multiple icon sets?
 		// if ( is_array( $this->choices ) ) {
@@ -423,8 +423,8 @@ class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
 		<label>
 			<?php $this->js_tpl_header(); ?>
 		</label>
-		<select class="pwpcp-selectize" value="{{ data.value }}" placeholder="Search by name..." name="icon[]" multiple><option value="">Search icon by name...</option></select>
-		<!-- <div class="pwpcp-icon-wrap"><?php // filled through js ?></div> -->
+		<select class="kkcp-selectize" value="{{ data.value }}" placeholder="Search by name..." name="icon[]" multiple><option value="">Search icon by name...</option></select>
+		<!-- <div class="kkcp-icon-wrap"><?php // filled through js ?></div> -->
 		<?php
 	}
 
@@ -440,7 +440,7 @@ class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return $value; // @@todo \\
-		// return PWPcp_Sanitize::string_in_choices( $value, $setting, $control );
+		// return KKcp_Sanitize::string_in_choices( $value, $setting, $control );
 	}
 
 	/**
@@ -463,4 +463,4 @@ class PWPcp_Customize_Control_Icon extends PWPcp_Customize_Control_Base_Radio {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Icon' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Icon' );

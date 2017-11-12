@@ -1,19 +1,19 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( ! class_exists( 'PWPcp_Customize' ) ):
+if ( ! class_exists( 'KKcp_Customize' ) ):
 
 	/**
 	 * Contains methods for customizing the theme customization screen.
 	 *
 	 * @package    Customize_Plus
 	 * @subpackage Customize
-	 * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
-	 * @copyright  2017 Knitkode
+	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+	 * @copyright  2017 KnitKode
 	 * @license    GPL-2.0+
 	 * @version    Release: pkgVersion
 	 * @link       https://knitkode.com/customize-plus
 	 */
-	class PWPcp_Customize {
+	class KKcp_Customize {
 
 		/**
 		 * Custom types for panels, sections controls and settings.
@@ -37,24 +37,24 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				'site_icon' => 'WP_Customize_Site_Icon_Control',
 				'header' => 'WP_Customize_Header_Image_Control',
 				// Customize Plus controls
-				'pwpcp_buttonset' => 'PWPcp_Customize_Control_Buttonset',
-				'pwpcp_checkbox' => 'PWPcp_Customize_Control_Checkbox',
-				'pwpcp_color' => 'PWPcp_Customize_Control_Color',
-				'pwpcp_content' => 'PWPcp_Customize_Control_Content',
-				'pwpcp_font_family' => 'PWPcp_Customize_Control_Font_Family',
-				'pwpcp_font_weight' => 'PWPcp_Customize_Control_Font_Weight',
-				'pwpcp_icon' => 'PWPcp_Customize_Control_Icon',
-				'pwpcp_multicheck' => 'PWPcp_Customize_Control_Multicheck',
-				'pwpcp_number' => 'PWPcp_Customize_Control_Number',
-				'pwpcp_radio' => 'PWPcp_Customize_Control_Radio',
-				'pwpcp_radio_image' => 'PWPcp_Customize_Control_Radio_Image',
-				'pwpcp_select' => 'PWPcp_Customize_Control_Select',
-				'pwpcp_slider' => 'PWPcp_Customize_Control_Slider',
-				'pwpcp_sortable' => 'PWPcp_Customize_Control_Sortable',
-				'pwpcp_tags' => 'PWPcp_Customize_Control_Tags',
-				'pwpcp_text' => 'PWPcp_Customize_Control_Text',
-				'pwpcp_textarea' => 'PWPcp_Customize_Control_Textarea',
-				'pwpcp_toggle' => 'PWPcp_Customize_Control_Toggle',
+				'kkcp_buttonset' => 'KKcp_Customize_Control_Buttonset',
+				'kkcp_checkbox' => 'KKcp_Customize_Control_Checkbox',
+				'kkcp_color' => 'KKcp_Customize_Control_Color',
+				'kkcp_content' => 'KKcp_Customize_Control_Content',
+				'kkcp_font_family' => 'KKcp_Customize_Control_Font_Family',
+				'kkcp_font_weight' => 'KKcp_Customize_Control_Font_Weight',
+				'kkcp_icon' => 'KKcp_Customize_Control_Icon',
+				'kkcp_multicheck' => 'KKcp_Customize_Control_Multicheck',
+				'kkcp_number' => 'KKcp_Customize_Control_Number',
+				'kkcp_radio' => 'KKcp_Customize_Control_Radio',
+				'kkcp_radio_image' => 'KKcp_Customize_Control_Radio_Image',
+				'kkcp_select' => 'KKcp_Customize_Control_Select',
+				'kkcp_slider' => 'KKcp_Customize_Control_Slider',
+				'kkcp_sortable' => 'KKcp_Customize_Control_Sortable',
+				'kkcp_tags' => 'KKcp_Customize_Control_Tags',
+				'kkcp_text' => 'KKcp_Customize_Control_Text',
+				'kkcp_textarea' => 'KKcp_Customize_Control_Textarea',
+				'kkcp_toggle' => 'KKcp_Customize_Control_Toggle',
 			),
 			'settings' => array(),
 		);
@@ -98,7 +98,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * @since  0.0.1
 		 * @var string
 		 */
-		const JS_API_NAMESPACE = 'PWPcp';
+		const JS_API_NAMESPACE = 'KKcp';
 
 		/**
 		 * JavaScript core dependencies
@@ -136,14 +136,14 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function enqueue_css_admin() {
-			do_action( 'PWPcp/customize/enqueue_css_admin_pre', 'PWPcp-customize' );
+			do_action( 'KKcp/customize/enqueue_css_admin_pre', 'KKcp-customize' );
 
-			if ( ! class_exists( 'PWPcpp_Customize' ) ) {
-				wp_enqueue_style( 'PWPcp-customize', PWPcp_Utils::get_asset( 'customize', 'css', PWPCP_PLUGIN_FILE ), array( 'dashicons' ), PWPCP_PLUGIN_VERSION );
-				wp_add_inline_style( 'PWPcp-customize', self::$css_icons );
+			if ( ! class_exists( 'KKcpp_Customize' ) ) {
+				wp_enqueue_style( 'KKcp-customize', KKcp_Utils::get_asset( 'customize', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
+				wp_add_inline_style( 'KKcp-customize', self::$css_icons );
 			}
 
-			do_action( 'PWPcp/customize/enqueue_css_admin_post', 'PWPcp-customize' );
+			do_action( 'KKcp/customize/enqueue_css_admin_post', 'KKcp-customize' );
 		}
 
 		/**
@@ -155,15 +155,15 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function enqueue_js_admin() {
-			do_action( 'PWPcp/customize/enqueue_js_admin_pre', 'PWPcp-customize' );
+			do_action( 'KKcp/customize/enqueue_js_admin_pre', 'KKcp-customize' );
 
-			if ( ! class_exists( 'PWPcpp_Customize' ) ) {
-				wp_register_script( 'PWPcp-customize', PWPcp_Utils::get_asset( 'customize', 'js', PWPCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, PWPCP_PLUGIN_VERSION, false );
-				wp_localize_script( 'PWPcp-customize', self::JS_API_NAMESPACE, self::get_script_localization() );
-				wp_enqueue_script( 'PWPcp-customize' );
+			if ( ! class_exists( 'KKcpp_Customize' ) ) {
+				wp_register_script( 'KKcp-customize', KKcp_Utils::get_asset( 'customize', 'js', KKCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, KKCP_PLUGIN_VERSION, false );
+				wp_localize_script( 'KKcp-customize', self::JS_API_NAMESPACE, self::get_script_localization() );
+				wp_enqueue_script( 'KKcp-customize' );
 			}
 
-			do_action( 'PWPcp/customize/enqueue_js_admin_post', 'PWPcp-customize' );
+			do_action( 'KKcp/customize/enqueue_js_admin_post', 'KKcp-customize' );
 		}
 
 		/**
@@ -174,7 +174,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 */
 		public static function get_script_localization () {
 			return array(
-				'components' => apply_filters( 'PWPcp/customize/get_js_components', array() ),
+				'components' => apply_filters( 'KKcp/customize/get_js_components', array() ),
 				'constants' => self::get_js_constants(),
 				'settings' => self::get_js_settings(),
 				'l10n' => self::get_js_l10n(),
@@ -190,12 +190,12 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 */
 		public static function get_js_constants() {
 			$required = array(
-				'OPTIONS_PREFIX' => PWPcp_Theme::$options_prefix,
+				'OPTIONS_PREFIX' => KKcp_Theme::$options_prefix,
 				'THEME_URL' => get_stylesheet_directory_uri(),
-				'IMAGES_BASE_URL' => PWPcp_Theme::$images_base_url,
-				'DOCS_BASE_URL' => PWPcp_Theme::$docs_base_url,
+				'IMAGES_BASE_URL' => KKcp_Theme::$images_base_url,
+				'DOCS_BASE_URL' => KKcp_Theme::$docs_base_url,
 			);
-			$additional = (array) apply_filters( 'PWPcp/customize/get_js_constants', array() );
+			$additional = (array) apply_filters( 'KKcp/customize/get_js_constants', array() );
 			return array_merge( $required, self::$controls_constants, $additional );
 		}
 
@@ -207,12 +207,12 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 *               hook.
 		 */
 		public static function get_js_settings() {
-			if ( class_exists( 'PWPcpp' ) ) {
-				$required = PWPcpp::get_options();
+			if ( class_exists( 'KKcpp' ) ) {
+				$required = KKcpp::get_options();
 			} else {
 				$required = array();
 			}
-			$additional = (array) apply_filters( 'PWPcp/customize/get_js_settings', array() );
+			$additional = (array) apply_filters( 'KKcp/customize/get_js_settings', array() );
 			return array_merge( $required, $additional );
 		}
 
@@ -234,7 +234,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				'vRequired' => __( 'A value is required' ),
 				'vInvalid' => __( 'Invalid value' ),
 			);
-			$additional = (array) apply_filters( 'PWPcp/customize/get_js_l10n', array() );
+			$additional = (array) apply_filters( 'KKcp/customize/get_js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );
 		}
 
@@ -242,7 +242,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * Add controls javascript variables
 		 *
 		 * Allows control classes to add localized strings accessible on our main
-		 * `js` object `PWPcp.l10n`
+		 * `js` object `KKcp.l10n`
 		 *
 		 * @since  0.0.1
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer
@@ -275,16 +275,16 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 */
 		public static function enqueue_js_preview() {
 
-			do_action( 'PWPcp/customize/enqueue_js_preview_pre' );
+			do_action( 'KKcp/customize/enqueue_js_preview_pre' );
 
-			wp_register_script( 'PWPcp-customize-preview', PWPcp_Utils::get_asset( 'customize-preview', 'js', PWPCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), PWPCP_PLUGIN_VERSION, true );
-			wp_localize_script( 'PWPcp-customize-preview', 'PWPcp', array(
+			wp_register_script( 'KKcp-customize-preview', KKcp_Utils::get_asset( 'customize-preview', 'js', KKCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), KKCP_PLUGIN_VERSION, true );
+			wp_localize_script( 'KKcp-customize-preview', 'KKcp', array(
 					'constants' => self::get_js_constants(),
 					'l10n' => self::get_js_l10n(),
 				) );
-			wp_enqueue_script( 'PWPcp-customize-preview' );
+			wp_enqueue_script( 'KKcp-customize-preview' );
 
-			do_action( 'PWPcp/customize/enqueue_js_preview_post' );
+			do_action( 'KKcp/customize/enqueue_js_preview_post' );
 		}
 
 		/**
@@ -311,9 +311,9 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		 * @since  0.0.1
 		 */
 		public static function register_custom_classes() {
-			require_once( PWPCP_PLUGIN_DIR . 'includes/customize-classes.php' );
+			require_once( KKCP_PLUGIN_DIR . 'includes/customize-classes.php' );
 
-			do_action( 'PWPcp/customize/register_custom_classes', __CLASS__ );
+			do_action( 'KKcp/customize/register_custom_classes', __CLASS__ );
 
 			self::register_tree();
 		}
@@ -345,13 +345,13 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 		private static function register_tree() {
 			$priority = 0;
 
-			if ( ! class_exists( 'PWPcp_Theme' ) ) {
+			if ( ! class_exists( 'KKcp_Theme' ) ) {
 				return;
 			}
 
-			do_action( 'PWPcp/customize/modify_tree', PWPcp_Theme::get_instance() );
+			do_action( 'KKcp/customize/modify_tree', KKcp_Theme::get_instance() );
 
-			foreach ( PWPcp_Theme::$customize_tree as $component ) {
+			foreach ( KKcp_Theme::$customize_tree as $component ) {
 				$priority++;
 
 				if ( 'panel' === $component['subject'] ) {
@@ -377,7 +377,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 			global $wp_customize;
 
 			// dynamically get panel_id with options_prefix
-			$panel_id = PWPcp_Theme::$options_prefix . '-' . $panel['id'];
+			$panel_id = KKcp_Theme::$options_prefix . '-' . $panel['id'];
 
 			// create panel args array
 			$panel_args = array();
@@ -562,7 +562,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 				// If 'option' is used as setting type its value will be stored in an
 				// entry in {prefix}_options table.
 				if ( isset( $setting_args['type'] ) && 'option' === $setting_args['type'] ) {
-					$setting_id = PWPcp_Theme::$options_prefix . '[' . $setting_id . ']';
+					$setting_id = KKcp_Theme::$options_prefix . '[' . $setting_id . ']';
 				}
 				// if not set add sanitize callback function from control class
 				if ( ! isset( $setting_args['sanitize_callback'] ) ) {
@@ -571,7 +571,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 						$setting_args['sanitize_callback'] = $control_type_class . '::sanitize_callback';
 					// otherwise use a default function
 					} else {
-						$setting_args['sanitize_callback'] = 'PWPcp_Customize_Control_Base::sanitize_callback';
+						$setting_args['sanitize_callback'] = 'KKcp_Customize_Control_Base::sanitize_callback';
 					}
 				}
 
@@ -582,7 +582,7 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 						$setting_args['validate_callback'] = $control_type_class . '::validate_callback';
 					// otherwise use a default function
 					} else {
-						$setting_args['validate_callback'] = 'PWPcp_Customize_Control_Base::validate_callback';
+						$setting_args['validate_callback'] = 'KKcp_Customize_Control_Base::validate_callback';
 					}
 				}
 				// add setting to WordPress
@@ -644,6 +644,6 @@ if ( ! class_exists( 'PWPcp_Customize' ) ):
 	}
 
 	// Instantiate
-	new PWPcp_Customize;
+	new KKcp_Customize;
 
 endif;

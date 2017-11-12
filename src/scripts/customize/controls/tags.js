@@ -7,7 +7,7 @@ import Utils from '../core/utils';
 /**
  * Control Tags class
  *
- * @class wp.customize.controlConstructor.pwpcp_tags
+ * @class wp.customize.controlConstructor.kkcp_tags
  * @constructor
  * @extends api.controls.Base
  * @augments wp.customize.Control
@@ -95,4 +95,4 @@ let Control = api.controls.Base.extend({
   }
 });
 
-export default wpApi.controlConstructor['pwpcp_tags'] = api.controls.Tags = Control;
+export default wpApi.controlConstructor['kkcp_tags'] = api.controls.Tags = Control;

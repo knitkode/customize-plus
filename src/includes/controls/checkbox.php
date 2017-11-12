@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Checkbox extends PWPcp_Customize_Control_Base {
+class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Checkbox extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_checkbox';
+	public $type = 'kkcp_checkbox';
 
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
@@ -40,7 +40,7 @@ class PWPcp_Customize_Control_Checkbox extends PWPcp_Customize_Control_Base {
 		?>
 		<label>
 			<# if (data.label) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
-			<input type="checkbox" name="_customize-pwpcp_checkbox-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> <# if (data.value) { #>checked<# } #>>
+			<input type="checkbox" name="_customize-kkcp_checkbox-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> <# if (data.value) { #>checked<# } #>>
 			<# if (data.description) { #>{{{ data.description }}}<# } #>
 		</label>
 		<?php
@@ -84,4 +84,4 @@ class PWPcp_Customize_Control_Checkbox extends PWPcp_Customize_Control_Base {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Checkbox' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Checkbox' );

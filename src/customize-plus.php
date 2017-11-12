@@ -16,7 +16,7 @@
  * Plugin URI:        https://knitkode.com/customize-plus
  * Description:       pkgDescription
  * Version:           pkgVersion
- * Author:            Knitkode
+ * Author:            KnitKode
  * Author URI:        https://knitkode.com
  * License:           GPLv2 or later (license.txt)
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -24,22 +24,22 @@
  * Domain Path:       /languages
  */
 
-define( 'PWPCP_PLUGIN_FILE', __FILE__ );
-define( 'PWPCP_PLUGIN_VERSION', '0.0.1' );
-define( 'PWPCP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'PWPCP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'KKCP_PLUGIN_FILE', __FILE__ );
+define( 'KKCP_PLUGIN_VERSION', '0.0.1' );
+define( 'KKCP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'KKCP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-require_once( PWPCP_PLUGIN_DIR . 'includes/class-requirements.php' );
-require_once( PWPCP_PLUGIN_DIR . 'includes/class-utils.php' );
-require_once( PWPCP_PLUGIN_DIR . 'includes/class-validate.php' );
-require_once( PWPCP_PLUGIN_DIR . 'includes/class-sanitize.php' );
-require_once( PWPCP_PLUGIN_DIR . 'includes/class-singleton.php' );
-require_once( PWPCP_PLUGIN_DIR . 'includes/class-core.php' );
-require_once( PWPCP_PLUGIN_DIR . 'includes/class-customize.php' );
-require_once( PWPCP_PLUGIN_DIR . 'includes/class-theme.php' );
+require_once( KKCP_PLUGIN_DIR . 'includes/class-requirements.php' );
+require_once( KKCP_PLUGIN_DIR . 'includes/class-utils.php' );
+require_once( KKCP_PLUGIN_DIR . 'includes/class-validate.php' );
+require_once( KKCP_PLUGIN_DIR . 'includes/class-sanitize.php' );
+require_once( KKCP_PLUGIN_DIR . 'includes/class-singleton.php' );
+require_once( KKCP_PLUGIN_DIR . 'includes/class-core.php' );
+require_once( KKCP_PLUGIN_DIR . 'includes/class-customize.php' );
+require_once( KKCP_PLUGIN_DIR . 'includes/class-theme.php' );
 if ( is_admin() ) {
-	require_once( PWPCP_PLUGIN_DIR . 'includes/class-admin.php' );
-	require_once( PWPCP_PLUGIN_DIR . 'includes/class-admin-about.php' );
+	require_once( KKCP_PLUGIN_DIR . 'includes/class-admin.php' );
+	require_once( KKCP_PLUGIN_DIR . 'includes/class-admin-about.php' );
 }
 
-do_action( 'PWPcp/after_requires' );
+do_action( 'KKcp/after_requires' );

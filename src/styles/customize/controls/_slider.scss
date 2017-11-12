@@ -2,7 +2,7 @@
  * Control Slider
  *
  */
-.customize-control-pwpcp_slider {}
+.customize-control-kkcp_slider {}
 
 /**
  * Wrapper around slider.
@@ -11,16 +11,16 @@
  * be sure to don't cut off the handle on the sides edges using
  * the padding in combinaiton with the negative margin.
  */
-.pwpcp-slider-wrap {
+.kkcp-slider-wrap {
   overflow: hidden;
   padding: 0 ($plugin--slider-handle-size / 1.5);
   // margin-left: -($plugin--slider-handle-size / 2);
   margin-right: -($plugin--slider-handle-size / 2);
 }
-.pwpcp-inputs-wrap {
+.kkcp-inputs-wrap {
   float: right;
 }
-.pwpcp-unit-wrap {
+.kkcp-unit-wrap {
   float: right;
   margin-top: 1px;
 }
@@ -29,10 +29,10 @@
  * Slider number input
  *
  * When the slider has no unit this element is on its own, while when
- * there is the unit picker it is a children of `.pwpcp-inputs-wrap`.
+ * there is the unit picker it is a children of `.kkcp-inputs-wrap`.
  */
-.pwpcp-slider-number,
-input[type=number].pwpcp-slider-number {
+.kkcp-slider-number,
+input[type=number].kkcp-slider-number {
   float: right;
   width: auto;
   max-width: 32px;
@@ -44,7 +44,7 @@ input[type=number].pwpcp-slider-number {
   margin: 0; // @@maybenotneeded \\
   text-align: right; // @@maybenotneeded \\
 
-  .pwpcp-inputs-wrap & {
+  .kkcp-inputs-wrap & {
     float: none;
     display: inline; // @@maybenotneeded \\
   }
@@ -63,8 +63,8 @@ input[type=number].pwpcp-slider-number {
  * Unit picker (`px`, `em`, `%`, etc.)
  *
  */
-.pwpcp-unit,
-input[type=text].pwpcp-unit {
+.kkcp-unit,
+input[type=text].kkcp-unit {
   display: inline-block;
   width: 24px;
   height: 28px;
@@ -87,7 +87,7 @@ input[type=text].pwpcp-unit {
     border-color: darken($control--bg, 15%);
   }
 
-  &.pwpcp-current {
+  &.kkcp-current {
     float: left;
     padding: 0;
     border-color: transparent;

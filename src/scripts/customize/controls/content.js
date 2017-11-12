@@ -25,4 +25,4 @@ let Control = api.controls.Base.extend({
   _extras: function () {}
 });
 
-export default wpApi.controlConstructor['pwpcp_content'] = api.controls.Content = Control;
+export default wpApi.controlConstructor['kkcp_content'] = api.controls.Content = Control;

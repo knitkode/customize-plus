@@ -6,7 +6,7 @@ import { api, wpApi } from '../core/globals';
 /**
  * Control Icon
  *
- * @class wp.customize.controlConstructor.pwpcp_icon
+ * @class wp.customize.controlConstructor.kkcp_icon
  * @constructor
  * @extends api.controls.Base
  * @augments wp.customize.Control
@@ -15,7 +15,7 @@ import { api, wpApi } from '../core/globals';
 let Control = api.controls.Base.extend({
   /**
    * @override
-   * @see php `PWPcp_Sanitize::font_families`
+   * @see php `KKcp_Sanitize::font_families`
    * @param  {string|array} value [description]
    * @return {string}       [description]
    */
@@ -75,7 +75,7 @@ let Control = api.controls.Base.extend({
    * @override
    */
   ready: function () {
-    this.__input = this._container.getElementsByClassName('pwpcp-selectize')[0];
+    this.__input = this._container.getElementsByClassName('kkcp-selectize')[0];
     this._iconSet = this._getIconsSet();
 
     var selectizeStuff = this._getSelectizeDataFromIconsSet(api.constants[this._iconSet]);
@@ -173,7 +173,7 @@ let Control = api.controls.Base.extend({
    */
   _selectizeRenderItem: function (data, escape) {
     var value = data.id;
-    return '<div class="pwpcp-icon-selectItem pwpcpui-tooltip--top" title="' + escape(value) + '">' +
+    return '<div class="kkcp-icon-selectItem kkcpui-tooltip--top" title="' + escape(value) + '">' +
         '<i class="' + escape(this._getIconClassName(value)) + '"></i>' +
       '</div>';
   },
@@ -187,7 +187,7 @@ let Control = api.controls.Base.extend({
    */
   _selectizeRenderOption: function (data, escape) {
     var value = data.id;
-    return '<div class="pwpcp-icon-selectOption pwpcpui-tooltip--top" title="' + escape(value) + '">' +
+    return '<div class="kkcp-icon-selectOption kkcpui-tooltip--top" title="' + escape(value) + '">' +
         '<i class="' + escape(this._getIconClassName(value)) + '"></i>' +
       '</div>';
   },
@@ -200,7 +200,7 @@ let Control = api.controls.Base.extend({
    * @return {string}          The option template.
    */
   _selectizeRenderGroupHeader: function (data, escape) {
-    return '<div class="pwpcp-icon-selectHeader">' + escape(data.label) + '</div>';
+    return '<div class="kkcp-icon-selectHeader">' + escape(data.label) + '</div>';
   },
   /**
    * Get icon class name
@@ -213,4 +213,4 @@ let Control = api.controls.Base.extend({
   }
 });
 
-export default wpApi.controlConstructor['pwpcp_icon'] = api.controls.Icon = Control;
+export default wpApi.controlConstructor['kkcp_icon'] = api.controls.Icon = Control;

@@ -4,13 +4,13 @@
   "description": "Enhance and extend the WordPress Customize.",
   "config": {
     "namePretty": "Customize Plus",
-    "nameShort": "PWPcp",
-    "textDomain": "pwpcp",
+    "nameShort": "KKcp",
+    "textDomain": "kkcp",
     "startYear": 2014
   },
   "homepage": "https://knitkode.com/customize-plus",
   "author": {
-    "name": "Knitkode",
+    "name": "KnitKode",
     "email": "dev@knitkode.com",
     "url": "https://knitkode.com/"
   },

@@ -16,7 +16,7 @@ var Tooltips = (function () {
    * @const
    * @type {string}
    */
-  var BASE_CLASS = '.pwpcpui-tooltip';
+  var BASE_CLASS = '.kkcpui-tooltip';
 
   /**
    * @const

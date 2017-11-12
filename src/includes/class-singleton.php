@@ -5,13 +5,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Core
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-abstract class PWPcp_Singleton {
+abstract class KKcp_Singleton {
 
 	/**
 	 * Get class instance

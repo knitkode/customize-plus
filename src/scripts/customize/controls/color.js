@@ -15,7 +15,7 @@ $.fn.spectrum.load = false;
 /**
  * Control Color class
  *
- * @class wp.customize.controlConstructor.pwpcp_color
+ * @class wp.customize.controlConstructor.kkcp_color
  * @alias api.controls.Color
  * @constructor
  * @extends api.controls.Base
@@ -101,14 +101,14 @@ let Control = api.controls.Base.extend({
     /** @type {HTMLElement} */
     var container = this._container;
     /** @type {HTMLElement} */
-    var btnCustom = container.getElementsByClassName('pwpcpui-toggle')[0];
+    var btnCustom = container.getElementsByClassName('kkcpui-toggle')[0];
 
     /** @type {HTMLElement} */
-    this.__preview = container.getElementsByClassName('pwpcpcolor-current-overlay')[0];
+    this.__preview = container.getElementsByClassName('kkcpcolor-current-overlay')[0];
     /** @type {JQuery} */
-    this.__$picker = $(container.getElementsByClassName('pwpcpcolor-input')[0]);
+    this.__$picker = $(container.getElementsByClassName('kkcpcolor-input')[0]);
     /** @type {JQuery} */
-    this.__$expander = $(container.getElementsByClassName('pwpcp-expander')[0]).hide();
+    this.__$expander = $(container.getElementsByClassName('kkcp-expander')[0]).hide();
 
     self._updateUIpreview(self.setting());
 
@@ -155,7 +155,7 @@ let Control = api.controls.Base.extend({
       showInput: true,
       showInitial: false,
       showButtons: false,
-      // localStorageKey: 'PWPcp_spectrum',
+      // localStorageKey: 'KKcp_spectrum',
       showSelectionPalette: false,
       togglePaletteMoreText: api.l10n['togglePaletteMoreText'],
       togglePaletteLessText: api.l10n['togglePaletteLessText'],
@@ -223,4 +223,4 @@ let Control = api.controls.Base.extend({
   }
 });
 
-export default wpApi.controlConstructor['pwpcp_color'] = api.controls.Color = Control;
+export default wpApi.controlConstructor['kkcp_color'] = api.controls.Color = Control;

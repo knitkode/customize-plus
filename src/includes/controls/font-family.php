@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
+class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_font_family';
+	public $type = 'kkcp_font_family';
 
 	/**
 	 * Font families
@@ -73,7 +73,7 @@ class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 */
 	protected function add_to_json() {
-		$this->json['value'] = PWPcp_Sanitize::font_families( $this->value() );
+		$this->json['value'] = KKcp_Sanitize::font_families( $this->value() );
 	}
 
 	/**
@@ -87,10 +87,10 @@ class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 			<?php $this->js_tpl_header(); ?>
 		</label>
 		<!-- <label>
-			<input class="pwpcp-font-google-toggle" type="checkbox" value="0">
+			<input class="kkcp-font-google-toggle" type="checkbox" value="0">
 			<?php _e( 'Enable Google fonts' ); ?>
 		</label> -->
-		<input class="pwpcp-selectize" type="text" value="{{ data.value }}" required>
+		<input class="kkcp-selectize" type="text" value="{{ data.value }}" required>
 		<?php
 	}
 
@@ -103,7 +103,7 @@ class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 	 */
 	public function get_constants() {
 		return array(
-			'font_families' => PWPcp_Sanitize::font_families( self::$font_families ),
+			'font_families' => KKcp_Sanitize::font_families( self::$font_families ),
 		);
 	}
 }
@@ -111,4 +111,4 @@ class PWPcp_Customize_Control_Font_Family extends PWPcp_Customize_Control_Base {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Font_Family' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Font_Family' );

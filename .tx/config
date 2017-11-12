@@ -1,8 +1,8 @@
 [main]
 host = https://www.transifex.com
 
-[customize-plus.pwpcp]
+[customize-plus.kkcp]
 file_filter = build/languages/<lang>.po
-source_file = build/languages/pwpcp.pot
+source_file = build/languages/kkcp.pot
 source_lang = en
 type = PO

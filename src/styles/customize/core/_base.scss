@@ -15,12 +15,12 @@
  *
  * Show or hide DOM based on feature detection done with Modernizr.
  */
-.pwpcp-if-filereader,
-.pwpcp-if-no-filereader {
+.kkcp-if-filereader,
+.kkcp-if-no-filereader {
   display: none;
 }
-.filereader .pwpcp-if-filereader,
-.no-filereader .pwpcp-if-no-filereader {
+.filereader .kkcp-if-filereader,
+.no-filereader .kkcp-if-no-filereader {
   display: block;
 }
 
@@ -47,7 +47,7 @@
  * while navigating through the panels/sections with the keyboard.
  */
 .accordion-section-title:focus,
-.pwpcpui-header-toggle:focus,
+.kkcpui-header-toggle:focus,
 .customize-controls-close:focus,
 .customize-section-back:focus,
 .customize-panel-back:focus {

@@ -1,25 +1,25 @@
-<div id="pwpcp-loader-preview" class="wp-full-overlay-main pwpcp-overlay--preview">
-	<div class="pwpcpui-midpoint-wrap">
-		<div class="pwpcpui-midpoint">
-			<img id="pwpcp-loader-img" src="<?php echo esc_url( plugins_url( 'assets/images/logo-white.png', PWPCP_PLUGIN_FILE ) ); ?>">
-			<?php if ( isset ( $_GET['pwpcp_import'] ) ): // input var okay ?>
-				<h1 id="pwpcp-loader-title" class="pwpcp-text"><?php _e( 'Import done' ); ?></h1>
-				<h3 id="pwpcp-loader-text" class="pwpcp-text"><?php _e( 'All options have been succesfully imported and saved' ); ?></h3>
+<div id="kkcp-loader-preview" class="wp-full-overlay-main kkcp-overlay--preview">
+	<div class="kkcpui-midpoint-wrap">
+		<div class="kkcpui-midpoint">
+			<img id="kkcp-loader-img" src="<?php echo esc_url( plugins_url( 'assets/images/logo-white.png', KKCP_PLUGIN_FILE ) ); ?>">
+			<?php if ( isset ( $_GET['kkcp_import'] ) ): // input var okay ?>
+				<h1 id="kkcp-loader-title" class="kkcp-text"><?php _e( 'Import done' ); ?></h1>
+				<h3 id="kkcp-loader-text" class="kkcp-text"><?php _e( 'All options have been succesfully imported and saved' ); ?></h3>
 			<?php else : ?>
-				<h1 id="pwpcp-loader-title" class="pwpcp-text"><?php echo 'Customize Plus'; ?></h1>
-				<h3 id="pwpcp-loader-text" class="pwpcp-text"></h3>
+				<h1 id="kkcp-loader-title" class="kkcp-text"><?php echo 'Customize Plus'; ?></h1>
+				<h3 id="kkcp-loader-text" class="kkcp-text"></h3>
 			<?php endif; ?>
-			<div class="pwpcp-text">
+			<div class="kkcp-text">
 				<span class="spinner"></span>
 				<?php _e( 'Loading preview...' ); ?>
 			</div>
 		</div>
 	</div>
 </div>
-<div id="pwpcp-loader-sidebar" class="pwpcp-overlay--sidebar" style="display:none">
-	<div class="pwpcpui-midpoint-wrap">
-		<div class="pwpcpui-midpoint">
-			<div class="pwpcp-text">
+<div id="kkcp-loader-sidebar" class="kkcp-overlay--sidebar" style="display:none">
+	<div class="kkcpui-midpoint-wrap">
+		<div class="kkcpui-midpoint">
+			<div class="kkcp-text">
 				<span class="spinner"></span>
 				<?php _e( 'Loading ...' ); ?>
 			</div>

@@ -13,13 +13,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
+class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 
 	/**
 	 * Control type.
@@ -28,7 +28,7 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_color';
+	public $type = 'kkcp_color';
 
 	/**
 	 * Allow alpha channel modification (rgba colors)
@@ -127,11 +127,11 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 	protected function js_tpl() {
 		?>
 		<?php $this->js_tpl_header(); ?>
-		<span class="pwpcpcolor-current pwpcpcolor-current-bg"></span>
-		<span class="pwpcpcolor-current pwpcpcolor-current-overlay" style="background:{{data.valueCSS}}"></span>
-		<button class="pwpcpui-toggle pwpcpcolor-toggle"><?php _e( 'Select Color' ) ?></button>
-		<div class="pwpcp-expander">
-			<input class="pwpcpcolor-input" type="text">
+		<span class="kkcpcolor-current kkcpcolor-current-bg"></span>
+		<span class="kkcpcolor-current kkcpcolor-current-overlay" style="background:{{data.valueCSS}}"></span>
+		<button class="kkcpui-toggle kkcpcolor-toggle"><?php _e( 'Select Color' ) ?></button>
+		<div class="kkcp-expander">
+			<input class="kkcpcolor-input" type="text">
 		</div>
 		<?php
 	}
@@ -152,10 +152,10 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 			! $control->togglePaletteOnly &&
 			is_array( $control->palette )
 		) {
-			$palette_flatten = PWPcp_Sanitize::array_flatten( $control->palette, 1 );
-			$palette_normalized = array_map( 'PWPcp_Sanitize::hex_to_rgb', $palette_flatten );
-			$value_normalized = PWPcp_Sanitize::hex_to_rgb( $value );
-			if ( PWPcp_Sanitize::in_array_r( $value_normalized, $palette_normalized ) ) {
+			$palette_flatten = KKcp_Sanitize::array_flatten( $control->palette, 1 );
+			$palette_normalized = array_map( 'KKcp_Sanitize::hex_to_rgb', $palette_flatten );
+			$value_normalized = KKcp_Sanitize::hex_to_rgb( $value );
+			if ( KKcp_Sanitize::in_array_r( $value_normalized, $palette_normalized ) ) {
 				return $value;
 			} else {
 				return $setting->default;
@@ -164,10 +164,10 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 		else if ( 'transparent' === $value && ! $control->disallowTransparent ) {
 			return $value;
 		}
-		else if ( ( $output = PWPcp_Sanitize::color_rgba( $value ) ) && $control->allowAlpha ) {
+		else if ( ( $output = KKcp_Sanitize::color_rgba( $value ) ) && $control->allowAlpha ) {
 			return $output;
 		}
-		else if ( $output = PWPcp_Sanitize::color_hex( $value ) ) {
+		else if ( $output = KKcp_Sanitize::color_hex( $value ) ) {
 			return $output;
 		}
 		else {
@@ -191,17 +191,17 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 			! $control->togglePaletteOnly &&
 			is_array( $control->palette )
 		) {
-			$palette_flatten = PWPcp_Sanitize::array_flatten( $control->palette, 1 );
-			$palette_normalized = array_map( 'PWPcp_Sanitize::hex_to_rgb', $palette_flatten );
-			$value_normalized = PWPcp_Sanitize::hex_to_rgb( $value );
-			if ( ! PWPcp_Sanitize::in_array_r( $value_normalized, $palette_normalized ) ) {
+			$palette_flatten = KKcp_Sanitize::array_flatten( $control->palette, 1 );
+			$palette_normalized = array_map( 'KKcp_Sanitize::hex_to_rgb', $palette_flatten );
+			$value_normalized = KKcp_Sanitize::hex_to_rgb( $value );
+			if ( ! KKcp_Sanitize::in_array_r( $value_normalized, $palette_normalized ) ) {
 				$validity->add( 'wrong_color', __( 'The color is not in the palette.' ) );
 			}
 		}
 		if ( 'transparent' === $value && $control->disallowTransparent ) {
 			$validity->add( 'wrong_color', __( 'Transparent is not allowed for this setting.' ) );
 		}
-		if ( ( $output = PWPcp_Sanitize::color_rgba( $value ) ) && ! $control->allowAlpha ) {
+		if ( ( $output = KKcp_Sanitize::color_rgba( $value ) ) && ! $control->allowAlpha ) {
 			$validity->add( 'wrong_color', __( 'RGBA color is not allowed for this setting.' ) );
 		}
 		return $validity;
@@ -211,4 +211,4 @@ class PWPcp_Customize_Control_Color extends PWPcp_Customize_Control_Base {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Color' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Color' );

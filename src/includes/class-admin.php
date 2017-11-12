@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( class_exists( 'PWPcp_Singleton' ) ):
+if ( class_exists( 'KKcp_Singleton' ) ):
 	/**
 	 * Short description for class
 	 *
@@ -8,13 +8,13 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 	 *
 	 * @package    Customize_Plus
 	 * @subpackage Admin
-	 * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
-	 * @copyright  2017 Knitkode
+	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+	 * @copyright  2017 KnitKode
 	 * @license    GPL-2.0+
 	 * @version    Release: pkgVersion
 	 * @link       https://knitkode.com/customize-plus
 	 */
-	class PWPcp_Admin extends PWPcp_Singleton {
+	class KKcp_Admin extends KKcp_Singleton {
 
 		/**
 		 * The menu page
@@ -141,8 +141,8 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 		 */
 		public function enqueue_scripts( $hook ) {
 			if ( 'settings_page_' . self::PARENT_HOOK === $hook ) {
-				wp_enqueue_style( 'PWPcp-admin', PWPcp_Utils::get_asset( 'admin', 'css', PWPCP_PLUGIN_FILE ), array( 'dashicons' ), PWPCP_PLUGIN_VERSION );
-				// wp_style_add_data( 'PWPcp-admin', 'rtl', true );
+				wp_enqueue_style( 'KKcp-admin', KKcp_Utils::get_asset( 'admin', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
+				// wp_style_add_data( 'KKcp-admin', 'rtl', true );
 			}
 		}
 
@@ -159,6 +159,6 @@ if ( class_exists( 'PWPcp_Singleton' ) ):
 	}
 
 	// Instantiate
-	PWPcp_Admin::get_instance();
+	KKcp_Admin::get_instance();
 
 endif;

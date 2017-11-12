@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Radio extends PWPcp_Customize_Control_Base_Radio {
+class KKcp_Customize_Control_Radio extends KKcp_Customize_Control_Base_Radio {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Radio extends PWPcp_Customize_Control_Base_Radio {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_radio';
+	public $type = 'kkcp_radio';
 
 	/**
 	 * Render template for choice displayment.
@@ -30,7 +30,7 @@ class PWPcp_Customize_Control_Radio extends PWPcp_Customize_Control_Base_Radio {
 	protected function js_tpl_choice_ui() {
 		?>
 			<label class="{{helpClass}}"{{{ helpAttrs }}}>
-				<input type="radio" value="{{ val }}" name="_customize-pwpcp_radio-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
+				<input type="radio" value="{{ val }}" name="_customize-kkcp_radio-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
 				{{{ label }}}
 				<# if (choice.sublabel) { #><small> ({{{ choice.sublabel }}})</small><# } #>
 			</label>
@@ -41,4 +41,4 @@ class PWPcp_Customize_Control_Radio extends PWPcp_Customize_Control_Base_Radio {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Radio' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Radio' );

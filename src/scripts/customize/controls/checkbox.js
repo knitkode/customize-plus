@@ -5,7 +5,7 @@ import { numberToBoolean } from '../core/validators';
 /**
  * Control Checkbox
  *
- * @class wp.customize.controlConstructor.pwpcp_checkbox
+ * @class wp.customize.controlConstructor.kkcp_checkbox
  * @constructor
  * @extends api.controls.Base
  * @augments wp.customize.Control
@@ -61,4 +61,4 @@ let Control = api.controls.Base.extend({
   }
 });
 
-export default wpApi.controlConstructor['pwpcp_checkbox'] = api.controls.Checkbox = Control;
+export default wpApi.controlConstructor['kkcp_checkbox'] = api.controls.Checkbox = Control;

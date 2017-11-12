@@ -6,13 +6,13 @@
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
- * @author     Knitkode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 Knitkode
+ * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
+ * @copyright  2017 KnitKode
  * @license    GPL-2.0+
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
-class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
+class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 
 	/**
 	 * Control type.
@@ -20,7 +20,7 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	 * @since 0.0.1
 	 * @var string
 	 */
-	public $type = 'pwpcp_slider';
+	public $type = 'kkcp_slider';
 
 	/**
 	 * Float numbers allowed
@@ -79,15 +79,15 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	protected function js_tpl_slider() {
 		?>
 		<# if (data.units) { #>
-		<div class="pwpcp-inputs-wrap">
-			<input type="number" class="pwpcp-slider-number" value="<?php // filled through js ?>" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
-			<div class="pwpcp-unit-wrap"><# for (var i = 0, l = data.units.length; i < l; i++) { #><input type="text" class="pwpcp-unit" readonly="true" tabindex="-1" value="{{ data.units[i] }}"><# } #></div>
+		<div class="kkcp-inputs-wrap">
+			<input type="number" class="kkcp-slider-number" value="<?php // filled through js ?>" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
+			<div class="kkcp-unit-wrap"><# for (var i = 0, l = data.units.length; i < l; i++) { #><input type="text" class="kkcp-unit" readonly="true" tabindex="-1" value="{{ data.units[i] }}"><# } #></div>
 		</div>
 		<# } else { #>
-		<input type="number" class="pwpcp-slider-number" value="<?php // filled through js ?>" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
+		<input type="number" class="kkcp-slider-number" value="<?php // filled through js ?>" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
 		<# } #>
-		<div class="pwpcp-slider-wrap">
-			<div class="pwpcp-slider"></div>
+		<div class="kkcp-slider-wrap">
+			<div class="kkcp-slider"></div>
 		</div>
 		<?php
 	}
@@ -127,16 +127,16 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		$number = PWPcp_Sanitize::extract_number( $value, $control );
-		$unit = PWPcp_Sanitize::extract_size_unit( $value, $control );
+		$number = KKcp_Sanitize::extract_number( $value, $control );
+		$unit = KKcp_Sanitize::extract_size_unit( $value, $control );
 
 		// if it is a slider without unit
 		if ( empty( $control->units ) && $number ) {
-			return PWPcp_Sanitize::number( $number, $control );
+			return KKcp_Sanitize::number( $number, $control );
 		}
 		// if it needs a unit
 		else if ( ! empty( $control->units ) && $number && $unit ) {
-			return PWPcp_Sanitize::number( $number, $control ) . $unit;
+			return KKcp_Sanitize::number( $number, $control ) . $unit;
 		} else {
 			return $setting->default;
 		}
@@ -154,8 +154,8 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 	 * @return mixed
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		$number = PWPcp_Sanitize::extract_number( $value, $control );
-		$unit = PWPcp_Sanitize::extract_size_unit( $value, $control );
+		$number = KKcp_Sanitize::extract_number( $value, $control );
+		$unit = KKcp_Sanitize::extract_size_unit( $value, $control );
 
 		// if it needs a unit
 		if ( ! empty( $control->units ) && ! $unit ) {
@@ -169,4 +169,4 @@ class PWPcp_Customize_Control_Slider extends PWPcp_Customize_Control_Base {
 /**
  * Register on WordPress Customize global object
  */
-$wp_customize->register_control_type( 'PWPcp_Customize_Control_Slider' );
+$wp_customize->register_control_type( 'KKcp_Customize_Control_Slider' );

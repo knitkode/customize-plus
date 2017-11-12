@@ -5,7 +5,7 @@ import { api, wpApi } from '../core/globals';
 /**
  * Control Multicheck
  *
- * @class wp.customize.controlConstructor.pwpcp_multicheck
+ * @class wp.customize.controlConstructor.kkcp_multicheck
  * @constructor
  * @extends api.controls.Base
  * @augments wp.customize.Control
@@ -147,4 +147,4 @@ let Control = api.controls.Base.extend({
   }
 });
 
-export default wpApi.controlConstructor['pwpcp_multicheck'] = api.controls.Multicheck = Control;
+export default wpApi.controlConstructor['kkcp_multicheck'] = api.controls.Multicheck = Control;

@@ -5,7 +5,7 @@ import { api, wpApi } from '../core/globals';
 /**
  * Control Sortable
  *
- * @class wp.customize.controlConstructor.pwpcp_sortable
+ * @class wp.customize.controlConstructor.kkcp_sortable
  * @alias api.controls.Sortable
  * @constructor
  * @extends api.controls.Base
@@ -62,7 +62,7 @@ let Control = api.controls.Base.extend({
     this.params.lastValue = this.setting();
 
     container.sortable({
-      items: '.pwpcp-sortable',
+      items: '.kkcp-sortable',
       cursor: 'move',
       update: function () {
         setting.set(container.sortable('toArray', { attribute: 'title' }));
@@ -74,7 +74,7 @@ let Control = api.controls.Base.extend({
    * with the corresponding DOM element
    */
   _buildItemsMap: function () {
-    var items = this._container.getElementsByClassName('pwpcp-sortable');
+    var items = this._container.getElementsByClassName('kkcp-sortable');
     this.__itemsMap = {};
 
     for (var i = 0, l = items.length; i < l; i++) {
@@ -102,4 +102,4 @@ let Control = api.controls.Base.extend({
   }
 });
 
-export default wpApi.controlConstructor['pwpcp_sortable'] = api.controls.Sortable = Control;
+export default wpApi.controlConstructor['kkcp_sortable'] = api.controls.Sortable = Control;

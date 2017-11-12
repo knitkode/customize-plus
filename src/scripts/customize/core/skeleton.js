@@ -37,12 +37,12 @@ var Skeleton = (function () {
     _initOnDomReady: function () {
 
       // set elements as properties
-      this._loader = document.getElementById('pwpcp-loader-preview');
+      this._loader = document.getElementById('kkcp-loader-preview');
       this.$loader = $(this._loader);
-      this.img = document.getElementById('pwpcp-loader-img');
-      this.title = document.getElementById('pwpcp-loader-title');
-      this.text = document.getElementById('pwpcp-loader-text');
-      this._loaderSidebar = document.getElementById('pwpcp-loader-sidebar');
+      this.img = document.getElementById('kkcp-loader-img');
+      this.title = document.getElementById('kkcp-loader-title');
+      this.text = document.getElementById('kkcp-loader-text');
+      this._loaderSidebar = document.getElementById('kkcp-loader-sidebar');
       this.$loaderSidebar = $(this._loaderSidebar);
 
       _$deferredDom.resolve();
@@ -54,13 +54,13 @@ var Skeleton = (function () {
      * Trigger loading UI state (changes based on added css class)
      */
     loading: function () {
-      body.classList.add('pwpcp-loading');
+      body.classList.add('kkcp-loading');
     },
     /**
      * Remove loading UI state
      */
     loaded: function () {
-      body.classList.remove('pwpcp-loading');
+      body.classList.remove('kkcp-loading');
     },
     /**
      * Show 'full page' loader

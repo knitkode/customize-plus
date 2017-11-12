@@ -7,7 +7,7 @@ import Regexes from '../core/regexes';
 /**
  * Control Slider
  *
- * @class wp.customize.controlConstructor.pwpcp_slider
+ * @class wp.customize.controlConstructor.kkcp_slider
  * @alias api.controls.Slider
  * @constructor
  * @extends api.controls.Base
@@ -82,11 +82,11 @@ let Control = api.controls.Base.extend({
   _setDOMelements: function () {
     var container = this._container;
     /** @type {HTMLElement} */
-    this.__inputNumber = container.getElementsByClassName('pwpcp-slider-number')[0];
+    this.__inputNumber = container.getElementsByClassName('kkcp-slider-number')[0];
     /** @type {JQuery} */
-    this.__$inputUnits = $(container.getElementsByClassName('pwpcp-unit'));
+    this.__$inputUnits = $(container.getElementsByClassName('kkcp-unit'));
     /** @type {JQuery} */
-    this.__$inputSlider = $(container.getElementsByClassName('pwpcp-slider')[0]);
+    this.__$inputSlider = $(container.getElementsByClassName('kkcp-slider')[0]);
   },
   /**
    * Init slider and bind input UI.
@@ -102,8 +102,8 @@ let Control = api.controls.Base.extend({
     if (params.units && params.units.length > 1) {
       var $inputUnits = self.__$inputUnits;
       $inputUnits.on('click', function () {
-        $inputUnits.removeClass('pwpcp-current');
-        this.className += ' pwpcp-current';
+        $inputUnits.removeClass('kkcp-current');
+        this.className += ' kkcp-current';
         self._setPartialValue({ _unit: this.value });
       });
     }
@@ -175,7 +175,7 @@ let Control = api.controls.Base.extend({
       if (value && value._unit) {
         output += value._unit;
       } else {
-        output += this.__$inputUnits.filter('.pwpcp-current').val();
+        output += this.__$inputUnits.filter('.kkcp-current').val();
       }
     }
     return output;
@@ -198,9 +198,9 @@ let Control = api.controls.Base.extend({
     this.__$inputSlider.slider('value', number);
     // update unit picker
     if (params.units) {
-      this.__$inputUnits.removeClass('pwpcp-current').filter(function () {
+      this.__$inputUnits.removeClass('kkcp-current').filter(function () {
         return this.value === unit;
-      }).addClass('pwpcp-current');
+      }).addClass('kkcp-current');
     }
   },
   /**
@@ -223,4 +223,4 @@ let Control = api.controls.Base.extend({
   }
 });
 
-export default wpApi.controlConstructor['pwpcp_slider'] = api.controls.Slider = Control;
+export default wpApi.controlConstructor['kkcp_slider'] = api.controls.Slider = Control;
