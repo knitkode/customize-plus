@@ -61,7 +61,7 @@ Donate
 
 License
 ---------------
- [![License](https://img.shields.io/badge/license-GPL--3.0%2B-blue.svg)](https://github.com/knitkode/customize-plus--theme/blob/master/license.txt) [![Knitkode](https://img.shields.io/badge/%C2%A9Knitkode-2017-blue.svg)](https://knitkode.com)
+ [![License](https://img.shields.io/badge/license-GPL--3.0%2B-blue.svg)](https://github.com/knitkode/customize-plus/blob/master/license.txt) [![Knitkode](https://img.shields.io/badge/%C2%A9Knitkode-2017-blue.svg)](https://knitkode.com)
 
 Unless otherwise specified, all the plugin files are licensed under GNU General Public License version 3, see file license.txt. The exceptions to this license are as follows*:
 
