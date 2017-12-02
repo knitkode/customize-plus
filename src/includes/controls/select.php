@@ -146,7 +146,11 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 			$max_items = null;
 		}
 		if ( is_numeric( $max_items ) && $max_items > 1 ) {
-			$input_decoded = json_decode( $value );
+			if ( ! is_string( $value ) ) {
+				return $validity->add( 'wrong', sprintf( __( 'The value must be a string or a JSONified string.' ) ) ); // @@tocheck, wrong error message
+			} else {
+				$input_decoded = json_decode( $value );
+			}
 
 			if ( is_array( $input_decoded ) ) {
 				foreach ( $input_decoded as $key ) {

@@ -170,11 +170,13 @@ class KKcp_Sanitize {
 		}
 
 		// if it's a jsonized value try to parse it and
-		$value_parsed = json_decode( $value );
-		if ( $value_parsed ) {
-			// see if we have an empty array or an empty object
-			if ( is_array( $value_parsed ) && empty( $value_parsed ) ) {
-				return true;
+		if ( is_string( $value ) ) {
+			$value_parsed = json_decode( $value );
+			if ( $value_parsed ) {
+				// see if we have an empty array or an empty object
+				if ( is_array( $value_parsed ) && empty( $value_parsed ) ) {
+					return true;
+				}
 			}
 		}
 
@@ -419,7 +421,11 @@ class KKcp_Sanitize {
 	 * @return string The sanitized value.
 	 */
 	public static function array_in_choices( $input, $setting, $control ) {
-		$input_decoded = json_decode( $input );
+		$input_decoded = $input;
+
+		if ( is_string( $input ) ) {
+			$input_decoded = json_decode( $input );
+		}
 
 		if ( is_array( $input_decoded ) ) {
 			$input_sanitized = array();

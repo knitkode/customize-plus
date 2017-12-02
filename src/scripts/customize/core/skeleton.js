@@ -14,15 +14,6 @@ const Skeleton = (function () {
   /** @type {JQuery} */
   const _$deferredDom = $.Deferred(); // @@todo to check if I still need it, see $reaadyDOM \\
 
-  /**
-   * Hide loader and unbind itself
-   * (we could also take advantage of the underscore `once` utility)
-   */
-  function _hideLoaderPreview () {
-    Skeleton.hide('preview');
-    wpApi.previewer.targetWindow.unbind(_hideLoaderPreview);
-  }
-
   // @access public
   return {
     /**
@@ -45,9 +36,8 @@ const Skeleton = (function () {
       this.$loaderSidebar = $(this._loaderSidebar);
 
       _$deferredDom.resolve();
-
       // the first time the iframe preview has loaded hide the skeleton loader
-      wpApi.previewer.targetWindow.bind(_hideLoaderPreview);
+      wpApi.previewer.targetWindow.bind(this._hideLoaderPreview.bind(this));
     },
     /**
      * Trigger loading UI state (changes based on added css class)
@@ -98,6 +88,14 @@ const Skeleton = (function () {
           }
         }
       });
+    },
+    /**
+     * Hide loader and unbind itself
+     * (we could also take advantage of the underscore `once` utility)
+     */
+    _hideLoaderPreview: function () {
+      this.hide('preview');
+      wpApi.previewer.targetWindow.unbind(this._hideLoaderPreview);
     }
   };
 })();
