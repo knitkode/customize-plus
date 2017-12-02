@@ -1,4 +1,4 @@
-<?php
+<?php // @partial
 $allowed_tabs = array();
 foreach ( $this->subpages as $subpage_id => $subpage_args ) {
 	array_push( $allowed_tabs, $subpage_id );

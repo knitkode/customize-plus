@@ -154,7 +154,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		public function get_view() {
 		?>
 			//=include ../views/page-admin.php
-		<?php
+		<?php // @@toimprove: substitute with: `require ( KKCP_PLUGIN_DIR . 'views/page-admin.php' );` \\
 		}
 	}
 

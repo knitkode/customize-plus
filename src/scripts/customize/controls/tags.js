@@ -25,7 +25,7 @@ let Control = api.controls.Base.extend({
         return string.trim();
       });
       newValue = _.uniq(newValue);
-      var maxItems = this.params.selectize.maxItems;
+      var maxItems = this.params.selectize ? this.params.selectize.maxItems : null;
       if (maxItems && _.isNumber(maxItems)) {
         if (newValue.length > maxItems) {
           newValue = newValue.slice(0, maxItems);
