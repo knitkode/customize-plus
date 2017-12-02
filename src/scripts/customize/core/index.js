@@ -1,4 +1,4 @@
-import './globals';
+// import './globals';
 import './setup-jquery';
 import './setup-markdown';
 import './regexes';

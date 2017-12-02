@@ -26,17 +26,57 @@ import Utils from '../core/utils';
 api.controls.Base = wpApi.Control.extend({
   /**
    * Tweak the initialize methods.
-   *
-   * @param  {string} id      The control id
-   * @param  {Object} options The control options
-   */
+   * @param {string} id                       - Unique identifier for the control instance.
+     * @param {object} options                  - Options hash for the control instance.
+     * @param {object} options.type             - Type of control (e.g. text, radio, dropdown-pages, etc.)
+     * @param {string} [options.content]        - The HTML content for the control or at least its container. This should normally be left blank and instead supplying a templateId.
+     * @param {string} [options.templateId]     - Template ID for control's content.
+     * @param {string} [options.priority=10]    - Order of priority to show the control within the section.
+     * @param {string} [options.active=true]    - Whether the control is active.
+     * @param {string} options.section          - The ID of the section the control belongs to.
+     * @param {mixed}  [options.setting]        - The ID of the main setting or an instance of this setting.
+     * @param {mixed}  options.settings         - An object with keys (e.g. default) that maps to setting IDs or Setting/Value objects, or an array of setting IDs or Setting/Value objects.
+     * @param {mixed}  options.settings.default - The ID of the setting the control relates to.
+     * @param {string} options.settings.data    - @todo Is this used?
+     * @param {string} options.label            - Label.
+     * @param {string} options.description      - Description.
+     * @param {number} [options.instanceNumber] - Order in which this instance was created in relation to other instances.
+     * @param {object} [options.params]         - Deprecated wrapper for the above properties.
+     * @returns {void}
+     */
   initialize: function(id, options) {
-    var control = this;
-    var settings;
-    var advancedClass;
+    const control = this;
+    let deferredSettingIds = [];
+    let gatherSettings;
+    let settings;
+    let advancedClass;
 
-    control.params = {};
-    _.extend( control, options || {} );
+    control.params = _.extend(
+      {},
+      control.defaults,
+      control.params || {}, // In case sub-class already defines.
+      options.params || options || {} // The options.params property is deprecated, but it is checked first for back-compat.
+    );
+
+    if ( ! wpApi.Control.instanceCounter ) {
+      wpApi.Control.instanceCounter = 0;
+    }
+    wpApi.Control.instanceCounter++;
+    if ( ! control.params.instanceNumber ) {
+      control.params.instanceNumber = wpApi.Control.instanceCounter;
+    }
+
+    // Look up the type if one was not supplied.
+    if ( ! control.params.type ) {
+      _.find( wpApi.controlConstructor, function( Constructor, type ) {
+        if ( Constructor === control.constructor ) {
+          control.params.type = type;
+          return true;
+        }
+        return false;
+      } );
+    }
+
     control.id = id;
 
     // add a flag so that we are able to recognize our custom controls, let's
@@ -47,7 +87,7 @@ api.controls.Base = wpApi.Control.extend({
     // control.templateSelector = 'customize-control-' + control.params.type + '-content';
     advancedClass = control.params.advanced ? ' kkcp-control-advanced' : '';
 
-    var container = document.createElement('li');
+    let container = document.createElement('li');
     container.id = 'customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
     container.className = 'customize-control kkcp-control customize-control-'
       + control.params.type + advancedClass;
@@ -55,91 +95,100 @@ api.controls.Base = wpApi.Control.extend({
     control.container = $(container);
 
     // save a reference of the raw DOM node, we're gonna use it more
-    // than the jquety object `container` (which we can't change, because it's
+    // than the jQuery object `container` (which we can't change, because it's
     // used by methods which we don't override)
     control._container = container;
 
-    control.deferred = {
+    if ( control.params.templateId ) {
+      control.templateSelector = control.params.templateId;
+    } else {
+      control.templateSelector = 'customize-control-' + control.params.type + '-content';
+    }
+
+    control.deferred = _.extend( control.deferred || {}, {
       embedded: new $.Deferred()
-    };
+    } );
     control.section = new wpApi.Value();
     control.priority = new wpApi.Value();
     control.active = new wpApi.Value();
     control.activeArgumentsQueue = [];
-    control.notifications = new wpApi.Values({ defaultConstructor: wpApi.Notification });
+    control.notifications = new wpApi.Notifications({
+      alt: control.altNotice
+    });
 
-    control.active.bind(function (active) {
+    control.elements = [];
+
+    control.active.bind( function ( active ) {
       var args = control.activeArgumentsQueue.shift();
-      args = $.extend({}, control.defaultActiveArguments, args);
-      control.onChangeActive(active, args);
-    });
+      args = $.extend( {}, control.defaultActiveArguments, args );
+      control.onChangeActive( active, args );
+    } );
 
-    control.section.set(control.params.section);
-    control.priority.set(isNaN(control.params.priority) ? 10 : control.params.priority);
-    control.active.set(control.params.active);
+    control.section.set( control.params.section );
+    control.priority.set( isNaN( control.params.priority ) ? 10 : control.params.priority );
+    control.active.set( control.params.active );
 
-    wpApi.utils.bubbleChildValueChanges(control, ['section', 'priority', 'active']);
+    wpApi.utils.bubbleChildValueChanges( control, [ 'section', 'priority', 'active' ] );
 
-    // Associate this control with its settings when they are created
-    settings = $.map(control.params.settings, function(value) {
-      return value;
-    });
+    control.settings = {};
 
-    if ( 0 === settings.length ) {
-      control.setting = null;
-      control.settings = {};
-      control.embed();
-    } else {
-      wpApi.apply(wpApi, settings.concat(function () {
-        control.settings = {};
-        for (var key in control.params.settings) {
-          control.settings[key] = wpApi(control.params.settings[key]);
-        }
-        control.setting = control.settings['default'] || null;
-
-        // Add setting notifications to the control notification.
-        _.each( control.settings, function( setting ) {
-          setting.notifications.bind( 'add', function( settingNotification ) {
-            var controlNotification, code, params;
-            code = setting.id + ':' + settingNotification.code;
-            params = _.extend(
-              {},
-              settingNotification,
-              {
-                setting: setting.id
-              }
-            );
-            controlNotification = new wpApi.Notification( code, params );
-            control.notifications.add( controlNotification.code, controlNotification );
-          } );
-          setting.notifications.bind( 'remove', function( settingNotification ) {
-            control.notifications.remove( setting.id + ':' + settingNotification.code );
-          } );
-        } );
-
-        control.embed();
-      }));
-
+    settings = {};
+    if ( control.params.setting ) {
+      settings['default'] = control.params.setting;
     }
+    _.extend( settings, control.params.settings );
+
+    // Note: Settings can be an array or an object, with values being either setting IDs or Setting (or Value) objects.
+    _.each( settings, function( value, key ) {
+      var setting;
+      if ( _.isObject( value ) && _.isFunction( value.extended ) && value.extended( wpApi.Value ) ) {
+        control.settings[ key ] = value;
+      } else if ( _.isString( value ) ) {
+        setting = wpApi( value );
+        if ( setting ) {
+          control.settings[ key ] = setting;
+        } else {
+          deferredSettingIds.push( value );
+        }
+      }
+    } );
+
+    gatherSettings = function() {
+
+      // Fill-in all resolved settings.
+      _.each( settings, function ( settingId, key ) {
+        if ( ! control.settings[ key ] && _.isString( settingId ) ) {
+          control.settings[ key ] = wpApi( settingId );
+        }
+      } );
+
+      // Make sure settings passed as array gets associated with default.
+      if ( control.settings[0] && ! control.settings['default'] ) {
+        control.settings['default'] = control.settings[0];
+      }
+
+      // Identify the main setting.
+      control.setting = control.settings['default'] || null;
+
+      control.linkElements(); // Link initial elements present in server-rendered content.
+      control.embed();
+    };
+
+    if ( 0 === deferredSettingIds.length ) {
+      gatherSettings();
+    } else {
+      wpApi.apply( wpApi, deferredSettingIds.concat( gatherSettings ) );
+    }
+
+    // an @abstract method to override (this needs to be called here, before than
+    // the `ready` method)
+    control.onInit();
 
     // After the control is embedded on the page, invoke the "ready" method.
     control.deferred.embedded.done( function () {
-      /*
-       * Note that this debounced/deferred rendering is needed for two reasons:
-       * 1) The 'remove' event is triggered just _before_ the notification is actually removed.
-       * 2) Improve performance when adding/removing multiple notifications at a time.
-       */
-      var debouncedRenderNotifications = _.debounce( function renderNotifications() {
-        control.renderNotifications();
-      } );
-      control.notifications.bind( 'add', function( notification ) {
-        wp.a11y.speak( notification.message, 'assertive' );
-        debouncedRenderNotifications();
-      } );
-      control.notifications.bind( 'remove', debouncedRenderNotifications );
-      control.renderNotifications();
-
-      // control.ready();
+      control.linkElements(); // Link any additional elements after template is rendered by renderContent().
+      control.setupNotifications();
+      control.ready();
     });
 
     // embed controls only when the parent section get clicked to keep the DOM light,
@@ -157,9 +206,6 @@ api.controls.Base = wpApi.Control.extend({
         _.defer(control.inflate.bind(control));
       }
     });
-
-    // an @abstract method to override
-    control.onInit();
 
     // controls can be setting-less from 4.5
     if (control.setting) {

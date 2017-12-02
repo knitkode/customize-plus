@@ -9,13 +9,13 @@ import { api, wpApi, body, $readyDOM } from './globals';
  * @class api.core.Skeleton
  * @requires Modernizr
  */
-var Skeleton = (function () {
+const Skeleton = (function () {
 
   /** @type {JQuery} */
-  var _$deferredDom = $.Deferred(); // @@todo to check if I still need it, see $reaadyDOM \\
+  const _$deferredDom = $.Deferred(); // @@todo to check if I still need it, see $reaadyDOM \\
 
   /**
-   * Hide loader and ubnid itself
+   * Hide loader and unbind itself
    * (we could also take advantage of the underscore `once` utility)
    */
   function _hideLoaderPreview () {
@@ -35,7 +35,6 @@ var Skeleton = (function () {
      * Init on DOM ready
      */
     _initOnDomReady: function () {
-
       // set elements as properties
       this._loader = document.getElementById('kkcp-loader-preview');
       this.$loader = $(this._loader);
@@ -66,14 +65,14 @@ var Skeleton = (function () {
      * Show 'full page' loader
      */
     show: function (what) {
-      _$deferredDom.done(function () {
+      _$deferredDom.done(() => {
         if (!what || what === 'preview') {
           this._loader.style.display = 'block';
         }
         if (!what || what === 'sidebar') {
           this._loaderSidebar.style.display = 'block';
         }
-      }.bind(this));
+      });
     },
     /**
      * Hide loaders overlays, use jQuery animation if the browser supports
@@ -82,8 +81,8 @@ var Skeleton = (function () {
      *                      to hide both)
      */
     hide: function (what) {
-      _$deferredDom.done(function () {
-        var shouldFade = Modernizr.webworkers;
+      _$deferredDom.done(() => {
+        const shouldFade = Modernizr.webworkers;
         if (!what || what === 'preview') {
           if (shouldFade) {
             this.$loader.fadeOut();
@@ -98,7 +97,7 @@ var Skeleton = (function () {
             this._loaderSidebar.style.display = 'none';
           }
         }
-      }.bind(this));
+      });
     }
   };
 })();
