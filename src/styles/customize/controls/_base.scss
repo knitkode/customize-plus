@@ -2,7 +2,7 @@
  * Give always some spacing on the bottom of the last control in the section
  */
 #customize-theme-controls .control-section .accordion-section-content > li.customize-control:last-child {
-  margin-bottom: $WPcustomize--control-margin-vertical * 2;
+  margin-bottom: $WPcustomize--control-margin-bottom * 2;
 }
 
 /**
@@ -137,14 +137,6 @@
 }
 
 /**
- * Remove highlighting behavior on theme switcher control
- */
-.customize-control-theme,
-.customize-control-theme:hover {
-  background: none;
-}
-
-/**
  * Reset our control custom style on the Nav Menus and Widgets WordPress native
  * panels. Add also generic class to apply on panel `ul` container to reset the
  * control style.
@@ -154,7 +146,7 @@
 #accordion-panel-nav_menus {
   .customize-control {
     padding: 0;
-    margin-bottom: $WPcustomize--control-margin-vertical;
+    margin-bottom: $WPcustomize--control-margin-bottom;
     border: 0;
 
     &:hover {

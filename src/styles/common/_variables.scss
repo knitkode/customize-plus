@@ -29,7 +29,7 @@ $WP--notice-border--info: #72DFFF; // I made this up
 $WPcustomize--overlay-z-index: 500000;
 $WPcustomize--container-meta-margin_bottom: 15px;
 $WPcustomize--section-padding-horizontal: 12px; // @@wptight-cs from .accordion-section-content {} \\
-$WPcustomize--control-margin-vertical: 12px;
+$WPcustomize--control-margin-bottom: 12px;
 $WPcustomize--sidebar-width: 300px;
 $WPcustomize--sidebar-inner-width: $WPcustomize--sidebar-width - ($WPcustomize--section-padding-horizontal * 2);
 $WPcustomize--footer-height: 45px;
@@ -119,8 +119,8 @@ $control--bg-focus: #ffc;
 $control--bg-hover: lighten($WPcustomize--sidebar-bg, 2%);
 $control--bg-divider: darken($control--bg-hover, 10%); // #fffafa;
 $control--bg-divider-hover: darken($control--bg-divider, 3%);
-$control--spacing-top: $WPcustomize--control-margin-vertical / 2;
-$control--spacing-bottom: $WPcustomize--control-margin-vertical / 2;
+$control--spacing-top: $WPcustomize--control-margin-bottom / 2;
+$control--spacing-bottom: $WPcustomize--control-margin-bottom / 2;
 $control--spacing-left: 20px;
 $control--spacing-right: $WPcustomize--section-padding-horizontal;
 $control--btn-size: $WP--dashicons-size;
