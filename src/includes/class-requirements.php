@@ -45,6 +45,20 @@ class KKcp_Requirements {
 		),
 	);
 
+	private static $msg_html_allowd = array(
+		'div' => array(
+			'id' => array(),
+			'class' => array(),
+			'style' => array()
+		),
+		'b' => array(),
+		'br' => array(),
+		'em' => array(),
+		'a' => array(
+			'href' => array()
+		)
+	);
+
 	/**
 	 * Constructor
 	 *
@@ -68,7 +82,7 @@ class KKcp_Requirements {
 	public static function check_php_version() {
 		$php_version = phpversion();
 		load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( KKCP_PLUGIN_FILE ) ), '/languages/' );
-		$msg = sprintf( __( '<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your PHP version (%s).<br />Reccomended PHP version &ndash; %s (or higher).</p><a href="%s">&larr; Return to the plugins screen</a>' ), '<b>Customize Plus</b>', $php_version, self::$min_php_version, network_admin_url( 'plugins.php?deactivate=true' ), $_SERVER['REQUEST_URI'] . '&continue=true', ' style="float:right;font-weight:bold"' );
+		$msg = sprintf( wp_kses( __( '<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your PHP version (%s).<br />Reccomended PHP version &ndash; %s (or higher).</p><a href="%s">&larr; Return to the plugins screen</a>' ), self::$msg_html_allowd ), '<b>Customize Plus</b>', $php_version, self::$min_php_version, network_admin_url( 'plugins.php?deactivate=true' ), $_SERVER['REQUEST_URI'] . '&continue=true', ' style="float:right;font-weight:bold"' );
 
 		// PHP version is too low
 		if ( version_compare( self::$min_php_version, $php_version, '>' ) ) {
@@ -85,7 +99,7 @@ class KKcp_Requirements {
 	public static function check_wp_version() {
 		$wp_version = get_bloginfo( 'version' );
 		load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( KKCP_PLUGIN_FILE ) ), '/languages/' );
-		$msg = sprintf( __( '<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your version of WordPress (%s).<br />Reccomended WordPress version &ndash; %s (or higher).</p><a href="%s">&larr; Return to the plugins screen</a> <a href="%s"%s>Continue and activate anyway &rarr;</a>' ), '<b>Customize Plus</b>', $wp_version, self::$min_wp_version, network_admin_url( 'plugins.php?deactivate=true' ), $_SERVER['REQUEST_URI'] . '&continue=true', ' style="float:right;font-weight:bold"' );
+		$msg = sprintf( wp_kses( __( '<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your version of WordPress (%s).<br />Reccomended WordPress version &ndash; %s (or higher).</p><a href="%s">&larr; Return to the plugins screen</a> <a href="%s"%s>Continue and activate anyway &rarr;</a>' ), self::$msg_html_allowd ), '<b>Customize Plus</b>', $wp_version, self::$min_wp_version, esc_url( network_admin_url( 'plugins.php?deactivate=true' ) ), $_SERVER['REQUEST_URI'] . '&continue=true', ' style="float:right;font-weight:bold"' );
 		// Check Forced activation
 		if ( isset( $_GET['continue'] ) ) {
 			return;
@@ -120,11 +134,11 @@ class KKcp_Requirements {
 				add_action( 'admin_notices', function() use ( $deactivated_plugins ) {
 
 					// inspired by TGM-Plugin-Activation by Thomas Griffin and Gary Jones
-					$self_title = '<a href="' . admin_url( 'plugins.php' ) . '#customize-plus"><b>Customize Plus</b></a>';
+					$title = '<a href="' . esc_url( admin_url( 'plugins.php' ) ) . '#customize-plus"><b>Customize Plus</b></a>';
 					$count = count( $deactivated_plugins );
 					$last_plugin = array_pop( $deactivated_plugins ); // Pop off last name to prep for readability.
 					$imploded    = empty( $deactivated_plugins ) ? '<b>' . $last_plugin . '</b>' : '<b>' . ( implode( ', ', $deactivated_plugins ) . '</b> and <b>' . $last_plugin . '</b>.' );
-					echo sprintf( '<div id="message" class="updated" style="border-color: #ffba00;"><p>%1$s<br><em>%2$s</em></p></div>', _n( sprintf( __( 'The plugin %1$s has been deactivated because is not compatible with %2$s.' ), $imploded, $self_title ), sprintf( __( 'The plugins %1$s has been deactivated because they are not compatible with %2$s.' ), $imploded, $self_title ), $count, 'pkgTextDomain' ), _n( sprintf( __( 'If you need to use it deactivate %s first.' ), $self_title ), sprintf( __( 'If you need to use them deactivate %s first.' ), $self_title ), $count, 'pkgTextDomain' ) );
+					echo sprintf( wp_kses( '<div id="message" class="updated" style="border-color: #ffba00;"><p>%1$s<br><em>%2$s</em></p></div>', self::$msg_html_allowd ), _n( sprintf( __( 'The plugin %1$s has been deactivated because is not compatible with %2$s.' ), $imploded, $title ), sprintf( __( 'The plugins %1$s have been deactivated because they are not compatible with %2$s.' ), $imploded, $title ), $count, 'pkgTextDomain' ), _n( sprintf( __( 'If you need to use it deactivate %s first.' ), $title ), sprintf( __( 'If you need to use them deactivate %s first.' ), $title ), $count, 'pkgTextDomain' ) );
 				}, 90 );
 			}
 		}

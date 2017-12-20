@@ -278,7 +278,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		if ( class_exists( 'KKcpp' ) ) {
 		?>
 			<# if (data.guide) { #>
-				<i class="kkcp-guide kkcpui-control-btn dashicons dashicons-editor-help" title="<?php _e( 'Click to show some help' ); ?>"></i>
+				<i class="kkcp-guide kkcpui-control-btn dashicons dashicons-editor-help" title="<?php esc_html_e( 'Click to show some help' ); ?>"></i>
 			<# } #>
 		<?php
 		}
@@ -310,9 +310,9 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 			<div class="kkcp-extras">
 				<i class="kkcp-extras-btn kkcpui-control-btn dashicons dashicons-admin-generic"></i>
 				<ul class="kkcp-extras-list">
-					<li class="kkcp-extras-reset_last"><?php _e( 'Reset to last saved value' ); ?></li>
-					<li class="kkcp-extras-reset_initial"><?php _e( 'Reset to initial session value' ); ?></li>
-					<li class="kkcp-extras-reset_factory"><?php _e( 'Reset to factory value' ); ?></li>
+					<li class="kkcp-extras-reset_last"><?php esc_html_e( 'Reset to last saved value' ); ?></li>
+					<li class="kkcp-extras-reset_initial"><?php esc_html_e( 'Reset to initial session value' ); ?></li>
+					<li class="kkcp-extras-reset_factory"><?php esc_html_e( 'Reset to factory value' ); ?></li>
 					<?php do_action( 'KKcp/controls/base/js_tpl_extras/add_list_items' ); ?>
 				</ul>
 			</div>
@@ -398,7 +398,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		$control = $setting->manager->get_control( $setting->id );
 
 		if ( $control && ! $control->optional && KKcp_Sanitize::is_setting_value_empty( $value ) ) {
-			$validity->add( 'required', __( 'You must supply a value.' ) );
+			$validity->add( 'required', esc_html__( 'You must supply a value.' ) );
 		} else {
 			if ( method_exists( $control, 'validate' ) ) {
 				return $control::validate( $validity, $value, $setting, $control );;

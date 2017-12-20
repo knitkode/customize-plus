@@ -101,8 +101,8 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 
 			add_submenu_page(
 				self::MENU_PAGE,
-				__( 'Customize Plus' ),
-				__( 'Customize Plus' ),
+				esc_html__( 'Customize Plus' ),
+				esc_html__( 'Customize Plus' ),
 				'manage_options',
 				self::PARENT_HOOK,
 				array( $this, 'get_view' )
@@ -114,7 +114,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 				$hooks[] = add_submenu_page(
 					self::MENU_PAGE,
 					$subpage_args['title'],
-					__( 'Customize Plus' ),
+					esc_html__( 'Customize Plus' ),
 					'manage_options',
 					self::PARENT_HOOK . 'tab=' . sanitize_key( $subpage_id ),
 					'__return_null'

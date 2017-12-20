@@ -28,11 +28,11 @@ class KKcp_Validate {
 		$input_decoded = json_decode( $value );
 
 		if ( ! is_array( $input_decoded ) ) {
-			$validity->add( 'wrong', __( 'The value should be a list.' ) );
+			$validity->add( 'wrong', esc_html__( 'The value should be a list.' ) );
 		} else {
 			foreach ( $input_decoded as $key ) {
 				if ( ! isset( $control->choices[ $key ] ) ) {
-					$validity->add( 'wrong', sprintf( __( 'The value %s is not a choice.' ), $key ) );
+					$validity->add( 'wrong', sprintf( esc_html__( 'The value %s is not a choice.' ), $key ) );
 				}
 			}
 		}
@@ -52,7 +52,7 @@ class KKcp_Validate {
  	 */
 	public static function string_in_choices( $validity, $value, $setting, $control ) {
 		if ( ! isset( $control->choices[ $value ] ) ) {
-			$validity->add( 'not_a_choice', __( 'The value is not an allowed choice.' ) );
+			$validity->add( 'not_a_choice', esc_html__( 'The value is not an allowed choice.' ) );
 		}
 		return $validity;
 	}

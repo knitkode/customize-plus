@@ -245,12 +245,12 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			$required = array(
 				'introTitle' => 'Customize Plus',
 				/* translators %s is the Plugin name */
-				'introText' => sprintf( __( 'Welcome to %s' ), 'Customize Plus' ),
-				'back' => __( 'Back' ),
+				'introText' => sprintf( esc_html__( 'Welcome to %s' ), 'Customize Plus' ),
+				'back' => esc_html__( 'Back' ),
 				'pluginName' => 'Customize Plus',
-				'tools' => __( 'Tools' ),
-				'vRequired' => __( 'A value is required' ),
-				'vInvalid' => __( 'Invalid value' ),
+				'tools' => esc_html__( 'Tools' ),
+				'vRequired' => esc_html__( 'A value is required' ),
+				'vInvalid' => esc_html__( 'Invalid value' ),
 			);
 			$additional = (array) apply_filters( 'KKcp/customize/get_js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );
@@ -435,7 +435,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					$wp_customize->add_panel( new $panel_type_class( $wp_customize, $panel_id, $panel_args ) );
 				// if the desired class doesn't exist just use the plain WordPress API
 				} else {
-					wp_die( sprintf( __( 'Customize Plus: missing class %s for panel type %s.' ), '<code>' . $panel_type_class . '</code>', '<code><b>' . $panel_type . '</b></code>' ) );
+					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for panel type %s.' ), '<code>' . $panel_type_class . '</code>', '<code><b>' . $panel_type . '</b></code>' ) ) );
 				}
 			// if the desired panel type is not specified just use the plain WordPress API
 			} else {
@@ -512,7 +512,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					$wp_customize->add_section( new $section_type_class( $wp_customize, $section['id'], $section_args ) );
 				// if the desired class doesn't exist report the error
 				} else {
-					wp_die( sprintf( __( 'Customize Plus: missing class %s for section type %s.' ), '<code>' . $section_type_class . '</code>', '<code><b>' . $section_type . '</b></code>' ) );
+					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for section type %s.' ), '<code>' . $section_type_class . '</code>', '<code><b>' . $section_type . '</b></code>' ) ) );
 				}
 			// if the desired control type is not specified just use the plain WordPress API
 			} else {
@@ -622,7 +622,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					$wp_customize->add_control( new $control_type_class( $wp_customize, $control_id, $control_args ) );
 				// if the desired class doesn't exist report the error
 				} else {
-					wp_die( sprintf( __( 'Customize Plus: missing class %s for control type %s.' ), '<code>' . $control_type_class . '</code>', '<code><b>' . $control_type . '</b></code>' ) );
+					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for control type %s.' ), '<code>' . $control_type_class . '</code>', '<code><b>' . $control_type . '</b></code>' ) ) );
 				}
 			// if the desired control type is not specified use the plain WordPress API
 			} else {

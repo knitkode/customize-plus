@@ -75,7 +75,7 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 	protected static function validate( $validity, $value, $setting, $control ) {
 		$filtered = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 		if ( $filtered != 0 && $filtered != 1 ) {
-			$validity->add( 'wrong', __( 'The checkbox should be either checked or unchecked.' ) );
+			$validity->add( 'wrong', esc_html__( 'The checkbox should be either checked or unchecked.' ) );
 		}
 		return $validity;
 	}

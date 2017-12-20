@@ -70,7 +70,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 	public static function get_dashicons() {
 		return array(
 			'admin_menu' => array(
-				'label' => __( 'Admin Menu' ),
+				'label' => esc_html__( 'Admin Menu' ),
 				'icons' => array(
 					'menu',
 					'admin-site',
@@ -95,7 +95,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'welcome_screen' => array(
-				'label' => __( 'Welcome Screen' ),
+				'label' => esc_html__( 'Welcome Screen' ),
 				'icons' => array(
 					'welcome-write-blog',
 					'welcome-add-page',
@@ -106,7 +106,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				),
 			),
 			'post_formats' => array(
-				'label' => __( 'Post Formats' ),
+				'label' => esc_html__( 'Post Formats' ),
 				'icons' => array(
 					'format-aside',
 					'format-image',
@@ -125,7 +125,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'media' => array(
-				'label' => __( 'Media' ),
+				'label' => esc_html__( 'Media' ),
 				'icons' => array(
 					'media-archive',
 					'media-audio',
@@ -150,7 +150,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'image_editing' => array(
-				'label' => __( 'Image Editing' ),
+				'label' => esc_html__( 'Image Editing' ),
 				'icons' => array(
 					'image-crop',
 					'image-rotate',
@@ -164,7 +164,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'tinymce' => array(
-				'label' => __( 'Tinymce' ),
+				'label' => esc_html__( 'Tinymce' ),
 				'icons' => array(
 					'editor-bold',
 					'editor-italic',
@@ -200,7 +200,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'posts' => array(
-				'label' => __( 'Posts' ),
+				'label' => esc_html__( 'Posts' ),
 				'icons' => array(
 					'align-left',
 					'align-right',
@@ -219,7 +219,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'sorting' => array(
-				'label' => __( 'Sorting' ),
+				'label' => esc_html__( 'Sorting' ),
 				'icons' => array(
 					'external',
 					'arrow-up',
@@ -243,7 +243,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'social' => array(
-				'label' => __( 'Social' ),
+				'label' => esc_html__( 'Social' ),
 				'icons' => array(
 					'share',
 					'share-alt',
@@ -259,7 +259,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'wordpress_org' => array(
-				'label' => __( 'Wordpress Org' ),
+				'label' => esc_html__( 'Wordpress Org' ),
 				'icons' => array(
 					'hammer',
 					'art',
@@ -276,7 +276,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'products' => array(
-				'label' => __( 'Products' ),
+				'label' => esc_html__( 'Products' ),
 				'icons' => array(
 					'wordpress',
 					'wordpress-alt',
@@ -291,14 +291,14 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'taxonomies' => array(
-				'label' => __( 'Taxonomies' ),
+				'label' => esc_html__( 'Taxonomies' ),
 				'icons' => array(
 					'tag',
 					'category',
 				)
 			),
 			'widgets' => array(
-				'label' => __( 'Widgets' ),
+				'label' => esc_html__( 'Widgets' ),
 				'icons' => array(
 					'archive',
 					'tagcloud',
@@ -306,7 +306,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'notifications' => array(
-				'label' => __( 'Notifications' ),
+				'label' => esc_html__( 'Notifications' ),
 				'icons' => array(
 					'yes',
 					'no',
@@ -324,7 +324,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 				)
 			),
 			'misc' => array(
-				'label' => __( 'Misc' ),
+				'label' => esc_html__( 'Misc' ),
 				'icons' => array(
 					'location',
 					'location-alt',

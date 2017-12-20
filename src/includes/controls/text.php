@@ -31,9 +31,9 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
 	 */
 	public function get_l10n() {
 		return array(
-			'vTooLong' => __( 'The value is too long.' ),
-			'vInvalidUrl' => __( 'Invalid url.' ),
-			'vInvalidEmail' => __( 'Invalid email.' ),
+			'vTooLong' => esc_html__( 'The value is too long.' ),
+			'vInvalidUrl' => esc_html__( 'Invalid url.' ),
+			'vInvalidEmail' => esc_html__( 'Invalid email.' ),
 		);
 	}
 
@@ -90,15 +90,15 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
 
 		// url
 		if ( 'url' === $input_type && filter_var( $value, FILTER_VALIDATE_URL) === FALSE) {
-	    $validity->add( 'wrong_text', __( 'Invalid URL.' ) );
+	    $validity->add( 'wrong_text', esc_html__( 'Invalid URL.' ) );
 		}
 		// email
 		if ( 'email' === $input_type && ! is_email( $value ) ) {
-			$validity->add( 'wrong_text', __( 'Invalid email.' ) );
+			$validity->add( 'wrong_text', esc_html__( 'Invalid email.' ) );
 		}
 		// max length
 		if ( isset( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
-			$validity->add( 'wrong_text', __( sprintf ( 'The text must be shorter than %s.', $attrs['maxlength'] ) ) );
+			$validity->add( 'wrong_text', sprintf ( esc_html__( 'The text must be shorter than %s.' ), $attrs['maxlength'] ) );
 		}
 
 		return $validity;

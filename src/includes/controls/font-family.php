@@ -88,7 +88,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base {
 		</label>
 		<!-- <label>
 			<input class="kkcp-font-google-toggle" type="checkbox" value="0">
-			<?php _e( 'Enable Google fonts' ); ?>
+			<?php esc_html_e( 'Enable Google fonts' ); ?>
 		</label> -->
 		<input class="kkcp-selectize" type="text" value="{{ data.value }}" required>
 		<?php

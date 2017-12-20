@@ -39,7 +39,7 @@ class KKcp_Admin_About {
 		if ( class_exists( 'KKcp_Admin' ) ) {
 			KKcp_Admin::get_instance()->add_subpages( array(
 				'about' => array(
-					'title' => __( 'About' ),
+					'title' => esc_html__( 'About' ),
 					'view' => array( $this, 'get_view' )
 				) )
 			);

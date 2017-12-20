@@ -112,7 +112,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	 */
 	public function get_l10n() {
 		return array(
-			'vInvalidUnit' => __( 'The CSS unit is invalid.' ),
+			'vInvalidUnit' => esc_html__( 'The CSS unit is invalid.' ),
 		);
 	}
 
@@ -159,7 +159,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 
 		// if it needs a unit
 		if ( ! empty( $control->units ) && ! $unit ) {
-			$validity->add( 'missing_unit', __( 'A unit must be specified.' ) );
+			$validity->add( 'missing_unit', esc_html__( 'A unit must be specified.' ) );
 		}
 
 		return $validity;

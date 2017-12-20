@@ -24,7 +24,7 @@ if ( ! class_exists( 'KKcp' ) ):
 		 */
 		public function __construct() {
 			// translate plugin meta
-			__( 'pkgDescription' );
+			esc_html__( 'pkgDescription' );
 
 			if ( is_admin() ) {
 				// Add plugin actions links
@@ -79,9 +79,9 @@ if ( ! class_exists( 'KKcp' ) ):
 			// Check plugin
 			if ( $file === plugin_basename( KKCP_PLUGIN_FILE ) ) {
 				unset( $links[2] );
-				$links[] = '<a href="http://gndev.info/shortcodes-ultimate/" target="_blank">' . __( 'Project homepage', 'su' ) . '</a>';
-				$links[] = '<a href="http://wordpress.org/support/plugin/shortcodes-ultimate/" target="_blank">' . __( 'Support forum', 'su' ) . '</a>';
-				$links[] = '<a href="http://wordpress.org/extend/plugins/shortcodes-ultimate/changelog/" target="_blank">' . __( 'Changelog', 'su' ) . '</a>';
+				$links[] = '<a href="https://knitkode.com/products/customize-plus" target="_blank">' . esc_html__( 'Project homepage' ) . '</a>';
+				$links[] = '<a href="https://knitkode.com/support" target="_blank">' . esc_html__( 'Support' ) . '</a>';
+				$links[] = '<a href="http://wordpress.org/extend/plugins/customize-plus/changelog/" target="_blank">' . esc_html__( 'Changelog' ) . '</a>';
 			}
 			return $links;
 		}

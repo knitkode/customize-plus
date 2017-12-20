@@ -472,7 +472,7 @@ class KKcp_Sanitize {
 					$sanitized_options = self::js_option( $key, $value, $allowed_options, $sanitized_options );
 			// 	}
 			// } else {
-			// 	// wp_die( sprintf( __( 'Customize Plus | API error: option %s is not allowed.' ), $key ) ); // @@todo api error \\
+			// 	// wp_die( sprintf( esc_html__( 'Customize Plus | API error: option %s is not allowed.' ), $key ) ); // @@todo api error \\
 			// }
 
 		}
@@ -596,7 +596,7 @@ class KKcp_Sanitize {
 			return $input;
 		}
 		return null;
-		wp_die( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be numeric or null.' ), $input ) ); // @@todo api error \\
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be numeric or null.' ), $input ) ); // @@todo api error \\
 	}
 
 	/**
@@ -615,7 +615,7 @@ class KKcp_Sanitize {
 			return $input;
 		}
 
-		wp_die( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be a integer.' ), $input ) ); // @@todo api error \\
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a integer.' ), $input ) ); // @@todo api error \\
 	}
 
 	/**
@@ -631,7 +631,7 @@ class KKcp_Sanitize {
 			return $input;
 		}
 
-		wp_die( 'cp_api', sprintf( __( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input, implode( ', ', $list ) ) ); // @@todo api error \\
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input, implode( ', ', $list ) ) ); // @@todo api error \\
 	}
 
 	/**
@@ -646,7 +646,7 @@ class KKcp_Sanitize {
 			return $input;
 		}
 
-		wp_die( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be a boolean.' ), $input ) ); // @@todo api error \\
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a boolean.' ), $input ) ); // @@todo api error \\
 	}
 
 	/**
@@ -661,6 +661,6 @@ class KKcp_Sanitize {
 			return $input;
 		}
 
-		wp_die( 'cp_api', sprintf( __( 'Customize Plus | API error: value %s must be a string.' ), $input ) ); // @@todo api error \\
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a string.' ), $input ) ); // @@todo api error \\
 	}
 }

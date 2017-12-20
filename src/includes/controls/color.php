@@ -82,13 +82,13 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 */
 	public function get_l10n() {
 		return array(
-			'cancelText' => __( 'Cancel' ),
-			'chooseText' => __( 'Choose' ),
-			'clearText' => __( 'Clear selection' ),
-			'noColorSelectedText' => __( 'No color selected' ),
-			'togglePaletteMoreText' => __( 'Show color picker' ),
-			'togglePaletteLessText' => __( 'Hide color picker' ),
-			'vNotInPalette' => __( 'Color not in the allowed palette.' ),
+			'cancelText' => esc_html__( 'Cancel' ),
+			'chooseText' => esc_html__( 'Choose' ),
+			'clearText' => esc_html__( 'Clear selection' ),
+			'noColorSelectedText' => esc_html__( 'No color selected' ),
+			'togglePaletteMoreText' => esc_html__( 'Show color picker' ),
+			'togglePaletteLessText' => esc_html__( 'Hide color picker' ),
+			'vNotInPalette' => esc_html__( 'Color not in the allowed palette.' ),
 		);
 	}
 
@@ -129,7 +129,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 		<?php $this->js_tpl_header(); ?>
 		<span class="kkcpcolor-current kkcpcolor-current-bg"></span>
 		<span class="kkcpcolor-current kkcpcolor-current-overlay" style="background:{{data.valueCSS}}"></span>
-		<button class="kkcpui-toggle kkcpcolor-toggle"><?php _e( 'Select Color' ) ?></button>
+		<button class="kkcpui-toggle kkcpcolor-toggle"><?php esc_html_e( 'Select Color' ) ?></button>
 		<div class="kkcp-expander">
 			<input class="kkcpcolor-input" type="text">
 		</div>
@@ -195,14 +195,14 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 			$palette_normalized = array_map( 'KKcp_Sanitize::hex_to_rgb', $palette_flatten );
 			$value_normalized = KKcp_Sanitize::hex_to_rgb( $value );
 			if ( ! KKcp_Sanitize::in_array_r( $value_normalized, $palette_normalized ) ) {
-				$validity->add( 'wrong_color', __( 'The color is not in the palette.' ) );
+				$validity->add( 'wrong_color', esc_html__( 'The color is not in the palette.' ) );
 			}
 		}
 		if ( 'transparent' === $value && $control->disallowTransparent ) {
-			$validity->add( 'wrong_color', __( 'Transparent is not allowed for this setting.' ) );
+			$validity->add( 'wrong_color', esc_html__( 'Transparent is not allowed for this setting.' ) );
 		}
 		if ( ( $output = KKcp_Sanitize::color_rgba( $value ) ) && ! $control->allowAlpha ) {
-			$validity->add( 'wrong_color', __( 'RGBA color is not allowed for this setting.' ) );
+			$validity->add( 'wrong_color', esc_html__( 'RGBA color is not allowed for this setting.' ) );
 		}
 		return $validity;
 	}

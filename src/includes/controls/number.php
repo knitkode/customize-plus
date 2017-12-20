@@ -52,12 +52,12 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	 */
 	public function get_l10n() {
 		return array(
-			'vNotAnumber' => __( 'The value is not a number.' ),
-			'vNoFloat' => __( 'The value must be an integer, not a float.' ),
-			'vNotAnInteger' => __( 'The value must be an integer number.' ),
-			'vNumberLow' => __( 'The number must be higher than %s.' ),
-			'vNumberHigh' => __( 'The number must be lower than %s.' ),
-			'vNumberStep' => __( 'The value must be a multiple of %s.' ),
+			'vNotAnumber' => esc_html__( 'The value is not a number.' ),
+			'vNoFloat' => esc_html__( 'The value must be an integer, not a float.' ),
+			'vNotAnInteger' => esc_html__( 'The value must be an integer number.' ),
+			'vNumberLow' => esc_html__( 'The number must be higher than %s.' ),
+			'vNumberHigh' => esc_html__( 'The number must be lower than %s.' ),
+			'vNumberStep' => esc_html__( 'The value must be a multiple of %s.' ),
 		);
 	}
 
@@ -94,11 +94,11 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		if ( ! is_numeric( $value ) ) {
-			$validity->add( 'wrong_number', __( 'The value must be a number.' ) );
+			$validity->add( 'wrong_number', esc_html__( 'The value must be a number.' ) );
 		}
 
 		if ( is_float( $value ) && ! $control->allowFloat ) {
-			$validity->add( 'wrong_number', __( 'The number can not be a float.' ) );
+			$validity->add( 'wrong_number', esc_html__( 'The number can not be a float.' ) );
 		}
 
 		$attrs = $control->input_attrs;
@@ -106,15 +106,15 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 		if ( $attrs ) {
 			// if doesn't respect the step given
 			if ( isset( $attrs['step'] ) && $value % $attrs['step'] != 0 ) {
-				$validity->add( 'wrong_number', sprintf( __( 'The number must be a multiple of %s.' ), $attrs['step'] ) );
+				$validity->add( 'wrong_number', sprintf( esc_html__( 'The number must be a multiple of %s.' ), $attrs['step'] ) );
 			}
 			// if it's lower than the minimum
 			if ( isset( $attrs['min'] ) && $value < $attrs['min'] ) {
-				$validity->add( 'wrong_number', sprintf( __( 'The number must be a higher than %s.' ), $attrs['min'] ) );
+				$validity->add( 'wrong_number', sprintf( esc_html__( 'The number must be a higher than %s.' ), $attrs['min'] ) );
 			}
 			// if it's higher than the maxmimum
 			if ( isset( $attrs['max'] ) && $value > $attrs['max'] ) {
-				$validity->add( 'wrong_number', sprintf( __( 'The number must be a lower than %s.' ), $attrs['max'] ) );
+				$validity->add( 'wrong_number', sprintf( esc_html__( 'The number must be a lower than %s.' ), $attrs['max'] ) );
 			}
 		}
 

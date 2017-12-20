@@ -147,7 +147,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 		}
 		if ( is_numeric( $max_items ) && $max_items > 1 ) {
 			if ( ! is_string( $value ) ) {
-				return $validity->add( 'wrong', sprintf( __( 'The value must be a string or a JSONified string.' ) ) ); // @@tocheck, wrong error message
+				return $validity->add( 'wrong', sprintf( esc_html__( 'The value must be a string or a JSONified string.' ) ) ); // @@tocheck, wrong error message
 			} else {
 				$input_decoded = json_decode( $value );
 			}
@@ -155,15 +155,15 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 			if ( is_array( $input_decoded ) ) {
 				foreach ( $input_decoded as $key ) {
 					if ( ! isset( $control->choices[ $key ] ) ) {
-						$validity->add( 'wrong', sprintf( __( 'The value %s is not selectable.' ), $key ) );
+						$validity->add( 'wrong', sprintf( esc_html__( 'The value %s is not selectable.' ), $key ) );
 					}
 				}
 			} else {
-				$validity->add( 'wrong', sprintf( __( 'The value %s must be a well formed array.' ), $value ) );
+				$validity->add( 'wrong', sprintf( esc_html__( 'The value %s must be a well formed array.' ), $value ) );
 			}
 		} else {
 			if ( ! isset( $control->choices[ $value ] ) ) {
-				$validity->add( 'not_a_choice', sprintf( __( 'The value %s is not an allowed selection.' ), $value ) );
+				$validity->add( 'not_a_choice', sprintf( esc_html__( 'The value %s is not an allowed selection.' ), $value ) );
 			}
 		}
 		return $validity;
