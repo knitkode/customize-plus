@@ -60,7 +60,7 @@ We use [Transifex](https://www.transifex.com) to manage translations. **Anyone**
 
 Donate
 ---------------
-[![Gratipay](https://img.shields.io/gratipay/knitkode.svg)](https://gratipay.com/knitkode)
+[![Gratipay](https://img.shields.io/gratipay/knitkode/shields.svg)](https://gratipay.com/knitkode)
 
 
 License
@@ -81,8 +81,8 @@ The MIT License (MIT)
 - [spectrum](https://github.com/bgrins/spectrum/) by [Brian Grinstead](http://briangrinstead.com) is licensed under the [MIT License](https://github.com/bgrins/spectrum/blob/master/LICENSE)
 - [validator.js](https://github.com/chriso/validator.js) by [Chris O'Hara](https://github.com/chriso) is licensed under [MIT](https://github.com/chriso/validator.js/blob/master/LICENSE)
 
-// @@todo check css libraries \\
-* All plugins included in Customize Plus adopt a GPL-compatible license as required by the WordPress.org [plugins guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/#the-guidelines)
+* All plugins included in Customize Plus adopt a GPL-compatible license as required by the WordPress.org [plugins guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/#the-guidelines) (check css libraries @@todo)
 
 
+---------------
 :registered: KnitKode 2017 | [knitkode.com](https://knitkode.com) | dev@knitkode.com
