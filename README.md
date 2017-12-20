@@ -33,9 +33,9 @@ Support
 ---------------
 This is a developer's portal and should **not** be used for support but only for development. Please visit the [support page](https://knitkode.com/support) to see other options.
 
-You can also try to see if someone is in our [chat room](https://gitter.im/knitkode/chat):
+You can also try to see if someone is in our [chat room](https://gitter.im/knitkode/customize-plus):
 
-[![Gitter Chat](http://img.shields.io/badge/GITTER-JOIN%20CHAT-1DCE73.svg)](https://gitter.im/knitkode/chat)
+[![Gitter Chat](http://img.shields.io/badge/GITTER-JOIN%20CHAT-1DCE73.svg)](https://gitter.im/knitkode/customize-plus)
 
 
 Contribute
