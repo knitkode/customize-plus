@@ -5,7 +5,7 @@ import './regexes';
 import './utils';
 import './validators';
 import './wptight';
-import './banner';
+// import './banner'; // @@disabledfornow
 import './skeleton';
 import './tabs';
 import './tooltips';

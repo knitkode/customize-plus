@@ -2,7 +2,23 @@
  * Control Textarea
  *
  */
-.customize-control-kkcp_textarea {}
+.customize-control-kkcp_textarea {
+
+  // when `wp_editor` is enabled
+  // .mce-container.mce-panel {
+  //   margin-left: -$control--spacing-left;
+  //   margin-right: -$control--spacing-right;
+  // }
+  .wp-editor-container {
+    textarea {
+      margin-bottom: -5px;
+      margin-top: 1px;
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+    }
+  }
+}
 
 // fix tinymce zindex problem with dropdowns
 .mce-floatpanel {

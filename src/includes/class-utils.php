@@ -15,8 +15,11 @@ class KKcp_Utils {
 
 	/**
 	 * Load editor through ajax call
+	 *
 	 * @see  http://wordpress.stackexchange.com/a/130425/25398
+	 *
 	 * @since  0.0.1
+	 * @deprecated
 	 */
 	public static function load_wp_editor() {
 		$id = isset( $_POST['id'] ) ? sanitize_key( $_POST['id'] ) : 'kkcp_tinymce_dummy';

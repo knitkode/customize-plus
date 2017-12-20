@@ -74,8 +74,16 @@ let Control = api.controls.Base.extend({
     // use selectize
     if (selectizeOpts) {
       $(this.__select).selectize(_.extend({
-        onChange: function (value) {
-          setting.set(value);
+        onChange: (value) => {
+          // if it's an array be sure the value is actually different and not
+          // just a JSON vs non-JSON situation
+          if (_.isArray(value)) {
+            if (!this._isSameAsSetting(value)) {
+              setting.set(value);
+            }
+          } else {
+            setting.set(value);
+          }
         }
       }, selectizeOpts));
     // or use normal DOM API
@@ -117,6 +125,27 @@ let Control = api.controls.Base.extend({
         option.selected = (value == option.value);
       }
     }
+  },
+  /**
+   * Check if the given value is the same as the current setting value,
+   * this will return `true` even in the scenario where the two values
+   * are one a real JS array and the other its JSONified version. This
+   * equality (that shouldn't trigger a `setting.set`) happens e.g. on load
+   *
+   * @param  {Array}  value
+   * @return {Boolean}
+   */
+  _isSameAsSetting (value) {
+    let settingValue = this.setting.get();
+    let valueToCompare = value;
+
+    try {
+      settingValue = JSON.parse(settingValue);
+    } catch (e) {
+      settingValue = JSON.stringify(settingValue);
+      valueToCompare = JSON.stringify(valueToCompare);
+    }
+    return _.isEqual(settingValue, valueToCompare);
   }
 });
 

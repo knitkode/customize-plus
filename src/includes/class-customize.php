@@ -23,19 +23,37 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @var array
 		 */
 		public static $custom_types = array(
-			'panels' => array(),
-			'sections' => array(),
-			'controls' => array(
+			'panels' => array(
+				// WordPress panels
+				// 'themes' => 'WP_Customize_Themes_Panel',
+			),
+			'sections' => array(
+				// WordPress sections
+				// 'sidebar' => 'WP_Customize_Sidebar_Section',
+				// 'themes' => 'WP_Customize_Themes_Section',
+			),
+			'controls' => array( // @@note search for `$this->register_control_type` in core \\
 				// WordPress controls
-				'text' => 'WP_Customize_Control',
-				'color' => 'WP_Customize_Color_Control',
-				'media' => 'WP_Customize_Media_Control',
-				'image' => 'WP_Customize_Image_Control',
 				'background' => 'WP_Customize_Background_Image_Control',
-				'upload' => 'WP_Customize_Upload_Control',
+				'background_position' => 'WP_Customize_Background_Position_Control',
+				'code_editor' => 'WP_Customize_Code_Editor_Control',
+				'color' => 'WP_Customize_Color_Control',
 				'cropped_image' => 'WP_Customize_Cropped_Image_Control',
-				'site_icon' => 'WP_Customize_Site_Icon_Control',
+				'date_time' => 'WP_Customize_Date_Time_Control',
 				'header' => 'WP_Customize_Header_Image_Control',
+				'image' => 'WP_Customize_Image_Control',
+				'media' => 'WP_Customize_Media_Control',
+				// 'nav_menu' => 'WP_Customize_Nav_Menu_Control',
+				// 'nav_menu_auto_add' => 'WP_Customize_Nav_Menu_Auto_Add_Control',
+				// 'nav_menu_item' => 'WP_Customize_Nav_Menu_Item_Control',
+				// 'nav_menu_location' => 'WP_Customize_Nav_Menu_Location_Control',
+				// 'nav_menu_locations' => 'WP_Customize_Nav_Menu_Locations_Control',
+				// 'nav_menu_name' => 'WP_Customize_Nav_Menu_Name_Control',
+				'site_icon' => 'WP_Customize_Site_Icon_Control',
+				'theme' => 'WP_Customize_Theme_Control',
+				'upload' => 'WP_Customize_Media_Control',
+				// 'widget_form' => 'WP_Widget_Form_Customize_Control',
+
 				// Customize Plus controls
 				'kkcp_buttonset' => 'KKcp_Customize_Control_Buttonset',
 				'kkcp_checkbox' => 'KKcp_Customize_Control_Checkbox',

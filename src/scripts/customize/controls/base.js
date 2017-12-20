@@ -170,8 +170,8 @@ api.controls.Base = wpApi.Control.extend({
       // Identify the main setting.
       control.setting = control.settings['default'] || null;
 
-      control.linkElements(); // Link initial elements present in server-rendered content.
-      control.embed();
+      // control.linkElements(); // @@note this way of managing controls is disabled here
+      // control.embed(); // @@note disable here for on demand rendering/inflation
     };
 
     if ( 0 === deferredSettingIds.length ) {
@@ -186,7 +186,7 @@ api.controls.Base = wpApi.Control.extend({
 
     // After the control is embedded on the page, invoke the "ready" method.
     control.deferred.embedded.done( function () {
-      control.linkElements(); // Link any additional elements after template is rendered by renderContent().
+      // control.linkElements(); // @@note this way of managing controls is disabled here
       control.setupNotifications();
       control.ready();
     });

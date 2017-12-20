@@ -40,14 +40,14 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 	 * @var array
 	 */
 	public static $selectize_allowed_options = array(
-		'plugins' => array(
-			'drag_drop' => 'js_in_array',
-			'remove_button' => 'js_in_array'
-		),
-		'maxItems' => 'js_number_or_null',
-		'persist' => 'js_bool',
-		'hideSelected' => 'js_bool',
-		'sortField' => 'js_string'
+		'plugins' => array( 'sanitizer' => 'js_array', 'values' => array(
+			'drag_drop',
+			'remove_button'
+		) ),
+		'maxItems' => array( 'sanitizer' => 'js_number_or_null' ),
+		'persist' => array( 'sanitizer' => 'js_bool' ),
+		'hideSelected' => array( 'sanitizer' => 'js_bool' ),
+		'sortField' => array( 'sanitizer' => 'js_string' ),
 	);
 
 	/**
