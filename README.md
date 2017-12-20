@@ -2,22 +2,26 @@
 
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)]()
 [![GitHub release](https://img.shields.io/github/release/knitkode/customize-plus.svg)]()
-[![Build Status](https://scrutinizer-ci.com/g/knitkode/customize-plus/badges/build.png?b=master)](https://scrutinizer-ci.com/g/knitkode/customize-plus/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/knitkode/customize-plus/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/knitkode/customize-plus/?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/39ed6cc3d19b4d2da947c5f2375d8eab)](https://www.codacy.com/app/knitkode/customize-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=knitkode/customize-plus&amp;utm_campaign=Badge_Grade)
 [![devDependency Status](https://david-dm.org/knitkode/customize-plus/dev-status.svg)](https://david-dm.org/knitkode/customize-plus#info=devDependencies)
 
 > Enhance and extend the WordPress Customize.
 
+Tags: wordpress, customizer, options framework, theme
+Requires at least: 4.9.1
+Tested up to: 4.9.1
+License: MIT
+License URI: https://opensource.org/licenses/MIT
 
 Todo
 ---------------
-- control text_decoration, in the same way as font_weight control
+- control `text_decoration`, in the same way as `font_weight` control
 
 
 Caveats
 ---------------
-- Textarea control with the `wp_editor` enabled conflicts with the feature plugin [Customize Posts](@@todo)
+- Let's see
 
 
 Bugs
@@ -27,9 +31,9 @@ If you find an issue, please let us know [here](https://github.com/knitkode/cust
 
 Support
 ---------------
-This is a developer's portal and should **not** be used for support. Please visit the [support forums](https://knitkode.com/support).
+This is a developer's portal and should **not** be used for support but only for development. Please visit the [support page](https://knitkode.com/support) to see other options.
 
-Otherwise you can also try to see if someone is in our [chat room](https://gitter.im/knitkode/chat):
+You can also try to see if someone is in our [chat room](https://gitter.im/knitkode/chat):
 
 [![Gitter Chat](http://img.shields.io/badge/GITTER-JOIN%20CHAT-1DCE73.svg)](https://gitter.im/knitkode/chat)
 
@@ -80,6 +84,5 @@ The MIT License (MIT)
 // @@todo check css libraries \\
 * All plugins included in Customize Plus adopt a GPL-compatible license as required by the WordPress.org [plugins guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/#the-guidelines)
 
----------------
+
 :registered: KnitKode 2017 | [knitkode.com](https://knitkode.com) | dev@knitkode.com
-=======
