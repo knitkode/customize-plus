@@ -1,4 +1,3 @@
-<?php // @partial ?>
 <div class="about-wrap">
 	<div class="kkcp-logo"></div>
 	<h1>Customize Plus</h1>

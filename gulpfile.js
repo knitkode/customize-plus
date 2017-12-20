@@ -31,8 +31,9 @@ global.PATHS = {
   }
 };
 
+var sequence = require('gulp-sequence');
 // @access public
-gulp.task('build', ['build-base', 'build-customize']);
+gulp.task('build', sequence('release-clean', 'build-base', 'build-customize'));
 
 // @access public
 gulp.task('watch', [

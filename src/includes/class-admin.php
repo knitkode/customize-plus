@@ -18,18 +18,21 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 
 		/**
 		 * The menu page
+		 *
 		 * @since  0.0.1
 		 */
 		const MENU_PAGE = 'options-general.php';
 
 		/**
 		 * Parent hook
+		 *
 		 * @since  0.0.1
 		 */
 		const PARENT_HOOK = 'customize-plus';
 
 		/**
 		 * The options subpages array
+		 *
 		 * @since  0.0.1
 		 * @var array
 		 */
@@ -37,6 +40,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 
 		/**
 		 * The options page default tab
+		 *
 		 * @since  0.0.1
 		 * @var string
 		 */
@@ -62,9 +66,9 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * Public method to add subpages to Customize Plus
 		 *
+		 * @since  0.0.1
 		 * @param  array $subpages An array of subpages array, each one needs a `title`
 		 *                         and a `view` callable function.
-		 * @since  0.0.1
 		 */
 		final public function add_subpages( $subpages ) {
 			if ( is_array( $subpages ) ) {
@@ -79,8 +83,8 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * Set default tab, the one visible when no query param is added to the url
 		 *
-		 * @param  string $subpage_id  The subpage / tab id to set as default.
 		 * @since  0.0.1
+		 * @param  string $subpage_id  The subpage / tab id to set as default.
 		 */
 		final public function set_default_tab( $subpage_id ) {
 			$this->default_tab = sanitize_key( $subpage_id );

@@ -27,6 +27,10 @@
     "src/styles",
     "src/images"
   ],
+  "scripts": {
+    "update": "git submodule update --remote config/common && git add config/common && git commit -m \"Update config/common from wp-dev-lib\"",
+    "u": "npm run update"
+  },
   "dependencies": {
     "classlist.js": "github:eligrey/classList.js.git",
     "css-toggle-switch": "^4.0.2",
