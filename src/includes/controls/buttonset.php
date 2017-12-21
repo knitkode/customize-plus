@@ -30,7 +30,7 @@ class KKcp_Customize_Control_Buttonset extends KKcp_Customize_Control_Base_Radio
 	protected function js_tpl_choice_ui () {
 		?>
 			<input id="{{ id }}" type="radio" value="{{ val }}" name="_customize-kkcp_buttonset-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
-			<label class="{{helpClass}} kkcpui-tooltip--bottom" {{{ helpAttrs }}} for="{{ id }}" onclick="" title="{{{ label }}}">{{{ label }}}</label>
+			<label class="{{helpClass}} kkcpui-tooltip--top" {{{ helpAttrs }}} for="{{ id }}" onclick="" title="{{{ label }}}">{{{ label }}}</label>
 		<?php
 	}
 

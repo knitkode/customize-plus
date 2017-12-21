@@ -77,14 +77,13 @@ api.controls.Base = wpApi.Control.extend({
       } );
     }
 
-    control.id = id;
+    // if ( ! control.params.content ) {
+    //   control.params.content = $( '<li></li>', {
+    //     id: 'customize-control-' + id.replace( /]/g, '' ).replace( /\[/g, '-' ),
+    //     'class': 'customize-control customize-control-' + control.params.type
+    //   } );
+    // }
 
-    // add a flag so that we are able to recognize our custom controls, let's
-    // keep it short, so we need only to check `if (control.kkcp)`
-    control.kkcp = 1;
-
-    // control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
-    // control.templateSelector = 'customize-control-' + control.params.type + '-content';
     advancedClass = control.params.advanced ? ' kkcp-control-advanced' : '';
 
     let container = document.createElement('li');
@@ -92,6 +91,18 @@ api.controls.Base = wpApi.Control.extend({
     container.className = 'customize-control kkcp-control customize-control-'
       + control.params.type + advancedClass;
 
+    // add a flag so that we are able to recognize our custom controls, let's
+    // keep it short, so we need only to check `if (control.kkcp)`
+    control.kkcp = 1;
+
+    control.id = id;
+    // control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
+    // control.templateSelector = 'customize-control-' + control.params.type + '-content';
+    // if ( control.params.content ) {
+    //   control.container = $( control.params.content );
+    // } else {
+    //   control.container = $( control.selector ); // Likely dead, per above. See #28709.
+    // }
     control.container = $(container);
 
     // save a reference of the raw DOM node, we're gonna use it more
@@ -321,32 +332,35 @@ api.controls.Base = wpApi.Control.extend({
    * @override
    */
   renderContent: function () {
-    var template;
-    var _container = this._container;
-    var templateSelector = 'customize-control-' + this.params.type + '-content';
+    const control = this;
+    const _container = control._container;
+    const templateId = control.templateSelector;
+    let template;
 
     // Replace the container element's content with the control.
-    if (document.getElementById('tmpl-' + templateSelector)) {
-      template = wp.template(templateSelector);
+    if (document.getElementById('tmpl-' + templateId)) {
+      template = wp.template(templateId);
       if (template && _container) {
 
         /* jshint funcscope: true */
         if (DEBUG.performances) var t = performance.now();
 
         // render and store it in the params
-        this.template = _container.innerHTML = template(this.params).trim();
+        control.template = _container.innerHTML = template(control.params).trim();
 
         // var frag = document.createDocumentFragment();
         // var tplNode = document.createElement('div');
-        // tplNode.innerHTML = template( this.params ).trim();
+        // tplNode.innerHTML = template( control.params ).trim();
         // frag.appendChild(tplNode);
-        // this.template = frag;
+        // control.template = frag;
         // _container.appendChild(frag);
 
-        if (DEBUG.performances) console.log('%c renderContent of ' + this.params.type + '(' +
-          this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+        if (DEBUG.performances) console.log('%c renderContent of ' + control.params.type + '(' +
+          control.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
     }
+
+    this._rerenderNotifications();
   },
   /**
    * We don't need this method
@@ -367,7 +381,7 @@ api.controls.Base = wpApi.Control.extend({
     /* jshint funcscope: true */
     // if (DEBUG) var t = performance.now();
 
-    var container = this._container;
+    const container = this._container;
 
     if (!this.template) {
       this.template = container.innerHTML.trim();
@@ -422,11 +436,14 @@ api.controls.Base = wpApi.Control.extend({
     if (DEBUG.performances) var t = performance.now();
     if (!this.template) {
       this.renderContent();
+
       if (DEBUG.performances) console.log('%c inflate DOM of ' + this.params.type +
         ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
     } else {
       if (!this.rendered) {
         this._container.innerHTML = this.template;
+        this._rerenderNotifications();
+
         if (DEBUG.performances) console.log('%c inflate DOM of ' + this.params.type +
           ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
@@ -444,6 +461,18 @@ api.controls.Base = wpApi.Control.extend({
 
     // if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
     //   ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
+  },
+  /**
+   * Re-render notifications after content has been re-rendered.
+   * This is taken as it is from the core base control class
+   * (`wp.customize.Control`)in the end of the `renderContent` method
+   */
+  _rerenderNotifications (){
+    this.notifications.container = this.getNotificationsContainerElement();
+    const sectionId = this.section();
+    if ( ! sectionId || ( wpApi.section.has( sectionId ) && wpApi.section( sectionId ).expanded() ) ) {
+      this.notifications.render();
+    }
   },
   /**
    * Softenize

@@ -244,11 +244,11 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		$this->js_tpl_guide();
 		 // this wrapper is needed to make the Extras menu play nice when divider
 		 // is there, because of the absolute positioning
-		echo '<# if (data.div) { #><div class="kkcp-control-wrap"><# } #>';
+		echo '<# if (data.divider) { #><div class="kkcp-control-wrap"><# } #>';
 			$this->js_tpl_extras();
 			$this->js_tpl();
 		// see comment above
-		echo '<# if (data.div) { #></div><# } #>';
+		echo '<# if (data.divider) { #></div><# } #>';
 		ob_end_flush();
 	}
 
@@ -259,10 +259,10 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 */
 	protected function js_tpl_divider() {
 		?>
-			<# if (data.div) { #>
+			<# if (data.divider) { #>
 				<div class="kkcp-control-divider">
-					<# if (data.div.title) { #><span class="customize-control-title">{{{ data.div.title }}}</span><# }
-						if (data.div.text) { #><span class="description customize-control-description">{{{ data.div.text }}}</span><# } #>
+					<# if (data.divider.title) { #><span class="customize-control-title">{{{ data.divider.title }}}</span><# }
+						if (data.divider.text) { #><span class="description customize-control-description">{{{ data.divider.text }}}</span><# } #>
 				</div>
 			<# } #>
 		<?php

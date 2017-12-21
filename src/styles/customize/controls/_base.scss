@@ -1,11 +1,4 @@
 /**
- * Give always some spacing on the bottom of the last control in the section
- */
-#customize-theme-controls .control-section .accordion-section-content > li.customize-control:last-child {
-  margin-bottom: $WPcustomize--control-margin-bottom * 2;
-}
-
-/**
  * Move the `padding` from the `<ul>` to the controls `<li>`s
  * so they are fullwidth in the sidebar, allowing a nice highlighting
  * in various situation like `:hover` or `.focus()`
@@ -30,8 +23,12 @@
 /**
  * Control changes, class applied on `<li>` container of each of our custom
  * controls and WordPress native control as well
+ *
+ * Do not apply this on:
+ * - `code_editor` native WordPress control
+ * - `theme` native WordPress control
  */
-.customize-control {
+.customize-control:not(.customize-control-code_editor):not(.customize-control-theme) {
   margin: 0; // @@wptight-css-override .customize-control {} \\
   padding-top: $control--spacing-top;
   padding-bottom: $control--spacing-bottom;
@@ -47,8 +44,10 @@
     border-color: darken($control--bg-hover, 1%);
   }
 
+  // Give always some spacing on the bottom of the last control in the section
   &:last-of-type {
     border-bottom: none;
+    margin-bottom: $WPcustomize--control-margin-bottom * 2;
   }
 }
 
@@ -94,34 +93,10 @@
       background: $control--bg-focus;
     }
     // transform: scale(1.2);
-    transform-origin : left center;
+    transform-origin: left center;
     animation: focus-control 1.8s ease;
   }
 }
-
-/**
- * 'Highlight' hovered control fading out a bit all the others
- *
- */
-// .kkcp-control {
-//   transition: opacity .1s ease;
-
-//   .control-section .accordion-section-content:hover & { // .kkcp-control-section
-//     opacity: .8;
-//   }
-//   .control-section .accordion-section-content &:hover { // .kkcp-control-section
-//     opacity: 1;
-//   }
-//   // on search active we have multple accordion-section visible
-//   // at the same time so we have to target the overall sidebar inner area
-//   // to trigger the hover higlight in the right way
-//   .kkcp-searching #customize-theme-controls:hover & {
-//     opacity: .8;
-//   }
-//   .kkcp-searching #customize-theme-controls &:hover {
-//     opacity: 1;
-//   }
-// }
 
 @keyframes focus-control {
   0% { box-shadow: 0 0 0 rgba(0,0,0,0); background: $control--bg; }
@@ -162,3 +137,27 @@
     padding-right: $WPcustomize--section-padding-horizontal;
   }
 }
+
+/**
+ * 'Highlight' hovered control fading out a bit all the others
+ *
+ */
+// .kkcp-control {
+//   transition: opacity .1s ease;
+
+//   .control-section .accordion-section-content:hover & { // .kkcp-control-section
+//     opacity: .8;
+//   }
+//   .control-section .accordion-section-content &:hover { // .kkcp-control-section
+//     opacity: 1;
+//   }
+//   // on search active we have multple accordion-section visible
+//   // at the same time so we have to target the overall sidebar inner area
+//   // to trigger the hover higlight in the right way
+//   .kkcp-searching #customize-theme-controls:hover & {
+//     opacity: .8;
+//   }
+//   .kkcp-searching #customize-theme-controls &:hover {
+//     opacity: 1;
+//   }
+// }
