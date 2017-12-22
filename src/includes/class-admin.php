@@ -19,21 +19,21 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * The menu page
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		const MENU_PAGE = 'options-general.php';
 
 		/**
 		 * Parent hook
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		const PARENT_HOOK = 'customize-plus';
 
 		/**
 		 * The options subpages array
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @var array
 		 */
 		private $subpages = array();
@@ -41,7 +41,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * The options page default tab
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @var string
 		 */
 		private $default_tab = 'about';
@@ -49,7 +49,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * Constructor
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 */
 		protected function __construct() {
 
@@ -66,7 +66,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * Public method to add subpages to Customize Plus
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  array $subpages An array of subpages array, each one needs a `title`
 		 *                         and a `view` callable function.
 		 */
@@ -83,7 +83,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * Set default tab, the one visible when no query param is added to the url
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  string $subpage_id  The subpage / tab id to set as default.
 		 */
 		final public function set_default_tab( $subpage_id ) {
@@ -93,7 +93,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * Add the navigational menu elements.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @uses   add_submenu_page() To add the the page submenu
 		 */
 		public function menu() {
@@ -129,7 +129,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * Hide subpages from side menu removing them
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 */
 		public function hide_subpages() {
 			foreach ( $this->subpages as $subpage_id => $subpage_args ) {
@@ -140,7 +140,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * Add some general styling to the admin area.
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 * @param string $hook The page hook
 		 */
 		public function enqueue_scripts( $hook ) {
@@ -153,7 +153,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * The view that wrap each subpage tab.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		public function get_view() {
 		?>

@@ -19,7 +19,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * Allowed array keys for themes to use through
 		 * `add_theme_support( 'KKcp-customize' )`.
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 * @var array
 		 */
 		private static $theme_support_keys = array(
@@ -38,7 +38,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * This is also the name of the DB entry under which options are stored if
 		 * `'type' => 'option'` is used for the Customizer settings.
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 * @var string
 		 */
 		public static $options_prefix = '';
@@ -49,7 +49,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * Themes pass all their organized customizer setup through
 		 * `add_theme_support( 'KKcp-customize' )`.
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 * @var array
 		 */
 		public static $customize_tree = array();
@@ -65,7 +65,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * The value always pass through the `trailingslashit` WordPress function
 		 * so it's not allowed to start images paths with a slash.
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 * @var string
 		 */
 		public static $images_base_url = '';
@@ -80,7 +80,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * The value always pass through the `trailingslashit` WordPress function
 		 * so it's not allowed to start images paths with a slash.
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 * @var string
 		 */
 		public static $docs_base_url = '';
@@ -94,7 +94,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * this plugin can use this array to safely retrieve options without having
 		 * to write the default values to the db.
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 * @var array
 		 */
 		public static $settings_defaults = array();
@@ -102,7 +102,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * Store the settings which are managed by the Options API
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 * @var array
 		 */
 		public static $settings_options_api = array();
@@ -110,7 +110,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * Constructor
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		protected function __construct() {
 			add_action( 'after_setup_theme', array( __CLASS__, 'configure' ), 999 );
@@ -125,7 +125,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * automatically created, allowing developers to override these settings
 		 * values through child themes or plugins.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		public static function configure() {
 
@@ -153,7 +153,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * Validate the values passed by the theme developer through
 		 * `add_theme_support( 'KKcp-customize' )`, and display error messages.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  string $key           One of the allowed keys for the
 		 *                               configuration array.
 		 * @param  array  $configuration The `theme_support( 'KKcp-customize' )`
@@ -221,7 +221,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * Set some static validated properties and bootstrap the Compiler
 		 * component if it exists and it's enabled.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  Array $theme The theme_support declared by the theme.
 		 */
 		private static function init( $theme ) {
@@ -260,7 +260,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * can have both panels and sections we need to check the subject first.
 		 *
 		 * @link http://wordpress.stackexchange.com/q/28954/25398
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 */
 		private static function set_settings_defaults() {
 			foreach ( self::$customize_tree as $component ) {
@@ -289,7 +289,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * settings default values. We don't check for the their existence them,
 		 * because a default value is always required.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  array $section The section array as defined by the theme
 		 *                        developers
 		 */
@@ -345,7 +345,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * theme_mod in one of our sanitization functions.
 		 * This is the same as using the global function `kk_get_theme_mod`
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param string  $opt_name
 		 * @return ?string
 		 */
@@ -362,7 +362,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 *
 		 * This is the same as using the global function `kk_get_option`
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param string $opt_name
 		 * @return ?
 		 */
@@ -387,7 +387,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * Anyway the function would be reverted:
 		 * `wp_parse_args( get_theme_mods(), self::$settings_defaults )`
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @return array All the `theme_mods` with default values as fallback.
 		 */
 		public static function get_theme_mods() {
@@ -407,7 +407,7 @@ endif;
 /**
  * Export useful functions to global namespace // @@doubt not sure if provide
  * these functions, and whether do it this way or with `call_user_func` \\
- * @since 0.0.1
+ * @since 1.0.0
  */
 
 /**

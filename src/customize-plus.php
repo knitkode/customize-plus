@@ -25,7 +25,7 @@
  */
 
 define( 'KKCP_PLUGIN_FILE', __FILE__ );
-define( 'KKCP_PLUGIN_VERSION', '0.0.1' );
+define( 'KKCP_PLUGIN_VERSION', '1.0.0' );
 define( 'KKCP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'KKCP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 

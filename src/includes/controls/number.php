@@ -2,7 +2,7 @@
 /**
  * Number Control custom class
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -17,7 +17,7 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	/**
 	 * Control type.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_number';
@@ -25,7 +25,7 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	/**
 	 * Float numbers allowed
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean
 	 */
 	public $allowFloat = false;
@@ -33,7 +33,7 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
 		parent::add_to_json();
@@ -47,7 +47,7 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	 * Get localized strings
 	 *
 	 * @override
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @return array
 	 */
 	public function get_l10n() {
@@ -64,7 +64,7 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	/**
 	 * Sanitize
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param string               $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
@@ -84,7 +84,7 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	/**
 	 * Validate
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.

@@ -19,7 +19,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * Custom types for panels, sections controls and settings.
 		 * Each type must be declared with its shortname and name of its php class.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @var array
 		 */
 		public static $custom_types = array(
@@ -80,7 +80,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Temporary store for localized strings defined through control classes
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @var array
 		 */
 		private static $controls_l10n = array();
@@ -88,7 +88,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Temporary store for localized strings defined through control classes
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @var array
 		 */
 		private static $controls_constants = array();
@@ -96,7 +96,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * CSS shared for all the icons
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @var string
 		 */
 		private static $css_icons_shared = 'position:relative;top:4px;left:-2px;line-height:0;opacity:.5;font-size:20px;font-weight:normal;font-family:"dashicons";';
@@ -104,7 +104,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * CSS for icons displayment
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @var string
 		 */
 		public static $css_icons = '';
@@ -113,7 +113,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * Data from the server will be exposed on a global object on window
 		 * with this name.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @var string
 		 */
 		const JS_API_NAMESPACE = 'KKcp';
@@ -121,7 +121,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * JavaScript core dependencies
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @var array
 		 */
 		const JS_BASE_DEPENDECIES = array(
@@ -135,7 +135,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Constructor
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		public function __construct() {
 			add_action( 'customize_register', array( __CLASS__, 'register_custom_classes' ) );
@@ -151,7 +151,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 *
 		 * Outputs the custom css file in the admin page of the customize.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		public static function enqueue_css_admin() {
 			do_action( 'KKcp/customize/enqueue_css_admin_pre', 'KKcp-customize' );
@@ -170,7 +170,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * Outputs the javascript needed in the admin page of the customize (not
 		 * the iframe in it). Register and add data and localized strings.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		public static function enqueue_js_admin() {
 			do_action( 'KKcp/customize/enqueue_js_admin_pre', 'KKcp-customize' );
@@ -187,7 +187,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Get script localization
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 * @return array
 		 */
 		public static function get_script_localization () {
@@ -202,7 +202,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Get javascript constants
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @return array The required plus the additional constants, added through
 		 *               hook.
 		 */
@@ -220,7 +220,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Get Customize global settings
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @return array The required plus the additional settings added through
 		 *               hook.
 		 */
@@ -237,7 +237,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Get javascript localized strings
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @return array The required plus the additional localized strings, added
 		 *               through hook.
 		 */
@@ -262,7 +262,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * Allows control classes to add localized strings accessible on our main
 		 * `js` object `KKcp.l10n`
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer
 		 */
 		public static function add_controls_js_vars() {
@@ -289,7 +289,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * This outputs the javascript needed in the iframe and manage the
 		 * dequeuing / enqueuing of the stylesheets
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		public static function enqueue_js_preview() {
 
@@ -311,7 +311,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * Get view for fullscreen loader (used later on also by other components
 		 * like 'Import')
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		public static function get_view_loader() { // @@wptight-layout \\
 			?>
@@ -326,7 +326,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * register through the WordPress API.
 		 *
 		 * @internal
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		public static function register_custom_classes() {
 			require_once( KKCP_PLUGIN_DIR . 'includes/customize-classes.php' );
@@ -339,7 +339,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Register custom settings/controls/sections/panels types
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  array $types The custom types to add: `array(<$type, $class_name>)`
 		 */
 		public static function register_custom_types( $types ) {
@@ -358,7 +358,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * On the root level we can have either panels or section so we check
 		 * the `subject` of the arrays at the first level of depth of the tree.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		private static function register_tree() {
 			$priority = 0;
@@ -384,7 +384,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Add panel declared in the Customizer tree.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  array $panel    The panel array as defined by the theme
 		 * @param  int   $priority This incremental number is used by WordPress to
 		 *                         calculate the order at which the panel are
@@ -458,7 +458,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Add section declared in the Customizer tree.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  string $panel_id The id of the parent panel when the section is
 		 *                          nested inside a panel.
 		 * @param  array  $section  The section array as defined by the theme
@@ -531,7 +531,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Add field (setting + control) declared in the Customizer tree.
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  string $section_id The id of the parent section (required).
 		 * @param  array  $field_id   The section id as defined by the theme
 		 * @param  array  $field_args The section array as defined by the theme
@@ -633,7 +633,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Add the needed css to display a dashicon for the given panel
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  string $panel_id      The panel which will show the specified dashicon.
 		 * @param  int    $dashicon_code The dashicon code number, the `\f` is automatically
 		 *                               added.
@@ -648,7 +648,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		/**
 		 * Add the needed css to display a dashicon for the given section
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  string $section_id    The section which will show the specified dashicon.
 		 * @param  int    $dashicon_code The dashicon code number, the `\f` is automatically
 		 *                               added.

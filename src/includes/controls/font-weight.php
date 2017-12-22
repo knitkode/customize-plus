@@ -2,7 +2,7 @@
 /**
  * Select Control custom class
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -17,7 +17,7 @@ class KKcp_Customize_Control_Font_Weight extends KKcp_Customize_Control_Select {
 	/**
 	 * Control type.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_font_weight';
@@ -25,7 +25,7 @@ class KKcp_Customize_Control_Font_Weight extends KKcp_Customize_Control_Select {
 	/**
 	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean|array
 	 */
 	public $choices = array(

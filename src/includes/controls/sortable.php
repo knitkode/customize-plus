@@ -2,7 +2,7 @@
 /**
  * Sortable Control custom class
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -17,7 +17,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	/**
 	 * Control type.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_sortable';
@@ -25,7 +25,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	/**
 	 * Enqueue libraries
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 */
 	public function enqueue() {
 		wp_enqueue_script( 'jquery-ui-sortable' );
@@ -35,7 +35,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	 * Add basic parameters passed to the JavaScript via JSON
 	 * nedeed by any radio control.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
 		$this->json['lastValue'] = $this->value();
@@ -46,7 +46,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	 * Ouput the choices template in a loop. Override this in subclasses
 	 * to change behavior, for instance in sortable controls.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_choices_loop() {
 		?>
@@ -63,7 +63,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	/**
 	 * Render template for choice displayment.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_choice_ui() {
 		?>
@@ -74,7 +74,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	/**
 	 * Sanitize
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
@@ -88,7 +88,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	/**
 	 * Validate
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.

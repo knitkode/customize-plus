@@ -9,7 +9,7 @@
  * JSON params of the control object, ready to be used in the javascript
  * implementation.
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -25,7 +25,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * Control type.
 	 *
 	 * {@inheritdoc}
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_color';
@@ -33,7 +33,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	/**
 	 * Allow alpha channel modification (rgba colors)
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean
 	 */
 	protected $allowAlpha = false;
@@ -41,7 +41,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	/**
 	 * Disallow transparent color
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean
 	 */
 	protected $disallowTransparent = false;
@@ -50,7 +50,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * Palette
 	 *
 	 * {@link(https://bgrins.github.io/spectrum/#options-selectionPalette, js docs)}
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean
 	 */
 	protected $palette = array();
@@ -59,7 +59,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * Show palette only in color control
 	 *
 	 * {@link(https://bgrins.github.io/spectrum/#options-showPaletteOnly, js docs)}
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean
 	 */
 	protected $showPaletteOnly = false;
@@ -68,7 +68,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * Toggle palette only in color control
 	 *
 	 * {@link(https://bgrins.github.io/spectrum/#options-togglePaletteOnly, js docs)}
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean
 	 */
 	protected $togglePaletteOnly = false;
@@ -77,7 +77,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * Get l10n
 	 *
 	 * {@inheritdoc}
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @override
 	 */
 	public function get_l10n() {
@@ -96,7 +96,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * Add to JSON
 	 *
 	 * {@inheritdoc}
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 */
 	protected function add_to_json() {
@@ -121,7 +121,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * JS template
 	 *
 	 * {@inheritdoc}
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 */
 	protected function js_tpl() {
@@ -140,7 +140,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * Sanitize
 	 *
 	 * {@inheritdoc}
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
@@ -178,7 +178,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	/**
 	 * Validate
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.

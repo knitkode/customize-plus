@@ -5,7 +5,7 @@
  * The images name needs to be named like following: '{setting-id}-{choice-value}.png'
  * and need to be in the $IMG_ADMIN path.
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -20,7 +20,7 @@ class KKcp_Customize_Control_Radio_Image extends KKcp_Customize_Control_Base_Rad
 	/**
 	 * Control type.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_radio_image';
@@ -31,7 +31,7 @@ class KKcp_Customize_Control_Radio_Image extends KKcp_Customize_Control_Base_Rad
 	 * It shows the full image path (`img_custom`) or an image bundled in the plugin
 	 * when `img` has been passed, with the plugin url as prepath, and always a `png`
 	 * extension.
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_choice_ui() {
 		?>

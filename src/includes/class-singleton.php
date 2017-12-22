@@ -16,7 +16,7 @@ abstract class KKcp_Singleton {
 	/**
 	 * Get class instance
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	final public static function get_instance() {
 		static $instances = array();
@@ -38,7 +38,7 @@ abstract class KKcp_Singleton {
 	 * PHP 5.2 version support
 	 * {@link(http://stackoverflow.com/q/7902586/1938970, source)}
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	private static function get_called_class() {
 		$bt = debug_backtrace();
@@ -54,14 +54,14 @@ abstract class KKcp_Singleton {
 	/**
 	 * Clone
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 */
 	final private function __clone() {}
 
 	/**
 	 * Constructor
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @abstract
 	 */
 	protected function __construct() {}

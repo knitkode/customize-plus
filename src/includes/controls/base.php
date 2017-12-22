@@ -3,7 +3,7 @@
  * Customize Control base class
  *
  * @override
- * @since 0.0.1
+ * @since 1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -18,7 +18,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * Whether this control is optional, that is when it is allowed to be empty.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean
 	 */
 	public $optional = false;
@@ -26,7 +26,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * The control divider data, optional
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var array
 	 */
 	public $divider;
@@ -35,7 +35,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * The control guide data, optional. It displays some help in a popover.
 	 * @premium A Customize Plus Premium feature.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var array
 	 */
 	public $guide;
@@ -45,7 +45,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * able to hide or show the advanced controls.
 	 *
 	 * @premium A Customize Plus Premium feature.
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean
 	 */
 	public $advanced = false;
@@ -59,7 +59,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * searchable (which should happen less often than otherwise...). \\
 	 *
 	 * @premium A Customize Plus Premium feature.
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean
 	 */
 	public $searchable = true;
@@ -71,7 +71,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * subclasses.
 	 *
 	 * @override
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	public function to_json() {
 		parent::to_json();
@@ -139,7 +139,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * the key is not set on the object. We save few bytes this way on the
 	 * maybe huge customize JSON data.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param array $keys
 	 */
 	protected function add_booleans_params_to_json( $keys = array() ) {
@@ -154,7 +154,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * Add `'attrs'` to JSON checking that the values specifies in the given
 	 * options are allowed to be configured.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param array $allowed The array contianing the allowed option keys.
 	 * @param array $options The associative array with the customized options.
 	 */
@@ -180,7 +180,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * also to merge required default values using a value different than
 	 * `null` in the given #defaults array.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param array $defaults Associative array with the default values.
 	 * @param array $options  Associative array with the custom value.
 	 */
@@ -211,7 +211,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * the `to_json` method calling everytime the parent method.
 	 *
 	 * @override
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function add_to_json() {}
 
@@ -220,7 +220,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * and declare the control `<li>` container in the js control base class.
 	 *
 	 * @override
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function render() {}
 
@@ -228,7 +228,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * Never render any inner content for controls from PHP.
 	 *
 	 * @override
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	public function render_content() {}
 
@@ -236,7 +236,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * Compose and minify js template rendered in the `js_tpl` function.
 	 *
 	 * @override
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	public function content_template() {
 		ob_start( 'KKcp_Utils::compress_html' );
@@ -255,7 +255,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * Subclasses can have their own 'divider' template overriding this method
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_divider() {
 		?>
@@ -272,7 +272,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * Subclasses can have their own 'guid' template overriding this method
 	 *
 	 * @premium A Customize Plus Premium feature.
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_guide() {
 		if ( class_exists( 'KKcpp' ) ) {
@@ -288,7 +288,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * Shared control header template.
 	 * Read the label and description as markdown if the js plugin is available.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_header() {
 		?>
@@ -303,7 +303,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * Subclasses can have their own 'extras' template overriding this method.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_extras() {
 		?>
@@ -323,7 +323,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * To override in subclasses with js templates
 	 *
 	 * @abstract
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl() {}
 
@@ -337,7 +337,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * The control instance is always passed to that method in addition to the
 	 * value and the setting instance.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
  	 * @return string The sanitized value.
@@ -365,7 +365,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 *
 	 * Class specific sanitization, method to override in subclasses.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @abstract
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
@@ -388,7 +388,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 *
 	 * @see http://bit.ly/2kzgHlm
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -412,7 +412,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 *
 	 * Class specific validation, method to override in subclasses.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -428,7 +428,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * Allows control classes to add localized strings accessible on our main
 	 * `js` object `KKcp.l10n`.
 	 * @abstract
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @return array
 	 */
 	// public function get_l10n() { // @@doubt maybe not needed on this base class \\
@@ -440,7 +440,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * Allows control classes to add its specific constants variables on our
 	 * main `js` object `KKcp.l10n`.
 	 * @abstract
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @return array
 	 */
 	// public function get_constants() { // @@doubt maybe not needed on this base class \\

@@ -2,7 +2,7 @@
 /**
  * Toggle Control custom class
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -17,7 +17,7 @@ class KKcp_Customize_Control_Toggle extends KKcp_Customize_Control_Checkbox {
 	/**
 	 * Control type.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_toggle';
@@ -25,7 +25,7 @@ class KKcp_Customize_Control_Toggle extends KKcp_Customize_Control_Checkbox {
 	/**
 	 * Render a JS template for the content of the text control.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl() {
 		?>

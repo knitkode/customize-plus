@@ -20,7 +20,7 @@ if ( ! class_exists( 'KKcp' ) ):
 		/**
 		 * Constructor
 		 *
-		 * @since 0.0.1
+		 * @since 1.0.0
 		 */
 		public function __construct() {
 			// translate plugin meta
@@ -45,7 +45,7 @@ if ( ! class_exists( 'KKcp' ) ):
 		 * Init
 		 * {@link(http://geertdedeckere.be/article/loading-wordpress-language-files-the-right-way, link)}
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		public static function init() {
 			// The "plugin_locale" filter is also used in load_plugin_textdomain()
@@ -59,7 +59,7 @@ if ( ! class_exists( 'KKcp' ) ):
 		/**
 		 * Add plugin actions links
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  array $links Links array in which we would prepend our link.
 		 * @return array Processed links.
 		 */
@@ -71,7 +71,7 @@ if ( ! class_exists( 'KKcp' ) ):
 		/**
 		 * Add plugin meta links
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 * @param  array  $links Links array in which we would prepend our link.
 		 * @param  string $file  Plugin file name
 		 */
@@ -89,7 +89,7 @@ if ( ! class_exists( 'KKcp' ) ):
 		/**
 		 * Activation hook
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		public static function activation() {
 			do_action( 'KKcp/activation' );
@@ -98,7 +98,7 @@ if ( ! class_exists( 'KKcp' ) ):
 		/**
 		 * Deactivation hook
 		 *
-		 * @since  0.0.1
+		 * @since  1.0.0
 		 */
 		public static function deactivation() {
 			do_action( 'KKcp/deactivation' );

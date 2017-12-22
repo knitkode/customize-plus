@@ -2,7 +2,7 @@
 /**
  * Font Family Control custom class
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -17,7 +17,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base {
 	/**
 	 * Control type.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_font_family';
@@ -70,7 +70,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base {
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
 		$this->json['value'] = KKcp_Sanitize::font_families( $this->value() );
@@ -79,7 +79,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base {
 	/**
 	 * Render a JS template for the content of the control.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl() {
 		?>
@@ -98,7 +98,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base {
 	 * Set font families array as a constant to use in javascript
 	 *
 	 * @override
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @return array
 	 */
 	public function get_constants() {

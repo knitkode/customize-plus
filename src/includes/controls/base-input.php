@@ -3,7 +3,7 @@
  * Base Input Control custom class
  * This is here just to be extended
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -18,7 +18,7 @@ abstract class KKcp_Customize_Control_Base_Input extends KKcp_Customize_Control_
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
 		$this->json['attrs'] = $this->input_attrs;
@@ -27,7 +27,7 @@ abstract class KKcp_Customize_Control_Base_Input extends KKcp_Customize_Control_
 	/**
 	 * Render a JS template for the content of the text control.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl() {
 		?>

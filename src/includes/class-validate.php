@@ -16,7 +16,7 @@ class KKcp_Validate {
 	/**
 	 * Array in choices
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
@@ -42,7 +42,7 @@ class KKcp_Validate {
 	/**
 	 * String in choices
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.

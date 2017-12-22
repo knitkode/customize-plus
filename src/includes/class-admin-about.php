@@ -18,7 +18,7 @@ class KKcp_Admin_About {
 	/**
 	 * Constructor
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 
@@ -32,7 +32,7 @@ class KKcp_Admin_About {
 	/**
 	 * Add subpage tab to our plugin submenu page
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @uses   KKcp_Admin->add_subpages To add the page tab
 	 */
 	public function add_menu_subpage() {
@@ -49,7 +49,7 @@ class KKcp_Admin_About {
 	/**
 	 * Add some general styling to the admin area.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param string $hook The page hook
 	 */
 	public static function enqueue_scripts( $hook ) {
@@ -66,7 +66,7 @@ class KKcp_Admin_About {
 	/**
 	 * The view for this subpage tab.
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 */
 	public function get_view() {
 	?>

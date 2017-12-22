@@ -2,7 +2,7 @@
 /**
  * Tags Control custom class
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -17,7 +17,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	/**
 	 * Control type.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_tags';
@@ -25,7 +25,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	/**
 	 * Selectize options
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var array
 	 */
 	protected $selectize = array();
@@ -36,7 +36,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	 * Sanitize methods must be class methods of `KKcp_Sanitize` or global
 	 * functions
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var array
 	 */
 	public static $selectize_allowed_options = array(
@@ -52,7 +52,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
 		if ( ! empty( $this->selectize ) ) {
@@ -63,7 +63,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	/**
 	 * Render a JS template for the content of the text control.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl() {
 		?>
@@ -77,7 +77,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	/**
 	 * Sanitize
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.

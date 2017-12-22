@@ -2,7 +2,7 @@
 /**
  * Content Control custom class
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -17,7 +17,7 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 	/**
 	 * Control type.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_content';
@@ -25,7 +25,7 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 	/**
 	 * Markdown.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $markdown = '';
@@ -33,7 +33,7 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 	/**
 	 * To JSON
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 */
 	public function to_json() {
 		parent::to_json();
@@ -51,7 +51,7 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 	/**
 	 * Content template
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 */
 	public function content_template() {
@@ -64,7 +64,7 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 	/**
 	 * Content control js template
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 */
 	protected function js_tpl() {

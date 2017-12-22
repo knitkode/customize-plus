@@ -2,7 +2,7 @@
 /**
  * Textarea Control custom class
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -17,7 +17,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	/**
 	 * Control type.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_textarea';
@@ -48,7 +48,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	 * - https://codex.wordpress.org/Quicktags_API#Default_Quicktags
 	 * - https://codex.wordpress.org/TinyMCE
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var array
 	 */
 	public static $wp_editor_allowed_options = array(
@@ -97,7 +97,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
 		$this->json['attrs'] = $this->input_attrs;
@@ -118,7 +118,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	/**
 	 * Render a JS template for the content of the text control.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl() {
 		?>
@@ -132,7 +132,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	/**
 	 * Sanitize
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param string               $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.

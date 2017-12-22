@@ -16,7 +16,7 @@ class KKcp_Sanitize {
 	/**
 	 * Is an associative array or not
 	 * @link(http://stackoverflow.com/a/14669600/1938970, source)
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @param  array   $array The array to test
 	 * @return boolean
 	 */
@@ -35,7 +35,7 @@ class KKcp_Sanitize {
 	/**
 	 * In array recursive
 	 * @link(http://stackoverflow.com/a/4128377/1938970, source)
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @param  string|number $needle
 	 * @param  array    		 $haystack
 	 * @param  boolean       $strict
@@ -145,7 +145,7 @@ class KKcp_Sanitize {
 	 * No-HTML sanitization callback example.
 	 *
 	 * @link(http://git.io/vZ0dL, source)
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @param string $nohtml The no-HTML content to sanitize.
 	 * @return string Sanitized no-HTML content.
 	 */
@@ -157,7 +157,7 @@ class KKcp_Sanitize {
 	 * Is setting value (`control.setting()`) empty?
 	 * Used to check if required control's settings have instead an empty value
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @see php class method `KKcp_Sanitize::is_setting_value_empty()`
 	 * @param  string  $value A setting value
 	 * @return boolean 				Whether the setting value has to be considered
@@ -188,7 +188,7 @@ class KKcp_Sanitize {
 	 *
 	 * Be sure that each font family is wrapped in quote, good for consistency
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @param  string $input
 	 * @return string
 	 */
@@ -244,7 +244,7 @@ class KKcp_Sanitize {
 	/**
 	 * Extract unit (like `px`, `em`, `%`, etc.) from control->units property
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @param  string               $input   The control's setting value
 	 * @param  WP_Customize_Control $control Control instance.
 	 * @return string 				               The first valid unit found.
@@ -264,7 +264,7 @@ class KKcp_Sanitize {
 	/**
 	 * Extract number from input, returns 0 otherwise
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @param  string 							$input   The value from where to extract
 	 * @param  WP_Customize_Control $control Control instance.
 	 * @return int|float|boolean The extracted number or false if the input does not
@@ -288,7 +288,7 @@ class KKcp_Sanitize {
 	/**
 	 * Sanitize / validate a number against an array of attributes.
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @param  int|float 						$number  The number to sanitize
 	 * @param  WP_Customize_Control $control Control instance.
 	 * @return int|float      			The saniitized / valid number
@@ -322,7 +322,7 @@ class KKcp_Sanitize {
 	 * Sanitize/validate hex color
 	 * check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or 'CCC'
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @param  string $input  The input value to sanitize
 	 * @return string|boolean The sanitized input or `false` in case the input
 	 *                        value is not valid.
@@ -345,7 +345,7 @@ class KKcp_Sanitize {
 	/**
 	 * Sanitize / validate RGBA color
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @param  string $input  The input value to sanitize
 	 * @return string|boolean The sanitized input or `false` in case the input
 	 *                        value is not valid.
@@ -365,7 +365,7 @@ class KKcp_Sanitize {
 	 * Convert a hexa decimal color code to its RGB equivalent
 	 *
 	 * @link(http://php.net/manual/en/function.hexdec.php#99478, original source)
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @param  string  $hex_str 				 Hexadecimal color value
 	 * @param  boolean $return_as_string If set true, returns the value separated
 	 *                                   by the separator character. Otherwise
@@ -397,7 +397,7 @@ class KKcp_Sanitize {
 	/**
 	 * Sanitize string compared to the choices array (i.e. for radio based control)
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param string               $input   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
@@ -414,7 +414,7 @@ class KKcp_Sanitize {
 	/**
 	 * Sanitize array compared to the choices array (i.e. for radio based control)
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param string               $input   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
@@ -483,7 +483,7 @@ class KKcp_Sanitize {
 	/**
 	 * Sanitization for a single js option
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param  string $opt_key
 	 * @param  mixed $opt_value
 	 * @param  array $allowed
@@ -583,7 +583,7 @@ class KKcp_Sanitize {
 	/**
 	 * Sanitization for js value: ?number
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param  mixed $input
 	 * @return ?number
 	 */
@@ -602,7 +602,7 @@ class KKcp_Sanitize {
 	/**
 	 * Sanitization for js value: integer
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param  mixed $input
 	 * @return number integer
 	 */
@@ -621,7 +621,7 @@ class KKcp_Sanitize {
 	/**
 	 * Sanitization for js value: in array
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param  mixed $input
 	 * @param  array $list
 	 * @return ?mixed
@@ -637,7 +637,7 @@ class KKcp_Sanitize {
 	/**
 	 * Sanitization for js value: boolean
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param  mixed $input
 	 * @return ?bool
 	 */
@@ -652,7 +652,7 @@ class KKcp_Sanitize {
 	/**
 	 * Sanitization for js value: string
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param  mixed $input
 	 * @return ?string
 	 */

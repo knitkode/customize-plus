@@ -2,7 +2,7 @@
 /**
  * Multicheck Control custom class
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -17,7 +17,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	/**
 	 * Control type.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_multicheck';
@@ -25,7 +25,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	/**
 	 * Sortable
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean
 	 */
 	protected $sortable = false;
@@ -33,7 +33,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	/**
 	 * Enqueue libraries
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 */
 	public function enqueue() {
 		if ( $this->sortable ) {
@@ -44,7 +44,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	/**
 	 * Add values to JSON params
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
 		parent::add_to_json();
@@ -60,7 +60,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	 * Ouput the choices template in a loop. Override this in subclasses
 	 * to change behavior, for instance in sortable controls.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_choices_loop() {
 		?>
@@ -88,7 +88,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	/**
 	 * Render template for choice displayment.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_choice_ui() {
 		?>
@@ -101,7 +101,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	/**
 	 * Sanitize
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
@@ -115,7 +115,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	/**
 	 * Validate
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.

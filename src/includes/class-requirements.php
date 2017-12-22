@@ -19,7 +19,7 @@ class KKcp_Requirements {
 	/**
 	 * Minimum php version supported
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public static $min_php_version = '5.2.4';
@@ -27,7 +27,7 @@ class KKcp_Requirements {
 	/**
 	 * Minimum WordPress version supported
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public static $min_wp_version = '4.1.1';
@@ -35,7 +35,7 @@ class KKcp_Requirements {
 	/**
 	 * List of incompatible plugins
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var array
 	 */
 	public static $incompatible_plugins = array(
@@ -62,7 +62,7 @@ class KKcp_Requirements {
 	/**
 	 * Constructor
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 		add_action( 'KKcp/activation', array( __CLASS__, 'check_php_version' ) );
@@ -77,7 +77,7 @@ class KKcp_Requirements {
 	/**
 	 * Check PHP version
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	public static function check_php_version() {
 		$php_version = phpversion();
@@ -94,7 +94,7 @@ class KKcp_Requirements {
 	/**
 	 * Check WordPress version
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	public static function check_wp_version() {
 		$wp_version = get_bloginfo( 'version' );
@@ -114,7 +114,7 @@ class KKcp_Requirements {
 	/**
 	 * Check plugin incompatibilities
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	public static function check_plugins_incompatibilities() {
 		$deactivated_plugins = array();
@@ -147,7 +147,7 @@ class KKcp_Requirements {
 	/**
 	 * Deactivate plugin
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @param  string  $probable_file  Probable file name of the plugin to search.
 	 * @param  string  $probable_title Probable title of the plugin to search for.
 	 * @param  boolean $deep_search    Whether to execute a deep search through

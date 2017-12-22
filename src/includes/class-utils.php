@@ -18,7 +18,7 @@ class KKcp_Utils {
 	 *
 	 * @see  http://wordpress.stackexchange.com/a/130425/25398
 	 *
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 * @deprecated
 	 */
 	public static function load_wp_editor() {
@@ -45,7 +45,7 @@ class KKcp_Utils {
 	 * Compress HTML
 	 * @param  string $buffer The php->HTML buffer
 	 * @return string         The compressed HTML (stripped whitespaces)
-	 * @since  0.0.1
+	 * @since  1.0.0
 	 */
 	public static function compress_html( $buffer ) {
 		return preg_replace( '/\s+/', ' ', str_replace( array( "\n", "\r", "\t" ), '', $buffer ) );

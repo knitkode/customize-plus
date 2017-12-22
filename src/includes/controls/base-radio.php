@@ -2,7 +2,7 @@
 /**
  * Base Radio Control custom class
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -18,7 +18,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 	 * Add basic parameters passed to the JavaScript via JSON
 	 * nedeed by any radio control.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
 		$this->json['id'] = $this->id;
@@ -31,7 +31,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 	 * Choice supports both a string if you only want to pass a label
 	 * or an object with label, sublabel, help, help_title, etc.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl() {
 		?>
@@ -49,7 +49,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 	 * Ouput the choices template in a loop. Override this in subclasses
 	 * to change behavior, for instance in sortable controls.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_choices_loop () {
 		?>
@@ -62,7 +62,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 	/**
 	 * Ouput the js to configure each choice template data and its UI
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_choice () {
 		?>
@@ -93,28 +93,28 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 	/**
 	 * Hook to print a custom choice template
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_choice_ui () {}
 
 	/**
 	 * Hook to add a part of template just before the choices loop
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_above_choices () {}
 
 	/**
 	 * Hook to add a part of template just after the choices loop.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_below_choices () {}
 
 	/**
 	 * Sanitize
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
@@ -128,7 +128,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 	/**
 	 * Validate
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.

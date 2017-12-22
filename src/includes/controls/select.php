@@ -2,7 +2,7 @@
 /**
  * Select Control custom class
  *
- * @since  0.0.1
+ * @since  1.0.0
  *
  * @package    Customize_Plus
  * @subpackage Customize\Controls
@@ -17,7 +17,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	/**
 	 * Control type.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_select';
@@ -25,7 +25,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	/**
 	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var boolean|array
 	 */
 	protected $selectize = false;
@@ -36,7 +36,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	 * Sanitize methods must be class methods of `KKcp_Sanitize` or global
 	 * functions
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @var array
 	 */
 	public static $selectize_allowed_options = array(
@@ -54,7 +54,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	/**
 	 * Add values to JSON params
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
 		parent::add_to_json();
@@ -71,7 +71,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	/**
 	 * Render template for choice displayment.
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_choice_ui() {
 		?>
@@ -84,7 +84,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	/**
 	 * Render needed html structure for CSS toggle / switch
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_above_choices () {
 		?>
@@ -95,7 +95,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	/**
 	 * Render needed html structure for CSS toggle / switch
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 */
 	protected function js_tpl_below_choices () {
 		?>
@@ -106,7 +106,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	/**
 	 * Sanitize
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
@@ -130,7 +130,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	/**
 	 * Validate
 	 *
-	 * @since 0.0.1
+	 * @since 1.0.0
 	 * @override
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
