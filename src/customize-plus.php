@@ -42,4 +42,4 @@ if ( is_admin() ) {
 	require_once( KKCP_PLUGIN_DIR . 'includes/class-admin-about.php' );
 }
 
-do_action( 'KKcp/after_requires' );
+do_action( 'kkcp_after_requires' );

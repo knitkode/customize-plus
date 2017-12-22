@@ -141,7 +141,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 
 					// automatically create hooks for child themes or whatever
 					$customizer_settings[ $key ] = apply_filters(
-						$prefix . '/KKcp/theme/' . $key,
+						$prefix . '_KKcp_theme_' . $key,
 						self::validate_theme_support( $key, $theme_support )
 					);
 				}
@@ -245,11 +245,11 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 			 * Pass all default settings values to the hook, so themes can use them
 			 * to create a safe get_theme_mod in case they need it.
 			 *
-			 * @hook 'KKcp/theme/is_configured' for themes,
+			 * @hook 'kkcp_theme_is_configured' for themes,
 			 * @param array An array containing the default value for each setting
 			 *              declared in the customize tree
 			 */
-			do_action( 'KKcp/theme/is_configured', self::$settings_defaults );
+			do_action( 'kkcp_theme_is_configured', self::$settings_defaults );
 		}
 
 		/**

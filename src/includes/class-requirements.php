@@ -65,8 +65,8 @@ class KKcp_Requirements {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		add_action( 'KKcp/activation', array( __CLASS__, 'check_php_version' ) );
-		add_action( 'KKcp/activation', array( __CLASS__, 'check_wp_version' ) );
+		add_action( 'kkcp_activation', array( __CLASS__, 'check_php_version' ) );
+		add_action( 'kkcp_activation', array( __CLASS__, 'check_wp_version' ) );
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( __CLASS__, 'check_plugins_incompatibilities' ) );
 			// @@todo the plugins get activated by themes anyway during live previews,

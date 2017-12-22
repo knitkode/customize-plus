@@ -313,7 +313,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 					<li class="kkcp-extras-reset_last"><?php esc_html_e( 'Reset to last saved value' ); ?></li>
 					<li class="kkcp-extras-reset_initial"><?php esc_html_e( 'Reset to initial session value' ); ?></li>
 					<li class="kkcp-extras-reset_factory"><?php esc_html_e( 'Reset to factory value' ); ?></li>
-					<?php do_action( 'KKcp/controls/base/js_tpl_extras/add_list_items' ); ?>
+					<?php do_action( 'kkcp_controls_base_js_tpl_extras_add_list_items' ); ?>
 				</ul>
 			</div>
 		<?php

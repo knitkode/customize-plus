@@ -154,14 +154,14 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @since  1.0.0
 		 */
 		public static function enqueue_css_admin() {
-			do_action( 'KKcp/customize/enqueue_css_admin_pre', 'KKcp-customize' );
+			do_action( 'kkcp_customize_enqueue_css_admin_pre', 'KKcp-customize' );
 
 			if ( ! class_exists( 'KKcpp_Customize' ) ) {
 				wp_enqueue_style( 'KKcp-customize', KKcp_Utils::get_asset( 'customize', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
 				wp_add_inline_style( 'KKcp-customize', self::$css_icons );
 			}
 
-			do_action( 'KKcp/customize/enqueue_css_admin_post', 'KKcp-customize' );
+			do_action( 'kkcp_customize_enqueue_css_admin_post', 'KKcp-customize' );
 		}
 
 		/**
@@ -173,7 +173,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @since  1.0.0
 		 */
 		public static function enqueue_js_admin() {
-			do_action( 'KKcp/customize/enqueue_js_admin_pre', 'KKcp-customize' );
+			do_action( 'kkcp_customize_enqueue_js_admin_pre', 'KKcp-customize' );
 
 			if ( ! class_exists( 'KKcpp_Customize' ) ) {
 				wp_register_script( 'KKcp-customize', KKcp_Utils::get_asset( 'customize', 'js', KKCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, KKCP_PLUGIN_VERSION, false );
@@ -181,7 +181,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				wp_enqueue_script( 'KKcp-customize' );
 			}
 
-			do_action( 'KKcp/customize/enqueue_js_admin_post', 'KKcp-customize' );
+			do_action( 'kkcp_customize_enqueue_js_admin_post', 'KKcp-customize' );
 		}
 
 		/**
@@ -192,7 +192,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 */
 		public static function get_script_localization () {
 			return array(
-				'components' => apply_filters( 'KKcp/customize/get_js_components', array() ),
+				'components' => apply_filters( 'kkcp_customize_get_js_components', array() ),
 				'constants' => self::get_js_constants(),
 				'settings' => self::get_js_settings(),
 				'l10n' => self::get_js_l10n(),
@@ -213,7 +213,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'IMAGES_BASE_URL' => KKcp_Theme::$images_base_url,
 				'DOCS_BASE_URL' => KKcp_Theme::$docs_base_url,
 			);
-			$additional = (array) apply_filters( 'KKcp/customize/get_js_constants', array() );
+			$additional = (array) apply_filters( 'kkcp_customize_get_js_constants', array() );
 			return array_merge( $required, self::$controls_constants, $additional );
 		}
 
@@ -230,7 +230,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			} else {
 				$required = array();
 			}
-			$additional = (array) apply_filters( 'KKcp/customize/get_js_settings', array() );
+			$additional = (array) apply_filters( 'kkcp_customize_get_js_settings', array() );
 			return array_merge( $required, $additional );
 		}
 
@@ -252,7 +252,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'vRequired' => esc_html__( 'A value is required' ),
 				'vInvalid' => esc_html__( 'Invalid value' ),
 			);
-			$additional = (array) apply_filters( 'KKcp/customize/get_js_l10n', array() );
+			$additional = (array) apply_filters( 'kkcp_customize_get_js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );
 		}
 
@@ -293,7 +293,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 */
 		public static function enqueue_js_preview() {
 
-			do_action( 'KKcp/customize/enqueue_js_preview_pre' );
+			do_action( 'kkcp_customize_enqueue_js_preview_pre' );
 
 			wp_register_script( 'KKcp-customize-preview', KKcp_Utils::get_asset( 'customize-preview', 'js', KKCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), KKCP_PLUGIN_VERSION, true );
 			wp_localize_script( 'KKcp-customize-preview', 'KKcp', array(
@@ -302,7 +302,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				) );
 			wp_enqueue_script( 'KKcp-customize-preview' );
 
-			do_action( 'KKcp/customize/enqueue_js_preview_post' );
+			do_action( 'kkcp_customize_enqueue_js_preview_post' );
 		}
 
 		/**
@@ -331,7 +331,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		public static function register_custom_classes() {
 			require_once( KKCP_PLUGIN_DIR . 'includes/customize-classes.php' );
 
-			do_action( 'KKcp/customize/register_custom_classes', __CLASS__ );
+			do_action( 'kkcp_customize_register_custom_classes', __CLASS__ );
 
 			self::register_tree();
 		}
@@ -367,7 +367,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				return;
 			}
 
-			do_action( 'KKcp/customize/modify_tree', KKcp_Theme::get_instance() );
+			do_action( 'kkcp_customize_modify_tree', KKcp_Theme::get_instance() );
 
 			foreach ( KKcp_Theme::$customize_tree as $component ) {
 				$priority++;

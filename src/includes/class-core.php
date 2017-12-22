@@ -92,7 +92,7 @@ if ( ! class_exists( 'KKcp' ) ):
 		 * @since  1.0.0
 		 */
 		public static function activation() {
-			do_action( 'KKcp/activation' );
+			do_action( 'kkcp_activation' );
 		}
 
 		/**
@@ -101,7 +101,7 @@ if ( ! class_exists( 'KKcp' ) ):
 		 * @since  1.0.0
 		 */
 		public static function deactivation() {
-			do_action( 'KKcp/deactivation' );
+			do_action( 'kkcp_deactivation' );
 		}
 	}
 
