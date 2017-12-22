@@ -8,6 +8,7 @@ var gulp = require('gulp');
  * @type {Object}
  */
 global.PATHS = {
+  root: './',
   /** @type {Object} */
   src: {
     root: './src/',

@@ -21,7 +21,7 @@
 	<ul class="kkcp-features">
 		<li><i class="dashicons dashicons-wordpress"></i>
 			<b><?php esc_html_e( 'Fully integrated in WordPress' ); ?></b>
-			<p class="description"><?php esc_html_e( 'The code, the admin UI and the API totally looks like WordPress. As it should be.' ); ?></p>
+			<p class="description"><?php esc_html_e( 'The code, the admin UI and the API totally looks like WordPress, as it should be.' ); ?></p>
 		</li>
 		<li><i class="dashicons dashicons-admin-settings"></i>
 			<b><?php esc_html_e( 'Powerful Custom Controls' ); ?></b>
