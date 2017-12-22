@@ -31,9 +31,8 @@ global.PATHS = {
   }
 };
 
-var sequence = require('gulp-sequence');
 // @access public
-gulp.task('build', sequence('release-clean', 'build-base', 'build-customize'));
+gulp.task('build', ['build-base', 'build-customize']);
 
 // @access public
 gulp.task('watch', [
@@ -50,3 +49,6 @@ require('./config/common/gulp');
 
 // Add all the gruntfile tasks to gulp, don't change this
 require('gulp-grunt')(require('gulp'));
+
+var sequence = require('gulp-sequence');
+gulp.task('pack', sequence('release-clean', 'build', 'release'));

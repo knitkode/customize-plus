@@ -1,6 +1,6 @@
 {
   "name": "knitkode/customize-plus",
-  "description": "Add premium features to the WordPress customize.",
+  "description": "Enhance and extend the WordPress Customizer.",
   "type": "wordpress-plugin",
   "keywords": [
     "customize",

@@ -8,21 +8,6 @@
 
 > Enhance and extend the WordPress Customize.
 
-Tags: wordpress, customizer, options framework, theme
-Requires at least: 4.9.1
-Tested up to: 4.9.1
-License: MIT
-License URI: https://opensource.org/licenses/MIT
-
-Todo
----------------
-- control `text_decoration`, in the same way as `font_weight` control
-
-
-Caveats
----------------
-- Let's see
-
 
 Bugs
 ---------------
@@ -48,14 +33,6 @@ There are various ways you can contribute:
 2. Send a [Pull Request](https://help.github.com/articles/creating-a-pull-request/) with your bug fixes and/or new features
 3. Translate this project into [different languages](https://www.transifex.com/projects/p/customize-plus/)
 4. Provide feedback and suggestions on [enhancements](https://github.com/knitkode/customize-plus/issues?direction=desc&labels=Enhancement&page=1&sort=created&state=open)
-
-
-Translations
----------------
-
-We use [Transifex](https://www.transifex.com) to manage translations. **Anyone** may [sign up](https://www.transifex.com/signup/) for free and contribute. If you know another language any little help is appreciated. Thank you!
-
-[Check this project on Transifex](https://www.transifex.com/knitkode/customize-plus/)
 
 
 Donate
