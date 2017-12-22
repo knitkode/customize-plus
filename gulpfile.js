@@ -50,6 +50,3 @@ require('./config/common/gulp');
 
 // Add all the gruntfile tasks to gulp, don't change this
 require('gulp-grunt')(require('gulp'));
-
-var sequence = require('gulp-sequence');
-gulp.task('pack', sequence('release-clean', 'build', 'release'));
