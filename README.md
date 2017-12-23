@@ -22,19 +22,17 @@ You can also try to see if someone is in our [chat room](https://gitter.im/knitk
 
 Contribute
 ---------------
-Anyone is welcome to contribute. Please read the [guidelines for contributing](https://github.com/knitkode/customize-plus/blob/master/CONTRIBUTING.md) to this repository.
-
-There are various ways you can contribute:
+Anyone is welcome to contribute, there are various ways you can do it:
 
 1. Raise an [issue](https://github.com/knitkode/customize-plus/issues) on GitHub
 2. Send a [Pull Request](https://help.github.com/articles/creating-a-pull-request/) with your bug fixes and/or new features
-3. Translate this project into [different languages](https://www.transifex.com/projects/p/customize-plus/)
+3. Translate this project into [different languages](https://translate.wordpress.org/projects/wp-plugins/customize-plus)
 4. Provide feedback and suggestions on [enhancements](https://github.com/knitkode/customize-plus/issues?direction=desc&labels=Enhancement&page=1&sort=created&state=open)
 
 
 Donate
 ---------------
-[![Gratipay](https://img.shields.io/gratipay/knitkode/shields.svg)](https://gratipay.com/knitkode)
+[![Liberapay](https://img.shields.io/liberapay/KnitKode/receives.svg)](https://liberapay.com/KnitKode/donate)
 
 
 License
@@ -42,8 +40,6 @@ License
  [![License](https://img.shields.io/badge/license-GPL--3.0%2B-blue.svg)](https://github.com/knitkode/customize-plus/blob/master/license.txt) [![KnitKode](https://img.shields.io/badge/%C2%A9KnitKode-2017-blue.svg)](https://knitkode.com)
 
 Unless otherwise specified, all the plugin files are licensed under GNU General Public License version 3, see file license.txt. The exceptions to this license are as follows*:
-
-The MIT License (MIT)
 
 - [Modernizr](https://github.com/Modernizr/Modernizr/) by Faruk Ates, Paul Irish, Alex Sexton, Ryan Seddon, Patrick Kettner, Stu Cox, Richard Herrera is licensed under the [MIT License](https://opensource.org/licenses/MIT)
 - [classList.js](https://github.com/eligrey/classList.js/) by [Eli Grey](https://eligrey.com/) is [dedicated to the public domain](https://github.com/eligrey/classList.js/blob/master/LICENSE.md)

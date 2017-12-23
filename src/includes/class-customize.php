@@ -604,11 +604,9 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					}
 				}
 
-				// some controls can be seeting less
-				if ( $control_type !== 'kkcp_content' ) {
-					// add setting to WordPress
-					$wp_customize->add_setting( $setting_id, $setting_args );
-				}
+				// add setting to WordPress
+				$wp_customize->add_setting( $setting_id, $setting_args );
+
 			// if no settings args are passed
 			} else {
 				// a setting-less control, pass empty array,
