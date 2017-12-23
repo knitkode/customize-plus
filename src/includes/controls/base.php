@@ -426,7 +426,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * Get localized strings for current controls.
 	 * Allows control classes to add localized strings accessible on our main
-	 * `js` object `KKcp.l10n`.
+	 * `js` object `kkcp.l10n`.
 	 * @abstract
 	 * @since  1.0.0
 	 * @return array
@@ -438,7 +438,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * Get js constants for current controls.
 	 * Allows control classes to add its specific constants variables on our
-	 * main `js` object `KKcp.l10n`.
+	 * main `js` object `kkcp.l10n`.
 	 * @abstract
 	 * @since  1.0.0
 	 * @return array

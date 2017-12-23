@@ -17,7 +17,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 
 		/**
 		 * Allowed array keys for themes to use through
-		 * `add_theme_support( 'KKcp-customize' )`.
+		 * `add_theme_support( 'kkcp-customize' )`.
 		 *
 		 * @since 1.0.0
 		 * @var array
@@ -34,7 +34,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * The unique theme prefix identifier
 		 *
 		 * Themes are required to declare this using through
-		 * `add_theme_support( 'KKcp-customize' )`.
+		 * `add_theme_support( 'kkcp-customize' )`.
 		 * This is also the name of the DB entry under which options are stored if
 		 * `'type' => 'option'` is used for the Customizer settings.
 		 *
@@ -47,7 +47,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * The theme customize tree array.
 		 *
 		 * Themes pass all their organized customizer setup through
-		 * `add_theme_support( 'KKcp-customize' )`.
+		 * `add_theme_support( 'kkcp-customize' )`.
 		 *
 		 * @since 1.0.0
 		 * @var array
@@ -58,7 +58,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * Images base url
 		 *
 		 * This is either defined by the theme through
-		 * `add_theme_support( 'KKcp-customize' )`, or set by default to
+		 * `add_theme_support( 'kkcp-customize' )`, or set by default to
 		 * `get_stylesheet_directory_uri`.
 		 * This url will be prendeded to the images `src` used in the Customizer
 		 * for stuff like 'guides', 'helpers' and 'radio_images' controls.
@@ -74,7 +74,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 * Docs base url
 		 *
 		 * This optional property is defined by the theme through
-		 * `add_theme_support( 'KKcp-customize' )`.
+		 * `add_theme_support( 'kkcp-customize' )`.
 		 * This url will be prendeded in the Customizer to the
 		 * `guides => array( 'docs' => '{url}' )` value where defined.
 		 * The value always pass through the `trailingslashit` WordPress function
@@ -90,7 +90,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 *
 		 * It acts like a store with the default values of theme settings
 		 * (`theme_mods`) extracted from the `tree` array declared by the theme
-		 * through `add_theme_support( 'KKcp-customize' )`. The current theme or
+		 * through `add_theme_support( 'kkcp-customize' )`. The current theme or
 		 * this plugin can use this array to safely retrieve options without having
 		 * to write the default values to the db.
 		 *
@@ -129,7 +129,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 */
 		public static function configure() {
 
-			$theme_support = get_theme_support( 'KKcp-customize' );
+			$theme_support = get_theme_support( 'kkcp-customize' );
 
 			// themes should provide an array of options
 			if ( is_array( $theme_support ) ) {
@@ -141,7 +141,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 
 					// automatically create hooks for child themes or whatever
 					$customizer_settings[ $key ] = apply_filters(
-						$prefix . '_KKcp_theme_' . $key,
+						$prefix . '_kkcp_theme_' . $key,
 						self::validate_theme_support( $key, $theme_support )
 					);
 				}
@@ -151,12 +151,12 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 
 		/**
 		 * Validate the values passed by the theme developer through
-		 * `add_theme_support( 'KKcp-customize' )`, and display error messages.
+		 * `add_theme_support( 'kkcp-customize' )`, and display error messages.
 		 *
 		 * @since  1.0.0
 		 * @param  string $key           One of the allowed keys for the
 		 *                               configuration array.
-		 * @param  array  $configuration The `theme_support( 'KKcp-customize' )`
+		 * @param  array  $configuration The `theme_support( 'kkcp-customize' )`
 		 *                               array.
 		 * @uses   esc_url               The url get sanitized, just to be sure
 		 * @uses   trailingslashit       Append always last slash to url, so it's

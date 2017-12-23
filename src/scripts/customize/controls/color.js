@@ -155,7 +155,7 @@ let Control = api.controls.Base.extend({
       showInput: true,
       showInitial: false,
       showButtons: false,
-      // localStorageKey: 'KKcp_spectrum',
+      // localStorageKey: 'kkcp_spectrum',
       showSelectionPalette: false,
       togglePaletteMoreText: api.l10n['togglePaletteMoreText'],
       togglePaletteLessText: api.l10n['togglePaletteLessText'],

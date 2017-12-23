@@ -116,7 +116,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @since  1.0.0
 		 * @var string
 		 */
-		const JS_API_NAMESPACE = 'KKcp';
+		const JS_API_NAMESPACE = 'kkcp';
 
 		/**
 		 * JavaScript core dependencies
@@ -154,14 +154,14 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @since  1.0.0
 		 */
 		public static function enqueue_css_admin() {
-			do_action( 'kkcp_customize_enqueue_css_admin_pre', 'KKcp-customize' );
+			do_action( 'kkcp_customize_enqueue_css_admin_pre', 'kkcp-customize' );
 
 			if ( ! class_exists( 'KKcpp_Customize' ) ) {
-				wp_enqueue_style( 'KKcp-customize', KKcp_Utils::get_asset( 'customize', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
-				wp_add_inline_style( 'KKcp-customize', self::$css_icons );
+				wp_enqueue_style( 'kkcp-customize', KKcp_Utils::get_asset( 'customize', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
+				wp_add_inline_style( 'kkcp-customize', self::$css_icons );
 			}
 
-			do_action( 'kkcp_customize_enqueue_css_admin_post', 'KKcp-customize' );
+			do_action( 'kkcp_customize_enqueue_css_admin_post', 'kkcp-customize' );
 		}
 
 		/**
@@ -173,15 +173,15 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @since  1.0.0
 		 */
 		public static function enqueue_js_admin() {
-			do_action( 'kkcp_customize_enqueue_js_admin_pre', 'KKcp-customize' );
+			do_action( 'kkcp_customize_enqueue_js_admin_pre', 'kkcp-customize' );
 
 			if ( ! class_exists( 'KKcpp_Customize' ) ) {
-				wp_register_script( 'KKcp-customize', KKcp_Utils::get_asset( 'customize', 'js', KKCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, KKCP_PLUGIN_VERSION, false );
-				wp_localize_script( 'KKcp-customize', self::JS_API_NAMESPACE, self::get_script_localization() );
-				wp_enqueue_script( 'KKcp-customize' );
+				wp_register_script( 'kkcp-customize', KKcp_Utils::get_asset( 'customize', 'js', KKCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, KKCP_PLUGIN_VERSION, false );
+				wp_localize_script( 'kkcp-customize', self::JS_API_NAMESPACE, self::get_script_localization() );
+				wp_enqueue_script( 'kkcp-customize' );
 			}
 
-			do_action( 'kkcp_customize_enqueue_js_admin_post', 'KKcp-customize' );
+			do_action( 'kkcp_customize_enqueue_js_admin_post', 'kkcp-customize' );
 		}
 
 		/**
@@ -260,7 +260,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * Add controls javascript variables
 		 *
 		 * Allows control classes to add localized strings accessible on our main
-		 * `js` object `KKcp.l10n`
+		 * `js` object `kkcp.l10n`
 		 *
 		 * @since  1.0.0
 		 * @global $wp_customize {WP_Customize_Manager} WordPress Customizer
@@ -295,12 +295,12 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 
 			do_action( 'kkcp_customize_enqueue_js_preview_pre' );
 
-			wp_register_script( 'KKcp-customize-preview', KKcp_Utils::get_asset( 'customize-preview', 'js', KKCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), KKCP_PLUGIN_VERSION, true );
-			wp_localize_script( 'KKcp-customize-preview', 'KKcp', array(
+			wp_register_script( 'kkcp-customize-preview', KKcp_Utils::get_asset( 'customize-preview', 'js', KKCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), KKCP_PLUGIN_VERSION, true );
+			wp_localize_script( 'kkcp-customize-preview', 'kkcp', array(
 					'constants' => self::get_js_constants(),
 					'l10n' => self::get_js_l10n(),
 				) );
-			wp_enqueue_script( 'KKcp-customize-preview' );
+			wp_enqueue_script( 'kkcp-customize-preview' );
 
 			do_action( 'kkcp_customize_enqueue_js_preview_post' );
 		}

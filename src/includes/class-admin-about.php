@@ -53,13 +53,13 @@ class KKcp_Admin_About {
 	 * @param string $hook The page hook
 	 */
 	public static function enqueue_scripts( $hook ) {
-		$settings_page_prefix = 'settings_page_KKcp-';
+		$settings_page_prefix = 'settings_page_kkcp-';
 		$settings_pages = array(
 			$settings_page_prefix . 'welcome',
 			$settings_page_prefix . 'about',
 		);
 		if ( in_array( $hook, $settings_pages ) ) {
-			wp_enqueue_style( 'KKcp-admin', KKcp_Utils::get_asset( 'admin', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
+			wp_enqueue_style( 'kkcp-admin', KKcp_Utils::get_asset( 'admin', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
 		}
 	}
 

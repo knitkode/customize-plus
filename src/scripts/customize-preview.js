@@ -53,4 +53,4 @@
     return constants.OPTIONS_PREFIX + '[' + key + ']';
   };
 
-})(window, document, jQuery, wp, KKcp);
+})(window, document, jQuery, wp, kkcp);

@@ -42,11 +42,11 @@
 			<b><?php esc_html_e( 'Controls, controls and controls' ); ?></b>
 			<p class="description"><?php esc_html_e( 'We\'ll keep adding controls both to the free and premium version.' ); ?> <a href="https://knitkode.com/customize-plus-roadmap"><?php esc_html_e( 'Roadmap' ) ?></a></p>
 		</li>
-		<li class="KKcp-premium"><i class="dashicons dashicons-search"></i>
+		<li class="kkcp-premium"><i class="dashicons dashicons-search"></i>
 			<b><?php esc_html_e( 'Instant Controls Search' ); ?></b> <em class="description">(<?php esc_html_e( 'Premium' ); ?>)</em>
 			<p class="description"><?php esc_html_e( 'Use the javascript search engine lunr.js to instantly find the control you need.' ); ?> <a href="https://knitkode.com/products/customize-plus-premium/components/search"><?php esc_html_e( 'Learn more' ) ?></a></p>
 		</li>
-		<li class="KKcp-premium"><i class="dashicons dashicons-admin-comments"></i>
+		<li class="kkcp-premium"><i class="dashicons dashicons-admin-comments"></i>
 			<b><?php esc_html_e( 'Explanatory guides' ); ?></b> <em class="description">(<?php esc_html_e( 'Premium' ); ?>)</em>
 			<p class="description"><?php esc_html_e( 'Show users some help or extra information for each control.' ); ?></p>
 		</li>
@@ -58,7 +58,7 @@
 			<b><?php esc_html_e( 'Hide & Show controls' ); ?></b> <em class="description">(<?php esc_html_e( 'Premium' ); ?>)</em>
 			<p class="description"><?php esc_html_e( 'If your product has a lot of options you will be able to hide them. And in case, to show them again.' ); ?></p>
 		</li>
-		<li class="KKcp-premium"><i class="dashicons dashicons-desktop"></i>
+		<li class="kkcp-premium"><i class="dashicons dashicons-desktop"></i>
 			<b><?php esc_html_e( 'Responsive screen Previews' ); ?></b> <em class="description">(<?php esc_html_e( 'Premium' ); ?>)</em>
 			<p class="description"><?php esc_html_e( 'Preview and test your website responsiveness on different screen sizes.' ); ?> <a href="https://knitkode.com/docs/customize-plus-premium/components/screen-preview">Learn more</a></p>
 		</li>
