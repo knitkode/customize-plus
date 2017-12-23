@@ -22,9 +22,9 @@ let Control = api.controls.Base.extend({
   validate: function (value) {
     // treat value only if it's a string (unlike the php function)
     // because here we always have to get a string.
-
-    if (!_.isArray(value)) {
-      return { error: true };
+    // @@todo
+    if (_.isArray(value)) {
+      return value;
     }
     if (typeof value === 'string') {
       return value;

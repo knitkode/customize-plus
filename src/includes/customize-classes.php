@@ -27,7 +27,7 @@ require ( KKCP_PLUGIN_DIR . 'includes/controls/checkbox.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/color.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/content.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/font-family.php' );
-require ( KKCP_PLUGIN_DIR . 'includes/controls/icon.php' );
+// require ( KKCP_PLUGIN_DIR . 'includes/controls/icon.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/multicheck.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/number.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/radio.php' );

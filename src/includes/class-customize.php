@@ -61,7 +61,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'kkcp_content' => 'KKcp_Customize_Control_Content',
 				'kkcp_font_family' => 'KKcp_Customize_Control_Font_Family',
 				'kkcp_font_weight' => 'KKcp_Customize_Control_Font_Weight',
-				'kkcp_icon' => 'KKcp_Customize_Control_Icon',
+				// 'kkcp_icon' => 'KKcp_Customize_Control_Icon',
 				'kkcp_multicheck' => 'KKcp_Customize_Control_Multicheck',
 				'kkcp_number' => 'KKcp_Customize_Control_Number',
 				'kkcp_radio' => 'KKcp_Customize_Control_Radio',

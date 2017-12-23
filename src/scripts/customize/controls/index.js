@@ -5,7 +5,7 @@ import './checkbox';
 import './color';
 import './content';
 import './font-family';
-import './icon';
+// import './icon';
 import './multicheck';
 import './number';
 import './radio';

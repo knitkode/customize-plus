@@ -271,15 +271,19 @@ api.controls.Base = wpApi.Control.extend({
    * @param  {Object<string,boolean|string>} error `{ error: true, msg: string }`
    */
   _onValidateError: function (error) {
-    var msg = error && error.msg ? error.msg : api.l10n['vInvalid'];
-    this._container.classList.add('kkcp-error');
+    const msg = error && error.msg ? error.msg : api.l10n['vInvalid'];
+    const id = `${this.id}__error_${msg.replace(/\s/g, '')}`;
+    // this._container.classList.add('kkcp-error');
     // this._container.setAttribute('data-kkcp-msg', msg);
-    if (!this._currentErrorMsg || msg !== this._currentErrorMsg) {
-      this.setting.notifications.add( 'error', new wpApi.Notification(
-        'error', { type: 'error', message: msg }
-      ));
+    if (!this._currentNotificationId || id !== this._currentNotificationId) {
+      console.log(`Control adds notification with id: ${id}`);
+      const notification = new wpApi.Notification(id, { type: 'error', message: msg });
+      // debugger;
+      this.notifications.add(notification);
+      this.notifications.render();
+
+      this._currentNotificationId = id;
     }
-    this._currentErrorMsg = msg;
   },
   /**
    * On validation success (optionally override it in subclasses)
@@ -287,10 +291,14 @@ api.controls.Base = wpApi.Control.extend({
    * @access private
    */
   _onValidateSuccess: function () {
-    this._container.classList.remove('kkcp-error');
+    // this._container.classList.remove('kkcp-error');
     // this._container.removeAttribute('data-kkcp-msg');
-    this.setting.notifications.remove('error');
-    this._currentErrorMsg = false;
+    if (this._currentNotificationId) {
+      this.notifications.remove(this._currentNotificationId);
+      this.notifications.render();
+      console.log(`Control removes notification with id: ${this._currentNotificationId}`);
+      this._currentNotificationId = false;
+    }
   },
   /**
    * Validate

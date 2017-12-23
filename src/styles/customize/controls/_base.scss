@@ -60,8 +60,9 @@
   // &[data-kkcp-msg]:after {
   //   content: attr(data-kkcp-msg);
   // }
+  // &.kkcp-error {}
 
-  &.kkcp-error {
+  &.has-error {
     // background: $state--danger-bg;
 
     // &:after {
