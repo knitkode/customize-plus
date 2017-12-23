@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[customize-plus.kkcp]
+[@knitkode/customize-plus.kkcp]
 file_filter = build/languages/<lang>.po
 source_file = build/languages/kkcp.pot
 source_lang = en
