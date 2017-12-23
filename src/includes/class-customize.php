@@ -61,7 +61,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'kkcp_content' => 'KKcp_Customize_Control_Content',
 				'kkcp_font_family' => 'KKcp_Customize_Control_Font_Family',
 				'kkcp_font_weight' => 'KKcp_Customize_Control_Font_Weight',
-				// 'kkcp_icon' => 'KKcp_Customize_Control_Icon',
+				'kkcp_icon' => 'KKcp_Customize_Control_Icon',
 				'kkcp_multicheck' => 'KKcp_Customize_Control_Multicheck',
 				'kkcp_number' => 'KKcp_Customize_Control_Number',
 				'kkcp_radio' => 'KKcp_Customize_Control_Radio',
@@ -603,8 +603,12 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 						$setting_args['validate_callback'] = 'KKcp_Customize_Control_Base::validate_callback';
 					}
 				}
-				// add setting to WordPress
-				$wp_customize->add_setting( $setting_id, $setting_args );
+
+				// some controls can be seeting less
+				if ( $control_type !== 'kkcp_content' ) {
+					// add setting to WordPress
+					$wp_customize->add_setting( $setting_id, $setting_args );
+				}
 			// if no settings args are passed
 			} else {
 				// a setting-less control, pass empty array,

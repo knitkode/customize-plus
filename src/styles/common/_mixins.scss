@@ -26,3 +26,24 @@
     color: $WPcustomize--btn-color-hover;
   }
 }
+
+/**
+ * Multiple `:not` attributes
+ *
+ * @credits to https://stackoverflow.com/a/30250161/9122820
+ *
+ * @param  {List} $ignorList...
+ * @return {@content}
+ */
+@mixin not($ignorList...) {
+  @if (length($ignorList) == 1){
+    $ignorList: nth($ignorList,1);
+  }
+  $notOutput: '';
+  @each $not in $ignorList {
+    $notOutput: $notOutput + ':not(#{$not})';
+  }
+  &#{$notOutput} {
+      @content;
+  }
+}

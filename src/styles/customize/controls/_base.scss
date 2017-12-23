@@ -10,9 +10,9 @@
 .customize-section-title {
   margin: 0;
 }
+// .kkcp-control,
 .customize-control,
 .customize-section-description {
-  box-sizing: border-box;
   padding-left: $control--spacing-left;
   padding-right: $control--spacing-right;
 }
@@ -28,7 +28,9 @@
  * - `code_editor` native WordPress control
  * - `theme` native WordPress control
  */
-.customize-control:not(.customize-control-code_editor):not(.customize-control-theme) {
+.customize-control {
+// .kkcp-control {
+  box-sizing: border-box;
   margin: 0; // @@wptight-css-override .customize-control {} \\
   padding-top: $control--spacing-top;
   padding-bottom: $control--spacing-bottom;
@@ -52,7 +54,9 @@
 }
 
 /**
- * Status class and message attribute on controls, used i.e. to show a
+ * Status class
+ *
+ * @deprecated: Show message attribute on controls, used i.e. to show a
  * validation error without the need of new DOM, through js it is enough
  * to add or change the `data-kkcp-msg` and optionally add a status class.
  */
@@ -117,9 +121,19 @@
  * panels. Add also generic class to apply on panel `ul` container to reset the
  * control style.
  */
-.kkcp-panel--reset-control-style,
-#accordion-panel-widgets,
-#accordion-panel-nav_menus {
+.kkcp--reset-style,
+.control-section-nav_menu,
+#sub-accordion-section-custom_css {
+
+  #customize-theme-controls &.accordion-section-content.open,
+  #customize-theme-controls &.customize-pane-child.accordion-section-content.open {
+    padding: $WPcustomize--section-gutter-vertical $WPcustomize--section-gutter-horizontal;
+  }
+
+  .customize-section-title {
+    margin: $WPcustomize--section-title-margin;
+  }
+
   .customize-control {
     padding: 0;
     margin-bottom: $WPcustomize--control-margin-bottom;
@@ -130,12 +144,13 @@
     }
   }
 
-  // re-add the padding on the outer control
-  .accordion-section-content > li.customize-control,
-  // and on the section descriptions
-  .customize-section-description-container p {
-    padding-left: $WPcustomize--section-padding-horizontal;
-    padding-right: $WPcustomize--section-padding-horizontal;
+  #customize-control-custom_css {
+    margin-bottom: -$WPcustomize--control-margin-bottom;
+  }
+}
+.control-section-nav_menu {
+  .customize-control {
+    margin-bottom: inherit;
   }
 }
 

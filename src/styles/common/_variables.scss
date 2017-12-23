@@ -28,10 +28,12 @@ $WP--notice-border--info: #72DFFF; // I made this up
 // WordPress Customize variables
 $WPcustomize--overlay-z-index: 500000;
 $WPcustomize--container-meta-margin_bottom: 15px;
-$WPcustomize--section-padding-horizontal: 12px; // @@wptight-cs from .accordion-section-content {} \\
+$WPcustomize--section-gutter-vertical: 12px;
+$WPcustomize--section-gutter-horizontal: 12px;
+$WPcustomize--section-title-margin: -12px -12px 0 -12px;
 $WPcustomize--control-margin-bottom: 12px;
 $WPcustomize--sidebar-width: 300px;
-$WPcustomize--sidebar-inner-width: $WPcustomize--sidebar-width - ($WPcustomize--section-padding-horizontal * 2);
+$WPcustomize--sidebar-inner-width: $WPcustomize--sidebar-width - ($WPcustomize--section-gutter-horizontal * 2);
 $WPcustomize--footer-height: 45px;
 $WPcustomize--header-height: 45px;
 $WPcustomize--headertoggle-borderwidth: 4px;
@@ -122,7 +124,7 @@ $control--bg-divider-hover: darken($control--bg-divider, 3%);
 $control--spacing-top: $WPcustomize--control-margin-bottom / 2;
 $control--spacing-bottom: $WPcustomize--control-margin-bottom / 2;
 $control--spacing-left: 20px;
-$control--spacing-right: $WPcustomize--section-padding-horizontal;
+$control--spacing-right: $WPcustomize--section-gutter-horizontal;
 $control--btn-size: $WP--dashicons-size;
 $control--btn-icon-fontsize: 15px;
 $control--btn-color: #aaa;
