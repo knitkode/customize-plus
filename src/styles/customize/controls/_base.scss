@@ -54,25 +54,10 @@
 }
 
 /**
- * Status class
- *
- * @deprecated: Show message attribute on controls, used i.e. to show a
- * validation error without the need of new DOM, through js it is enough
- * to add or change the `data-kkcp-msg` and optionally add a status class.
+ * Validation feedback styling
  */
 .customize-control {
-  // &[data-kkcp-msg]:after {
-  //   content: attr(data-kkcp-msg);
-  // }
-  // &.kkcp-error {}
-
   &.has-error {
-    // background: $state--danger-bg;
-
-    // &:after {
-    //   color: $state--danger-color;
-    //   font-size: 11px;
-    // }
 
     input,
     textarea,

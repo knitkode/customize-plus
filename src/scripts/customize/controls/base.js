@@ -273,8 +273,7 @@ api.controls.Base = wpApi.Control.extend({
   _onValidateError: function (error) {
     const msg = error && error.msg ? error.msg : api.l10n['vInvalid'];
     const id = `${this.id}__error_${msg.replace(/\s/g, '')}`;
-    // this._container.classList.add('kkcp-error');
-    // this._container.setAttribute('data-kkcp-msg', msg);
+
     if (!this._currentNotificationId || id !== this._currentNotificationId) {
       console.log(`Control adds notification with id: ${id}`);
       const notification = new wpApi.Notification(id, { type: 'error', message: msg });
@@ -291,8 +290,6 @@ api.controls.Base = wpApi.Control.extend({
    * @access private
    */
   _onValidateSuccess: function () {
-    // this._container.classList.remove('kkcp-error');
-    // this._container.removeAttribute('data-kkcp-msg');
     if (this._currentNotificationId) {
       this.notifications.remove(this._currentNotificationId);
       this.notifications.render();
