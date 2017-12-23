@@ -45,7 +45,6 @@ Unless otherwise specified, all the plugin files are licensed under GNU General 
 
 The MIT License (MIT)
 
-- [es5-shim](https://github.com/es-shims/es5-shim/) by [Kristopher Michael Kowal](http://codi.sh/) and [contributors](https://github.com/es-shims/es5-shim/graphs/contributors) is licensed under the [MIT License](https://github.com/es-shims/es5-shim/blob/master/LICENSE)
 - [classList.js](https://github.com/eligrey/classList.js/) by [Eli Grey](https://eligrey.com/) is [dedicated to the public domain](https://github.com/eligrey/classList.js/blob/master/LICENSE.md)
 - [Modernizr](https://github.com/Modernizr/Modernizr/) by Faruk Ates, Paul Irish, Alex Sexton, Ryan Seddon, Patrick Kettner, Stu Cox, Richard Herrera is licensed under the [MIT License](https://opensource.org/licenses/MIT)
 - [Highlight.js](https://github.com/isagalaev/highlight.js/) by [Ivan Sagalaev](mailto:maniac@softwaremaniacs.org) and [contributors](https://github.com/isagalaev/highlight.js/blob/master/AUTHORS.en.txt) is released under the [BSD License](https://github.com/isagalaev/highlight.js/blob/master/LICENSE).

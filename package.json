@@ -35,7 +35,6 @@
   "dependencies": {
     "classlist.js": "github:eligrey/classList.js.git",
     "css-toggle-switch": "^4.0.2",
-    "es5-shim": "^4.5.9",
     "jQuery-ui-Slider-Pips": "github:simeydotme/jQuery-ui-Slider-Pips.git",
     "knitkode-vendor": "gitlab:knitkode/knitkode-vendor.git",
     "locutus": "^2.0.6",

@@ -145,7 +145,6 @@ gulp.task('_customize-scripts-admin-rollup', () => {
 gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-rollup'], function() {
   var stream = new StreamQueue({ objectMode: true });
   stream.queue(gulp.src([
-    PATHS.src.npm + 'es5-shim/es5-shim.min.js', // @@ie9 @@ie8 \\
     PATHS.src.npm + 'classlist.js/classList.js', // @@ie9 @@ie8 \\
     PATHS.src.npm + 'knitkode-vendor/cp/modernizr-custom.js',
     PATHS.src.npm + 'knitkode-vendor/cp/highlight.pack.js',
