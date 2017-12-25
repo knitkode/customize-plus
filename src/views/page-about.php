@@ -40,7 +40,7 @@
 		<h2><?php esc_html_e( 'Coming soon' ); ?></h2>
 		<li><i class="dashicons dashicons-admin-settings"></i>
 			<b><?php esc_html_e( 'Controls, controls and controls' ); ?></b>
-			<p class="description"><?php esc_html_e( 'We\'ll keep adding controls both to the free and premium version.' ); ?> <a href="https://knitkode.com/customize-plus-roadmap"><?php esc_html_e( 'Roadmap' ) ?></a></p>
+			<p class="description"><?php esc_html_e( 'We\'ll keep adding controls both to the free and premium version.' ); ?> <a href="https://knitkode.com/roadmap#customize-plus"><?php esc_html_e( 'Roadmap' ) ?></a></p>
 		</li>
 		<li class="kkcp-premium"><i class="dashicons dashicons-search"></i>
 			<b><?php esc_html_e( 'Instant Controls Search' ); ?></b> <em class="description">(<?php esc_html_e( 'Premium' ); ?>)</em>

@@ -1,6 +1,6 @@
 # Customize Plus [![by KnitKode](https://img.shields.io/badge/by-KnitKode-lightgrey.svg?style=social)]()
 
-[![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)]()
+[![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)](https://wordpress.org/plugins/customize-plus)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/facc393563dd4ef49ff3b2dea2bd2f7c)](https://www.codacy.com/app/knitkode/customize-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=knitkode/customize-plus&amp;utm_campaign=Badge_Grade)
 
 > Enhance and extend the WordPress Customize.
@@ -25,7 +25,7 @@ Contribute
 Anyone is welcome to contribute, there are various ways you can do it:
 
 1. Raise an [issue](https://github.com/knitkode/customize-plus/issues) on GitHub
-2. Send a [Pull Request](https://help.github.com/articles/creating-a-pull-request/) with your bug fixes and/or new features
+2. Send a [Pull Request](https://help.github.com/articles/creating-a-pull-request/) with your bug fixes and/or new features (remember to use [the development branch](https://github.com/knitkode/customize-plus/tree/master))
 3. Translate this project into [different languages](https://translate.wordpress.org/projects/wp-plugins/customize-plus)
 4. Provide feedback and suggestions on [enhancements](https://github.com/knitkode/customize-plus/issues?direction=desc&labels=Enhancement&page=1&sort=created&state=open)
 

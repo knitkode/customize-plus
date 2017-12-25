@@ -38,7 +38,7 @@ Anyone interested in using the WordPress Customize interface. Especially theme d
  *
 
 **COMING SOON**
-Take a look at its [roadmap here](https://knitkode.com/customize-plus-roadmap?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=coming_soon&utm_campaign=readme).
+Take a look at its [roadmap here](https://knitkode.com/roadmap#customize-plus?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=coming_soon&utm_campaign=readme).
 
 
 == Installation ==
