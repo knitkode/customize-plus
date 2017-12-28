@@ -6,17 +6,17 @@
     "customize",
     "tool"
   ],
-  "homepage": "https://knitkode.com/customize-plus",
+  "homepage": "https://knitkode.com/products/customize-plus",
   "license": "GPL-2.0+",
   "authors": [{
     "name": "KnitKode",
     "homepage": "https://knitkode.com/"
   }],
   "support": {
-    "forum": "https://knitkode.com/customize-plus/support/",
+    "forum": "https://knitkode.com/support",
     "issues": "https://github.com/knitkode/customize-plus/issues",
     "wiki": "https://github.com/knitkode/customize-plus/wiki",
-    "source": "https://github.com/knitkode/customize-plus/"
+    "source": "https://github.com/knitkode/customize-plus"
   },
   "require": {
     "php": ">=5.2.4"
