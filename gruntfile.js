@@ -16,7 +16,7 @@ module.exports = function (grunt) {
     // Add textdomain.
     addtextdomain: {
       options: {
-        textdomain: '<%= pkg.config.textDomain %>',
+        textdomain: 'kkcp',
         updateDomains: ['pkgTextDomain']
       },
       target: {
@@ -32,21 +32,21 @@ module.exports = function (grunt) {
         options: {
           type: 'wp-plugin',
           domainPath: 'languages',
-          potFilename: '<%= pkg.config.textDomain %>.pot',
-          mainFile: '<%= pkg.name %>.php',
+          potFilename: 'kkcp.pot',
+          mainFile: 'customize-plus.php',
           cwd: 'build/',
           // include: [''], // no glob
           // exclude: [''], // no glob
           potHeaders: {
             poedit: true,
-            'report-msgid-bugs-to': '<%= pkg.repository.url %>/issues',
-            'language-team': 'LANGUAGE <<%= pkg.author.email %>>',
+            'report-msgid-bugs-to': 'https://github.com/knitkode/customize-plus/issues',
+            'language-team': 'LANGUAGE <dev@knitkode.com>',
             'x-poedit-keywordslist': true
           },
           updateTimestamp: true,
           // from http://git.io/vZ05R
           processPot: function (pot, options) {
-            // pot.headers['report-msgid-bugs-to'] = '<%= pkg.repository.url %>/issues';
+            // pot.headers['report-msgid-bugs-to'] = 'https://github.com/knitkode/customize-plus/issues';
             // pot.headers['last-translator'] = 'WP-Translations (http://wp-translations.org/)';
             // pot.headers['language-team'] = 'WP-Translations <wpt@wp-translations.org>';
             // pot.headers['language'] = 'en_US';
@@ -93,11 +93,8 @@ module.exports = function (grunt) {
         stdout: true,
         stderr: true
       },
-      txpush: {
-       command: 'tx push -s'
-      },
-      txpull: {
-        command: 'tx pull -a --minimum-perc=1'
+      trialList: {
+       command: 'ls'
       }
     },
 
@@ -140,19 +137,14 @@ module.exports = function (grunt) {
   // Load tasks
   grunt.loadNpmTasks('grunt-wp-i18n');
   grunt.loadNpmTasks('grunt-potomo');
-  grunt.loadNpmTasks('grunt-shell');
+  // grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-phpdocumentor');
   // grunt.loadNpmTasks('grunt-flatdoc');
 
   // Register tasks
   grunt.registerTask('lang', [
     'addtextdomain',
-    // makepot
     'makepot',
-    // push pot on Transifex
-    // 'shell:txpush', // @@temp disabled for now \\
-    // pull from Transifex
-    // 'shell:txpull', // @@temp disabled for now \\
     // create .mo files
     'potomo'
   ]);
