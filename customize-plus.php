@@ -3,24 +3,20 @@
 /**
  * Customize Plus
  *
- * Enhance and extend the WordPress Customizer.
- *
- * This plugin was built on top of a mix of WordPress-Plugin-Skeleton by Ian
- * Dunn (see {@link http://git.io/vZ05r here} for details) and WordPress-Plugin
- * Boilerplate (see {@link http://git.io/vZ056 here} for details).
+ * pkgDescription
  *
  * @package           Customize_Plus
  *
  * @wordpress-plugin
  * Plugin Name:       Customize Plus
  * Plugin URI:        https://knitkode.com/customize-plus
- * Description:       Enhance and extend the WordPress Customizer.
- * Version:           1.0.0
+ * Description:       pkgDescription
+ * Version:           pkgVersion
  * Author:            KnitKode
  * Author URI:        https://knitkode.com
  * License:           GPLv2 or later (license.txt)
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       kkcp
+ * Text Domain:       pkgTextDomain
  * Domain Path:       /languages
  */
 
