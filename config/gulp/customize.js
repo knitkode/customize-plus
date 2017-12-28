@@ -14,13 +14,7 @@ const rename = require('gulp-rename');
 const uglify = require('gulp-uglify');
 const replace = require('gulp-replace');
 const header = require('gulp-header');
-const replace = require('gulp-replace');
-const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
-const header = require('gulp-header');
-const replace = require('gulp-replace');
-const uglify = require('gulp-uglify');
-const rename = require('gulp-rename');
 
 
 /**
