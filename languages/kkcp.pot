@@ -1,0 +1,456 @@
+# Copyright (C) 2017 KnitKode
+# This file is distributed under the GPLv2 or later (license.txt).
+msgid ""
+msgstr ""
+"Project-Id-Version: Customize Plus 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/knitkode/customize-plus/issues\n"
+"POT-Creation-Date: 2017-12-28 17:04:15+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <dev@knitkode.com>\n"
+"X-Generator: grunt-wp-i18n 0.4.9\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+
+#: includes/class-admin-about.php:42 includes/class-core.php:67
+msgid "About"
+msgstr ""
+
+#: includes/class-admin-about.php:77
+msgid "Enhance and extend the WordPress Customize."
+msgstr ""
+
+#: includes/class-admin-about.php:79 includes/class-core.php:82
+msgid "Project homepage"
+msgstr ""
+
+#: includes/class-admin-about.php:80
+msgid "Documentation"
+msgstr ""
+
+#: includes/class-admin-about.php:81 includes/class-core.php:83
+msgid "Support"
+msgstr ""
+
+#: includes/class-admin-about.php:82 includes/class-core.php:84
+msgid "Changelog"
+msgstr ""
+
+#: includes/class-admin-about.php:83
+msgid "View on GitHub"
+msgstr ""
+
+#: includes/class-admin-about.php:92
+msgid "Plugin features"
+msgstr ""
+
+#: includes/class-admin-about.php:95
+msgid "Fully integrated in WordPress"
+msgstr ""
+
+#: includes/class-admin-about.php:96
+msgid ""
+"The code, the admin UI and the API totally looks like WordPress, as it "
+"should be."
+msgstr ""
+
+#: includes/class-admin-about.php:99
+msgid "Powerful Custom Controls"
+msgstr ""
+
+#: includes/class-admin-about.php:100
+msgid ""
+"Customize Plus extend the WordPress API to create all the controls you need "
+"leveraging the JavaScript API. All the theme_mods or options managed by "
+"Customize Plus controls are automatically validated and sanitized. You do "
+"not even need to define the fallback value when retrieving them."
+msgstr ""
+
+#: includes/class-admin-about.php:100 includes/class-admin-about.php:108
+#: includes/class-admin-about.php:119
+msgid "Learn more"
+msgstr ""
+
+#: includes/class-admin-about.php:103
+msgid "Reset control values"
+msgstr ""
+
+#: includes/class-admin-about.php:104
+msgid ""
+"Users will be able to reset the control values to the initial session or "
+"factory value"
+msgstr ""
+
+#: includes/class-admin-about.php:107
+msgid "Documented API"
+msgstr ""
+
+#: includes/class-admin-about.php:108
+msgid "The documentation makes use of JSdocs and phpdocs."
+msgstr ""
+
+#: includes/class-admin-about.php:112
+msgid "Coming soon"
+msgstr ""
+
+#: includes/class-admin-about.php:114
+msgid "Controls, controls and controls"
+msgstr ""
+
+#: includes/class-admin-about.php:115
+msgid "We'll keep adding controls both to the free and premium version."
+msgstr ""
+
+#: includes/class-admin-about.php:115
+msgid "Roadmap"
+msgstr ""
+
+#: includes/class-admin-about.php:118
+msgid "Instant Controls Search"
+msgstr ""
+
+#: includes/class-admin-about.php:118 includes/class-admin-about.php:122
+#: includes/class-admin-about.php:126 includes/class-admin-about.php:130
+#: includes/class-admin-about.php:134
+msgid "Premium"
+msgstr ""
+
+#: includes/class-admin-about.php:119
+msgid ""
+"Use the javascript search engine lunr.js to instantly find the control you "
+"need."
+msgstr ""
+
+#: includes/class-admin-about.php:122
+msgid "Explanatory guides"
+msgstr ""
+
+#: includes/class-admin-about.php:123
+msgid "Show users some help or extra information for each control."
+msgstr ""
+
+#: includes/class-admin-about.php:126
+msgid "Live Less Compiler"
+msgstr ""
+
+#: includes/class-admin-about.php:127
+msgid "Use the power of less.js to "
+msgstr ""
+
+#: includes/class-admin-about.php:130
+msgid "Hide & Show controls"
+msgstr ""
+
+#: includes/class-admin-about.php:131
+msgid ""
+"If your product has a lot of options you will be able to hide them. And in "
+"case, to show them again."
+msgstr ""
+
+#: includes/class-admin-about.php:134
+msgid "Responsive screen Previews"
+msgstr ""
+
+#: includes/class-admin-about.php:135
+msgid "Preview and test your website responsiveness on different screen sizes."
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Enhance and extend the WordPress Customizer."
+msgstr ""
+
+#: includes/class-customize.php:248
+msgid "Welcome to %s"
+msgstr ""
+
+#: includes/class-customize.php:249
+msgid "Back"
+msgstr ""
+
+#: includes/class-customize.php:251
+msgid "Tools"
+msgstr ""
+
+#: includes/class-customize.php:252
+msgid "A value is required"
+msgstr ""
+
+#: includes/class-customize.php:253
+msgid "Invalid value"
+msgstr ""
+
+#: includes/class-customize.php:323
+msgid "Import done"
+msgstr ""
+
+#: includes/class-customize.php:324
+msgid "All options have been succesfully imported and saved"
+msgstr ""
+
+#: includes/class-customize.php:331
+msgid "Loading preview..."
+msgstr ""
+
+#: includes/class-customize.php:341
+msgid "Loading ..."
+msgstr ""
+
+#: includes/class-customize.php:465
+msgid "Customize Plus: missing class %s for panel type %s."
+msgstr ""
+
+#: includes/class-customize.php:542
+msgid "Customize Plus: missing class %s for section type %s."
+msgstr ""
+
+#: includes/class-customize.php:653
+msgid "Customize Plus: missing class %s for control type %s."
+msgstr ""
+
+#: includes/class-requirements.php:90
+msgid ""
+"<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible "
+"with your PHP version (%s).<br />Reccomended PHP version &ndash; %s (or "
+"higher).</p><a href=\"%s\">&larr; Return to the plugins screen</a>"
+msgstr ""
+
+#: includes/class-requirements.php:107
+msgid ""
+"<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible "
+"with your version of WordPress (%s).<br />Reccomended WordPress version "
+"&ndash; %s (or higher).</p><a href=\"%s\">&larr; Return to the plugins "
+"screen</a> <a href=\"%s\"%s>Continue and activate anyway &rarr;</a>"
+msgstr ""
+
+#: includes/class-sanitize.php:599
+msgid "Customize Plus | API error: value %s must be numeric or null."
+msgstr ""
+
+#: includes/class-sanitize.php:618
+msgid "Customize Plus | API error: value %s must be a integer."
+msgstr ""
+
+#: includes/class-sanitize.php:634
+msgid "Customize Plus | API error: value %1$s must be one of %2$s."
+msgstr ""
+
+#: includes/class-sanitize.php:649
+msgid "Customize Plus | API error: value %s must be a boolean."
+msgstr ""
+
+#: includes/class-sanitize.php:664
+msgid "Customize Plus | API error: value %s must be a string."
+msgstr ""
+
+#: includes/class-theme.php:174
+#. translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code)
+msgid "%1$s no %2$s given."
+msgstr ""
+
+#: includes/class-theme.php:182 includes/class-theme.php:195
+#. translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code)
+msgid "%1$s %2$s must be an array."
+msgstr ""
+
+#: includes/class-theme.php:186
+#. translators: %1$s is 'Plugin_Name: ', %2$s is the object (code)
+msgid "%1$s no %2$s array given."
+msgstr ""
+
+#: includes/class-theme.php:280
+#. translators: %1$s is 'Plugin_Name: ', %2$s and %3$s pieces of code
+msgid "%1$s %2$s root components need a %3$s value."
+msgstr ""
+
+#: includes/class-theme.php:321
+#. translators: %1$s is 'Plugin_Name: ', %2$s is the type of value (code)
+msgid "%1$s every setting must have a %2$s value."
+msgstr ""
+
+#: includes/class-validate.php:31
+msgid "The value should be a list."
+msgstr ""
+
+#: includes/class-validate.php:35
+msgid "The value %s is not a choice."
+msgstr ""
+
+#: includes/class-validate.php:55
+msgid "The value is not an allowed choice."
+msgstr ""
+
+#: includes/customize-classes.php:313
+msgid "You must supply a value."
+msgstr ""
+
+#: includes/customize-classes.php:685
+msgid "The checkbox should be either checked or unchecked."
+msgstr ""
+
+#: includes/customize-classes.php:779
+msgid "Cancel"
+msgstr ""
+
+#: includes/customize-classes.php:780
+msgid "Choose"
+msgstr ""
+
+#: includes/customize-classes.php:781
+msgid "Clear selection"
+msgstr ""
+
+#: includes/customize-classes.php:782
+msgid "No color selected"
+msgstr ""
+
+#: includes/customize-classes.php:783
+msgid "Show color picker"
+msgstr ""
+
+#: includes/customize-classes.php:784
+msgid "Hide color picker"
+msgstr ""
+
+#: includes/customize-classes.php:785
+msgid "Color not in the allowed palette."
+msgstr ""
+
+#: includes/customize-classes.php:826
+msgid "Select Color"
+msgstr ""
+
+#: includes/customize-classes.php:892
+msgid "The color is not in the palette."
+msgstr ""
+
+#: includes/customize-classes.php:896
+msgid "Transparent is not allowed for this setting."
+msgstr ""
+
+#: includes/customize-classes.php:899
+msgid "RGBA color is not allowed for this setting."
+msgstr ""
+
+#: includes/customize-classes.php:1081
+msgid "Enable Google fonts"
+msgstr ""
+
+#: includes/customize-classes.php:1177
+msgid "Admin Menu"
+msgstr ""
+
+#: includes/customize-classes.php:1202
+msgid "Welcome Screen"
+msgstr ""
+
+#: includes/customize-classes.php:1213
+msgid "Post Formats"
+msgstr ""
+
+#: includes/customize-classes.php:1232
+msgid "Media"
+msgstr ""
+
+#: includes/customize-classes.php:1257
+msgid "Image Editing"
+msgstr ""
+
+#: includes/customize-classes.php:1271
+msgid "Tinymce"
+msgstr ""
+
+#: includes/customize-classes.php:1307
+msgid "Posts"
+msgstr ""
+
+#: includes/customize-classes.php:1326
+msgid "Sorting"
+msgstr ""
+
+#: includes/customize-classes.php:1350
+msgid "Social"
+msgstr ""
+
+#: includes/customize-classes.php:1366
+msgid "Wordpress Org"
+msgstr ""
+
+#: includes/customize-classes.php:1383
+msgid "Products"
+msgstr ""
+
+#: includes/customize-classes.php:1398
+msgid "Taxonomies"
+msgstr ""
+
+#: includes/customize-classes.php:1405
+msgid "Widgets"
+msgstr ""
+
+#: includes/customize-classes.php:1413
+msgid "Notifications"
+msgstr ""
+
+#: includes/customize-classes.php:1431
+msgid "Misc"
+msgstr ""
+
+#: includes/customize-classes.php:1751
+msgid "The value is not a number."
+msgstr ""
+
+#: includes/customize-classes.php:1752
+msgid "The value must be an integer, not a float."
+msgstr ""
+
+#: includes/customize-classes.php:1753
+msgid "The value must be an integer number."
+msgstr ""
+
+#: includes/customize-classes.php:1754
+msgid "The number must be higher than %s."
+msgstr ""
+
+#: includes/customize-classes.php:1755
+msgid "The number must be lower than %s."
+msgstr ""
+
+#: includes/customize-classes.php:1756
+msgid "The value must be a multiple of %s."
+msgstr ""
+
+#: includes/customize-classes.php:1793
+msgid "The value must be a number."
+msgstr ""
+
+#: includes/customize-classes.php:1797
+msgid "The number can not be a float."
+msgstr ""
+
+#: includes/customize-classes.php:1805
+msgid "The number must be a multiple of %s."
+msgstr ""
+
+#: includes/customize-classes.php:1809
+msgid "The number must be a higher than %s."
+msgstr ""
+
+#: includes/customize-classes.php:1813
+msgid "The number must be a lower than %s."
+msgstr ""
+
+#: includes/customize-classes.php:2068
+msgid "The value must be a string or a JSONified string."
+msgstr ""

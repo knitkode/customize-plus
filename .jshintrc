@@ -1,4 +1,0 @@
-{
-  "extends": "config/common/.jshintrc-base",
-  "esnext": true
-}
