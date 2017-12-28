@@ -1,10 +1,20 @@
-/* global gulp, $, CONFIG, PLUGINS */
+/* global CONFIG, PLUGINS */
 /* jshint node: true */
 'use strict';
 
 var PATHS = global.PATHS;
 var pkg = require('../../package.json');
-
+const gulp = require('gulp');
+const gulpIf = require('gulp-if');
+const cache = require('gulp-cache');
+const imagemin = require('gulp-imagemin');
+const sass = require('gulp-sass');
+const postcss = require('gulp-postcss');
+const cssnano = require('gulp-cssnano');
+const base64 = require('gulp-base64');
+const rename = require('gulp-rename');
+const replace = require('gulp-replace');
+const include = require('gulp-include');
 
 /**
  * Build
@@ -47,8 +57,8 @@ gulp.task('_base-images', function() {
       '!' + PATHS.src.images + '*.svg', // svg are inlined in css
       '!' + PATHS.src.images + '*.dev*' // exclude dev images (kind of sketches)
     ])
-    .pipe($.cache($.imagemin(PLUGINS.imagemin)))
-    .pipe($.if(function (file) {
+    .pipe(cache(imagemin(PLUGINS.imagemin)))
+    .pipe(gulpIf(function (file) {
       // for the props of `file` see http://stackoverflow.com/a/33245138/1938970
       return !file.relative.match(/^_/); // exclude `private` images
     }, gulp.dest(PATHS.build.images)));
@@ -65,17 +75,17 @@ gulp.task('_base-styles', ['_base-images'], function() {
   var banner = CONFIG.isDist ? require('lodash.template')(CONFIG.credits)({ pkg: pkg }) : '';
   PLUGINS.base64.baseDir = PATHS.src.root;
   return gulp.src(PATHS.src.styles + '*.scss')
-    .pipe($.if(CONFIG.isDist, $.replace(CONFIG.creditsPlaceholder, banner)))
-    .pipe($.sass.sync(PLUGINS.sass).on('error', $.sass.logError))
-    .pipe($.postcss([
+    .pipe(gulpIf(CONFIG.isDist, replace(CONFIG.creditsPlaceholder, banner)))
+    .pipe(sass.sync(PLUGINS.sass).on('error', sass.logError))
+    .pipe(postcss([
       require('autoprefixer')(PLUGINS.autoprefixer),
       require('css-mqpacker')(PLUGINS.cssMqpacker)
     ]))
-    .pipe($.base64(PLUGINS.base64))
-    .pipe($.if(CONFIG.isDist, $.replace(CONFIG.creditsPlaceholder, banner)))
+    .pipe(base64(PLUGINS.base64))
+    .pipe(gulpIf(CONFIG.isDist, replace(CONFIG.creditsPlaceholder, banner)))
     .pipe(gulp.dest(PATHS.build.styles))
-    .pipe($.if(CONFIG.isDist, $.cssnano(PLUGINS.cssnano)))
-    .pipe($.rename({ suffix: '.min' }))
+    .pipe(gulpIf(CONFIG.isDist, cssnano(PLUGINS.cssnano)))
+    .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.styles));
 });
 
@@ -91,9 +101,9 @@ gulp.task('_base-php', function() {
   var path = CONFIG.isDist ? PATHS.src.includes + '*.php' : PATHS.src.includes + '**/*.php';
   return gulp.src(path)
     // transform php `require` in gulp-include `require` to inline php files in one file
-    .pipe($.if(CONFIG.isDist, $.replace("require ( KKCP_PLUGIN_DIR . 'includes/", '//=require ')))
-    .pipe($.include())
-    .pipe($.if(CONFIG.isDist, $.replace(/<\?php\s\/\/\s@partial/g, ''))) // remove extra `<?php // @partial`
+    .pipe(gulpIf(CONFIG.isDist, replace("require ( KKCP_PLUGIN_DIR . 'includes/", '//=require ')))
+    .pipe(include())
+    .pipe(gulpIf(CONFIG.isDist, replace(/<\?php\s\/\/\s@partial/g, ''))) // remove extra `<?php // @partial`
     .pipe(gulp.dest(PATHS.build.includes));
 });
 

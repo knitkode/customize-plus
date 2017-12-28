@@ -1,11 +1,26 @@
-/* global gulp, $, CONFIG, PLUGINS */
+/* global CONFIG, PLUGINS */
 /* jshint node: true */
 'use strict';
 
 var PATHS = global.PATHS;
-var StreamQueue = require('streamqueue');
-var extend = require('deep-extend');
 var pkg = require('../../package.json');
+const StreamQueue = require('streamqueue');
+const extend = require('deep-extend');
+const gulp = require('gulp');
+const gulpIf = require('gulp-if');
+const stripDebug = require('gulp-strip-debug');
+const modernizr = require('gulp-modernizr');
+const rename = require('gulp-rename');
+const uglify = require('gulp-uglify');
+const replace = require('gulp-replace');
+const header = require('gulp-header');
+const replace = require('gulp-replace');
+const uglify = require('gulp-uglify');
+const concat = require('gulp-concat');
+const header = require('gulp-header');
+const replace = require('gulp-replace');
+const uglify = require('gulp-uglify');
+const rename = require('gulp-rename');
 
 
 /**
@@ -49,7 +64,7 @@ gulp.task('_customize-scripts-admin_libs', function() {
   stream.queue(gulp.src([
   ]));
   return stream.done()
-    .pipe($.if(CONFIG.isDist, $.stripDebug()))
+    .pipe(gulpIf(CONFIG.isDist, stripDebug()))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
 
@@ -67,9 +82,9 @@ gulp.task('_customize-modernizr', function() {
   // the src path is just needed by gulp but we don't want gulp-modernizr to
   // automatically look for tests to do, we just defined them here above
   return gulp.src(PATHS.src.scripts + 'customize/index.js')
-    .pipe($.if(rebuild, $.modernizr(modernizrOpts)))
-    .pipe($.if(rebuild, $.rename('modernizr-custom.js')))
-    .pipe($.if(rebuild, $.uglify({ preserveComments: function (node, comment) {
+    .pipe(gulpIf(rebuild, modernizr(modernizrOpts)))
+    .pipe(gulpIf(rebuild, rename('modernizr-custom.js')))
+    .pipe(gulpIf(rebuild, uglify({ preserveComments: function (node, comment) {
       // {@link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/}
       // just keep the comment with License
       // this regex should work but it doesn't: /[\s\S]*\/\*\![\s\S]*(license)/gi
@@ -77,7 +92,7 @@ gulp.task('_customize-modernizr', function() {
         return true;
       }
     }})))
-    .pipe($.if(rebuild, gulp.dest(PATHS.src.scripts + 'vendor-custom')));
+    .pipe(gulpIf(rebuild, gulp.dest(PATHS.src.scripts + 'vendor-custom')));
 });
 
 /**
@@ -154,15 +169,15 @@ gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-rollup'], funct
     PATHS.src.npm + 'spectrum-colorpicker/spectrum.js',
   ]));
   stream.queue(gulp.src('.tmp/customize.js')
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
-    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    .pipe(gulpIf(CONFIG.isDist, replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
+    .pipe(gulpIf(CONFIG.isDist, header(CONFIG.credits, { pkg: pkg })))
   );
   return stream.done()
-    .pipe($.concat('customize.js', PLUGINS.concat))
+    .pipe(concat('customize.js', PLUGINS.concat))
     .pipe(gulp.dest(PATHS.build.scripts))
-    .pipe($.rename({ suffix: '.min' }))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = !!api.DEBUG;', '')))
-    .pipe($.if(CONFIG.isDist, $.uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulpIf(CONFIG.isDist, replace('var DEBUG = !!api.DEBUG;', '')))
+    .pipe(gulpIf(CONFIG.isDist, uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
 
@@ -173,14 +188,14 @@ gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-rollup'], funct
  */
 gulp.task('_customize-scripts-preview', function() {
   return gulp.src(PATHS.src.scripts + 'customize-preview.js')
-    // .pipe($.sourcemaps.init())
-    // .pipe($.buble())
-    // .pipe($.sourcemaps.write('.'))
-    .pipe($.concat('customize-preview.js', PLUGINS.concat))
-    .pipe($.if(CONFIG.isDist, $.header(CONFIG.credits, { pkg: pkg })))
+    // .pipe(sourcemaps.init())
+    // .pipe(buble())
+    // .pipe(sourcemaps.write('.'))
+    .pipe(concat('customize-preview.js', PLUGINS.concat))
+    .pipe(gulpIf(CONFIG.isDist, header(CONFIG.credits, { pkg: pkg })))
     .pipe(gulp.dest(PATHS.build.scripts))
-    .pipe($.if(CONFIG.isDist, $.replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
-    .pipe($.if(CONFIG.isDist, $.uglify(PLUGINS.uglify)))
-    .pipe($.rename({ suffix: '.min' }))
+    .pipe(gulpIf(CONFIG.isDist, replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
+    .pipe(gulpIf(CONFIG.isDist, uglify(PLUGINS.uglify)))
+    .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(PATHS.build.scripts));
 });

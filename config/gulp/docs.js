@@ -1,4 +1,4 @@
-/* global gulp, $, PLUGINS */
+/* global PLUGINS */
 /* jshint node: true */
 'use strict';
 
@@ -10,6 +10,12 @@ var pathsScriptsToDocument = [
   '!' + PATHS.src.scripts + 'vendor-custom/**/*.js'
 ];
 var pathsScriptsReadyToDocument = './docs/js/scripts-to-document/**/*.js';
+
+const gulp = require('gulp');
+const trimlines = require('gulp-trimlines');
+const include = require('gulp-include');
+const docco = require('gulp-docco');
+const jsdoc = require('gulp-jsdoc');
 
 
 /**
@@ -26,8 +32,8 @@ gulp.task('docs', ['_docs-docco', '_docs-jsdoc', '_docs-jsduck']);
  */
 gulp.task('_docs-prepare-scripts', function() {
   return gulp.src(pathsScriptsToDocument)
-    // .pipe($.trimlines(PLUGINS.trimlines))
-    .pipe($.include())
+    // .pipe(trimlines(PLUGINS.trimlines))
+    .pipe(include())
     .pipe(gulp.dest('./docs/js/scripts-to-document'));
 });
 
@@ -38,7 +44,7 @@ gulp.task('_docs-prepare-scripts', function() {
  */
 gulp.task('_docs-docco', ['_docs-prepare-scripts'], function() {
   return gulp.src(pathsScriptsReadyToDocument)
-    .pipe($.docco())
+    .pipe(docco())
     .pipe(gulp.dest('./docs/js/docco'));
 });
 
@@ -52,7 +58,7 @@ gulp.task('_docs-jsdoc', ['_docs-prepare-scripts'], function() {
   return gulp.src([pathsScriptsReadyToDocument,
     '!./docs/js/scripts-to-document/*.js'])
   // return gulp.src(pathsScriptsReadyToDocument)
-    .pipe($.jsdoc('./docs/js/jsdoc'));
+    .pipe(jsdoc('./docs/js/jsdoc'));
 });
 
 /**
