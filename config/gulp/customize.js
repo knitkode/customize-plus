@@ -178,7 +178,15 @@ gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-rollup'], funct
     .pipe(gulp.dest(PATHS.build.scripts))
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulpIf(CONFIG.isDist, replace('var DEBUG = !!api.DEBUG;', '')))
-    .pipe(gulpIf(CONFIG.isDist, uglify(extend(PLUGINS.uglify, PLUGINS.uglifyCustomScripts))))
+    .pipe(gulpIf(CONFIG.isDist, uglify(extend({}, PLUGINS.uglify, PLUGINS.uglifyCustomScripts, {
+      preserveComments: function (node, comment) {
+      // {@link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/}
+      // just keep the comment with License
+      // this regex should work but it doesn't: /[\s\S]*\/\*\![\s\S]*(license)/gi
+      if (/license/gi.test(comment.value)) {
+        return true;
+      }
+    }}))))
     .pipe(gulp.dest(PATHS.build.scripts));
 });
 
