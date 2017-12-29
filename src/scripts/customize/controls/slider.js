@@ -27,10 +27,10 @@ let Control = api.controls.Base.extend({
    * @override
    */
   validate: function (newValue) {
-    var params = this.params;
-    var errorMsg = '';
-    var unit = '';
-    var number = '';
+    const params = this.params;
+    let errorMsg = '';
+    let unit = '';
+    let number = '';
 
     if (params.units) {
       unit = this._extractFirstUnit(newValue);
@@ -80,7 +80,7 @@ let Control = api.controls.Base.extend({
    * Set DOM element as control properties
    */
   _setDOMelements: function () {
-    var container = this._container;
+    const container = this._container;
     /** @type {HTMLElement} */
     this.__inputNumber = container.getElementsByClassName('kkcp-slider-number')[0];
     /** @type {JQuery} */
@@ -92,15 +92,20 @@ let Control = api.controls.Base.extend({
    * Init slider and bind input UI.
    */
   _initSliderAndBindInputs: function () {
-    var self = this;
-    var params = self.params;
-    var inputNumber = self.__inputNumber;
-    var $inputSlider = self.__$inputSlider;
+    const self = this;
+    const params = self.params;
+    const inputNumber = self.__inputNumber;
+    const $inputSlider = self.__$inputSlider;
+    const onInputNumberChange = function () {
+      var value = this.value;
+      $inputSlider.slider('value', value);
+      self._setPartialValue({ _number: value });
+    };
 
     // Bind click action to unit picker
     // (only if there is more than one unit allowed)
     if (params.units && params.units.length > 1) {
-      var $inputUnits = self.__$inputUnits;
+      let $inputUnits = self.__$inputUnits;
       $inputUnits.on('click', function () {
         $inputUnits.removeClass('kkcp-current');
         this.className += ' kkcp-current';
@@ -109,14 +114,11 @@ let Control = api.controls.Base.extend({
     }
 
     // Bind number input
-    inputNumber.onchange = function () {
-      var value = this.value;
-      $inputSlider.slider('value', value);
-      self._setPartialValue({ _number: value });
-    };
+    inputNumber.onchange = onInputNumberChange;
+    inputNumber.onkeyup = onInputNumberChange;
 
     // Init Slider
-    var sliderOptions = params.attrs || {};
+    let sliderOptions = params.attrs || {};
     $inputSlider.slider(_.extend(sliderOptions, {
       value: self._extractFirstNumber(),
       slide: function(event, ui) {
@@ -138,8 +140,8 @@ let Control = api.controls.Base.extend({
    * @return {?string}       [description]
    */
   _extractFirstUnit: function (value) {
-    var valueOrigin = value || this.setting();
-    var matchesUnit = Regexes._extractUnit.exec(valueOrigin);
+    const valueOrigin = value || this.setting();
+    const matchesUnit = Regexes._extractUnit.exec(valueOrigin);
     if (matchesUnit && matchesUnit[0]) {
       return matchesUnit[0];
     }
@@ -151,8 +153,8 @@ let Control = api.controls.Base.extend({
    * @return {?string}              [description]
    */
   _extractFirstNumber: function (value) {
-    var valueOrigin = value || this.setting();
-    var matchesNumber = Regexes._extractNumber.exec(valueOrigin);
+    const valueOrigin = value || this.setting();
+    const matchesNumber = Regexes._extractNumber.exec(valueOrigin);
     if (matchesNumber && matchesNumber[0]) {
       return matchesNumber[0];
     }
@@ -165,7 +167,8 @@ let Control = api.controls.Base.extend({
    * @return {string}
    */
   _getValueFromUI: function (value) {
-    var output;
+    let output;
+
     if (value && value._number) {
       output = value._number.toString();
     } else {
@@ -188,9 +191,9 @@ let Control = api.controls.Base.extend({
    *                        uses `this.setting()` if a `null` value is passed.
    */
   _updateUIcustomControl: function (value) {
-    var params = this.params;
-    var number = this._extractFirstNumber(value);
-    var unit = this._extractFirstUnit(value);
+    const params = this.params;
+    const number = this._extractFirstNumber(value);
+    const unit = this._extractFirstUnit(value);
 
     // update number input
     this.__inputNumber.value = number;

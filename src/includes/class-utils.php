@@ -7,9 +7,9 @@
  * @subpackage Customize
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2017 KnitKode
- * @license    GPL-2.0+
+ * @license    GPLv3
  * @version    Release: pkgVersion
- * @link       https://knitkode.com/customize-plus
+ * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Utils {
 

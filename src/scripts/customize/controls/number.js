@@ -42,27 +42,26 @@ let Control = ControlBaseInput.extend({
     var attrs = params.attrs;
     var errorMsg = '';
 
-    if (isNaN(value)) {
+    if (isNaN(value) || value === null) {
       errorMsg += api.l10n['vNotAnumber'];
     } else {
-
-    }
-    if (!params.allowFloat) {
-      if (is_float(value)) {
-        errorMsg += api.l10n['vNoFloat'] + ' ';
-      } else if (!isInt(value.toString())) {
-        errorMsg += api.l10n['vNotAnInteger'] + ' ';
+      if (!params.allowFloat) {
+        if (is_float(value)) {
+          errorMsg += api.l10n['vNoFloat'] + ' ';
+        } else if (!isInt(value.toString())) {
+          errorMsg += api.l10n['vNotAnInteger'] + ' ';
+        }
       }
-    }
-    if (attrs) {
-      if (attrs.min && value < attrs.min) {
-        errorMsg += sprintf(api.l10n['vNumberLow'], attrs.min) + ' ';
-      }
-      if (attrs.max && value > attrs.max) {
-        errorMsg += sprintf(api.l10n['vNumberHigh'], attrs.max) + ' ';
-      }
-      if (attrs.step && !isMultipleOf(value.toString(), attrs.step)) {
-        errorMsg += sprintf(api.l10n['vNumberStep'], attrs.step) + ' ';
+      if (attrs) {
+        if (attrs.min && value < attrs.min) {
+          errorMsg += sprintf(api.l10n['vNumberLow'], attrs.min) + ' ';
+        }
+        if (attrs.max && value > attrs.max) {
+          errorMsg += sprintf(api.l10n['vNumberHigh'], attrs.max) + ' ';
+        }
+        if (attrs.step && !isMultipleOf(value.toString(), attrs.step)) {
+          errorMsg += sprintf(api.l10n['vNumberStep'], attrs.step) + ' ';
+        }
       }
     }
 

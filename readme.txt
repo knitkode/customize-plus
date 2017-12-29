@@ -12,7 +12,6 @@ Donate link: https://liberapay.com/knitkode/donate
 Enhance and extend the WordPress Customizer in your themes.
 
 
-
 == Description ==
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)]()
 [![GitHub release](https://img.shields.io/github/release/knitkode/customize-plus.svg)]()
@@ -20,25 +19,43 @@ Enhance and extend the WordPress Customizer in your themes.
 
 Customize Plus brings powerful custom controls fully integrated in the WordPress Customizer, the code, the admin UI and the API totally looks like WordPress, as it should be. Customize Plus extends the WordPress API to create all the controls you need leveraging the JavaScript API. All the `theme_mods` or `options` managed by Customize Plus controls are automatically validated and sanitized. You do not even need to define the fallback value when retrieving them. End users will also benefit from this plugin, for instance they will be able to separately reset the control values of each control to the initial session or factory value. This and many other features are extended in [Customize Plus Premium](https://knitkode.com/products/customize-plus-premium/) enriching the Customize experience not only for developers but also for users. Developers will also find useful the plugin [Customize Plus Builder](https://knitkode.com/products/customize-plus-builder/) to further improve their development experience.
 
-Documentation is available at [knitkode.com/docs/customize-plus](https://knitkode.com/docs/customize-plus)
-
-[Development](https://github.com/knitkode/customize-plus/tree/master) and [issues](https://github.com/knitkode/customize-plus/issues) on [github](https://github.com/knitkode/customize-plus).
-
+= Links =
+* [Project page](https://knitkode.com/products/customize-plus)
+* [Documentation](https://knitkode.com/docs/customize-plus)
+* [Development](https://github.com/knitkode/customize-plus/tree/develop) and [issues](https://github.com/knitkode/customize-plus/issues) on [github](https://github.com/knitkode/customize-plus)
 
 = What does this plugin do? =
 Improve the WordPress Customizer experience both for theme developers and their users. Note that themes' end users will not have any benefit without a theme that actively implements Customize Plus.
-
 
 = Who is this Plugin ideal for? =
 Anyone interested in using the WordPress Customize interface. Especially theme developers who want to build rich Customizer experiences for their users.
 
 = Features =
-
+* Controls can be reset individually
+* Controls are lightweight and fast to load
+* WordPress like UI
+* Markdown supported in control's titles and descriptions
 * Custom controls implemented
- *
-
-**COMING SOON**
-Take a look at its [roadmap here](https://knitkode.com/roadmap#customize-plus?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=coming_soon&utm_campaign=readme).
+  1. **text / email / url**
+  2. **textarea** / **wp_editor**
+  3. **number**
+  4. **toggle** / **switch** / **checkbox**
+  5. **radio** / **radio image** / **buttonset**
+  6. **multicheck**
+  7. **slider**
+  8. **color** / **alpha** / **palette** / **transparent**
+  9. **font family** / **font weight**
+  10. **select** / **dropdown** / **selectize** / **multiselect** / **sortable multiselect**
+  11. **sortable**
+  12. **tags / sortable tags**
+  13. **icons**
+  14. **content** / **markdown**
+  15. **WordPress native controls***
+  16. **dynamic color** *(Premium)*
+  17. **dynamic size** *(Premium)*
+  18. **datepicker** *(Premium)*
+  19. **knob** *(Premium)*
+* **COMING SOON**: take a look at the [roadmap here](https://knitkode.com/roadmap#customize-plus?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=coming_soon&utm_campaign=readme)
 
 
 == Installation ==
@@ -60,7 +77,6 @@ Go to Loco Translate > Home in the left-hand menu to start translating
 Checkout the [documentation here](https://knitkode.com/docs/customize-plus/getting-started/integration?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme). A tool to facilitate this task is [Customize Plus Builder](https://knitkode.com/products/customize-plus-builder?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme), you can [try it here](https://knitkode.com/customize-plus-builder).
 
 = Translations =
-
 * English - default
 * Contributions are welcome
 
@@ -68,7 +84,6 @@ Checkout the [documentation here](https://knitkode.com/docs/customize-plus/getti
 
 
 == Frequently Asked Questions ==
-
 
 = Where can I find complete documentation? =
 

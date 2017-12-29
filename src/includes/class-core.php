@@ -11,9 +11,9 @@ if ( ! class_exists( 'KKcp' ) ):
 	 * @subpackage Core
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2017 KnitKode
-	 * @license    GPL-2.0+
+	 * @license    GPLv3
 	 * @version    Release: pkgVersion
-	 * @link       https://knitkode.com/customize-plus
+	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp {
 
@@ -29,9 +29,6 @@ if ( ! class_exists( 'KKcp' ) ):
 			if ( is_admin() ) {
 				// Add plugin actions links
 				add_filter( 'plugin_action_links_' . plugin_basename( KKCP_PLUGIN_FILE ), array( __CLASS__, 'actions_links' ), -10 );
-
-				// Add plugin meta links
-				add_filter( 'plugin_row_meta', array( __CLASS__, 'meta_links' ), 10, 2 );
 			}
 
 			add_action( 'plugins_loaded', array( __CLASS__, 'init' ) );
@@ -65,24 +62,6 @@ if ( ! class_exists( 'KKcp' ) ):
 		 */
 		public static function actions_links( $links ) {
 			$links[] = '<a href="' . add_query_arg( array( 'page' => 'customize-plus', 'tab' => 'about' ), admin_url( 'options-general.php' ) ) . '">' . esc_html__( 'About' ) . '</a>';
-			return $links;
-		}
-
-		/**
-		 * Add plugin meta links
-		 *
-		 * @since  1.0.0
-		 * @param  array  $links Links array in which we would prepend our link.
-		 * @param  string $file  Plugin file name
-		 */
-		public static function meta_links( $links, $file ) {
-			// Check plugin
-			if ( $file === plugin_basename( KKCP_PLUGIN_FILE ) ) {
-				unset( $links[2] );
-				$links[] = '<a href="https://knitkode.com/products/customize-plus" target="_blank">' . esc_html__( 'Project homepage' ) . '</a>';
-				$links[] = '<a href="https://knitkode.com/support" target="_blank">' . esc_html__( 'Support' ) . '</a>';
-				$links[] = '<a href="http://wordpress.org/extend/plugins/customize-plus/changelog/" target="_blank">' . esc_html__( 'Changelog' ) . '</a>';
-			}
 			return $links;
 		}
 
