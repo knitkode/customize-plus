@@ -10,7 +10,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2017 KnitKode
 	 * @license    GPL-2.0+
-	 * @version    Release: 1.0.0
+	 * @version    Release: pkgVersion
 	 * @link       https://knitkode.com/customize-plus
 	 */
 	class KKcp_Theme extends KKcp_Singleton {
@@ -171,7 +171,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 						return sanitize_key( $configuration['prefix'] );
 					} else {
 						/* translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code) */
-						wp_die( sprintf( esc_html__( '%1$s no %2$s given.', 'kkcp' ), 'Customize Plus', '`prefix`' ) );
+						wp_die( sprintf( esc_html__( '%1$s no %2$s given.' ), 'Customize Plus', '`prefix`' ) );
 					}
 				case 'customize_tree':
 					if ( isset( $configuration[ 'customize_tree' ] ) ) {
@@ -179,11 +179,11 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 							return $configuration[ 'customize_tree' ];
 						} else {
 							/* translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code) */
-							wp_die( sprintf( esc_html__( '%1$s %2$s must be an array.', 'kkcp' ), 'Customize Plus', '`customize_tree`' ) );
+							wp_die( sprintf( esc_html__( '%1$s %2$s must be an array.' ), 'Customize Plus', '`customize_tree`' ) );
 						}
 					} else {
 						/* translators: %1$s is 'Plugin_Name: ', %2$s is the object (code) */
-						wp_die( sprintf( esc_html__( '%1$s no %2$s array given.', 'kkcp' ), 'Customize Plus', '`customize_tree`' ) );
+						wp_die( sprintf( esc_html__( '%1$s no %2$s array given.' ), 'Customize Plus', '`customize_tree`' ) );
 					}
 					break;
 				case 'styles':
@@ -192,7 +192,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 							return $configuration[ 'styles' ];
 						} else {
 							/* translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code) */
-							wp_die( sprintf( esc_html__( '%1$s %2$s must be an array.', 'kkcp' ), 'Customize Plus', '`styles`' ) );
+							wp_die( sprintf( esc_html__( '%1$s %2$s must be an array.' ), 'Customize Plus', '`styles`' ) );
 						}
 					}
 					break;
@@ -277,7 +277,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 					}
 				} else {
 					/* translators: %1$s is 'Plugin_Name: ', %2$s and %3$s pieces of code */
-					wp_die( sprintf( esc_html__( '%1$s %2$s root components need a %3$s value.', 'kkcp' ), 'Customize Plus', '`customize_tree`', '`subject`' ) );
+					wp_die( sprintf( esc_html__( '%1$s %2$s root components need a %3$s value.' ), 'Customize Plus', '`customize_tree`', '`subject`' ) );
 				}
 			}
 		}
@@ -318,7 +318,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 						}
 						else {
 							/* translators: %1$s is 'Plugin_Name: ', %2$s is the type of value (code) */
-							wp_die( sprintf( esc_html__( '%1$s every setting must have a %2$s value.', 'kkcp' ), 'Customize Plus', '`default`' ) );
+							wp_die( sprintf( esc_html__( '%1$s every setting must have a %2$s value.' ), 'Customize Plus', '`default`' ) );
 						}
 					}
 				}
@@ -374,7 +374,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 			} else if ( isset( self::$settings_defaults[ $full_id ] ) ) {
 				return self::$settings_defaults[ $full_id ];
 			} else {
-				return null;
+				return null; // @@tocheck \\
 			}
 		}
 
@@ -405,7 +405,8 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 endif;
 
 /**
- * Export useful functions to global namespace
+ * Export useful functions to global namespace // @@doubt not sure if provide
+ * these functions, and whether do it this way or with `call_user_func` \\
  * @since 1.0.0
  */
 

@@ -1975,13 +1975,13 @@ input[type=text].sp-input.sp-validation-error {
  * Customize Plus v1.0.0 (https://knitkode.com/products/customize-plus)
  * Enhance and extend the WordPress Customizer.
  * Copyright (c) 2014-2017 KnitKode <dev@knitkode.com> (https://knitkode.com/)
- * @license SEE LICENSE IN license.txt (Last change on: 28-11-2017)
+ * @license SEE LICENSE IN license.txt (Last change on: 29-11-2017)
  */
 /**
  * Shadow on sidebar
  *
  * Add a subtle shadow to the customize sidebar
- *
+ * // @@doubt not sure if it's good to alter the iframe displayment this way \\
  */
 .wp-full-overlay.expanded .wp-full-overlay-sidebar {
   box-shadow: 50px 0 85px -65px rgba(0, 0, 0, 0.15);

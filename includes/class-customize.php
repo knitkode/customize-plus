@@ -10,7 +10,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2017 KnitKode
 	 * @license    GPL-2.0+
-	 * @version    Release: 1.0.0
+	 * @version    Release: pkgVersion
 	 * @link       https://knitkode.com/customize-plus
 	 */
 	class KKcp_Customize {
@@ -32,7 +32,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				// 'sidebar' => 'WP_Customize_Sidebar_Section',
 				// 'themes' => 'WP_Customize_Themes_Section',
 			),
-			'controls' => array(
+			'controls' => array( // @@note search for `$this->register_control_type` in core \\
 				// WordPress controls
 				'background' => 'WP_Customize_Background_Image_Control',
 				'background_position' => 'WP_Customize_Background_Position_Control',
@@ -245,12 +245,12 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			$required = array(
 				'introTitle' => 'Customize Plus',
 				/* translators %s is the Plugin name */
-				'introText' => sprintf( esc_html__( 'Welcome to %s', 'kkcp' ), 'Customize Plus' ),
-				'back' => esc_html__( 'Back', 'kkcp' ),
+				'introText' => sprintf( esc_html__( 'Welcome to %s' ), 'Customize Plus' ),
+				'back' => esc_html__( 'Back' ),
 				'pluginName' => 'Customize Plus',
-				'tools' => esc_html__( 'Tools', 'kkcp' ),
-				'vRequired' => esc_html__( 'A value is required', 'kkcp' ),
-				'vInvalid' => esc_html__( 'Invalid value', 'kkcp' ),
+				'tools' => esc_html__( 'Tools' ),
+				'vRequired' => esc_html__( 'A value is required' ),
+				'vInvalid' => esc_html__( 'Invalid value' ),
 			);
 			$additional = (array) apply_filters( 'kkcp_customize_get_js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );
@@ -313,22 +313,22 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 *
 		 * @since  1.0.0
 		 */
-		public static function get_view_loader() {
+		public static function get_view_loader() { // @@wptight-layout \\
 			?>
 			<div id="kkcp-loader-preview" class="wp-full-overlay-main kkcp-overlay--preview">
 				<div class="kkcpui-midpoint-wrap">
 					<div class="kkcpui-midpoint">
 						<img id="kkcp-loader-img" src="<?php echo esc_url( plugins_url( 'assets/images/logo-white.png', KKCP_PLUGIN_FILE ) ); ?>">
 						<?php if ( isset ( $_GET['kkcp_import'] ) ): // input var okay ?>
-							<h1 id="kkcp-loader-title" class="kkcp-text"><?php esc_html_e( 'Import done', 'kkcp' ); ?></h1>
-							<h3 id="kkcp-loader-text" class="kkcp-text"><?php esc_html_e( 'All options have been succesfully imported and saved', 'kkcp' ); ?></h3>
+							<h1 id="kkcp-loader-title" class="kkcp-text"><?php esc_html_e( 'Import done' ); ?></h1>
+							<h3 id="kkcp-loader-text" class="kkcp-text"><?php esc_html_e( 'All options have been succesfully imported and saved' ); ?></h3>
 						<?php else : ?>
 							<h1 id="kkcp-loader-title" class="kkcp-text">Customize Plus</h1>
 							<h3 id="kkcp-loader-text" class="kkcp-text"></h3>
 						<?php endif; ?>
 						<div class="kkcp-text">
 							<span class="spinner"></span>
-							<?php esc_html_e( 'Loading preview...', 'kkcp' ); ?>
+							<?php esc_html_e( 'Loading preview...' ); ?>
 						</div>
 					</div>
 				</div>
@@ -338,7 +338,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					<div class="kkcpui-midpoint">
 						<div class="kkcp-text">
 							<span class="spinner"></span>
-							<?php esc_html_e( 'Loading ...', 'kkcp' ); ?>
+							<?php esc_html_e( 'Loading ...' ); ?>
 						</div>
 					</div>
 				</div>
@@ -462,7 +462,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					$wp_customize->add_panel( new $panel_type_class( $wp_customize, $panel_id, $panel_args ) );
 				// if the desired class doesn't exist just use the plain WordPress API
 				} else {
-					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for panel type %s.', 'kkcp' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $panel_type_class . '</code>', '<code><b>' . $panel_type . '</b></code>' ) );
+					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for panel type %s.' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $panel_type_class . '</code>', '<code><b>' . $panel_type . '</b></code>' ) );
 				}
 			// if the desired panel type is not specified just use the plain WordPress API
 			} else {
@@ -539,7 +539,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					$wp_customize->add_section( new $section_type_class( $wp_customize, $section['id'], $section_args ) );
 				// if the desired class doesn't exist report the error
 				} else {
-					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for section type %s.', 'kkcp' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $section_type_class . '</code>', '<code><b>' . $section_type . '</b></code>' ) );
+					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for section type %s.' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $section_type_class . '</code>', '<code><b>' . $section_type . '</b></code>' ) );
 				}
 			// if the desired control type is not specified just use the plain WordPress API
 			} else {
@@ -586,7 +586,8 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			// then add setting
 			$setting_args = isset( $field_args['setting'] ) ? $field_args['setting'] : null;
 
-		
+			// @@todo remove the following 3 lines
+			// @see track https://core.trac.wordpress.org/ticket/34290#ticket \\
 			// % symbols get stripped out, we need to replace it with a double one \\
 			if ( isset( $setting_args['default'] ) ) {
 				$setting_args['default'] = str_replace( '%', '%%', $setting_args['default'] );
@@ -641,7 +642,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			}
 
 			// finally add control
-			$control_id = $setting_id;
+			$control_id = $setting_id; // @@doubt, maybe do something different... \\
 
 			// check if a custom type/class has been specified
 			if ( $control_type_class ) {
@@ -650,7 +651,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					$wp_customize->add_control( new $control_type_class( $wp_customize, $control_id, $control_args ) );
 				// if the desired class doesn't exist report the error
 				} else {
-					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for control type %s.', 'kkcp' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $control_type_class . '</code>', '<code><b>' . $control_type . '</b></code>' ) );
+					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for control type %s.' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $control_type_class . '</code>', '<code><b>' . $control_type . '</b></code>' ) );
 				}
 			// if the desired control type is not specified use the plain WordPress API
 			} else {

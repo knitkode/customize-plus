@@ -8,7 +8,7 @@
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2017 KnitKode
  * @license    GPL-2.0+
- * @version    Release: 1.0.0
+ * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
 class KKcp_Sanitize {
@@ -192,7 +192,7 @@ class KKcp_Sanitize {
 	 * @param  string $input
 	 * @return string
 	 */
-	public static function font_families( $input ) {
+	public static function font_families( $input ) { // @@todo to finish, check that the inputs are valid font family names \\
 		$font_families_sanitized = array();
 
 		// treat a string
@@ -472,7 +472,7 @@ class KKcp_Sanitize {
 					$sanitized_options = self::js_option( $key, $value, $allowed_options, $sanitized_options );
 			// 	}
 			// } else {
-			// 	// wp_die( sprintf( esc_html__( 'Customize Plus | API error: option %s is not allowed.' ), $key ) );
+			// 	// wp_die( sprintf( esc_html__( 'Customize Plus | API error: option %s is not allowed.' ), $key ) ); // @@todo api error \\
 			// }
 
 		}
@@ -495,7 +495,7 @@ class KKcp_Sanitize {
 		$sanitizer_function = null;
 
 		if ( ! isset( $allowed[ $opt_key ] ) || ! isset( $allowed[ $opt_key ]['sanitizer'] ) ) {
-		
+			// @@todo api warning \\
 			return $sanitized;
 		}
 
@@ -516,7 +516,7 @@ class KKcp_Sanitize {
 				$sanitized[ $opt_key ] = call_user_func_array( $sanitizer_function, array( $opt_value ) );
 			} else {
 				// $sanitized[ $opt_key ] = $opt_value;
-			
+				// @@todo api warning \\
 			}
 
 		// if we have nested sanitization
@@ -596,7 +596,7 @@ class KKcp_Sanitize {
 			return $input;
 		}
 		return null;
-		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be numeric or null.', 'kkcp' ), $input ) );
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be numeric or null.' ), $input ) ); // @@todo api error \\
 	}
 
 	/**
@@ -615,7 +615,7 @@ class KKcp_Sanitize {
 			return $input;
 		}
 
-		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a integer.', 'kkcp' ), $input ) );
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a integer.' ), $input ) ); // @@todo api error \\
 	}
 
 	/**
@@ -631,7 +631,7 @@ class KKcp_Sanitize {
 			return $input;
 		}
 
-		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.', 'kkcp' ), $input, implode( ', ', $list ) ) );
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input, implode( ', ', $list ) ) ); // @@todo api error \\
 	}
 
 	/**
@@ -646,7 +646,7 @@ class KKcp_Sanitize {
 			return $input;
 		}
 
-		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a boolean.', 'kkcp' ), $input ) );
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a boolean.' ), $input ) ); // @@todo api error \\
 	}
 
 	/**
@@ -661,6 +661,6 @@ class KKcp_Sanitize {
 			return $input;
 		}
 
-		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a string.', 'kkcp' ), $input ) );
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a string.' ), $input ) ); // @@todo api error \\
 	}
 }

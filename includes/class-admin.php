@@ -11,7 +11,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2017 KnitKode
 	 * @license    GPL-2.0+
-	 * @version    Release: 1.0.0
+	 * @version    Release: pkgVersion
 	 * @link       https://knitkode.com/customize-plus
 	 */
 	class KKcp_Admin extends KKcp_Singleton {
@@ -105,8 +105,8 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 
 			add_submenu_page(
 				self::MENU_PAGE,
-				esc_html__( 'Customize Plus', 'kkcp' ),
-				esc_html__( 'Customize Plus', 'kkcp' ),
+				esc_html__( 'Customize Plus' ),
+				esc_html__( 'Customize Plus' ),
 				'manage_options',
 				self::PARENT_HOOK,
 				array( $this, 'get_view' )
@@ -118,7 +118,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 				$hooks[] = add_submenu_page(
 					self::MENU_PAGE,
 					$subpage_args['title'],
-					esc_html__( 'Customize Plus', 'kkcp' ),
+					esc_html__( 'Customize Plus' ),
 					'manage_options',
 					self::PARENT_HOOK . 'tab=' . sanitize_key( $subpage_id ),
 					'__return_null'
@@ -167,11 +167,11 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 			} else {
 				$active_tab = $this->default_tab;
 			} ?>
-			<div id="kkcp-admin-<?php esc_attr_e( $active_tab, 'kkcp' ); ?>" class="wrap">
+			<div id="kkcp-admin-<?php esc_attr_e( $active_tab ); ?>" class="wrap">
 				<h2 class="nav-tab-wrapper">
 				<?php foreach ( $this->subpages as $subpage_id => $subpage_args ) {
 					$active_class = ( $subpage_id === $active_tab ) ? ' nav-tab-active' : ''; ?>
-					<a href="<?php echo esc_url( add_query_arg( array( 'page' => self::PARENT_HOOK, 'tab' => $subpage_id ), admin_url( self::MENU_PAGE ) ) ); ?>" class="nav-tab<?php esc_attr_e( $active_class, 'kkcp' ); ?>"><?php esc_html_e( $subpage_args['title'], 'kkcp' ); ?></a>
+					<a href="<?php echo esc_url( add_query_arg( array( 'page' => self::PARENT_HOOK, 'tab' => $subpage_id ), admin_url( self::MENU_PAGE ) ) ); ?>" class="nav-tab<?php esc_attr_e( $active_class ); ?>"><?php esc_html_e( $subpage_args['title'] ); ?></a>
 				<?php } ?>
 				</h2>
 				<?php	foreach ( $this->subpages as $subpage_id => $subpage_args ) {
@@ -182,7 +182,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 					}
 				} ?>
 			</div>
-		<?php
+		<?php // @@toimprove: substitute with: `require ( KKCP_PLUGIN_DIR . 'views/page-admin.php' );` \\
 		}
 	}
 

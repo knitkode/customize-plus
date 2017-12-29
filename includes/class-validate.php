@@ -8,7 +8,7 @@
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2017 KnitKode
  * @license    GPL-2.0+
- * @version    Release: 1.0.0
+ * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
 class KKcp_Validate {
@@ -28,11 +28,11 @@ class KKcp_Validate {
 		$input_decoded = json_decode( $value );
 
 		if ( ! is_array( $input_decoded ) ) {
-			$validity->add( 'wrong', esc_html__( 'The value should be a list.', 'kkcp' ) );
+			$validity->add( 'wrong', esc_html__( 'The value should be a list.' ) );
 		} else {
 			foreach ( $input_decoded as $key ) {
 				if ( ! isset( $control->choices[ $key ] ) ) {
-					$validity->add( 'wrong', sprintf( esc_html__( 'The value %s is not a choice.', 'kkcp' ), $key ) );
+					$validity->add( 'wrong', sprintf( esc_html__( 'The value %s is not a choice.' ), $key ) );
 				}
 			}
 		}
@@ -52,7 +52,7 @@ class KKcp_Validate {
  	 */
 	public static function string_in_choices( $validity, $value, $setting, $control ) {
 		if ( ! isset( $control->choices[ $value ] ) ) {
-			$validity->add( 'not_a_choice', esc_html__( 'The value is not an allowed choice.', 'kkcp' ) );
+			$validity->add( 'not_a_choice', esc_html__( 'The value is not an allowed choice.' ) );
 		}
 		return $validity;
 	}

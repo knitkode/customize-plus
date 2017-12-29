@@ -8,7 +8,7 @@
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2017 KnitKode
  * @license    GPL-2.0+
- * @version    Release: 1.0.0
+ * @version    Release: pkgVersion
  * @link       https://knitkode.com/customize-plus
  */
 abstract class KKcp_Singleton {

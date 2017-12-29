@@ -78,6 +78,13 @@ Documentation can be found at [knitkode.com/docs/customize-plus](https://knitkod
 First be sure.............Help is provided via the plugin support forum only, personal support by email is not available for this plugin.
 
 
+## Changelog ##
+
+
+### 1.0.0: December 2017 ###
+
+* First plugin release.
+
 
 ## Upgrade Notice ##
 
