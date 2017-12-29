@@ -138,7 +138,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-wp-i18n');
   grunt.loadNpmTasks('grunt-potomo');
   // grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-phpdocumentor');
+  // grunt.loadNpmTasks('grunt-phpdocumentor');
   // grunt.loadNpmTasks('grunt-flatdoc');
 
   // Register tasks
