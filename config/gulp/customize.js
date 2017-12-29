@@ -78,14 +78,21 @@ gulp.task('_customize-modernizr', function() {
   return gulp.src(PATHS.src.scripts + 'customize/index.js')
     .pipe(gulpIf(rebuild, modernizr(modernizrOpts)))
     .pipe(gulpIf(rebuild, rename('modernizr-custom.js')))
-    .pipe(gulpIf(rebuild, uglify({ preserveComments: function (node, comment) {
-      // {@link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/}
-      // just keep the comment with License
-      // this regex should work but it doesn't: /[\s\S]*\/\*\![\s\S]*(license)/gi
-      if (/license/gi.test(comment.value)) {
-        return true;
+    .pipe(gulpIf(rebuild, uglify({
+      preserveComments: function (node, comment) {
+        // {@link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/}
+        // just keep the comment with License
+        // this regex should work but it doesn't: /[\s\S]*\/\*\![\s\S]*(license)/gi
+        if (/license/gi.test(comment.value)) {
+          return true;
+        }
+      },
+      compress: false,
+      mangle: false,
+      output: {
+        beautify: true
       }
-    }})))
+    })))
     .pipe(gulpIf(rebuild, gulp.dest(PATHS.src.scripts + 'vendor-custom')));
 });
 
@@ -155,8 +162,8 @@ gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-rollup'], funct
   var stream = new StreamQueue({ objectMode: true });
   stream.queue(gulp.src([
     PATHS.src.npm + 'classlist.js/classList.js', // @@ie9 @@ie8 \\
-    PATHS.src.npm + 'knitkode-vendor/cp/modernizr-custom.js',
-    PATHS.src.npm + 'knitkode-vendor/cp/highlight.pack.js',
+    PATHS.src.npm + '@knitkode/vendor/cp/modernizr-custom.js',
+    PATHS.src.npm + '@knitkode/vendor/cp/highlight.pack.js',
     PATHS.src.npm + 'marked/lib/marked.js', // @@doubt or use http://git.io/vZ05a \\
     PATHS.src.npm + 'jQuery-ui-Slider-Pips/dist/jquery-ui-slider-pips.js', // @@todo, this is actually needed only in the layout_columns control... so maybe put it in the theme... \\
     PATHS.src.npm + 'selectize/dist/js/standalone/selectize.js',

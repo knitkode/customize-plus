@@ -7,7 +7,10 @@
     "namePretty": "Customize Plus",
     "nameShort": "KKcp",
     "textDomain": "kkcp",
-    "startYear": 2014
+    "startYear": 2014,
+    "deployGithub": {
+      "branch": "master"
+    }
   },
   "homepage": "https://knitkode.com/products/customize-plus",
   "author": {
@@ -33,10 +36,10 @@
     "u": "npm run update"
   },
   "dependencies": {
+    "@knitkode/vendor": "github:knitkode/vendor.git",
     "classlist.js": "github:eligrey/classList.js.git",
     "css-toggle-switch": "^4.0.2",
     "jQuery-ui-Slider-Pips": "github:simeydotme/jQuery-ui-Slider-Pips.git",
-    "knitkode-vendor": "gitlab:knitkode/knitkode-vendor.git",
     "locutus": "^2.0.6",
     "marked": "^0.3.6",
     "selectize": "^0.12.4",
