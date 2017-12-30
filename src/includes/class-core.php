@@ -46,11 +46,11 @@ if ( ! class_exists( 'KKcp' ) ):
 		 */
 		public static function init() {
 			// The "plugin_locale" filter is also used in load_plugin_textdomain()
-			$locale = apply_filters( 'plugin_locale', get_locale(), 'pkgTextDomain' );
+			$locale = apply_filters( 'plugin_locale', get_locale(), 'pkgTextdomain' );
 
 			// Make plugin available for translation
-			load_textdomain( 'pkgTextDomain', WP_LANG_DIR . '/customize-plus/pkgTextDomain-' . $locale . '.mo' );
-			load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( KKCP_PLUGIN_FILE ) ) . '/languages/' );
+			load_textdomain( 'pkgTextdomain', WP_LANG_DIR . '/customize-plus/pkgTextdomain-' . $locale . '.mo' );
+			load_plugin_textdomain( 'pkgTextdomain', false, dirname( plugin_basename( KKCP_PLUGIN_FILE ) ) . '/languages/' );
 		}
 
 		/**

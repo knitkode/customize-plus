@@ -16,8 +16,8 @@ module.exports = function (grunt) {
     // Add textdomain.
     addtextdomain: {
       options: {
-        textdomain: 'kkcp',
-        updateDomains: ['pkgTextDomain']
+        textdomain: 'pkgTextdomain',
+        updateDomains: ['pkgTextdomain']
       },
       target: {
         files: {

@@ -4,12 +4,14 @@
   "description": "Enhance and extend the WordPress Customizer.",
   "config": {
     "slug": "customize-plus",
-    "namePretty": "Customize Plus",
-    "nameShort": "KKcp",
-    "textDomain": "kkcp",
+    "title": "Customize Plus",
+    "textdomain": "kkcp",
     "startYear": 2014,
     "deployGithub": {
       "branch": "master"
+    },
+    "paths": {
+      "wpAssets": "../ui/customize-plus"
     }
   },
   "homepage": "https://knitkode.com/products/customize-plus",
