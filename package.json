@@ -35,7 +35,11 @@
   ],
   "scripts": {
     "update": "git submodule update --remote config/common && git add config/common && git commit -m \"Update config/common from wp-dev-lib\"",
-    "u": "npm run update"
+    "init": {
+      "git submodule init && git submodule update"
+    },
+    "u": "npm run update",
+    "i": "npm run init"
   },
   "dependencies": {
     "@knitkode/vendor": "github:knitkode/vendor.git",
@@ -49,7 +53,7 @@
     "validator": "9.2.x"
   },
   "devDependencies": {
-    "autoprefixer": "6.7.x",
+    "autoprefixer": "7.2.x",
     "conventional-changelog": "1.0.x",
     "css-mqpacker": "6.0.x",
     "deep-extend": "0.5.x",
@@ -76,7 +80,7 @@
     "gulp-data": "1.1.x",
     "gulp-debug": "3.2.x",
     "gulp-filelog": "0.4.x",
-    "gulp-flatten": "0.0.x",
+    "gulp-flatten": "0.4.x",
     "gulp-ftp": "1.0.x",
     "gulp-git": "2.5.x",
     "gulp-grunt": "0.5.x",

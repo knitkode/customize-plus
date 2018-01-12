@@ -4,6 +4,7 @@
 
 var PATHS = global.PATHS;
 var pkg = require('../../package.json');
+const fs = require('fs');
 const StreamQueue = require('streamqueue');
 const extend = require('deep-extend');
 const gulp = require('gulp');
@@ -79,18 +80,18 @@ gulp.task('_customize-modernizr', function() {
     .pipe(gulpIf(rebuild, modernizr(modernizrOpts)))
     .pipe(gulpIf(rebuild, rename('modernizr-custom.js')))
     .pipe(gulpIf(rebuild, uglify({
-      preserveComments: function (node, comment) {
-        // {@link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/}
-        // just keep the comment with License
-        // this regex should work but it doesn't: /[\s\S]*\/\*\![\s\S]*(license)/gi
-        if (/license/gi.test(comment.value)) {
-          return true;
-        }
-      },
       compress: false,
       mangle: false,
       output: {
-        beautify: true
+        beautify: true,
+        comments: function (node, comment) {
+          // {@link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/}
+          // just keep the comment with License
+          // this regex should work but it doesn't: /[\s\S]*\/\*\![\s\S]*(license)/gi
+          if (/license/gi.test(comment.value)) {
+            return true;
+          }
+        },
       }
     })))
     .pipe(gulpIf(rebuild, gulp.dest(PATHS.src.scripts + 'vendor-custom')));
@@ -178,12 +179,15 @@ gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-rollup'], funct
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulpIf(CONFIG.isDist, replace('var DEBUG = !!api.DEBUG;', '')))
     .pipe(gulpIf(CONFIG.isDist, uglify(extend({}, PLUGINS.uglify, PLUGINS.uglifyCustomScripts, {
-      preserveComments: function (node, comment) {
-      // {@link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/}
-      // just keep the comment with License
-      // this regex should work but it doesn't: /[\s\S]*\/\*\![\s\S]*(license)/gi
-      if (/license/gi.test(comment.value)) {
-        return true;
+      nameCache: JSON.parse(fs.readFileSync('../customize-plus-premium/config/uglify--customize-name_cache.json', 'utf8')),
+      output: {
+        comments: function (node, comment) {
+        // {@link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/}
+        // just keep the comment with License
+        // this regex should work but it doesn't: /[\s\S]*\/\*\![\s\S]*(license)/gi
+        if (/license/gi.test(comment.value)) {
+          return true;
+        }
       }
     }}))))
     .pipe(gulp.dest(PATHS.build.scripts));
