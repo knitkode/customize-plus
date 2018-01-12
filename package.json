@@ -26,7 +26,7 @@
     "url": "https://github.com/knitkode/customize-plus"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=8"
   },
   "files": [
     "src/scripts",
@@ -35,9 +35,7 @@
   ],
   "scripts": {
     "update": "git submodule update --remote config/common && git add config/common && git commit -m \"Update config/common from wp-dev-lib\"",
-    "init": {
-      "git submodule init && git submodule update"
-    },
+    "init": "git submodule init && git submodule update",
     "u": "npm run update",
     "i": "npm run init"
   },
