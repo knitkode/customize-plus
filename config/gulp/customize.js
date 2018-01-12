@@ -101,7 +101,7 @@ gulp.task('_customize-modernizr', function() {
  *
  * @access private
  */
-const rollupOpts = {
+const rollupInputOptions = {
   external: [
     'window',
     'document',
@@ -131,7 +131,7 @@ const rollupOpts = {
   ]
 }
 
-const rollupOptsWrite = {
+const rollupOutputOptions = {
   format: 'iife',
   indent: '  ',
   intro: 'var DEBUG = true;',
@@ -146,15 +146,14 @@ const rollupOptsWrite = {
     marked: 'marked',
     hljs: 'hljs',
   },
-  namedFunctionExpressions: false,
   interop: false,
 };
 
 gulp.task('_customize-scripts-admin-rollup', () => {
-  return require('rollup').rollup(extend(rollupOpts, {
-      entry: PATHS.src.scripts + 'customize/index.js'
+  return require('rollup').rollup(extend(rollupInputOptions, {
+      input: PATHS.src.scripts + 'customize/index.js'
     })).then((bundle) => {
-      return bundle.write(extend(rollupOptsWrite, { dest: '.tmp/customize.js' }));
+      return bundle.write(extend(rollupOutputOptions, { file: '.tmp/customize.js' }));
     });
 });
 
