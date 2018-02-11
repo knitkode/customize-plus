@@ -72,9 +72,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 			var helpClass = '';
 			var helpAttrs = '';
 			var id = data.id + idx++;
-			if (typeof choices[val] === 'string') {
-				label = choice;
-			} else {
+			if (!_.isUndefined(choice.label)) {
 				label = choice.label;
 				if (choice.help) {
 					helpClass = 'kkcp-help';
@@ -84,6 +82,8 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 					if (choice.help_text) helpAttrs += ' data-text=' + choice.help_text;
 					if (choice.help_video) helpAttrs += ' data-video=' + choice.help_video;
 				}
+			} else {
+				label = choice;
 			} #>
 			<?php $this->js_tpl_choice_ui(); ?>
 		<# } #>
@@ -122,7 +122,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return KKcp_Sanitize::string_in_choices( $value, $setting, $control );
+		return KKcp_Sanitize::single_choice( $value, $setting, $control );
 	}
 
 	/**
@@ -137,6 +137,6 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 	 * @return mixed
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		return KKcp_Validate::string_in_choices( $validity, $value, $setting, $control );
+		return KKcp_Validate::single_choice( $validity, $value, $setting, $control );
 	}
 }

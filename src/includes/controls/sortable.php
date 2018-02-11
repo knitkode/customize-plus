@@ -38,7 +38,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
-		$this->json['lastValue'] = $this->value();
+		$this->json['choicesOrdered'] = $this->value();
 		$this->json['choices'] = $this->choices;
 	}
 
@@ -50,10 +50,9 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	 */
 	protected function js_tpl_choices_loop() {
 		?>
-		<# var lastValue = JSON.parse(data.lastValue);
-			if (_.isArray(lastValue)) {
-				for (var i = 0; i < lastValue.length; i++) {
-					var val = lastValue[i]; #>
+		<# if (_.isArray(data.choicesOrdered)) {
+				for (var i = 0; i < data.choicesOrdered.length; i++) {
+					var val = data.choicesOrdered[i]; #>
 					<?php $this->js_tpl_choice(); ?>
 				<# }
 			} #>
@@ -79,10 +78,10 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
  	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
+ 	 * @return array The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return KKcp_Sanitize::array_in_choices( $value, $setting, $control );
+		return KKcp_Sanitize::multiple_choices( $value, $setting, $control );
 	}
 
 	/**
@@ -94,10 +93,10 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
  	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @return array
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		return KKcp_Validate::array_in_choices( $validity, $value, $setting, $control );
+		return KKcp_Validate::multiple_choices( $validity, $value, $setting, $control, true );
 	}
 }
 

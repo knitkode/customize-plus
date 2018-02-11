@@ -79,11 +79,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		// add setting factory value
 		// @@todo remove sprintf @see track https://core.trac.wordpress.org/ticket/34290#ticket \\
 		if ( is_object( $this->setting ) ) {
-			if ( is_string( $this->setting->default ) ) {
-				$this->json['vFactory'] = sprintf( $this->setting->default );
-			} else {
-				$this->json['vFactory'] = sprintf( json_encode( $this->setting->default ) );
-			}
+			$this->json['vFactory'] = sprintf( json_encode( $this->setting->default ) );
 		}
 
 		// add setting initial value

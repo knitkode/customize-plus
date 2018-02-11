@@ -39,6 +39,14 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	public $units = array( 'px' );
 
 	/**
+	 * Allowed units
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	public static $allowed_units = KKcp_Utils::CSS_UNITS;
+
+	/**
 	 * Enqueue libraries
 	 *
 	 * @since  1.0.0
@@ -62,12 +70,10 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 			}
 		}
 
-		if ( $this->allowFloat ) {
-			$this->json['allowFloat'] = true;
-		}
+		$this->json['allowFloat'] = KKcp_Sanitize::js_bool( $this->allowFloat );
 
 		if ( ! empty( $this->units ) ) {
-			$this->json['units'] = $this->units;
+			$this->json['units'] = KKcp_Sanitize::js_in_array( $this->units, self::$allowed_units );
 		}
 	}
 

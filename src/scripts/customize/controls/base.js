@@ -45,11 +45,7 @@ api.controls.Base = wpApi.Control.extend({
      * @returns {void}
      */
   initialize: function(id, options) {
-    const control = this;
-    let deferredSettingIds = [];
-    let gatherSettings;
-    let settings;
-    let advancedClass;
+    var control = this, deferredSettingIds = [], settings, gatherSettings;
 
     control.params = _.extend(
       {},
@@ -84,12 +80,10 @@ api.controls.Base = wpApi.Control.extend({
     //   } );
     // }
 
-    advancedClass = control.params.advanced ? ' kkcp-control-advanced' : '';
-
     let container = document.createElement('li');
     container.id = 'customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
     container.className = 'customize-control kkcp-control customize-control-'
-      + control.params.type + advancedClass;
+      + control.params.type;
 
     // add a flag so that we are able to recognize our custom controls, let's
     // keep it short, so we need only to check `if (control.kkcp)`
@@ -171,6 +165,7 @@ api.controls.Base = wpApi.Control.extend({
         if ( ! control.settings[ key ] && _.isString( settingId ) ) {
           control.settings[ key ] = wpApi( settingId );
         }
+
       } );
 
       // Make sure settings passed as array gets associated with default.
@@ -189,6 +184,17 @@ api.controls.Base = wpApi.Control.extend({
       gatherSettings();
     } else {
       wpApi.apply( wpApi, deferredSettingIds.concat( gatherSettings ) );
+    }
+
+    // we need to parse the factory value ourselves because we also encode it
+    // ourselves in `base.php` control. It is enough to do this once on initialization
+    if (!_.isUndefined(control.params['vFactory'])) {
+      control.params['vFactory'] = JSON.parse(control.params['vFactory']);
+      // These values seem to get copied on the main constructor at a certain
+      // point instead of staying only on the `params` where we define them
+      // (this happens since WordPress 4.9)
+      // delete control['vFactory'];
+      // delete control['vInitial'];
     }
 
     // an @abstract method to override (this needs to be called here, before than
@@ -222,7 +228,7 @@ api.controls.Base = wpApi.Control.extend({
     if (control.setting) {
       // Add custom validation function overriding the empty function from WP
       // API in `customize-controls.js`, in the constructor `api.Value`
-      control.setting.validate = control._validateWrap.bind(control);
+      // control.setting.validate = control._validateWrap.bind(control);
 
       // bind setting change to control method to reflect a programmatic
       // change on the UI, only if the control is rendered
@@ -231,6 +237,12 @@ api.controls.Base = wpApi.Control.extend({
           control.syncUI.call(control, value);
         }
       });
+
+      if (DEBUG) {
+        control.setting.notifications.bind( 'change', () => {
+          console.log(`Notification for default setting of control '${control.id}'`);
+        });
+      }
     }
   },
   /**
@@ -462,7 +474,7 @@ api.controls.Base = wpApi.Control.extend({
     // errors get resetted because on ready we fill the values in the UI with
     // the value of `this.setting()` which can never be not valid (see the
     // `_validateWrap` method above)
-    this._onValidateSuccess();
+    // this._onValidateSuccess();
 
     // if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
     //   ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
@@ -472,7 +484,7 @@ api.controls.Base = wpApi.Control.extend({
    * This is taken as it is from the core base control class
    * (`wp.customize.Control`)in the end of the `renderContent` method
    */
-  _rerenderNotifications (){
+  _rerenderNotifications () {
     this.notifications.container = this.getNotificationsContainerElement();
     const sectionId = this.section();
     if ( ! sectionId || ( wpApi.section.has( sectionId ) && wpApi.section( sectionId ).expanded() ) ) {
@@ -521,8 +533,8 @@ api.controls.Base = wpApi.Control.extend({
     var btnResetFactory = container.getElementsByClassName(CLASS_RESET_FACTORY)[0];
     // value variables, uses closure
     var setting = this.setting;
-    var initialValue = this.params.vInitial;
-    var factoryValue = this.params.vFactory;
+    var initialValue = this.vInitial;
+    var factoryValue = this.vFactory;
     // state
     var isOpen = false;
 
@@ -623,6 +635,9 @@ api.controls.Base = wpApi.Control.extend({
       } else {
         _enableBtnLast();
       }
+      let aaaaaaaaaa = _softenize(initialValue);
+      let bbbbbbbbbb = currentValue;
+      debugger;
       if (currentValue === _softenize(initialValue)) {
         _disableBtnInitial();
       } else {

@@ -101,15 +101,15 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	 */
 	protected function add_to_json() {
 		$this->json['attrs'] = $this->input_attrs;
-		if ( $this->allowHTML ) {
-			$this->json['allowHTML'] = $this->allowHTML;
-		}
+
+		$this->json['allowHTML'] = KKcp_Sanitize::js_bool( $this->allowHTML );
+
 		// @@doubt Should we check for capability here? \\
 		if ( $this->wp_editor && user_can_richedit() ) {
 			if ( is_array( $this->wp_editor ) ) {
 				$this->json['wp_editor'] = KKcp_Sanitize::js_options( $this->wp_editor, self::$wp_editor_allowed_options );
 			} else {
-				$this->json['wp_editor'] = true;
+				$this->json['wp_editor'] = KKcp_Sanitize::js_bool( $this->wp_editor );
 			}
 			wp_enqueue_editor();
 		}

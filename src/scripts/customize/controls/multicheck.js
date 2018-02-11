@@ -1,5 +1,6 @@
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
+import logger from '../core/logger';
 // import ControlBase from './base';
 
 /**
@@ -14,33 +15,22 @@ import { api, wpApi } from '../core/globals';
 let Control = api.controls.Base.extend({
   /**
    * @override
-   * @return {string|object<string,boolean>} A JSONified Array
+   * @return {array|object}
    */
-  validate: function (rawNewValue) {
-    var newValue = rawNewValue;
-    // in case the value come from a reset action it is a json
-    // string (as it is saed in the db) so we need to parse it
-    try {
-      newValue = JSON.parse(rawNewValue);
-    } catch(e) {}
-    if(_.isArray(newValue)) {
-      var validArray = [];
-      for (var i = 0; i < newValue.length; i++) {
-        // only if it is an allowed choice...
-        if (this.params.choices.hasOwnProperty(newValue[i])) {
-          validArray.push( newValue[i] );
-        }
-      }
-      return JSON.stringify(validArray);
-    } else {
-      return { error: true };
-    }
+  validate: function (value) {
+    return api.controls['Sortable'].prototype.validate.call(this, value);
+  },
+  /**
+   * @override
+   */
+  sanitize: function (value) {
+    return api.controls['Sortable'].prototype.sanitize.call(this, value);
   },
   /**
    * @override
    */
   syncUI: function (value) {
-    if (value !== this._getValueFromUI(true)) {
+    if (!_.isEqual(value, this._getValueFromUI())) {
       this._syncCheckboxes();
 
       if (this.params.sortable) {
@@ -56,14 +46,11 @@ let Control = api.controls.Base.extend({
 
     // special stuff for sortable multicheck controls
     if (this.params.sortable) {
-      var self = this;
-      var setting = self.setting;
-
       this.container.sortable({
         items: '> label',
         cursor: 'move',
-        update: function () {
-          setting.set(self._getValueFromUI());
+        update: () => {
+          this.setting.set(this._getValueFromUI());
         }
       });
 
@@ -77,10 +64,10 @@ let Control = api.controls.Base.extend({
    * @override
    */
   _buildItemsMap: function () {
-    var items = this._container.getElementsByTagName('label');
+    const items = this._container.getElementsByTagName('label');
     this.__itemsMap = {};
 
-    for (var i = 0, l = items.length; i < l; i++) {
+    for (let i = 0, l = items.length; i < l; i++) {
       this.__itemsMap[items[i].title] = {
         _sortable: items[i],
         _input: items[i].getElementsByTagName('input')[0]
@@ -95,31 +82,37 @@ let Control = api.controls.Base.extend({
     api.controls['Sortable'].prototype._reorder.apply(this);
 
     // then sort the unchecked ones
-    var valueAsArray = JSON.parse(this.setting());
-    for (var key in this.params.choices) {
-      if (valueAsArray.indexOf(key) === -1) {
-        var itemDOM = this.__itemsMap[key]._sortable;
-        itemDOM.parentNode.removeChild(itemDOM);
-        this._container.appendChild(itemDOM);
+    const value = this.setting();
+
+    for (let itemValueAsKey in this.params.choices) {
+      let item = this.__itemsMap[itemValueAsKey];
+
+      if (item) {
+        if (value.indexOf(itemValueAsKey) === -1) {
+          let itemSortableDOM = item._sortable;
+          itemSortableDOM.parentNode.removeChild(itemSortableDOM);
+          this._container.appendChild(itemSortableDOM);
+        }
+      } else {
+        logger.error('controls.Multicheck->_reorder', `item '${itemValueAsKey}' has no '_sortable' DOM in 'this.__itemsMap'`);
       }
     }
   },
   /**
    * Get sorted value, reaading checkboxes status from the DOM
    *
-   * @param {boolean} jsonize Whether to stringify the array or not
-   * @return {array|string} It could be a normal array or a JSONized one based
-   *                        on the argument `jsonize`.
+   * @return {array}
    */
-  _getValueFromUI: function (jsonize) {
-    var valueSorted = [];
-    for (var i = 0, l = this.__inputs.length; i < l; i++) {
-      var input = this.__inputs[i];
+  _getValueFromUI: function () {
+    let valueSorted = [];
+
+    for (let i = 0, l = this.__inputs.length; i < l; i++) {
+      let input = this.__inputs[i];
       if (input.checked) {
         valueSorted.push(input.value);
       }
     }
-    return jsonize ? JSON.stringify(valueSorted) : valueSorted;
+    return valueSorted;
   },
   /**
    * Sync checkboxes and maybe bind change event
@@ -128,20 +121,19 @@ let Control = api.controls.Base.extend({
    * @param  {boolean} bindAsWell Bind on change?
    */
   _syncCheckboxes: function (bindAsWell) {
-    var valueAsArray = [];
-    try {
-      valueAsArray = JSON.parse(this.setting());
-    } catch(e) {
-      console.warn('Control->Multicheck: setting value of ' + this.id +
-        ' is not a valid json array', this.setting());
+    const value = this.setting();
+
+    if (!_.isArray(value)) {
+      return logger.error('controls.Multicheck->_syncCheckboxes', `setting.value must be an array`);
     }
-    for (var i = 0, l = this.__inputs.length; i < l; i++) {
-      var input = this.__inputs[i];
-      input.checked = valueAsArray.indexOf(input.value) !== -1;
+
+    for (let i = 0, l = this.__inputs.length; i < l; i++) {
+      let input = this.__inputs[i];
+      input.checked = value.indexOf(input.value) !== -1;
       if (bindAsWell) {
-        input.onchange = function () {
+        input.onchange = () => {
           this.setting.set(this._getValueFromUI());
-        }.bind(this);
+        };
       }
     }
   }

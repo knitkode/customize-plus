@@ -23,6 +23,22 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	public $type = 'kkcp_tags';
 
 	/**
+	 * Option to allow a maxmimum icons selection
+	 *
+	 * @since 1.0.0
+	 * @var ?int
+	 */
+	protected $max = null;
+
+	/**
+	 * Option to allow a minimum icons selection
+	 *
+	 * @since 1.0.0
+	 * @var ?int
+	 */
+	protected $min = 2;
+
+	/**
 	 * Selectize options
 	 *
 	 * @since 1.0.0
@@ -45,7 +61,6 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 			'drag_drop',
 			'remove_button'
 		) ),
-		'maxItems' => array( 'sanitizer' => 'js_number_or_null' ),
 		'persist' => array( 'sanitizer' => 'js_bool' ),
 	);
 
@@ -55,6 +70,10 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
+
+		$this->json['max'] = KKcp_Sanitize::js_int_or_null( $this->max );
+		$this->json['min'] = KKcp_Sanitize::js_int_or_null( $this->min );
+
 		if ( ! empty( $this->selectize ) ) {
 			$this->json['selectize'] = KKcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
 		}
@@ -88,8 +107,8 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 		$value = array_map( 'trim', explode( ',', $value ) );
 		$value = array_unique( $value );
 
-		if ( isset( $control->selectize['maxItems'] ) ) {
-			$max_items = filter_var( $control->selectize['maxItems'], FILTER_SANITIZE_NUMBER_INT );
+		if ( isset( $control->max ) ) {
+			$max_items = filter_var( $control->max, FILTER_SANITIZE_NUMBER_INT );
 
 			if ( count( $value ) > $max_items ) {
 				$value = array_slice( $value, $max_items );

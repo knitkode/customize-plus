@@ -23,6 +23,22 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	public $type = 'kkcp_multicheck';
 
 	/**
+	 * Option to allow a maxmimum icons selection
+	 *
+	 * @since 1.0.0
+	 * @var ?int
+	 */
+	protected $max = null;
+
+	/**
+	 * Option to allow a minimum icons selection
+	 *
+	 * @since 1.0.0
+	 * @var ?int
+	 */
+	protected $min = null;
+
+	/**
 	 * Sortable
 	 *
 	 * @since 1.0.0
@@ -49,30 +65,33 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	protected function add_to_json() {
 		parent::add_to_json();
 
-		$this->json['lastValue'] = $this->value();
+		$this->json['sortable'] = KKcp_Sanitize::js_bool( $this->sortable );
+		$this->json['max'] = KKcp_Sanitize::js_int_or_null( $this->max );
+		$this->json['min'] = KKcp_Sanitize::js_int_or_null( $this->min );
 
-		if ( $this->sortable ) {
-			$this->json['sortable'] = $this->sortable;
-		}
+		$this->json['choicesOrdered'] = $this->value();
 	}
 
 	/**
 	 * Ouput the choices template in a loop. Override this in subclasses
 	 * to change behavior, for instance in sortable controls.
 	 *
+	 * If the control is sortable we first show the ordered choices (the ones stored
+	 * as value in the DB, gathered with `$this->value()`) and then the other choices,
+	 * that's why the double loop with the `indexOf` condition.
+	 *
 	 * @since 1.0.0
 	 */
 	protected function js_tpl_choices_loop() {
 		?>
 		<# if (data.sortable) {
-			var lastValue = JSON.parse(data.lastValue);
-			if (_.isArray(lastValue)) {
-				for (var i = 0; i < lastValue.length; i++) {
-					var val = lastValue[i]; #>
+			if (_.isArray(data.choicesOrdered)) {
+				for (var i = 0; i < data.choicesOrdered.length; i++) {
+					var val = data.choicesOrdered[i]; #>
 					<?php $this->js_tpl_choice(); ?>
 				<# }
 				for (var val in choices) {
-					if (lastValue.indexOf(val) === -1) { #>
+					if (data.choicesOrdered.indexOf(val) === -1) { #>
 						<?php $this->js_tpl_choice(); ?>
 					<# }
 				}
@@ -106,10 +125,10 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
  	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
+ 	 * @return array The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return KKcp_Sanitize::array_in_choices( $value, $setting, $control );
+		return KKcp_Sanitize::multiple_choices( $value, $setting, $control );
 	}
 
 	/**
@@ -121,10 +140,10 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Radi
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
  	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @return array
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		return KKcp_Validate::array_in_choices( $validity, $value, $setting, $control );
+		return KKcp_Validate::multiple_choices( $validity, $value, $setting, $control );
 	}
 }
 

@@ -25,10 +25,11 @@ let Control = api.controls.Base.extend({
         return string.trim();
       });
       newValue = _.uniq(newValue);
-      var maxItems = this.params.selectize ? this.params.selectize.maxItems : null;
-      if (maxItems && _.isNumber(maxItems)) {
-        if (newValue.length > maxItems) {
-          newValue = newValue.slice(0, maxItems);
+
+      const max = this.params.max;
+      if (max && _.isNumber(max)) {
+        if (newValue.length > max) {
+          newValue = newValue.slice(0, max);
         }
       }
       return Utils._stripHTML(newValue.join(','));

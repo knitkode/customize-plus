@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
+import sprintf from 'locutus/php/strings/sprintf';
 import { api, wpApi } from '../core/globals';
 // import ControlBase from './base';
 
@@ -15,49 +16,26 @@ import { api, wpApi } from '../core/globals';
 let Control = api.controls.Base.extend({
   /**
    * @override
-   * @see php `KKcp_Sanitize::font_families`
-   * @param  {string|array} value [description]
-   * @return {string}       [description]
+   * @param  {string|array} value
+   * @return {string}
    */
   validate: function (value) {
-    // treat value only if it's a string (unlike the php function)
-    // because here we always have to get a string.
-    // @@todo
-    if (_.isArray(value)) {
-      return value;
-    }
-    if (typeof value === 'string') {
-      return value;
-    } else {
-      return { error: true };
-    }
+    return api.controls['Sortable'].prototype.validate.call(this, value);
   },
   /**
    * @override
    * @return {array|string}
    */
   sanitize: function (value) {
-    if (!_.isArray(value)) {
-      value.toString().split(',');
-    }
-    var sanitized = [];
-    for (var i = 0, l = value.length; i < l; i++) {
-      sanitized.push(value[i].trim());
-    }
-    // if the array has more than one element return an array
-    if (sanitized.length > 1) {
-      return sanitized;
-      // @@doubt or return a string even here? like `a,b,c`
-      // return sanitized.join(',');
-    }
-    // or if it's just one element return a simple string
-    return sanitized[0];
+    return api.controls['Sortable'].prototype.sanitize.call(this, value);
   },
   /**
    * @override
    */
   syncUI: function (value) {
-    if (value !== this.__input.value) {
+    const selectize = this.__input.selectize;
+    const valueFromUi = selectize ? this.__input.selectize.getValue() : null; // this._getValueFromUI()
+    if (!_.isEqual(value, valueFromUi)) {
       this._updateUI(value);
     }
   },
@@ -78,9 +56,9 @@ let Control = api.controls.Base.extend({
     this.__input = this._container.getElementsByClassName('kkcp-selectize')[0];
     this._iconSet = this._getIconsSet();
 
-    var selectizeStuff = this._getSelectizeDataFromIconsSet(api.constants[this._iconSet]);
-    this._iconOptions = selectizeStuff._options;
-    this._iconGroups = selectizeStuff._groups;
+    const selectizeData = this._getSelectizeDataFromIconsSet(api.constants[this._iconSet]);
+    this._iconOptions = selectizeData._options;
+    this._iconGroups = selectizeData._groups;
 
     this._updateUI();
   },
@@ -89,9 +67,9 @@ let Control = api.controls.Base.extend({
    * @return {String} [description]
    */
   _getIconsSet: function () {
-    const choices = this.params.choices;
-    if (_.isString(choices)) {
-      return choices;
+    const iconsSet = this.params['icons_set'];
+    if (_.isString(iconsSet)) {
+      return iconsSet;
     }
     // @@todo api error? \\
   },
@@ -101,17 +79,17 @@ let Control = api.controls.Base.extend({
    * @return {Object<Array,Array>}
    */
   _getSelectizeDataFromIconsSet: function (set) {
-    var selectizeOptions = [];
-    var selectizeGroups = [];
-    for (var groupId in set) {
+    let selectizeOptions = [];
+    let selectizeGroups = [];
+    for (let groupId in set) {
       if (set.hasOwnProperty(groupId)) {
-        var group = set[groupId];
+        let group = set[groupId];
         selectizeGroups.push({
           id: groupId,
           label: group.label
         });
-        var icons = group.icons;
-        for (var i = 0; i < icons.length; i++) {
+        let icons = group.icons;
+        for (let i = 0; i < icons.length; i++) {
           selectizeOptions.push({
             id: icons[i],
             group: groupId
@@ -130,7 +108,8 @@ let Control = api.controls.Base.extend({
    * @param  {string} value
    */
   _updateUI: function (value) {
-    var setting = this.setting;
+    const setting = this.setting;
+    const max = this.params.max;
     const selectizeOpts = this.params.selectize || {};
 
     // if there is an instance of selectize destroy it
@@ -143,7 +122,7 @@ let Control = api.controls.Base.extend({
     // init selectize plugin
     $(this.__input).selectize(_.extend({
       plugins: ['drag_drop','remove_button'],
-      maxItems: null,
+      maxItems: max,
       options: this._iconOptions,
       optgroups: this._iconGroups,
       optgroupField: 'group',
@@ -158,7 +137,6 @@ let Control = api.controls.Base.extend({
         optgroup_header: this._selectizeRenderGroupHeader.bind(this),
       },
       onChange: function (value) {
-        console.log(value);
         setting.set(value);
       }
     }, selectizeOpts));

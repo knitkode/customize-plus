@@ -2,6 +2,7 @@ import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 // import ControlBase from './base';
+import { oneOrMoreChoices } from '../core/validate';
 
 /**
  * Control Select class
@@ -17,33 +18,10 @@ let Control = api.controls.Base.extend({
   /**
    * override
    */
-  validate: function (rawNewValue) {
-    const choices = this.params.choices;
-    let newValue;
-    // it could come as a stringified array through a programmatic change
-    // of the setting (i.e. from a a reset action)
-    try {
-      newValue = JSON.parse(rawNewValue);
-    } catch(e) {
-      newValue = rawNewValue;
-    }
-    // validate array of values
-    if (_.isArray(newValue) && this.params.selectize) {
-      let validatedArray = [];
-      for (let i = 0, l = newValue.length; i < l; i++) {
-        let item = newValue[i];
-        if (choices.hasOwnProperty(item)) {
-          validatedArray.push(item);
-        }
-      }
-      return JSON.stringify(validatedArray);
-    }
-    // validate string value
-    if (choices.hasOwnProperty(newValue)) {
-      return newValue;
-    }
+  validate: function (value) {
+    return oneOrMoreChoices(value);
     // otherwise return error
-    return { error: true };
+    // return { error: true }; // @@todo remove
   },
   /**
    * Destroy `selectize` instance if any.
@@ -74,6 +52,7 @@ let Control = api.controls.Base.extend({
     // use selectize
     if (selectizeOpts) {
       $(this.__select).selectize(_.extend({
+        maxItems: this.params.max,
         onChange: (value) => {
           // if it's an array be sure the value is actually different and not
           // just a JSON vs non-JSON situation

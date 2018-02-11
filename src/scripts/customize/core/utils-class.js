@@ -147,17 +147,17 @@ class Utils {
    * @return {boolean}          Whether the reset has succeded
    */
   resetControl (control, resetType) {
-    var params = control.params;
+    const params = {control};
     if (!control.setting) {
       return true;
     }
     var value;
-    if (resetType === 'last' && !_.isUndefined(params.vLast)) {
-      value = params.vLast;
+    if (resetType === 'last' && !_.isUndefined(params['vLast'])) {
+      value = params['vLast'];
     } else if (resetType === 'initial') {
-      value = params.vInitial;
+      value = params['vInitial'];
     } else if (resetType === 'factory') {
-      value = params.vFactory;
+      value = params['vFactory'];
     }
     if (value) {
       control.setting.set(value);

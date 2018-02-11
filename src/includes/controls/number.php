@@ -38,9 +38,7 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	protected function add_to_json() {
 		parent::add_to_json();
 
-		if ( $this->allowFloat ) {
-			$this->json['allowFloat'] = true;
-		}
+		$this->json['allowFloat'] = KKcp_Sanitize::js_bool( $this->allowFloat );
 	}
 
 	/**

@@ -395,50 +395,88 @@ class KKcp_Sanitize {
 	}
 
 	/**
-	 * Sanitize string compared to the choices array (i.e. for radio based control)
+	 * Sanitize string
 	 *
 	 * @since 1.0.0
-	 * @param string               $input   The value to sanitize.
+	 * @param mixed     				   $input   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
 	 * @return string The sanitized value.
 	 */
-	public static function string_in_choices( $input, $setting, $control ) {
-		if ( isset( $control->choices[ $input ] ) ) {
-			return $input;
-		} else {
-			return $setting->default;
+	public static function string( $input ) {
+		if ( ! is_string( $input ) ) {
+			$input = (string) $input;
 		}
+		return sanitize_text_field( $input );
 	}
 
 	/**
-	 * Sanitize array compared to the choices array (i.e. for radio based control)
+	 * Sanitize array
 	 *
 	 * @since 1.0.0
-	 * @param string               $input   The value to sanitize.
+	 * @param mixed      		   	   $input   The value to sanitize.
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return array The sanitized value.
+	 */
+	public static function array( $input ) {
+		if ( ! is_array( $input ) ) {
+			$input = (array) $input;
+		}
+
+		$input_sanitized = array();
+
+		foreach ( $input as $key ) {
+			if ( is_string( $key ) ) {
+				array_push( $input_sanitized, sanitize_text_field( $key ) );
+			} else {
+				array_push( $input_sanitized, $key );
+			}
+		}
+		return $input_sanitized;
+	}
+
+	/**
+	 * Sanitize single choice
+	 *
+	 * @since 1.0.0
+	 * @param string         $input   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
 	 * @return string The sanitized value.
 	 */
-	public static function array_in_choices( $input, $setting, $control ) {
-		$input_decoded = $input;
+	public static function single_choice( $input, $setting, $control ) {
+		return self::string( $input );
+	}
 
+	/**
+	 * Sanitize multiple choices
+	 *
+	 * @since 1.0.0
+	 * @param array         $input   The value to sanitize.
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return array The sanitized value.
+	 */
+	public static function multiple_choices( $input, $setting, $control ) {
+		return self::array( $input );
+	}
+
+	/**
+	 * Sanitize one or more choices
+	 *
+	 * @since 1.0.0
+	 * @param string|array         $input   The value to sanitize.
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return string|array The sanitized value.
+	 */
+	public static function one_or_more_choices( $input, $setting, $control ) {
 		if ( is_string( $input ) ) {
-			$input_decoded = json_decode( $input );
+			return self::single_choice( $input );
 		}
 
-		if ( is_array( $input_decoded ) ) {
-			$input_sanitized = array();
-
-			foreach ( $input_decoded as $key ) {
-				if ( isset( $control->choices[ $key ] ) ) {
-					array_push( $input_sanitized, $key );
-				}
-			}
-			return wp_json_encode( $input_sanitized );
-		} else {
-			return $setting->default;
-		}
+		return self::multiple_choices( $input );
 	}
 
 	/**
@@ -600,6 +638,27 @@ class KKcp_Sanitize {
 	}
 
 	/**
+	 * Sanitization for js value: integer or null
+	 *
+	 * @since 1.0.0
+	 * @param  mixed   $input
+	 * @return ?number integer or null
+	 */
+	public static function js_int_or_null( $input ) {
+		// The input might comes as a string, this is a generic way to coerce it
+		// to a number either int or float, @see http://bit.ly/2kh6mx9
+		$input = $input + 0;
+
+		if ( is_int( $input ) ) {
+			return $input;
+		}
+
+		return null;
+
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a integer or null.' ), $input ) ); // @@todo api error \\
+	}
+
+	/**
 	 * Sanitization for js value: integer
 	 *
 	 * @since 1.0.0
@@ -627,11 +686,20 @@ class KKcp_Sanitize {
 	 * @return ?mixed
 	 */
 	public static function js_in_array ( $input, $list = array() ) {
-		if ( in_array( $input, $list ) ) {
-			return $input;
+		if ( is_string( $input ) ) {
+			if ( in_array( $input, $list ) ) {
+				return $input;
+			}
+			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input, implode( ', ', $list ) ) ); // @@todo api error \\
+		} else if ( is_array( $input ) ) {
+			foreach ( $input as $input_value ) {
+				if ( ! in_array( $input_value, $list ) ) {
+					wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input_value, implode( ', ', $list ) ) ); // @@todo api error \\
+				}
+				return $input;
+			}
 		}
 
-		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input, implode( ', ', $list ) ) ); // @@todo api error \\
 	}
 
 	/**

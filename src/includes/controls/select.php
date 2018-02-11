@@ -23,12 +23,29 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	public $type = 'kkcp_select';
 
 	/**
-	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
+	 * Option to allow a maxmimum icons selection
+	 *
+	 * @since 1.0.0
+	 * @var ?int
+	 */
+	protected $max = 1;
+
+	/**
+	 * Option to allow a minimum icons selection
+	 *
+	 * @since 1.0.0
+	 * @var ?int
+	 */
+	protected $min = null;
+
+	/**
+	 * Selectize disabled (`false`) or enabled (just `false` or array of options),
+	 * enabled by default
 	 *
 	 * @since 1.0.0
 	 * @var boolean|array
 	 */
-	protected $selectize = false;
+	protected $selectize = true;
 
 	/**
 	 * Selectize allowed options
@@ -45,7 +62,6 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 			'drag_drop',
 			'remove_button'
 		) ),
-		'maxItems' => array( 'sanitizer' => 'js_number_or_null' ),
 		'persist' => array( 'sanitizer' => 'js_bool' ),
 		'hideSelected' => array( 'sanitizer' => 'js_bool' ),
 		'sortField' => array( 'sanitizer' => 'js_string' ),
@@ -59,12 +75,13 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	protected function add_to_json() {
 		parent::add_to_json();
 
-		if ( $this->selectize ) {
-			if ( is_array( $this->selectize ) ) {
-				$this->json['selectize'] = KKcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
-			} else {
-				$this->json['selectize'] = true;
-			}
+		$this->json['max'] = KKcp_Sanitize::js_int_or_null( $this->max );
+		$this->json['min'] = KKcp_Sanitize::js_int_or_null( $this->min );
+
+		if ( is_array( $this->selectize ) ) {
+			$this->json['selectize'] = KKcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
+		} else {
+			$this->json['selectize'] = KKcp_Sanitize::js_bool( $this->selectize );
 		}
 	}
 
@@ -114,17 +131,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		$selectize = $control->selectize;
-		if ( isset( $selectize['maxItems'] ) ) {
-			$max_items = filter_var( $selectize['maxItems'], FILTER_SANITIZE_NUMBER_INT );
-		} else {
-			$max_items = null;
-		}
-		if ( is_numeric( $max_items ) && $max_items > 1 ) {
-			return KKcp_Sanitize::array_in_choices( $value, $setting, $control );
-		} else {
-			return KKcp_Sanitize::string_in_choices( $value, $setting, $control );
-		}
+		return KKcp_Sanitize::one_or_more_choices( $value, $setting, $control );
 	}
 
 	/**
@@ -139,34 +146,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	 * @return mixed
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		$selectize = $control->selectize;
-		if ( isset( $selectize['maxItems'] ) ) {
-			$max_items = filter_var( $selectize['maxItems'], FILTER_SANITIZE_NUMBER_INT );
-		} else {
-			$max_items = null;
-		}
-		if ( is_numeric( $max_items ) && $max_items > 1 ) {
-			if ( ! is_string( $value ) ) {
-				return $validity->add( 'wrong', sprintf( esc_html__( 'The value must be a string or a JSONified string.' ) ) ); // @@tocheck, wrong error message \\
-			} else {
-				$input_decoded = json_decode( $value );
-			}
-
-			if ( is_array( $input_decoded ) ) {
-				foreach ( $input_decoded as $key ) {
-					if ( ! isset( $control->choices[ $key ] ) ) {
-						$validity->add( 'wrong', sprintf( esc_html__( 'The value %s is not selectable.' ), $key ) );
-					}
-				}
-			} else {
-				$validity->add( 'wrong', sprintf( esc_html__( 'The value %s must be a well formed array.' ), $value ) );
-			}
-		} else {
-			if ( ! isset( $control->choices[ $value ] ) ) {
-				$validity->add( 'not_a_choice', sprintf( esc_html__( 'The value %s is not an allowed selection.' ), $value ) );
-			}
-		}
-		return $validity;
+		return KKcp_Validate::one_or_more_choices( $validity, $value, $setting, $control );
 	}
 }
 

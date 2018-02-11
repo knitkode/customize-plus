@@ -1,5 +1,7 @@
 import _ from 'underscore';
+import sprintf from 'locutus/php/strings/sprintf';
 import { api, wpApi } from '../core/globals';
+import logger from '../core/logger';
 // import ControlBase from './base';
 
 /**
@@ -15,37 +17,59 @@ import { api, wpApi } from '../core/globals';
 let Control = api.controls.Base.extend({
   /**
    * @override
+   * @return {array|object}
    */
-  validate: function (rawNewValue) {
-    var choices = this.params.choices;
-    var newValue;
-    // it could come as a stringified array through a programmatic change
-    // of the setting (i.e. from a a reset action)
-    try {
-      newValue = JSON.parse(rawNewValue);
-    } catch(e) {
-      newValue = rawNewValue;
-    }
+  validate: function (value) {
+    const choices = this.params.choices;
+
     // validate array of values
-    if (_.isArray(newValue)) {
-      var validatedArray = [];
-      for (var i = 0, l = newValue.length; i < l; i++) {
-        var item = newValue[i];
-        if (choices.hasOwnProperty(item)) {
-          validatedArray.push(item);
+    if (_.isArray(value)) {
+      for (let i = 0, l = value.length; i < l; i++) {
+        let itemValue = value[i];
+        if (!choices.hasOwnProperty(itemValue)) {
+          return {
+            error: true,
+            msg: sprintf(api.l10n['vNotAChoice'], itemValue),
+          };
         }
       }
-      return JSON.stringify(validatedArray);
+      return value;
     }
     else {
-      return { error: true };
+      return {
+        error: true,
+        msg: api.l10n['vNotArray'],
+      };
     }
+  },
+  /**
+   * @override
+   * @return {array}
+   */
+  sanitize: function (value) {
+    let sanitizedValue = value;
+
+    // in the edge case it comes as a stringified array
+    if (_.isString(value)) {
+      try {
+        sanitizedValue = JSON.parse(value);
+      } catch(e) {
+        sanitizedValue = value;
+      }
+    }
+
+    // coerce in any case to an array, the rest will be dealt during validation
+    if (!_.isArray(sanitizedValue)) {
+      return [value];
+    }
+
+    return sanitizedValue;
   },
   /**
    * @override
    */
   syncUI: function (value) {
-    if (value !== this.params.lastValue) {
+    if (!_.isEqual(value, this.params.lastValue)) {
       this._reorder();
       this.params.lastValue = value;
     }
@@ -54,8 +78,8 @@ let Control = api.controls.Base.extend({
    * @override
    */
   ready: function () {
-    var setting = this.setting;
-    var container = this.container;
+    const setting = this.setting;
+    const container = this.container;
 
     this._buildItemsMap();
 
@@ -65,20 +89,22 @@ let Control = api.controls.Base.extend({
       items: '.kkcp-sortable',
       cursor: 'move',
       update: function () {
-        setting.set(container.sortable('toArray', { attribute: 'title' }));
+        const newValue = container.sortable('toArray', { attribute: 'data-value' });
+        setting.set(newValue);
       }
     });
   },
   /**
-   * Build sortable items map, a key (grabbed from the `title` attrbiute)
+   * Build sortable items map, a key (grabbed from the `data-value` attrbiute)
    * with the corresponding DOM element
    */
   _buildItemsMap: function () {
-    var items = this._container.getElementsByClassName('kkcp-sortable');
+    const items = this._container.getElementsByClassName('kkcp-sortable');
     this.__itemsMap = {};
 
-    for (var i = 0, l = items.length; i < l; i++) {
-      this.__itemsMap[items[i].title] = {
+    for (let i = 0, l = items.length; i < l; i++) {
+      let itemKey = items[i].getAttribute('data-value');
+      this.__itemsMap[itemKey] = {
         _sortable: items[i]
       };
     }
@@ -89,13 +115,22 @@ let Control = api.controls.Base.extend({
    * to keep in sync the order of an array and its corresponding DOM.
    */
   _reorder: function () {
-    var valueAsArray = JSON.parse(this.setting());
+    const value = this.setting();
 
-    for (var i = 0, l = valueAsArray.length; i < l; i++) {
-      var itemValue = valueAsArray[i];
-      var itemDOM = this.__itemsMap[itemValue]._sortable;
-      itemDOM.parentNode.removeChild(itemDOM);
-      this._container.appendChild(itemDOM);
+    if (!_.isArray(value)) {
+      return logger.error('controls.Sortable->_reorder', `setting.value must be an array`);
+    }
+
+    for (let i = 0, l = value.length; i < l; i++) {
+      let itemValueAsKey = value[i];
+      let item = this.__itemsMap[itemValueAsKey];
+      if (item) {
+        let itemSortableDOM = item._sortable;
+        itemSortableDOM.parentNode.removeChild(itemSortableDOM);
+        this._container.appendChild(itemSortableDOM);
+      } else {
+        logger.error('controls.Sortable->_reorder', `item '${itemValueAsKey}' has no '_sortable' DOM in 'this.__itemsMap'`);
+      }
     }
 
     this.container.sortable('refresh');
