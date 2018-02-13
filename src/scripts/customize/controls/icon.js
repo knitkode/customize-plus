@@ -2,6 +2,8 @@ import $ from 'jquery';
 import _ from 'underscore';
 import sprintf from 'locutus/php/strings/sprintf';
 import { api, wpApi } from '../core/globals';
+import Validate from '../core/validate';
+import Sanitize from '../core/sanitize';
 // import ControlBase from './base';
 
 /**
@@ -17,25 +19,26 @@ let Control = api.controls.Base.extend({
   /**
    * @override
    * @param  {string|array} value
-   * @return {string}
+   * @return {array} $validity
    */
   validate: function (value) {
-    return api.controls['Sortable'].prototype.validate.call(this, value);
+    return Validate.oneOrMoreChoices([], value, this.setting, this);
   },
   /**
    * @override
-   * @return {array|string}
+   * @return {string|array}
    */
   sanitize: function (value) {
-    return api.controls['Sortable'].prototype.sanitize.call(this, value);
+    return Sanitize.oneOrMoreChoices(value);
   },
   /**
    * @override
    */
   syncUI: function (value) {
-    const selectize = this.__input.selectize;
-    const valueFromUi = selectize ? this.__input.selectize.getValue() : null; // this._getValueFromUI()
-    if (!_.isEqual(value, valueFromUi)) {
+    if (_.isString(value)) {
+      value = [value];
+    }
+    if (!_.isEqual(value, this._getValueFromUI())) {
       this._updateUI(value);
     }
   },
@@ -52,15 +55,20 @@ let Control = api.controls.Base.extend({
   /**
    * @override
    */
+  onInit: function () {
+    this._iconSet = this._getIconsSet();
+    const data = this._extractDataFromIconsSet(api.constants[this._iconSet]);
+    this._options = data._options;
+    this._groups = data._groups;
+    this.params.choices = data._choices;
+  },
+  /**
+   * @override
+   */
   ready: function () {
     this.__input = this._container.getElementsByClassName('kkcp-selectize')[0];
-    this._iconSet = this._getIconsSet();
-
-    const selectizeData = this._getSelectizeDataFromIconsSet(api.constants[this._iconSet]);
-    this._iconOptions = selectizeData._options;
-    this._iconGroups = selectizeData._groups;
-
-    this._updateUI();
+    this._initUI();
+    this._updateUI(this.setting())
   },
   /**
    * Get Icons set
@@ -74,57 +82,65 @@ let Control = api.controls.Base.extend({
     // @@todo api error? \\
   },
   /**
-   * Get selectize items from icon set
-   * @param  {Object} set
-   * @return {Object<Array,Array>}
+   * Extract data for this control from the icon set
+   *
+   * Besides the creation of the `options` and `groups` array to populate
+   * the `<select>` field we also create the `choices` array. We do this
+   * here in order to avoid defining it in each icon php control that would
+   * print a lot of duplicated JSON data, since icons sets have usually many
+   * entries we just define them globally and then use them as in the other
+   * select-like controls on the `params.choices` to provide validation.
+   *
+   * @param  {object} set
+   * @return {object<array,array,array>}
    */
-  _getSelectizeDataFromIconsSet: function (set) {
-    let selectizeOptions = [];
-    let selectizeGroups = [];
+  _extractDataFromIconsSet: function (set) {
+    let options = [];
+    let groups = [];
+    let choices = [];
+
     for (let groupId in set) {
       if (set.hasOwnProperty(groupId)) {
         let group = set[groupId];
-        selectizeGroups.push({
+        groups.push({
           id: groupId,
           label: group.label
         });
         let icons = group.icons;
         for (let i = 0; i < icons.length; i++) {
-          selectizeOptions.push({
+          options.push({
             id: icons[i],
             group: groupId
           });
+          choices.push(icons[i]);
         }
       }
     }
     return {
-      _options: selectizeOptions,
-      _groups: selectizeGroups
+      _options: options,
+      _groups: groups,
+      _choices: choices,
     };
   },
   /**
-   * Update UI
-   *
-   * @param  {string} value
+   * Init UI
    */
-  _updateUI: function (value) {
-    const setting = this.setting;
-    const max = this.params.max;
-    const selectizeOpts = this.params.selectize || {};
-
+  _initUI: function () {
     // if there is an instance of selectize destroy it
     if (this.__input.selectize) {
       this.__input.selectize.destroy();
     }
 
-    this.__input.value = value || setting();
+    // @@note this is not needed, in case if it was the setting value should be
+    // transformed to a string probably \\
+    // this.__input.value = this.setting();
 
     // init selectize plugin
     $(this.__input).selectize(_.extend({
       plugins: ['drag_drop','remove_button'],
-      maxItems: max,
-      options: this._iconOptions,
-      optgroups: this._iconGroups,
+      maxItems: this.params.max,
+      options: this._options,
+      optgroups: this._groups,
       optgroupField: 'group',
       optgroupValueField: 'id',
       lockOptgroupOrder: true,
@@ -132,24 +148,55 @@ let Control = api.controls.Base.extend({
       sortField: 'id',
       searchField: ['id'],
       render: {
-        item: this._selectizeRenderItem.bind(this),
-        option: this._selectizeRenderOption.bind(this),
-        optgroup_header: this._selectizeRenderGroupHeader.bind(this),
+        item: this._renderItem.bind(this),
+        option: this._renderOption.bind(this),
+        optgroup_header: this._renderGroupHeader.bind(this),
       },
-      onChange: function (value) {
-        setting.set(value);
+      onChange: (value) => {
+        this.setting.set(value);
       }
-    }, selectizeOpts));
+    }, this.params.selectize || {}));
+  },
+  /**
+   * Get value from UI
+   *
+   * @return {?array}
+   */
+  _getValueFromUI () {
+    if (!this.__input) {
+      return null;
+    }
+    const selectize = this.__input.selectize;
+    if (selectize) {
+      return selectize.getValue();
+    }
+    return null; // @@note this should not happen \\
+  },
+  /**
+   * Update UI
+   *
+   * Check if there is an instance of selectize otherwise reinitialise it.
+   * Pass `true` as second argument to perform a `silent` update, that does
+   * not trigger the `onChange` event of `selectize`.
+   *
+   * @param  {array} value
+   */
+  _updateUI: function (value) {
+    if (this.__input.selectize) {
+      this.__input.selectize.setValue(value, true);
+    } else {
+      this._initUI();
+      this._updateUI(value);
+    }
   },
   /**
    * Selectize render item function
    *
-   * @static
    * @param  {Object} data     The selectize option object representation.
    * @param  {function} escape Selectize escape function.
    * @return {string}          The option template.
    */
-  _selectizeRenderItem: function (data, escape) {
+  _renderItem: function (data, escape) {
     var value = data.id;
     return '<div class="kkcp-icon-selectItem kkcpui-tooltip--top" title="' + escape(value) + '">' +
         '<i class="' + escape(this._getIconClassName(value)) + '"></i>' +
@@ -158,12 +205,11 @@ let Control = api.controls.Base.extend({
   /**
    * Selectize render option function
    *
-   * @static
    * @param  {Object} data     The selectize option object representation.
    * @param  {function} escape Selectize escape function.
    * @return {string}          The option template.
    */
-  _selectizeRenderOption: function (data, escape) {
+  _renderOption: function (data, escape) {
     var value = data.id;
     return '<div class="kkcp-icon-selectOption kkcpui-tooltip--top" title="' + escape(value) + '">' +
         '<i class="' + escape(this._getIconClassName(value)) + '"></i>' +
@@ -172,22 +218,21 @@ let Control = api.controls.Base.extend({
   /**
    * Selectize render option function
    *
-   * @static
    * @param  {Object} data     The selectize option object representation.
    * @param  {function} escape Selectize escape function.
    * @return {string}          The option template.
    */
-  _selectizeRenderGroupHeader: function (data, escape) {
+  _renderGroupHeader: function (data, escape) {
     return '<div class="kkcp-icon-selectHeader">' + escape(data.label) + '</div>';
   },
   /**
    * Get icon class name
-   * @param  {[type]} icon [description]
-   * @return {[type]}      [description]
+   *
+   * @param  {string} icon
+   * @return {string}
    */
   _getIconClassName: function (icon) {
-    var iconsSetName = this._iconSet;
-    return iconsSetName + ' ' + iconsSetName + '-' + icon;
+    return `${this._iconSet} ${this._iconSet}-${icon}`;
   }
 });
 

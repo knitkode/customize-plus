@@ -1,8 +1,7 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import isHexColor from 'validator/lib/isHexColor';
 import { api, wpApi } from '../core/globals';
-import { isRgbaColor } from '../core/validators';
+import { isHexColor, isRgbColor, isRgbaColor } from '../core/validators';
 /* global tinycolor */
 
 /**
@@ -36,46 +35,74 @@ let Control = api.controls.Base.extend({
    */
   softenize: function (value) {
     try {
-      var anyColor = tinycolor(value);
+      const anyColor = tinycolor(value);
       if (!anyColor['_format']) { // whitelisted from uglify \\
         return value;
       } else {
         return anyColor.toRgbString();
       }
     } catch(e) {
-      console.warn('Control->Color->softenize: tinycolor conversion failed', e);
+      if (DEBUG) {
+        console.warn('Control->Color->softenize: tinycolor conversion failed', e);
+      }
       return value;
     }
   },
   /**
    * @override
    */
+  sanitize: function (value) {
+    if (!_.isString) {
+      return JSON.stringify(value);
+    }
+
+    const sanitized = value.replace(/\s/, '');
+
+    // @@todo see color control sanitize function for missing part here... \\
+
+    // interpret an empty string as a transparent value // @@doubt \\
+    if ( '' === sanitized && ! this.params['disallowTransparent'] ) {
+      return 'transparent';
+    }
+    return sanitized;
+  },
+  /**
+   * @override
+   */
   validate: function (value) {
-    var params = this.params;
-    var softenize = this.softenize;
+    let $validity = [];
+    const params = this.params;
+
     if (params.showPaletteOnly &&
       !params.togglePaletteOnly &&
       _.isArray(params.palette)
     ) {
-      var allColorsAllowed = _.flatten(params.palette, true);
-      allColorsAllowed = _.map(allColorsAllowed, function (color) {
-        return softenize(color);
+      let allColorsAllowed = _.flatten(params.palette, true);
+      allColorsAllowed = _.map(allColorsAllowed, (color) => {
+        return this.softenize(color);
       });
-      if (allColorsAllowed.indexOf(softenize(value)) !== -1) {
-        return value;
-      } else {
-        return { error: true, msg: api.l10n['vNotInPalette'] };
+      if (allColorsAllowed.indexOf(this.softenize(value)) === -1) {
+        $validity.push({ vNotInPalette: api.l10n['vNotInPalette'] });
       }
     }
-    else if (
-      (!params.disallowTransparent && value === 'transparent') ||
-      isHexColor(value) ||
-      (params.allowAlpha && isRgbaColor(value))
-    ) {
-      return value;
-    } else {
-      return { error: true };
+
+    if (params.disallowTransparent && value === 'transparent') {
+      $validity.push({ vNoTranpsarent: api.l10n['vNoTranpsarent'] });
     }
+
+    if (!params.allowAlpha && isRgbaColor(value)) {
+      $validity.push({ vNoRGBA: api.l10n['vNoRGBA'] });
+    }
+
+    if (!isHexColor(value) &&
+        !isRgbColor(value) &&
+        !isRgbColor(value) &&
+        value !== 'transparent'
+      ) {
+      $validity.push({ vNoColor: api.l10n['vNoColor'] });
+    }
+
+    return $validity;
   },
   /**
    * @override
@@ -97,11 +124,10 @@ let Control = api.controls.Base.extend({
    * @override
    */
   ready: function () {
-    var self = this;
     /** @type {HTMLElement} */
-    var container = this._container;
+    const container = this._container;
     /** @type {HTMLElement} */
-    var btnCustom = container.getElementsByClassName('kkcpui-toggle')[0];
+    const btnCustom = container.getElementsByClassName('kkcpui-toggle')[0];
 
     /** @type {HTMLElement} */
     this.__preview = container.getElementsByClassName('kkcpcolor-current-overlay')[0];
@@ -110,30 +136,30 @@ let Control = api.controls.Base.extend({
     /** @type {JQuery} */
     this.__$expander = $(container.getElementsByClassName('kkcp-expander')[0]).hide();
 
-    self._updateUIpreview(self.setting());
+    this._updateUIpreview(this.setting());
 
+    let isOpen = false;
+    let pickerIsInitialized = false;
 
-    var isOpen = false;
-    var pickerIsInitialized = false;
-    var _maybeInitializeSpectrum = function () {
+    const _maybeInitializeSpectrum = () => {
       // initialize only once
       if (!pickerIsInitialized) {
-        self.__$picker.spectrum(self._getSpectrumOpts(self));
+        this.__$picker.spectrum(this._getSpectrumOpts(this));
         pickerIsInitialized = true;
       }
     };
 
     btnCustom.onmouseover = _maybeInitializeSpectrum;
 
-    btnCustom.onclick = function() {
+    btnCustom.onclick = () => {
       isOpen = !isOpen;
       _maybeInitializeSpectrum();
 
       // and toggle
       if (isOpen) {
-        self.__$expander.slideDown();
+        this.__$expander.slideDown();
       } else {
-        self.__$expander.slideUp();
+        this.__$expander.slideUp();
       }
       return false;
     };
@@ -142,13 +168,14 @@ let Control = api.controls.Base.extend({
    * Get Spectrum plugin options
    *
    * {@link https://bgrins.github.io/spectrum/ spectrum API}
-   * @param  {Object} options Options that override the defaults (optional)
-   * @return {Object} The spectrum plugin options
+   *
+   * @param  {?object} options Options that override the defaults (optional)
+   * @return {object} The spectrum plugin options
    */
   _getSpectrumOpts: function (options) {
-    var self = this;
-    var params = self.params;
-    var $container = self.container;
+    const params = this.params;
+    const $container = this.container;
+
     return _.extend({
       preferredFormat: 'hex',
       flat: true,
@@ -165,18 +192,18 @@ let Control = api.controls.Base.extend({
       showPaletteOnly: params.showPaletteOnly && params.palette,
       togglePaletteOnly: params.togglePaletteOnly && params.palette,
       palette: params.palette,
-      color: self.setting(),
-      show: function () {
+      color: this.setting(),
+      show: () => {
         $container.find('.sp-input').focus();
         if (params.showInitial) {
           $container.find('.sp-container').addClass('sp-show-initial');
         }
       },
-      move: function (tinycolor) {
-        var color = tinycolor ? tinycolor.toString() : 'transparent';
-        self._apply(color);
+      move: (tinycolor) => {
+        const color = tinycolor ? tinycolor.toString() : 'transparent';
+        this._apply(color);
       },
-      change: function (tinycolor) {
+      change: (tinycolor) => {
         if (!tinycolor) {
           $container.find('.sp-input').val('transparent');
         }

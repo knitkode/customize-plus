@@ -38,11 +38,11 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 	 */
 	protected function js_tpl() {
 		?>
-		<label>
-			<# if (data.label) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
-			<input type="checkbox" name="_customize-kkcp_checkbox-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> <# if (data.value) { #>checked<# } #>>
-			<# if (data.description) { #>{{{ data.description }}}<# } #>
-		</label>
+			<?php $this->js_tpl_header(); ?>
+			<label>
+				<input type="checkbox" name="_customize-kkcp_checkbox-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> <# if (data.value) { #>checked<# } #>>
+				<# if (data.attrs.label) { #>{{{ data.attrs.label }}}<# } #>
+			</label>
 		<?php
 	}
 
@@ -57,8 +57,7 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		$filtered = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
-		return $filtered ? 1 : 0;
+		return KKcp_Sanitize::checkbox( $value, $setting, $control );
 	}
 
 	/**
@@ -73,11 +72,7 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 	 * @return mixed
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		$filtered = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
-		if ( $filtered != 0 && $filtered != 1 ) {
-			$validity->add( 'wrong', esc_html__( 'The checkbox should be either checked or unchecked.' ) );
-		}
-		return $validity;
+		return KKcp_Validate::checkbox( $validity, $value, $setting, $control );
 	}
 }
 

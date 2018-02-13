@@ -31,6 +31,14 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	public $type = 'kkcp_color';
 
 	/**
+	 * Colors format supported
+	 *
+	 * @since 1.0.0
+	 * @var array
+	 */
+	private static $colorsFormatsSupported = array( 'hex', 'rgb', 'rgba', /*'hsl', 'hsla', 'keyword'*/ );
+
+	/**
 	 * Allow alpha channel modification (rgba colors)
 	 *
 	 * @since 1.0.0
@@ -51,7 +59,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 *
 	 * {@link(https://bgrins.github.io/spectrum/#options-selectionPalette, js docs)}
 	 * @since 1.0.0
-	 * @var boolean
+	 * @var boolean|array
 	 */
 	protected $palette = array();
 
@@ -73,6 +81,21 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 */
 	protected $togglePaletteOnly = false;
 
+
+	/**
+	 * Get l10n
+	 *
+	 * {@inheritdoc}
+	 * @since  1.0.0
+	 * @override
+	 */
+	public function get_constants() {
+		return array(
+			'colorsKeyword' => KKcp_Utils::COLORS_KEYWORDS,
+			'colorsFormatsSupported' => self::$colorsFormatsSupported
+		);
+	}
+
 	/**
 	 * Get l10n
 	 *
@@ -89,6 +112,9 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 			'togglePaletteMoreText' => esc_html__( 'Show color picker' ),
 			'togglePaletteLessText' => esc_html__( 'Hide color picker' ),
 			'vNotInPalette' => esc_html__( 'Color not in the allowed palette.' ),
+			'vNoTransparent', esc_html__( 'Transparent is not allowed for this setting.' ),
+			'vNoRGBA', esc_html__( 'RGBA color is not allowed for this setting.' ),
+			'vNoColor' => esc_html__( 'Not a valid color.' ),
 		);
 	}
 
@@ -148,31 +174,19 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		if ( $control->showPaletteOnly &&
-			! $control->togglePaletteOnly &&
-			is_array( $control->palette )
-		) {
-			$palette_flatten = KKcp_Sanitize::array_flatten( $control->palette, 1 );
-			$palette_normalized = array_map( 'KKcp_Sanitize::hex_to_rgb', $palette_flatten );
-			$value_normalized = KKcp_Sanitize::hex_to_rgb( $value );
-			if ( KKcp_Sanitize::in_array_r( $value_normalized, $palette_normalized ) ) {
-				return $value;
-			} else {
-				return $setting->default;
-			}
+		$value = preg_replace( '~\x{00a0}~', '', $value );
+
+		// interpret an empty string as a transparent value // @@doubt \\
+		if ( '' === $value && ! $control->disallowTransparent ) {
+			return 'transparent';
 		}
-		else if ( 'transparent' === $value && ! $control->disallowTransparent ) {
-			return $value;
+		if ( KKcp_Validate::is_rgba( $value ) && ! $control->allowAlpha ) {
+			$value = KKcp_Sanitize::rgba_to_rgb( $value );
+		} else {
+			$value = KKcp_Sanitize::hex( $value );
 		}
-		else if ( ( $output = KKcp_Sanitize::color_rgba( $value ) ) && $control->allowAlpha ) {
-			return $output;
-		}
-		else if ( $output = KKcp_Sanitize::color_hex( $value ) ) {
-			return $output;
-		}
-		else {
-			return $setting->default;
-		}
+
+		return $value;
 	}
 
 	/**
@@ -195,15 +209,26 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 			$palette_normalized = array_map( 'KKcp_Sanitize::hex_to_rgb', $palette_flatten );
 			$value_normalized = KKcp_Sanitize::hex_to_rgb( $value );
 			if ( ! KKcp_Sanitize::in_array_r( $value_normalized, $palette_normalized ) ) {
-				$validity->add( 'wrong_color', esc_html__( 'The color is not in the palette.' ) );
+				$validity->add( 'vNotInPalette', esc_html__( 'Color not in the allowed palette.' ) );
 			}
 		}
+
 		if ( 'transparent' === $value && $control->disallowTransparent ) {
-			$validity->add( 'wrong_color', esc_html__( 'Transparent is not allowed for this setting.' ) );
+			$validity->add( 'vNoTransparent', esc_html__( 'Transparent is not allowed for this setting.' ) );
 		}
-		if ( ( $output = KKcp_Sanitize::color_rgba( $value ) ) && ! $control->allowAlpha ) {
-			$validity->add( 'wrong_color', esc_html__( 'RGBA color is not allowed for this setting.' ) );
+
+		if ( KKcp_Validate::is_rgba( $value ) && ! $control->allowAlpha ) {
+			$validity->add( 'vNoRGBA', esc_html__( 'RGBA color is not allowed for this setting.' ) );
 		}
+
+		if ( !KKcp_Validate::is_hex( $value ) &&
+			!KKcp_Validate::is_rgb( $value ) &&
+			!KKcp_Validate::is_rgba( $value ) &&
+			$value !== 'transparent'
+		) {
+			$validity->add( 'vNoColor', esc_html__( 'Not a valid color.' ) );
+		}
+
 		return $validity;
 	}
 }

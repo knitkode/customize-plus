@@ -14,10 +14,128 @@
 class KKcp_Validate {
 
 	/**
-	 * Validate a single choice
+	 * Is an associative array or not
+	 *
+	 * @link(http://stackoverflow.com/a/14669600/1938970, source)
+	 * @since  1.0.0
+	 * @param  array   $array The array to test
+	 * @return boolean
+	 */
+	public static function is_assoc( $array ) {
+		if ( ! is_array( $array ) ) {
+			return false;
+		}
+		// Keys of the array
+		$keys = array_keys( $array );
+
+		// If the array keys of the keys match the keys, then the array must
+		// not be associative (e.g. the keys array looked like {0:0, 1:1...}).
+		return array_keys( $keys ) !== $keys;
+	}
+
+	/**
+	 * Is HEX color
+	 *
+	 * It needs a value cleaned of all whitespaces (sanitized)
+	 *
+	 * @since  1.0.0
+	 * @param  string $value  The value value to check
+	 * @return boolean
+	 */
+	public static function is_hex( $value ) {
+		return preg_match( '/^#([A-Fa-f0-9]{3}){1,2}$/', $input );
+	}
+
+	/**
+	 * Is RGB color
+	 *
+	 * It needs a value cleaned of all whitespaces (sanitized)
+	 *
+	 * @since  1.0.0
+	 * @param  string $value  The value value to check
+	 * @return boolean
+	 */
+	public static function is_rgb( $value ) {
+		return preg_match( '/^rgba\((0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])$/', $value );
+	}
+
+	/**
+	 * Is RGBA color
+	 *
+	 * It needs a value cleaned of all whitespaces (sanitized)
+	 *
+	 * @since  1.0.0
+	 * @param  string $value  The value value to check
+	 * @return boolean
+	 */
+	public static function is_rgba( $value ) {
+		return preg_match( '/^rgba\((0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0?\.[0-9]*[1-9][0-9]*|[01])\)$/', $value );
+	}
+
+	/**
+	 * Is setting value (`control.setting()`) empty?
+	 * Used to check if required control's settings have instead an empty value
+	 *
+	 * @since  1.0.0
+	 * @see php class method `KKcp_Sanitize::is_empty()`
+	 * @param  string  $value A setting value
+	 * @return boolean 				Whether the setting value has to be considered
+	 *                        empty, or not set.
+	 */
+	public static function is_empty( $value ) {
+		// first try to compare it to an empty string
+		if ( $value === '' || $value === null ) {
+			return true;
+		}
+
+		// if it's a jsonized value try to parse it and
+		if ( is_string( $value ) ) {
+			$value_parsed = json_decode( $value );
+			if ( $value_parsed ) {
+				// see if we have an empty array or an empty object
+				if ( is_array( $value_parsed ) && empty( $value_parsed ) ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Validate a required setting
 	 *
 	 * @since 1.0.0
-	 * @override
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	public static function check_required( $validity, $value, $setting, $control ) {
+		if ( self::is_empty( $value ) ) {
+			$validity->add( 'vRequired', esc_html__( 'You must supply a value.' ) );
+		}
+		return $validity;
+	}
+
+	/**
+	 * Is value in choices?
+	 *
+	 * @since  1.0.0
+	 * @return boolean
+	 */
+	public static function is_value_in_choices ( $value, $choices ) {
+		if ( self::is_assoc( $choices ) ) {
+			return isset( $choices[ $value ] );
+		}
+		return in_array( $value, $choices );
+	}
+
+	/**
+	 * Validate a single choice
+
+	 * @since 1.0.0
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -25,7 +143,7 @@ class KKcp_Validate {
 	 * @return mixed
  	 */
 	public static function single_choice( $validity, $value, $setting, $control ) {
-		if ( ! isset( $control->choices[ $value ] ) ) {
+		if ( ! self::is_value_in_choices( $value, $control->choices ) ) {
 			$validity->add( 'vNotAChoice', sprintf( esc_html__( 'Value %s is not an allowed choice.' ), $value ) );
 		}
 		return $validity;
@@ -35,7 +153,6 @@ class KKcp_Validate {
 	 * Validate an array of choices
 	 *
 	 * @since 1.0.0
-	 * @override
 	 * @param WP_Error 						 $validity
 	 * @param array 							 $value   		 The value to validate.
  	 * @param WP_Customize_Setting $setting   	 Setting instance.
@@ -57,19 +174,20 @@ class KKcp_Validate {
 			}
 
 			// maybe check the minimum number of choices selectable
-			if ( isset( $control->min ) && count( $value ) < $control->min ) {
+			if ( isset( $control->min ) && is_int( $control->min ) && count( $value ) < $control->min ) {
 				$validity->add( 'vNotMinLengthArray', sprintf( esc_html__( 'List of values must contain minimum %s values.' ), $control->min ) );
 			}
 
+
 			// maybe check the maxmimum number of choices selectable
-			if ( isset( $control->max ) && count( $value ) < $control->max ) {
+			if ( isset( $control->max ) && is_int( $control->max ) && count( $value ) > $control->max ) {
 				$validity->add( 'vNotMaxLengthArray', sprintf( esc_html__( 'List of values must contain maximum %s values.' ), $control->max ) );
 			}
 
 			// now check that the selected values are allowed choices
-			foreach ( $value as $key ) {
-				if ( ! isset( $control->choices[ $key ] ) ) {
-					$validity->add( 'vNotAChoice', sprintf( esc_html__( 'Value %s is not an allowed choice.' ), $key ) );
+			foreach ( $value as $value_key ) {
+				if ( ! self::is_value_in_choices( $value_key, $control->choices ) ) {
+					$validity->add( 'vNotAChoice', sprintf( esc_html__( 'Value %s is not an allowed choice.' ), $value_key ) );
 				}
 			}
 		}
@@ -95,4 +213,21 @@ class KKcp_Validate {
 		return self::multiple_choices( $validity, $value, $setting, $control );
 	}
 
+	/**
+	 * Validate checkbox
+	 *
+	 * @since 1.0.0
+	 * @override
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	public static function checkbox( $validity, $value, $setting, $control ) {
+		if ( $filtered != 0 && $filtered != 1 ) {
+			$validity->add( 'vCheckbox', esc_html__( 'The checkbox should be either checked or unchecked.' ) );
+		}
+		return $validity;
+	}
 }

@@ -83,7 +83,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @since  1.0.0
 		 * @var array
 		 */
-		private static $controls_l10n = array();
+		protected static $controls_l10n = array();
 
 		/**
 		 * Temporary store for localized strings defined through control classes
@@ -91,7 +91,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @since  1.0.0
 		 * @var array
 		 */
-		private static $controls_constants = array();
+		protected static $controls_constants = array();
 
 		/**
 		 * CSS shared for all the icons
@@ -256,6 +256,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'vNotExactLengthArray' => esc_html__( 'List of values must contain exactly %s values' ),
 				'vNotMinLengthArray' => esc_html__( 'List of values must contain minimum %s values.' ),
 				'vNotMaxLengthArray' => esc_html__( 'List of values must contain maximum %s values.' ),
+				'vCheckbox' => esc_html__( 'The checkbox should be either checked or unchecked.' ),
 			);
 			$additional = (array) apply_filters( 'kkcp_customize_get_js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );

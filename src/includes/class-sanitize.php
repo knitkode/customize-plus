@@ -14,25 +14,6 @@
 class KKcp_Sanitize {
 
 	/**
-	 * Is an associative array or not
-	 * @link(http://stackoverflow.com/a/14669600/1938970, source)
-	 * @since  1.0.0
-	 * @param  array   $array The array to test
-	 * @return boolean
-	 */
-	public static function is_assoc( $array ) {
-		if ( ! is_array( $array ) ) {
-			return false;
-		}
-		// Keys of the array
-		$keys = array_keys( $array );
-
-		// If the array keys of the keys match the keys, then the array must
-		// not be associative (e.g. the keys array looked like {0:0, 1:1...}).
-		return array_keys( $keys ) !== $keys;
-	}
-
-	/**
 	 * In array recursive
 	 * @link(http://stackoverflow.com/a/4128377/1938970, source)
 	 * @since  1.0.0
@@ -151,36 +132,6 @@ class KKcp_Sanitize {
 	 */
 	public static function nohtml( $nohtml ) {
 		return wp_filter_nohtml_kses( $nohtml );
-	}
-
-	/**
-	 * Is setting value (`control.setting()`) empty?
-	 * Used to check if required control's settings have instead an empty value
-	 *
-	 * @since  1.0.0
-	 * @see php class method `KKcp_Sanitize::is_setting_value_empty()`
-	 * @param  string  $value A setting value
-	 * @return boolean 				Whether the setting value has to be considered
-	 *                        empty, or not set.
-	 */
-	public static function is_setting_value_empty( $value ) {
-		// first try to compare it to an empty string
-		if ( $value === '' ) {
-			return true;
-		}
-
-		// if it's a jsonized value try to parse it and
-		if ( is_string( $value ) ) {
-			$value_parsed = json_decode( $value );
-			if ( $value_parsed ) {
-				// see if we have an empty array or an empty object
-				if ( is_array( $value_parsed ) && empty( $value_parsed ) ) {
-					return true;
-				}
-			}
-		}
-
-		return false;
 	}
 
 	/**
@@ -319,46 +270,35 @@ class KKcp_Sanitize {
 	}
 
 	/**
-	 * Sanitize/validate hex color
+	 * Sanitize hex color
 	 * check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or 'CCC'
+	 *
+	 * It needs a value cleaned of all whitespaces (sanitized).
 	 *
 	 * @since  1.0.0
 	 * @param  string $input  The input value to sanitize
 	 * @return string|boolean The sanitized input or `false` in case the input
 	 *                        value is not valid.
 	 */
-	public static function color_hex( $input ) {
-		$input = trim( $input );
-
-		if ( preg_match( '/^#([A-Fa-f0-9]{3}){1,2}$/', $input ) ) {
-			return $input;
-		}
-		// check for a hex color string without hash 'c1c2b4'
-		else if ( preg_match( '/^([A-Fa-f0-9]{3}){1,2}$/', $input ) ) {
-			// hex color is valid, add hash
+	public static function hex( $input ) {
+		if ( preg_match( '/^([A-Fa-f0-9]{3}){1,2}$/', $input ) ) {
 			return '#' . $input;
-		} else {
-			return false;
 		}
+		return $input;
 	}
 
 	/**
-	 * Sanitize / validate RGBA color
+	 * Sanitize a RGB color given as an RGBA, stripping the alpha channel value
+	 *
+	 * It needs a value cleaned of all whitespaces (sanitized).
 	 *
 	 * @since  1.0.0
-	 * @param  string $input  The input value to sanitize
-	 * @return string|boolean The sanitized input or `false` in case the input
-	 *                        value is not valid.
+	 * @param  string $input
+	 * @return string
 	 */
-	public static function color_rgba( $input ) {
-		$input = trim( $input );
-		if ( preg_match( '/^rgba\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])\s*,\s*(0?\.[0-9]*[1-9][0-9]*|[01])\s*\)$/', $input ) ) {
-			$input = str_replace( ' ', '', $input );
-			sscanf( $input, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
-			return "rgba($red,$green,$blue,$alpha)";
-		} else {
-			return false;
-		}
+	public static function rgba_to_rgb( $input ) {
+		sscanf( $input, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
+		return "rgba($red,$green,$blue)";
 	}
 
 	/**
@@ -477,6 +417,20 @@ class KKcp_Sanitize {
 		}
 
 		return self::multiple_choices( $input );
+	}
+
+	/**
+	 * Sanitize a checkbox
+	 *
+	 * @since 1.0.0
+	 * @param mixed         $input   The value to sanitize.
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return boolean The sanitized value.
+	 */
+	public static function checkbox( $input, $setting, $control ) {
+		$filtered = filter_var( $input, FILTER_VALIDATE_BOOLEAN );
+		return $filtered ? 1 : 0;
 	}
 
 	/**

@@ -152,8 +152,8 @@ class Utils {
       return true;
     }
     var value;
-    if (resetType === 'last' && !_.isUndefined(params['vLast'])) {
-      value = params['vLast'];
+    if (resetType === 'last' && !_.isUndefined(params['vLastSaved'])) {
+      value = params['vLastSaved'];
     } else if (resetType === 'initial') {
       value = params['vInitial'];
     } else if (resetType === 'factory') {
@@ -182,12 +182,12 @@ class Utils {
     }
     var _softenize = control.softenize;
     var value = _softenize(control.setting());
-    if (resetType === 'last' && !_.isUndefined(params.vLast)) {
-      return value !== _softenize(params.vLast);
+    if (resetType === 'last' && !_.isUndefined(params['vLastSaved'])) {
+      return value !== _softenize(params['vLastSaved']);
     } else if (resetType === 'initial') {
-      return value !== _softenize(params.vInitial);
+      return value !== _softenize(params['vInitial']);
     } else if (resetType === 'factory') {
-      return value !== _softenize(params.vFactory);
+      return value !== _softenize(params['vFactory']);
     }
   }
 
@@ -222,34 +222,6 @@ class Utils {
   _forceSettingSet (setting, value, dummyValue) {
     setting['_value'] = dummyValue || 'dummy'; // whitelisted from uglify \\
     setting.set(value);
-  }
-
-  /**
-   * Is setting value (`control.setting()`) empty?
-   * Used to check if required control's settings have instead an empty value
-   *
-   * @see php class method `KKcp_Sanitize::is_setting_value_empty()`
-   * @static
-   * @param  {string}  value
-   * @return {Boolean}
-   */
-  _isSettingValueEmpty (value) {
-    // first try to compare it to an empty string
-    if (value === '') {
-      return true;
-    } else {
-      // if it's a jsonized value try to parse it
-      try {
-        value = JSON.parse(value);
-      } catch(e) {}
-
-      // and then see if we have an empty array or an empty object
-      if ((_.isArray(value) || _.isObject(value)) && _.isEmpty(value)) {
-        return true;
-      }
-
-      return false;
-    }
   }
 
   /**

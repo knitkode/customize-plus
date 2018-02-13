@@ -5,6 +5,7 @@ import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import Skeleton from '../core/skeleton';
 import Utils from '../core/utils';
+import Validate from '../core/validate';
 
 /**
  * Control Base class
@@ -228,7 +229,7 @@ api.controls.Base = wpApi.Control.extend({
     if (control.setting) {
       // Add custom validation function overriding the empty function from WP
       // API in `customize-controls.js`, in the constructor `api.Value`
-      // control.setting.validate = control._validateWrap.bind(control);
+      control.setting.validate = control._beforeSet.bind(control);
 
       // bind setting change to control method to reflect a programmatic
       // change on the UI, only if the control is rendered
@@ -240,74 +241,88 @@ api.controls.Base = wpApi.Control.extend({
 
       if (DEBUG) {
         control.setting.notifications.bind( 'change', () => {
-          console.log(`Notification for default setting of control '${control.id}'`);
+          console.log(`Notification change for default setting of control '${control.id}'`);
         });
       }
     }
   },
   /**
-   * Validate wrap function.
+   * Before `setting.set`, acutally `control.validate` wrap function.
+   *
    * Always check that required setting (not `optional`) are not empty,
    * if it pass the check call the control specific abstract `validate` method.
    *
    * // @@doubt not sure whether this should be private or not \\
    * @access private
-   * @param  {string} newValue
-   * @return {string} The newValue validated or the last setting value.
+   * @param  {string} value
+   * @return {string} The value validated or the last setting value.
    */
-  _validateWrap: function (newValue) {
-    if (!this.params.optional && Utils._isSettingValueEmpty(newValue)) {
-      this._onValidateError({ error: true, msg: api.l10n['vRequired'] });
-      this._currentValueHasError = true;
-      return this.setting();
+  _beforeSet: function (value) {
+    let $validity;
 
-    } else {
-      newValue = this.sanitize(newValue);
-      var validationResult = this.validate(newValue);
+    if (!this.params.optional && Validate.isEmpty(value)) {
+      $validity = Validate.checkRequired([], value);
 
-      if (validationResult.error) {
-        this._onValidateError(validationResult);
-        this._currentValueHasError = true;
-        return this.setting();
-      } else {
-        this._onValidateSuccess(validationResult);
-        this._currentValueHasError = false;
-        return validationResult;
+      this._manageValidityNotifications($validity);
+      return value; // @@doubt set last valid value with `this.setting();`? \\
+    }
+
+    const sanitizedValue = this.sanitize(value);
+    $validity = this.validate(sanitizedValue);
+
+    this._manageValidityNotifications($validity);
+
+    return sanitizedValue; // @@doubt set last valid value with `this.setting();`? \\
+  },
+  /**
+   * Add validity notifications
+   *
+   * @abstract
+   * @access private
+   * @param  {array<object<string,string>>} error `{ msgId: msg }`
+   */
+  _manageValidityNotifications: function ($validity) {
+    this._clearNotifications();
+    this.notifications.render();
+
+    if (!$validity.length) {
+      return;
+    }
+    this._currentValueHasError = true;
+
+    for (let i = 0; i < $validity.length; i++) {
+      let error = $validity[i];
+      let code = _.keys(error)[0];
+      let message = error[code] || api.l10n['vInvalid'];
+      let notification = new wpApi.Notification(code, { type: 'error', message });
+      this.notifications.add(notification);
+      if (DEBUG) {
+        console.log(`Notification add '${code}' for default setting of control '${this.id}'`);
       }
     }
+
+    this.notifications.render();
   },
   /**
-   * On validation error (optionally override it in subclasses)
-   * @abstract
-   * @access private
-   * @param  {Object<string,boolean|string>} error `{ error: true, msg: string }`
-   */
-  _onValidateError: function (error) {
-    const msg = error && error.msg ? error.msg : api.l10n['vInvalid'];
-    const id = `${this.id}__error_${msg.replace(/\s/g, '')}`;
-
-    if (!this._currentNotificationId || id !== this._currentNotificationId) {
-      console.log(`Control adds notification with id: ${id}`);
-      const notification = new wpApi.Notification(id, { type: 'error', message: msg });
-      // debugger;
-      this.notifications.add(notification);
-      this.notifications.render();
-
-      this._currentNotificationId = id;
-    }
-  },
-  /**
-   * On validation success (optionally override it in subclasses)
+   * Clear notifications
+   *
    * @abstract
    * @access private
    */
-  _onValidateSuccess: function () {
-    if (this._currentNotificationId) {
-      this.notifications.remove(this._currentNotificationId);
-      this.notifications.render();
-      console.log(`Control removes notification with id: ${this._currentNotificationId}`);
-      this._currentNotificationId = false;
+  _clearNotifications: function () {
+    this._currentValueHasError = false;
+
+    const notifications = this.notifications.get();
+    if (!notifications.length) {
+      return;
     }
+    for (let i = 0; i < notifications.length; i++) {
+      this.notifications.remove(notifications[i]['code']);
+      if (DEBUG) {
+        console.log(`Notification remove '${notifications[i]['code']}' for default setting of control '${this.id}'`);
+      }
+    }
+    // this.notifications.render();
   },
   /**
    * Validate
@@ -473,8 +488,8 @@ api.controls.Base = wpApi.Control.extend({
     this._extras();
     // errors get resetted because on ready we fill the values in the UI with
     // the value of `this.setting()` which can never be not valid (see the
-    // `_validateWrap` method above)
-    // this._onValidateSuccess();
+    // `_beforeSet` method above)
+    // this._clearNotifications();
 
     // if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
     //   ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
@@ -512,34 +527,33 @@ api.controls.Base = wpApi.Control.extend({
    * @access private
    */
   _extras: function () {
-    var self = this;
-    var params = this.params;
+    const params = this.params;
     /**
      * Reference to abstract method different in various control's subclasses
      * @type {function(*)}
      */
-    var _softenize = this.softenize;
+    const _softenize = this.softenize;
     // constants
-    var CLASS_RESET_LAST = ' kkcp-extras-reset_last';
-    var CLASS_RESET_INITIAL = ' kkcp-extras-reset_initial';
-    var CLASS_RESET_FACTORY = 'kkcp-extras-reset_factory';
-    var CLASS_DISABLED = ' kkcp-disabled';
+    const CLASS_RESET_LAST = ' kkcp-extras-reset_last';
+    const CLASS_RESET_INITIAL = ' kkcp-extras-reset_initial';
+    const CLASS_RESET_FACTORY = 'kkcp-extras-reset_factory';
+    const CLASS_DISABLED = ' kkcp-disabled';
     // DOM
-    var container = this._container;
-    var area = container.getElementsByClassName('kkcp-extras')[0];
-    var toggle = container.getElementsByClassName('kkcp-extras-btn')[0];
-    var btnResetLast = container.getElementsByClassName(CLASS_RESET_LAST)[0];
-    var btnResetInitial = container.getElementsByClassName(CLASS_RESET_INITIAL)[0];
-    var btnResetFactory = container.getElementsByClassName(CLASS_RESET_FACTORY)[0];
+    const container = this._container;
+    const area = container.getElementsByClassName('kkcp-extras')[0];
+    const toggle = container.getElementsByClassName('kkcp-extras-btn')[0];
+    const btnResetLast = container.getElementsByClassName(CLASS_RESET_LAST)[0];
+    const btnResetInitial = container.getElementsByClassName(CLASS_RESET_INITIAL)[0];
+    const btnResetFactory = container.getElementsByClassName(CLASS_RESET_FACTORY)[0];
     // value variables, uses closure
-    var setting = this.setting;
-    var initialValue = this.vInitial;
-    var factoryValue = this.vFactory;
+    const setting = this.setting;
+    const initialValue = params['vInitial'];
+    const factoryValue = params['vFactory'];
     // state
-    var isOpen = false;
+    let isOpen = false;
 
     // handlers
-    var _closeExtras = function () {
+    const _closeExtras = function () {
       container.classList.remove('kkcp-extras-open');
     };
     /**
@@ -547,8 +561,8 @@ api.controls.Base = wpApi.Control.extend({
      * It closes the `extras` dropdown.
      *
      */
-    var _resetLastValue = function () {
-      Utils._forceSettingSet(setting, params.vLast);
+    const _resetLastValue = function () {
+      Utils._forceSettingSet(setting, params['vLastSaved']);
       _closeExtras();
     };
     /**
@@ -556,7 +570,7 @@ api.controls.Base = wpApi.Control.extend({
      * It closes the `extras` dropdown.
      *
      */
-    var _resetInitialValue = function () {
+    const _resetInitialValue = function () {
       Utils._forceSettingSet(setting, initialValue);
       _closeExtras();
     };
@@ -566,49 +580,49 @@ api.controls.Base = wpApi.Control.extend({
      * It closes the `extras` dropdown.
      *
      */
-    var _resetFactoryValue = function () {
+    const _resetFactoryValue = function () {
       Utils._forceSettingSet(setting, factoryValue);
       _closeExtras();
     };
     /**
      * Enable button responsible for: resetting to last saved value
      */
-    var _enableBtnLast = function () {
+    const _enableBtnLast = function () {
       btnResetLast.className = CLASS_RESET_LAST;
       btnResetLast.onclick = _resetLastValue;
     };
     /**
      * Disable button responsible for: resetting to initial value
      */
-    var _disableBtnLast = function () {
+    const _disableBtnLast = function () {
       btnResetLast.className = CLASS_RESET_LAST + CLASS_DISABLED;
       btnResetLast.onclick = '';
     };
     /**
      * Enable button responsible for: resetting to initial value
      */
-    var _enableBtnInitial = function () {
+    const _enableBtnInitial = function () {
       btnResetInitial.className = CLASS_RESET_INITIAL;
       btnResetInitial.onclick = _resetInitialValue;
     };
     /**
      * Disable button responsible for: resetting to initial value
      */
-    var _disableBtnInitial = function () {
+    const _disableBtnInitial = function () {
       btnResetInitial.className = CLASS_RESET_INITIAL + CLASS_DISABLED;
       btnResetInitial.onclick = '';
     };
     /**
      * Enable button responsible for: resetting to factory / theme-default value
      */
-    var _enableBtnFactory = function () {
+    const _enableBtnFactory = function () {
       btnResetFactory.className = CLASS_RESET_FACTORY;
       btnResetFactory.onclick = _resetFactoryValue;
     };
     /**
      * Disable button responsible for: resetting to factory / theme-default value
      */
-    var _disableBtnFactory = function () {
+    const _disableBtnFactory = function () {
       btnResetFactory.className = CLASS_RESET_FACTORY + CLASS_DISABLED;
       btnResetFactory.onclick = '';
     };
@@ -616,34 +630,31 @@ api.controls.Base = wpApi.Control.extend({
      * Update status (enable / disable)
      * for each control in the `extras` menu.
      */
-    var _onExtrasOpen = function () {
+    const _onExtrasOpen = () => {
       // if the control current value is not valid enable both reset buttons
-      if (self._currentValueHasError) {
+      if (this._currentValueHasError) {
         _enableBtnInitial();
         _enableBtnFactory();
         return;
       }
 
-      var currentValue = _softenize(setting());
-      var lastValue = params.vLast;
+      const currentValue = _softenize(setting());
+      const lastSavedValue = params['vLastSaved'];
 
       // the last saved value is not always there like the others, we don't put
       // it in the big json through php, to save bytes, in the end. We check
       // here if the last value is `undefined`
-      if (_.isUndefined(lastValue) || currentValue === _softenize(lastValue)) {
+      if (_.isUndefined(lastSavedValue) || _.isEqual(currentValue, _softenize(lastSavedValue))) {
         _disableBtnLast();
       } else {
         _enableBtnLast();
       }
-      let aaaaaaaaaa = _softenize(initialValue);
-      let bbbbbbbbbb = currentValue;
-      debugger;
-      if (currentValue === _softenize(initialValue)) {
+      if (_.isEqual(currentValue, _softenize(initialValue))) {
         _disableBtnInitial();
       } else {
         _enableBtnInitial();
       }
-      if (currentValue === _softenize(factoryValue)) {
+      if (_.isEqual(currentValue, _softenize(factoryValue))) {
         _disableBtnFactory();
       } else {
         _enableBtnFactory();
@@ -659,28 +670,28 @@ api.controls.Base = wpApi.Control.extend({
       if (DEBUG) {
         toggle.title = 'Click to dump control object into console';
       }
-      toggle.onclick = function () {
+      toggle.onclick = () => {
         isOpen = !isOpen;
         container.classList.toggle('kkcp-extras-open', isOpen);
         if (isOpen) {
           _onExtrasOpen();
         }
         if (DEBUG) {
-          console.info('Control[' + self.id + '] ', self);
+          console.info(`Control[${this.id}] `, this);
         }
       };
     }
 
     if (area) {
-      area.onmouseenter = function () {
+      area.onmouseenter = () => {
         isOpen = true;
         container.classList.add('kkcp-extras-open');
         _onExtrasOpen();
       };
-      area.onmouseleave = function () {
+      area.onmouseleave = () => {
         isOpen = false;
         // don't close immediately, wait a bit and see if the mouse is still out of the area
-        setTimeout(function () {
+        setTimeout(() => {
           if (!isOpen) {
             container.classList.remove('kkcp-extras-open');
           }
@@ -697,7 +708,7 @@ api.controls.Base = wpApi.Control.extend({
  */
 wpApi.bind('ready', function () {
   try {
-    var controlToFocusID = window._wpCustomizeSettings.autofocus.control;
+    const controlToFocusID = window._wpCustomizeSettings.autofocus.control;
     if (controlToFocusID) {
       Utils.linkControl(null, controlToFocusID);
     }
@@ -715,7 +726,7 @@ wpApi.bind('save', function () {
   Utils._eachControl(function (control) {
     if (control.setting && control.setting['_dirty']) { // whitelisted from uglify \\
       // console.log(control.id, 'is dirty on save with value:', control.setting());
-      control.params.vLast = control.setting();
+      control.params['vLastSaved'] = control.setting();
     }
   });
 });

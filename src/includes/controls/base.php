@@ -113,7 +113,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 			}
 		}
 
-		// remove description if not specified, save bytes...
+		// remove description if not specified, save bytes in printed JSON...
 		if ( ! $this->description ) {
 			unset( $this->json['description'] );
 		}
@@ -342,19 +342,12 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public static function sanitize_callback( $value, $setting ) {
 		$control = $setting->manager->get_control( $setting->id );
 
+		// @@doubt, is this sanitization useful? Or dangerous? \\
 		if ( is_string( $value ) ) {
 			$value = trim( $value );
 		}
 
-		if ( $control && ! $control->optional && KKcp_Sanitize::is_setting_value_empty( $value ) ) {
-			return $setting->default;
-		} else {
-			if ( method_exists( $control, 'sanitize' ) ) {
-				return $control::sanitize( $value, $setting, $control ); // @@doubt, $control used to be `self` \\
-			} else {
-				return wp_kses( $value, array() );
-			}
-		}
+		return $control::sanitize( $value, $setting, $control ); // @@doubt, $control used to be `self` \\
 	}
 
 	/**
@@ -374,7 +367,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
-	 * Validation callback
+	 * Valide callback
 	 *
 	 * All control's specific validation pass from this function which
 	 * always check if the value satisfy the `optional` attribute and then
@@ -394,14 +387,10 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public static function validate_callback( $validity, $value, $setting ) {
 		$control = $setting->manager->get_control( $setting->id );
 
-		if ( $control && ! $control->optional && KKcp_Sanitize::is_setting_value_empty( $value ) ) {
-			$validity->add( 'required', esc_html__( 'You must supply a value.' ) );
-		} else {
-			if ( method_exists( $control, 'validate' ) ) {
-				return $control::validate( $validity, $value, $setting, $control );;
-			}
+		if ( $control && ! $control->optional && KKcp_Validate::is_empty( $value ) ) {
+			return KKcp_Validate::check_required( $value );
 		}
-		return $validity;
+		return $control::validate( $validity, $value, $setting, $control );
 	}
 
 	/**

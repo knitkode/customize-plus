@@ -19,7 +19,7 @@ var WpTight = (function () {
    * @internal
    * @type {string}
    */
-  var _colorSchemaCssId = 'colors-css';
+  const _colorSchemaCssId = 'colors-css';
 
   /**
    * The WordPress color schema useful selectors
@@ -28,7 +28,7 @@ var WpTight = (function () {
    * @internal
    * @type {Object}
    */
-  var _colorSchemaSelectors = {
+  const _colorSchemaSelectors = {
     _primary: '.wp-core-ui .wp-ui-primary',
     _textPrimary: '.wp-core-ui .wp-ui-text-primary',
     _linksPrimary: '#adminmenu .wp-submenu .wp-submenu-head',
@@ -45,13 +45,13 @@ var WpTight = (function () {
    * @return {object}
    */
   function _getWpAdminColors () {
-    var stylesheet = Utils._getStylesheetById(_colorSchemaCssId);
-    var schema = _colorSchemaSelectors;
-    var output = {};
-    for (var key in schema) {
+    const stylesheet = Utils._getStylesheetById(_colorSchemaCssId);
+    const schema = _colorSchemaSelectors;
+    let output = {};
+    for (let key in schema) {
       if (schema.hasOwnProperty(key)) {
-        var selector = schema[key];
-        var rules = Utils._getRulesFromStylesheet(stylesheet, selector);
+        let selector = schema[key];
+        let rules = Utils._getRulesFromStylesheet(stylesheet, selector);
         output[key] = Utils._getCssRulesContent(rules, selector);
       }
     }
@@ -71,7 +71,7 @@ var WpTight = (function () {
        *
        * @type {Object.<string, jQuery|HTMLElement>}
        */
-      var el = this.el = {};
+      const el = this.el = {};
 
       /** @type {JQuery} */
       el.container = $('.wp-full-overlay');

@@ -55,7 +55,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 	 * @since 1.0.0
 	 * @var array
 	 */
-	public static $selectize_allowed_options = array(
+	protected static $selectize_allowed_options = array(
 		'plugins' => array( 'sanitizer' => 'js_array', 'values' => array(
 			'drag_drop',
 			'remove_button'
@@ -66,37 +66,77 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 	);
 
 	/**
-	 * Icons set
+	 * Icons set supported
 	 *
 	 * @since 1.0.0
-	 * @var string
+	 * @var array
 	 */
-	public $supported_icons_set = array(
+	protected static $supported_icons_set = array(
 		'dashicons'
 	);
 
-	/**
-	 * Get an array of all available dashicons.
-	 *
-	 * @static
-	 * @access public
-	 * @return array
-	 */
-	public static function get_dashicons() {
-		return KKcp_Utils::get_dashicons();
+	public function __construct( $manager, $id, $args = array() ) {
+
+		if ( isset( $args[ 'icons_set' ] ) && is_string( $args[ 'icons_set' ] ) && in_array( $args[ 'icons_set' ], self::$supported_icons_set ) ) {
+
+			$icons_set_values = self::get_iconset( $args[ 'icons_set' ] );
+			$this->choices = self::get_choices_from_icon_set( $icons_set_values );
+		}
+
+		parent::__construct( $manager, $id, $args );
 	}
 
 	/**
-	 * Set dashicons array as a constant to use in javascript
+	 * Get icon set array
 	 *
-	 * @override
-	 * @since  1.0.0
+	 * @since 1.0.0
+	 * @param string  $name
 	 * @return array
 	 */
+	private static function get_iconset ( $name ) {
+		if ( $name === 'dashicons' ) {
+			return KKcp_Utils::get_dashicons();
+		}
+
+		return [];
+	}
+
+	/**
+	 * Get choices from icon set array
+	 *
+	 * @since 1.0.0
+	 * @param array  $icon_set
+	 * @return array
+	 */
+	private static function get_choices_from_icon_set ( $icon_set ) {
+		$choices = array();
+
+		foreach ( $icon_set as $group_key => $group_values )  {
+			$icons = $group_values['icons'];
+
+			foreach ( $icons as $icon )  {
+				array_push( $choices, $icon );
+			}
+		}
+
+		return $choices;
+	}
+
+	/**
+	 * Get js constants
+	 *
+	 * {@inheritdoc}
+	 * @since  1.0.0
+	 * @override
+	 */
 	public function get_constants() {
-		return array(
-			'dashicons' => self::get_dashicons(),
-		);
+		$constants = array();
+
+		foreach ( self::$supported_icons_set as $icon_set ) {
+			$constants[ $icon_set ] = self::get_iconset( $icon_set );
+		}
+
+		return $constants;
 	}
 
 	/**
@@ -116,6 +156,11 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 	/**
 	 * Add values to JSON params
 	 *
+	 * We don't print here the `choices` param in order to avoid defining it
+	 * in each icon php control that would print a lot of duplicated JSON data.
+	 * We just define it globally.
+	 * @see `icon.js` control.
+	 *
 	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
@@ -125,16 +170,16 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 		if ( ! empty( $this->selectize ) ) {
 			$this->json['selectize'] = KKcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
 		}
-		if ( isset( $this->icons_set ) && is_string( $this->icons_set ) && in_array( $this->icons_set, $this->supported_icons_set ) ) {
+		if ( isset( $this->icons_set ) && is_string( $this->icons_set ) && in_array( $this->icons_set, self::$supported_icons_set ) ) {
 			$this->json['icons_set'] = KKcp_Sanitize::js_string( $this->icons_set );
 		} else {
-			$this->json['icons_set'] = KKcp_Sanitize::js_string( $this->supported_icons_set[0] );
+			$this->json['icons_set'] = KKcp_Sanitize::js_string( self::$supported_icons_set[0] );
 		}
 		// @@doubt support multiple icon sets?
 		// if ( is_array( $this->icons_set ) ) {
 		// 	$this->json['icons_set'] = array();
 		// 	foreach ( $this->icons_set as $icons_set_code => $icons_set_label ) {
-		// 		if ( in_array( $icons_set_code, $this->supported_icons_set ) ) {
+		// 		if ( in_array( $icons_set_code, self::$supported_icons_set ) ) {
 		// 			array_push( $this->json['icons_set'], $icons_set_code );
 		// 		}
 		// 	}
@@ -151,8 +196,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 		<label>
 			<?php $this->js_tpl_header(); ?>
 		</label>
-		<select class="kkcp-selectize" value="{{ data.value }}" placeholder="Search by name..." name="icon[]" multiple><option value="">Search icon by name...</option></select>
-		<!-- <div class="kkcp-icon-wrap"><?php // filled through js ?></div> -->
+		<select class="kkcp-selectize" value="{{ data.value }}" placeholder="<?php esc_html_e( 'Search icon by name...' ) ?>"<# if (data.max > 1) { #>  name="icon[]" multiple<# } else { #>name="icon"<# } #>><option value=""><?php esc_html_e( 'Search icon by name...' ) ?></option></select>
 		<?php
 	}
 

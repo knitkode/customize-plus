@@ -1,5 +1,7 @@
 import { api, wpApi } from '../core/globals';
 import { numberToBoolean } from '../core/validators';
+import Validate from '../core/validate';
+import Sanitize from '../core/sanitize';
 // import ControlBase from './base';
 
 /**
@@ -30,15 +32,21 @@ let Control = api.controls.Base.extend({
   /**
    * @override
    */
-  validate: function (newValue) {
-    return numberToBoolean(newValue) ? 1 : 0;
+  validate: function (value) {
+    return Validate.checkbox([], value, this.setting, this);
+  },
+  /**
+   * @override
+   */
+  sanitize: function (value) {
+    return Sanitize.checkbox(value);
   },
   /**
    * @override
    */
   syncUI: function (value) {
-    var valueClean = numberToBoolean(value);
-    var inputStatus = numberToBoolean(this.__input.checked);
+    const valueClean = numberToBoolean(value);
+    const inputStatus = numberToBoolean(this.__input.checked);
     if (inputStatus !== valueClean) {
       this.__input.checked = valueClean;
     }
