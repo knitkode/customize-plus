@@ -713,4 +713,64 @@ class KKcp_Utils {
     sscanf( $input, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
     return "rgba($red,$green,$blue)";
   }
+
+  /**
+   * Extract number from value, returns 0 otherwise
+   *
+   * @since  1.0.0
+   * @param  string         $value         The value from to extract from
+   * @param  bool|null      $allowed_float Whether float numbers are allowed
+   * @return int|float|null The extracted number or null if the value does not
+   *                        contain any digit.
+   */
+  public static function extract_number( $value, $allowed_float ) {
+    if ( is_int( $value ) || ( is_float( $value ) && $allowed_float ) ) {
+      return $value;
+    }
+    if ( $allowed_float ) {
+      $number_extracted = filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+    } else {
+      $number_extracted = filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
+    }
+    if ( $number_extracted || 0 === $number_extracted ) {
+      return $number_extracted;
+    }
+    return null;
+  }
+
+  /**
+   * Extract unit (like `px`, `em`, `%`, etc.) from an array of allowed units
+   *
+   * @since  1.0.0
+   * @param  string     $value          The value from to extract from
+   * @param  null|array $allowed_units  An array of allowed units
+   * @return string                     The first valid unit found.
+   */
+  public static function extract_size_unit( $value, $allowed_units ) {
+    if ( is_array( $allowed_units ) ) {
+      foreach ( $allowed_units as $unit ) {
+        if ( strpos( $value, $unit ) ) {
+          return $unit;
+        }
+      }
+      return isset( $allowed_units[0] ) ? $allowed_units[0] : '';
+    }
+    return '';
+  }
+
+  /**
+   * Modulus
+   *
+   * // @@todo this is not really precise \\
+   * @see http://php.net/manual/it/function.fmod.php#76125
+   * @since  1.0.0
+   * @param  number $n1
+   * @param  number $n2
+   * @return number
+   */
+  public static function modulus( $n1, $n2 ) {
+    $division = $n1 / $n2;
+
+    return (int) ( $n1 - ( ( (int) ( $division ) ) * $n2 ) );
+  }
 }

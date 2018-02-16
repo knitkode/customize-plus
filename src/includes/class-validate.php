@@ -119,7 +119,7 @@ class KKcp_Validate {
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
  	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @return WP_Error
  	 */
 	public static function check_required( $validity, $value, $setting, $control ) {
 		if ( self::is_empty( $value ) ) {
@@ -136,7 +136,7 @@ class KKcp_Validate {
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
  	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @return WP_Error
  	 */
 	public static function single_choice( $validity, $value, $setting, $control ) {
 		if ( isset( $control->valid_choices ) && !empty( $control->valid_choices ) ) {
@@ -209,7 +209,7 @@ class KKcp_Validate {
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
  	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @return WP_Error
  	 */
 	public static function one_or_more_choices( $validity, $value, $setting, $control ) {
 		if ( is_string( $value ) ) {
@@ -226,7 +226,7 @@ class KKcp_Validate {
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
  	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @return WP_Error
  	 */
 	public static function checkbox( $validity, $value, $setting, $control ) {
 		if ( $filtered != 0 && $filtered != 1 ) {
@@ -243,7 +243,7 @@ class KKcp_Validate {
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
  	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @return WP_Error
  	 */
 	public static function tags( $validity, $value, $setting, $control ) {
 		if ( ! is_string( $value ) ) {
@@ -272,7 +272,7 @@ class KKcp_Validate {
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
  	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @return WP_Error
  	 */
 	public static function text( $validity, $value, $setting, $control ) {
 		$attrs = $control->input_attrs;
@@ -311,9 +311,11 @@ class KKcp_Validate {
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
  	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @return WP_Error
  	 */
 	public static function number( $validity, $value, $setting, $control ) {
+		$value = ($value == (int) $value) ? (int) $value : (float) $value;
+
 		// no number
 		if ( ! is_numeric( $value ) ) {
 			$validity->add( 'vNotAnumber', esc_html__( 'The value must be a number.' ) );
@@ -333,7 +335,7 @@ class KKcp_Validate {
 
 		if ( $attrs ) {
 			// if doesn't respect the step given
-			if ( isset( $attrs['step'] ) && is_numeric( $attrs['step'] ) && $value % $attrs['step'] != 0 ) {
+			if ( isset( $attrs['step'] ) && is_numeric( $attrs['step'] ) && KKcp_Utils::modulus( $value, $attrs['step'] ) != 0 ) {
 				$validity->add( 'vNumberStep', sprintf( esc_html__( 'The number must be a multiple of %s.' ), $attrs['step'] ) );
 			}
 			// if it's lower than the minimum
@@ -345,6 +347,52 @@ class KKcp_Validate {
 				$validity->add( 'vNumberHigh', sprintf( esc_html__( 'The number must be lower than %s.' ), $attrs['max'] ) );
 			}
 		}
+
+		return $validity;
+	}
+
+	/**
+	 * Validate CSS size unit
+	 *
+	 * @since 1.0.0
+	 * @param WP_Error 					      $validity
+	 * @param mixed    $unit    			The unit to validate.
+ 	 * @param mixed    $allowed_units The allowed units
+	 * @return WP_Error
+ 	 */
+	public static function size_unit( $validity, $unit, $allowed_units ) {
+		// if it needs a unit and it is missing
+		if ( ! empty( $allowed_units ) && ! $unit ) {
+			$validity->add( 'vSliderMissingUnit', esc_html__( 'A CSS unit must be specified.' ) );
+		}
+		// if the unit specified is not in the allowed ones
+		else if ( ! empty( $allowed_units ) && $unit && ! in_array( $unit, $allowed_units ) ) {
+			$validity->add( 'vSliderInvalidUnit', esc_html__( 'The CSS unit is invalid.' ) );
+		}
+		// if a unit is specified but none is allowed
+		else if ( empty( $allowed_units ) && $unit ) {
+			$validity->add( 'vSliderNoUnit', esc_html__( 'This value does not accept a CSS unit.' ) );
+		}
+
+		return $validity;
+	}
+
+	/**
+	 * Validate slider
+	 *
+	 * @since 1.0.0
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return WP_Error
+ 	 */
+	public static function slider( $validity, $value, $setting, $control ) {
+		$number = KKcp_Utils::extract_number( $value, $control->allowFloat );
+		$unit = KKcp_Utils::extract_size_unit( $value, $control->units );
+
+		$validity = self::number( $validity, $number, $setting, $control );
+		$validity = self::size_unit( $validity, $unit, $control->units );
 
 		return $validity;
 	}

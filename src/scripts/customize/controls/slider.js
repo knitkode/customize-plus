@@ -2,6 +2,8 @@ import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import Regexes from '../core/regexes';
+import Validate from '../core/validate';
+import Sanitize from '../core/sanitize';
 // import ControlBase from './base';
 
 /**
@@ -17,45 +19,23 @@ import Regexes from '../core/regexes';
  */
 let Control = api.controls.Base.extend({
   /**
+   * @override
+   */
+  validate: function (value) {
+    return Validate.slider([], value, this.setting, this);
+  },
+  /**
+   * @override
+   */
+  sanitize: function (value) {
+    return Sanitize.slider(value, this.setting, this);
+  },
+  /**
    * Let's consider '44' to be equal to 44.
    * @override
    */
   softenize: function (value) {
     return value.toString();
-  },
-  /**
-   * @override
-   */
-  validate: function (newValue) {
-    const params = this.params;
-    let errorMsg = '';
-    let unit = '';
-    let number = '';
-
-    if (params.units) {
-      unit = this._extractFirstUnit(newValue);
-      if (!unit || params.units.indexOf(unit) === -1) {
-        errorMsg = api.l10n['vInvalidUnit'];
-        unit = params.units[0];
-      }
-    }
-
-    // validate number with the api.controls.Number method
-    number = api.controls.Number.prototype.validate.call(this,
-      this._extractFirstNumber(newValue));
-
-    if (number.error) {
-      errorMsg += ' ' + number.msg;
-    }
-
-    if (errorMsg) {
-      return {
-        error: true,
-        msg: errorMsg
-      };
-    } else {
-      return number.toString() + unit;
-    }
   },
   /**
    * @override

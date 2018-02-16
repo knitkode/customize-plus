@@ -1,8 +1,8 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import strpos from 'locutus/php/strings/strpos';
 import is_int from 'locutus/php/var/is_int';
 import is_float from 'locutus/php/var/is_float';
+import empty from 'locutus/php/var/empty';
 import round from 'locutus/php/math/round';
 // import escape from 'validator/lib/escape';
 import {Utils} from './utils';
@@ -231,7 +231,7 @@ export function text( $value, $setting, $control ) {
 export function number( $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
   const allowFloat = $control.params.allowFloat;
-  let $number = extractNumber( $value, $control );
+  let $number = Utils.extractNumber( $value, $control.params.allowFloat );
 
   if ( $number === null ) {
     return $setting.default;
@@ -244,7 +244,7 @@ export function number( $value, $setting, $control ) {
   if ( $attrs ) {
     // if doesn't respect the step given round it to the closest
     // then do the min and max checks
-    if ( _.isNumber( $attrs['step'] ) && $number % $attrs['step'] != 0 ) {
+    if ( _.isNumber( $attrs['step'] ) && Utils.modulus($number, $attrs['step']) !== 0 ) {
       $number = round( $number / $attrs['step'] ) * $attrs['step'];
     }
     // if it's lower than the minimum return the minimum
@@ -260,51 +260,61 @@ export function number( $value, $setting, $control ) {
 }
 
 /**
- * Extract unit (like `px`, `em`, `%`, etc.) from control->units property
+ * Sanitize CSS size unit
  *
- * @since  1.0.0
- * @param  string               $value   The control's setting value
- * @param  WP_Customize_Control $control Control instance.
- * @return string                        The first valid unit found.
+ * @since 1.0.0
+ * @param string   $unit          The unit to sanitize
+ * @param mixed    $allowed_units The allowed units
+ * @return string
  */
-export function extractSizeUnit( $value, $control ) {
-  const $units = $control.params.units;
+export function sizeUnit( $unit, $allowed_units ) {
+  $allowed_units = $allowed_units || [];
 
-  if ( _.isArray( $units ) ) {
-    for (let i = 0; i < $units.length; i++) {
-      if ( strpos( $value, $units[i] ) ) {
-        return $units[i];
-      }
-    }
-    return $units[0] || '';
+  // if no unit is allowed
+  if ( !$allowed_units.length ) {
+    return '';
   }
+  // if it needs a unit and it is missing
+  else if ( $allowed_units.length && ! $unit ) {
+    return $allowed_units[0];
+  }
+  // if the unit specified is not in the allowed ones
+  else if ( $allowed_units.length && $unit && $allowed_units.indexOf( $unit ) === -1 ) {
+    return $allowed_units[0];
+  }
+  // if the unit specified is in the allowed ones
+  else if ( $allowed_units.length && $unit && $allowed_units.indexOf( $unit ) !== -1 ) {
+    return $unit;
+  }
+
   return '';
 }
 
 /**
- * Extract number from value, returns 0 otherwise
+ * Sanitize slider
  *
- * @since  1.0.0
- * @param  string               $value   The value from where to extract
- * @param  WP_Customize_Control $control Control instance.
- * @return int|float|null       The extracted number or null if the value
- *                              does not contain any digit.
+ * @since 1.0.0
+ * @param mixed                $value   The value to sanitize.
+ * @param WP_Customize_Setting $setting Setting instance.
+ * @param WP_Customize_Control $control Control instance.
+ * @return string The sanitized value.
  */
-export function extractNumber( $value, $control ) {
-  let $number_extracted;
+export function slider( $value, $setting, $control ) {
+  let $number = Utils.extractNumber( $value, $control.params.allowFloat );
+  let $unit = Utils.extractSizeUnit( $value, $control.params.units );
 
-  if ( is_int( $value ) || ( is_float( $value ) && $control.params.allowFloat ) ) {
-    return $value;
+  $number = number( $number, $setting, $control );
+  $unit = sizeUnit( $unit, $control.params.units );
+
+  if ( $number === null ) {
+    return $setting.default;
   }
-  if ( $control.params.allowFloat ) {
-    $number_extracted = parseFloat( $value ); // filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-  } else {
-    $number_extracted = parseInt( $value, 10 ); // filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
+
+  if ( $unit ) {
+    return $number + $unit;
   }
-  if ( $number_extracted || 0 === $number_extracted ) {
-    return $number_extracted;
-  }
-  return null;
+
+  return $number;
 }
 
 /**
@@ -320,6 +330,6 @@ export default {
   tags,
   text,
   number,
-  extractSizeUnit,
-  extractNumber,
+  sizeUnit,
+  slider,
 };

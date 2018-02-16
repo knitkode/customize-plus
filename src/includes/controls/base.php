@@ -46,6 +46,18 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $loose = true;
 
 	/**
+	 * HTML (allows html in the setting value)
+	 *
+	 * // @@todo allow a set of whitelisted html tags to be passed in an `array`,
+	 * if the value is `true` all html will be allowed (dangerous). If `false`
+	 * no `html` is allowed at all. \\
+	 *
+	 * @since 1.0.0
+	 * @var boolean|array
+	 */
+	public $html = false;
+
+	/**
 	 * The control guide data, optional. It displays some help in a popover.
 	 * @premium A Customize Plus Premium feature.
 	 *
@@ -79,13 +91,15 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $searchable = true;
 
 	/**
+	 * {inheritDoc}
+	 *
 	 * Change parent method adding more default data shared by all the controls
 	 * (add them only if needed to save bytes on the huge `_wpCustomizeSettings`
 	 * JSON on load). In the end call an abstract method to add stuff here from
 	 * subclasses.
 	 *
-	 * @override
 	 * @since 1.0.0
+	 * @ovrride
 	 */
 	public function to_json() {
 		parent::to_json();
@@ -109,6 +123,20 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 			$this->json['loose'] = true;
 		}
 
+		// set control html option
+		if ( $this->html ) {
+			$this->json['html'] = true;
+		}
+
+		// remove description if not specified, save bytes in printed JSON...
+		if ( ! $this->description ) {
+			unset( $this->json['description'] );
+		}
+
+		// remove content, we rely completely on js, and declare
+		// the control container in the js control base class
+		unset( $this->json['content'] );
+
 		// @premium A Customize Plus Premium features.
 		if ( class_exists( 'KKcpp' ) ) {
 			// add guide if any
@@ -126,15 +154,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 				$this->json['unsearchable'] = true;
 			}
 		}
-
-		// remove description if not specified, save bytes in printed JSON...
-		if ( ! $this->description ) {
-			unset( $this->json['description'] );
-		}
-
-		// remove content, we rely completely on js, and declare
-		// the control container in the js control base class
-		unset( $this->json['content'] );
 
 		// call a function to add data to `control.params`
 		$this->add_to_json();

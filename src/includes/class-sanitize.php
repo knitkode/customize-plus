@@ -220,7 +220,7 @@ class KKcp_Sanitize {
 	 * @return number The sanitized value.
 	 */
 	public static function number( $value, $setting, $control ) {
-		$number = self::extract_number( $value, $control );
+		$number = KKcp_Utils::extract_number( $value, $control );
 
 		if ( is_null( $number ) ) {
 			return $setting->default;
@@ -235,7 +235,7 @@ class KKcp_Sanitize {
 		if ( $attrs ) {
 			// if doesn't respect the step given round it to the closest
 			// then do the min and max checks
-			if ( isset( $attrs['step'] ) && $number % $attrs['step'] !== 0 ) {
+			if ( isset( $attrs['step'] ) && KKcp_Utils::modulus( $number, $attrs['step'] ) != 0 ) {
 				$number = round( $number / $attrs['step'] ) * $attrs['step'];
 			}
 			// if it's lower than the minimum return the minimum
@@ -251,47 +251,59 @@ class KKcp_Sanitize {
 	}
 
 	/**
-	 * Extract unit (like `px`, `em`, `%`, etc.) from control->units property
+	 * Sanitize CSS size unit
 	 *
-	 * @since  1.0.0
-	 * @param  string               $value   The control's setting value
-	 * @param  WP_Customize_Control $control Control instance.
-	 * @return string 				               The first valid unit found.
-	 */
-	public static function extract_size_unit( $value, $control ) {
-		if ( is_array( $control->units ) ) {
-			foreach ( $control->units as $unit ) {
-				if ( strpos( $value, $unit ) ) {
-					return $unit;
-				}
-			}
-			return isset( $control->units[0] ) ? $control->units[0] : '';
+	 * @since 1.0.0
+	 * @param string   $unit    			The unit to sanitize
+ 	 * @param mixed    $allowed_units The allowed units
+	 * @return string
+ 	 */
+	public static function size_unit( $unit, $allowed_units ) {
+		// if no unit is allowed
+		if ( empty( $allowed_units )) {
+			return '';
 		}
+		// if it needs a unit and it is missing
+		else if ( ! empty( $allowed_units ) && ! $unit ) {
+			return $allowed_units[0];
+		}
+		// if the unit specified is not in the allowed ones
+		else if ( ! empty( $allowed_units ) && $unit && ! in_array( $unit, $allowed_units ) ) {
+			return $allowed_units[0];
+		}
+		// if the unit specified is in the allowed ones
+		else if ( ! empty( $allowed_units ) && $unit && in_array( $unit, $allowed_units ) ) {
+			return $unit;
+		}
+
 		return '';
 	}
 
 	/**
-	 * Extract number from value, returns 0 otherwise
+	 * Sanitize slider
 	 *
-	 * @since  1.0.0
-	 * @param  string 							$value   The value from where to extract
-	 * @param  WP_Customize_Control $control Control instance.
-	 * @return int|float|null       The extracted number or null if the value
-	 *                              does not contain any digit.
+	 * @since 1.0.0
+	 * @param mixed         			 $value   The value to sanitize.
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return string The sanitized value.
 	 */
-	public static function extract_number( $value, $control ) {
-		if ( is_int( $value ) || ( is_float( $value ) && $control->allowFloat ) ) {
-			return $value;
+	public static function slider( $value, $setting, $control ) {
+		$number = KKcp_Utils::extract_number( $value, $control->allowFloat );
+		$unit = KKcp_Utils::extract_size_unit( $value, $control->units );
+
+		$number = self::number( $number, $setting, $control );
+		$unit = self::size_unit( $unit, $control->units );
+
+		if ( is_null( $number ) ) {
+			return $setting->default;
 		}
-		if ( $control->allowFloat ) {
-			$number_extracted = filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-		} else {
-			$number_extracted = filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
+
+		if ( $unit ) {
+			return $number . $unit;
 		}
-		if ( $number_extracted || 0 === $number_extracted ) {
-			return $number_extracted;
-		}
-		return null;
+
+		return $number;
 	}
 
 	/**

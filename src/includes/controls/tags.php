@@ -82,7 +82,6 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	 * @inheritDoc
 	 */
 	protected function add_to_json() {
-
 		$this->json['max'] = KKcp_SanitizeJS::int_or_null( $this->max );
 		$this->json['min'] = KKcp_SanitizeJS::int_or_null( $this->min );
 

@@ -15,10 +15,8 @@
 class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 
 	/**
-	 * Control type.
-	 *
 	 * @since 1.0.0
-	 * @var string
+	 * @inheritDoc
 	 */
 	public $type = 'kkcp_slider';
 
@@ -46,28 +44,52 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	 */
 	public static $allowed_units = KKcp_Utils::CSS_UNITS;
 
+  /**
+   * Constructor
+   *
+   * {@inheritDoc}. Override it here in order to manually populate the
+   * `valid_choices` property from the 'globally' defined sets filtered with
+   * the given `choices` param.
+   *
+   * @since 1.0.0
+   * @override
+   */
+  public function __construct( $manager, $id, $args = array() ) {
+    parent::__construct( $manager, $id, $args );
+
+    // allowFloat also if input_attrs['step'] is a float number
+		if ( isset( $this->input_attrs['step'] ) && is_float( $this->input_attrs['step'] ) ) {
+			$this->allowFloat = true;
+		}
+  }
+
 	/**
-	 * Enqueue libraries
-	 *
 	 * @since  1.0.0
+	 * @inheritDoc
+	 */
+	public function get_l10n() {
+		return array(
+			'vSliderMissingUnit' => esc_html__( 'A CSS unit must be specified.' ),
+			'vSliderInvalidUnit' => esc_html__( 'The CSS unit is invalid.' ),
+			'vSliderNoUnit' => esc_html__( 'This value does not accept a CSS unit.' ),
+		);
+	}
+
+	/**
+	 * @since  1.0.0
+	 * @inheritDoc
 	 */
 	public function enqueue() {
 		wp_enqueue_script( 'jquery-ui-slider' );
 	}
 
 	/**
-	 * Refresh the parameters passed to the JavaScript via JSON.
-	 *
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function add_to_json() {
 		if ( is_array( $this->input_attrs ) && ! empty( $this->input_attrs ) ) {
 			$this->json['attrs'] = $this->input_attrs;
-
-			// allowFloat also if input_attrs['step'] is a float number
-			if ( isset( $this->input_attrs['step'] ) && is_float( $this->input_attrs['step'] ) ) {
-				$this->json['allowFloat'] = true;
-			}
 		}
 
 		$this->json['allowFloat'] = KKcp_SanitizeJS::bool( $this->allowFloat );
@@ -78,9 +100,12 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * Separate the slider template to make it reusable by child classes
 	 *
 	 * @since 1.0.0
+	 * @override
 	 */
 	protected function js_tpl_slider() {
 		?>
@@ -99,10 +124,8 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	}
 
 	/**
-	 * Render a JS template for the content of the slider control.
-	 *
-	 * @override
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function js_tpl() {
 		$this->js_tpl_header();
@@ -110,65 +133,19 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	}
 
 	/**
-	 * Get localized strings
-	 *
-	 * @override
-	 * @since  1.0.0
-	 * @return array
-	 */
-	public function get_l10n() {
-		return array(
-			'vInvalidUnit' => esc_html__( 'The CSS unit is invalid.' ),
-		);
-	}
-
-	/**
-	 * Sanitize
-	 *
 	 * @since 1.0.0
-	 * @override
-	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
+	 * @inheritDoc
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		$number = KKcp_Sanitize::extract_number( $value, $control );
-		$unit = KKcp_Sanitize::extract_size_unit( $value, $control );
-
-		// if it is a slider without unit
-		if ( empty( $control->units ) && $number ) {
-			return KKcp_Sanitize::number( $number, $control );
-		}
-		// if it needs a unit
-		else if ( ! empty( $control->units ) && $number && $unit ) {
-			return KKcp_Sanitize::number( $number, $control ) . $unit;
-		} else {
-			return $setting->default;
-		}
+		return KKcp_Sanitize::slider( $value, $setting, $control );
 	}
 
 	/**
-	 * Validate
-	 *
 	 * @since 1.0.0
-	 * @override
-	 * @param WP_Error 						 $validity
-	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @inheritDoc
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		$number = KKcp_Sanitize::extract_number( $value, $control );
-		$unit = KKcp_Sanitize::extract_size_unit( $value, $control );
-
-		// if it needs a unit
-		if ( ! empty( $control->units ) && ! $unit ) {
-			$validity->add( 'missing_unit', esc_html__( 'A unit must be specified.' ) );
-		}
-
-		return $validity;
+		return KKcp_Validate::slider( $validity, $value, $setting, $control );
 	}
 }
 

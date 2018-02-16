@@ -4,6 +4,7 @@ import sprintf from 'locutus/php/strings/sprintf';
 import is_int from 'locutus/php/var/is_int';
 import is_float from 'locutus/php/var/is_float';
 import is_numeric from 'locutus/php/var/is_numeric';
+import empty from 'locutus/php/var/empty';
 import isURL from 'validator/lib/isURL';
 import isEmail from 'validator/lib/isEmail';
 import {Utils} from './utils';
@@ -45,7 +46,7 @@ export function isEmpty (value) {
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
  * @param WP_Customize_Control $control  Control instance.
- * @return mixed
+ * @return WP_Error
  */
 export function checkRequired ($validity, $value, $setting, $control) {
   if ( isEmpty( $value ) ) {
@@ -121,7 +122,7 @@ export function multipleChoices( $validity, $value, $setting, $control, $check_l
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
  * @param WP_Customize_Control $control  Control instance.
- * @return mixed
+ * @return WP_Error
  */
 export function oneOrMoreChoices( $validity, $value, $setting, $control ) {
   if ( _.isString( $value ) ) {
@@ -139,7 +140,7 @@ export function oneOrMoreChoices( $validity, $value, $setting, $control ) {
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
  * @param WP_Customize_Control $control  Control instance.
- * @return mixed
+ * @return WP_Error
  */
 export function checkbox( $validity, $value, $setting, $control ) {
   if ( $value != 1 && $value != 0 ) {
@@ -156,7 +157,7 @@ export function checkbox( $validity, $value, $setting, $control ) {
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
  * @param WP_Customize_Control $control  Control instance.
- * @return mixed
+ * @return WP_Error
  */
 export function tags( $validity, $value, $setting, $control ) {
   const {params} = $control;
@@ -188,7 +189,7 @@ export function tags( $validity, $value, $setting, $control ) {
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
  * @param WP_Customize_Control $control  Control instance.
- * @return mixed
+ * @return WP_Error
  */
 export function text( $validity, $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
@@ -227,7 +228,7 @@ export function text( $validity, $value, $setting, $control ) {
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
  * @param WP_Customize_Control $control  Control instance.
- * @return mixed
+ * @return WP_Error
  */
 export function number( $validity, $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
@@ -252,7 +253,7 @@ export function number( $validity, $value, $setting, $control ) {
 
   if ( $attrs ) {
     // if doesn't respect the step given
-    if ( is_numeric( $attrs['step'] ) && $value % $attrs['step'] !== 0 ) {
+    if ( is_numeric( $attrs['step'] ) && Utils.modulus($value, $attrs['step']) !== 0 ) {
       $validity.push({ 'vNumberStep': sprintf( api.l10n['vNumberStep'], $attrs['step'] ) });
     }
     // if it's lower than the minimum
@@ -264,6 +265,52 @@ export function number( $validity, $value, $setting, $control ) {
       $validity.push({ 'vNumberHigh': sprintf( api.l10n['vNumberHigh'], $attrs['max'] ) });
     }
   }
+
+  return $validity;
+}
+
+/**
+ * Validate css unit
+ *
+ * @since 1.0.0
+ * @param WP_Error                $validity
+ * @param mixed    $unit          The unit to validate.
+ * @param mixed    $allowed_units The allowed units
+ * @return WP_Error
+ */
+export function sizeUnit( $validity, $unit, $allowed_units ) {
+  // if it needs a unit and it is missing
+  if ( ! empty( $allowed_units ) && ! $unit ) {
+    $validity.push({ 'vSliderMissingUnit': api.l10n['vSliderMissingUnit'] });
+  }
+  // if the unit specified is not in the allowed ones
+  else if ( ! empty( $allowed_units ) && $unit && $allowed_units.indexOf( $unit ) === -1 ) {
+    $validity.push({ 'vSliderInvalidUnit': api.l10n['vSliderInvalidUnit'] });
+  }
+  // if a unit is specified but none is allowed
+  else if ( empty( $allowed_units ) && $unit ) {
+    $validity.push({ 'vSliderNoUnit': api.l10n['vSliderNoUnit'] });
+  }
+
+  return $validity;
+}
+
+/**
+ * Validate slider
+ *
+ * @since 1.0.0
+ * @param WP_Error             $validity
+ * @param mixed                $value    The value to validate.
+ * @param WP_Customize_Setting $setting  Setting instance.
+ * @param WP_Customize_Control $control  Control instance.
+ * @return WP_Error
+ */
+export function slider( $validity, $value, $setting, $control ) {
+  let $number = Utils.extractNumber( $value, $control.params.allowFloat );
+  let $unit = Utils.extractSizeUnit( $value, $control.params.units );
+
+  $validity = number( $validity, $number, $setting, $control );
+  $validity = sizeUnit( $validity, $unit, $control.params.units );
 
   return $validity;
 }
@@ -281,4 +328,6 @@ export default {
   tags,
   text,
   number,
+  sizeUnit,
+  slider,
 };
