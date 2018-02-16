@@ -49,10 +49,8 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 	 * @inheritDoc
 	 */
 	public function content_template() {
-		ob_start( 'KKcp_Utils::compress_html' );
 		$this->js_tpl_guide();
 		$this->js_tpl();
-		ob_end_flush();
 	}
 
 	/**

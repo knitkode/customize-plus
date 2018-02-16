@@ -571,17 +571,6 @@ class KKcp_Utils {
 	}
 
 	/**
-	 * Compress HTML
-   *
-	 * @since  1.0.0
-   * @param  string $buffer The php->HTML buffer
-   * @return string         The compressed HTML (stripped whitespaces)
-	 */
-	public static function compress_html( $buffer ) {
-		return preg_replace( '/\s+/', ' ', str_replace( array( "\n", "\r", "\t" ), '', $buffer ) );
-	}
-
-	/**
 	 * Get asset file, minified or unminified
 	 *
    *@since  1.0.0

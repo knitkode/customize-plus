@@ -235,7 +235,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since 1.0.0
 	 */
 	public function content_template() {
-		ob_start( 'KKcp_Utils::compress_html' );
 		$this->js_tpl_divider();
 		$this->js_tpl_guide();
 		 // this wrapper is needed to make the Extras menu play nice when divider
@@ -246,7 +245,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 			$this->js_tpl_notifications();
 		// see comment above
 		echo '<# if (data.divider) { #></div><# } #>';
-		ob_end_flush();
 	}
 
 	/**
