@@ -1,6 +1,9 @@
 import $ from 'jquery';
 import _ from 'underscore';
+import strpos from 'locutus/php/strings/strpos';
 import is_int from 'locutus/php/var/is_int';
+import is_float from 'locutus/php/var/is_float';
+import round from 'locutus/php/math/round';
 // import escape from 'validator/lib/escape';
 import {Utils} from './utils';
 
@@ -123,7 +126,7 @@ export function oneOrMoreChoices ($value, $setting, $control) {
  * @param string|array         $value   The value to sanitize.
  * @param WP_Customize_Setting $setting Setting instance.
  * @param WP_Customize_Control $control Control instance.
- * @return string|array The sanitized value.
+ * @return string The sanitized value.
  */
 export function fontFamily( $value ) {
   let $sanitized = [];
@@ -148,7 +151,7 @@ export function fontFamily( $value ) {
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
  * @param WP_Customize_Control $control  Control instance.
- * @return mixed
+ * @return number
  */
 export function checkbox( $value, $setting, $control ) {
   return Boolean( $value ) ? '1' : '0';
@@ -161,7 +164,7 @@ export function checkbox( $value, $setting, $control ) {
  * @param mixed                $value   The value to sanitize.
  * @param WP_Customize_Setting $setting Setting instance.
  * @param WP_Customize_Control $control Control instance.
- * @return boolean The sanitized value.
+ * @return string The sanitized value.
  */
 export function tags( $value, $setting, $control ) {
   if (_.isString($value )) {
@@ -191,7 +194,7 @@ export function tags( $value, $setting, $control ) {
  * @param mixed                $value   The value to sanitize.
  * @param WP_Customize_Setting $setting Setting instance.
  * @param WP_Customize_Control $control Control instance.
- * @return boolean The sanitized value.
+ * @return string The sanitized value.
  */
 export function text( $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
@@ -217,6 +220,94 @@ export function text( $value, $setting, $control ) {
 }
 
 /**
+ * Sanitize number
+ *
+ * @since 1.0.0
+ * @param mixed                $value   The value to sanitize.
+ * @param WP_Customize_Setting $setting Setting instance.
+ * @param WP_Customize_Control $control Control instance.
+ * @return number The sanitized value.
+ */
+export function number( $value, $setting, $control ) {
+  const $attrs = $control.params.attrs;
+  const allowFloat = $control.params.allowFloat;
+  let $number = extractNumber( $value, $control );
+
+  if ( $number === null ) {
+    return $setting.default;
+  }
+
+  // if it's a float but it is not allowed to be it round it
+  if ( is_float( $number ) && !allowFloat ) {
+    $number = round( $number );
+  }
+  if ( $attrs ) {
+    // if doesn't respect the step given round it to the closest
+    // then do the min and max checks
+    if ( _.isNumber( $attrs['step'] ) && $number % $attrs['step'] != 0 ) {
+      $number = round( $number / $attrs['step'] ) * $attrs['step'];
+    }
+    // if it's lower than the minimum return the minimum
+    if ( _.isNumber( $attrs['min'] ) && $number < $attrs['min'] ) {
+      return $attrs['min'];
+    }
+    // if it's higher than the maxmimum return the maximum
+    if (  _.isNumber( $attrs['max'] ) && $number > $attrs['max'] ) {
+      return $attrs['max'];
+    }
+  }
+  return $number;
+}
+
+/**
+ * Extract unit (like `px`, `em`, `%`, etc.) from control->units property
+ *
+ * @since  1.0.0
+ * @param  string               $value   The control's setting value
+ * @param  WP_Customize_Control $control Control instance.
+ * @return string                        The first valid unit found.
+ */
+export function extractSizeUnit( $value, $control ) {
+  const $units = $control.params.units;
+
+  if ( _.isArray( $units ) ) {
+    for (let i = 0; i < $units.length; i++) {
+      if ( strpos( $value, $units[i] ) ) {
+        return $units[i];
+      }
+    }
+    return $units[0] || '';
+  }
+  return '';
+}
+
+/**
+ * Extract number from value, returns 0 otherwise
+ *
+ * @since  1.0.0
+ * @param  string               $value   The value from where to extract
+ * @param  WP_Customize_Control $control Control instance.
+ * @return int|float|null       The extracted number or null if the value
+ *                              does not contain any digit.
+ */
+export function extractNumber( $value, $control ) {
+  let $number_extracted;
+
+  if ( is_int( $value ) || ( is_float( $value ) && $control.params.allowFloat ) ) {
+    return $value;
+  }
+  if ( $control.params.allowFloat ) {
+    $number_extracted = parseFloat( $value ); // filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+  } else {
+    $number_extracted = parseInt( $value, 10 ); // filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
+  }
+  if ( $number_extracted || 0 === $number_extracted ) {
+    return $number_extracted;
+  }
+  return null;
+}
+
+/**
  * Exports the `Sanitize` object
  */
 export default {
@@ -227,4 +318,7 @@ export default {
   fontFamily,
   tags,
   text,
+  number,
+  extractSizeUnit,
+  extractNumber,
 };

@@ -14,109 +14,6 @@
 class KKcp_Sanitize {
 
 	/**
-	 * Extract first unit
-	 * It returns the first matched, so the units are sorted by popularity (approx)
-	 * @see Slider._extractFirstUnit Js corresponding method
-	 * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
-	 * @param  [type] $input [description]
-	 * @return [type]        [description]
-	 */
-	public static function extract_first_unit( $input ) {
-		preg_match( '/(px|%|em|rem|vh|vw|vmin|vmax|cm|mm|in|pt|pc|ch|ex)/', $input, $matches );
-		return ! empty( $matches ) ? $matches[0] : false;
-	}
-
-	/**
-	 * Extract first number
-	 * (both integers or float)
-	 * @see Slider._extractFirstNumber Js corresponding method
-	 * @see http://stackoverflow.com/a/17885985/1938970
-	 * @param  [type] $input [description]
-	 * @return [type]        [description]
-	 */
-	public static function extract_first_number( $input ) {
-		preg_match( '/(\+|-)?((\d+(\.\d+)?)|(\.\d+))/', $input, $matches );
-		return ! empty( $matches ) ? $matches[0] : false;
-	}
-
-	/**
-	 * Extract unit (like `px`, `em`, `%`, etc.) from control->units property
-	 *
-	 * @since  1.0.0
-	 * @param  string               $input   The control's setting value
-	 * @param  WP_Customize_Control $control Control instance.
-	 * @return string 				               The first valid unit found.
-	 */
-	public static function extract_size_unit( $input, $control ) {
-		if ( is_array( $control->units ) ) {
-			foreach ( $control->units as $unit ) {
-				if ( strpos( $input, $unit ) ) {
-					return $unit;
-				}
-			}
-			return isset( $control->units[0] ) ? $control->units[0] : '';
-		}
-		return '';
-	}
-
-	/**
-	 * Extract number from input, returns 0 otherwise
-	 *
-	 * @since  1.0.0
-	 * @param  string 							$input   The value from where to extract
-	 * @param  WP_Customize_Control $control Control instance.
-	 * @return int|float|boolean The extracted number or false if the input does not
-	 *                           contain any digit.
-	 */
-	public static function extract_number( $input, $control ) {
-		if ( is_int( $input ) || ( is_float( $input ) && $control->allowFloat ) ) {
-			return $input;
-		}
-		if ( $control->allowFloat ) {
-			$number_extracted = filter_var( $input, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-		} else {
-			$number_extracted = filter_var( $input, FILTER_SANITIZE_NUMBER_INT );
-		}
-		if ( $number_extracted || 0 == $number_extracted ) {
-			return $number_extracted;
-		}
-		return false;
-	}
-
-	/**
-	 * Sanitize / validate a number against an array of attributes.
-	 *
-	 * @since  1.0.0
-	 * @param  int|float 						$number  The number to sanitize
-	 * @param  WP_Customize_Control $control Control instance.
-	 * @return int|float      			The saniitized / valid number
-	 */
-	public static function number( $number, $control ) {
-		$attrs = $control->input_attrs;
-
-		// if it's a float but it is not allowed to be it round it
-		if ( is_float( $number ) && ! $control->allowFloat ) {
-			$number = round( $number );
-		}
-		if ( $attrs ) {
-			// if doesn't respect the step given round it to the closest
-			// then do the min and max checks
-			if ( isset( $attrs['step'] ) && $number % $attrs['step'] != 0 ) {
-				$number = round( $number / $attrs['step'] ) * $attrs['step'];
-			}
-			// if it's lower than the minimum return the minimum
-			if ( isset( $attrs['min'] ) && $number < $attrs['min'] ) {
-				return $attrs['min'];
-			}
-			// if it's higher than the maxmimum return the maximum
-			if ( isset( $attrs['max'] ) && $number > $attrs['max'] ) {
-				return $attrs['max'];
-			}
-		}
-		return $number;
-	}
-
-	/**
 	 * Sanitize string
 	 *
 	 * @since 1.0.0
@@ -222,7 +119,7 @@ class KKcp_Sanitize {
 	 * @param string|array         $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
-	 * @return string|array The sanitized value.
+	 * @return string The sanitized value.
 	 */
 	public static function font_family( $value ) {
 		$sanitized = array();
@@ -246,7 +143,7 @@ class KKcp_Sanitize {
 	 * @param mixed         			 $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
-	 * @return boolean The sanitized value.
+	 * @return number The sanitized value.
 	 */
 	public static function checkbox( $value, $setting, $control ) {
 		$filtered = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
@@ -260,7 +157,7 @@ class KKcp_Sanitize {
 	 * @param mixed         			 $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
-	 * @return boolean The sanitized value.
+	 * @return string The sanitized value.
 	 */
 	public static function tags( $value, $setting, $control ) {
 		if ( is_string( $value ) ) {
@@ -289,7 +186,7 @@ class KKcp_Sanitize {
 	 * @param mixed         			 $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
-	 * @return boolean The sanitized value.
+	 * @return string The sanitized value.
 	 */
 	public static function text( $value, $setting, $control ) {
 		$attrs = $control->input_attrs;
@@ -311,6 +208,90 @@ class KKcp_Sanitize {
 		}
 
 		return wp_strip_all_tags( $value );
+	}
+
+	/**
+	 * Sanitize number
+	 *
+	 * @since 1.0.0
+	 * @param mixed         			 $value   The value to sanitize.
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return number The sanitized value.
+	 */
+	public static function number( $value, $setting, $control ) {
+		$number = self::extract_number( $value, $control );
+
+		if ( is_null( $number ) ) {
+			return $setting->default;
+		}
+
+		$attrs = $control->input_attrs;
+
+		// if it's a float but it is not allowed to be it round it
+		if ( is_float( $number ) && ! $control->allowFloat ) {
+			$number = round( $number );
+		}
+		if ( $attrs ) {
+			// if doesn't respect the step given round it to the closest
+			// then do the min and max checks
+			if ( isset( $attrs['step'] ) && $number % $attrs['step'] !== 0 ) {
+				$number = round( $number / $attrs['step'] ) * $attrs['step'];
+			}
+			// if it's lower than the minimum return the minimum
+			if ( isset( $attrs['min'] ) && $number < $attrs['min'] ) {
+				return $attrs['min'];
+			}
+			// if it's higher than the maxmimum return the maximum
+			if ( isset( $attrs['max'] ) && $number > $attrs['max'] ) {
+				return $attrs['max'];
+			}
+		}
+		return $number;
+	}
+
+	/**
+	 * Extract unit (like `px`, `em`, `%`, etc.) from control->units property
+	 *
+	 * @since  1.0.0
+	 * @param  string               $value   The control's setting value
+	 * @param  WP_Customize_Control $control Control instance.
+	 * @return string 				               The first valid unit found.
+	 */
+	public static function extract_size_unit( $value, $control ) {
+		if ( is_array( $control->units ) ) {
+			foreach ( $control->units as $unit ) {
+				if ( strpos( $value, $unit ) ) {
+					return $unit;
+				}
+			}
+			return isset( $control->units[0] ) ? $control->units[0] : '';
+		}
+		return '';
+	}
+
+	/**
+	 * Extract number from value, returns 0 otherwise
+	 *
+	 * @since  1.0.0
+	 * @param  string 							$value   The value from where to extract
+	 * @param  WP_Customize_Control $control Control instance.
+	 * @return int|float|null       The extracted number or null if the value
+	 *                              does not contain any digit.
+	 */
+	public static function extract_number( $value, $control ) {
+		if ( is_int( $value ) || ( is_float( $value ) && $control->allowFloat ) ) {
+			return $value;
+		}
+		if ( $control->allowFloat ) {
+			$number_extracted = filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+		} else {
+			$number_extracted = filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
+		}
+		if ( $number_extracted || 0 === $number_extracted ) {
+			return $number_extracted;
+		}
+		return null;
 	}
 
 	/**

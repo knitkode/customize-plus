@@ -264,15 +264,18 @@ api.controls.Base = wpApi.Control.extend({
       $validity = Validate.checkRequired([], value);
 
       this._manageValidityNotifications($validity);
-      return value; // @@doubt set last valid value with `this.setting();`? \\
+
+      return this.params.loose ? value : this.setting();
     }
 
-    const sanitizedValue = this.sanitize(value);
-    $validity = this.validate(sanitizedValue);
+    $validity = this.validate(value);
 
     this._manageValidityNotifications($validity);
 
-    return sanitizedValue; // @@doubt set last valid value with `this.setting();`? \\
+    if (!$validity.length) {
+      return this.sanitize(value);
+    }
+    return this.params.loose ? this.sanitize(value) : this.setting();
   },
   /**
    * Add validity notifications

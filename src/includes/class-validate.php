@@ -303,4 +303,49 @@ class KKcp_Validate {
 		return $validity;
 	}
 
+	/**
+	 * Validate number
+	 *
+	 * @since 1.0.0
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	public static function number( $validity, $value, $setting, $control ) {
+		// no number
+		if ( ! is_numeric( $value ) ) {
+			$validity->add( 'vNotAnumber', esc_html__( 'The value must be a number.' ) );
+
+			return $validity;
+		}
+		// unallowed float
+		if ( is_float( $value ) && ! $control->allowFloat ) {
+			$validity->add( 'vNoFloat', esc_html__( 'The value must be an integer, not a float.' ) );
+		}
+		// must be an int but it is not
+		else if ( ! is_int( $value ) && ! $control->allowFloat ) {
+			$validity->add( 'vNotAnInteger', esc_html__( 'The value must be an integer number.' ) );
+		}
+
+		$attrs = $control->input_attrs;
+
+		if ( $attrs ) {
+			// if doesn't respect the step given
+			if ( isset( $attrs['step'] ) && is_numeric( $attrs['step'] ) && $value % $attrs['step'] != 0 ) {
+				$validity->add( 'vNumberStep', sprintf( esc_html__( 'The number must be a multiple of %s.' ), $attrs['step'] ) );
+			}
+			// if it's lower than the minimum
+			if ( isset( $attrs['min'] ) && is_numeric( $attrs['min'] ) && $value < $attrs['min'] ) {
+				$validity->add( 'vNumberLow', sprintf( esc_html__( 'The number must be higher than %s.' ), $attrs['min'] ) );
+			}
+			// if it's higher than the maxmimum
+			if ( isset( $attrs['max'] ) && is_numeric( $attrs['max'] ) && $value > $attrs['max'] ) {
+				$validity->add( 'vNumberHigh', sprintf( esc_html__( 'The number must be lower than %s.' ), $attrs['max'] ) );
+			}
+		}
+
+		return $validity;
+	}
 }

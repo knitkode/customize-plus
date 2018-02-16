@@ -2,6 +2,8 @@ import $ from 'jquery';
 import _ from 'underscore';
 import sprintf from 'locutus/php/strings/sprintf';
 import is_int from 'locutus/php/var/is_int';
+import is_float from 'locutus/php/var/is_float';
+import is_numeric from 'locutus/php/var/is_numeric';
 import isURL from 'validator/lib/isURL';
 import isEmail from 'validator/lib/isEmail';
 import {Utils} from './utils';
@@ -218,6 +220,55 @@ export function text( $validity, $value, $setting, $control ) {
 }
 
 /**
+ * Validate number
+ *
+ * @since 1.0.0
+ * @param WP_Error             $validity
+ * @param mixed                $value    The value to validate.
+ * @param WP_Customize_Setting $setting  Setting instance.
+ * @param WP_Customize_Control $control  Control instance.
+ * @return mixed
+ */
+export function number( $validity, $value, $setting, $control ) {
+  const $attrs = $control.params.attrs;
+  const allowFloat = $control.params.allowFloat;
+
+  // coerce to number
+  $value = Number($value);
+
+  // no number
+  if ( ! is_numeric( $value ) ) {
+    $validity.push({ 'vNotAnumber': api.l10n['vNotAnumber'] });
+    return $validity;
+  }
+  // unallowed float
+  if ( is_float( $value ) && !allowFloat ) {
+    $validity.push({ 'vNoFloat': api.l10n['vNoFloat'] });
+  }
+  // must be an int but it is not
+  else if ( ! is_int( $value ) && !allowFloat ) {
+    $validity.push({ 'vNotAnInteger': api.l10n['vNotAnInteger'] });
+  }
+
+  if ( $attrs ) {
+    // if doesn't respect the step given
+    if ( is_numeric( $attrs['step'] ) && $value % $attrs['step'] !== 0 ) {
+      $validity.push({ 'vNumberStep': sprintf( api.l10n['vNumberStep'], $attrs['step'] ) });
+    }
+    // if it's lower than the minimum
+    if ( is_numeric( $attrs['min'] ) && $value < $attrs['min'] ) {
+      $validity.push({ 'vNumberLow': sprintf( api.l10n['vNumberLow'], $attrs['min'] ) });
+    }
+    // if it's higher than the maxmimum
+    if ( is_numeric( $attrs['max'] ) && $value > $attrs['max'] ) {
+      $validity.push({ 'vNumberHigh': sprintf( api.l10n['vNumberHigh'], $attrs['max'] ) });
+    }
+  }
+
+  return $validity;
+}
+
+/**
  * Exports the `Validate` object
  */
 export default {
@@ -229,4 +280,5 @@ export default {
   checkbox,
   tags,
   text,
+  number,
 };

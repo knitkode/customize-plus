@@ -1,9 +1,7 @@
-import sprintf from 'locutus/php/strings/sprintf';
-import is_float from 'locutus/php/var/is_float';
-import isInt from 'validator/lib/isInt';
-import { isMultipleOf } from '../core/validators';
 import { api, wpApi } from '../core/globals';
 import ControlBaseInput from './base-input';
+import Validate from '../core/validate';
+import Sanitize from '../core/sanitize';
 
 /**
  * Control Number
@@ -18,6 +16,18 @@ import ControlBaseInput from './base-input';
  */
 let Control = ControlBaseInput.extend({
   /**
+   * @override
+   */
+  validate: function (value) {
+    return Validate.number([], value, this.setting, this);
+  },
+  /**
+   * @override
+   */
+  sanitize: function (value) {
+    return Sanitize.number(value, this.setting, this);
+  },
+  /**
    * We just neet to convert the value to string for the check, for the rest
    * is the same as in the base input control
    *
@@ -28,54 +38,6 @@ let Control = ControlBaseInput.extend({
       this.__input.value = value;
     }
   },
-  /**
-   * @override
-   */
-  sanitize: function (value) {
-    return Number(value);
-  },
-  /**
-   * @override
-   */
-  validate: function (value) {
-    var params = this.params;
-    var attrs = params.attrs;
-    var errorMsg = '';
-
-    if (isNaN(value) || value === null) {
-      errorMsg += api.l10n['vNotAnumber'];
-    } else {
-      if (!params.allowFloat) {
-        if (is_float(value)) {
-          errorMsg += api.l10n['vNoFloat'] + ' ';
-        } else if (!isInt(value.toString())) {
-          errorMsg += api.l10n['vNotAnInteger'] + ' ';
-        }
-      }
-      if (attrs) {
-        if (attrs.min && value < attrs.min) {
-          errorMsg += sprintf(api.l10n['vNumberLow'], attrs.min) + ' ';
-        }
-        if (attrs.max && value > attrs.max) {
-          errorMsg += sprintf(api.l10n['vNumberHigh'], attrs.max) + ' ';
-        }
-        if (attrs.step && !isMultipleOf(value.toString(), attrs.step)) {
-          errorMsg += sprintf(api.l10n['vNumberStep'], attrs.step) + ' ';
-        }
-      }
-    }
-
-    // if there is an error return it
-    if (errorMsg) {
-      return {
-        error: true,
-        msg: errorMsg
-      };
-    // otherwise return the valid value
-    } else {
-      return value;
-    }
-  }
 });
 
 export default wpApi.controlConstructor['kkcp_number'] = api.controls.Number = Control;

@@ -16,12 +16,34 @@
 class KKcp_Customize_Control_Base extends WP_Customize_Control {
 
 	/**
-	 * Whether this control is optional, that is when it is allowed to be empty.
+	 * Optional value
+	 *
+	 * Whether this control is optional, in other words, when it is allowed to
+	 * be empty.
 	 *
 	 * @since 1.0.0
 	 * @var boolean
 	 */
 	public $optional = false;
+
+	/**
+	 * Loose (allows human error to be previewed)
+	 *
+	 * Whether this control allows the user to set and preview an invalid value.
+	 * The value will not be saved anyway. In fact when this option (applyable
+	 * on all controls) is set to `true` the user will both see the notification
+	 * error sent from JavaScript in the frontend AND the one from the backend.
+	 * Since notifications are the same they will not be duplicated.
+	 * When this option is set to `false` the user will not be able to preview
+	 * an invalid value in the customizer preview, and the last valid value will
+	 * always be the one both previewed and sent to the server.
+	 *
+	 * @see JS: `api.controls.Base->_beforeSet()`
+	 *
+	 * @since 1.0.0
+	 * @var boolean
+	 */
+	public $loose = true;
 
 	/**
 	 * The control divider data, optional
@@ -93,6 +115,11 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		// set control setting as optional
 		if ( $this->optional ) {
 			$this->json['optional'] = true;
+		}
+
+		// set control as loose
+		if ( $this->loose ) {
+			$this->json['loose'] = true;
 		}
 
 		// @premium A Customize Plus Premium features.
