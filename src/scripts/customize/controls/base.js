@@ -326,7 +326,6 @@ api.controls.Base = wpApi.Control.extend({
         console.log(`Notification remove '${notifications[i]['code']}' for default setting of control '${this.id}'`);
       }
     }
-    // this.notifications.render();
   },
   /**
    * Validate
@@ -490,10 +489,6 @@ api.controls.Base = wpApi.Control.extend({
       this.deferred.embedded.resolve();
     }
     this._extras();
-    // errors get resetted because on ready we fill the values in the UI with
-    // the value of `this.setting()` which can never be not valid (see the
-    // `_beforeSet` method above)
-    // this._clearNotifications();
 
     // if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
     //   ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
