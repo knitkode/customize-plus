@@ -33,14 +33,14 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 	 * @since 1.0.0
 	 */
 	protected $selectize_allowed_options = array(
-		'plugins' => array( 'sanitizer' => 'js_array', 'values' => array(
+		'plugins' => array( 'sanitizer' => 'array', 'values' => array(
 			'restore_on_backspace',
 			'drag_drop',
 			'remove_button'
 		) ),
-		'persist' => array( 'sanitizer' => 'js_bool' ),
-		'hideSelected' => array( 'sanitizer' => 'js_bool' ),
-		'sortField' => array( 'sanitizer' => 'js_string' ),
+		'persist' => array( 'sanitizer' => 'bool' ),
+		'hideSelected' => array( 'sanitizer' => 'bool' ),
+		'sortField' => array( 'sanitizer' => 'string' ),
 	);
 
   /**

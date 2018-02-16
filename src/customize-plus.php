@@ -29,6 +29,7 @@ require_once( KKCP_PLUGIN_DIR . 'includes/class-requirements.php' );
 require_once( KKCP_PLUGIN_DIR . 'includes/class-utils.php' );
 require_once( KKCP_PLUGIN_DIR . 'includes/class-validate.php' );
 require_once( KKCP_PLUGIN_DIR . 'includes/class-sanitize.php' );
+require_once( KKCP_PLUGIN_DIR . 'includes/class-sanitizejs.php' );
 require_once( KKCP_PLUGIN_DIR . 'includes/class-singleton.php' );
 require_once( KKCP_PLUGIN_DIR . 'includes/class-core.php' );
 require_once( KKCP_PLUGIN_DIR . 'includes/class-customize.php' );

@@ -44,154 +44,154 @@ class KKcp_Utils {
    * @var array
    */
 	const COLORS_KEYWORDS = array(
-    'aliceblue' => 1,
-    'antiquewhite' => 1,
-    'aqua' => 1,
-    'aquamarine' => 1,
-    'azure' => 1,
-    'beige' => 1,
-    'bisque' => 1,
-    'black' => 1,
-    'blanchedalmond' => 1,
-    'blue' => 1,
-    'blueviolet' => 1,
-    'brown' => 1,
-    'burlywood' => 1,
-    'cadetblue' => 1,
-    'chartreuse' => 1,
-    'chocolate' => 1,
-    'coral' => 1,
-    'cornflowerblue' => 1,
-    'cornsilk' => 1,
-    'crimson' => 1,
-    'cyan' => 1,
-    'darkblue' => 1,
-    'darkcyan' => 1,
-    'darkgoldenrod' => 1,
-    'darkgray' => 1,
-    'darkgreen' => 1,
-    'darkgrey' => 1,
-    'darkkhaki' => 1,
-    'darkmagenta' => 1,
-    'darkolivegreen' => 1,
-    'darkorange' => 1,
-    'darkorchid' => 1,
-    'darkred' => 1,
-    'darksalmon' => 1,
-    'darkseagreen' => 1,
-    'darkslateblue' => 1,
-    'darkslategray' => 1,
-    'darkslategrey' => 1,
-    'darkturquoise' => 1,
-    'darkviolet' => 1,
-    'deeppink' => 1,
-    'deepskyblue' => 1,
-    'dimgray' => 1,
-    'dimgrey' => 1,
-    'dodgerblue' => 1,
-    'firebrick' => 1,
-    'floralwhite' => 1,
-    'forestgreen' => 1,
-    'fuchsia' => 1,
-    'gainsboro' => 1,
-    'ghostwhite' => 1,
-    'gold' => 1,
-    'goldenrod' => 1,
-    'gray' => 1,
-    'green' => 1,
-    'greenyellow' => 1,
-    'grey' => 1,
-    'honeydew' => 1,
-    'hotpink' => 1,
-    'indianred' => 1,
-    'indigo' => 1,
-    'ivory' => 1,
-    'khaki' => 1,
-    'lavender' => 1,
-    'lavenderblush' => 1,
-    'lawngreen' => 1,
-    'lemonchiffon' => 1,
-    'lightblue' => 1,
-    'lightcoral' => 1,
-    'lightcyan' => 1,
-    'lightgoldenrodyellow' => 1,
-    'lightgray' => 1,
-    'lightgreen' => 1,
-    'lightgrey' => 1,
-    'lightpink' => 1,
-    'lightsalmon' => 1,
-    'lightseagreen' => 1,
-    'lightskyblue' => 1,
-    'lightslategray' => 1,
-    'lightslategrey' => 1,
-    'lightsteelblue' => 1,
-    'lightyellow' => 1,
-    'lime' => 1,
-    'limegreen' => 1,
-    'linen' => 1,
-    'magenta' => 1,
-    'maroon' => 1,
-    'mediumaquamarine' => 1,
-    'mediumblue' => 1,
-    'mediumorchid' => 1,
-    'mediumpurple' => 1,
-    'mediumseagreen' => 1,
-    'mediumslateblue' => 1,
-    'mediumspringgreen' => 1,
-    'mediumturquoise' => 1,
-    'mediumvioletred' => 1,
-    'midnightblue' => 1,
-    'mintcream' => 1,
-    'mistyrose' => 1,
-    'moccasin' => 1,
-    'navajowhite' => 1,
-    'navy' => 1,
-    'oldlace' => 1,
-    'olive' => 1,
-    'olivedrab' => 1,
-    'orange' => 1,
-    'orangered' => 1,
-    'orchid' => 1,
-    'palegoldenrod' => 1,
-    'palegreen' => 1,
-    'paleturquoise' => 1,
-    'palevioletred' => 1,
-    'papayawhip' => 1,
-    'peachpuff' => 1,
-    'peru' => 1,
-    'pink' => 1,
-    'plum' => 1,
-    'powderblue' => 1,
-    'purple' => 1,
-    'red' => 1,
-    'rosybrown' => 1,
-    'royalblue' => 1,
-    'saddlebrown' => 1,
-    'salmon' => 1,
-    'sandybrown' => 1,
-    'seagreen' => 1,
-    'seashell' => 1,
-    'sienna' => 1,
-    'silver' => 1,
-    'skyblue' => 1,
-    'slateblue' => 1,
-    'slategray' => 1,
-    'slategrey' => 1,
-    'snow' => 1,
-    'springgreen' => 1,
-    'steelblue' => 1,
-    'tan' => 1,
-    'teal' => 1,
-    'thistle' => 1,
-    'tomato' => 1,
-    'transparent' => 1,
-    'turquoise' => 1,
-    'violet' => 1,
-    'wheat' => 1,
-    'white' => 1,
-    'whitesmoke' => 1,
-    'yellow' => 1,
-    'yellowgreen' => 1,
+    'aliceblue',
+    'antiquewhite',
+    'aqua',
+    'aquamarine',
+    'azure',
+    'beige',
+    'bisque',
+    'black',
+    'blanchedalmond',
+    'blue',
+    'blueviolet',
+    'brown',
+    'burlywood',
+    'cadetblue',
+    'chartreuse',
+    'chocolate',
+    'coral',
+    'cornflowerblue',
+    'cornsilk',
+    'crimson',
+    'cyan',
+    'darkblue',
+    'darkcyan',
+    'darkgoldenrod',
+    'darkgray',
+    'darkgreen',
+    'darkgrey',
+    'darkkhaki',
+    'darkmagenta',
+    'darkolivegreen',
+    'darkorange',
+    'darkorchid',
+    'darkred',
+    'darksalmon',
+    'darkseagreen',
+    'darkslateblue',
+    'darkslategray',
+    'darkslategrey',
+    'darkturquoise',
+    'darkviolet',
+    'deeppink',
+    'deepskyblue',
+    'dimgray',
+    'dimgrey',
+    'dodgerblue',
+    'firebrick',
+    'floralwhite',
+    'forestgreen',
+    'fuchsia',
+    'gainsboro',
+    'ghostwhite',
+    'gold',
+    'goldenrod',
+    'gray',
+    'green',
+    'greenyellow',
+    'grey',
+    'honeydew',
+    'hotpink',
+    'indianred',
+    'indigo',
+    'ivory',
+    'khaki',
+    'lavender',
+    'lavenderblush',
+    'lawngreen',
+    'lemonchiffon',
+    'lightblue',
+    'lightcoral',
+    'lightcyan',
+    'lightgoldenrodyellow',
+    'lightgray',
+    'lightgreen',
+    'lightgrey',
+    'lightpink',
+    'lightsalmon',
+    'lightseagreen',
+    'lightskyblue',
+    'lightslategray',
+    'lightslategrey',
+    'lightsteelblue',
+    'lightyellow',
+    'lime',
+    'limegreen',
+    'linen',
+    'magenta',
+    'maroon',
+    'mediumaquamarine',
+    'mediumblue',
+    'mediumorchid',
+    'mediumpurple',
+    'mediumseagreen',
+    'mediumslateblue',
+    'mediumspringgreen',
+    'mediumturquoise',
+    'mediumvioletred',
+    'midnightblue',
+    'mintcream',
+    'mistyrose',
+    'moccasin',
+    'navajowhite',
+    'navy',
+    'oldlace',
+    'olive',
+    'olivedrab',
+    'orange',
+    'orangered',
+    'orchid',
+    'palegoldenrod',
+    'palegreen',
+    'paleturquoise',
+    'palevioletred',
+    'papayawhip',
+    'peachpuff',
+    'peru',
+    'pink',
+    'plum',
+    'powderblue',
+    'purple',
+    'red',
+    'rosybrown',
+    'royalblue',
+    'saddlebrown',
+    'salmon',
+    'sandybrown',
+    'seagreen',
+    'seashell',
+    'sienna',
+    'silver',
+    'skyblue',
+    'slateblue',
+    'slategray',
+    'slategrey',
+    'snow',
+    'springgreen',
+    'steelblue',
+    'tan',
+    'teal',
+    'thistle',
+    'tomato',
+    'transparent',
+    'turquoise',
+    'violet',
+    'wheat',
+    'white',
+    'whitesmoke',
+    'yellow',
+    'yellowgreen',
 	);
 
   /**
@@ -572,9 +572,10 @@ class KKcp_Utils {
 
 	/**
 	 * Compress HTML
-	 * @param  string $buffer The php->HTML buffer
-	 * @return string         The compressed HTML (stripped whitespaces)
+   *
 	 * @since  1.0.0
+   * @param  string $buffer The php->HTML buffer
+   * @return string         The compressed HTML (stripped whitespaces)
 	 */
 	public static function compress_html( $buffer ) {
 		return preg_replace( '/\s+/', ' ', str_replace( array( "\n", "\r", "\t" ), '', $buffer ) );
@@ -583,6 +584,7 @@ class KKcp_Utils {
 	/**
 	 * Get asset file, minified or unminified
 	 *
+   *@since  1.0.0
 	 * @param  string $filename
 	 * @param  string $type
 	 * @param  string $base_url
@@ -597,6 +599,131 @@ class KKcp_Utils {
 
 		return plugins_url( "assets/$type/$filename$min.$ext", $base_url );
 	}
+
+  /**
+   * In array recursive
+   *
+   * @link(http://stackoverflow.com/a/4128377/1938970, source)
+   * @since  1.0.0
+   * @param  string|number $needle
+   * @param  array         $haystack
+   * @param  boolean       $strict
+   * @return boolean
+   */
+  public static function in_array_r( $needle, $haystack, $strict = false ) {
+    foreach ( $haystack as $item ) {
+      if ( ( $strict ? $item === $needle : $item == $needle ) ||
+        ( is_array( $item ) && self::in_array_r( $needle, $item, $strict ) )
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Flattens a nested array
+   *
+   * @since  1.0.0
+   * @author {@link(http://ramartin.net/, Ron Martinez)}
+   * {@link(http://davidwalsh.name/flatten-nested-arrays-php#comment-64616,
+   * source)}
+   *
+   * Based on:
+   * {@link http://davidwalsh.name/flatten-nested-arrays-php#comment-56256}
+   *
+   * @param array $array     The array to flatten.
+   * @param int   $max_depth How many levels to flatten. Negative numbers
+   *                         mean flatten all levels. Defaults to -1.
+   * @param int   $_depth    The current depth level. Should be left alone.
+   */
+  public static function array_flatten(array $array, $max_depth = -1, $_depth = 0) {
+    $result = array();
+
+    foreach ( $array as $key => $value ) {
+      if ( is_array( $value ) && ( $max_depth < 0 || $_depth < $max_depth ) ) {
+        $flat = self::array_flatten( $value, $max_depth, $_depth + 1 );
+        if ( is_string( $key ) ) {
+          $duplicate_keys = array_keys( array_intersect_key( $array, $flat ) );
+          foreach ( $duplicate_keys as $k ) {
+            $flat["$key.$k"] = $flat[ $k ];
+            unset( $flat[ $k ] );
+          }
+        }
+        $result = array_merge( $result, $flat );
+      }
+      else {
+        if ( is_string( $key ) ) {
+          $result[ $key ] = $value;
+        }
+        else {
+          $result[] = $value;
+        }
+      }
+    }
+    return $result;
+  }
+
+  /**
+   * Normalize font family
+   *
+   * Be sure that a font family is trimmed and wrapped in quote, good for
+   * consistency
+   *
+   * @since  1.0.0
+   * @param  string|array $value
+   * @return string
+   */
+  public static function normalize_font_family( $value ) {
+    return "'" . trim( str_replace( "'", '', str_replace( '"', '', $value ) ) ) . "'";
+  }
+
+  /**
+   * Convert a hexa decimal color code to its RGB equivalent
+   *
+   * @link(http://php.net/manual/en/function.hexdec.php#99478, original source)
+   * @since  1.0.0
+   * @param  string  $hex_str          Hexadecimal color value
+   * @param  boolean $return_as_string If set true, returns the value separated
+   *                                   by the separator character. Otherwise
+   *                                   returns associative array
+   * @return array|string              Depending on second parameter. Returns
+   *                                   `false` if invalid hex color value
+   */
+  public static function hex_to_rgb( $hex_str, $return_as_string = true ) {
+    $hex_str = preg_replace( '/[^0-9A-Fa-f]/ ', '', $hex_str ); // Gets a proper hex string
+    $rgb_array = array();
+    // If a proper hex code, convert using bitwise operation. No overhead... faster
+    if ( strlen( $hex_str ) == 6 ) {
+      $color_val = hexdec( $hex_str );
+      $rgb_array['red'] = 0xFF & ( $color_val >> 0x10 );
+      $rgb_array['green'] = 0xFF & ( $color_val >> 0x8 );
+      $rgb_array['blue'] = 0xFF & $color_val;
+    // if shorthand notation, need some string manipulations
+    } else if ( strlen( $hex_str ) == 3 ) {
+      $rgb_array['red'] = hexdec( str_repeat( substr( $hex_str, 0, 1 ), 2 ) );
+      $rgb_array['green'] = hexdec( str_repeat( substr( $hex_str, 1, 1 ), 2 ) );
+      $rgb_array['blue'] = hexdec( str_repeat( substr( $hex_str, 2, 1 ), 2 ) );
+    } else {
+      return false; //Invalid hex color code
+    }
+    // returns the rgb string or the associative array
+    return $return_as_string ? implode( ',', $rgb_array ) : $rgb_array;
+  }
+
+  /**
+   * Converts a RGBA color to a RGB, stripping the alpha channel value
+   *
+   * It needs a value cleaned of all whitespaces (sanitized).
+   *
+   * @since  1.0.0
+   * @param  string $input
+   * @return string
+   */
+  public static function rgba_to_rgb( $input ) {
+    sscanf( $input, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
+    return "rgba($red,$green,$blue)";
+  }
 }
 
 // add ajax action

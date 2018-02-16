@@ -99,6 +99,20 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
   }
 
   /**
+   * @since  1.0.0
+   * @inheritDoc
+   */
+  public function get_l10n() {
+    return array(
+      'vNotArray' => esc_html__( 'Value must be a list.' ),
+      'vNotAChoice' => esc_html__( 'Value %s is not an allowed choice.' ),
+      'vNotExactLengthArray' => esc_html__( 'List of values must contain exactly %s values' ),
+      'vNotMinLengthArray' => esc_html__( 'List of values must contain minimum %s values.' ),
+      'vNotMaxLengthArray' => esc_html__( 'List of values must contain maximum %s values.' ),
+    );
+  }
+
+  /**
    * JavaScript parameters nedeed by choice based controls.
    *
    * {@inheritDoc}
@@ -107,15 +121,15 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
    * @override
    */
   protected function add_to_json() {
-    $this->json['id'] = KKcp_Sanitize::js_string( $this->id );
-    $this->json['max'] = KKcp_Sanitize::js_int_or_null( $this->max );
-    $this->json['min'] = KKcp_Sanitize::js_int_or_null( $this->min );
+    $this->json['id'] = KKcp_SanitizeJS::string( $this->id );
+    $this->json['max'] = KKcp_SanitizeJS::int_or_null( $this->max );
+    $this->json['min'] = KKcp_SanitizeJS::int_or_null( $this->min );
     $this->json['choices'] = $this->choices;
 
     if ( is_array( $this->selectize ) ) {
-      $this->json['selectize'] = KKcp_Sanitize::js_options( $this->selectize, $this->selectize_allowed_options );
+      $this->json['selectize'] = KKcp_SanitizeJS::options( $this->selectize, $this->selectize_allowed_options );
     } else {
-      $this->json['selectize'] = KKcp_Sanitize::js_bool( $this->selectize );
+      $this->json['selectize'] = KKcp_SanitizeJS::bool( $this->selectize );
     }
   }
 

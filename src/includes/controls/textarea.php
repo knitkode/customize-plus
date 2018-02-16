@@ -52,45 +52,45 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	 * @var array
 	 */
 	public static $wp_editor_allowed_options = array(
-		'wpautop' => array( 'sanitizer' => 'js_bool' ),
+		'wpautop' => array( 'sanitizer' => 'bool' ),
 		// Default: false (instead of WP core's true)
 
-		'mediaButtons' => array( 'sanitizer' => 'js_bool' ),
+		'mediaButtons' => array( 'sanitizer' => 'bool' ),
 		// Default: false (instead of WP core's true)
 
-		// 'textareaName' => 'js_string',
+		// 'textareaName' => 'string',
 		// Default: $editor_id
 
-		'textareaRows' => array( 'sanitizer' => 'js_int' ),
+		'textareaRows' => array( 'sanitizer' => 'int' ),
 		// Default: 5 (instead of WP core's get_option('default_post_edit_rows', 10))
 
-		// 'tabindex' => array( 'sanitizer' => 'js_int' ),
+		// 'tabindex' => array( 'sanitizer' => 'int' ),
 		// Default: None
 
-		// 'editorCss' => array( 'sanitizer' => 'js_string' ),
+		// 'editorCss' => array( 'sanitizer' => 'string' ),
 		// Default: None
 
-		'editorClass' => array( 'sanitizer' => 'js_string' ),
+		'editorClass' => array( 'sanitizer' => 'string' ),
 		// Default: Empty string
 
-		'editorHeight' => array( 'sanitizer' => 'js_int' ),
+		'editorHeight' => array( 'sanitizer' => 'int' ),
 		// Default: None
 
-		// 'teeny' => array( 'sanitizer' => 'js_bool' ),
+		// 'teeny' => array( 'sanitizer' => 'bool' ),
 		// Default: true (instead of WP core's false)
 
-		// 'dfw' => array( 'sanitizer' => 'js_bool' ),
+		// 'dfw' => array( 'sanitizer' => 'bool' ),
 		// Default: false
 
-		'tinymce' => array( 'sanitizer' => 'js_bool_object', 'permissive_object' => true ),
+		'tinymce' => array( 'sanitizer' => 'bool_object', 'permissive_object' => true ),
 		// Default: true (we don't sanitize each option here @@todo)
 
-		'quicktags' => array( 'sanitizer' => 'js_bool_object', 'values' => array(
-			'buttons' => array( 'sanitizer' => 'js_string' )
+		'quicktags' => array( 'sanitizer' => 'bool_object', 'values' => array(
+			'buttons' => array( 'sanitizer' => 'string' )
 		) ),
 		// Default: true
 
-		'dragDropUpload' => array( 'sanitizer' => 'js_bool' ),
+		'dragDropUpload' => array( 'sanitizer' => 'bool' ),
 		// Default: false
 	);
 
@@ -102,14 +102,14 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	protected function add_to_json() {
 		$this->json['attrs'] = $this->input_attrs;
 
-		$this->json['allowHTML'] = KKcp_Sanitize::js_bool( $this->allowHTML );
+		$this->json['allowHTML'] = KKcp_SanitizeJS::bool( $this->allowHTML );
 
 		// @@doubt Should we check for capability here? \\
 		if ( $this->wp_editor && user_can_richedit() ) {
 			if ( is_array( $this->wp_editor ) ) {
-				$this->json['wp_editor'] = KKcp_Sanitize::js_options( $this->wp_editor, self::$wp_editor_allowed_options );
+				$this->json['wp_editor'] = KKcp_SanitizeJS::options( $this->wp_editor, self::$wp_editor_allowed_options );
 			} else {
-				$this->json['wp_editor'] = KKcp_Sanitize::js_bool( $this->wp_editor );
+				$this->json['wp_editor'] = KKcp_SanitizeJS::bool( $this->wp_editor );
 			}
 			wp_enqueue_editor();
 		}

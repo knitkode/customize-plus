@@ -251,12 +251,6 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'tools' => esc_html__( 'Tools' ),
 				'vRequired' => esc_html__( 'A value is required.' ),
 				'vInvalid' => esc_html__( 'Invalid value.' ),
-				'vNotArray' => esc_html__( 'Value must be a list.' ),
-				'vNotAChoice' => esc_html__( 'Value %s is not an allowed choice.' ),
-				'vNotExactLengthArray' => esc_html__( 'List of values must contain exactly %s values' ),
-				'vNotMinLengthArray' => esc_html__( 'List of values must contain minimum %s values.' ),
-				'vNotMaxLengthArray' => esc_html__( 'List of values must contain maximum %s values.' ),
-				'vCheckbox' => esc_html__( 'The checkbox should be either checked or unchecked.' ),
 			);
 			$additional = (array) apply_filters( 'kkcp_customize_get_js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );

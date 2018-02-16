@@ -1,6 +1,71 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import sprintf from 'locutus/php/strings/sprintf';
+import {Utils} from './utils';
+
+/**
+ * Sanitize string
+ *
+ * @since 1.0.0
+ * @param mixed                $input   The value to sanitize.
+ * @return string The sanitized value.
+ */
+export function string ($input) {
+  if (!_.isString($input)) {
+    return JSON.stringify($input);
+  }
+  return $input;
+}
+
+/**
+ * Sanitize array
+ *
+ * @since 1.0.0
+ * @param mixed                $input   The value to sanitize.
+ * @return array The sanitized value.
+ */
+export function array ($input) {
+  let sanitized = [];
+  let inputAsArray = $input;
+
+  // in the edge case it comes as a stringified array
+  if (_.isString($input)) {
+    try {
+      inputAsArray = JSON.parse($input);
+    } catch(e) {
+      inputAsArray = $input;
+    }
+  }
+
+  // coerce in any case to an array, the rest will be dealt during validation
+  if (!_.isArray(inputAsArray)) {
+    inputAsArray = [$input];
+  }
+
+  for (let i = 0; i < inputAsArray.length; i++) {
+    sanitized.push(string(inputAsArray[i]));
+  }
+
+  return sanitized;
+}
+
+/**
+ * Sanitize hex color
+ * check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or 'CCC'
+ *
+ * It needs a value cleaned of all whitespaces (sanitized).
+ *
+ * @since  1.0.0
+ * @param  string $input  The input value to sanitize
+ * @return string|boolean The sanitized input or `false` in case the input
+ *                        value is not valid.
+ */
+export function hex( $input ) {
+  if ( $input.match( /^([A-Fa-f0-9]{3}){1,2}$/ ) ) {
+    return `#${$input}`;
+  }
+  return $input;
+}
 
 /**
  * Sanitize single choice
@@ -12,10 +77,20 @@ import sprintf from 'locutus/php/strings/sprintf';
  * @return string The sanitized value.
  */
 export function singleChoice ($value, $setting, $control) {
-  if (_.isObject($value) || _.isArray($value)) {
-    return JSON.stringify($value);
-  }
-  return $value;
+  return string($value);
+}
+
+/**
+ * Sanitize multiple choices
+ *
+ * @since 1.0.0
+ * @param array                $value   The value to sanitize.
+ * @param WP_Customize_Setting $setting Setting instance.
+ * @param WP_Customize_Control $control Control instance.
+ * @return array The sanitized value.
+ */
+export function multipleChoices($value, $setting, $control) {
+  return array($value);
 }
 
 /**
@@ -41,32 +116,27 @@ export function oneOrMoreChoices ($value, $setting, $control) {
 }
 
 /**
- * Sanitize multiple choices
+ * Sanitize font family
  *
- * @since 1.0.0
- * @param array                $value   The value to sanitize.
+ * @since  1.0.0
+ * @param string|array         $value   The value to sanitize.
  * @param WP_Customize_Setting $setting Setting instance.
  * @param WP_Customize_Control $control Control instance.
- * @return array The sanitized value.
+ * @return string|array The sanitized value.
  */
-export function multipleChoices($value, $setting, $control) {
-  let sanitizedValue = $value;
+export function fontFamily( $value ) {
+  let $sanitized = [];
 
-  // in the edge case it comes as a stringified array
-  if (_.isString($value)) {
-    try {
-      sanitizedValue = JSON.parse($value);
-    } catch(e) {
-      sanitizedValue = $value;
+  if ( _.isString( $value ) ) {
+    $value = $value.split(',');
+  }
+  if ( _.isArray( $value ) ) {
+    for (let i = 0; i < $value.length; i++) {
+      $sanitized.push(Utils.normalizeFontFamily($value[i]));
     }
+    $sanitized = $sanitized.join(',');
   }
-
-  // coerce in any case to an array, the rest will be dealt during validation
-  if (!_.isArray(sanitizedValue)) {
-    return [$value];
-  }
-
-  return sanitizedValue;
+  return $sanitized;
 }
 
 /**
@@ -84,40 +154,32 @@ export function checkbox( $value, $setting, $control ) {
 }
 
 /**
- * Normalize font family.
+ * Sanitize tags
  *
- * Be sure that a font family is wrapped in quote, good for consistency
- *
- * @since  1.0.0
- * @param  string|array $value
- * @return string
+ * @since 1.0.0
+ * @param mixed                $value   The value to sanitize.
+ * @param WP_Customize_Setting $setting Setting instance.
+ * @param WP_Customize_Control $control Control instance.
+ * @return boolean The sanitized value.
  */
-export function normalizeFontFamily( $value ) {
-  // remove extra quotes, add always quotes and trim
-  $value = $value.replace(/'/g, '').replace(/"/g, '');
-  return `'${$value.trim()}'`;
-}
-
-/**
- * Sanitize font family.
- *
- * @since  1.0.0
- * @param  string $value
- * @return string
- */
-export function fontFamily( $value ) {
-  let $sanitized = [];
-
-  if ( _.isString( $value ) ) {
+export function tags( $value, $setting, $control ) {
+  if (_.isString($value )) {
     $value = $value.split(',');
   }
-  if ( _.isArray( $value ) ) {
-    for (let i = 0; i < $value.length; i++) {
-      $sanitized.push(normalizeFontFamily($value[i]));
-    }
-    $sanitized = $sanitized.join(',');
+  if (!_.isArray($value)) {
+    $value = [string($value)];
   }
-  return $sanitized;
+  $value = _.map($value, value => { return value.trim() });
+  $value = _.unique($value);
+
+  // if ( isset( $control->max ) ) {
+  //  $max_items = filter_var( $control->max, FILTER_SANITIZE_NUMBER_INT );
+
+  //  if ( count( $value ) > $max_items ) {
+  //    $value = array_slice( $value, $max_items );
+  //  }
+  // }
+  return Utils.stripHTML($value.join(','));
 }
 
 /**
@@ -128,6 +190,6 @@ export default {
   oneOrMoreChoices,
   multipleChoices,
   checkbox,
-  normalizeFontFamily,
   fontFamily,
+  tags,
 };

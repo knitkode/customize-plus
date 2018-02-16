@@ -67,7 +67,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
     $valid_choices = parent::get_valid_choices( $filtered_sets );
 
     foreach ( $valid_choices as $valid_choice ) {
-      array_push( $valid_choices, KKcp_Sanitize::normalize_font_family( $valid_choice ) );
+      array_push( $valid_choices, KKcp_Utils::normalize_font_family( $valid_choice ) );
     }
 
     return $valid_choices;
@@ -95,7 +95,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 	 * @inheritDoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return KKcp_Sanitize::font_family( $value );
+		return KKcp_Sanitize::font_family( $value, $setting, $control );
 	}
 
 	/**
@@ -103,7 +103,8 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 	 * @inheritDoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		$value = KKcp_Sanitize::font_family( $value );
+		$value = self::sanitize( $value, $setting, $control );
+
 		if ( is_string( $value ) ) {
 			$value = explode( ',', $value );
 		}

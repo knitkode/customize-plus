@@ -2,6 +2,7 @@ import $ from 'jquery';
 import { api, wpApi } from '../core/globals';
 import ControlBaseSet from './base-set';
 import Sanitize from '../core/sanitize';
+import {Utils} from '../core/utils';
 
 /**
  * Font Family Control
@@ -39,10 +40,10 @@ let Control = ControlBaseSet.extend({
   onInit: function () {
     ControlBaseSet.prototype.onInit.apply(this);
     this._options = _.map(this._options, option => {
-      option.value = Sanitize.normalizeFontFamily(option.value);
+      option.value = Utils.normalizeFontFamily(option.value);
       return option;
     });
-    this._validChoices = _.map(this._validChoices, value => Sanitize.normalizeFontFamily(value));
+    this._validChoices = _.map(this._validChoices, value => Utils.normalizeFontFamily(value));
 
     this.params['vInitial'] = Sanitize.fontFamily(this.params['vInitial']);
     this.params['vFactory'] = Sanitize.fontFamily(this.params['vFactory']);

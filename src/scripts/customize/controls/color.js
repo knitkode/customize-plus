@@ -2,6 +2,7 @@ import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import { isHexColor, isRgbColor, isRgbaColor } from '../core/validators';
+import Sanitize from '../core/sanitize';
 /* global tinycolor */
 
 /**
@@ -56,14 +57,10 @@ let Control = api.controls.Base.extend({
       return JSON.stringify(value);
     }
 
-    const sanitized = value.replace(/\s/g, '');
+    let sanitized = value.replace(/\s/g, '');
 
-    // @@todo see color control sanitize function for missing part here... \\
+    sanitized = Sanitize.hex(sanitized);
 
-    // interpret an empty string as a transparent value // @@doubt \\
-    if ( '' === sanitized && ! this.params['disallowTransparent'] ) {
-      return 'transparent';
-    }
     return sanitized;
   },
   /**

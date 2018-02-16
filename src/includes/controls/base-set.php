@@ -29,13 +29,13 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
    * @inheritDoc
    */
   protected $selectize_allowed_options = array(
-    'plugins' => array( 'sanitizer' => 'js_array', 'values' => array(
+    'plugins' => array( 'sanitizer' => 'array', 'values' => array(
       'drag_drop',
       'remove_button'
     ) ),
-    'persist' => array( 'sanitizer' => 'js_bool' ),
-    'hideSelected' => array( 'sanitizer' => 'js_bool' ),
-    'sortField' => array( 'sanitizer' => 'js_string' ),
+    'persist' => array( 'sanitizer' => 'bool' ),
+    'hideSelected' => array( 'sanitizer' => 'bool' ),
+    'sortField' => array( 'sanitizer' => 'string' ),
   );
 
   /**
@@ -241,7 +241,7 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
    */
   protected function add_to_json() {
     parent::add_to_json();
-    $this->json['setVar'] = KKcp_Sanitize::js_string( $this->set_js_var );
-    $this->json['supportedSets'] = KKcp_Sanitize::js_array( $this->supported_sets );
+    $this->json['setVar'] = KKcp_SanitizeJS::string( $this->set_js_var );
+    $this->json['supportedSets'] = KKcp_SanitizeJS::array( $this->supported_sets );
   }
 }

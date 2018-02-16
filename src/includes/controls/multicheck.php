@@ -77,7 +77,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 	protected function add_to_json() {
 		parent::add_to_json();
 
-		$this->json['sortable'] = KKcp_Sanitize::js_bool( $this->sortable );
+		$this->json['sortable'] = KKcp_SanitizeJS::bool( $this->sortable );
 		$this->json['choicesOrdered'] = $this->value();
 	}
 

@@ -3,6 +3,8 @@ import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import Utils from '../core/utils';
 // import ControlBase from './base';
+import Validate from '../core/validate';
+import Sanitize from '../core/sanitize';
 
 /**
  * Control Tags class
@@ -18,23 +20,14 @@ let Control = api.controls.Base.extend({
   /**
    * @override
    */
-  validate: function (rawNewValue) {
-    if (_.isString(rawNewValue)) {
-      var newValue = rawNewValue;
-      newValue = _.map(newValue.split(','), function (string) {
-        return string.trim();
-      });
-      newValue = _.uniq(newValue);
-
-      const max = this.params.max;
-      if (max && _.isNumber(max)) {
-        if (newValue.length > max) {
-          newValue = newValue.slice(0, max);
-        }
-      }
-      return Utils._stripHTML(newValue.join(','));
-    }
-    return { error: true };
+  validate: function (value) {
+    return Validate.tags([], value, this.setting, this);
+  },
+  /**
+   * @override
+   */
+  sanitize: function (value) {
+    return Sanitize.tags(value);
   },
   /**
    * Destroy `selectize` instance if any.
@@ -50,7 +43,8 @@ let Control = api.controls.Base.extend({
    * @override
    */
   syncUI: function (value) {
-    var selectize = this.__input.selectize;
+    const selectize = this.__input.selectize;
+
     if (selectize && selectize.getValue() !== value) {
       this.__input.value = value;
       // this is due to a bug, we should use:
@@ -78,7 +72,6 @@ let Control = api.controls.Base.extend({
    * Init selectize on text input
    */
   _initSelectize: function () {
-    const setting = this.setting;
     const selectizeOpts = this.params.selectize || {};
 
     $(this.__input).selectize(_.extend({
@@ -89,8 +82,8 @@ let Control = api.controls.Base.extend({
           text: input
         };
       },
-      onChange: function (value) {
-        setting.set(value);
+      onChange: (value) => {
+        this.setting.set(value);
       }
     }, selectizeOpts));
   }

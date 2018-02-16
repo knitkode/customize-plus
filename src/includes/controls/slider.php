@@ -70,10 +70,10 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 			}
 		}
 
-		$this->json['allowFloat'] = KKcp_Sanitize::js_bool( $this->allowFloat );
+		$this->json['allowFloat'] = KKcp_SanitizeJS::bool( $this->allowFloat );
 
 		if ( ! empty( $this->units ) ) {
-			$this->json['units'] = KKcp_Sanitize::js_in_array( $this->units, self::$allowed_units );
+			$this->json['units'] = KKcp_SanitizeJS::in_array( $this->units, self::$allowed_units );
 		}
 	}
 

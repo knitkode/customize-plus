@@ -153,10 +153,10 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	protected static function sanitize( $value, $setting, $control ) {
 		$value = preg_replace( '/\s+/', '', $value );
 
-		// @@doubt here there might be arace condition when the developer defines a palette
+		// @@doubt here there might be a race condition when the developer defines a palette
 		// that have rgba colors without setting `allowAlpha` to `true`. \\
 		if ( KKcp_Validate::is_rgba( $value ) && ! $control->allowAlpha ) {
-			$value = KKcp_Sanitize::rgba_to_rgb( $value );
+			$value = KKcp_Utils::rgba_to_rgb( $value );
 		} else {
 			$value = KKcp_Sanitize::hex( $value );
 		}
@@ -175,10 +175,10 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 			! $control->togglePaletteOnly &&
 			is_array( $control->palette )
 		) {
-			$palette_flatten = KKcp_Sanitize::array_flatten( $control->palette, 1 );
-			$palette_normalized = array_map( 'KKcp_Sanitize::hex_to_rgb', $palette_flatten );
-			$value_normalized = KKcp_Sanitize::hex_to_rgb( $value );
-			if ( ! KKcp_Sanitize::in_array_r( $value_normalized, $palette_normalized ) ) {
+			$palette_flatten = KKcp_Utils::array_flatten( $control->palette, 1 );
+			$palette_normalized = array_map( 'KKcp_Utils::hex_to_rgb', $palette_flatten );
+			$value_normalized = KKcp_Utils::hex_to_rgb( $value );
+			if ( ! KKcp_Utils::in_array_r( $value_normalized, $palette_normalized ) ) {
 				$validity->add( 'vNotInPalette', esc_html__( 'Color not in the allowed palette.' ) );
 			}
 		}

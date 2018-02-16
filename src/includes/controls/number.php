@@ -31,14 +31,13 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	public $allowFloat = false;
 
 	/**
-	 * Refresh the parameters passed to the JavaScript via JSON.
-	 *
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function add_to_json() {
 		parent::add_to_json();
 
-		$this->json['allowFloat'] = KKcp_Sanitize::js_bool( $this->allowFloat );
+		$this->json['allowFloat'] = KKcp_SanitizeJS::bool( $this->allowFloat );
 	}
 
 	/**

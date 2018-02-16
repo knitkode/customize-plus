@@ -143,6 +143,38 @@ export function checkbox( $validity, $value, $setting, $control ) {
 }
 
 /**
+ * Validate tags
+ *
+ * @since 1.0.0
+ * @param WP_Error             $validity
+ * @param mixed                $value    The value to validate.
+ * @param WP_Customize_Setting $setting  Setting instance.
+ * @param WP_Customize_Control $control  Control instance.
+ * @return mixed
+ */
+export function tags( $validity, $value, $setting, $control ) {
+  const {params} = $control;
+
+  if ( !_.isString( $value ) ) {
+    $validity.push({ 'vTagsType': api.l10n['vTagsType'] });
+  }
+  if (!_.isArray($value)) {
+    $value = $value.split(',');
+  }
+
+  // maybe check the minimum number of choices selectable
+  if ( _.isNumber( params.min ) && $value.length < params.min ) {
+    $validity.push({ 'vTagsMin': sprintf( api.l10n['vTagsMin'], params.min ) });
+  }
+  // maybe check the maxmimum number of choices selectable
+  if ( _.isNumber( params.max ) && $value.length > params.max ) {
+    $validity.push({ 'vTagsMax': sprintf( api.l10n['vTagsMax'], params.max ) });
+  }
+
+  return $validity;
+}
+
+/**
  * Exports the `Validate` object
  */
 export default {
@@ -152,4 +184,5 @@ export default {
   multipleChoices,
   oneOrMoreChoices,
   checkbox,
+  tags,
 };

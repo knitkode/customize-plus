@@ -129,19 +129,6 @@ class KKcp_Validate {
 	}
 
 	/**
-	 * Is value in choices?
-	 *
-	 * @since  1.0.0
-	 * @return boolean
-	 */
-	public static function is_value_in_choices ( $value, $choices ) {
-		if ( self::is_assoc( $choices ) ) {
-			return isset( $choices[ $value ] );
-		}
-		return in_array( $value, $choices );
-	}
-
-	/**
 	 * Validate a single choice
 
 	 * @since 1.0.0
@@ -158,7 +145,7 @@ class KKcp_Validate {
 			$choices = $control->choices;
 		}
 
-		if ( ! self::is_value_in_choices( $value, $choices ) ) {
+		if ( ! in_array( $value, $choices ) ) {
 			$validity->add( 'vNotAChoice', sprintf( esc_html__( 'Value %s is not an allowed choice.' ), $value ) );
 		}
 		return $validity;
@@ -198,7 +185,6 @@ class KKcp_Validate {
 				$validity->add( 'vNotMinLengthArray', sprintf( esc_html__( 'List of values must contain minimum %s values.' ), $control->min ) );
 			}
 
-
 			// maybe check the maxmimum number of choices selectable
 			if ( isset( $control->max ) && is_int( $control->max ) && count( $value ) > $control->max ) {
 				$validity->add( 'vNotMaxLengthArray', sprintf( esc_html__( 'List of values must contain maximum %s values.' ), $control->max ) );
@@ -206,7 +192,7 @@ class KKcp_Validate {
 
 			// now check that the selected values are allowed choices
 			foreach ( $value as $value_key ) {
-				if ( ! self::is_value_in_choices( $value_key, $choices ) ) {
+				if ( ! in_array( $value_key, $choices ) ) {
 					$validity->add( 'vNotAChoice', sprintf( esc_html__( 'Value %s is not an allowed choice.' ), $value_key ) );
 				}
 			}
@@ -219,7 +205,6 @@ class KKcp_Validate {
 	 * Validate one or more choices
 	 *
 	 * @since 1.0.0
-	 * @override
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -237,7 +222,6 @@ class KKcp_Validate {
 	 * Validate checkbox
 	 *
 	 * @since 1.0.0
-	 * @override
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -250,4 +234,34 @@ class KKcp_Validate {
 		}
 		return $validity;
 	}
+
+	/**
+	 * Validate tags
+	 *
+	 * @since 1.0.0
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	public static function tags( $validity, $value, $setting, $control ) {
+		if ( ! is_string( $value ) ) {
+			$validity->add( 'vTagsType', esc_html__( 'Tags must be a string.' ) );
+		} else {
+			$value = explode( ',', $value );
+		}
+
+		// maybe check the minimum number of choices selectable
+		if ( isset( $control->min ) && is_int( $control->min ) && count( $value ) < $control->min ) {
+			$validity->add( 'vTagsMin', esc_html__( 'Minimum %s tags required.' ) );
+		}
+		// maybe check the maxmimum number of choices selectable
+		if ( isset( $control->max ) && is_int( $control->max ) && count( $value ) > $control->max ) {
+			$validity->add( 'vTagsMax', esc_html__( 'Maximum %s tags allowed.' ) );
+		}
+
+		return $validity;
+	}
+
 }
