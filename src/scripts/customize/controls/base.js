@@ -275,7 +275,8 @@ api.controls.Base = wpApi.Control.extend({
     if (!$validity.length) {
       return this.sanitize(value);
     }
-    return this.params.loose ? this.sanitize(value) : this.setting();
+    // @@doubt sanitize here despite the loose option? `this.sanitize(value)` \\
+    return this.params.loose ? value : this.setting();
   },
   /**
    * Add validity notifications
