@@ -16,21 +16,21 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 
 	/**
 	 * @since 1.0.0
-	 * @override
+	 * @inheritDoc
 	 */
 	public $type = 'kkcp_select';
 
 	/**
-	 * Selectize true by default for select controls
+	 * {@inheritDoc}. Selectize true by default for select controls
 	 *
-	 * @override
 	 * @since 1.0.0
+	 * @override
 	 */
 	public $selectize = true;
 
 	/**
-	 * @override
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected $selectize_allowed_options = array(
 		'plugins' => array( 'sanitizer' => 'array', 'values' => array(
@@ -47,6 +47,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
    * {@inhertDoc}. Populate the `valid_choices` property.
    *
    * @since 1.0.0
+   * @override
    */
   public function __construct( $manager, $id, $args = array() ) {
     parent::__construct( $manager, $id, $args );
@@ -55,9 +56,8 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
   }
 
 	/**
-	 * Render template for choice displayment.
-	 *
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function js_tpl_choice_ui() {
 		?>
@@ -68,9 +68,10 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 	}
 
 	/**
-	 * Render needed html structure for CSS toggle / switch
+	 * {@inheritDoc}. Render needed html structure for CSS toggle / switch
 	 *
 	 * @since 1.0.0
+	 * @override
 	 */
 	protected function js_tpl_above_choices () {
 		?>
@@ -79,9 +80,10 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 	}
 
 	/**
-	 * Render needed html structure for CSS toggle / switch
+	 * {@inheritDoc}. Render needed html structure for CSS toggle / switch
 	 *
 	 * @since 1.0.0
+	 * @override
 	 */
 	protected function js_tpl_below_choices () {
 		?>

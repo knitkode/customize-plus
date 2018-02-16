@@ -264,4 +264,43 @@ class KKcp_Validate {
 		return $validity;
 	}
 
+	/**
+	 * Validate text
+	 *
+	 * @since 1.0.0
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return mixed
+ 	 */
+	public static function text( $validity, $value, $setting, $control ) {
+		$attrs = $control->input_attrs;
+
+		$input_type = isset( $attrs['type'] ) ? $attrs['type'] : 'text';
+
+		// type
+		if ( ! is_string( $value ) ) {
+			$validity->add( 'vTextType', esc_html__( 'The value must be a string.' ) );
+		}
+		// url
+		if ( 'url' === $input_type && ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+	    $validity->add( 'vInvalidUrl', esc_html__( 'Invalid URL.' ) );
+		}
+		// email
+		else if ( 'email' === $input_type && ! is_email( $value ) ) {
+			$validity->add( 'vInvalidEmail', esc_html__( 'Invalid email.' ) );
+		}
+		// max length
+		if ( isset( $attrs['maxlength'] ) && is_int( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
+			$validity->add( 'vTooLong', sprintf ( esc_html__( 'The text must be shorter than %s.' ), $attrs['maxlength'] ) );
+		}
+		// html
+		if( $value != strip_tags( $value ) ) {
+			$validity->add( 'vTextHtml', esc_html__( 'HTML is not allowed. It will be stripped out on save.' ) );
+		}
+
+		return $validity;
+	}
+
 }

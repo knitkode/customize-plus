@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import sprintf from 'locutus/php/strings/sprintf';
+import is_int from 'locutus/php/var/is_int';
+// import escape from 'validator/lib/escape';
 import {Utils} from './utils';
 
 /**
@@ -179,7 +180,40 @@ export function tags( $value, $setting, $control ) {
   //    $value = array_slice( $value, $max_items );
   //  }
   // }
-  return Utils.stripHTML($value.join(','));
+  return $value.join(',');
+  // return Utils.stripHTML($value.join(','));
+}
+
+/**
+ * Sanitize text
+ *
+ * @since 1.0.0
+ * @param mixed                $value   The value to sanitize.
+ * @param WP_Customize_Setting $setting Setting instance.
+ * @param WP_Customize_Control $control Control instance.
+ * @return boolean The sanitized value.
+ */
+export function text( $value, $setting, $control ) {
+  const $attrs = $control.params.attrs;
+  const $input_type = $attrs.type || 'text';
+
+  $value = string( $value );
+
+  // url
+  if ( 'url' === $input_type ) {
+    $value = $value.trim(); // @@todo: something like: `esc_url_raw( $value );` \\
+  }
+  // email
+  else if ( 'email' === $input_type ) {
+    $value = $value.trim(); // @@todo: something like: `sanitize_email( $value );` \\
+  }
+  // max length
+  if ( is_int( $attrs['maxlength'] ) && $value.length > $attrs['maxlength'] ) {
+    $value = $value.substr( 0, $attrs['maxlength'] );
+  }
+
+  return $value;
+  // return Utils.stripHTML($value);
 }
 
 /**
@@ -192,4 +226,5 @@ export default {
   checkbox,
   fontFamily,
   tags,
+  text,
 };

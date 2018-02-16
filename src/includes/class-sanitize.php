@@ -283,6 +283,37 @@ class KKcp_Sanitize {
 	}
 
 	/**
+	 * Sanitize text
+	 *
+	 * @since 1.0.0
+	 * @param mixed         			 $value   The value to sanitize.
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return boolean The sanitized value.
+	 */
+	public static function text( $value, $setting, $control ) {
+		$attrs = $control->input_attrs;
+		$input_type = isset( $attrs['type'] ) ? $attrs['type'] : 'text';
+
+		$value = self::string( $value );
+
+		// url
+		if ( 'url' === $input_type ) {
+			$value = filter_var( $value, FILTER_SANITIZE_URL );
+		}
+		// email
+		else if ( 'email' === $input_type ) {
+			$value = sanitize_email( $value );
+		}
+		// max length
+		if ( isset( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
+			$value = substr( $value, 0, $attrs['maxlength'] );
+		}
+
+		return wp_strip_all_tags( $value );
+	}
+
+	/**
 	 * Sanitize CSS
 	 *
 	 * @link(http://git.io/vZ05N, source)

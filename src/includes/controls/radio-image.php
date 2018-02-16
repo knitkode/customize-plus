@@ -18,20 +18,18 @@
 class KKcp_Customize_Control_Radio_Image extends KKcp_Customize_Control_Base_Radio {
 
 	/**
-	 * @override
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	public $type = 'kkcp_radio_image';
 
 	/**
-	 * Render template for choice displayment.
+	 * {@inheritDoc}. It shows the full image path (`img_custom`) or an image
+	 * bundled in the plugin when `img` has been passed, with the plugin url
+	 * as prepath, and always a `png` extension.
 	 *
-	 * It shows the full image path (`img_custom`) or an image bundled in the plugin
-	 * when `img` has been passed, with the plugin url as prepath, and always a `png`
-	 * extension.
-	 *
-	 * @override
 	 * @since 1.0.0
+	 * @override
 	 */
 	protected function js_tpl_choice_ui() {
 		?>

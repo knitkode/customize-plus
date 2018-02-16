@@ -1,8 +1,7 @@
-import isURL from 'validator/lib/isURL';
-import isEmail from 'validator/lib/isEmail';
 import { api, wpApi } from '../core/globals';
-import Utils from '../core/utils';
 import ControlBaseInput from './base-input';
+import Validate from '../core/validate';
+import Sanitize from '../core/sanitize';
 
 /**
  * Control Text class
@@ -13,45 +12,20 @@ import ControlBaseInput from './base-input';
  * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Classnds
- * @requires api.core.Utils
  */
 let Control = ControlBaseInput.extend({
   /**
    * @override
-   * @inheritdoc api.controls.Base.validate
    */
   validate: function (value) {
-    var attrs = this.params.attrs;
-    var inputType = attrs.type || 'text';
-    var errorMsg = '';
-
-    // max length
-    if (attrs.maxlength && value.length > attrs.maxlength) {
-      errorMsg += api.l10n['vTooLong'];
-    }
-    // url
-    if (inputType === 'url' && !isURL(value)) {
-      errorMsg += api.l10n['vInvalidUrl'];
-    }
-    // email
-    else if (inputType === 'email' && !isEmail(value)) {
-      errorMsg += api.l10n['vInvalidEmail'];
-    }
-    // text
-    else {
-      // always strip HTML
-      value = Utils._stripHTML(value);
-    }
-
-    if (errorMsg) {
-      return {
-        error: true,
-        msg: errorMsg
-      };
-    } else {
-      return value;
-    }
-  }
+    return Validate.text([], value, this.setting, this);
+  },
+  /**
+   * @override
+   */
+  sanitize: function (value) {
+    return Sanitize.text(value, this.setting, this);
+  },
 });
 
 export default wpApi.controlConstructor['kkcp_text'] = api.controls.Text = Control;

@@ -1,6 +1,10 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import sprintf from 'locutus/php/strings/sprintf';
+import is_int from 'locutus/php/var/is_int';
+import isURL from 'validator/lib/isURL';
+import isEmail from 'validator/lib/isEmail';
+import {Utils} from './utils';
 import { api } from './globals';
 
 /**
@@ -86,12 +90,12 @@ export function multipleChoices( $validity, $value, $setting, $control, $check_l
     }
 
     // maybe check the minimum number of choices selectable
-    if ( _.isNumber( params.min ) && $value.length < params.min ) {
+    if ( is_int( params.min ) && $value.length < params.min ) {
       $validity.push({ 'vNotMinLengthArray': sprintf( api.l10n['vNotMinLengthArray'], params.min ) });
     }
 
     // maybe check the maxmimum number of choices selectable
-    if ( _.isNumber( params.max ) && $value.length > params.max ) {
+    if ( is_int( params.max ) && $value.length > params.max ) {
       $validity.push({ 'vNotMaxLengthArray': sprintf( api.l10n['vNotMaxLengthArray'], params.max ) });
     }
 
@@ -163,12 +167,51 @@ export function tags( $validity, $value, $setting, $control ) {
   }
 
   // maybe check the minimum number of choices selectable
-  if ( _.isNumber( params.min ) && $value.length < params.min ) {
+  if ( is_int( params.min ) && $value.length < params.min ) {
     $validity.push({ 'vTagsMin': sprintf( api.l10n['vTagsMin'], params.min ) });
   }
   // maybe check the maxmimum number of choices selectable
-  if ( _.isNumber( params.max ) && $value.length > params.max ) {
+  if ( is_int( params.max ) && $value.length > params.max ) {
     $validity.push({ 'vTagsMax': sprintf( api.l10n['vTagsMax'], params.max ) });
+  }
+
+  return $validity;
+}
+
+/**
+ * Validate text
+ *
+ * @since 1.0.0
+ * @param WP_Error             $validity
+ * @param mixed                $value    The value to validate.
+ * @param WP_Customize_Setting $setting  Setting instance.
+ * @param WP_Customize_Control $control  Control instance.
+ * @return mixed
+ */
+export function text( $validity, $value, $setting, $control ) {
+  const $attrs = $control.params.attrs;
+  const $input_type = $attrs.type || 'text';
+
+  // type
+  if ( ! _.isString( $value ) ) {
+    $validity.push({ 'vTextType': api.l10n['vTextType'] });
+  }
+  // url
+  // make the `isURL` function behaving like php's `filter_var( $value, FILTER_VALIDATE_URL )`
+  if ( $input_type === 'url' && !isURL( $value, { require_tld: false, allow_trailing_dot: true } ) ) {
+    $validity.push({ 'vInvalidUrl': api.l10n['vInvalidUrl'] });
+  }
+  // email
+  else if ( $input_type === 'email' && !isEmail( $value ) ) {
+    $validity.push({ 'vInvalidEmail': api.l10n['vInvalidEmail'] });
+  }
+  // max length
+  if ( is_int( $attrs.maxlength ) && $value.length > $attrs.maxlength ) {
+    $validity.push({ 'vTooLong': api.l10n['vTooLong'] });
+  }
+  // html presence
+  if ( Utils.hasHTML( $value ) ) {
+    $validity.push({ 'vTextHtml': api.l10n['vTextHtml'] });
   }
 
   return $validity;
@@ -185,4 +228,5 @@ export default {
   oneOrMoreChoices,
   checkbox,
   tags,
+  text,
 };
