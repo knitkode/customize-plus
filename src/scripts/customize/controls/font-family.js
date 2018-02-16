@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { api, wpApi } from '../core/globals';
-// import ControlBase from './base';
+import ControlBaseSet from './base-set';
+import Sanitize from '../core/sanitize';
 
 /**
  * Font Family Control
@@ -11,50 +12,49 @@ import { api, wpApi } from '../core/globals';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = api.controls.Base.extend({
+let Control = ControlBaseSet.extend({
   /**
    * @override
-   * @see php `KKcp_Sanitize::font_families`
-   * @param  {string|array} value [description]
-   * @return {string}       [description]
+   * @param  {string|array} value
+   * @return {array} $validity
    */
   validate: function (value) {
-    // treat value only if it's a string (unlike the php function)
-    // because here we always have to get a string.
-    if (typeof value === 'string') {
-      return value;
-    } else {
-      return { error: true };
+    if ( _.isString(value)) {
+      value = value.split(',');
     }
+    return ControlBaseSet.prototype.validate.call(this, value);
   },
   /**
    * @override
+   * @return {string}
    */
   sanitize: function (value) {
-    var sanitized = [];
-    var singleValues = value.split(',');
-    for (var i = 0, l = singleValues.length; i < l; i++) {
-      var valueUnquoted = singleValues[i].replace(/'/g, '').replace(/"/g, '');
-      sanitized.push('\'' + valueUnquoted.trim() + '\'');
-    }
-    return sanitized.join(',');
+    return Sanitize.fontFamily(value);
+  },
+  /**
+   * Always quote all font families
+   * @override
+   */
+  onInit: function () {
+    ControlBaseSet.prototype.onInit.apply(this);
+    this._options = _.map(this._options, option => {
+      option.value = Sanitize.normalizeFontFamily(option.value);
+      return option;
+    });
+    this._validChoices = _.map(this._validChoices, value => Sanitize.normalizeFontFamily(value));
+
+    this.params['vInitial'] = Sanitize.fontFamily(this.params['vInitial']);
+    this.params['vFactory'] = Sanitize.fontFamily(this.params['vFactory']);
   },
   /**
    * @override
    */
   syncUI: function (value) {
-    if (value !== this.__input.value) {
-      this._updateUI(value);
+    if (_.isArray(value)) {
+      value = value.join(',');
     }
-  },
-  /**
-   * Destroy `selectize` instance.
-   *
-   * @override
-   */
-  onDeflate: function () {
-    if (this.__input  && this.__input.selectize) {
-      this.__input.selectize.destroy();
+    if (!_.isEqual(value, this.__input.value)) {
+      this._updateUI(value);
     }
   },
   /**
@@ -62,68 +62,54 @@ let Control = api.controls.Base.extend({
    */
   ready: function () {
     this.__input = this._container.getElementsByClassName('kkcp-selectize')[0];
-    this._fontFamilies = api.constants['font_families'].map(function (fontFamilyName) {
-      return { item: fontFamilyName };
-    });
-    this._updateUI();
+    this.__input.value = Sanitize.fontFamily(this.setting());
+    this._initUI();
   },
   /**
-   * Update UI
+   * When the value is not set by the UI directly we need to destroy selectize
+   * and recreate it to sync the UI correctly.
    *
-   * @param  {string} value
+   * @override
    */
   _updateUI: function (value) {
-    var setting = this.setting;
-
-    // if there is an instance of selectize destroy it
-    if (this.__input.selectize) {
-      this.__input.selectize.destroy();
-    }
-
-    this.__input.value = value || setting();
-
-    // init selectize plugin
-    $(this.__input).selectize({
-      plugins: ['drag_drop','remove_button'],
-      delimiter: ',',
-      maxItems: 10,
-      persist: false,
-      hideSelected: true,
-      options: this._fontFamilies,
-      labelField: 'item',
-      valueField: 'item',
-      sortField: 'item',
-      searchField: 'item',
-      create: function (input) {
-        return {
-          value: input,
-          text: input.replace(/'/g, '') // remove quotes from UI only
-        };
-      },
-      render: {
-        item: this._selectizeRenderItemAndOption,
-        option: this._selectizeRenderItemAndOption
-      }
-    })
-    .on('change', function () {
-      setting.set(this.value);
-    })
-    .on('item_remove', function (e,b) {
-      if (DEBUG) console.log(this, e, b);
-    });
+    this.__input.value = Sanitize.fontFamily(value);
+    this._initUI();
   },
   /**
-   * Selectize render item and option function
-   *
-   * @static
-   * @param  {Object} data     The selectize option object representation.
-   * @param  {function} escape Selectize escape function.
-   * @return {string}          The option template.
+   * @override
    */
-  _selectizeRenderItemAndOption: function (data, escape) {
-    var value = escape(data.item);
-    return '<div style="font-family:' + value + '">' + value.replace(/'/g, '').replace(/"/g, '') + '</div>';
-  }
+  _getSelectizeCustomOpts: function () {
+    const self = this;
+    return {
+      hideSelected: true,
+      delimiter: ',',
+      persist: false,
+      onChange: function () {
+        // self.setting.set(this.value);
+        self.setting.set(this.getValue());
+      },
+    }
+  },
+  /**
+   * @override
+   */
+  _renderItem: function (data, escape) {
+    const value = escape(data.value);
+    const text = data.text ? escape(data.text) : value;
+    return `<div style="font-family:${value}">${text.replace(/'/g, '').replace(/"/g, '')}</div>`;
+  },
+  /**
+   * @override
+   */
+  _renderOption: function (data, escape) {
+    return this._renderItem(data, escape);
+  },
+  /**
+   * @override
+   */
+  _renderGroupHeader: function (data, escape) {
+    return `<div class="kkcp-icon-selectHeader">${escape(data.label)}</div>`;
+  },
 });
 
 export default wpApi.controlConstructor['kkcp_font_family'] = api.controls.FontFamily = Control;

@@ -51,12 +51,9 @@ export function checkRequired ($validity, $value, $setting, $control) {
 
 
 export function singleChoice ($validity, $value, $setting, $control) {
-  const {params} = $control;
+  const choices = $control._validChoices || $control.params.choices;
 
-  // @@todo doing this check with an object lookup instead of `indexOf`
-  // might be faster \\
-  // if ( _.isUndefined( params.choices[ $value ] ) ) {
-  if ( params.choices.indexOf( $value ) === -1 ) {
+  if ( choices.indexOf( $value ) === -1 ) {
     $validity.push({ 'vNotAChoice': sprintf( api.l10n['vNotAChoice'], $value ) });
   }
   return $validity;
@@ -78,14 +75,15 @@ export function singleChoice ($validity, $value, $setting, $control) {
  */
 export function multipleChoices( $validity, $value, $setting, $control, $check_length = false ) {
   const {params} = $control;
+  const choices = $control._validChoices || params.choices;
 
   if ( !_.isArray( $value ) ) {
     $validity.push({ 'vNotArray': api.l10n['vNotArray'] });
   } else {
 
     // maybe check that the length of the value array is correct
-    if ( $check_length && params.choices.length !== $value.length ) {
-      $validity.push({ 'vNotExactLengthArray': sprintf( api.l10n['vNotExactLengthArray'], params.choices.length ) });
+    if ( $check_length && choices.length !== $value.length ) {
+      $validity.push({ 'vNotExactLengthArray': sprintf( api.l10n['vNotExactLengthArray'], choices.length ) });
     }
 
     // maybe check the minimum number of choices selectable
@@ -100,10 +98,7 @@ export function multipleChoices( $validity, $value, $setting, $control, $check_l
 
     // now check that the selected values are allowed choices
     for (let i = 0; i < $value.length; i++) {
-      // @@todo doing this check with an object lookup instead of `indexOf`
-      // might be faster \\
-      // if ( _.isUndefined( params.choices[ $value[i] ] ) ) {
-      if ( params.choices.indexOf( $value[i] ) === -1 ) {
+      if ( choices.indexOf( $value[i] ) === -1 ) {
         $validity.push({ 'vNotAChoice': sprintf( api.l10n['vNotAChoice'], $value[i] ) });
       }
     }

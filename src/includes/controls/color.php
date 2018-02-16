@@ -174,12 +174,10 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		$value = preg_replace( '~\x{00a0}~', '', $value );
+		$value = preg_replace( '/\s+/', '', $value );
 
-		// interpret an empty string as a transparent value // @@doubt \\
-		if ( '' === $value && ! $control->disallowTransparent ) {
-			return 'transparent';
-		}
+		// @@doubt here there might be arace condition when the developer defines a palette
+		// that have rgba colors without setting `allowAlpha` to `true`. \\
 		if ( KKcp_Validate::is_rgba( $value ) && ! $control->allowAlpha ) {
 			$value = KKcp_Sanitize::rgba_to_rgb( $value );
 		} else {
@@ -201,6 +199,8 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @return mixed
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
+		$value = self::sanitize( $value, $setting, $control );
+
 		if ( $control->showPaletteOnly &&
 			! $control->togglePaletteOnly &&
 			is_array( $control->palette )

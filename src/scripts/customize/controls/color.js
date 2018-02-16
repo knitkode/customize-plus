@@ -56,7 +56,7 @@ let Control = api.controls.Base.extend({
       return JSON.stringify(value);
     }
 
-    const sanitized = value.replace(/\s/, '');
+    const sanitized = value.replace(/\s/g, '');
 
     // @@todo see color control sanitize function for missing part here... \\
 
@@ -96,7 +96,7 @@ let Control = api.controls.Base.extend({
 
     if (!isHexColor(value) &&
         !isRgbColor(value) &&
-        !isRgbColor(value) &&
+        !isRgbaColor(value) &&
         value !== 'transparent'
       ) {
       $validity.push({ vNoColor: api.l10n['vNoColor'] });

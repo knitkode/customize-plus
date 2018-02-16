@@ -13,6 +13,12 @@
  */
 class KKcp_Utils {
 
+  /**
+   * Browser's native css units
+   *
+   * @since  1.0.0
+   * @var array
+   */
 	const CSS_UNITS = array(
 		'em',
 		'ex',
@@ -31,6 +37,12 @@ class KKcp_Utils {
 		'vmax',
 	);
 
+  /**
+   * Browser's native css color keywords
+   *
+   * @since  1.0.0
+   * @var array
+   */
 	const COLORS_KEYWORDS = array(
     'aliceblue' => 1,
     'antiquewhite' => 1,
@@ -182,37 +194,68 @@ class KKcp_Utils {
     'yellowgreen' => 1,
 	);
 
-	/**
-	 * Compress HTML
-	 * @param  string $buffer The php->HTML buffer
-	 * @return string         The compressed HTML (stripped whitespaces)
-	 * @since  1.0.0
-	 */
-	public static function compress_html( $buffer ) {
-		return preg_replace( '/\s+/', ' ', str_replace( array( "\n", "\r", "\t" ), '', $buffer ) );
-	}
-
-	/**
-	 * Get asset file, minified or unminified
-	 *
-	 * @param  string $filename
-	 * @param  string $type
-	 * @param  string $base_url
-	 * @param  string $ext
-	 * @return string
-	 */
-	public static function get_asset( $filename, $type, $base_url, $ext = '' ) {
-		if ( ! $ext ) {
-			$ext = $type;
-		}
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
-		return plugins_url( "assets/$type/$filename$min.$ext", $base_url );
-	}
+  /**
+   * Browser's native css font families divided in groups
+   *
+   * @see http://www.w3schools.com/cssref/css_websafe_fonts.asp
+   * @since  1.0.0
+   * @var array
+   */
+  public static function get_font_families_standard () {
+    return array(
+      'serif' => array(
+        'label' => 'Serif Fonts',
+        'values' => array(
+          'Georgia',
+          '"Palatino Linotype"',
+          '"Book Antiqua"',
+          'Palatino',
+          '"Times New Roman"',
+          'Times',
+          'serif',
+        ),
+      ),
+      'sans-serif' => array(
+        'label' => 'Sans-Serif Fonts',
+        'values' => array(
+          'Arial',
+          'Helvetica',
+          '"Helvetica Neue"',
+          '"Arial Black"',
+          'Gadget',
+          '"Comic Sans MS"',
+          'cursive',
+          'Impact',
+          'Charcoal',
+          '"Lucida Sans Unicode"',
+          '"Lucida Grande"',
+          'Tahoma',
+          'Geneva',
+          '"Trebuchet MS"',
+          'Verdana',
+          'sans-serif',
+        ),
+      ),
+      'monospace' => array(
+        'label' => 'Monospace Fonts',
+        'values' => array(
+          '"Courier New"',
+          'Courier',
+          '"Lucida Console"',
+          'Monaco',
+          'monospace',
+          'Menlo',
+          'Consolas',
+        ),
+      ),
+    );
+  }
 
 	/**
 	 * Get an array of all available dashicons.
-	 *
+   *
+   * @see https://github.com/knitkode/dashicons/blob/master/groups.json
+   * @since  1.0.0
 	 * @static
 	 * @access public
 	 * @return array
@@ -221,7 +264,7 @@ class KKcp_Utils {
 		return array(
 			'admin_menu' => array(
 				'label' => esc_html__( 'Admin Menu' ),
-				'icons' => array(
+				'values' => array(
 					'menu',
 					'admin-site',
 					'dashboard',
@@ -246,7 +289,7 @@ class KKcp_Utils {
 			),
 			'welcome_screen' => array(
 				'label' => esc_html__( 'Welcome Screen' ),
-				'icons' => array(
+				'values' => array(
 					'welcome-write-blog',
 					'welcome-add-page',
 					'welcome-view-site',
@@ -257,7 +300,7 @@ class KKcp_Utils {
 			),
 			'post_formats' => array(
 				'label' => esc_html__( 'Post Formats' ),
-				'icons' => array(
+				'values' => array(
 					'format-aside',
 					'format-image',
 					'format-gallery',
@@ -276,7 +319,7 @@ class KKcp_Utils {
 			),
 			'media' => array(
 				'label' => esc_html__( 'Media' ),
-				'icons' => array(
+				'values' => array(
 					'media-archive',
 					'media-audio',
 					'media-code',
@@ -301,7 +344,7 @@ class KKcp_Utils {
 			),
 			'image_editing' => array(
 				'label' => esc_html__( 'Image Editing' ),
-				'icons' => array(
+				'values' => array(
 					'image-crop',
 					'image-rotate',
 					'image-rotate-left',
@@ -315,7 +358,7 @@ class KKcp_Utils {
 			),
 			'tinymce' => array(
 				'label' => esc_html__( 'Tinymce' ),
-				'icons' => array(
+				'values' => array(
 					'editor-bold',
 					'editor-italic',
 					'editor-ul',
@@ -351,7 +394,7 @@ class KKcp_Utils {
 			),
 			'posts' => array(
 				'label' => esc_html__( 'Posts' ),
-				'icons' => array(
+				'values' => array(
 					'align-left',
 					'align-right',
 					'align-center',
@@ -370,7 +413,7 @@ class KKcp_Utils {
 			),
 			'sorting' => array(
 				'label' => esc_html__( 'Sorting' ),
-				'icons' => array(
+				'values' => array(
 					'external',
 					'arrow-up',
 					'arrow-down',
@@ -394,7 +437,7 @@ class KKcp_Utils {
 			),
 			'social' => array(
 				'label' => esc_html__( 'Social' ),
-				'icons' => array(
+				'values' => array(
 					'share',
 					'share-alt',
 					'share-alt2',
@@ -410,7 +453,7 @@ class KKcp_Utils {
 			),
 			'wordpress_org' => array(
 				'label' => esc_html__( 'Wordpress Org' ),
-				'icons' => array(
+				'values' => array(
 					'hammer',
 					'art',
 					'migrate',
@@ -427,7 +470,7 @@ class KKcp_Utils {
 			),
 			'products' => array(
 				'label' => esc_html__( 'Products' ),
-				'icons' => array(
+				'values' => array(
 					'wordpress',
 					'wordpress-alt',
 					'pressthis',
@@ -442,14 +485,14 @@ class KKcp_Utils {
 			),
 			'taxonomies' => array(
 				'label' => esc_html__( 'Taxonomies' ),
-				'icons' => array(
+				'values' => array(
 					'tag',
 					'category',
 				)
 			),
 			'widgets' => array(
 				'label' => esc_html__( 'Widgets' ),
-				'icons' => array(
+				'values' => array(
 					'archive',
 					'tagcloud',
 					'text',
@@ -457,7 +500,7 @@ class KKcp_Utils {
 			),
 			'notifications' => array(
 				'label' => esc_html__( 'Notifications' ),
-				'icons' => array(
+				'values' => array(
 					'yes',
 					'no',
 					'no-alt',
@@ -475,7 +518,7 @@ class KKcp_Utils {
 			),
 			'misc' => array(
 				'label' => esc_html__( 'Misc' ),
-				'icons' => array(
+				'values' => array(
 					'location',
 					'location-alt',
 					'vault',
@@ -525,6 +568,34 @@ class KKcp_Utils {
 				)
 			)
 		);
+	}
+
+	/**
+	 * Compress HTML
+	 * @param  string $buffer The php->HTML buffer
+	 * @return string         The compressed HTML (stripped whitespaces)
+	 * @since  1.0.0
+	 */
+	public static function compress_html( $buffer ) {
+		return preg_replace( '/\s+/', ' ', str_replace( array( "\n", "\r", "\t" ), '', $buffer ) );
+	}
+
+	/**
+	 * Get asset file, minified or unminified
+	 *
+	 * @param  string $filename
+	 * @param  string $type
+	 * @param  string $base_url
+	 * @param  string $ext
+	 * @return string
+	 */
+	public static function get_asset( $filename, $type, $base_url, $ext = '' ) {
+		if ( ! $ext ) {
+			$ext = $type;
+		}
+		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		return plugins_url( "assets/$type/$filename$min.$ext", $base_url );
 	}
 }
 

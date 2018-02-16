@@ -16,7 +16,8 @@ class KKcp_Validate {
 	/**
 	 * Is an associative array or not
 	 *
-	 * @link(http://stackoverflow.com/a/14669600/1938970, source)
+	 * @link(https://stackoverflow.com/a/145348, source1)
+	 * @link(https://stackoverflow.com/a/145348, source2)
 	 * @since  1.0.0
 	 * @param  array   $array The array to test
 	 * @return boolean
@@ -25,12 +26,20 @@ class KKcp_Validate {
 		if ( ! is_array( $array ) ) {
 			return false;
 		}
-		// Keys of the array
-		$keys = array_keys( $array );
 
-		// If the array keys of the keys match the keys, then the array must
-		// not be associative (e.g. the keys array looked like {0:0, 1:1...}).
-		return array_keys( $keys ) !== $keys;
+		// source1:
+    foreach ( $array as $a ) {
+      if ( is_array( $a ) ) return true;
+    }
+    return false;
+
+    // source2:
+		// // Keys of the array
+		// $keys = array_keys( $array );
+
+		// // If the array keys of the keys match the keys, then the array must
+		// // not be associative (e.g. the keys array looked like {0:0, 1:1...}).
+		// return array_keys( $keys ) !== $keys;
 	}
 
 	/**
@@ -43,7 +52,7 @@ class KKcp_Validate {
 	 * @return boolean
 	 */
 	public static function is_hex( $value ) {
-		return preg_match( '/^#([A-Fa-f0-9]{3}){1,2}$/', $input );
+		return preg_match( '/^#([A-Fa-f0-9]{3}){1,2}$/', $value );
 	}
 
 	/**
@@ -143,7 +152,9 @@ class KKcp_Validate {
 	 * @return mixed
  	 */
 	public static function single_choice( $validity, $value, $setting, $control ) {
-		if ( ! self::is_value_in_choices( $value, $control->choices ) ) {
+		$choices = isset( $control->valid_choices ) ? $control->valid_choices : $control->choices;
+
+		if ( ! self::is_value_in_choices( $value, $choices ) ) {
 			$validity->add( 'vNotAChoice', sprintf( esc_html__( 'Value %s is not an allowed choice.' ), $value ) );
 		}
 		return $validity;
@@ -163,14 +174,15 @@ class KKcp_Validate {
 	 * @return $validity
  	 */
 	public static function multiple_choices( $validity, $value, $setting, $control, $check_length = false ) {
+		$choices = isset( $control->valid_choices ) ? $control->valid_choices : $control->choices;
 
 		if ( ! is_array( $value ) ) {
 			$validity->add( 'vNotArray', esc_html__( 'Value must be a list.' ) );
 		} else {
 
 			// maybe check that the length of the value array is correct
-			if ( $check_length && count( $control->choices ) !== count( $value ) ) {
-				$validity->add( 'vNotExactLengthArray', sprintf( esc_html__( 'List of values must contain exactly %s values' ), count( $control->choices ) ) );
+			if ( $check_length && count( $choices ) !== count( $value ) ) {
+				$validity->add( 'vNotExactLengthArray', sprintf( esc_html__( 'List of values must contain exactly %s values' ), count( $choices ) ) );
 			}
 
 			// maybe check the minimum number of choices selectable
@@ -186,7 +198,7 @@ class KKcp_Validate {
 
 			// now check that the selected values are allowed choices
 			foreach ( $value as $value_key ) {
-				if ( ! self::is_value_in_choices( $value_key, $control->choices ) ) {
+				if ( ! self::is_value_in_choices( $value_key, $choices ) ) {
 					$validity->add( 'vNotAChoice', sprintf( esc_html__( 'Value %s is not an allowed choice.' ), $value_key ) );
 				}
 			}
@@ -207,6 +219,7 @@ class KKcp_Validate {
 	 * @return mixed
  	 */
 	public static function one_or_more_choices( $validity, $value, $setting, $control ) {
+		// var_dump( 'xxxxxxx', $control );
 		if ( is_string( $value ) ) {
 			return self::single_choice( $validity, $value, $setting, $control );
 		}

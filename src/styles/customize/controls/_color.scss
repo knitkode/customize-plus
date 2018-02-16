@@ -12,6 +12,7 @@ $control--color-preview-width: 30px;
   &-toggle {
     margin-left: -1px;
     border-radius: 0  $WPcustomize--btn-border-radius $WPcustomize--btn-border-radius 0;
+    user-select: none;
   }
 
   // button for current color preview

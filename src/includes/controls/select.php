@@ -23,7 +23,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	public $type = 'kkcp_select';
 
 	/**
-	 * Option to allow a maxmimum icons selection
+	 * Option to allow a maximum selection boundary
 	 *
 	 * @since 1.0.0
 	 * @var ?int
@@ -31,10 +31,12 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Radio {
 	protected $max = 1;
 
 	/**
-	 * Option to allow a minimum icons selection
+	 * Option to allow a minimum selection boundary
 	 *
 	 * @since 1.0.0
-	 * @var ?int
+	 * @var ?int This should be `null` or a value higher or lower than 1. To set
+	 *      		 a control as optional use the `$optional` class property instead
+	 *      		 of setting `$min` to `1`.
 	 */
 	protected $min = null;
 

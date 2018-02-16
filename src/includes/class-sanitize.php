@@ -135,35 +135,39 @@ class KKcp_Sanitize {
 	}
 
 	/**
-	 * Sanitize font families.
+	 * Normalize font family.
 	 *
-	 * Be sure that each font family is wrapped in quote, good for consistency
+	 * Be sure that a font family is wrapped in quote, good for consistency
 	 *
 	 * @since  1.0.0
-	 * @param  string $input
+	 * @param  string|array $value
 	 * @return string
 	 */
-	public static function font_families( $input ) { // @@todo to finish, check that the inputs are valid font family names \\
-		$font_families_sanitized = array();
+	public static function normalize_font_family( $value ) {
+		// remove extra quotes, add always quotes and trim
+		return "'" . trim( str_replace( "'", '', str_replace( '"', '', $value ) ) ) . "'";
+	}
 
-		// treat a string
-		if ( is_string( $input ) ) {
-			foreach ( explode( ',', $input ) as $font_family ) {
-				// remove eventual quotes
-				$unquoted_font_family = str_replace( "'", '', str_replace( '"', '', $font_family ) );
-				array_push( $font_families_sanitized, "'" . trim( $unquoted_font_family ) . "'" );
-			}
-			return implode( ',', $font_families_sanitized );
+	/**
+	 * Sanitize font family.
+	 *
+	 * @since  1.0.0
+	 * @param  string $value
+	 * @return string
+	 */
+	public static function font_family( $value ) {
+		$sanitized = array();
+
+		if ( is_string( $value ) ) {
+			$value = explode( ',', $value );
 		}
-		// and an array
-		else if ( is_array( $input ) ) {
-			foreach ( $input as $font_family ) {
-				// remove eventual quotes
-				$unquoted_font_family = str_replace( "'", '', str_replace( '"', '', $font_family ) );
-				array_push( $font_families_sanitized, "'" . trim( $unquoted_font_family ) . "'" );
+		if ( is_array( $value ) ) {
+			foreach ( $value as $font_family ) {
+				array_push( $sanitized, self::normalize_font_family( $font_family ) );
 			}
-			return $font_families_sanitized;
+			$sanitized = implode( ',', $sanitized );
 		}
+		return $sanitized;
 	}
 
 	/**
@@ -464,7 +468,7 @@ class KKcp_Sanitize {
 					$sanitized_options = self::js_option( $key, $value, $allowed_options, $sanitized_options );
 			// 	}
 			// } else {
-			// 	// wp_die( sprintf( esc_html__( 'Customize Plus | API error: option %s is not allowed.' ), $key ) ); // @@todo api error \\
+			// 	// wp_die( sprintf( esc_html__( 'Customize Plus | API error: option %s is not allowed.' ), $key ) );
 			// }
 
 		}
@@ -588,7 +592,7 @@ class KKcp_Sanitize {
 			return $input;
 		}
 		return null;
-		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be numeric or null.' ), $input ) ); // @@todo api error \\
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be numeric or null.' ), $input ) );
 	}
 
 	/**
@@ -609,7 +613,7 @@ class KKcp_Sanitize {
 
 		return null;
 
-		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a integer or null.' ), $input ) ); // @@todo api error \\
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a integer or null.' ), $input ) );
 	}
 
 	/**
@@ -628,7 +632,7 @@ class KKcp_Sanitize {
 			return $input;
 		}
 
-		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a integer.' ), $input ) ); // @@todo api error \\
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a integer.' ), $input ) );
 	}
 
 	/**
@@ -644,16 +648,33 @@ class KKcp_Sanitize {
 			if ( in_array( $input, $list ) ) {
 				return $input;
 			}
-			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input, implode( ', ', $list ) ) ); // @@todo api error \\
+			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input, implode( ', ', $list ) ) );
 		} else if ( is_array( $input ) ) {
 			foreach ( $input as $input_value ) {
 				if ( ! in_array( $input_value, $list ) ) {
-					wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input_value, implode( ', ', $list ) ) ); // @@todo api error \\
+					wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input_value, implode( ', ', $list ) ) );
 				}
 				return $input;
 			}
 		}
 
+	}
+
+	/**
+	 * Sanitization for js value: array
+	 *
+	 * @since 1.0.0
+	 * @param  mixed $input
+	 * @return ?bool
+	 */
+	public static function js_array ( $input ) {
+		if ( is_array( $input ) ) {
+			return $input;
+		}
+		if ( KKcp_Validate::is_assoc( $input ) ) {
+			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a flat array.' ), $input ) );
+		}
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be an array.' ), $input ) );
 	}
 
 	/**
@@ -668,7 +689,7 @@ class KKcp_Sanitize {
 			return $input;
 		}
 
-		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a boolean.' ), $input ) ); // @@todo api error \\
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a boolean.' ), $input ) );
 	}
 
 	/**
@@ -683,6 +704,6 @@ class KKcp_Sanitize {
 			return $input;
 		}
 
-		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a string.' ), $input ) ); // @@todo api error \\
+		wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a string.' ), $input ) );
 	}
 }

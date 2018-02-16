@@ -15,14 +15,14 @@ let Control = api.controls.Base.extend({
    *
    * @override
    */
-  _validateWrap: function () {},
-  _onValidateError: function () {},
-  _onValidateSuccess: function () {},
-  validate: function () {},
-  sanitize: function () {},
-  syncUI: function () {},
-  softenize: function () {},
-  _extras: function () {}
+  _beforeSet: $.noop,
+  _manageValidityNotifications: $.noop,
+  _clearNotifications: $.noop,
+  validate: $.noop,
+  sanitize: $.noop,
+  syncUI: $.noop,
+  softenize: $.noop,
+  _extras: $.noop,
 });
 
 export default wpApi.controlConstructor['kkcp_content'] = api.controls.Content = Control;

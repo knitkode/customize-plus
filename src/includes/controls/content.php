@@ -41,7 +41,6 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 		if ( ! $this->description ) {
 			unset( $this->json['description'] );
 		}
-		unset( $this->json['content'] );
 
 		if ( $this->markdown ) {
 			$this->json['markdown'] = $this->markdown;

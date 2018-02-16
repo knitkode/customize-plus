@@ -243,10 +243,19 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		echo '<# if (data.divider) { #><div class="kkcp-control-wrap"><# } #>';
 			$this->js_tpl_extras();
 			$this->js_tpl();
-		echo '<div class="customize-control-notifications-container"></div>'; // @@doubt make it overridable? \\
+			$this->js_tpl_notifications();
 		// see comment above
 		echo '<# if (data.divider) { #></div><# } #>';
 		ob_end_flush();
+	}
+
+	/**
+	 * Subclasses can have their own notifications container template
+	 *
+	 * @since 1.0.0
+	 */
+	protected function js_tpl_notifications() {
+		echo '<div class="customize-control-notifications-container"></div>';
 	}
 
 	/**

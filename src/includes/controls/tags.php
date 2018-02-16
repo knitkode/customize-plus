@@ -23,7 +23,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	public $type = 'kkcp_tags';
 
 	/**
-	 * Option to allow a maxmimum icons selection
+	 * Option to allow a maximum selection boundary
 	 *
 	 * @since 1.0.0
 	 * @var ?int
@@ -31,10 +31,12 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	protected $max = null;
 
 	/**
-	 * Option to allow a minimum icons selection
+	 * Option to allow a minimum selection boundary
 	 *
 	 * @since 1.0.0
-	 * @var ?int
+	 * @var ?int This should be `null` or a value equal or higher than 2. To set
+	 *      		 a control as optional use the `$optional` class property instead
+	 *      		 of setting `$min` to `1`.
 	 */
 	protected $min = 2;
 

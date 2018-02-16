@@ -12,31 +12,37 @@
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
  */
-class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
+class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Set {
 
 	/**
-	 * Control type.
-	 *
+	 * @override
 	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_icon';
 
 	/**
-	 * Option to allow a maxmimum icons selection
-	 *
+	 * @override
 	 * @since 1.0.0
-	 * @var ?int
+	 * @var array
 	 */
-	protected $max = 1;
+	public $choices = array( 'dashicons' );
 
 	/**
-	 * Option to allow a minimum icons selection
-	 *
+	 * @override
 	 * @since 1.0.0
-	 * @var ?int
+	 * @var array
 	 */
-	protected $min = null;
+	protected $supported_sets = array(
+		'dashicons'
+	);
+
+  /**
+   * @override
+   * @since 1.0.0
+   * @var string
+   */
+  protected $set_js_var = 'iconSets';
 
 	/**
 	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
@@ -66,34 +72,13 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 	);
 
 	/**
-	 * Icons set supported
+	 * Get set by the given name
 	 *
-	 * @since 1.0.0
-	 * @var array
-	 */
-	protected static $supported_icons_set = array(
-		'dashicons'
-	);
-
-	public function __construct( $manager, $id, $args = array() ) {
-
-		if ( isset( $args[ 'icons_set' ] ) && is_string( $args[ 'icons_set' ] ) && in_array( $args[ 'icons_set' ], self::$supported_icons_set ) ) {
-
-			$icons_set_values = self::get_iconset( $args[ 'icons_set' ] );
-			$this->choices = self::get_choices_from_icon_set( $icons_set_values );
-		}
-
-		parent::__construct( $manager, $id, $args );
-	}
-
-	/**
-	 * Get icon set array
-	 *
-	 * @since 1.0.0
-	 * @param string  $name
+	 * @override
+	 * @since  1.0.0
 	 * @return array
 	 */
-	private static function get_iconset ( $name ) {
+	protected function get_set ( $name ) {
 		if ( $name === 'dashicons' ) {
 			return KKcp_Utils::get_dashicons();
 		}
@@ -101,44 +86,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 		return [];
 	}
 
-	/**
-	 * Get choices from icon set array
-	 *
-	 * @since 1.0.0
-	 * @param array  $icon_set
-	 * @return array
-	 */
-	private static function get_choices_from_icon_set ( $icon_set ) {
-		$choices = array();
-
-		foreach ( $icon_set as $group_key => $group_values )  {
-			$icons = $group_values['icons'];
-
-			foreach ( $icons as $icon )  {
-				array_push( $choices, $icon );
-			}
-		}
-
-		return $choices;
-	}
-
-	/**
-	 * Get js constants
-	 *
-	 * {@inheritdoc}
-	 * @since  1.0.0
-	 * @override
-	 */
-	public function get_constants() {
-		$constants = array();
-
-		foreach ( self::$supported_icons_set as $icon_set ) {
-			$constants[ $icon_set ] = self::get_iconset( $icon_set );
-		}
-
-		return $constants;
-	}
-
+	// @@todo override validation with custom messages
 	/**
 	 * Get l10n
 	 *
@@ -146,12 +94,12 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 	 * @since  1.0.0
 	 * @override
 	 */
-	public function get_l10n() {
-		return array(
-			'vIconMaxSingular' => esc_html__( 'You can select maximum 1 icon' ),
-			'vIconMaxPlural' => esc_html__( 'You can select maximum %s icons' ),
-		);
-	}
+	// public function get_l10n() {
+	// 	return array(
+	// 		'vIconMaxSingular' => esc_html__( 'You can select maximum 1 icon' ),
+	// 		'vIconMaxPlural' => esc_html__( 'You can select maximum %s icons' ),
+	// 	);
+	// } \\
 
 	/**
 	 * Add values to JSON params
@@ -163,28 +111,23 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function add_to_json() {
-		$this->json['max'] = KKcp_Sanitize::js_int_or_null( $this->max );
-		$this->json['min'] = KKcp_Sanitize::js_int_or_null( $this->min );
+	// protected function add_to_json() {
+	// 	$this->json['max'] = KKcp_Sanitize::js_int_or_null( $this->max );
+	// 	$this->json['min'] = KKcp_Sanitize::js_int_or_null( $this->min );
 
-		if ( ! empty( $this->selectize ) ) {
-			$this->json['selectize'] = KKcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
-		}
-		if ( isset( $this->icons_set ) && is_string( $this->icons_set ) && in_array( $this->icons_set, self::$supported_icons_set ) ) {
-			$this->json['icons_set'] = KKcp_Sanitize::js_string( $this->icons_set );
-		} else {
-			$this->json['icons_set'] = KKcp_Sanitize::js_string( self::$supported_icons_set[0] );
-		}
-		// @@doubt support multiple icon sets?
-		// if ( is_array( $this->icons_set ) ) {
-		// 	$this->json['icons_set'] = array();
-		// 	foreach ( $this->icons_set as $icons_set_code => $icons_set_label ) {
-		// 		if ( in_array( $icons_set_code, self::$supported_icons_set ) ) {
-		// 			array_push( $this->json['icons_set'], $icons_set_code );
-		// 		}
-		// 	}
-		// } \\
-	}
+	// 	if ( ! empty( $this->selectize ) ) {
+	// 		$this->json['selectize'] = KKcp_Sanitize::js_options( $this->selectize, self::$selectize_allowed_options );
+	// 	}
+	// 	// @@doubt support multiple icon sets?
+	// 	// if ( is_array( $this->icons_set ) ) {
+	// 	// 	$this->json['icons_set'] = array();
+	// 	// 	foreach ( $this->icons_set as $icons_set_code => $icons_set_label ) {
+	// 	// 		if ( in_array( $icons_set_code, self::$supported_icons_set ) ) {
+	// 	// 			array_push( $this->json['icons_set'], $icons_set_code );
+	// 	// 		}
+	// 	// 	}
+	// 	// } \\
+	// }
 
 	/**
 	 * Render a JS template for the content of the control.
@@ -198,35 +141,6 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Radio {
 		</label>
 		<select class="kkcp-selectize" value="{{ data.value }}" placeholder="<?php esc_html_e( 'Search icon by name...' ) ?>"<# if (data.max > 1) { #>  name="icon[]" multiple<# } else { #>name="icon"<# } #>><option value=""><?php esc_html_e( 'Search icon by name...' ) ?></option></select>
 		<?php
-	}
-
-	/**
-	 * Sanitize
-	 *
-	 * @since 1.0.0
-	 * @override
-	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
- 	 */
-	protected static function sanitize( $value, $setting, $control ) {
-		return KKcp_Sanitize::one_or_more_choices( $value, $setting, $control );
-	}
-
-	/**
-	 * Validate
-	 *
-	 * @since 1.0.0
-	 * @override
-	 * @param WP_Error 						 $validity
-	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
- 	 */
-	protected static function validate( $validity, $value, $setting, $control ) {
-		return KKcp_Validate::one_or_more_choices( $validity, $value, $setting, $control );
 	}
 }
 

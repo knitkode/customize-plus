@@ -22,6 +22,7 @@ global $wp_customize;
 require ( KKCP_PLUGIN_DIR . 'includes/controls/base.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/base-input.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/base-radio.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/base-set.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/buttonset.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/checkbox.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/color.php' );

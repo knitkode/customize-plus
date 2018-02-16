@@ -12,60 +12,73 @@
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
  */
-class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base {
+class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set {
 
 	/**
-	 * Control type.
-	 *
+	 * @override
 	 * @since 1.0.0
 	 * @var string
 	 */
 	public $type = 'kkcp_font_family';
 
 	/**
-	 * Font families
-	 *
-	 * @see http://www.w3schools.com/cssref/css_websafe_fonts.asp
+	 * @override
+	 * @since 1.0.0
+	 * @var ?int
+	 */
+	public $max = 10;
+
+	/**
+	 * @override
+	 * @since 1.0.0
 	 * @var array
 	 */
-	public static $font_families = array(
-		// Serif Fonts
-		'Georgia',
-		'"Palatino Linotype"',
-		'"Book Antiqua"',
-		'Palatino',
-		'"Times New Roman"',
-		'Times',
-		'serif',
-		// Sans-Serif Fonts
-		'Arial',
-		'Helvetica',
-		'"Helvetica Neue"',
-		'"Arial Black"',
-		'Gadget',
-		'"Comic Sans MS"',
-		'cursive',
-		'Impact',
-		'Charcoal',
-		'"Lucida Sans Unicode"',
-		'"Lucida Grande"',
-		'Tahoma',
-		'Geneva',
-		'"Trebuchet MS"',
-		'Verdana',
-		'sans-serif',
-		// Monospace Font
-		'"Courier New"',
-		'Courier',
-		'"Lucida Console"',
-		'Monaco',
-		'monospace',
-		'Menlo',
-		'Consolas',
+	public $choices = array( 'standard' );
 
-		// Google font
-		'"Lato"',
+	/**
+	 * @override
+	 * @since 1.0.0
+	 * @var array
+	 */
+	protected $supported_sets = array(
+		'standard',
 	);
+
+	/**
+	 * @override
+	 * @since 1.0.0
+	 * @var string
+	 */
+	protected $set_js_var = 'fontFamiliesSets';
+
+
+	/**
+	 * Get set by the given name
+	 *
+	 * @override
+	 * @since  1.0.0
+	 * @return array
+	 */
+	protected function get_set ( $name ) {
+		if ( $name === 'standard' ) {
+			return KKcp_Utils::get_font_families_standard();
+		}
+
+		return [];
+	}
+
+  /**
+   * @override
+   */
+  protected function get_valid_choices ( $filtered_sets ) {
+    $valid_choices = parent::get_valid_choices( $filtered_sets );
+
+    foreach ( $valid_choices as $valid_choice ) {
+      array_push( $valid_choices, KKcp_Sanitize::normalize_font_family( $valid_choice ) );
+    }
+
+    return $valid_choices;
+  }
 
 	/**
 	 * Refresh the parameters passed to the JavaScript via JSON.
@@ -73,7 +86,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
-		$this->json['value'] = KKcp_Sanitize::font_families( $this->value() );
+		parent::add_to_json();
 	}
 
 	/**
@@ -90,21 +103,28 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base {
 			<input class="kkcp-font-google-toggle" type="checkbox" value="0">
 			<?php esc_html_e( 'Enable Google fonts' ); ?>
 		</label> -->
-		<input class="kkcp-selectize" type="text" value="{{ data.value }}" required>
+		<input class="kkcp-selectize" type="text" required>
 		<?php
 	}
 
 	/**
-	 * Set font families array as a constant to use in javascript
-	 *
 	 * @override
-	 * @since  1.0.0
-	 * @return array
+	 * @since 1.0.0
 	 */
-	public function get_constants() {
-		return array(
-			'font_families' => KKcp_Sanitize::font_families( self::$font_families ),
-		);
+	protected static function sanitize( $value, $setting, $control ) {
+		return KKcp_Sanitize::font_family( $value ); // KKcp_Validate::one_or_more_choices( $value, $setting, $control );
+	}
+
+	/**
+	 * @override
+	 * @since 1.0.0
+	 */
+	protected static function validate( $validity, $value, $setting, $control ) {
+		$value = KKcp_Sanitize::font_family( $value );
+		if ( is_string( $value ) ) {
+			$value = explode( ',', $value );
+		}
+		return KKcp_Validate::one_or_more_choices( $validity, $value, $setting, $control );
 	}
 }
 
