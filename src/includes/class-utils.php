@@ -725,6 +725,3 @@ class KKcp_Utils {
     return "rgba($red,$green,$blue)";
   }
 }
-
-// add ajax action
-add_action( 'wp_ajax_KKcp_utils_load_wp_editor', 'KKcp_Utils::load_wp_editor' );
