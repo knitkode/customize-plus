@@ -2,7 +2,7 @@
  * Color Control
  *
  */
-$control--color-preview-width: 30px;
+$control--color-preview-width: 26px;
 
 .customize-control-kkcp_color {}
 
@@ -23,6 +23,7 @@ $control--color-preview-width: 30px;
     border: 1px solid $WPcustomize--btn-border-color;
     border-radius: $WPcustomize--btn-border-radius 0 0 $WPcustomize--btn-border-radius;
     box-shadow: $WPcustomize--btn-box-shadow;
+    margin-left: 4px;
 
     // the squared bg for transparent values
     &-bg {
@@ -32,8 +33,11 @@ $control--color-preview-width: 30px;
     // the overlay which get the currently selected color from javascript
     // and display it through `background-color`
     &-overlay {
+      position: relative;
       box-shadow: none;
-      margin-left: -$control--color-preview-width - 2;
+      left: -37px;
+      margin-right: -40px;
+      // margin-left: -$control--color-preview-width - 2;
     }
   }
 

@@ -169,7 +169,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @inheritDoc
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		$value = self::sanitize( $value, $setting, $control );
+		$value = preg_replace( '/\s+/', '', $value );
 
 		if ( $control->showPaletteOnly &&
 			! $control->togglePaletteOnly &&

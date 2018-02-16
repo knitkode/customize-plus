@@ -103,8 +103,6 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 	 * @inheritDoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		$value = self::sanitize( $value, $setting, $control );
-
 		if ( is_string( $value ) ) {
 			$value = explode( ',', $value );
 		}

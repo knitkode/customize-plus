@@ -311,6 +311,7 @@ export function extractNumber( $value, $control ) {
  * Exports the `Sanitize` object
  */
 export default {
+  hex,
   singleChoice,
   oneOrMoreChoices,
   multipleChoices,
