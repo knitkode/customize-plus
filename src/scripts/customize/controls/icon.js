@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import sprintf from 'locutus/php/strings/sprintf';
 import { api, wpApi } from '../core/globals';
 import ControlBaseSet from './base-set';
 
@@ -9,7 +8,8 @@ import ControlBaseSet from './base-set';
  *
  * @class wp.customize.controlConstructor.kkcp_icon
  * @constructor
- * @extends api.controls.Base
+ * @extends api.controls.BaseSet
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */

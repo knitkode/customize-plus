@@ -15,18 +15,14 @@
 class KKcp_Customize_Control_Font_Weight extends KKcp_Customize_Control_Select {
 
 	/**
-	 * Control type.
-	 *
 	 * @since 1.0.0
-	 * @var string
+	 * @inheritDoc
 	 */
 	public $type = 'kkcp_font_weight';
 
 	/**
-	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
-	 *
 	 * @since 1.0.0
-	 * @var boolean|array
+	 * @inheritDoc
 	 */
 	public $choices = array(
 		'normal' => array(

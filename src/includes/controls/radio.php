@@ -15,16 +15,13 @@
 class KKcp_Customize_Control_Radio extends KKcp_Customize_Control_Base_Radio {
 
 	/**
-	 * Control type.
-	 *
+	 * @override
 	 * @since 1.0.0
-	 * @var string
 	 */
 	public $type = 'kkcp_radio';
 
 	/**
-	 * Render template for choice displayment.
-	 *
+	 * @override
 	 * @since 1.0.0
 	 */
 	protected function js_tpl_choice_ui() {

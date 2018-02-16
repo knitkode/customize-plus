@@ -22,21 +22,10 @@
 class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 
 	/**
-	 * Control type.
-	 *
-	 * {@inheritdoc}
 	 * @since 1.0.0
-	 * @var string
+	 * @inheritDoc
 	 */
 	public $type = 'kkcp_color';
-
-	/**
-	 * Colors format supported
-	 *
-	 * @since 1.0.0
-	 * @var array
-	 */
-	private static $colorsFormatsSupported = array( 'hex', 'rgb', 'rgba', /*'hsl', 'hsla', 'keyword'*/ );
 
 	/**
 	 * Allow alpha channel modification (rgba colors)
@@ -44,7 +33,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @var boolean
 	 */
-	protected $allowAlpha = false;
+	public $allowAlpha = false;
 
 	/**
 	 * Disallow transparent color
@@ -52,7 +41,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @var boolean
 	 */
-	protected $disallowTransparent = false;
+	public $disallowTransparent = false;
 
 	/**
 	 * Palette
@@ -61,7 +50,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @var boolean|array
 	 */
-	protected $palette = array();
+	public $palette = array();
 
 	/**
 	 * Show palette only in color control
@@ -70,7 +59,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @var boolean
 	 */
-	protected $showPaletteOnly = false;
+	public $showPaletteOnly = false;
 
 	/**
 	 * Toggle palette only in color control
@@ -79,29 +68,30 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @var boolean
 	 */
-	protected $togglePaletteOnly = false;
-
+	public $togglePaletteOnly = false;
 
 	/**
-	 * Get l10n
+	 * Colors format supported
 	 *
-	 * {@inheritdoc}
+	 * @since 1.0.0
+	 * @var array
+	 */
+	private static $colors_formats_supported = array( 'hex', 'rgb', 'rgba', /*'hsl', 'hsla', 'keyword'*/ );
+
+	/**
 	 * @since  1.0.0
-	 * @override
+	 * @inheritDoc
 	 */
 	public function get_constants() {
 		return array(
 			'colorsKeyword' => KKcp_Utils::COLORS_KEYWORDS,
-			'colorsFormatsSupported' => self::$colorsFormatsSupported
+			'colorsFormatsSupported' => self::$colors_formats_supported
 		);
 	}
 
 	/**
-	 * Get l10n
-	 *
-	 * {@inheritdoc}
 	 * @since  1.0.0
-	 * @override
+	 * @inheritDoc
 	 */
 	public function get_l10n() {
 		return array(
@@ -119,11 +109,8 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	}
 
 	/**
-	 * Add to JSON
-	 *
-	 * {@inheritdoc}
 	 * @since 1.0.0
-	 * @override
+	 * @inheritDoc
 	 */
 	protected function add_to_json() {
 		$value = $this->value();
@@ -144,11 +131,8 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	}
 
 	/**
-	 * JS template
-	 *
-	 * {@inheritdoc}
 	 * @since 1.0.0
-	 * @override
+	 * @inheritDoc
 	 */
 	protected function js_tpl() {
 		?>
@@ -163,15 +147,8 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	}
 
 	/**
-	 * Sanitize
-	 *
-	 * {@inheritdoc}
 	 * @since 1.0.0
-	 * @override
-	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
+	 * @inheritDoc
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		$value = preg_replace( '/\s+/', '', $value );
@@ -188,15 +165,8 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	}
 
 	/**
-	 * Validate
-	 *
 	 * @since 1.0.0
-	 * @override
-	 * @param WP_Error 						 $validity
-	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @inheritDoc
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		$value = self::sanitize( $value, $setting, $control );

@@ -15,49 +15,41 @@
 class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set {
 
 	/**
-	 * @override
 	 * @since 1.0.0
-	 * @var string
+	 * @inheritDoc
 	 */
 	public $type = 'kkcp_font_family';
 
 	/**
-	 * @override
 	 * @since 1.0.0
-	 * @var ?int
+	 * @inheritDoc
 	 */
 	public $max = 10;
 
 	/**
-	 * @override
 	 * @since 1.0.0
-	 * @var array
+	 * @inheritDoc
 	 */
 	public $choices = array( 'standard' );
 
 	/**
-	 * @override
 	 * @since 1.0.0
-	 * @var array
+	 * @inheritDoc
 	 */
 	protected $supported_sets = array(
 		'standard',
 	);
 
 	/**
-	 * @override
 	 * @since 1.0.0
-	 * @var string
+	 * @inheritDoc
 	 */
 	protected $set_js_var = 'fontFamiliesSets';
 
 
 	/**
-	 * Get set by the given name
-	 *
-	 * @override
 	 * @since  1.0.0
-	 * @return array
+	 * @inheritDoc
 	 */
 	protected function get_set ( $name ) {
 		if ( $name === 'standard' ) {
@@ -68,7 +60,8 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 	}
 
   /**
-   * @override
+   * @since 1.0.0
+   * @inheritDoc
    */
   protected function get_valid_choices ( $filtered_sets ) {
     $valid_choices = parent::get_valid_choices( $filtered_sets );
@@ -81,50 +74,40 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
   }
 
 	/**
-	 * Refresh the parameters passed to the JavaScript via JSON.
-	 *
 	 * @since 1.0.0
-	 */
-	protected function add_to_json() {
-		parent::add_to_json();
-	}
-
-	/**
-	 * Render a JS template for the content of the control.
-	 *
-	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function js_tpl() {
 		?>
 		<label>
 			<?php $this->js_tpl_header(); ?>
 		</label>
-		<!-- <label>
+		<?php /* <label>
 			<input class="kkcp-font-google-toggle" type="checkbox" value="0">
 			<?php esc_html_e( 'Enable Google fonts' ); ?>
-		</label> -->
+		</label> */ ?>
 		<input class="kkcp-selectize" type="text" required>
 		<?php
 	}
 
 	/**
-	 * @override
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return KKcp_Sanitize::font_family( $value ); // KKcp_Validate::one_or_more_choices( $value, $setting, $control );
+		return KKcp_Sanitize::font_family( $value );
 	}
 
 	/**
-	 * @override
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		$value = KKcp_Sanitize::font_family( $value );
 		if ( is_string( $value ) ) {
 			$value = explode( ',', $value );
 		}
-		return KKcp_Validate::one_or_more_choices( $validity, $value, $setting, $control );
+		return parent::validate( $validity, $value, $setting, $control );
 	}
 }
 

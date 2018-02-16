@@ -1,5 +1,7 @@
+import './base-choices';
 import './base-input';
 import './base-radio';
+import './base-set';
 import './buttonset';
 import './checkbox';
 import './color';

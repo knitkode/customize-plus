@@ -3,6 +3,9 @@ import sprintf from 'locutus/php/strings/sprintf';
 import { api, wpApi } from '../core/globals';
 import logger from '../core/logger';
 // import ControlBase from './base';
+import ControlBaseChoices from './base-choices';
+import Validate from '../core/validate';
+import Sanitize from '../core/sanitize';
 
 /**
  * Control Sortable
@@ -10,60 +13,23 @@ import logger from '../core/logger';
  * @class wp.customize.controlConstructor.kkcp_sortable
  * @alias api.controls.Sortable
  * @constructor
- * @extends api.controls.Base
+ * @extends api.controls.BaseChoices
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = api.controls.Base.extend({
+let Control = ControlBaseChoices.extend({
   /**
    * @override
-   * @return {array|object}
    */
   validate: function (value) {
-    const choices = this.params.choices;
-
-    // validate array of values
-    if (_.isArray(value)) {
-      for (let i = 0, l = value.length; i < l; i++) {
-        let itemValue = value[i];
-        if (!choices.hasOwnProperty(itemValue)) {
-          return {
-            error: true,
-            msg: sprintf(api.l10n['vNotAChoice'], itemValue),
-          };
-        }
-      }
-      return value;
-    }
-    else {
-      return {
-        error: true,
-        msg: api.l10n['vNotArray'],
-      };
-    }
+    return Validate.multipleChoices([], value, this.setting, this, true);
   },
   /**
    * @override
-   * @return {array}
    */
   sanitize: function (value) {
-    let sanitizedValue = value;
-
-    // in the edge case it comes as a stringified array
-    if (_.isString(value)) {
-      try {
-        sanitizedValue = JSON.parse(value);
-      } catch(e) {
-        sanitizedValue = value;
-      }
-    }
-
-    // coerce in any case to an array, the rest will be dealt during validation
-    if (!_.isArray(sanitizedValue)) {
-      return [value];
-    }
-
-    return sanitizedValue;
+    return Sanitize.multipleChoices(value, this.setting, this);
   },
   /**
    * @override

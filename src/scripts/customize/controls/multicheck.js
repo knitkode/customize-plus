@@ -2,29 +2,32 @@ import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import logger from '../core/logger';
 // import ControlBase from './base';
+import ControlBaseChoices from './base-choices';
+import Validate from '../core/validate';
+import Sanitize from '../core/sanitize';
 
 /**
  * Control Multicheck
  *
  * @class wp.customize.controlConstructor.kkcp_multicheck
  * @constructor
- * @extends api.controls.Base
+ * @extends api.controls.BaseChoices
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = api.controls.Base.extend({
+let Control = ControlBaseChoices.extend({
   /**
    * @override
-   * @return {array|object}
    */
   validate: function (value) {
-    return api.controls['Sortable'].prototype.validate.call(this, value);
+    return Validate.multipleChoices([], value, this.setting, this);
   },
   /**
    * @override
    */
   sanitize: function (value) {
-    return api.controls['Sortable'].prototype.sanitize.call(this, value);
+    return Sanitize.multipleChoices(value, this.setting, this);
   },
   /**
    * @override

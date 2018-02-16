@@ -16,15 +16,12 @@ import Sanitize from '../core/sanitize';
 let Control = api.controls.Base.extend({
   /**
    * @override
-   * @param  {string|array} value
-   * @return {array} $validity
    */
   validate: function (value) {
     return Validate.oneOrMoreChoices([], value, this.setting, this);
   },
   /**
    * @override
-   * @return {string|array}
    */
   sanitize: function (value) {
     return Sanitize.oneOrMoreChoices(value);
@@ -245,7 +242,7 @@ let Control = api.controls.Base.extend({
    * @return {object}
    */
   _getSelectizeOpts: function () {
-    let customOpts = this._getSelectizeCustomOpts();
+    const customOpts = this._getSelectizeCustomOpts();
     let defaultOpts = {
       plugins: ['drag_drop','remove_button'],
       maxItems: this.params.max,

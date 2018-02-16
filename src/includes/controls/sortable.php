@@ -12,29 +12,40 @@
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
  */
-class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio {
+class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choices {
 
 	/**
-	 * Control type.
-	 *
+	 * @override
 	 * @since 1.0.0
-	 * @var string
 	 */
 	public $type = 'kkcp_sortable';
 
 	/**
-	 * Enqueue libraries
-	 *
+	 * @override
 	 * @since  1.0.0
 	 */
 	public function enqueue() {
 		wp_enqueue_script( 'jquery-ui-sortable' );
 	}
 
+  /**
+   * Constructor
+   *
+   * {@inheritDoc}. Set `max` dynamically to the number of choices.
+   *
+   * @since 1.0.0
+   */
+  public function __construct( $manager, $id, $args = array() ) {
+    parent::__construct( $manager, $id, $args );
+
+    if ( is_array( $this->choices ) ) {
+    	$this->max = count( $this->choices );
+    }
+    $this->valid_choices = $this->get_valid_choices( $this->choices );
+  }
+
 	/**
-	 * Add basic parameters passed to the JavaScript via JSON
-	 * nedeed by any radio control.
-	 *
+	 * @override
 	 * @since 1.0.0
 	 */
 	protected function add_to_json() {
@@ -43,9 +54,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	}
 
 	/**
-	 * Ouput the choices template in a loop. Override this in subclasses
-	 * to change behavior, for instance in sortable controls.
-	 *
+	 * @override
 	 * @since 1.0.0
 	 */
 	protected function js_tpl_choices_loop() {
@@ -60,8 +69,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	}
 
 	/**
-	 * Render template for choice displayment.
-	 *
+	 * @override
 	 * @since 1.0.0
 	 */
 	protected function js_tpl_choice_ui() {
@@ -71,29 +79,16 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Radio 
 	}
 
 	/**
-	 * Sanitize
-	 *
-	 * @since 1.0.0
 	 * @override
-	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @param WP_Customize_Control $control Control instance.
- 	 * @return array The sanitized value.
+	 * @since 1.0.0
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::multiple_choices( $value, $setting, $control );
 	}
 
 	/**
-	 * Validate
-	 *
-	 * @since 1.0.0
 	 * @override
-	 * @param WP_Error 						 $validity
-	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
-	 * @return array
+	 * @since 1.0.0
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::multiple_choices( $validity, $value, $setting, $control, true );

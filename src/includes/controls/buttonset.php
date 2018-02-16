@@ -15,17 +15,14 @@
 class KKcp_Customize_Control_Buttonset extends KKcp_Customize_Control_Base_Radio {
 
 	/**
-	 * Control type.
-	 *
 	 * @since 1.0.0
-	 * @var string
+	 * @inheritDoc
 	 */
 	public $type = 'kkcp_buttonset';
 
 	/**
-	 * Render template for choice displayment.
-	 *
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function js_tpl_choice_ui () {
 		?>
@@ -35,9 +32,8 @@ class KKcp_Customize_Control_Buttonset extends KKcp_Customize_Control_Base_Radio
 	}
 
 	/**
-	 * Render needed html structure for CSS buttonset
-	 *
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function js_tpl_above_choices () {
 		?>
@@ -46,9 +42,8 @@ class KKcp_Customize_Control_Buttonset extends KKcp_Customize_Control_Base_Radio
 	}
 
 	/**
-	 * Render needed html structure for CSS buttonset
-	 *
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function js_tpl_below_choices () {
 		?>

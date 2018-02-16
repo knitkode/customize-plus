@@ -1,8 +1,10 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
+import ControlBaseChoices from './base-choices';
 // import ControlBase from './base';
-import { oneOrMoreChoices } from '../core/validate';
+import Validate from '../core/validate';
+import Sanitize from '../core/sanitize';
 
 /**
  * Control Select class
@@ -11,17 +13,22 @@ import { oneOrMoreChoices } from '../core/validate';
  * @alias api.controls.Select
  * @constructor
  * @extends api.controls.Base
+ * @augments api.controls.BaseChoices
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = api.controls.Base.extend({
+let Control = ControlBaseChoices.extend({
   /**
-   * override
+   * @override
    */
   validate: function (value) {
-    return oneOrMoreChoices(value);
-    // otherwise return error
-    // return { error: true }; // @@todo remove
+    return Validate.oneOrMoreChoices([], value, this.setting, this);
+  },
+  /**
+   * @override
+   */
+  sanitize: function (value) {
+    return Sanitize.oneOrMoreChoices(value);
   },
   /**
    * Destroy `selectize` instance if any.

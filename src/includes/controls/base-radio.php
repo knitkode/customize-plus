@@ -12,129 +12,52 @@
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
  */
-abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_Base {
+abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_Base_Choices {
 
 	/**
-	 * Add basic parameters passed to the JavaScript via JSON
-	 * nedeed by any radio control.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function add_to_json() {
-		$this->json['id'] = $this->id;
-		$this->json['choices'] = $this->choices;
-	}
-
-	/**
-	 * Js template
-	 *
-	 * Choice supports both a string if you only want to pass a label
-	 * or an object with label, sublabel, help, help_title, etc.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl() {
-		?>
-		<# var choices = data.choices, idx = 0;
-			if (!_.isEmpty(choices)) { #>
-				<?php $this->js_tpl_header(); ?>
-				<?php $this->js_tpl_above_choices(); ?>
-				<?php $this->js_tpl_choices_loop(); ?>
-				<?php $this->js_tpl_below_choices(); ?>
-		<# } #>
-		<?php
-	}
-
-	/**
-	 * Ouput the choices template in a loop. Override this in subclasses
-	 * to change behavior, for instance in sortable controls.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_choices_loop () {
-		?>
-		<# for (var val in choices) { #>
-			<?php $this->js_tpl_choice(); ?>
-		<#} #>
-		<?php
-	}
-
-	/**
-	 * Ouput the js to configure each choice template data and its UI
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_choice () {
-		?>
-		<# if (choices.hasOwnProperty(val)) {
-			var label;
-			var choice = choices[val];
-			var helpClass = '';
-			var helpAttrs = '';
-			var id = data.id + idx++;
-			if (!_.isUndefined(choice.label)) {
-				label = choice.label;
-				if (choice.help) {
-					helpClass = 'kkcp-help';
-					helpAttrs = ' data-help=' + choice.help;
-					if (choice.help_title) helpAttrs += ' data-title=' + choice.help_title;
-					if (choice.help_img) helpAttrs += ' data-img=' + choice.help_img;
-					if (choice.help_text) helpAttrs += ' data-text=' + choice.help_text;
-					if (choice.help_video) helpAttrs += ' data-video=' + choice.help_video;
-				}
-			} else {
-				label = choice;
-			} #>
-			<?php $this->js_tpl_choice_ui(); ?>
-		<# } #>
-		<?php
-	}
-
-	/**
-	 * Hook to print a custom choice template
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_choice_ui () {}
-
-	/**
-	 * Hook to add a part of template just before the choices loop
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_above_choices () {}
-
-	/**
-	 * Hook to add a part of template just after the choices loop.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_below_choices () {}
-
-	/**
-	 * Sanitize
+   * {@inheritDoc}. Selectize is not meant for radio controls
 	 *
 	 * @since 1.0.0
 	 * @override
-	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
+	 */
+	public $selectize = false;
+
+  /**
+   * {@inhertDoc}. Populate the `valid_choices` property.
+   *
+   * @since 1.0.0
+   */
+  public function __construct( $manager, $id, $args = array() ) {
+    parent::__construct( $manager, $id, $args );
+
+    $this->valid_choices = $this->get_valid_choices( $this->choices );
+  }
+
+	/**
+   * Override the base choices, we don't need `min`, `max` and `selectize` for
+   * radio based controls.
+   *
+   * {@inheritDoc}
+   *
+   * @since 1.0.0
+   * @override
+   */
+  protected function add_to_json() {
+    $this->json['id'] = KKcp_Sanitize::js_string( $this->id );
+    $this->json['choices'] = $this->choices;
+  }
+
+	/**
+	 * @since 1.0.0
+	 * @inheritDoc
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::single_choice( $value, $setting, $control );
 	}
 
 	/**
-	 * Validate
-	 *
 	 * @since 1.0.0
-	 * @override
-	 * @param WP_Error 						 $validity
-	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @inheritDoc
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::single_choice( $validity, $value, $setting, $control );

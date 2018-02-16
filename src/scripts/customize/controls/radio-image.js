@@ -7,6 +7,7 @@ import ControlBaseRadio from './base-radio';
  * @class wp.customize.controlConstructor.kkcp_radio_image
  * @constructor
  * @extends api.controls.BaseRadio
+ * @augments api.controls.BaseChoices
  * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class

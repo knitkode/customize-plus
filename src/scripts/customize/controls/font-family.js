@@ -8,7 +8,8 @@ import Sanitize from '../core/sanitize';
  *
  * @class wp.customize.controlConstructor.kkcp_font_family
  * @constructor
- * @extends api.controls.Base
+ * @extends api.controls.BaseSet
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
@@ -53,8 +54,8 @@ let Control = ControlBaseSet.extend({
     if (_.isArray(value)) {
       value = value.join(',');
     }
-    if (!_.isEqual(value, this.__input.value)) {
-      this._updateUI(value);
+    if (!_.isEqual(value, this.__input.selectize.getValue())) {
+      this._initUI(value);
     }
   },
   /**
@@ -62,8 +63,7 @@ let Control = ControlBaseSet.extend({
    */
   ready: function () {
     this.__input = this._container.getElementsByClassName('kkcp-selectize')[0];
-    this.__input.value = Sanitize.fontFamily(this.setting());
-    this._initUI();
+    this._initUI(this.setting());
   },
   /**
    * When the value is not set by the UI directly we need to destroy selectize
@@ -71,23 +71,26 @@ let Control = ControlBaseSet.extend({
    *
    * @override
    */
-  _updateUI: function (value) {
+  _initUI: function (value) {
+    // if there is an instance of selectize destroy it
+    if (this.__input.selectize) {
+      this.__input.selectize.destroy();
+    }
+
     this.__input.value = Sanitize.fontFamily(value);
-    this._initUI();
+
+    // init selectize plugin
+    const opts = this._getSelectizeOpts();
+
+    $(this.__input).selectize(this._getSelectizeOpts());
   },
   /**
    * @override
    */
   _getSelectizeCustomOpts: function () {
-    const self = this;
     return {
       hideSelected: true,
       delimiter: ',',
-      persist: false,
-      onChange: function () {
-        // self.setting.set(this.value);
-        self.setting.set(this.getValue());
-      },
     }
   },
   /**
@@ -95,14 +98,14 @@ let Control = ControlBaseSet.extend({
    */
   _renderItem: function (data, escape) {
     const value = escape(data.value);
-    const text = data.text ? escape(data.text) : value;
-    return `<div style="font-family:${value}">${text.replace(/'/g, '').replace(/"/g, '')}</div>`;
+    return `<div style="font-family:${value}">${value.replace(/'/g, '').replace(/"/g, '')}</div>`;
   },
   /**
    * @override
    */
   _renderOption: function (data, escape) {
-    return this._renderItem(data, escape);
+    const value = escape(data.value);
+    return `<div style="font-family:${value}">${value.replace(/'/g, '').replace(/"/g, '')}</div>`;
   },
   /**
    * @override

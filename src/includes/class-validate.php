@@ -92,16 +92,16 @@ class KKcp_Validate {
 	 *                        empty, or not set.
 	 */
 	public static function is_empty( $value ) {
-		// first try to compare it to an empty string
+		// first try to compare it to an empty string and to null
 		if ( $value === '' || $value === null ) {
 			return true;
 		}
 
-		// if it's a jsonized value try to parse it and
+		// if it's a jsonized value try to parse it and...
 		if ( is_string( $value ) ) {
 			$value_parsed = json_decode( $value );
 			if ( $value_parsed ) {
-				// see if we have an empty array or an empty object
+				// ...see if we have an empty array or an empty object
 				if ( is_array( $value_parsed ) && empty( $value_parsed ) ) {
 					return true;
 				}
@@ -152,7 +152,11 @@ class KKcp_Validate {
 	 * @return mixed
  	 */
 	public static function single_choice( $validity, $value, $setting, $control ) {
-		$choices = isset( $control->valid_choices ) ? $control->valid_choices : $control->choices;
+		if ( isset( $control->valid_choices ) && !empty( $control->valid_choices ) ) {
+			$choices = $control->valid_choices;
+		} else {
+			$choices = $control->choices;
+		}
 
 		if ( ! self::is_value_in_choices( $value, $choices ) ) {
 			$validity->add( 'vNotAChoice', sprintf( esc_html__( 'Value %s is not an allowed choice.' ), $value ) );
@@ -174,7 +178,11 @@ class KKcp_Validate {
 	 * @return $validity
  	 */
 	public static function multiple_choices( $validity, $value, $setting, $control, $check_length = false ) {
-		$choices = isset( $control->valid_choices ) ? $control->valid_choices : $control->choices;
+		if ( isset( $control->valid_choices ) && !empty( $control->valid_choices ) ) {
+			$choices = $control->valid_choices;
+		} else {
+			$choices = $control->choices;
+		}
 
 		if ( ! is_array( $value ) ) {
 			$validity->add( 'vNotArray', esc_html__( 'Value must be a list.' ) );
@@ -219,7 +227,6 @@ class KKcp_Validate {
 	 * @return mixed
  	 */
 	public static function one_or_more_choices( $validity, $value, $setting, $control ) {
-		// var_dump( 'xxxxxxx', $control );
 		if ( is_string( $value ) ) {
 			return self::single_choice( $validity, $value, $setting, $control );
 		}

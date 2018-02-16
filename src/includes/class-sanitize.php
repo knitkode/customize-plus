@@ -343,8 +343,6 @@ class KKcp_Sanitize {
 	 *
 	 * @since 1.0.0
 	 * @param mixed     				   $input   The value to sanitize.
-	 * @param WP_Customize_Setting $setting Setting instance.
-	 * @param WP_Customize_Control $control Control instance.
 	 * @return string The sanitized value.
 	 */
 	public static function string( $input ) {
@@ -359,8 +357,6 @@ class KKcp_Sanitize {
 	 *
 	 * @since 1.0.0
 	 * @param mixed      		   	   $input   The value to sanitize.
-	 * @param WP_Customize_Setting $setting Setting instance.
-	 * @param WP_Customize_Control $control Control instance.
 	 * @return array The sanitized value.
 	 */
 	public static function array( $input ) {
@@ -384,56 +380,56 @@ class KKcp_Sanitize {
 	 * Sanitize single choice
 	 *
 	 * @since 1.0.0
-	 * @param string         $input   The value to sanitize.
+	 * @param string         $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
 	 * @return string The sanitized value.
 	 */
-	public static function single_choice( $input, $setting, $control ) {
-		return self::string( $input );
+	public static function single_choice( $value, $setting, $control ) {
+		return self::string( $value );
 	}
 
 	/**
 	 * Sanitize multiple choices
 	 *
 	 * @since 1.0.0
-	 * @param array         $input   The value to sanitize.
+	 * @param array         $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
 	 * @return array The sanitized value.
 	 */
-	public static function multiple_choices( $input, $setting, $control ) {
-		return self::array( $input );
+	public static function multiple_choices( $value, $setting, $control ) {
+		return self::array( $value );
 	}
 
 	/**
 	 * Sanitize one or more choices
 	 *
 	 * @since 1.0.0
-	 * @param string|array         $input   The value to sanitize.
+	 * @param string|array         $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
 	 * @return string|array The sanitized value.
 	 */
-	public static function one_or_more_choices( $input, $setting, $control ) {
-		if ( is_string( $input ) ) {
-			return self::single_choice( $input );
+	public static function one_or_more_choices( $value, $setting, $control ) {
+		if ( is_string( $value ) ) {
+			return self::single_choice( $value );
 		}
 
-		return self::multiple_choices( $input );
+		return self::multiple_choices( $value );
 	}
 
 	/**
 	 * Sanitize a checkbox
 	 *
 	 * @since 1.0.0
-	 * @param mixed         $input   The value to sanitize.
+	 * @param mixed         $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
 	 * @return boolean The sanitized value.
 	 */
-	public static function checkbox( $input, $setting, $control ) {
-		$filtered = filter_var( $input, FILTER_VALIDATE_BOOLEAN );
+	public static function checkbox( $value, $setting, $control ) {
+		$filtered = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 		return $filtered ? 1 : 0;
 	}
 
@@ -455,8 +451,7 @@ class KKcp_Sanitize {
 			// 	// if it's an associative array of nested options go recursive
 			// 	if ( self::is_assoc( $value ) ) {
 			// 		if ( $key == 'quicktags' ) {
-			// 				var_dump( 'minkiu', $value );
-			// 			}
+			// 		}
 			// 		$sanitized_options[ $key ] = self::js_options( $value, $allowed_options[ $key ] );
 			// 	// if it's a flat array loop through it
 			// 	} else if ( is_array( $value ) ) {

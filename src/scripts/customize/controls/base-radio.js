@@ -1,29 +1,32 @@
 import _ from 'underscore';
 import { api } from '../core/globals';
 // import ControlBase from './base';
+import ControlBaseChoices from './base-choices';
+import Validate from '../core/validate';
+import Sanitize from '../core/sanitize';
 
 /**
  * Control Base Radio class
  *
  * @class api.controls.BaseRadio
  * @constructor
- * @extends api.controls.Base
+ * @extends api.controls.BaseChoices
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = api.controls.Base.extend({
+let Control = ControlBaseChoices.extend({
   /**
    * @override
    */
-  validate: function (newValue) {
-    // validate value as a string
-    if (_.isString(newValue) && this.params.choices.hasOwnProperty(newValue)) {
-      return newValue;
-    }
-    // otherwise return last value
-    else {
-      return { error: true };
-    }
+  validate: function (value) {
+    return Validate.singleChoice([], value, this.setting, this);
+  },
+  /**
+   * @override
+   */
+  sanitize: function (value) {
+    return Sanitize.singleChoice(value);
   },
   /**
    * @override

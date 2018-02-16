@@ -1,8 +1,7 @@
-// import $ from 'jquery';
-// import _ from 'underscore';
+import $ from 'jquery';
+import _ from 'underscore';
 import sprintf from 'locutus/php/strings/sprintf';
-// import { api, wpApi, body } from './globals';
-// import Regexes from './regexes';
+import { api } from './globals';
 
 /**
  * Is setting value (`control.setting()`) empty?
@@ -51,7 +50,7 @@ export function checkRequired ($validity, $value, $setting, $control) {
 
 
 export function singleChoice ($validity, $value, $setting, $control) {
-  const choices = $control._validChoices || $control.params.choices;
+  const choices = $control._validChoices && $control._validChoices.length ? $control._validChoices : $control.params.choices;
 
   if ( choices.indexOf( $value ) === -1 ) {
     $validity.push({ 'vNotAChoice': sprintf( api.l10n['vNotAChoice'], $value ) });
@@ -75,7 +74,7 @@ export function singleChoice ($validity, $value, $setting, $control) {
  */
 export function multipleChoices( $validity, $value, $setting, $control, $check_length = false ) {
   const {params} = $control;
-  const choices = $control._validChoices || params.choices;
+  const choices = $control._validChoices && $control._validChoices.length ? $control._validChoices : params.choices;
 
   if ( !_.isArray( $value ) ) {
     $validity.push({ 'vNotArray': api.l10n['vNotArray'] });
@@ -143,6 +142,9 @@ export function checkbox( $validity, $value, $setting, $control ) {
   return $validity;
 }
 
+/**
+ * Exports the `Validate` object
+ */
 export default {
   isEmpty,
   checkRequired,

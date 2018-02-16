@@ -12,61 +12,46 @@
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
  */
-abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Base {
+abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Base_Choices {
 
   /**
-   * Option to force a maximum selection boundary
+   * Use selectize by default.
+   *
+   * {@inheritDoc}
    *
    * @since 1.0.0
-   * @var ?int
+   * @override
    */
-  public $max = 1;
+  public $selectize = array();
 
   /**
-   * Option to force a minimum selection boundary
-   *
    * @since 1.0.0
-   * @var ?int This should be `null` or a value higher or lower than 1. To set
-   *           a control as optional use the `$optional` class property instead
-   *           of setting `$min` to `1`.
+   * @inheritDoc
    */
-  public $min = null;
-
-  /**
-   * This is then populated in the construct based on the choices array and
-   * later used for validation.
-   *
-   * @since 1.0.0
-   * @var array
-   */
-  public $valid_choices = array();
-
-  /**
-   * Subclasses needs to override this with a custom default array.
-   *
-   * @abstract
-   * @since 1.0.0
-   * @var array
-   */
-  public $choices = array(
-    'standard',
+  protected $selectize_allowed_options = array(
+    'plugins' => array( 'sanitizer' => 'js_array', 'values' => array(
+      'drag_drop',
+      'remove_button'
+    ) ),
+    'persist' => array( 'sanitizer' => 'js_bool' ),
+    'hideSelected' => array( 'sanitizer' => 'js_bool' ),
+    'sortField' => array( 'sanitizer' => 'js_string' ),
   );
 
   /**
    * Subclasses needs to override this with a custom array
    *
    * @since 1.0.0
+   * @abstract
    * @var array
    */
-  protected $supported_sets = array(
-    'standard',
-  );
+  protected $supported_sets = array();
 
   /**
    * Subclasses needs to override this with a custom string
    *
-   * @abstract
    * @since 1.0.0
+   * @abstract
    * @var string
    */
   protected $set_js_var = 'mySet';
@@ -74,13 +59,12 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
   /**
    * Constructor
    *
-   * Override it here in order to manually populate the `valid_choices` property from
-   * the 'globally' defined sets filtered with the given `choices` param
+   * {@inheritDoc}. Override it here in order to manually populate the
+   * `valid_choices` property from the 'globally' defined sets filtered with
+   * the given `choices` param.
    *
    * @since 1.0.0
-   * @param WP_Customize_Manager $manager
-   * @param string               $id
-   * @param array                $args
+   * @override
    */
   public function __construct( $manager, $id, $args = array() ) {
     parent::__construct( $manager, $id, $args );
@@ -131,7 +115,7 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
   }
 
   /**
-   * Get filtered sets
+   * Get all filtered sets
    *
    * @since 1.0.0
    * @param array   $choices
@@ -148,10 +132,10 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
   }
 
   /**
-   * Get filtered set
+   * Get one filtered set
    *
    * @since 1.0.0
-   * @param string  name
+   * @param string  $name
    * @param array   $filter
    * @return array
    */
@@ -208,13 +192,8 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
   }
 
   /**
-   * Get choices from set array
-   *
    * @since 1.0.0
-   * @param array              $valid_choices
-   * @param string             $set_name
-   * @param null|string|arary  $filter
-   * @return array
+   * @inheritDoc
    */
   protected function get_valid_choices ( $filtered_sets ) {
     $valid_choices = array();
@@ -239,11 +218,10 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
   }
 
   /**
-   * Set set arrays as constants to use in JavaScript
+   * {@inheritDoc}. Set set arrays as constants to use in JavaScript
    *
-   * @override
    * @since  1.0.0
-   * @return array
+   * @override
    */
   public function get_constants() {
     $sets = array();
@@ -258,45 +236,12 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
   }
 
   /**
-   * Refresh the parameters passed to the JavaScript via JSON
-   *
    * @override
    * @since 1.0.0
    */
   protected function add_to_json() {
-    $this->json['max'] = KKcp_Sanitize::js_int_or_null( $this->max );
-    $this->json['min'] = KKcp_Sanitize::js_int_or_null( $this->min );
+    parent::add_to_json();
     $this->json['setVar'] = KKcp_Sanitize::js_string( $this->set_js_var );
     $this->json['supportedSets'] = KKcp_Sanitize::js_array( $this->supported_sets );
-    $this->json['choices'] = $this->choices;
-  }
-
-  /**
-   * Sanitize
-   *
-   * @since 1.0.0
-   * @override
-   * @param string               $value   The value to sanitize.
-   * @param WP_Customize_Setting $setting Setting instance.
-   * @param WP_Customize_Control $control Control instance.
-   * @return string The sanitized value.
-   */
-  protected static function sanitize( $value, $setting, $control ) {
-    return KKcp_Sanitize::one_or_more_choices( $value, $setting, $control );
-  }
-
-  /**
-   * Validate
-   *
-   * @since 1.0.0
-   * @override
-   * @param WP_Error             $validity
-   * @param mixed                $value    The value to validate.
-   * @param WP_Customize_Setting $setting  Setting instance.
-   * @param WP_Customize_Control $control  Control instance.
-   * @return mixed
-   */
-  protected static function validate( $validity, $value, $setting, $control ) {
-    return KKcp_Validate::one_or_more_choices( $validity, $value, $setting, $control );
   }
 }

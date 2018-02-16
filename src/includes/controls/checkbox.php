@@ -15,26 +15,22 @@
 class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 
 	/**
-	 * Control type.
-	 *
 	 * @since 1.0.0
-	 * @var string
+	 * @inheritDoc
 	 */
 	public $type = 'kkcp_checkbox';
 
 	/**
-	 * Refresh the parameters passed to the JavaScript via JSON.
-	 *
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function add_to_json() {
 		$this->json['attrs'] = $this->input_attrs;
 	}
 
 	/**
-	 * Render a JS template for the content of the text control.
-	 *
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function js_tpl() {
 		?>
@@ -47,29 +43,16 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 	}
 
 	/**
-	 * Sanitize
-	 *
 	 * @since 1.0.0
-	 * @override
-	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
+	 * @inheritDoc
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::checkbox( $value, $setting, $control );
 	}
 
 	/**
-	 * Validate
-	 *
 	 * @since 1.0.0
-	 * @override
-	 * @param WP_Error 						 $validity
-	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
-	 * @return mixed
+	 * @inheritDoc
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::checkbox( $validity, $value, $setting, $control );
