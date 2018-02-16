@@ -1,12 +1,9 @@
 /**
  * Control changes, class applied on wrapper div inside the `<li>`
- * container (wrapper present only in case we have a control divider),
- * and on the container itself (for controls without a divider)
- * of each of our custom controls.
+ * container of each of our custom controls.
  *
  */
-.kkcp-control,
-.kkcp-control-wrap {
+.kkcp-control {
   position: relative;
 }
 
@@ -25,13 +22,6 @@
 .kkcp-extras-btn {
   top: $control--spacing-top;
   left: 1px;
-
-  // the button needs to slightly change the position
-  // if it inside the control-wrap (when we have dividers...)
-  .kkcp-control-wrap & {
-    top: 0;
-    left: -$control--spacing-left - 1;
-  }
 
   /**
    * Open state
@@ -60,13 +50,6 @@
   border: 1px solid $popover--border-color;
   box-shadow: $popover--box-shadow;
   box-sizing: border-box;
-
-  // the button needs to slightly change the position
-  // if it inside the control-wrap (when we have dividers...)
-  .kkcp-control-wrap & {
-    top: $control--btn-size + 3px;
-    left: 0;
-  }
 
   // the menus shrinks a bit when the scrollbar is visible
   .kkcp-has-scrollbar & {

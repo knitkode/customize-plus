@@ -119,8 +119,6 @@ $control--color-light: #999;
 $control--bg: $WPcustomize--sidebar-bg;
 $control--bg-focus: #ffc;
 $control--bg-hover: lighten($WPcustomize--sidebar-bg, 2%);
-$control--bg-divider: darken($control--bg-hover, 10%); // #fffafa;
-$control--bg-divider-hover: darken($control--bg-divider, 3%);
 $control--spacing-top: $WPcustomize--control-margin-bottom / 2;
 $control--spacing-bottom: $WPcustomize--control-margin-bottom / 2;
 $control--spacing-left: 20px;

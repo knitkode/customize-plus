@@ -46,14 +46,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $loose = true;
 
 	/**
-	 * The control divider data, optional
-	 *
-	 * @since 1.0.0
-	 * @var array
-	 */
-	public $divider;
-
-	/**
 	 * The control guide data, optional. It displays some help in a popover.
 	 * @premium A Customize Plus Premium feature.
 	 *
@@ -106,11 +98,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 
 		// add setting initial value
 		$this->json['vInitial'] = $this->value();
-
-		// add divider if any
-		if ( $this->divider ) {
-			$this->json['div'] = $this->divider;
-		}
 
 		// set control setting as optional
 		if ( $this->optional ) {
@@ -262,16 +249,10 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since 1.0.0
 	 */
 	public function content_template() {
-		$this->js_tpl_divider();
 		$this->js_tpl_guide();
-		 // this wrapper is needed to make the Extras menu play nice when divider
-		 // is there, because of the absolute positioning
-		echo '<# if (data.divider) { #><div class="kkcp-control-wrap"><# } #>';
-			$this->js_tpl_extras();
-			$this->js_tpl();
-			$this->js_tpl_notifications();
-		// see comment above
-		echo '<# if (data.divider) { #></div><# } #>';
+		$this->js_tpl_extras();
+		$this->js_tpl();
+		$this->js_tpl_notifications();
 	}
 
 	/**
@@ -281,22 +262,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 */
 	protected function js_tpl_notifications() {
 		echo '<div class="customize-control-notifications-container"></div>';
-	}
-
-	/**
-	 * Subclasses can have their own 'divider' template overriding this method
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_divider() {
-		?>
-			<# if (data.divider) { #>
-				<div class="kkcp-control-divider">
-					<# if (data.divider.title) { #><span class="customize-control-title">{{{ data.divider.title }}}</span><# }
-						if (data.divider.text) { #><span class="description customize-control-description">{{{ data.divider.text }}}</span><# } #>
-				</div>
-			<# } #>
-		<?php
 	}
 
 	/**
