@@ -1,6 +1,6 @@
 <?php // @partial
 /**
- * Customize Control base class.
+ * Customize Plus Control base class
  *
  * {@inheritDoc}
  *
@@ -20,8 +20,8 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * Optional value
 	 *
-	 * Whether this control is optional, in other words, when it is allowed to
-	 * be empty.
+	 * Whether this control is optional, in other words, when its setting is
+	 * allowed to be empty.
 	 *
 	 * @since 1.0.0
 	 * @var boolean
@@ -60,6 +60,8 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $html = false;
 
 	/**
+	 * Guide
+	 *
 	 * The control guide data, optional. It displays some help in a popover.
 	 * @premium A Customize Plus Premium feature.
 	 *
@@ -69,6 +71,8 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $guide;
 
 	/**
+	 * Advanced
+	 *
 	 * Whether this control is advanced or normal, users and developers will be
 	 * able to hide or show the advanced controls.
 	 *
@@ -107,7 +111,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		parent::to_json();
 
 		// add setting factory value
-		// @@todo remove sprintf @see track https://core.trac.wordpress.org/ticket/34290#ticket \\
+		// @@todo remove sprintf @see track http://bit.ly/2odnCmN \\
 		if ( is_object( $this->setting ) ) {
 			$this->json['vFactory'] = sprintf( json_encode( $this->setting->default ) );
 		}
