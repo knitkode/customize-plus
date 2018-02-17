@@ -7,7 +7,7 @@
  * @package    Customize_Plus
  * @subpackage Customize\Controls
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 KnitKode
+ * @copyright  2018 KnitKode
  * @license    GPLv3
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
@@ -29,7 +29,7 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
 			'vTextType' => esc_html__( 'The value must be a string.' ),
 			'vInvalidUrl' => esc_html__( 'Invalid URL.' ),
 			'vInvalidEmail' => esc_html__( 'Invalid email.' ),
-			'vTooLong' => esc_html__( 'The value is too long.' ),
+			'vTextTooLong' => esc_html__( 'The text must be shorter than %s.' ),
 			'vTextHtml' => esc_html__( 'HTML is not allowed. It will be stripped out on save.' ),
 		);
 	}

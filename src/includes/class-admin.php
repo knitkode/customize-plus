@@ -2,14 +2,14 @@
 
 if ( class_exists( 'KKcp_Singleton' ) ):
 	/**
-	 * Short description for class
+	 * Admin
 	 *
-	 * Long description (if any) ...
+	 * Manage the admin side Customize Plus.
 	 *
 	 * @package    Customize_Plus
 	 * @subpackage Admin
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
-	 * @copyright  2017 KnitKode
+	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
 	 * @version    Release: pkgVersion
 	 * @link       https://knitkode.com/products/customize-plus

@@ -3,12 +3,17 @@
 if ( ! class_exists( 'KKcp_Customize' ) ):
 
 	/**
-	 * Contains methods for customizing the theme customization screen.
+	 * Customize
+	 *
+	 * Manage the actual customize WordPress screen. In here we define all panels,
+	 * sections, controls and settings managed by Customize Plus building a
+	 * customize tree. Here all JavaScripts and CSSs are enqueued and data from
+	 * backend is provided to the JavaScript.
 	 *
 	 * @package    Customize_Plus
 	 * @subpackage Customize
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
-	 * @copyright  2017 KnitKode
+	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
 	 * @version    Release: pkgVersion
 	 * @link       https://knitkode.com/products/customize-plus
@@ -610,7 +615,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			// if no settings args are passed
 			} else {
 				// a setting-less control, pass empty array,
-				// @see https://make.wordpress.org/core/2016/03/10/customizer-improvements-in-4-5/
+				// @see http://bit.ly/1pc3obI
 				$control_args['settings'] = array();
 			}
 
@@ -636,9 +641,10 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * Add the needed css to display a dashicon for the given panel
 		 *
 		 * @since  1.0.0
-		 * @param  string $panel_id      The panel which will show the specified dashicon.
-		 * @param  int    $dashicon_code The dashicon code number, the `\f` is automatically
-		 *                               added.
+		 * @param  string $panel_id      The panel which will show the specified
+		 *                               dashicon.
+		 * @param  int    $dashicon_code The dashicon code number, the `\f` is
+		 *                               automatically added.
 		 */
 		private static function add_css_panel_dashicon( $panel_id = '', $dashicon_code ) {
 			if ( ! absint( $dashicon_code ) ) {
@@ -651,9 +657,10 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * Add the needed css to display a dashicon for the given section
 		 *
 		 * @since  1.0.0
-		 * @param  string $section_id    The section which will show the specified dashicon.
-		 * @param  int    $dashicon_code The dashicon code number, the `\f` is automatically
-		 *                               added.
+		 * @param  string $section_id    The section which will show the specified
+		 *                               dashicon.
+		 * @param  int    $dashicon_code The dashicon code number, the `\f` is
+		 *                               automatically added.
 		 */
 		private static function add_css_section_dashicon( $section_id = '', $dashicon_code ) {
 			if ( ! absint( $dashicon_code ) ) {

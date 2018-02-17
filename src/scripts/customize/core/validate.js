@@ -12,12 +12,13 @@ import { api } from './globals';
 
 /**
  * Is setting value (`control.setting()`) empty?
+ *
  * Used to check if required control's settings have instead an empty value
  *
  * @see php class method `KKcp_Validate::is_empty()`
  * @static
  * @param  {string}  value
- * @return {Boolean}
+ * @return {boolean}
  */
 export function isEmpty (value) {
   // first try to compare it to an empty string
@@ -42,6 +43,7 @@ export function isEmpty (value) {
  * Validate a required setting
  *
  * @since 1.0.0
+ *
  * @param WP_Error             $validity
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
@@ -69,15 +71,16 @@ export function singleChoice ($validity, $value, $setting, $control) {
  * Validate an array of choices
  *
  * @since 1.0.0
- * @override
+ *
  * @param WP_Error             $validity
  * @param array                $value        The value to validate.
  * @param WP_Customize_Setting $setting      Setting instance.
  * @param WP_Customize_Control $control      Control instance.
- * @param boolean              $check_length Should match choices length? e.g. for sortable control
- *                                           where the all the defined choices should be present in
- *                                           the validated value
- * @return $validity
+ * @param boolean              $check_length Should match choices length? e.g.
+ *                                           for sortable control where the all
+ *                                           the defined choices should be
+ *                                           present in the validated value
+ * @return WP_Error
  */
 export function multipleChoices( $validity, $value, $setting, $control, $check_length = false ) {
   const {params} = $control;
@@ -117,7 +120,7 @@ export function multipleChoices( $validity, $value, $setting, $control, $check_l
  * Validate one or more choices
  *
  * @since 1.0.0
- * @override
+ *
  * @param WP_Error             $validity
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
@@ -135,7 +138,7 @@ export function oneOrMoreChoices( $validity, $value, $setting, $control ) {
  * Validate checkbox
  *
  * @since 1.0.0
- * @override
+ *
  * @param WP_Error             $validity
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
@@ -153,6 +156,7 @@ export function checkbox( $validity, $value, $setting, $control ) {
  * Validate tags
  *
  * @since 1.0.0
+ *
  * @param WP_Error             $validity
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
@@ -185,6 +189,7 @@ export function tags( $validity, $value, $setting, $control ) {
  * Validate text
  *
  * @since 1.0.0
+ *
  * @param WP_Error             $validity
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
@@ -209,8 +214,8 @@ export function text( $validity, $value, $setting, $control ) {
     $validity.push({ 'vInvalidEmail': api.l10n['vInvalidEmail'] });
   }
   // max length
-  if ( is_int( $attrs.maxlength ) && $value.length > $attrs.maxlength ) {
-    $validity.push({ 'vTooLong': api.l10n['vTooLong'] });
+  if ( is_int( $attrs['maxlength'] ) && $value.length > $attrs['maxlength'] ) {
+    $validity.push({ 'vTextTooLong': sprintf( api.l10n['vTextTooLong'], $attrs['maxlength'] ) });
   }
   // html presence
   if ( Utils.hasHTML( $value ) ) {
@@ -224,6 +229,7 @@ export function text( $validity, $value, $setting, $control ) {
  * Validate number
  *
  * @since 1.0.0
+ *
  * @param WP_Error             $validity
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
@@ -273,6 +279,7 @@ export function number( $validity, $value, $setting, $control ) {
  * Validate css unit
  *
  * @since 1.0.0
+ *
  * @param WP_Error                $validity
  * @param mixed    $unit          The unit to validate.
  * @param mixed    $allowed_units The allowed units
@@ -299,6 +306,7 @@ export function sizeUnit( $validity, $unit, $allowed_units ) {
  * Validate slider
  *
  * @since 1.0.0
+ *
  * @param WP_Error             $validity
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.

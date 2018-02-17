@@ -3,14 +3,14 @@
 if ( ! class_exists( 'KKcp' ) ):
 
 	/**
-	 * Short description for class
+	 * Core
 	 *
-	 * Long description (if any) ...
+	 * Simple core class for this plugin.
 	 *
 	 * @package    Customize_Plus
 	 * @subpackage Core
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
-	 * @copyright  2017 KnitKode
+	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
 	 * @version    Release: pkgVersion
 	 * @link       https://knitkode.com/products/customize-plus

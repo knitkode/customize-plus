@@ -1,0 +1,10 @@
+/**
+ * Control Content
+ *
+ */
+.customize-control-kkcp_content {
+	// don't highlight control area on hover
+  &:hover {
+  	background: inherit;
+  }
+}

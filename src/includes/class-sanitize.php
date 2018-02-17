@@ -1,12 +1,17 @@
 <?php defined( 'ABSPATH' ) or die;
 
 /**
- * Sanitize functions
+ * Sanitize
+ *
+ * Collects all sanitize methods used by Customize Plus controls. Each function
+ * has also a respective JavaScript version in `sanitize.js`.
+ * A good resource about customize sanitization is @link(http://git.io/vZ0dL,
+ * this series of examples)
  *
  * @package    Customize_Plus
  * @subpackage Customize
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 KnitKode
+ * @copyright  2018 KnitKode
  * @license    GPLv3
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
@@ -17,6 +22,7 @@ class KKcp_Sanitize {
 	 * Sanitize string
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param mixed     				   $input   The value to sanitize.
 	 * @return string The sanitized value.
 	 */
@@ -31,6 +37,7 @@ class KKcp_Sanitize {
 	 * Sanitize array
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param mixed      		   	   $input   The value to sanitize.
 	 * @return array The sanitized value.
 	 */
@@ -53,9 +60,10 @@ class KKcp_Sanitize {
 
 	/**
 	 * Sanitize hex color
-	 * check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or 'CCC'
 	 *
-	 * It needs a value cleaned of all whitespaces (sanitized).
+	 * Check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or
+	 * 'CCC'. It needs a value cleaned of all whitespaces (sanitized).
+	 * // @@todo with whitespaces should sanitize too \\
 	 *
 	 * @since  1.0.0
 	 * @param  string $input  The input value to sanitize
@@ -73,6 +81,7 @@ class KKcp_Sanitize {
 	 * Sanitize single choice
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param string         			 $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
@@ -86,6 +95,7 @@ class KKcp_Sanitize {
 	 * Sanitize multiple choices
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param array         			 $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
@@ -99,6 +109,7 @@ class KKcp_Sanitize {
 	 * Sanitize one or more choices
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param string|array         $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
@@ -116,6 +127,7 @@ class KKcp_Sanitize {
 	 * Sanitize font family
 	 *
 	 * @since  1.0.0
+	 *
 	 * @param string|array         $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
@@ -140,10 +152,11 @@ class KKcp_Sanitize {
 	 * Sanitize a checkbox
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param mixed         			 $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
-	 * @return number The sanitized value.
+	 * @return number:0|1 The sanitized value.
 	 */
 	public static function checkbox( $value, $setting, $control ) {
 		$filtered = filter_var( $value, FILTER_VALIDATE_BOOLEAN );
@@ -154,6 +167,7 @@ class KKcp_Sanitize {
 	 * Sanitize tags
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param mixed         			 $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
@@ -169,13 +183,13 @@ class KKcp_Sanitize {
 		$value = array_map( 'trim', $value );
 		$value = array_unique( $value );
 
-		// if ( isset( $control->max ) ) {
-		// 	$max_items = filter_var( $control->max, FILTER_SANITIZE_NUMBER_INT );
+		if ( isset( $control->max ) ) {
+			$max_items = filter_var( $control->max, FILTER_SANITIZE_NUMBER_INT );
 
-		// 	if ( count( $value ) > $max_items ) {
-		// 		$value = array_slice( $value, $max_items );
-		// 	}
-		// }
+			if ( count( $value ) > $max_items ) {
+				$value = array_slice( $value, $max_items );
+			}
+		}
 		return wp_strip_all_tags( implode( ',', $value ) );
 	}
 
@@ -183,6 +197,7 @@ class KKcp_Sanitize {
 	 * Sanitize text
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param mixed         			 $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
@@ -214,6 +229,7 @@ class KKcp_Sanitize {
 	 * Sanitize number
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param mixed         			 $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
@@ -254,6 +270,7 @@ class KKcp_Sanitize {
 	 * Sanitize CSS size unit
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param string   $unit    			The unit to sanitize
  	 * @param mixed    $allowed_units The allowed units
 	 * @return string
@@ -283,10 +300,11 @@ class KKcp_Sanitize {
 	 * Sanitize slider
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param mixed         			 $value   The value to sanitize.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @param WP_Customize_Control $control Control instance.
-	 * @return string The sanitized value.
+	 * @return string|number The sanitized value.
 	 */
 	public static function slider( $value, $setting, $control ) {
 		$number = KKcp_Utils::extract_number( $value, $control->allowFloat );
@@ -307,9 +325,32 @@ class KKcp_Sanitize {
 	}
 
 	/**
+	 * Sanitize textarea
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed         			 $value   The value to sanitize.
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return string The sanitized value.
+ 	 */
+	public static function textarea( $value, $setting, $control ) {
+		$value = (string) $value;
+
+		if ( $control->allowHTML || $control->wp_editor ) {
+			return wp_kses_post( $value );
+		} else {
+			return wp_strip_all_tags( $value );
+		}
+		return $value;
+	}
+
+	/**
 	 * Sanitize CSS
 	 *
 	 * @link(http://git.io/vZ05N, source)
+	 * @since 1.0.0
+	 *
 	 * @param string $input CSS to sanitize.
 	 * @return string Sanitized CSS.
 	 */
@@ -321,6 +362,8 @@ class KKcp_Sanitize {
 	 * Sanitize image
 	 *
 	 * @link(http://git.io/vZ05p, source)
+	 * @since 1.0.0
+	 *
 	 * @param string               $image   Image filename.
 	 * @param WP_Customize_Setting $setting Setting instance.
 	 * @return string The image filename if the extension is allowed; otherwise, the setting default.
@@ -346,6 +389,8 @@ class KKcp_Sanitize {
 	 * HTML sanitization callback example.
 	 *
 	 * @link(http://git.io/vZ0dv, source)
+	 * @since 1.0.0
+	 *
 	 * @param string $html HTML to sanitize.
 	 * @return string Sanitized HTML.
 	 */
@@ -357,6 +402,8 @@ class KKcp_Sanitize {
 	 * No-HTML sanitization callback example.
 	 *
 	 * @link(http://git.io/vZ0dL, source)
+	 * @since 1.0.0
+	 *
 	 * @since  1.0.0
 	 * @param string $nohtml The no-HTML content to sanitize.
 	 * @return string Sanitized no-HTML content.

@@ -1,12 +1,15 @@
 <?php defined( 'ABSPATH' ) or die;
 
 /**
- * Sanitize JavaScript helper class
+ * Sanitize JavaScript
+ *
+ * Contains methods to sanitize values defined in PHP before to be passed to
+ * JavaScript through JSON.
  *
  * @package    Customize_Plus
  * @subpackage Customize
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 KnitKode
+ * @copyright  2018 KnitKode
  * @license    GPLv3
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
@@ -182,7 +185,7 @@ class KKcp_SanitizeJS {
    *
    * @since 1.0.0
    * @param  mixed $input
-   * @return number integer
+   * @return ?int
    */
   public static function int( $input ) {
     // The input might comes as a string, this is a generic way to coerce it
@@ -202,7 +205,7 @@ class KKcp_SanitizeJS {
    * @since 1.0.0
    * @param  mixed $input
    * @param  array $list
-   * @return ?mixed
+   * @return mixed
    */
   public static function in_array ( $input, $list = array() ) {
     if ( is_string( $input ) ) {
@@ -226,7 +229,7 @@ class KKcp_SanitizeJS {
    *
    * @since 1.0.0
    * @param  mixed $input
-   * @return ?bool
+   * @return ?array
    */
   public static function array ( $input ) {
     if ( is_array( $input ) ) {

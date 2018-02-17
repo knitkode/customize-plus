@@ -286,10 +286,12 @@ api.controls.Base = wpApi.Control.extend({
    * @param  {array<object<string,string>>} error `{ msgId: msg }`
    */
   _manageValidityNotifications: function ($validity) {
+    // always clear current notifications
     this._clearNotifications();
-    this.notifications.render();
 
+    // if no errors render and bail
     if (!$validity.length) {
+      this.notifications.render();
       return;
     }
     this._currentValueHasError = true;
@@ -326,6 +328,7 @@ api.controls.Base = wpApi.Control.extend({
         console.log(`Notification remove '${notifications[i]['code']}' for default setting of control '${this.id}'`);
       }
     }
+    // this.notifications.render();
   },
   /**
    * Validate

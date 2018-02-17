@@ -7,7 +7,7 @@
  * @package    Customize_Plus
  * @subpackage Customize\Controls
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 KnitKode
+ * @copyright  2018 KnitKode
  * @license    GPLv3
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
@@ -15,24 +15,26 @@
 class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 
 	/**
-	 * Control type.
-	 *
 	 * @since 1.0.0
-	 * @var string
+	 * @inheritDoc
 	 */
 	public $type = 'kkcp_textarea';
 
 	/**
 	 * Allow HTML inside textarea (default = `false`)
+	 *
+	 * @since 1.0.0
 	 * @var boolean
 	 */
-	protected $allowHTML = false;
+	public $allowHTML = false;
 
 	/**
 	 * Enable TinyMCE textarea (default = `false`)
+	 *
+	 * @since 1.0.0
 	 * @var boolean|array
 	 */
-	protected $wp_editor = false;
+	public $wp_editor = false;
 
 	/**
 	 * WP editor allowed options
@@ -95,9 +97,8 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	);
 
 	/**
-	 * Refresh the parameters passed to the JavaScript via JSON.
-	 *
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function add_to_json() {
 		$this->json['attrs'] = $this->input_attrs;
@@ -116,9 +117,8 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	}
 
 	/**
-	 * Render a JS template for the content of the text control.
-	 *
 	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function js_tpl() {
 		?>
@@ -130,27 +130,19 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	}
 
 	/**
-	 * Sanitize
-	 *
 	 * @since 1.0.0
-	 * @override
-	 * @param string               $value   The value to sanitize.
-	 * @param WP_Customize_Setting $setting Setting instance.
-	 * @param WP_Customize_Control $control Control instance.
-	 * @return string The sanitized value.
+	 * @inheritDoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		// always cast to string
-		$value = (string) $value;
+		return KKcp_Sanitize::textarea( $value, $setting, $control );
+	}
 
-		$html_is_allowed = $control->allowHTML || $control->wp_editor;
-
-		if ( $html_is_allowed ) {
-			return wp_kses_post( $value );
-		} else {
-			return wp_strip_all_tags( $value );
-		}
-		return $value;
+	/**
+	 * @since 1.0.0
+	 * @inheritDoc
+	 */
+	protected static function validate( $validity, $value, $setting, $control ) {
+		return KKcp_Validate::textarea( $validity, $value, $setting, $control );
 	}
 }
 

@@ -1,12 +1,15 @@
 <?php defined( 'ABSPATH' ) or die;
 
 /**
- * Validate functions
+ * Validate
+ *
+ * Collects all validate methods used by Customize Plus controls. Each function
+ * has also a respective JavaScript version in `validate.js`.
  *
  * @package    Customize_Plus
  * @subpackage Customize
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 KnitKode
+ * @copyright  2018 KnitKode
  * @license    GPLv3
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
@@ -19,6 +22,7 @@ class KKcp_Validate {
 	 * @link(https://stackoverflow.com/a/145348, source1)
 	 * @link(https://stackoverflow.com/a/145348, source2)
 	 * @since  1.0.0
+	 *
 	 * @param  array   $array The array to test
 	 * @return boolean
 	 */
@@ -48,6 +52,7 @@ class KKcp_Validate {
 	 * It needs a value cleaned of all whitespaces (sanitized)
 	 *
 	 * @since  1.0.0
+	 *
 	 * @param  string $value  The value value to check
 	 * @return boolean
 	 */
@@ -61,6 +66,7 @@ class KKcp_Validate {
 	 * It needs a value cleaned of all whitespaces (sanitized)
 	 *
 	 * @since  1.0.0
+	 *
 	 * @param  string $value  The value value to check
 	 * @return boolean
 	 */
@@ -74,6 +80,7 @@ class KKcp_Validate {
 	 * It needs a value cleaned of all whitespaces (sanitized)
 	 *
 	 * @since  1.0.0
+	 *
 	 * @param  string $value  The value value to check
 	 * @return boolean
 	 */
@@ -83,9 +90,11 @@ class KKcp_Validate {
 
 	/**
 	 * Is setting value (`control.setting()`) empty?
+	 *
 	 * Used to check if required control's settings have instead an empty value
 	 *
 	 * @since  1.0.0
+	 *
 	 * @see php class method `KKcp_Sanitize::is_empty()`
 	 * @param  string  $value A setting value
 	 * @return boolean 				Whether the setting value has to be considered
@@ -112,9 +121,10 @@ class KKcp_Validate {
 	}
 
 	/**
-	 * Validate a required setting
+	 * Validate a required setting value
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -130,8 +140,9 @@ class KKcp_Validate {
 
 	/**
 	 * Validate a single choice
-
+   *
 	 * @since 1.0.0
+	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -155,14 +166,16 @@ class KKcp_Validate {
 	 * Validate an array of choices
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param WP_Error 						 $validity
 	 * @param array 							 $value   		 The value to validate.
  	 * @param WP_Customize_Setting $setting   	 Setting instance.
  	 * @param WP_Customize_Control $control 		 Control instance.
- 	 * @param boolean  						 $check_length Should match choices length? e.g. for sortable control
- 	 *                                      	   where the all the defined choices should be present in
- 	 *                                      	   the validated value
-	 * @return $validity
+ 	 * @param boolean  						 $check_length Should match choices length? e.g.
+ 	 *                                      		 for sortable control where the
+ 	 *                                         	 all the defined choices should be
+ 	 *                                           present in the validated value
+	 * @return WP_Error
  	 */
 	public static function multiple_choices( $validity, $value, $setting, $control, $check_length = false ) {
 		if ( isset( $control->valid_choices ) && !empty( $control->valid_choices ) ) {
@@ -205,6 +218,7 @@ class KKcp_Validate {
 	 * Validate one or more choices
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -222,6 +236,7 @@ class KKcp_Validate {
 	 * Validate checkbox
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -239,6 +254,7 @@ class KKcp_Validate {
 	 * Validate tags
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -268,6 +284,7 @@ class KKcp_Validate {
 	 * Validate text
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -293,7 +310,7 @@ class KKcp_Validate {
 		}
 		// max length
 		if ( isset( $attrs['maxlength'] ) && is_int( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
-			$validity->add( 'vTooLong', sprintf ( esc_html__( 'The text must be shorter than %s.' ), $attrs['maxlength'] ) );
+			$validity->add( 'vTextTooLong', sprintf ( esc_html__( 'The text must be shorter than %s.' ), $attrs['maxlength'] ) );
 		}
 		// html
 		if( $value != strip_tags( $value ) ) {
@@ -307,6 +324,7 @@ class KKcp_Validate {
 	 * Validate number
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -355,6 +373,7 @@ class KKcp_Validate {
 	 * Validate CSS size unit
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param WP_Error 					      $validity
 	 * @param mixed    $unit    			The unit to validate.
  	 * @param mixed    $allowed_units The allowed units
@@ -381,6 +400,7 @@ class KKcp_Validate {
 	 * Validate slider
 	 *
 	 * @since 1.0.0
+	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -394,6 +414,36 @@ class KKcp_Validate {
 		$validity = self::number( $validity, $number, $setting, $control );
 		$validity = self::size_unit( $validity, $unit, $control->units );
 
+		return $validity;
+	}
+
+	/**
+	 * Validate textarea
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+ 	 * @param WP_Customize_Setting $setting  Setting instance.
+ 	 * @param WP_Customize_Control $control  Control instance.
+	 * @return WP_Error
+ 	 */
+	public static function textarea( $validity, $value, $setting, $control ) {
+		// wrong type
+		if ( is_string( $value ) ) {
+			$validity->add( 'vTextType', esc_html__( 'Value must be a string.' ) );
+		}
+		//
+		if ( $control->allowHTML || $control->wp_editor ) {
+
+		// html
+		if( $value != strip_tags( $value ) ) {
+			$validity->add( 'vTextHtml', esc_html__( 'HTML is not allowed. It will be stripped out on save.' ) );
+		}
+			return wp_kses_post( $value );
+		} else {
+			return wp_strip_all_tags( $value );
+		}
 		return $validity;
 	}
 }

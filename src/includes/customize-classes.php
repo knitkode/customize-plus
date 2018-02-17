@@ -3,12 +3,13 @@
 /**
  * Customize custom classes for panels, sections, control and settings.
  *
- * All custom classes are collected in this file by an automated gulp task.
+ * All custom classes are collected in this file by an automated task that
+ * inlines the `require` php statements.
  *
  * @package    Customize_Plus
  * @subpackage Customize
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2017 KnitKode
+ * @copyright  2018 KnitKode
  * @license    GPLv3
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
