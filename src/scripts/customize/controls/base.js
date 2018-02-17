@@ -252,7 +252,6 @@ api.controls.Base = wpApi.Control.extend({
    * Always check that required setting (not `optional`) are not empty,
    * if it pass the check call the control specific abstract `validate` method.
    *
-   * // @@doubt not sure whether this should be private or not \\
    * @access private
    * @param  {string} value
    * @return {string} The value validated or the last setting value.
@@ -275,7 +274,9 @@ api.controls.Base = wpApi.Control.extend({
     if (!$validity.length) {
       return this.sanitize(value);
     }
-    // @@doubt sanitize here despite the loose option? `this.sanitize(value)` \\
+    // @@doubt sanitize here despite the loose option? `this.sanitize(value)`
+    // make sanitiziation optional and not happen here, it should just sanitize
+    // what is passed to the live preview.. @@todo \\
     return this.params.loose ? value : this.setting();
   },
   /**
@@ -443,7 +444,7 @@ api.controls.Base = wpApi.Control.extend({
         //   container.removeChild(container.lastChild);
         // }
 
-        // @@doubt, most of the times innerHTML seems to be faster, maybe when
+        // @@note, most of the times innerHTML seems to be faster, maybe when
         // there are many DOM elements to remove, investigate here \\
         container.innerHTML = '';
 

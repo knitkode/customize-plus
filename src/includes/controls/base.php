@@ -362,12 +362,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public static function sanitize_callback( $value, $setting ) {
 		$control = $setting->manager->get_control( $setting->id );
 
-		// @@doubt, is this sanitization useful? Or dangerous? \\
-		if ( is_string( $value ) ) {
-			$value = trim( $value );
-		}
-
-		return $control::sanitize( $value, $setting, $control ); // @@doubt, $control used to be `self` \\
+		return $control::sanitize( $value, $setting, $control );
 	}
 
 	/**
@@ -387,7 +382,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
-	 * Valide callback
+	 * Validate callback
 	 *
 	 * All control's specific validation pass from this function which
 	 * always check if the value satisfy the `optional` attribute and then
@@ -431,25 +426,29 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 
 	/**
 	 * Get localized strings for current controls.
+	 *
 	 * Allows control classes to add localized strings accessible on our main
 	 * `js` object `kkcp.l10n`.
-	 * @abstract
+	 *
 	 * @since  1.0.0
+	 * @abstract
 	 * @return array
 	 */
-	// public function get_l10n() { // @@doubt maybe not needed on this base class \\
-	// 	return array();
-	// }
+	public function get_l10n() {
+		return array();
+	}
 
 	/**
 	 * Get js constants for current controls.
+	 *
 	 * Allows control classes to add its specific constants variables on our
 	 * main `js` object `kkcp.l10n`.
-	 * @abstract
+	 *
 	 * @since  1.0.0
+	 * @abstract
 	 * @return array
 	 */
-	// public function get_constants() { // @@doubt maybe not needed on this base class \\
-	// 	return array();
-	// }
+	public function get_constants() {
+		return array();
+	}
 }

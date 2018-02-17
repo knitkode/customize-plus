@@ -619,8 +619,8 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				$control_args['settings'] = array();
 			}
 
-			// finally add control
-			$control_id = $setting_id; // @@doubt, maybe do something different... \\
+			// finally add control with same `id` as setting
+			$control_id = $setting_id;
 
 			// check if a custom type/class has been specified
 			if ( $control_type_class ) {

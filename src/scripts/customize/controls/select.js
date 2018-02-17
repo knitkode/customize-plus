@@ -41,6 +41,10 @@ let Control = ControlBaseChoices.extend({
     }
   },
   /**
+   * We do a comparison with two equals `==` because sometimes we want to
+   * compare `500` to `'500'` (like in the font-weight dropdown) and return
+   * true from that. // @@todo the before comment... \\
+   *
    * @override
    */
   syncUI: function () {
@@ -61,15 +65,7 @@ let Control = ControlBaseChoices.extend({
       $(this.__select).selectize(_.extend({
         maxItems: this.params.max,
         onChange: (value) => {
-          // if it's an array be sure the value is actually different and not
-          // just a JSON vs non-JSON situation
-          if (_.isArray(value)) {
-            if (!this._isSameAsSetting(value)) {
-              setting.set(value);
-            }
-          } else {
-            setting.set(value);
-          }
+          setting.set(value);
         }
       }, selectizeOpts));
     // or use normal DOM API
@@ -83,26 +79,14 @@ let Control = ControlBaseChoices.extend({
     this._syncOptions();
   },
   /**
-   * Sync options and maybe bind change event
-   *
-   * We need to be fast here, use vanilla js.
-   * We do a comparison with two equals `==` because sometimes we want to
-   * compare `500` to `'500'` (like in the font-weight dropdown) and return
-   * true from that.
-   * // @@doubt We could use `.toString()` on the two values to compare, not
-   * if those value can be `null` or `undefined`, probably they can \\
+   * Sync options
    */
   _syncOptions: function () {
     const value = this.setting();
 
     // use selectize
     if (this.params.selectize) {
-      // it could be a json array or a simple string
-      try {
-        this.__select.selectize.setValue(JSON.parse(value));
-      } catch(e) {
-        this.__select.selectize.setValue(value);
-      }
+      this.__select.selectize.setValue(value);
     }
     // or use normal DOM API
     else {
@@ -111,27 +95,6 @@ let Control = ControlBaseChoices.extend({
         option.selected = (value == option.value);
       }
     }
-  },
-  /**
-   * Check if the given value is the same as the current setting value,
-   * this will return `true` even in the scenario where the two values
-   * are one a real JS array and the other its JSONified version. This
-   * equality (that shouldn't trigger a `setting.set`) happens e.g. on load
-   *
-   * @param  {Array}  value
-   * @return {Boolean}
-   */
-  _isSameAsSetting (value) {
-    let settingValue = this.setting.get();
-    let valueToCompare = value;
-
-    try {
-      settingValue = JSON.parse(settingValue);
-    } catch (e) {
-      settingValue = JSON.stringify(settingValue);
-      valueToCompare = JSON.stringify(valueToCompare);
-    }
-    return _.isEqual(settingValue, valueToCompare);
   }
 });
 

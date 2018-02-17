@@ -105,7 +105,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 
 		$this->json['allowHTML'] = KKcp_SanitizeJS::bool( $this->allowHTML );
 
-		// @@doubt Should we check for capability here? \\
+		// @@doubt Should we check for capability here? move this to the constructor \\
 		if ( $this->wp_editor && user_can_richedit() ) {
 			if ( is_array( $this->wp_editor ) ) {
 				$this->json['wp_editor'] = KKcp_SanitizeJS::options( $this->wp_editor, self::$wp_editor_allowed_options );

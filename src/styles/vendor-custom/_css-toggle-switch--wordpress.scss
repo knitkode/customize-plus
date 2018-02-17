@@ -279,7 +279,8 @@ $toggle--transition_function: cubic-bezier(.4, 0, .2, 1);
     border-style: solid;
     border-width: 1px;
     border-color: $WP--select-border-color;
-    white-space: nowrap; // @@doubt not sure if it's good to ellipse here for usability \\
+    // @@doubt not sure if it's good to ellipse here for usability \\
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 
