@@ -7,6 +7,11 @@
   &.ui-sortable {
     overflow-x: hidden;
   }
+
+  // move cursor on all the list item
+  .kkcp-sortable {
+    cursor: move;
+  }
 }
 
 .kkcp-sortable {

@@ -47,8 +47,10 @@ let Control = ControlBaseChoices.extend({
    *
    * @override
    */
-  syncUI: function () {
-    this._syncOptions();
+  syncUI: function (value) {
+    if (!_.isEqual(value, this._getValueFromUI())) {
+      this._updateUI(value);
+    }
   },
   /**
    * @override
@@ -76,17 +78,35 @@ let Control = ControlBaseChoices.extend({
     }
 
     // sync selected state on options on ready
-    this._syncOptions();
+    this._updateUI(this.setting());
   },
   /**
-   * Sync options
+   * Get value from UI
+   *
+   * @return {?array}
    */
-  _syncOptions: function () {
-    const value = this.setting();
-
+  _getValueFromUI () {
+    if (!this.__select) {
+      return null;
+    }
+    const selectize = this.__select.selectize;
+    if (selectize) {
+      return selectize.getValue();
+    }
+    return this.__select.value;
+  },
+  /**
+   * Update UI syncing options values
+   *
+   * Pass `true` as second argument to perform a `silent` update, that does
+   * not trigger the `onChange` event of `selectize`.
+   *
+   * @param {string|array} value
+   */
+  _updateUI: function (value) {
     // use selectize
     if (this.params.selectize) {
-      this.__select.selectize.setValue(value);
+      this.__select.selectize.setValue(value, true);
     }
     // or use normal DOM API
     else {

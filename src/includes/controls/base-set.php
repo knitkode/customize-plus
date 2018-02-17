@@ -57,8 +57,6 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
   protected $set_js_var = 'mySet';
 
   /**
-   * Constructor
-   *
    * {@inheritDoc}. Override it here in order to manually populate the
    * `valid_choices` property from the 'globally' defined sets filtered with
    * the given `choices` param.

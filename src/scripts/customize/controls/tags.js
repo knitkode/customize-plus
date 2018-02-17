@@ -62,8 +62,8 @@ let Control = api.controls.Base.extend({
   ready: function () {
     this.__input = this._container.getElementsByTagName('input')[0];
 
-    // fill input before to initialize selectize
-    // so it grabs the value directly from the DOM
+    // fill input before to initialize selectize so selectize grabs the value
+    // directly from the DOM
     this.__input.value = this.setting();
 
     this._initSelectize();

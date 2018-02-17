@@ -2,6 +2,8 @@ import window from 'window';
 import document from 'document';
 import $ from 'jquery';
 import _ from 'underscore';
+import sprintf from 'locutus/php/strings/sprintf';
+import vsprintf from 'locutus/php/strings/vsprintf';
 import { api, wpApi } from '../core/globals';
 import Skeleton from '../core/skeleton';
 import Utils from '../core/utils';
@@ -17,6 +19,7 @@ import Validate from '../core/validate';
  * @link(http://git.io/vZ6Yq, WordPress source code).
  *
  * @see PHP class KKcp_Customize_Control_Base.
+ * @since  1.0.0
  *
  * @class api.controls.Base
  * @extends wp.customize.Control
@@ -26,25 +29,12 @@ import Validate from '../core/validate';
  */
 api.controls.Base = wpApi.Control.extend({
   /**
-   * Tweak the initialize methods.
-   * @param {string} id                       - Unique identifier for the control instance.
-     * @param {object} options                  - Options hash for the control instance.
-     * @param {object} options.type             - Type of control (e.g. text, radio, dropdown-pages, etc.)
-     * @param {string} [options.content]        - The HTML content for the control or at least its container. This should normally be left blank and instead supplying a templateId.
-     * @param {string} [options.templateId]     - Template ID for control's content.
-     * @param {string} [options.priority=10]    - Order of priority to show the control within the section.
-     * @param {string} [options.active=true]    - Whether the control is active.
-     * @param {string} options.section          - The ID of the section the control belongs to.
-     * @param {mixed}  [options.setting]        - The ID of the main setting or an instance of this setting.
-     * @param {mixed}  options.settings         - An object with keys (e.g. default) that maps to setting IDs or Setting/Value objects, or an array of setting IDs or Setting/Value objects.
-     * @param {mixed}  options.settings.default - The ID of the setting the control relates to.
-     * @param {string} options.settings.data    - @todo Is this used?
-     * @param {string} options.label            - Label.
-     * @param {string} options.description      - Description.
-     * @param {number} [options.instanceNumber] - Order in which this instance was created in relation to other instances.
-     * @param {object} [options.params]         - Deprecated wrapper for the above properties.
-     * @returns {void}
-     */
+   * {@inheritDoc}
+   *
+   * Tweak the initialize method.
+   *
+   * @override
+   */
   initialize: function(id, options) {
     var control = this, deferredSettingIds = [], settings, gatherSettings;
 
@@ -239,12 +229,37 @@ api.controls.Base = wpApi.Control.extend({
         }
       });
 
-      if (DEBUG) {
-        control.setting.notifications.bind( 'change', () => {
-          console.log(`Notification change for default setting of control '${control.id}'`);
-        });
-      }
+      // this is needed to render a setting notification in its control
+      control.setting.notifications.bind( 'add', (notification) => {
+        // if (DEBUG) {
+        //   console.log(`Notification add [${notification.code}] for default setting of control '${control.id}'`);
+        // }
+        control.notifications.add(new wpApi.Notification(notification.code, { message: notification.message }));
+        control.notifications.render();
+      });
+      // this is needed to render a setting notification in its control
+      control.setting.notifications.bind( 'remove', (notification) => {
+        // if (DEBUG) {
+        //   console.log(`Notification remove [${notification.code}] for default setting of control '${control.id}'`);
+        // }
+        control.notifications.remove(notification.code);
+        control.notifications.render();
+      });
     }
+  },
+  /**
+   * Get localize string for current control
+   *
+   * Allows control classes to get a localized string by its key value. This is
+   * useful during validation to define the validation messages only once both
+   * for JavaScript and PHP validation.
+   *
+   * @see  PHP: `KKcp_Customize_Control_Base->l10n()`
+   * @since  1.0.0
+   * @return string
+   */
+  _l10n: function ( $key ) {
+    return api.l10n[ $key ] || '';
   },
   /**
    * Before `setting.set`, acutally `control.validate` wrap function.
@@ -259,7 +274,7 @@ api.controls.Base = wpApi.Control.extend({
   _beforeSet: function (value) {
     let $validity;
 
-    if (!this.params.optional && Validate.isEmpty(value)) {
+    if (!this.params.optional && Validate.isEmpty(value)) { // @@todo \\
       $validity = Validate.checkRequired([], value);
 
       this._manageValidityNotifications($validity);
@@ -280,76 +295,98 @@ api.controls.Base = wpApi.Control.extend({
     return this.params.loose ? value : this.setting();
   },
   /**
-   * Add validity notifications
+   * Manage validity notifications
    *
    * @abstract
    * @access private
-   * @param  {array<object<string,string>>} error `{ msgId: msg }`
+   * @param  {object<object<string,string>>} $validity
    */
   _manageValidityNotifications: function ($validity) {
     // always clear current notifications
-    this._clearNotifications();
-
-    // if no errors render and bail
-    if (!$validity.length) {
-      this.notifications.render();
-      return;
-    }
-    this._currentValueHasError = true;
-
-    for (let i = 0; i < $validity.length; i++) {
-      let error = $validity[i];
-      let code = _.keys(error)[0];
-      let message = error[code] || api.l10n['vInvalid'];
-      let notification = new wpApi.Notification(code, { type: 'error', message });
-      this.notifications.add(notification);
-      if (DEBUG) {
-        console.log(`Notification add '${code}' for default setting of control '${this.id}'`);
-      }
-    }
-
-    this.notifications.render();
-  },
-  /**
-   * Clear notifications
-   *
-   * @abstract
-   * @access private
-   */
-  _clearNotifications: function () {
-    this._currentValueHasError = false;
-
-    const notifications = this.notifications.get();
+    const notifications = this.setting.notifications.get();
+    // debugger; @@todo
     if (!notifications.length) {
       return;
     }
     for (let i = 0; i < notifications.length; i++) {
-      this.notifications.remove(notifications[i]['code']);
-      if (DEBUG) {
-        console.log(`Notification remove '${notifications[i]['code']}' for default setting of control '${this.id}'`);
+      this.setting.notifications.remove(notifications[i]['code']);
+    }
+
+    // if no errors render and bail
+    if (!$validityNotifications.length) {
+      return;
+    }
+    this._currentValueHasError = true;
+
+
+
+    if (!this._validityCodes) {
+      this._validityCodes = [];
+    }
+    for (let key in $validity) {
+      if ($validity.hasOwnProperty(key)) {
+        this._validityCodes.push(key);
       }
     }
-    // this.notifications.render();
+
+    for (let i = this._validityCodes.length - 1; i >= 0; i--) {
+      let code = this._validityCodes[i]
+      // if (code === )
+    }
+
+
+    for (let i = 0; i < $validityNotifications.length; i++) {
+      let notification = $validityNotifications[i];
+      this.setting.notifications.add(new wpApi.Notification(notification.code, { message: notification.message || api.l10n['vInvalid'] }));
+    }
+  },
+  /**
+   * Add error
+   *
+   * Shortcut to manage the $validity object during validation
+   *
+   * @see  PHP: `KKcp_Customize_Control_Base->add_error()`
+   * @since  1.0.0
+   * @param WP_Error          $validity
+   * @param string            $msg_id
+   * @param mixd|array|null   $msg_arguments
+   * @return WP_Error
+   */
+  _addError: function ( $validity, $msg_id, $msg_arguments ) {
+    const $msg = this._l10n( $msg_id );
+
+    // if there is an array of message arguments
+    if ( _.isArray( $msg_arguments ) ) {
+      $validity[$msg_id] = vsprintf( $msg, $msg_arguments );
+    }
+    // if there is just one message argument
+    else if ( $msg_arguments ) {
+      $validity[$msg_id] = sprintf( $msg, $msg_arguments );
+    // if it is a simple string message
+    } else {
+      $validity[$msg_id] = $msg;
+    }
+    return $validity;
   },
   /**
    * Validate
    *
    * @abstract
-   * @param  {string} newValue
-   * @return {string} The newValue validated
+   * @param  {string} value
+   * @return {string} The value validated
    */
-  validate: function (newValue) {
-    return newValue;
+  validate: function (value) {
+    return value;
   },
   /**
    * Sanitize
    *
    * @abstract
-   * @param  {string} newValue
-   * @return {string} The newValue sanitized
+   * @param  {string} value
+   * @return {string} The value sanitized
    */
-  sanitize: function (newValue) {
-    return newValue;
+  sanitize: function (value) {
+    return value;
   },
   /**
    * Sync UI with value coming from API, a programmatic change like a reset.
@@ -357,7 +394,6 @@ api.controls.Base = wpApi.Control.extend({
    * @abstract
    * @param {string} value The new setting value.
    */
-  /* jshint unused: false */
   syncUI: function (value) {},
   /**
    * Triggered when the control has been initialized
@@ -431,7 +467,7 @@ api.controls.Base = wpApi.Control.extend({
 
     // and empty the DOM from the container deferred
     // the slide out animation of the section doesn't freeze
-    _.defer(function () {
+    _.defer(() => {
       // due to the timeout we need to be sure that the section is not expanded
       if (!wpApi.section(this.section.get()).expanded.get()) {
 
@@ -454,7 +490,7 @@ api.controls.Base = wpApi.Control.extend({
         // flag control that it's not rendered
         this.rendered = false;
       }
-    }.bind(this));
+    });
   },
   /**
    * Inflate
@@ -519,7 +555,7 @@ api.controls.Base = wpApi.Control.extend({
    * @access private
    * @param  {?} value Could be the original, the current, or the initial
    *                   session value
-   * @return {string} The 'normalized' value passed as an argument.
+   * @return {?}       The 'normalized' value passed as an argument.
    */
   softenize: function (value) {
     return value;

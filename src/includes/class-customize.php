@@ -21,13 +21,14 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 	class KKcp_Customize {
 
 		/**
-		 * Custom types for panels, sections controls and settings.
-		 * Each type must be declared with its shortname and name of its php class.
+		 * Native types for panels, sections controls and settings.
 		 *
+		 * // @@note to help finding these out search for
+		 * `$this->register_control_type` in core \\
 		 * @since  1.0.0
 		 * @var array
 		 */
-		public static $custom_types = array(
+		public static $native_types = array(
 			'panels' => array(
 				// WordPress panels
 				// 'themes' => 'WP_Customize_Themes_Panel',
@@ -58,8 +59,24 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'theme' => 'WP_Customize_Theme_Control',
 				'upload' => 'WP_Customize_Media_Control',
 				// 'widget_form' => 'WP_Widget_Form_Customize_Control',
+			),
+			'settings' => array(
+			),
+		);
 
-				// Customize Plus controls
+		/**
+		 * Custom types for panels, sections controls and settings.
+		 * Each type must be declared with its shortname and name of its php class.
+		 *
+		 * @since  1.0.0
+		 * @var array
+		 */
+		public static $custom_types = array(
+			'panels' => array(
+			),
+			'sections' => array(
+			),
+			'controls' => array(
 				'kkcp_buttonset' => 'KKcp_Customize_Control_Buttonset',
 				'kkcp_checkbox' => 'KKcp_Customize_Control_Checkbox',
 				'kkcp_color' => 'KKcp_Customize_Control_Color',
@@ -79,7 +96,9 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'kkcp_textarea' => 'KKcp_Customize_Control_Textarea',
 				'kkcp_toggle' => 'KKcp_Customize_Control_Toggle',
 			),
-			'settings' => array(),
+			'settings' => array(
+				'kkcp_base' => 'KKcp_Customize_Setting_Base',
+			),
 		);
 
 		/**
@@ -545,31 +564,48 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		private static function tree_add_field( $section_id, $field_id, $field_args ) {
 			global $wp_customize;
 
-			// manage control first
+			$control_type_class = null;
+			$setting_type_class = null;
+
+			// grab control arguments
 			$control_args = $field_args['control'];
 
-			// augment control args array with section id
-			$control_args['section'] = $section_id;
+			// grab setting arguments
+			$setting_args = isset( $field_args['setting'] ) ? $field_args['setting'] : null;
 
 			// get type (required)
 			$control_type = $control_args['type'];
 
+			// get type (required) this is not meant for custom settings class for now
+			$setting_type = 'kkcp_base'; // $setting_args['type'];
+
+			// if a native setting type has been try to use its class
+			if ( $setting_type && isset( self::$native_types['settings'][ $setting_type ] ) ) {
+				$setting_type_class = self::$native_types['settings'][ $setting_type ];
+			}
 			// check if a custom class is needed for this control
 			if ( $control_type && isset( self::$custom_types['controls'][ $control_type ] ) ) {
 				$control_type_class = self::$custom_types['controls'][ $control_type ];
-			} else {
-				$control_type_class = null;
+
+				// only if it does use also our custom setting base class
+				if ( !$setting_type_class && $setting_type && isset( self::$custom_types['settings'][ $setting_type ] ) ) {
+					$setting_type_class = self::$custom_types['settings'][ $setting_type ];
+				}
+			}
+			// check if type matches a native control type
+			else if ( $control_type && isset( self::$native_types['controls'][ $control_type ] ) ) {
+				$control_type_class = self::$native_types['controls'][ $control_type ];
 			}
 
-			// then add setting
-			$setting_args = isset( $field_args['setting'] ) ? $field_args['setting'] : null;
+			// augment control args array with section id
+			$control_args['section'] = $section_id;
 
 			// @@todo remove the following 3 lines
 			// @see track https://core.trac.wordpress.org/ticket/34290#ticket \\
 			// % symbols get stripped out, we need to replace it with a double one \\
-			if ( isset( $setting_args['default'] ) ) {
-				$setting_args['default'] = str_replace( '%', '%%', $setting_args['default'] );
-			}
+			// if ( isset( $setting_args['default'] ) ) {
+			// 	$setting_args['default'] = str_replace( '%', '%%', $setting_args['default'] );
+			// }
 
 			// by default the setting id is the same as the control, so the field id
 			$setting_id = $field_id;
@@ -609,8 +645,20 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					}
 				}
 
-				// add setting to WordPress
-				$wp_customize->add_setting( $setting_id, $setting_args );
+				// check if a custom type/class has been specified
+				if ( $setting_type_class ) {
+					// if the class exists use it
+					if ( class_exists( $setting_type_class ) ) {
+						$wp_customize->add_setting( new $setting_type_class( $wp_customize, $setting_id, $setting_args ) );
+					// if the desired class doesn't exist report the error
+					} else {
+						wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for setting type %s.' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $setting_type_class . '</code>', '<code><b>' . $setting_type . '</b></code>' ) );
+					}
+				// if the desired control type is not specified use the plain WordPress API
+				} else {
+					// add setting to WordPress
+					$wp_customize->add_setting( $setting_id, $setting_args );
+				}
 
 			// if no settings args are passed
 			} else {

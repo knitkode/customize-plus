@@ -36,6 +36,21 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	 */
 	public $wp_editor = false;
 
+  /**
+   * {@inheritDoc}. Override it here in order to force the unset of `wp_editor`
+   * in case the user has no the right capability.
+   *
+   * @since 1.0.0
+   * @override
+   */
+  public function __construct( $manager, $id, $args = array() ) {
+    parent::__construct( $manager, $id, $args );
+
+		if ( ! user_can_richedit() ) {
+			$this->wp_editor = false;
+		}
+  }
+
 	/**
 	 * WP editor allowed options
 	 *
@@ -105,8 +120,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 
 		$this->json['allowHTML'] = KKcp_SanitizeJS::bool( $this->allowHTML );
 
-		// @@doubt Should we check for capability here? move this to the constructor \\
-		if ( $this->wp_editor && user_can_richedit() ) {
+		if ( $this->wp_editor ) {
 			if ( is_array( $this->wp_editor ) ) {
 				$this->json['wp_editor'] = KKcp_SanitizeJS::options( $this->wp_editor, self::$wp_editor_allowed_options );
 			} else {

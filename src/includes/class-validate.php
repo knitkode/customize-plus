@@ -157,7 +157,7 @@ class KKcp_Validate {
 		}
 
 		if ( ! in_array( $value, $choices ) ) {
-			$validity->add( 'vNotAChoice', sprintf( esc_html__( 'Value %s is not an allowed choice.' ), $value ) );
+			$validity = $control->add_error( $validity, 'vNotAChoice', $value );
 		}
 		return $validity;
 	}
@@ -185,28 +185,28 @@ class KKcp_Validate {
 		}
 
 		if ( ! is_array( $value ) ) {
-			$validity->add( 'vNotArray', esc_html__( 'Value must be a list.' ) );
+			$validity = $control->add_error( $validity, 'vNotArray' );
 		} else {
 
 			// maybe check that the length of the value array is correct
 			if ( $check_length && count( $choices ) !== count( $value ) ) {
-				$validity->add( 'vNotExactLengthArray', sprintf( esc_html__( 'List of values must contain exactly %s values' ), count( $choices ) ) );
+				$validity = $control->add_error( $validity, 'vNotExactLengthArray', count( $choices ) );
 			}
 
 			// maybe check the minimum number of choices selectable
 			if ( isset( $control->min ) && is_int( $control->min ) && count( $value ) < $control->min ) {
-				$validity->add( 'vNotMinLengthArray', sprintf( esc_html__( 'List of values must contain minimum %s values.' ), $control->min ) );
+				$validity = $control->add_error( $validity, 'vNotMinLengthArray', $control->min );
 			}
 
 			// maybe check the maxmimum number of choices selectable
 			if ( isset( $control->max ) && is_int( $control->max ) && count( $value ) > $control->max ) {
-				$validity->add( 'vNotMaxLengthArray', sprintf( esc_html__( 'List of values must contain maximum %s values.' ), $control->max ) );
+				$validity = $control->add_error( $validity, 'vNotMaxLengthArray', $control->max );
 			}
 
 			// now check that the selected values are allowed choices
 			foreach ( $value as $value_key ) {
 				if ( ! in_array( $value_key, $choices ) ) {
-					$validity->add( 'vNotAChoice', sprintf( esc_html__( 'Value %s is not an allowed choice.' ), $value_key ) );
+					$validity = $control->add_error( $validity, 'vNotAChoice', $value_key );
 				}
 			}
 		}
@@ -245,7 +245,7 @@ class KKcp_Validate {
  	 */
 	public static function checkbox( $validity, $value, $setting, $control ) {
 		if ( $filtered != 0 && $filtered != 1 ) {
-			$validity->add( 'vCheckbox', esc_html__( 'The checkbox should be either checked or unchecked.' ) );
+			$validity = $control->add_error( $validity, 'vCheckbox' );
 		}
 		return $validity;
 	}
@@ -263,18 +263,18 @@ class KKcp_Validate {
  	 */
 	public static function tags( $validity, $value, $setting, $control ) {
 		if ( ! is_string( $value ) ) {
-			$validity->add( 'vTagsType', esc_html__( 'Tags must be a string.' ) );
+			$validity = $control->add_error( $validity, 'vTagsType' );
 		} else {
 			$value = explode( ',', $value );
 		}
 
-		// maybe check the minimum number of choices selectable
+		// maybe check the minimum number of tags allowed
 		if ( isset( $control->min ) && is_int( $control->min ) && count( $value ) < $control->min ) {
-			$validity->add( 'vTagsMin', esc_html__( 'Minimum %s tags required.' ) );
+			$validity = $control->add_error( $validity, 'vTagsMin', $control->min );
 		}
-		// maybe check the maxmimum number of choices selectable
+		// maybe check the maximum number of tags allowed
 		if ( isset( $control->max ) && is_int( $control->max ) && count( $value ) > $control->max ) {
-			$validity->add( 'vTagsMax', esc_html__( 'Maximum %s tags allowed.' ) );
+			$validity = $control->add_error( $validity, 'vTagsMax', $control->max );
 		}
 
 		return $validity;
@@ -298,23 +298,23 @@ class KKcp_Validate {
 
 		// type
 		if ( ! is_string( $value ) ) {
-			$validity->add( 'vTextType', esc_html__( 'The value must be a string.' ) );
+			$validity = $control->add_error( $validity, 'vTextType' );
 		}
 		// url
 		if ( 'url' === $input_type && ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
-	    $validity->add( 'vInvalidUrl', esc_html__( 'Invalid URL.' ) );
+	    $validity = $control->add_error( $validity, 'vInvalidUrl' );
 		}
 		// email
 		else if ( 'email' === $input_type && ! is_email( $value ) ) {
-			$validity->add( 'vInvalidEmail', esc_html__( 'Invalid email.' ) );
+			$validity = $control->add_error( $validity, 'vInvalidEmail' );
 		}
 		// max length
 		if ( isset( $attrs['maxlength'] ) && is_int( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
-			$validity->add( 'vTextTooLong', sprintf ( esc_html__( 'The text must be shorter than %s.' ), $attrs['maxlength'] ) );
+			$validity = $control->add_error( $validity, 'vTextTooLong', $attrs['maxlength'] );
 		}
 		// html
 		if( $value != strip_tags( $value ) ) {
-			$validity->add( 'vTextHtml', esc_html__( 'HTML is not allowed. It will be stripped out on save.' ) );
+			$validity = $control->add_error( $validity, 'vTextHtml' );
 		}
 
 		return $validity;
@@ -336,17 +336,17 @@ class KKcp_Validate {
 
 		// no number
 		if ( ! is_numeric( $value ) ) {
-			$validity->add( 'vNotAnumber', esc_html__( 'The value must be a number.' ) );
+			$validity = $control->add_error( $validity, 'vNotAnumber' );
 
 			return $validity;
 		}
 		// unallowed float
 		if ( is_float( $value ) && ! $control->allowFloat ) {
-			$validity->add( 'vNoFloat', esc_html__( 'The value must be an integer, not a float.' ) );
+			$validity = $control->add_error( $validity, 'vNoFloat' );
 		}
 		// must be an int but it is not
 		else if ( ! is_int( $value ) && ! $control->allowFloat ) {
-			$validity->add( 'vNotAnInteger', esc_html__( 'The value must be an integer number.' ) );
+			$validity = $control->add_error( $validity, 'vNotAnInteger' );
 		}
 
 		$attrs = $control->input_attrs;
@@ -354,15 +354,15 @@ class KKcp_Validate {
 		if ( $attrs ) {
 			// if doesn't respect the step given
 			if ( isset( $attrs['step'] ) && is_numeric( $attrs['step'] ) && KKcp_Utils::modulus( $value, $attrs['step'] ) != 0 ) {
-				$validity->add( 'vNumberStep', sprintf( esc_html__( 'The number must be a multiple of %s.' ), $attrs['step'] ) );
+				$validity = $control->add_error( $validity, 'vNumberStep', $attrs['step'] );
 			}
 			// if it's lower than the minimum
 			if ( isset( $attrs['min'] ) && is_numeric( $attrs['min'] ) && $value < $attrs['min'] ) {
-				$validity->add( 'vNumberLow', sprintf( esc_html__( 'The number must be higher than %s.' ), $attrs['min'] ) );
+				$validity = $control->add_error( $validity, 'vNumberLow', $attrs['min'] );
 			}
 			// if it's higher than the maxmimum
 			if ( isset( $attrs['max'] ) && is_numeric( $attrs['max'] ) && $value > $attrs['max'] ) {
-				$validity->add( 'vNumberHigh', sprintf( esc_html__( 'The number must be lower than %s.' ), $attrs['max'] ) );
+				$validity = $control->add_error( $validity, 'vNumberHigh', $attrs['max'] );
 			}
 		}
 
@@ -382,15 +382,15 @@ class KKcp_Validate {
 	public static function size_unit( $validity, $unit, $allowed_units ) {
 		// if it needs a unit and it is missing
 		if ( ! empty( $allowed_units ) && ! $unit ) {
-			$validity->add( 'vSliderMissingUnit', esc_html__( 'A CSS unit must be specified.' ) );
+			$validity = $control->add_error( $validity, 'vSliderMissingUnit' );
 		}
 		// if the unit specified is not in the allowed ones
 		else if ( ! empty( $allowed_units ) && $unit && ! in_array( $unit, $allowed_units ) ) {
-			$validity->add( 'vSliderInvalidUnit', esc_html__( 'The CSS unit is invalid.' ) );
+			$validity = $control->add_error( $validity, 'vSliderInvalidUnit' );
 		}
 		// if a unit is specified but none is allowed
 		else if ( empty( $allowed_units ) && $unit ) {
-			$validity->add( 'vSliderNoUnit', esc_html__( 'This value does not accept a CSS unit.' ) );
+			$validity = $control->add_error( $validity, 'vSliderNoUnit' );
 		}
 
 		return $validity;
@@ -429,21 +429,29 @@ class KKcp_Validate {
 	 * @return WP_Error
  	 */
 	public static function textarea( $validity, $value, $setting, $control ) {
-		// wrong type
-		if ( is_string( $value ) ) {
-			$validity->add( 'vTextType', esc_html__( 'Value must be a string.' ) );
-		}
-		//
-		if ( $control->allowHTML || $control->wp_editor ) {
+		// // wrong type
+		// if ( ! is_string( $value ) ) {
+		// 	$validity->add( 'vTextType', esc_html__( 'Value must be a string.' ) );
+		// }
+		// // type
+		// if ( ! is_string( $value ) ) {
+		// 	$validity->add( 'vTextType', esc_html__( 'Value must be a string.' ) );
+		// }
 
-		// html
-		if( $value != strip_tags( $value ) ) {
-			$validity->add( 'vTextHtml', esc_html__( 'HTML is not allowed. It will be stripped out on save.' ) );
-		}
-			return wp_kses_post( $value );
-		} else {
-			return wp_strip_all_tags( $value );
-		}
+		// // max length
+		// if ( isset( $attrs['maxlength'] ) && is_int( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
+		// 	$validity->add( 'vTextTooLong', sprintf ( esc_html__( 'The text must be shorter than %s.' ), $attrs['maxlength'] ) );
+		// }
+		// if ( $control->allowHTML || $control->wp_editor ) {
+
+		// // html
+		// if( $value != strip_tags( $value ) ) {
+		// 	$validity->add( 'vTextHtml', esc_html__( 'HTML is not allowed. It will be stripped out on save.' ) );
+		// }
+		// 	return wp_kses_post( $value );
+		// } else {
+		// 	return wp_strip_all_tags( $value );
+		// }
 		return $validity;
 	}
 }

@@ -113,7 +113,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		// add setting factory value
 		// @@todo remove sprintf @see track http://bit.ly/2odnCmN \\
 		if ( is_object( $this->setting ) ) {
-			$this->json['vFactory'] = sprintf( json_encode( $this->setting->default ) );
+			$this->json['vFactory'] = json_encode( $this->setting->default );
 		}
 
 		// add setting initial value
@@ -443,6 +443,25 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
+	 * Get localize string for current control
+	 *
+	 * Allows control classes to get a localized string by its key value. This is
+	 * useful during validation to define the validation messages only once both
+	 * for JavaScript and PHP validation.
+	 *
+	 * @see  JavaScript: `kkcp.controls.Base.l10n()`
+	 * @since  1.0.0
+	 * @return string
+	 */
+	public function l10n( $key ) {
+		$strings = $this->get_l10n();
+		if ( isset( $strings[ $key ] ) ) {
+			return $strings[ $key ];
+		}
+		return '';
+	}
+
+	/**
 	 * Get js constants for current controls.
 	 *
 	 * Allows control classes to add its specific constants variables on our
@@ -454,5 +473,34 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 */
 	public function get_constants() {
 		return array();
+	}
+
+	/**
+	 * Add error
+	 *
+	 * Shortcut to manage the $validity object during validation
+	 *
+	 * @see  JavaScript: `kkcp.controls.Base.addError()`
+	 * @since  1.0.0
+	 * @param WP_Error					$validity
+	 * @param string						$msg_id
+	 * @param mixd|array|null 	$msg_arguments
+	 * @return WP_Error
+	 */
+	public function add_error( $validity, $msg_id, $msg_arguments ) {
+		$msg = $this->l10n( $msg_id );
+
+		// if there is an array of message arguments
+		if ( is_array( $msg_arguments ) ) {
+			$validity->add( $msg_id, vsprintf( $msg, $msg_arguments ) );
+		}
+		// if there is just one message argument
+		else if ( ! empty( $msg_arguments ) ) {
+			$validity->add( $msg_id, sprintf( $msg, $msg_arguments ) );
+		// if it is a simple string message
+		} else {
+			$validity->add( $msg_id, $msg );
+		}
+		return $validity;
 	}
 }

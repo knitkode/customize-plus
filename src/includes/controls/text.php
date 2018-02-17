@@ -26,10 +26,10 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
 	 */
 	public function get_l10n() {
 		return array(
-			'vTextType' => esc_html__( 'The value must be a string.' ),
+			'vTextType' => esc_html__( 'Value must be a string.' ),
 			'vInvalidUrl' => esc_html__( 'Invalid URL.' ),
 			'vInvalidEmail' => esc_html__( 'Invalid email.' ),
-			'vTextTooLong' => esc_html__( 'The text must be shorter than %s.' ),
+			'vTextTooLong' => esc_html__( 'Text must be shorter than %s.' ),
 			'vTextHtml' => esc_html__( 'HTML is not allowed. It will be stripped out on save.' ),
 		);
 	}

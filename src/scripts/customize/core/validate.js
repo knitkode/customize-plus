@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import sprintf from 'locutus/php/strings/sprintf';
 import is_int from 'locutus/php/var/is_int';
 import is_float from 'locutus/php/var/is_float';
 import is_numeric from 'locutus/php/var/is_numeric';
@@ -52,7 +51,7 @@ export function isEmpty (value) {
  */
 export function checkRequired ($validity, $value, $setting, $control) {
   if ( isEmpty( $value ) ) {
-    $validity.push({ 'vRequired': api.l10n['vRequired'] });
+    $validity.push({ 'vRequired': api.l10n['vRequired'] }); // @@todo \\
   }
   return $validity;
 }
@@ -62,7 +61,7 @@ export function singleChoice ($validity, $value, $setting, $control) {
   const choices = $control._validChoices && $control._validChoices.length ? $control._validChoices : $control.params.choices;
 
   if ( choices.indexOf( $value ) === -1 ) {
-    $validity.push({ 'vNotAChoice': sprintf( api.l10n['vNotAChoice'], $value ) });
+    $validity = $control._addError( $validity, 'vNotAChoice', $value );
   }
   return $validity;
 }
@@ -87,28 +86,28 @@ export function multipleChoices( $validity, $value, $setting, $control, $check_l
   const choices = $control._validChoices && $control._validChoices.length ? $control._validChoices : params.choices;
 
   if ( !_.isArray( $value ) ) {
-    $validity.push({ 'vNotArray': api.l10n['vNotArray'] });
+    $validity = $control._addError( $validity, 'vNotArray' );
   } else {
 
     // maybe check that the length of the value array is correct
     if ( $check_length && choices.length !== $value.length ) {
-      $validity.push({ 'vNotExactLengthArray': sprintf( api.l10n['vNotExactLengthArray'], choices.length ) });
+      $validity = $control._addError( $validity, 'vNotExactLengthArray', choices.length );
     }
 
     // maybe check the minimum number of choices selectable
     if ( is_int( params.min ) && $value.length < params.min ) {
-      $validity.push({ 'vNotMinLengthArray': sprintf( api.l10n['vNotMinLengthArray'], params.min ) });
+      $validity = $control._addError( $validity, 'vNotMinLengthArray', params.min );
     }
 
     // maybe check the maxmimum number of choices selectable
     if ( is_int( params.max ) && $value.length > params.max ) {
-      $validity.push({ 'vNotMaxLengthArray': sprintf( api.l10n['vNotMaxLengthArray'], params.max ) });
+      $validity = $control._addError( $validity, 'vNotMaxLengthArray', params.max );
     }
 
     // now check that the selected values are allowed choices
     for (let i = 0; i < $value.length; i++) {
       if ( choices.indexOf( $value[i] ) === -1 ) {
-        $validity.push({ 'vNotAChoice': sprintf( api.l10n['vNotAChoice'], $value[i] ) });
+        $validity = $control._addError( $validity, 'vNotAChoice', $value[i] );
       }
     }
   }
@@ -147,7 +146,7 @@ export function oneOrMoreChoices( $validity, $value, $setting, $control ) {
  */
 export function checkbox( $validity, $value, $setting, $control ) {
   if ( $value != 1 && $value != 0 ) {
-    $validity.push({ 'vCheckbox': api.l10n['vCheckbox'] });
+    $validity = $control._addError( $validity, 'vCheckbox' );
   }
   return $validity;
 }
@@ -167,7 +166,7 @@ export function tags( $validity, $value, $setting, $control ) {
   const {params} = $control;
 
   if ( !_.isString( $value ) ) {
-    $validity.push({ 'vTagsType': api.l10n['vTagsType'] });
+    $validity = $control._addError( $validity, 'vTagsType' );
   }
   if (!_.isArray($value)) {
     $value = $value.split(',');
@@ -175,11 +174,11 @@ export function tags( $validity, $value, $setting, $control ) {
 
   // maybe check the minimum number of choices selectable
   if ( is_int( params.min ) && $value.length < params.min ) {
-    $validity.push({ 'vTagsMin': sprintf( api.l10n['vTagsMin'], params.min ) });
+    $validity = $control._addError( $validity, 'vTagsMin', params.min );
   }
   // maybe check the maxmimum number of choices selectable
   if ( is_int( params.max ) && $value.length > params.max ) {
-    $validity.push({ 'vTagsMax': sprintf( api.l10n['vTagsMax'], params.max ) });
+    $validity = $control._addError( $validity, 'vTagsMax', params.max );
   }
 
   return $validity;
@@ -202,24 +201,24 @@ export function text( $validity, $value, $setting, $control ) {
 
   // type
   if ( ! _.isString( $value ) ) {
-    $validity.push({ 'vTextType': api.l10n['vTextType'] });
+    $validity = $control._addError( $validity, 'vTextType' );
   }
   // url
   // make the `isURL` function behaving like php's `filter_var( $value, FILTER_VALIDATE_URL )`
   if ( $input_type === 'url' && !isURL( $value, { require_tld: false, allow_trailing_dot: true } ) ) {
-    $validity.push({ 'vInvalidUrl': api.l10n['vInvalidUrl'] });
+    $validity = $control._addError( $validity, 'vInvalidUrl' );
   }
   // email
   else if ( $input_type === 'email' && !isEmail( $value ) ) {
-    $validity.push({ 'vInvalidEmail': api.l10n['vInvalidEmail'] });
+    $validity = $control._addError( $validity, 'vInvalidEmail' );
   }
   // max length
   if ( is_int( $attrs['maxlength'] ) && $value.length > $attrs['maxlength'] ) {
-    $validity.push({ 'vTextTooLong': sprintf( api.l10n['vTextTooLong'], $attrs['maxlength'] ) });
+    $validity = $control._addError( $validity, 'vTextTooLong', $attrs['maxlength'] );
   }
   // html presence
   if ( Utils.hasHTML( $value ) ) {
-    $validity.push({ 'vTextHtml': api.l10n['vTextHtml'] });
+    $validity = $control._addError( $validity, 'vTextHtml' );
   }
 
   return $validity;
@@ -245,30 +244,30 @@ export function number( $validity, $value, $setting, $control ) {
 
   // no number
   if ( ! is_numeric( $value ) ) {
-    $validity.push({ 'vNotAnumber': api.l10n['vNotAnumber'] });
+    $validity = $control._addError( $validity, 'vNotAnumber' );
     return $validity;
   }
   // unallowed float
   if ( is_float( $value ) && !allowFloat ) {
-    $validity.push({ 'vNoFloat': api.l10n['vNoFloat'] });
+    $validity = $control._addError( $validity, 'vNoFloat' );
   }
   // must be an int but it is not
   else if ( ! is_int( $value ) && !allowFloat ) {
-    $validity.push({ 'vNotAnInteger': api.l10n['vNotAnInteger'] });
+    $validity = $control._addError( $validity, 'vNotAnInteger' );
   }
 
   if ( $attrs ) {
     // if doesn't respect the step given
     if ( is_numeric( $attrs['step'] ) && Utils.modulus($value, $attrs['step']) !== 0 ) {
-      $validity.push({ 'vNumberStep': sprintf( api.l10n['vNumberStep'], $attrs['step'] ) });
+      $validity = $control._addError( $validity, 'vNumberStep', $attrs['step'] );
     }
     // if it's lower than the minimum
     if ( is_numeric( $attrs['min'] ) && $value < $attrs['min'] ) {
-      $validity.push({ 'vNumberLow': sprintf( api.l10n['vNumberLow'], $attrs['min'] ) });
+      $validity = $control._addError( $validity, 'vNumberLow', $attrs['min'] );
     }
     // if it's higher than the maxmimum
     if ( is_numeric( $attrs['max'] ) && $value > $attrs['max'] ) {
-      $validity.push({ 'vNumberHigh': sprintf( api.l10n['vNumberHigh'], $attrs['max'] ) });
+      $validity = $control._addError( $validity, 'vNumberHigh', $attrs['max'] );
     }
   }
 
@@ -288,15 +287,15 @@ export function number( $validity, $value, $setting, $control ) {
 export function sizeUnit( $validity, $unit, $allowed_units ) {
   // if it needs a unit and it is missing
   if ( ! empty( $allowed_units ) && ! $unit ) {
-    $validity.push({ 'vSliderMissingUnit': api.l10n['vSliderMissingUnit'] });
+    $validity = $control._addError( $validity, 'vSliderMissingUnit' );
   }
   // if the unit specified is not in the allowed ones
   else if ( ! empty( $allowed_units ) && $unit && $allowed_units.indexOf( $unit ) === -1 ) {
-    $validity.push({ 'vSliderInvalidUnit': api.l10n['vSliderInvalidUnit'] });
+    $validity = $control._addError( $validity, 'vSliderInvalidUnit' );
   }
   // if a unit is specified but none is allowed
   else if ( empty( $allowed_units ) && $unit ) {
-    $validity.push({ 'vSliderNoUnit': api.l10n['vSliderNoUnit'] });
+    $validity = $control._addError( $validity, 'vSliderNoUnit' );
   }
 
   return $validity;

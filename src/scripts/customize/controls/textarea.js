@@ -2,6 +2,8 @@ import window from 'window';
 import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
+import Validate from '../core/validate';
+import Sanitize from '../core/sanitize';
 // import ControlBase from './base';
 
 /**
@@ -18,24 +20,14 @@ let Control = api.controls.Base.extend({
   /**
    * @override
    */
-  sanitize: function (newValue) {
-    if (!this.params.allowHTML && !this.params.wp_editor) {
-      return _.escape(newValue);
-    } else {
-      return newValue;
-    }
+  validate: function (value) {
+    return Validate.textarea([], value, this.setting, this);
   },
   /**
    * @override
    */
-  validate: function (newValue) {
-    // @@todo block here if it contains html, otherwise the textarea get crazy
-    // escaping it while you type \\
-    if (_.isString(newValue)) {
-      return newValue;
-    } else {
-      return { error: true };
-    }
+  sanitize: function (value) {
+    return Sanitize.textarea(value, this.setting, this);
   },
   /**
    * @override
