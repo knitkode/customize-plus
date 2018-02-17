@@ -21,6 +21,18 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 	public $type = 'kkcp_content';
 
 	/**
+	 * @since 1.0.0
+	 * @inheritDoc
+	 */
+	public $advanced = false;
+
+	/**
+	 * @since 1.0.0
+	 * @inheritDoc
+	 */
+	public $searchable = false;
+
+	/**
 	 * Markdown.
 	 *
 	 * @since 1.0.0
