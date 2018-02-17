@@ -231,13 +231,10 @@ class Utils {
    * @param {function} callback
    */
   _eachControl (callback) {
-    var wpApiControl = wpApi.control;
+    const wpApiControl = wpApi.control;
+
     for (var controlId in wpApi.settings.controls) {
-      var control = wpApiControl(controlId);
-      // @@doubt, probably unneeded check \\
-      if (control && control.setting) {
-        callback(control);
-      }
+      callback(wpApiControl(controlId));
     }
   }
 

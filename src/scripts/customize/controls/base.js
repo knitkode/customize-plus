@@ -727,7 +727,7 @@ wpApi.bind('ready', function () {
  */
 wpApi.bind('save', function () {
   Utils._eachControl(function (control) {
-    if (control.setting && control.setting['_dirty']) { // whitelisted from uglify \\
+    if (control && control.setting && control.setting['_dirty']) { // whitelisted from uglify \\
       // console.log(control.id, 'is dirty on save with value:', control.setting());
       control.params['vLastSaved'] = control.setting();
     }
