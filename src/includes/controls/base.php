@@ -111,7 +111,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		parent::to_json();
 
 		// add setting factory value
-		// @@todo remove sprintf @see track http://bit.ly/2odnCmN \\
 		if ( is_object( $this->setting ) ) {
 			$this->json['vFactory'] = json_encode( $this->setting->default );
 		}
