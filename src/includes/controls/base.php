@@ -375,9 +375,9 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 *
 	 * @since 1.0.0
 	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @return string The sanitized value.
- 	 */
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @return string The sanitized value.
+	 */
 	public static function sanitize_callback( $value, $setting ) {
 		$control = $setting->manager->get_control( $setting->id );
 
@@ -394,10 +394,10 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 *
 	 * @abstract
 	 * @param string               $value   The value to sanitize.
- 	 * @param WP_Customize_Setting $setting Setting instance.
- 	 * @param WP_Customize_Control $control Control instance.
- 	 * @return string The sanitized value.
- 	 */
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return string The sanitized value.
+	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return $value;
 		// return wp_kses_post( $value );
@@ -420,9 +420,9 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @param WP_Customize_Setting $setting  Setting instance.
 	 * @return mixed
- 	 */
+	 */
 	public static function validate_callback( $validity, $value, $setting ) {
 		$control = $setting->manager->get_control( $setting->id );
 
@@ -449,10 +449,10 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @abstract
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
+	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @param WP_Customize_Control $control  Control instance.
 	 * @return mixed
- 	 */
+	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return $validity;
 	}

@@ -12,13 +12,13 @@ import Validate from '../core/validate';
 /**
  * Control Base class
  *
- * Change a bit the default Customizer Control class.
+ * Expands the default Customizer Control class.
  * Render controls content on demand when their section is expanded then remove
- * the DOM when the section is collapsed. Since we override the `initialize`
- * and `renderContent` methods keep an eye on
- * @link(http://git.io/vZ6Yq, WordPress source code).
+ * the DOM when the section is collapsed. Since we override some 'not-meant-to-
+ * be-overriden' methods keep an eye on @link(http://git.io/vZ6Yq, WordPress
+ * source code).
  *
- * @see PHP class KKcp_Customize_Control_Base.
+ * @see PHP class KKcp_Customize_Control_Base
  * @since  1.0.0
  *
  * @class api.controls.Base
@@ -64,6 +64,8 @@ api.controls.Base = wpApi.Control.extend({
       } );
     }
 
+    // @note `control.params.content` is managed differently in `inflate` and
+    // `deflate` methods
     // if ( ! control.params.content ) {
     //   control.params.content = $( '<li></li>', {
     //     id: 'customize-control-' + id.replace( /]/g, '' ).replace( /\[/g, '-' ),
@@ -76,11 +78,12 @@ api.controls.Base = wpApi.Control.extend({
     container.className = 'customize-control kkcp-control customize-control-'
       + control.params.type;
 
-    // add a flag so that we are able to recognize our custom controls, let's
-    // keep it short, so we need only to check `if (control.kkcp)`
+    // @note add a flag so that we are able to recognize our custom controls,
+    // let's keep it short, so we need only to check `if (control.kkcp)`
     control.kkcp = 1;
 
     control.id = id;
+    // @note all this stuff is not needed in Customize Plus Controls
     // control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
     // control.templateSelector = 'customize-control-' + control.params.type + '-content';
     // if ( control.params.content ) {
@@ -90,7 +93,7 @@ api.controls.Base = wpApi.Control.extend({
     // }
     control.container = $(container);
 
-    // save a reference of the raw DOM node, we're gonna use it more
+    // @note save a reference of the raw DOM node, we're gonna use it more
     // than the jQuery object `container` (which we can't change, because it's
     // used by methods which we don't override)
     control._container = container;
@@ -167,8 +170,10 @@ api.controls.Base = wpApi.Control.extend({
       // Identify the main setting.
       control.setting = control.settings['default'] || null;
 
-      // control.linkElements(); // @@note this way of managing controls is disabled here \\
-      // control.embed(); // @@note disable here for on demand rendering/inflation \\
+      // @note this way of managing controls is disabled here
+      // control.linkElements();
+      // @note disable here for on demand rendering/inflation
+      // control.embed();
     };
 
     if ( 0 === deferredSettingIds.length ) {
@@ -177,88 +182,103 @@ api.controls.Base = wpApi.Control.extend({
       wpApi.apply( wpApi, deferredSettingIds.concat( gatherSettings ) );
     }
 
+    // @note call custom private initialization (not overridable by subclasses)
+    this._initialize();
+  },
+  /**
+   * Private Initialize
+   *
+   * Collect here the custom initialization additions of Customize Plus controls
+   */
+  _initialize: function () {
     // we need to parse the factory value ourselves because we also encode it
-    // ourselves in `base.php` control. It is enough to do this once on initialization
-    if (!_.isUndefined(control.params['vFactory'])) {
-      control.params['vFactory'] = JSON.parse(control.params['vFactory']);
+    // ourselves in `base.php` control. It is enough to do this once on
+    // initialization
+    if (!_.isUndefined(this.params['vFactory'])) {
+      this.params['vFactory'] = JSON.parse(this.params['vFactory']);
       // These values seem to get copied on the main constructor at a certain
       // point instead of staying only on the `params` where we define them
-      // (this happens since WordPress 4.9)
-      // delete control['vFactory'];
-      // delete control['vInitial'];
+      // (this seems to happen since WordPress 4.9)
+      // delete this['vFactory'];
+      // delete this['vInitial'];
     }
 
     // an @abstract method to override (this needs to be called here, before than
     // the `ready` method)
-    control.onInit();
+    this.onInit();
 
-    // After the control is embedded on the page, invoke the "ready" method.
-    control.deferred.embedded.done( function () {
-      // control.linkElements(); // @@note this way of managing controls is disabled here \\
-      control.setupNotifications();
-      control.ready();
+    // After the this is embedded on the page, invoke the "ready" method.
+    this.deferred.embedded.done(() => {
+      // @note this way of managing thiss is disabled
+      // this.linkElements();
+      this.setupNotifications();
+      this.ready();
     });
 
-    // embed controls only when the parent section get clicked to keep the DOM light,
-    // to make this work all data can't be stored in the DOM, which is good
-    wpApi.section(control.section()).expanded.bind(function (expanded) {
+    // embed control only when the parent section get clicked to keep the DOM
+    // light,to make this work all data can't be stored in the DOM, which is ok
+    wpApi.section(this.section()).expanded.bind((expanded) => {
       // @@doubt \\
       // either deflate and re-inflate dom each time...
       // if (expanded) {
-      //   _.defer(control.inflate.bind(control));
+      //   _.defer(this.inflate.bind(this));
       // } else {
-      //   control.deflate();
+      //   this.deflate();
       // }
-      // ...or just do it the first time a control is expanded
-      if (expanded && !control.rendered) {
-        _.defer(control.inflate.bind(control));
+      // ...or just do it the first time a this is expanded
+      if (expanded && !this.rendered) {
+        _.defer(this.inflate.bind(this));
       }
     });
 
-    // controls can be setting-less from 4.5
-    if (control.setting) {
+    // controls can be setting-less from 4.5, so check
+    if (this.setting) {
 
       // always add the initial setting value and the last saved value on
       // initialization without printing them to JSON via PHP `to_json`
-      // control method
-      control.params['vInitial'] = control.setting();
-      control.params['vLastSaved'] = control.params['vInitial'];
+      // this method
+      this.params['vInitial'] = this.setting();
+      this.params['vLastSaved'] = this.params['vInitial'];
 
       // Add custom validation function overriding the empty function from WP
-      // API in `customize-controls.js`, in the constructor `api.Value`
-      if (!control.params['noLiveValidation']) {
-        control.setting.validate = control._validate.bind(control);
+      // API in `customize-thiss.js`, in the constructor `api.Value`
+      if (!this.params['noLiveValidation']) {
+        this.setting.validate = this._validate.bind(this);
       }
 
       // add sanitization of the value `postMessag`ed to the preview
-      if (!control.params['noLiveSanitization'] && !control.params['loose']) {
-        control.setting.sanitize = control.sanitize.bind(control);
+      if (!this.params['noLiveSanitization'] && !this.params['loose']) {
+        this.setting.sanitize = this.sanitize.bind(this);
       }
 
-      // bind setting change to control method to reflect a programmatic
-      // change on the UI, only if the control is rendered
-      control.setting.bind(function (value) {
-        if (control.rendered) {
-          control.syncUI.call(control, value);
+      // bind setting change to this method to reflect a programmatic
+      // change on the UI, only if the this is rendered
+      this.setting.bind((value) => {
+        if (this.rendered) {
+          this.syncUI.call(this, value);
         }
       });
 
-      // this is needed to render a setting notification in its control
-      control.setting.notifications.bind('add', function (notification) {
+      // this is needed to render a setting notification in its this
+      this.setting.notifications.bind('add', (notification) => {
         // if (DEBUG) {
-        //   console.log(`Notification add [${notification.code}] for default setting of control '${control.id}'`);
+        //   console.log(`Notification add [${notification.code}] for default
+        //    setting of this '${this.id}'`);
         // }
-        control.notifications.add(new wpApi.Notification(notification.code, { message: notification.message }));
-        control.notifications.render();
+        this.notifications.add(new wpApi.Notification(notification.code,
+          { message: notification.message })
+        );
+        this.notifications.render();
       });
 
-      // this is needed to render a setting notification in its control
-      control.setting.notifications.bind('removed', function (notification) {
+      // this is needed to render a setting notification in its this
+      this.setting.notifications.bind('removed', (notification) => {
         // if (DEBUG) {
-        //   console.log(`Notification remove [${notification.code}] for default setting of control '${control.id}'`);
+        //   console.log(`Notification remove [${notification.code}] for default
+        //    setting of this '${this.id}'`);
         // }
-        control.notifications.remove(notification.code);
-        control.notifications.render();
+        this.notifications.remove(notification.code);
+        this.notifications.render();
       });
     }
   },
@@ -413,31 +433,28 @@ api.controls.Base = wpApi.Control.extend({
    * @override
    */
   renderContent: function () {
-    const control = this;
-    const _container = control._container;
-    const templateId = control.templateSelector;
-    let template;
+    const {_container, templateSelector} = this;
 
-    // Replace the container element's content with the control.
-    if (document.getElementById('tmpl-' + templateId)) {
-      template = wp.template(templateId);
+    // replaces the container element's content with the control.
+    if (document.getElementById(`tmpl-${templateSelector}`)) {
+      const template = wp.template(templateSelector);
       if (template && _container) {
 
         /* jshint funcscope: true */
         if (DEBUG.performances) var t = performance.now();
 
         // render and store it in the params
-        control.template = _container.innerHTML = template(control.params).trim();
+        this.params.content = _container.innerHTML = template(this.params).trim();
 
         // var frag = document.createDocumentFragment();
         // var tplNode = document.createElement('div');
-        // tplNode.innerHTML = template( control.params ).trim();
+        // tplNode.innerHTML = template( this.params ).trim();
         // frag.appendChild(tplNode);
-        // control.template = frag;
+        // this.params.content = frag;
         // _container.appendChild(frag);
 
-        if (DEBUG.performances) console.log('%c renderContent of ' + control.params.type + '(' +
-          control.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
+        if (DEBUG.performances) console.log('%c renderContent of ' + this.params.type + '(' +
+          this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
     }
 
@@ -464,8 +481,8 @@ api.controls.Base = wpApi.Control.extend({
 
     const container = this._container;
 
-    if (!this.template) {
-      this.template = container.innerHTML.trim();
+    if (!this.params.content) {
+      this.params.content = container.innerHTML.trim();
     }
 
     // call the abstract method
@@ -515,14 +532,14 @@ api.controls.Base = wpApi.Control.extend({
   inflate: function (shouldResolveEmbeddedDeferred) {
     /* jshint funcscope: true */
     if (DEBUG.performances) var t = performance.now();
-    if (!this.template) {
+    if (!this.params.content) {
       this.renderContent();
 
       if (DEBUG.performances) console.log('%c inflate DOM of ' + this.params.type +
         ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
     } else {
       if (!this.rendered) {
-        this._container.innerHTML = this.template;
+        this._container.innerHTML = this.params.content;
         this._rerenderNotifications();
 
         if (DEBUG.performances) console.log('%c inflate DOM of ' + this.params.type +
