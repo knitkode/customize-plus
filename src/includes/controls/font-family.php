@@ -82,10 +82,6 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 		<label>
 			<?php $this->js_tpl_header(); ?>
 		</label>
-		<?php /* <label>
-			<input class="kkcp-font-google-toggle" type="checkbox" value="0">
-			<?php esc_html_e( 'Enable Google fonts' ); ?>
-		</label> */ ?>
 		<input class="kkcp-selectize" type="text" required>
 		<?php
 	}
