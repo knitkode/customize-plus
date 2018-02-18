@@ -370,7 +370,7 @@ class KKcp_Validate {
 			!KKcp_Helper::is_rgba( $value ) &&
 			$value !== 'transparent'
 		) {
-			$validity = $control->add_error( $validity, 'vNoColor' );
+			$validity = $control->add_error( $validity, 'vColorInvalid' );
 		}
 
 		return $validity;

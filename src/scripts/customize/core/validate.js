@@ -369,10 +369,11 @@ export function color( $validity={}, $value, $setting, $control ) {
       !Helper.isRgba(value) &&
       value !== 'transparent'
     ) {
-    $validity = $control._addError( $validity, 'vNoColor' );
+    $validity = $control._addError( $validity, 'vColorInvalid' );
   }
 
   return $validity;
+}
 
 /**
  * Exports the `Validate` object

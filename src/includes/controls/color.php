@@ -104,7 +104,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 			'vNotInPalette' => esc_html__( 'Color not in the allowed palette' ),
 			'vNoTransparent', esc_html__( 'Transparent is not allowed for this setting' ),
 			'vNoRGBA', esc_html__( 'RGBA color is not allowed for this setting' ),
-			'vNoColor' => esc_html__( 'Not a valid color' ),
+			'vColorInvalid' => esc_html__( 'Not a valid color' ),
 		);
 	}
 
