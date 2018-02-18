@@ -24,7 +24,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * allowed to be empty.
 	 *
 	 * @since 1.0.0
-	 * @var boolean
+	 * @var bool
 	 */
 	public $optional = false;
 
@@ -40,12 +40,42 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * an invalid value in the customizer preview, and the last valid value will
 	 * always be the one both previewed and sent to the server.
 	 *
-	 * @see JS: `api.controls.Base->_beforeSet()`
+	 * @see JS: `api.controls.Base->_validate()`
 	 *
 	 * @since 1.0.0
-	 * @var boolean
+	 * @var bool
 	 */
 	public $loose = true;
+
+	/**
+	 * Enable live validation of control's default setting value
+	 *
+	 * For readibility this property is 'positively' put. But in the JSON `params`
+	 * it is reversed in its negative form, so that the `control.params` object
+	 * get another property only in the less frequent case and prints a slightly
+	 * smaller JSON. In `to_json` this becomes `noLiveValidation`.
+	 *
+	 * @see JS: `api.controls.Base->initialize()`
+	 *
+	 * @since 1.0.0
+	 * @var bool
+	 */
+	public $live_validation = true;
+
+	/**
+	 * Enable live sanitization of control's default setting value
+	 *
+	 * For readibility this property is 'positively' put. But in the JSON `params`
+	 * it is reversed in its negative form, so that the `control.params` object
+	 * get another property only in the less frequent case and prints a slightly
+	 * smaller JSON. In `to_json` this becomes `noLiveSanitization`.
+	 *
+	 * @see JS: `api.controls.Base->initialize()`
+	 *
+	 * @since 1.0.0
+	 * @var bool
+	 */
+	public $live_sanitization = true;
 
 	/**
 	 * HTML (allows html in the setting value)
@@ -55,7 +85,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * no `html` is allowed at all. \\
 	 *
 	 * @since 1.0.0
-	 * @var boolean|array
+	 * @var bool|array
 	 */
 	public $html = false;
 
@@ -78,21 +108,21 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 *
 	 * @premium A Customize Plus Premium feature.
 	 * @since 1.0.0
-	 * @var boolean
+	 * @var bool
 	 */
 	public $advanced = false;
 
 	/**
 	 * Whether this control is searchable by the Search tool.
 	 *
-	 * // @@tobecareful for readibility here is 'searchable' and not
-	 * 'unsearchable', but in the `params` json is reversed, so that the
-	 * `control.params` object get another property only if a control is not
-	 * searchable (which should happen less often than otherwise...). \\
+	 * For readibility this property is 'positively' put. But in the JSON `params`
+	 * it is reversed in its negative form, so that the `control.params` object
+	 * get another property only in the less frequent case and prints a slightly
+	 * smaller JSON. In `to_json` this becomes `unsearchable`.
 	 *
 	 * @premium A Customize Plus Premium feature.
 	 * @since 1.0.0
-	 * @var boolean
+	 * @var bool
 	 */
 	public $searchable = true;
 
@@ -110,36 +140,34 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public function to_json() {
 		parent::to_json();
 
-		// add setting factory value
+		if ( $this->optional ) {
+			$this->json['optional'] = true;
+		}
+		if ( $this->loose ) {
+			$this->json['loose'] = true;
+		}
+		if ( ! $this->live_validation ) {
+			$this->json['noLiveValidation'] = true;
+		}
+		if ( ! $this->live_sanitization ) {
+			$this->json['noLiveSanitization'] = true;
+		}
+		if ( $this->html ) {
+			$this->json['html'] = $this->html;
+		}
+
+		// add setting factory default value
 		if ( is_object( $this->setting ) ) {
 			$this->json['vFactory'] = json_encode( $this->setting->default );
 		}
 
-		// add setting initial value
-		$this->json['vInitial'] = $this->value();
-
-		// set control setting as optional
-		if ( $this->optional ) {
-			$this->json['optional'] = true;
-		}
-
-		// set control as loose
-		if ( $this->loose ) {
-			$this->json['loose'] = true;
-		}
-
-		// set control html option
-		if ( $this->html ) {
-			$this->json['html'] = true;
-		}
-
-		// remove description if not specified, save bytes in printed JSON...
+		// remove description if not specified
 		if ( ! $this->description ) {
 			unset( $this->json['description'] );
 		}
 
-		// remove content, we rely completely on js, and declare
-		// the control container in the js control base class
+		// remove content, we rely completely on js, and declare the control
+		// container in the js control base class
 		unset( $this->json['content'] );
 
 		// @premium A Customize Plus Premium features.
@@ -285,7 +313,9 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since 1.0.0
 	 */
 	protected function js_tpl_notifications() {
-		echo '<div class="customize-control-notifications-container"></div>';
+		?>
+		<div class="customize-control-notifications-container"></div>
+		<?php
 	}
 
 	/**

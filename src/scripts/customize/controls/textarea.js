@@ -21,7 +21,7 @@ let Control = api.controls.Base.extend({
    * @override
    */
   validate: function (value) {
-    return Validate.textarea([], value, this.setting, this);
+    return Validate.textarea({}, value, this.setting, this);
   },
   /**
    * @override

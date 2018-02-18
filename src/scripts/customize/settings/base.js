@@ -22,7 +22,6 @@ api.settings.Base = wpApi.Setting.extend({
 	 * @override
 	 */
 	preview: function() {
-		debugger;
 		var setting = this, transport;
 		transport = setting.transport;
 

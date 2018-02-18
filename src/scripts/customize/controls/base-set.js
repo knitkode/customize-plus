@@ -18,7 +18,7 @@ let Control = api.controls.Base.extend({
    * @override
    */
   validate: function (value) {
-    return Validate.oneOrMoreChoices([], value, this.setting, this);
+    return Validate.oneOrMoreChoices({}, value, this.setting, this);
   },
   /**
    * @override

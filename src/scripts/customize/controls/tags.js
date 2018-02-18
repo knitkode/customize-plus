@@ -21,13 +21,13 @@ let Control = api.controls.Base.extend({
    * @override
    */
   validate: function (value) {
-    return Validate.tags([], value, this.setting, this);
+    return Validate.tags({}, value, this.setting, this);
   },
   /**
    * @override
    */
   sanitize: function (value) {
-    return Sanitize.tags(value);
+    return Sanitize.tags(value, this.setting, this);
   },
   /**
    * Destroy `selectize` instance if any.

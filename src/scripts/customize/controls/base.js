@@ -217,9 +217,23 @@ api.controls.Base = wpApi.Control.extend({
 
     // controls can be setting-less from 4.5
     if (control.setting) {
+
+      // always add the initial setting value and the last saved value on
+      // initialization without printing them to JSON via PHP `to_json`
+      // control method
+      control.params['vInitial'] = control.setting();
+      control.params['vLastSaved'] = control.params['vInitial'];
+
       // Add custom validation function overriding the empty function from WP
       // API in `customize-controls.js`, in the constructor `api.Value`
-      control.setting.validate = control._beforeSet.bind(control);
+      if (!this.params['noLiveValidation']) {
+        control.setting.validate = control._validate.bind(control);
+      }
+
+      // add sanitization of the value `postMessag`ed to the preview
+      if (!this.params['noLiveSanitization']) {
+        control.setting.sanitize = control.sanitize.bind(control);
+      }
 
       // bind setting change to control method to reflect a programmatic
       // change on the UI, only if the control is rendered
@@ -230,15 +244,16 @@ api.controls.Base = wpApi.Control.extend({
       });
 
       // this is needed to render a setting notification in its control
-      control.setting.notifications.bind( 'add', (notification) => {
+      control.setting.notifications.bind('add', function (notification) {
         // if (DEBUG) {
         //   console.log(`Notification add [${notification.code}] for default setting of control '${control.id}'`);
         // }
         control.notifications.add(new wpApi.Notification(notification.code, { message: notification.message }));
         control.notifications.render();
       });
+
       // this is needed to render a setting notification in its control
-      control.setting.notifications.bind( 'remove', (notification) => {
+      control.setting.notifications.bind('remove', function (notification) {
         // if (DEBUG) {
         //   console.log(`Notification remove [${notification.code}] for default setting of control '${control.id}'`);
         // }
@@ -262,7 +277,8 @@ api.controls.Base = wpApi.Control.extend({
     return api.l10n[ $key ] || '';
   },
   /**
-   * Before `setting.set`, acutally `control.validate` wrap function.
+   * Private `validate` wrap, it only wraps the `setting.validate` function
+   * calling each control subclass `validate` method on its default setting.
    *
    * Always check that required setting (not `optional`) are not empty,
    * if it pass the check call the control specific abstract `validate` method.
@@ -271,27 +287,23 @@ api.controls.Base = wpApi.Control.extend({
    * @param  {string} value
    * @return {string} The value validated or the last setting value.
    */
-  _beforeSet: function (value) {
+  _validate: function (value) {
     let $validity;
 
+    // perform first validation that applies to all types of controls
     if (!this.params.optional && Validate.isEmpty(value)) { // @@todo \\
-      $validity = Validate.checkRequired([], value);
-
-      this._manageValidityNotifications($validity);
-
-      return this.params.loose ? value : this.setting();
+      $validity = Validate.checkRequired({}, value);
+    // if it passes performs the specific control's validation
+    } else {
+      $validity = this.validate(value);
     }
-
-    $validity = this.validate(value);
 
     this._manageValidityNotifications($validity);
 
-    if (!$validity.length) {
-      return this.sanitize(value);
+    if (!_.keys($validity).length) {
+      return value;
     }
-    // @@doubt sanitize here despite the loose option? `this.sanitize(value)`
-    // make sanitiziation optional and not happen here, it should just sanitize
-    // what is passed to the live preview.. @@todo \\
+
     return this.params.loose ? value : this.setting();
   },
   /**
@@ -302,42 +314,29 @@ api.controls.Base = wpApi.Control.extend({
    * @param  {object<object<string,string>>} $validity
    */
   _manageValidityNotifications: function ($validity) {
-    // always clear current notifications
     const notifications = this.setting.notifications.get();
-    // debugger; @@todo
-    if (!notifications.length) {
-      return;
-    }
+    let currentNotificationCodes = [];
+
+    // flag used somewhere else (see below)
+    this._currentValueHasError = !!_.keys($validity).length;
+
     for (let i = 0; i < notifications.length; i++) {
-      this.setting.notifications.remove(notifications[i]['code']);
-    }
-
-    // if no errors render and bail
-    if (!$validityNotifications.length) {
-      return;
-    }
-    this._currentValueHasError = true;
-
-
-
-    if (!this._validityCodes) {
-      this._validityCodes = [];
-    }
-    for (let key in $validity) {
-      if ($validity.hasOwnProperty(key)) {
-        this._validityCodes.push(key);
+      let code = notifications[i]['code'];
+      currentNotificationCodes.push(code);
+      // if an existing notification is now valid remove it
+      if (!$validity[code]) {
+        this.setting.notifications.remove(code);
       }
     }
 
-    for (let i = this._validityCodes.length - 1; i >= 0; i--) {
-      let code = this._validityCodes[i]
-      // if (code === )
-    }
+    for (let code in $validity) {
+      // if the notification is not there already add it
+      if (currentNotificationCodes.indexOf(code) === -1) {
 
-
-    for (let i = 0; i < $validityNotifications.length; i++) {
-      let notification = $validityNotifications[i];
-      this.setting.notifications.add(new wpApi.Notification(notification.code, { message: notification.message || api.l10n['vInvalid'] }));
+        this.setting.notifications.add(new wpApi.Notification(
+          code, { message: $validity[code] || api.l10n['vInvalid'] }
+        ));
+      }
     }
   },
   /**
@@ -369,7 +368,7 @@ api.controls.Base = wpApi.Control.extend({
     return $validity;
   },
   /**
-   * Validate
+   * Validate control's default setting value
    *
    * @abstract
    * @param  {string} value
@@ -379,7 +378,7 @@ api.controls.Base = wpApi.Control.extend({
     return value;
   },
   /**
-   * Sanitize
+   * Sanitize control's default setting value
    *
    * @abstract
    * @param  {string} value
@@ -680,10 +679,7 @@ api.controls.Base = wpApi.Control.extend({
       const currentValue = _softenize(setting());
       const lastSavedValue = params['vLastSaved'];
 
-      // the last saved value is not always there like the others, we don't put
-      // it in the big json through php, to save bytes, in the end. We check
-      // here if the last value is `undefined`
-      if (_.isUndefined(lastSavedValue) || _.isEqual(currentValue, _softenize(lastSavedValue))) {
+      if (_.isEqual(currentValue, _softenize(lastSavedValue))) {
         _disableBtnLast();
       } else {
         _enableBtnLast();

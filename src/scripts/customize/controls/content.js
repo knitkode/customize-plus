@@ -15,9 +15,8 @@ let Control = api.controls.Base.extend({
    *
    * @override
    */
-  _beforeSet: $.noop,
+  _validate: $.noop,
   _manageValidityNotifications: $.noop,
-  _clearNotifications: $.noop,
   validate: $.noop,
   sanitize: $.noop,
   syncUI: $.noop,

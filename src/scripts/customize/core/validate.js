@@ -49,15 +49,15 @@ export function isEmpty (value) {
  * @param WP_Customize_Control $control  Control instance.
  * @return WP_Error
  */
-export function checkRequired ($validity, $value, $setting, $control) {
+export function checkRequired( $validity={}, $value, $setting, $control ) {
   if ( isEmpty( $value ) ) {
-    $validity.push({ 'vRequired': api.l10n['vRequired'] }); // @@todo \\
+    $validity['vRequired'] = api.l10n['vRequired']; // @@todo \\
   }
   return $validity;
 }
 
 
-export function singleChoice ($validity, $value, $setting, $control) {
+export function singleChoice( $validity={}, $value, $setting, $control ) {
   const choices = $control._validChoices && $control._validChoices.length ? $control._validChoices : $control.params.choices;
 
   if ( choices.indexOf( $value ) === -1 ) {
@@ -81,7 +81,7 @@ export function singleChoice ($validity, $value, $setting, $control) {
  *                                           present in the validated value
  * @return WP_Error
  */
-export function multipleChoices( $validity, $value, $setting, $control, $check_length = false ) {
+export function multipleChoices( $validity={}, $value, $setting, $control, $check_length = false ) {
   const {params} = $control;
   const choices = $control._validChoices && $control._validChoices.length ? $control._validChoices : params.choices;
 
@@ -126,7 +126,7 @@ export function multipleChoices( $validity, $value, $setting, $control, $check_l
  * @param WP_Customize_Control $control  Control instance.
  * @return WP_Error
  */
-export function oneOrMoreChoices( $validity, $value, $setting, $control ) {
+export function oneOrMoreChoices( $validity={}, $value, $setting, $control ) {
   if ( _.isString( $value ) ) {
     return singleChoice( $validity, $value, $setting, $control );
   }
@@ -144,7 +144,7 @@ export function oneOrMoreChoices( $validity, $value, $setting, $control ) {
  * @param WP_Customize_Control $control  Control instance.
  * @return WP_Error
  */
-export function checkbox( $validity, $value, $setting, $control ) {
+export function checkbox( $validity={}, $value, $setting, $control ) {
   if ( $value != 1 && $value != 0 ) {
     $validity = $control._addError( $validity, 'vCheckbox' );
   }
@@ -162,7 +162,7 @@ export function checkbox( $validity, $value, $setting, $control ) {
  * @param WP_Customize_Control $control  Control instance.
  * @return WP_Error
  */
-export function tags( $validity, $value, $setting, $control ) {
+export function tags( $validity={}, $value, $setting, $control ) {
   const {params} = $control;
 
   if ( !_.isString( $value ) ) {
@@ -195,7 +195,7 @@ export function tags( $validity, $value, $setting, $control ) {
  * @param WP_Customize_Control $control  Control instance.
  * @return WP_Error
  */
-export function text( $validity, $value, $setting, $control ) {
+export function text( $validity={}, $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
   const $input_type = $attrs.type || 'text';
 
@@ -235,7 +235,7 @@ export function text( $validity, $value, $setting, $control ) {
  * @param WP_Customize_Control $control  Control instance.
  * @return WP_Error
  */
-export function number( $validity, $value, $setting, $control ) {
+export function number( $validity={}, $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
   const allowFloat = $control.params.allowFloat;
 
@@ -312,7 +312,7 @@ export function sizeUnit( $validity, $unit, $allowed_units ) {
  * @param WP_Customize_Control $control  Control instance.
  * @return WP_Error
  */
-export function slider( $validity, $value, $setting, $control ) {
+export function slider( $validity={}, $value, $setting, $control ) {
   let $number = Utils.extractNumber( $value, $control.params.allowFloat );
   let $unit = Utils.extractSizeUnit( $value, $control.params.units );
 

@@ -20,7 +20,7 @@ let Control = ControlBaseChoices.extend({
    * @override
    */
   validate: function (value) {
-    return Validate.singleChoice([], value, this.setting, this);
+    return Validate.singleChoice({}, value, this.setting, this);
   },
   /**
    * @override

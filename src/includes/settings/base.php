@@ -17,20 +17,12 @@
  */
 class KKcp_Customize_Setting_Base extends WP_Customize_Setting {
 
-
 	/**
 	 * {@inheritDoc}. Change default to `postMessage` for Customize Plus settings.
 	 *
 	 * @since 1.0.0
 	 */
 	public $transport = 'postMessage';
-
-	// interesting methods to maybe override:
-	// public function sanitize( $value ) {}
-	// public function validate( $value ) {}
-	// public function js_value() {}
-	// public function json() {}
-
 
 	/**
 	 * {@inheritDoc}. Change type in order to use our custom JavaScript
@@ -49,4 +41,10 @@ class KKcp_Customize_Setting_Base extends WP_Customize_Setting {
 			'type'      => 'kkcp_base', // $this->type,
 		);
 	}
+
+	// interesting methods to maybe override:
+	// public function sanitize( $value ) {}
+	// public function validate( $value ) {}
+	// public function js_value() {}
+	// public function json() {}
 }

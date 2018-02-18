@@ -18,7 +18,7 @@ let Control = ControlBaseInput.extend({
    * @override
    */
   validate: function (value) {
-    return Validate.text([], value, this.setting, this);
+    return Validate.text({}, value, this.setting, this);
   },
   /**
    * @override

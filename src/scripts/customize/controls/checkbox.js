@@ -33,7 +33,7 @@ let Control = api.controls.Base.extend({
    * @override
    */
   validate: function (value) {
-    return Validate.checkbox([], value, this.setting, this);
+    return Validate.checkbox({}, value, this.setting, this);
   },
   /**
    * @override

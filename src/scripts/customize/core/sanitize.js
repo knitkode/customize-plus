@@ -176,15 +176,15 @@ export function tags( $value, $setting, $control ) {
   $value = _.map($value, value => { return value.trim() });
   $value = _.unique($value);
 
-  // if ( isset( $control->max ) ) {
-  //  $max_items = filter_var( $control->max, FILTER_SANITIZE_NUMBER_INT );
+  if ( $control.params.max ) {
+   let $max_items = parseInt( $control.params.max, 10 );
 
-  //  if ( count( $value ) > $max_items ) {
-  //    $value = array_slice( $value, $max_items );
-  //  }
-  // }
+   if ( $value.length > $max_items ) {
+     $value = $value.slice( 0, $max_items );
+   }
+  }
   return $value.join(',');
-  // return Utils.stripHTML($value.join(','));
+  // return Utils.stripHTML($value.join(',')); // @@todo here on in base class \\
 }
 
 /**
@@ -215,8 +215,7 @@ export function text( $value, $setting, $control ) {
     $value = $value.substr( 0, $attrs['maxlength'] );
   }
 
-  return $value;
-  // return Utils.stripHTML($value);
+  return Utils.stripHTML($value);
 }
 
 /**
@@ -252,7 +251,7 @@ export function number( $value, $setting, $control ) {
       return $attrs['min'];
     }
     // if it's higher than the maxmimum return the maximum
-    if (  _.isNumber( $attrs['max'] ) && $number > $attrs['max'] ) {
+    if ( _.isNumber( $attrs['max'] ) && $number > $attrs['max'] ) {
       return $attrs['max'];
     }
   }

@@ -22,7 +22,7 @@ let Control = api.controls.Base.extend({
    * @override
    */
   validate: function (value) {
-    return Validate.slider([], value, this.setting, this);
+    return Validate.slider({}, value, this.setting, this);
   },
   /**
    * @override
