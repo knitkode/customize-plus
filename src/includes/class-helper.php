@@ -1,9 +1,9 @@
 <?php defined( 'ABSPATH' ) or die;
 
 /**
- * Utils
+ * Helper
  *
- * An helper class containing utils methods.
+ * An helper class containing helper methods.
  *
  * @package    Customize_Plus
  * @subpackage Customize
@@ -13,7 +13,7 @@
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
  */
-class KKcp_Utils {
+class KKcp_Helper {
 
   /**
    * Browser's native css units
@@ -572,24 +572,35 @@ class KKcp_Utils {
 		);
 	}
 
-	/**
-	 * Get asset file, minified or unminified
-	 *
-   *@since  1.0.0
-	 * @param  string $filename
-	 * @param  string $type
-	 * @param  string $base_url
-	 * @param  string $ext
-	 * @return string
-	 */
-	public static function get_asset( $filename, $type, $base_url, $ext = '' ) {
-		if ( ! $ext ) {
-			$ext = $type;
-		}
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+  /**
+   * Is an associative array or not
+   *
+   * @link(https://stackoverflow.com/a/145348, source1)
+   * @link(https://stackoverflow.com/a/145348, source2)
+   * @since  1.0.0
+   *
+   * @param  array   $array The array to test
+   * @return bool
+   */
+  public static function is_assoc( $array ) {
+    if ( ! is_array( $array ) ) {
+      return false;
+    }
 
-		return plugins_url( "assets/$type/$filename$min.$ext", $base_url );
-	}
+    // source1:
+    foreach ( $array as $a ) {
+      if ( is_array( $a ) ) return true;
+    }
+    return false;
+
+    // source2:
+    // // Keys of the array
+    // $keys = array_keys( $array );
+
+    // // If the array keys of the keys match the keys, then the array must
+    // // not be associative (e.g. the keys array looked like {0:0, 1:1...}).
+    // return array_keys( $keys ) !== $keys;
+  }
 
   /**
    * In array recursive
@@ -598,8 +609,8 @@ class KKcp_Utils {
    * @since  1.0.0
    * @param  string|number $needle
    * @param  array         $haystack
-   * @param  boolean       $strict
-   * @return boolean
+   * @param  bool          $strict
+   * @return bool
    */
   public static function in_array_r( $needle, $haystack, $strict = false ) {
     foreach ( $haystack as $item ) {
@@ -653,6 +664,79 @@ class KKcp_Utils {
       }
     }
     return $result;
+  }
+
+  /**
+   * Is setting value (`control.setting()`) empty?
+   *
+   * Used to check if required control's settings has an empty value
+   *
+   * @since  1.0.0
+   *
+   * @param  string  $value A setting value
+   * @return bool           Whether the setting value has to be considered
+   *                        empty, or not set.
+   */
+  public static function is_empty( $value ) {
+    // first try to compare it to an empty string and to null
+    if ( $value === '' || $value === null ) {
+      return true;
+    }
+
+    // if it's a jsonized value try to parse it and...
+    if ( is_string( $value ) ) {
+      $value_parsed = json_decode( $value );
+      if ( $value_parsed ) {
+        // ...see if we have an empty array or an empty object
+        if ( is_array( $value_parsed ) && empty( $value_parsed ) ) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Is HEX color
+   *
+   * It needs a value cleaned of all whitespaces (sanitized)
+   *
+   * @since  1.0.0
+   *
+   * @param  string $value  The value value to check
+   * @return boolean
+   */
+  public static function is_hex( $value ) {
+    return preg_match( '/^#([A-Fa-f0-9]{3}){1,2}$/', $value );
+  }
+
+  /**
+   * Is RGB color
+   *
+   * It needs a value cleaned of all whitespaces (sanitized)
+   *
+   * @since  1.0.0
+   *
+   * @param  string $value  The value value to check
+   * @return boolean
+   */
+  public static function is_rgb( $value ) {
+    return preg_match( '/^rgba\((0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])$/', $value );
+  }
+
+  /**
+   * Is RGBA color
+   *
+   * It needs a value cleaned of all whitespaces (sanitized)
+   *
+   * @since  1.0.0
+   *
+   * @param  string $value  The value value to check
+   * @return boolean
+   */
+  public static function is_rgba( $value ) {
+    return preg_match( '/^rgba\((0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0?\.[0-9]*[1-9][0-9]*|[01])\)$/', $value );
   }
 
   /**

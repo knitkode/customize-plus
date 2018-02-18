@@ -59,7 +59,7 @@ class KKcp_Admin_About {
 			$settings_page_prefix . 'about',
 		);
 		if ( in_array( $hook, $settings_pages ) ) {
-			wp_enqueue_style( 'kkcp-admin', KKcp_Utils::get_asset( 'admin', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
+			wp_enqueue_style( 'kkcp-admin', KKcp::get_asset( 'admin', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
 		}
 	}
 

@@ -12,21 +12,13 @@
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
  */
-class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
+class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
 	public $type = 'kkcp_textarea';
-
-	/**
-	 * Allow HTML inside textarea (default = `false`)
-	 *
-	 * @since 1.0.0
-	 * @var boolean
-	 */
-	public $allowHTML = false;
 
 	/**
 	 * Enable TinyMCE textarea (default = `false`)
@@ -36,25 +28,10 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	 */
 	public $wp_editor = false;
 
-  /**
-   * {@inheritDoc}. Override it here in order to force the unset of `wp_editor`
-   * in case the user has no the right capability.
-   *
-   * @since 1.0.0
-   * @override
-   */
-  public function __construct( $manager, $id, $args = array() ) {
-    parent::__construct( $manager, $id, $args );
-
-		if ( ! user_can_richedit() ) {
-			$this->wp_editor = false;
-		}
-  }
-
 	/**
-	 * WP editor allowed options
+	 * Allowed WP editor options
 	 *
-	 * Sanitize methods must be class methods of `KKcp_Sanitize` or global
+	 * Sanitize methods must be class methods of `KKcp_SanitizeJS` or global
 	 * functions
 	 *
 	 * The commented options are not allowed to be changed and some of theme
@@ -68,7 +45,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @var array
 	 */
-	public static $wp_editor_allowed_options = array(
+	public static $allowed_wp_editor_options = array(
 		'wpautop' => array( 'sanitizer' => 'bool' ),
 		// Default: false (instead of WP core's true)
 
@@ -111,18 +88,37 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 		// Default: false
 	);
 
+  /**
+   * {@inheritDoc}. Override it here in order to force the unset of `wp_editor`
+   * in case the user has no the right capability. Then, if the wp_editor is in
+   * use force a possible `$html => false` property to context `'post'` (this
+   * can stil be tweaked on a per control base).
+   *
+   * @since 1.0.0
+   * @override
+   */
+  public function __construct( $manager, $id, $args = array() ) {
+    parent::__construct( $manager, $id, $args );
+
+		if ( ! user_can_richedit() ) {
+			$this->wp_editor = false;
+		}
+
+		if ( $this->wp_editor && ! $this->html ) {
+			$this->html = 'post';
+		}
+  }
+
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
 	protected function add_to_json() {
-		$this->json['attrs'] = $this->input_attrs;
-
-		$this->json['allowHTML'] = KKcp_SanitizeJS::bool( $this->allowHTML );
+		parent::add_to_json();
 
 		if ( $this->wp_editor ) {
 			if ( is_array( $this->wp_editor ) ) {
-				$this->json['wp_editor'] = KKcp_SanitizeJS::options( $this->wp_editor, self::$wp_editor_allowed_options );
+				$this->json['wp_editor'] = KKcp_SanitizeJS::options( $this->wp_editor, self::$allowed_wp_editor_options );
 			} else {
 				$this->json['wp_editor'] = KKcp_SanitizeJS::bool( $this->wp_editor );
 			}
@@ -141,22 +137,6 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Base {
 			<textarea class="kkcpui-textarea<# if (data.wp_editor && data.wp_editor.editorClass) { #> {{ data.wp_editor.editorClass }}<# } #>" <# for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> rows="<# if (data.wp_editor && data.wp_editor.textareaRows) { #>{{ data.wp_editor.textareaRows }}<# } else if (a.rows) { #>{{ a.rows }}<# } else { #>4<# } #>"<# if (data.wp_editor && data.wp_editor.editorHeight) { #> style="height:{{ data.wp_editor.editorHeight }}px"<# } #>><?php // filled through js ?></textarea>
 		</label>
 		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected static function sanitize( $value, $setting, $control ) {
-		return KKcp_Sanitize::textarea( $value, $setting, $control );
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected static function validate( $validity, $value, $setting, $control ) {
-		return KKcp_Validate::textarea( $validity, $value, $setting, $control );
 	}
 }
 

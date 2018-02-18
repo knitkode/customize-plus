@@ -66,6 +66,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 
 		/**
 		 * Custom types for panels, sections controls and settings.
+		 *
 		 * Each type must be declared with its shortname and name of its php class.
 		 *
 		 * @since  1.0.0
@@ -181,7 +182,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			do_action( 'kkcp_customize_enqueue_css_admin_pre', 'kkcp-customize' );
 
 			if ( ! class_exists( 'KKcpp_Customize' ) ) {
-				wp_enqueue_style( 'kkcp-customize', KKcp_Utils::get_asset( 'customize', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
+				wp_enqueue_style( 'kkcp-customize', KKcp::get_asset( 'customize', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
 				wp_add_inline_style( 'kkcp-customize', self::$css_icons );
 			}
 
@@ -200,7 +201,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			do_action( 'kkcp_customize_enqueue_js_admin_pre', 'kkcp-customize' );
 
 			if ( ! class_exists( 'KKcpp_Customize' ) ) {
-				wp_register_script( 'kkcp-customize', KKcp_Utils::get_asset( 'customize', 'js', KKCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, KKCP_PLUGIN_VERSION, false );
+				wp_register_script( 'kkcp-customize', KKcp::get_asset( 'customize', 'js', KKCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, KKCP_PLUGIN_VERSION, false );
 				wp_localize_script( 'kkcp-customize', self::JS_API_NAMESPACE, self::get_script_localization() );
 				wp_enqueue_script( 'kkcp-customize' );
 			}
@@ -273,8 +274,8 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'back' => esc_html__( 'Back' ),
 				'pluginName' => 'Customize Plus',
 				'tools' => esc_html__( 'Tools' ),
-				'vRequired' => esc_html__( 'A value is required.' ),
-				'vInvalid' => esc_html__( 'Invalid value.' ),
+				'vRequired' => esc_html__( 'A value is required' ),
+				'vInvalid' => esc_html__( 'Invalid value' ),
 			);
 			$additional = (array) apply_filters( 'kkcp_customize_get_js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );
@@ -319,7 +320,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 
 			do_action( 'kkcp_customize_enqueue_js_preview_pre' );
 
-			wp_register_script( 'kkcp-customize-preview', KKcp_Utils::get_asset( 'customize-preview', 'js', KKCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), KKCP_PLUGIN_VERSION, true );
+			wp_register_script( 'kkcp-customize-preview', KKcp::get_asset( 'customize-preview', 'js', KKCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), KKCP_PLUGIN_VERSION, true );
 			wp_localize_script( 'kkcp-customize-preview', 'kkcp', array(
 					'constants' => self::get_js_constants(),
 					'l10n' => self::get_js_l10n(),

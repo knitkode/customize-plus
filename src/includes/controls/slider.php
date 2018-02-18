@@ -42,7 +42,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @var array
 	 */
-	public static $allowed_units = KKcp_Utils::CSS_UNITS;
+	public static $allowed_units = KKcp_Helper::CSS_UNITS;
 
   /**
    * Constructor
@@ -69,9 +69,9 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	 */
 	public function get_l10n() {
 		return array(
-			'vSliderMissingUnit' => esc_html__( 'A CSS unit must be specified.' ),
-			'vSliderInvalidUnit' => esc_html__( 'The CSS unit is invalid.' ),
-			'vSliderNoUnit' => esc_html__( 'This value does not accept a CSS unit.' ),
+			'vSliderMissingUnit' => esc_html__( 'A CSS unit must be specified' ),
+			'vSliderInvalidUnit' => esc_html__( 'The CSS unit is invalid' ),
+			'vSliderNoUnit' => esc_html__( 'This value does not accept a CSS unit' ),
 		);
 	}
 

@@ -17,138 +17,37 @@
 class KKcp_Validate {
 
 	/**
-	 * Is an associative array or not
-	 *
-	 * @link(https://stackoverflow.com/a/145348, source1)
-	 * @link(https://stackoverflow.com/a/145348, source2)
-	 * @since  1.0.0
-	 *
-	 * @param  array   $array The array to test
-	 * @return boolean
-	 */
-	public static function is_assoc( $array ) {
-		if ( ! is_array( $array ) ) {
-			return false;
-		}
-
-		// source1:
-    foreach ( $array as $a ) {
-      if ( is_array( $a ) ) return true;
-    }
-    return false;
-
-    // source2:
-		// // Keys of the array
-		// $keys = array_keys( $array );
-
-		// // If the array keys of the keys match the keys, then the array must
-		// // not be associative (e.g. the keys array looked like {0:0, 1:1...}).
-		// return array_keys( $keys ) !== $keys;
-	}
-
-	/**
-	 * Is HEX color
-	 *
-	 * It needs a value cleaned of all whitespaces (sanitized)
-	 *
-	 * @since  1.0.0
-	 *
-	 * @param  string $value  The value value to check
-	 * @return boolean
-	 */
-	public static function is_hex( $value ) {
-		return preg_match( '/^#([A-Fa-f0-9]{3}){1,2}$/', $value );
-	}
-
-	/**
-	 * Is RGB color
-	 *
-	 * It needs a value cleaned of all whitespaces (sanitized)
-	 *
-	 * @since  1.0.0
-	 *
-	 * @param  string $value  The value value to check
-	 * @return boolean
-	 */
-	public static function is_rgb( $value ) {
-		return preg_match( '/^rgba\((0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])$/', $value );
-	}
-
-	/**
-	 * Is RGBA color
-	 *
-	 * It needs a value cleaned of all whitespaces (sanitized)
-	 *
-	 * @since  1.0.0
-	 *
-	 * @param  string $value  The value value to check
-	 * @return boolean
-	 */
-	public static function is_rgba( $value ) {
-		return preg_match( '/^rgba\((0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0?\.[0-9]*[1-9][0-9]*|[01])\)$/', $value );
-	}
-
-	/**
-	 * Is setting value (`control.setting()`) empty?
-	 *
-	 * Used to check if required control's settings have instead an empty value
-	 *
-	 * @since  1.0.0
-	 *
-	 * @see php class method `KKcp_Sanitize::is_empty()`
-	 * @param  string  $value A setting value
-	 * @return boolean 				Whether the setting value has to be considered
-	 *                        empty, or not set.
-	 */
-	public static function is_empty( $value ) {
-		// first try to compare it to an empty string and to null
-		if ( $value === '' || $value === null ) {
-			return true;
-		}
-
-		// if it's a jsonized value try to parse it and...
-		if ( is_string( $value ) ) {
-			$value_parsed = json_decode( $value );
-			if ( $value_parsed ) {
-				// ...see if we have an empty array or an empty object
-				if ( is_array( $value_parsed ) && empty( $value_parsed ) ) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Validate a required setting value
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
+	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @param WP_Customize_Control $control  Control instance.
 	 * @return WP_Error
- 	 */
-	public static function check_required( $validity, $value, $setting, $control ) {
-		if ( self::is_empty( $value ) ) {
-			$validity->add( 'vRequired', esc_html__( 'You must supply a value.' ) );
+	 */
+	public static function required( $validity, $value, $setting, $control ) {
+		if ( ! $control->optional ) {
+			if ( KKcp_Helper::is_empty( $value ) ) {
+				// $validity->add( 'vRequired', esc_html__( 'You must supply a value.' ) );
+				$validity = $control->add_error( $validity, 'vRequired' );
+			}
 		}
 		return $validity;
 	}
 
 	/**
 	 * Validate a single choice
-   *
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
+	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @param WP_Customize_Control $control  Control instance.
 	 * @return WP_Error
- 	 */
+	 */
 	public static function single_choice( $validity, $value, $setting, $control ) {
 		if ( isset( $control->valid_choices ) && !empty( $control->valid_choices ) ) {
 			$choices = $control->valid_choices;
@@ -169,14 +68,14 @@ class KKcp_Validate {
 	 *
 	 * @param WP_Error 						 $validity
 	 * @param array 							 $value   		 The value to validate.
- 	 * @param WP_Customize_Setting $setting   	 Setting instance.
- 	 * @param WP_Customize_Control $control 		 Control instance.
- 	 * @param boolean  						 $check_length Should match choices length? e.g.
- 	 *                                      		 for sortable control where the
- 	 *                                         	 all the defined choices should be
- 	 *                                           present in the validated value
+	 * @param WP_Customize_Setting $setting   	 Setting instance.
+	 * @param WP_Customize_Control $control 		 Control instance.
+	 * @param boolean  						 $check_length Should match choices length? e.g.
+	 *                                      		 for sortable control where the
+	 *                                         	 all the defined choices should be
+	 *                                           present in the validated value
 	 * @return WP_Error
- 	 */
+	 */
 	public static function multiple_choices( $validity, $value, $setting, $control, $check_length = false ) {
 		if ( isset( $control->valid_choices ) && !empty( $control->valid_choices ) ) {
 			$choices = $control->valid_choices;
@@ -221,10 +120,10 @@ class KKcp_Validate {
 	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
+	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @param WP_Customize_Control $control  Control instance.
 	 * @return WP_Error
- 	 */
+	 */
 	public static function one_or_more_choices( $validity, $value, $setting, $control ) {
 		if ( is_string( $value ) ) {
 			return self::single_choice( $validity, $value, $setting, $control );
@@ -239,10 +138,10 @@ class KKcp_Validate {
 	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
+	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @param WP_Customize_Control $control  Control instance.
 	 * @return WP_Error
- 	 */
+	 */
 	public static function checkbox( $validity, $value, $setting, $control ) {
 		if ( $filtered != 0 && $filtered != 1 ) {
 			$validity = $control->add_error( $validity, 'vCheckbox' );
@@ -257,10 +156,10 @@ class KKcp_Validate {
 	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
+	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @param WP_Customize_Control $control  Control instance.
 	 * @return WP_Error
- 	 */
+	 */
 	public static function tags( $validity, $value, $setting, $control ) {
 		if ( ! is_string( $value ) ) {
 			$validity = $control->add_error( $validity, 'vTagsType' );
@@ -287,10 +186,10 @@ class KKcp_Validate {
 	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
+	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @param WP_Customize_Control $control  Control instance.
 	 * @return WP_Error
- 	 */
+	 */
 	public static function text( $validity, $value, $setting, $control ) {
 		$attrs = $control->input_attrs;
 
@@ -302,7 +201,7 @@ class KKcp_Validate {
 		}
 		// url
 		if ( 'url' === $input_type && ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
-	    $validity = $control->add_error( $validity, 'vInvalidUrl' );
+			$validity = $control->add_error( $validity, 'vInvalidUrl' );
 		}
 		// email
 		else if ( 'email' === $input_type && ! is_email( $value ) ) {
@@ -312,10 +211,25 @@ class KKcp_Validate {
 		if ( isset( $attrs['maxlength'] ) && is_int( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
 			$validity = $control->add_error( $validity, 'vTextTooLong', $attrs['maxlength'] );
 		}
-		// html
-		if( $value != strip_tags( $value ) ) {
-			$validity = $control->add_error( $validity, 'vTextHtml' );
+
+		// html must be escaped
+	  if ( $control->html === 'escape' ) {
+	  }
+		// html is dangerously completely allowed
+	  else if ( $control->html === 'dangerous' ) {
 		}
+		// html is not allowed at all
+		if ( ! $control->html ) {
+			if ( $value != strip_tags( $value ) ) {
+				$validity = $control->add_error( $validity, 'vTextHtml' );
+			}
+		}
+    // html is a valid argument for wp_kses_allowed_html
+    else if ( $control->html ) {
+			if ( $value != wp_kses( $value, wp_kses_allowed_html( $control->html ) ) ) {
+				$validity = $control->add_error( $validity, 'vTextInvalidHtml' );
+			}
+    }
 
 		return $validity;
 	}
@@ -327,10 +241,10 @@ class KKcp_Validate {
 	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
+	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @param WP_Customize_Control $control  Control instance.
 	 * @return WP_Error
- 	 */
+	 */
 	public static function number( $validity, $value, $setting, $control ) {
 		$value = ($value == (int) $value) ? (int) $value : (float) $value;
 
@@ -353,7 +267,7 @@ class KKcp_Validate {
 
 		if ( $attrs ) {
 			// if doesn't respect the step given
-			if ( isset( $attrs['step'] ) && is_numeric( $attrs['step'] ) && KKcp_Utils::modulus( $value, $attrs['step'] ) != 0 ) {
+			if ( isset( $attrs['step'] ) && is_numeric( $attrs['step'] ) && KKcp_Helper::modulus( $value, $attrs['step'] ) != 0 ) {
 				$validity = $control->add_error( $validity, 'vNumberStep', $attrs['step'] );
 			}
 			// if it's lower than the minimum
@@ -376,9 +290,9 @@ class KKcp_Validate {
 	 *
 	 * @param WP_Error 					      $validity
 	 * @param mixed    $unit    			The unit to validate.
- 	 * @param mixed    $allowed_units The allowed units
+	 * @param mixed    $allowed_units The allowed units
 	 * @return WP_Error
- 	 */
+	 */
 	public static function size_unit( $validity, $unit, $allowed_units ) {
 		// if it needs a unit and it is missing
 		if ( ! empty( $allowed_units ) && ! $unit ) {
@@ -403,55 +317,17 @@ class KKcp_Validate {
 	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
+	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @param WP_Customize_Control $control  Control instance.
 	 * @return WP_Error
- 	 */
+	 */
 	public static function slider( $validity, $value, $setting, $control ) {
-		$number = KKcp_Utils::extract_number( $value, $control->allowFloat );
-		$unit = KKcp_Utils::extract_size_unit( $value, $control->units );
+		$number = KKcp_Helper::extract_number( $value, $control->allowFloat );
+		$unit = KKcp_Helper::extract_size_unit( $value, $control->units );
 
 		$validity = self::number( $validity, $number, $setting, $control );
 		$validity = self::size_unit( $validity, $unit, $control->units );
 
-		return $validity;
-	}
-
-	/**
-	 * Validate textarea
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param WP_Error 						 $validity
-	 * @param mixed 							 $value    The value to validate.
- 	 * @param WP_Customize_Setting $setting  Setting instance.
- 	 * @param WP_Customize_Control $control  Control instance.
-	 * @return WP_Error
- 	 */
-	public static function textarea( $validity, $value, $setting, $control ) {
-		// // wrong type
-		// if ( ! is_string( $value ) ) {
-		// 	$validity->add( 'vTextType', esc_html__( 'Value must be a string.' ) );
-		// }
-		// // type
-		// if ( ! is_string( $value ) ) {
-		// 	$validity->add( 'vTextType', esc_html__( 'Value must be a string.' ) );
-		// }
-
-		// // max length
-		// if ( isset( $attrs['maxlength'] ) && is_int( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
-		// 	$validity->add( 'vTextTooLong', sprintf ( esc_html__( 'The text must be shorter than %s.' ), $attrs['maxlength'] ) );
-		// }
-		// if ( $control->allowHTML || $control->wp_editor ) {
-
-		// // html
-		// if( $value != strip_tags( $value ) ) {
-		// 	$validity->add( 'vTextHtml', esc_html__( 'HTML is not allowed. It will be stripped out on save.' ) );
-		// }
-		// 	return wp_kses_post( $value );
-		// } else {
-		// 	return wp_strip_all_tags( $value );
-		// }
 		return $validity;
 	}
 }

@@ -235,7 +235,7 @@ class KKcp_SanitizeJS {
     if ( is_array( $input ) ) {
       return $input;
     }
-    if ( KKcp_Validate::is_assoc( $input ) ) {
+    if ( KKcp_Helper::is_assoc( $input ) ) {
       wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a flat array.' ), $input ) );
     }
     wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be an array.' ), $input ) );

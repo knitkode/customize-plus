@@ -44,12 +44,12 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	 */
 	public function get_l10n() {
 		return array(
-			'vNotAnumber' => esc_html__( 'This must be a number.' ),
-			'vNoFloat' => esc_html__( 'This must be an integer, not a float.' ),
-			'vNotAnInteger' => esc_html__( 'This must be an integer number.' ),
-			'vNumberStep' => esc_html__( 'This must be a multiple of %s.' ),
-			'vNumberLow' => esc_html__( 'This must be higher than %s.' ),
-			'vNumberHigh' => esc_html__( 'This must be lower than %s.' ),
+			'vNotAnumber' => esc_html__( 'It must be a number' ),
+			'vNoFloat' => esc_html__( 'It must be an integer, not a float' ),
+			'vNotAnInteger' => esc_html__( 'It must be an integer number' ),
+			'vNumberStep' => esc_html__( 'It must be a multiple of %s' ),
+			'vNumberLow' => esc_html__( 'It must be higher than %s' ),
+			'vNumberHigh' => esc_html__( 'It must be lower than %s' ),
 		);
 	}
 

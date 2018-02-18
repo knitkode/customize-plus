@@ -4,8 +4,7 @@ import is_int from 'locutus/php/var/is_int';
 import is_float from 'locutus/php/var/is_float';
 import empty from 'locutus/php/var/empty';
 import round from 'locutus/php/math/round';
-// import escape from 'validator/lib/escape';
-import {Utils} from './utils';
+import Helper from './helper';
 
 /**
  * Sanitize string
@@ -136,7 +135,7 @@ export function fontFamily( $value ) {
   }
   if ( _.isArray( $value ) ) {
     for (let i = 0; i < $value.length; i++) {
-      $sanitized.push(Utils.normalizeFontFamily($value[i]));
+      $sanitized.push(Helper.normalizeFontFamily($value[i]));
     }
     $sanitized = $sanitized.join(',');
   }
@@ -184,7 +183,7 @@ export function tags( $value, $setting, $control ) {
    }
   }
   return $value.join(',');
-  // return Utils.stripHTML($value.join(',')); // @@todo here on in base class \\
+  // return Helper.stripHTML($value.join(',')); // @@todo here on in base class \\
 }
 
 /**
@@ -215,7 +214,26 @@ export function text( $value, $setting, $control ) {
     $value = $value.substr( 0, $attrs['maxlength'] );
   }
 
-  return Utils.stripHTML($value);
+  // html is not allowed at all
+  if ( ! $control.params.html ) {
+    $value = Helper.stripHTML($value);
+  }
+  // html must be escaped
+  else if ( $control.params.html === 'escape' ) {
+    $value = _.escape( $value );
+  }
+  // html is dangerously completely allowed
+  else if ( $control.params.html === 'dangerous' ) {
+    $value = $value;
+  }
+  // @@todo find some smart way to javascriptify the following html sanitization
+  // html is a valid argument for wp_kses_allowed_html
+  // else if ( $control.params.html ) {
+  //   $value = wp_kses( $value, wp_kses_allowed_html( $control->html ) );
+  // }
+  // \\
+
+  return $value;
 }
 
 /**
@@ -230,7 +248,7 @@ export function text( $value, $setting, $control ) {
 export function number( $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
   const allowFloat = $control.params.allowFloat;
-  let $number = Utils.extractNumber( $value, $control.params.allowFloat );
+  let $number = Helper.extractNumber( $value, $control.params.allowFloat );
 
   if ( $number === null ) {
     return $setting.default;
@@ -243,7 +261,7 @@ export function number( $value, $setting, $control ) {
   if ( $attrs ) {
     // if doesn't respect the step given round it to the closest
     // then do the min and max checks
-    if ( _.isNumber( $attrs['step'] ) && Utils.modulus($number, $attrs['step']) !== 0 ) {
+    if ( _.isNumber( $attrs['step'] ) && Helper.modulus($number, $attrs['step']) !== 0 ) {
       $number = round( $number / $attrs['step'] ) * $attrs['step'];
     }
     // if it's lower than the minimum return the minimum
@@ -299,8 +317,8 @@ export function sizeUnit( $unit, $allowed_units ) {
  * @return string The sanitized value.
  */
 export function slider( $value, $setting, $control ) {
-  let $number = Utils.extractNumber( $value, $control.params.allowFloat );
-  let $unit = Utils.extractSizeUnit( $value, $control.params.units );
+  let $number = Helper.extractNumber( $value, $control.params.allowFloat );
+  let $unit = Helper.extractSizeUnit( $value, $control.params.units );
 
   $number = number( $number, $setting, $control );
   $unit = sizeUnit( $unit, $control.params.units );

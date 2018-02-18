@@ -145,7 +145,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		 */
 		public function enqueue_scripts( $hook ) {
 			if ( 'settings_page_' . self::PARENT_HOOK === $hook ) {
-				wp_enqueue_style( 'kkcp-admin', KKcp_Utils::get_asset( 'admin', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
+				wp_enqueue_style( 'kkcp-admin', KKcp::get_asset( 'admin', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
 				// wp_style_add_data( 'kkcp-admin', 'rtl', true );
 			}
 		}

@@ -82,6 +82,25 @@ if ( ! class_exists( 'KKcp' ) ):
 		public static function deactivation() {
 			do_action( 'kkcp_deactivation' );
 		}
+
+		/**
+		 * Get asset file, minified or unminified
+		 *
+	   * @since  1.0.0
+		 * @param  string $filename
+		 * @param  string $type
+		 * @param  string $base_url
+		 * @param  string $ext
+		 * @return string
+		 */
+		public static function get_asset( $filename, $type, $base_url, $ext = '' ) {
+			if ( ! $ext ) {
+				$ext = $type;
+			}
+			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+			return plugins_url( "assets/$type/$filename$min.$ext", $base_url );
+		}
 	}
 
 	// Instantiate

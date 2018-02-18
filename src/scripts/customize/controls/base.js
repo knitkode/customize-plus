@@ -283,27 +283,32 @@ api.controls.Base = wpApi.Control.extend({
    * Always check that required setting (not `optional`) are not empty,
    * if it pass the check call the control specific abstract `validate` method.
    *
+   * @see  PHP KKcp_Customize_Control_Base::validate_callback
    * @access private
    * @param  {string} value
    * @return {string} The value validated or the last setting value.
    */
   _validate: function (value) {
-    let $validity;
+    let $validity = {};
 
-    // perform first validation that applies to all types of controls
-    if (!this.params.optional && Validate.isEmpty(value)) { // @@todo \\
-      $validity = Validate.checkRequired({}, value);
-    // if it passes performs the specific control's validation
-    } else {
+    // immediately check a required value validity
+    $validity = Validate.required($validity, value, this.setting, this);
+
+    // if a required value is not supplied only perform one validation routine
+    if (!_.keys($validity).length) {
+
+      // otherwise apply the specific control/setting validation
       $validity = this.validate(value);
     }
 
     this._manageValidityNotifications($validity);
 
+    // if there are no errors return the given new value
     if (!_.keys($validity).length) {
       return value;
     }
 
+    // otherwise choose what to return based on the "looseness" of this control
     return this.params.loose ? value : this.setting();
   },
   /**
@@ -330,12 +335,14 @@ api.controls.Base = wpApi.Control.extend({
     }
 
     for (let code in $validity) {
-      // if the notification is not there already add it
-      if (currentNotificationCodes.indexOf(code) === -1) {
+      if ($validity.hasOwnProperty(code)) {
+        // if the notification is not there already add it
+        if (currentNotificationCodes.indexOf(code) === -1) {
 
-        this.setting.notifications.add(new wpApi.Notification(
-          code, { message: $validity[code] || api.l10n['vInvalid'] }
-        ));
+          this.setting.notifications.add(new wpApi.Notification(
+            code, { message: $validity[code] || api.l10n['vInvalid'] }
+          ));
+        }
       }
     }
   },

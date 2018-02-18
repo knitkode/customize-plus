@@ -6,40 +6,11 @@ import is_numeric from 'locutus/php/var/is_numeric';
 import empty from 'locutus/php/var/empty';
 import isURL from 'validator/lib/isURL';
 import isEmail from 'validator/lib/isEmail';
-import {Utils} from './utils';
 import { api } from './globals';
+import Helper from '../core/helper';
 
 /**
- * Is setting value (`control.setting()`) empty?
- *
- * Used to check if required control's settings have instead an empty value
- *
- * @see php class method `KKcp_Validate::is_empty()`
- * @static
- * @param  {string}  value
- * @return {boolean}
- */
-export function isEmpty (value) {
-  // first try to compare it to an empty string
-  if (value === null || value === undefined || value === '') {
-    return true;
-  } else {
-    // if it's a jsonized value try to parse it
-    try {
-      value = JSON.parse(value);
-    } catch(e) {}
-
-    // and then see if we have an empty array or an empty object
-    if ((_.isArray(value) || _.isObject(value)) && _.isEmpty(value)) {
-      return true;
-    }
-
-    return false;
-  }
-}
-
-/**
- * Validate a required setting
+ * Validate a required setting value
  *
  * @since 1.0.0
  *
@@ -49,14 +20,26 @@ export function isEmpty (value) {
  * @param WP_Customize_Control $control  Control instance.
  * @return WP_Error
  */
-export function checkRequired( $validity={}, $value, $setting, $control ) {
-  if ( isEmpty( $value ) ) {
-    $validity['vRequired'] = api.l10n['vRequired']; // @@todo \\
+export function required( $validity={}, $value, $setting, $control ) {
+  if ( !$control.params.optional ) {
+    if ( Helper.isEmpty( $value ) ) {
+      $validity = $control._addError( $validity, 'vRequired' );
+    }
   }
   return $validity;
 }
 
-
+/**
+ * Validate a single choice
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Error             $validity
+ * @param mixed                $value    The value to validate.
+ * @param WP_Customize_Setting $setting  Setting instance.
+ * @param WP_Customize_Control $control  Control instance.
+ * @return WP_Error
+ */
 export function singleChoice( $validity={}, $value, $setting, $control ) {
   const choices = $control._validChoices && $control._validChoices.length ? $control._validChoices : $control.params.choices;
 
@@ -216,10 +199,34 @@ export function text( $validity={}, $value, $setting, $control ) {
   if ( is_int( $attrs['maxlength'] ) && $value.length > $attrs['maxlength'] ) {
     $validity = $control._addError( $validity, 'vTextTooLong', $attrs['maxlength'] );
   }
-  // html presence
-  if ( Utils.hasHTML( $value ) ) {
-    $validity = $control._addError( $validity, 'vTextHtml' );
+
+  // html must be escaped
+  if ( $control.params.html === 'escape' ) {
+    // if ( Helper.hasHTML( $value ) ) {
+    //   $validity = $control._addWarning( $validity, 'vTextEscaped' ); // @@todo \\
+    // }
   }
+  // html is dangerously completely allowed
+  else if ( $control.params.html === 'dangerous' ) {
+    // $validity = $control._addWarning( $validity, 'vTextDangerousHtml' ); // @@todo \\
+  }
+  // html is not allowed at all
+  else if ( ! $control.params.html ) {
+    if ( Helper.hasHTML( $value ) ) {
+      $validity = $control._addError( $validity, 'vTextHtml' );
+    }
+  }
+  // @@todo find some smart way to javascriptify the following html sanitization
+  // html is a valid argument for wp_kses_allowed_html
+  // else if ( $control->html ) {
+  //   if ( $value != wp_kses( $value, wp_kses_allowed_html( $control->html ) ) ) {
+  //     $validity = $control->add_error( $validity, 'vTextInvalidHtml' );
+  //   }
+  // }
+  // or show a warning/info to indicate that the live preview might differ from
+  // what is actually stored in the database
+  // $validity = $control._addWarning( $validity, '' );
+  // \\
 
   return $validity;
 }
@@ -258,7 +265,7 @@ export function number( $validity={}, $value, $setting, $control ) {
 
   if ( $attrs ) {
     // if doesn't respect the step given
-    if ( is_numeric( $attrs['step'] ) && Utils.modulus($value, $attrs['step']) !== 0 ) {
+    if ( is_numeric( $attrs['step'] ) && Helper.modulus($value, $attrs['step']) !== 0 ) {
       $validity = $control._addError( $validity, 'vNumberStep', $attrs['step'] );
     }
     // if it's lower than the minimum
@@ -313,8 +320,8 @@ export function sizeUnit( $validity, $unit, $allowed_units ) {
  * @return WP_Error
  */
 export function slider( $validity={}, $value, $setting, $control ) {
-  let $number = Utils.extractNumber( $value, $control.params.allowFloat );
-  let $unit = Utils.extractSizeUnit( $value, $control.params.units );
+  let $number = Helper.extractNumber( $value, $control.params.allowFloat );
+  let $unit = Helper.extractSizeUnit( $value, $control.params.units );
 
   $validity = number( $validity, $number, $setting, $control );
   $validity = sizeUnit( $validity, $unit, $control.params.units );
@@ -326,8 +333,7 @@ export function slider( $validity={}, $value, $setting, $control ) {
  * Exports the `Validate` object
  */
 export default {
-  isEmpty,
-  checkRequired,
+  required,
   singleChoice,
   multipleChoices,
   oneOrMoreChoices,

@@ -141,7 +141,7 @@ class KKcp_Sanitize {
 		}
 		if ( is_array( $value ) ) {
 			foreach ( $value as $font_family ) {
-				array_push( $sanitized, KKcp_Utils::normalize_font_family( $font_family ) );
+				array_push( $sanitized, KKcp_Helper::normalize_font_family( $font_family ) );
 			}
 			$sanitized = implode( ',', $sanitized );
 		}
@@ -207,7 +207,7 @@ class KKcp_Sanitize {
 		$attrs = $control->input_attrs;
 		$input_type = isset( $attrs['type'] ) ? $attrs['type'] : 'text';
 
-		$value = self::string( $value );
+		$value = (string) $value;
 
 		// url
 		if ( 'url' === $input_type ) {
@@ -222,7 +222,24 @@ class KKcp_Sanitize {
 			$value = substr( $value, 0, $attrs['maxlength'] );
 		}
 
-		return wp_strip_all_tags( $value );
+		// html must be escaped
+		if ( $control->html === 'escape' ) {
+			$value = esc_html( $value );
+		}
+		// html is dangerously completely allowed
+		else if ( $control->html === 'dangerous' ) {
+			$value = $value;
+		}
+		// html is not allowed at all
+		else if ( ! $control->html ) {
+			$value = wp_strip_all_tags( $value );
+		}
+    // html is a valid argument for wp_kses_allowed_html
+    else if ( $control->html ) {
+    	$value = wp_kses( $value, wp_kses_allowed_html( $control->html ) );
+    }
+
+		return $value;
 	}
 
 	/**
@@ -236,7 +253,7 @@ class KKcp_Sanitize {
 	 * @return number The sanitized value.
 	 */
 	public static function number( $value, $setting, $control ) {
-		$number = KKcp_Utils::extract_number( $value, $control );
+		$number = KKcp_Helper::extract_number( $value, $control );
 
 		if ( is_null( $number ) ) {
 			return $setting->default;
@@ -251,7 +268,7 @@ class KKcp_Sanitize {
 		if ( $attrs ) {
 			// if doesn't respect the step given round it to the closest
 			// then do the min and max checks
-			if ( isset( $attrs['step'] ) && KKcp_Utils::modulus( $number, $attrs['step'] ) != 0 ) {
+			if ( isset( $attrs['step'] ) && KKcp_Helper::modulus( $number, $attrs['step'] ) != 0 ) {
 				$number = round( $number / $attrs['step'] ) * $attrs['step'];
 			}
 			// if it's lower than the minimum return the minimum
@@ -307,8 +324,8 @@ class KKcp_Sanitize {
 	 * @return string|number The sanitized value.
 	 */
 	public static function slider( $value, $setting, $control ) {
-		$number = KKcp_Utils::extract_number( $value, $control->allowFloat );
-		$unit = KKcp_Utils::extract_size_unit( $value, $control->units );
+		$number = KKcp_Helper::extract_number( $value, $control->allowFloat );
+		$unit = KKcp_Helper::extract_size_unit( $value, $control->units );
 
 		$number = self::number( $number, $setting, $control );
 		$unit = self::size_unit( $unit, $control->units );
@@ -322,27 +339,6 @@ class KKcp_Sanitize {
 		}
 
 		return $number;
-	}
-
-	/**
-	 * Sanitize textarea
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param mixed         			 $value   The value to sanitize.
-	 * @param WP_Customize_Setting $setting Setting instance.
-	 * @param WP_Customize_Control $control Control instance.
-	 * @return string The sanitized value.
- 	 */
-	public static function textarea( $value, $setting, $control ) {
-		$value = (string) $value;
-
-		if ( $control->allowHTML || $control->wp_editor ) {
-			return wp_kses_post( $value );
-		} else {
-			return wp_strip_all_tags( $value );
-		}
-		return $value;
 	}
 
 	/**

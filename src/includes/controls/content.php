@@ -44,13 +44,7 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 	 * @since  1.0.0
 	 * @inheritDoc
 	 */
-	public function to_json() {
-		parent::to_json();
-
-		if ( ! $this->description ) {
-			unset( $this->json['description'] );
-		}
-
+	protected function add_to_json() {
 		if ( $this->markdown ) {
 			$this->json['markdown'] = $this->markdown;
 		}

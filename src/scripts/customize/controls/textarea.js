@@ -5,30 +5,22 @@ import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 // import ControlBase from './base';
+import ControlText from './text';
 
 /**
  * Control Textarea class
  *
  * @class wp.customize.controlConstructor.kkcp_textarea
  * @constructor
- * @extends api.controls.Base
+ * @extends api.controls.Text
+ * @augments api.controls.Control
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  * @requires tinyMCE
  */
-let Control = api.controls.Base.extend({
-  /**
-   * @override
-   */
-  validate: function (value) {
-    return Validate.textarea({}, value, this.setting, this);
-  },
-  /**
-   * @override
-   */
-  sanitize: function (value) {
-    return Sanitize.textarea(value, this.setting, this);
-  },
+let Control = ControlText.extend({
+  // validate: _.noop(),
+  // sanitize: _.noop(),
   /**
    * @override
    */
@@ -67,12 +59,6 @@ let Control = api.controls.Base.extend({
       lastValue = this.__textarea.value;
     }
     if (value && lastValue !== value) {
-      // additional check to prevent the textarea content to be escaped
-      // while you type if html is not allowed
-      if (!this.params.allowHTML && !this.params.wp_editor
-          && _.escape(lastValue) === value) {
-        return;
-      }
       if (this.params.wp_editor) {
         wpEditorInstance.setContent(value);
       } else {

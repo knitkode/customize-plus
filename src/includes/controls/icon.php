@@ -46,7 +46,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Set {
 	 */
 	protected function get_set ( $name ) {
 		if ( $name === 'dashicons' ) {
-			return KKcp_Utils::get_dashicons();
+			return KKcp_Helper::get_dashicons();
 		}
 
 		return [];

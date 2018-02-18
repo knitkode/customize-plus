@@ -26,7 +26,7 @@ define( 'KKCP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'KKCP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 require_once( KKCP_PLUGIN_DIR . 'includes/class-requirements.php' );
-require_once( KKCP_PLUGIN_DIR . 'includes/class-utils.php' );
+require_once( KKCP_PLUGIN_DIR . 'includes/class-helper.php' );
 require_once( KKCP_PLUGIN_DIR . 'includes/class-validate.php' );
 require_once( KKCP_PLUGIN_DIR . 'includes/class-sanitize.php' );
 require_once( KKCP_PLUGIN_DIR . 'includes/class-sanitizejs.php' );

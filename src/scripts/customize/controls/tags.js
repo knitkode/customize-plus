@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
-import Utils from '../core/utils';
 // import ControlBase from './base';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
@@ -14,7 +13,6 @@ import Sanitize from '../core/sanitize';
  * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
- * @requires api.core.Utils
  */
 let Control = api.controls.Base.extend({
   /**

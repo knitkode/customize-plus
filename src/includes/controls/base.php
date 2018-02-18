@@ -78,18 +78,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $live_sanitization = true;
 
 	/**
-	 * HTML (allows html in the setting value)
-	 *
-	 * // @@todo allow a set of whitelisted html tags to be passed in an `array`,
-	 * if the value is `true` all html will be allowed (dangerous). If `false`
-	 * no `html` is allowed at all. \\
-	 *
-	 * @since 1.0.0
-	 * @var bool|array
-	 */
-	public $html = false;
-
-	/**
 	 * Guide
 	 *
 	 * The control guide data, optional. It displays some help in a popover.
@@ -151,9 +139,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		}
 		if ( ! $this->live_sanitization ) {
 			$this->json['noLiveSanitization'] = true;
-		}
-		if ( $this->html ) {
-			$this->json['html'] = $this->html;
 		}
 
 		// add setting factory default value
@@ -404,6 +389,8 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * Class specific sanitization, method to override in subclasses.
 	 *
 	 * @since 1.0.0
+	 * @see  JS `kkcp.controls.Base.sanitize`
+	 *
 	 * @abstract
 	 * @param string               $value   The value to sanitize.
  	 * @param WP_Customize_Setting $setting Setting instance.
@@ -411,7 +398,8 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
  	 * @return string The sanitized value.
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return wp_kses_post( $value );
+		return $value;
+		// return wp_kses_post( $value );
 	}
 
 	/**
@@ -427,6 +415,8 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @see http://bit.ly/2kzgHlm
 	 *
 	 * @since 1.0.0
+	 * @see  JS `kkcp.controls.Base._validate`
+	 *
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -435,9 +425,15 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public static function validate_callback( $validity, $value, $setting ) {
 		$control = $setting->manager->get_control( $setting->id );
 
-		if ( $control && ! $control->optional && KKcp_Validate::is_empty( $value ) ) {
-			return KKcp_Validate::check_required( $value );
+		// immediately check a required value validity
+		$validity = KKcp_Validate::required( $validity, $value, $setting, $control );
+
+		// if a required value is not supplied only perform one validation routine
+		if ( is_wp_error( $validity ) ) {
+			return $validity;
 		}
+
+		// otherwise apply the specific control/setting validation
 		return $control::validate( $validity, $value, $setting, $control );
 	}
 
@@ -447,6 +443,9 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * Class specific validation, method to override in subclasses.
 	 *
 	 * @since 1.0.0
+	 * @see  JS `kkcp.controls.Base.validate`
+	 *
+	 * @abstract
 	 * @param WP_Error 						 $validity
 	 * @param mixed 							 $value    The value to validate.
  	 * @param WP_Customize_Setting $setting  Setting instance.
@@ -478,7 +477,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * useful during validation to define the validation messages only once both
 	 * for JavaScript and PHP validation.
 	 *
-	 * @see  JavaScript: `kkcp.controls.Base.l10n()`
+	 * @see  JS `kkcp.controls.Base.l10n`
 	 * @since  1.0.0
 	 * @return string
 	 */
@@ -486,6 +485,12 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		$strings = $this->get_l10n();
 		if ( isset( $strings[ $key ] ) ) {
 			return $strings[ $key ];
+		}
+		if ( class_exists( 'KKcp_Customize' ) ) {
+			$strings = KKcp_Customize::get_js_l10n();
+			if ( isset( $strings[ $key ] ) ) {
+				return $strings[ $key ];
+			}
 		}
 		return '';
 	}
