@@ -216,7 +216,7 @@ export function text( $validity={}, $value, $setting, $control ) {
       $validity = $control._addError( $validity, 'vTextHtml' );
     }
   }
-  // @@todo find some smart way to javascriptify the following html sanitization
+  // @@todo find some smart way to javascriptify the following html validation
   // html is a valid argument for wp_kses_allowed_html
   // else if ( $control->html ) {
   //   if ( $value != wp_kses( $value, wp_kses_allowed_html( $control->html ) ) ) {

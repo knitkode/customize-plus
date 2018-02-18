@@ -53,7 +53,6 @@ const Regexes = {
   /**
    * Helps to understand if a url is absolute or relative
    *
-   * @@todo test
    * @const
    * @type {RegExp}
    */
@@ -61,7 +60,6 @@ const Regexes = {
   /**
    * Multiple slashes
    *
-   * @@todo test
    * @const
    * @type {RegExp}
    */

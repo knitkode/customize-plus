@@ -77,7 +77,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 		// Default: false
 
 		'tinymce' => array( 'sanitizer' => 'bool_object', 'permissive_object' => true ),
-		// Default: true (we don't sanitize each option here @@todo)
+		// Default: true (we don't sanitize each option here // @@todo ? \\)
 
 		'quicktags' => array( 'sanitizer' => 'bool_object', 'values' => array(
 			'buttons' => array( 'sanitizer' => 'string' )

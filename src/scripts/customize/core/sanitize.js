@@ -182,8 +182,7 @@ export function tags( $value, $setting, $control ) {
      $value = $value.slice( 0, $max_items );
    }
   }
-  return $value.join(',');
-  // return Helper.stripHTML($value.join(',')); // @@todo here on in base class \\
+  return Helper.stripHTML($value.join(','));
 }
 
 /**

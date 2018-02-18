@@ -11,9 +11,6 @@ import { api, wpApi, body, $readyDOM } from './globals';
  */
 const Skeleton = (function () {
 
-  /** @type {JQuery} */
-  const _$deferredDom = $.Deferred(); // @@todo to check if I still need it, see $reaadyDOM \\
-
   // @access public
   return {
     /**
@@ -35,7 +32,6 @@ const Skeleton = (function () {
       this._loaderSidebar = document.getElementById('kkcp-loader-sidebar');
       this.$loaderSidebar = $(this._loaderSidebar);
 
-      _$deferredDom.resolve();
       // the first time the iframe preview has loaded hide the skeleton loader
       wpApi.previewer.targetWindow.bind(this._hideLoaderPreview.bind(this));
     },
@@ -55,7 +51,7 @@ const Skeleton = (function () {
      * Show 'full page' loader
      */
     show: function (what) {
-      _$deferredDom.done(() => {
+      $readyDOM.done(() => {
         if (!what || what === 'preview') {
           this._loader.style.display = 'block';
         }
@@ -71,7 +67,7 @@ const Skeleton = (function () {
      *                      to hide both)
      */
     hide: function (what) {
-      _$deferredDom.done(() => {
+      $readyDOM.done(() => {
         const shouldFade = Modernizr.webworkers;
         if (!what || what === 'preview') {
           if (shouldFade) {

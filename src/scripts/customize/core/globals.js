@@ -51,7 +51,6 @@ const _readyDOM = (fn) => {
 }
 _readyDOM(() => { $readyDOM.resolve(); });
 
-// @@todo \\
 // var DEBUG = true; is injected through rollup
 if (DEBUG) {
   $ready.done(() => { console.log('global $ready.done()'); });
@@ -60,9 +59,6 @@ if (DEBUG) {
     performances: false,
     compiler: false
   };
-  // shim for Opera // @@todo remove these two lines \\
-  window.performance = window.performance || { now: function(){} };
-  // var t = performance.now();
 
   // just useful aliases for debugging
   window.api = pluginApi;
