@@ -68,6 +68,9 @@ export function hex( $input ) {
   if ( $input.match( /^([A-Fa-f0-9]{3}){1,2}$/ ) ) {
     return `#${$input}`;
   }
+  if (Helper.isHex($input)) {
+    return $input;
+  }
   return null;
 }
 

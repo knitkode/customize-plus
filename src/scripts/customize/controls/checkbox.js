@@ -1,5 +1,5 @@
 import { api, wpApi } from '../core/globals';
-import { numberToBoolean } from '../core/validators';
+import { numberToBoolean } from '../core/helper';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 // import ControlBase from './base';

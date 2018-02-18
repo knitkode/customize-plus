@@ -1,8 +1,8 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
-import { isHexColor, isRgbColor, isRgbaColor } from '../core/validators';
 import Sanitize from '../core/sanitize';
+import Helper from '../core/helper';
 /* global tinycolor */
 
 /**
@@ -87,13 +87,13 @@ let Control = api.controls.Base.extend({
       $validity.push({ vNoTranpsarent: api.l10n['vNoTranpsarent'] });
     }
 
-    if (!params.allowAlpha && isRgbaColor(value)) {
+    if (!params.allowAlpha && Helper.isRgba(value)) {
       $validity.push({ vNoRGBA: api.l10n['vNoRGBA'] });
     }
 
-    if (!isHexColor(value) &&
-        !isRgbColor(value) &&
-        !isRgbaColor(value) &&
+    if (!Helper.isHex(value) &&
+        !Helper.isRgb(value) &&
+        !Helper.isRgba(value) &&
         value !== 'transparent'
       ) {
       $validity.push({ vNoColor: api.l10n['vNoColor'] });
