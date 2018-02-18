@@ -253,7 +253,7 @@ api.controls.Base = wpApi.Control.extend({
       });
 
       // this is needed to render a setting notification in its control
-      control.setting.notifications.bind('remove', function (notification) {
+      control.setting.notifications.bind('removed', function (notification) {
         // if (DEBUG) {
         //   console.log(`Notification remove [${notification.code}] for default setting of control '${control.id}'`);
         // }

@@ -62,7 +62,7 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
 			'vTextType' => esc_html__( 'Text must be a string' ),
 			'vInvalidUrl' => esc_html__( 'Invalid URL' ),
 			'vInvalidEmail' => esc_html__( 'Invalid email' ),
-			'vTextTooLong' => esc_html__( 'Text must be shorter than %s' ),
+			'vTextTooLong' => esc_html__( 'Text must be shorter than %s chars' ),
 			'vTextHtml' => esc_html__( 'HTML is not allowed. It will be stripped out on save' ),
 			'vTextInvalidHtml' => esc_html__( 'This text contains some unallowed HTML. It will be stripped out on save' ),
 			'vTextHtmlTags' => esc_html__( 'The following HTML tags are not allowed: %s. They will be stripped out on save' ),
