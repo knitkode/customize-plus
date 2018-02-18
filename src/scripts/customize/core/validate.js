@@ -342,6 +342,7 @@ export function slider( $validity={}, $value, $setting, $control ) {
  */
 export function color( $validity={}, $value, $setting, $control ) {
   const params = $control.params;
+  $value = $value.replace(/\s/g, '');
 
   if (params.showPaletteOnly &&
     !params.togglePaletteOnly &&
@@ -351,23 +352,23 @@ export function color( $validity={}, $value, $setting, $control ) {
     allColorsAllowed = _.map(allColorsAllowed, (color) => {
       return $control.softenize(color);
     });
-    if (allColorsAllowed.indexOf($control.softenize(value)) === -1) {
+    if (allColorsAllowed.indexOf($control.softenize($value)) === -1) {
       $validity = $control._addError( $validity, 'vNotInPalette' );
     }
   }
 
-  if (params.disallowTransparent && value === 'transparent') {
+  if (params.disallowTransparent && $value === 'transparent') {
     $validity = $control._addError( $validity, 'vNoTranpsarent' );
   }
 
-  if (!params.allowAlpha && Helper.isRgba(value)) {
+  if (!params.allowAlpha && Helper.isRgba($value)) {
     $validity = $control._addError( $validity, 'vNoRGBA' );
   }
 
-  if (!Helper.isHex(value) &&
-      !Helper.isRgb(value) &&
-      !Helper.isRgba(value) &&
-      value !== 'transparent'
+  if (!Helper.isHex($value) &&
+      !Helper.isRgb($value) &&
+      !Helper.isRgba($value) &&
+      $value !== 'transparent'
     ) {
     $validity = $control._addError( $validity, 'vColorInvalid' );
   }

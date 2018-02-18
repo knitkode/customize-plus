@@ -349,14 +349,14 @@ export function slider( $value, $setting, $control ) {
  */
 export function color( $value, $setting, $control ) {
   if (!_.isString($value)) {
-    return JSON.stringify(value);
+    return JSON.stringify($value);
   }
 
-  let sanitized = value.replace(/\s/g, '');
+  $value = $value.replace(/\s/g, '');
 
-  sanitized = Sanitize.hex(sanitized);
+  $value = hex($value);
 
-  return sanitized;
+  return $value;
   // $value = preg_replace( '/\s+/', '', $value );
 
   // // @@doubt here there might be a race condition when the developer defines a palette
@@ -373,6 +373,7 @@ export function color( $value, $setting, $control ) {
 
   // return $setting->default;
 }
+
 /**
  * Exports the `Sanitize` object
  */
