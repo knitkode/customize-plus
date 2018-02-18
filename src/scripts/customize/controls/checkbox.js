@@ -39,7 +39,7 @@ let Control = api.controls.Base.extend({
    * @override
    */
   sanitize: function (value) {
-    return Sanitize.checkbox(value);
+    return Sanitize.checkbox(value, this.setting, this);
   },
   /**
    * @override

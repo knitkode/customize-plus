@@ -151,21 +151,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @inheritDoc
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		$value = preg_replace( '/\s+/', '', $value );
-
-		// @@doubt here there might be a race condition when the developer defines a palette
-		// that have rgba colors without setting `allowAlpha` to `true`. \\
-		if ( KKcp_Helper::is_rgba( $value ) && ! $control->allowAlpha ) {
-			$value = KKcp_Helper::rgba_to_rgb( $value );
-		} else {
-			$value = KKcp_Sanitize::hex( $value );
-		}
-
-		if ( $value ) {
-			return $value;
-		}
-
-		return $setting->default;
+		return KKcp_Sanitize::color( $value, $setting, $control );
 	}
 
 	/**
@@ -173,37 +159,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @inheritDoc
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		$value = preg_replace( '/\s+/', '', $value );
-
-		if ( $control->showPaletteOnly &&
-			! $control->togglePaletteOnly &&
-			is_array( $control->palette )
-		) {
-			$palette_flatten = KKcp_Helper::array_flatten( $control->palette, 1 );
-			$palette_normalized = array_map( 'KKcp_Helper::hex_to_rgb', $palette_flatten );
-			$value_normalized = KKcp_Helper::hex_to_rgb( $value );
-			if ( ! KKcp_Helper::in_array_r( $value_normalized, $palette_normalized ) ) {
-				$validity->add( 'vNotInPalette', esc_html__( 'Color not in the allowed palette.' ) );
-			}
-		}
-
-		if ( 'transparent' === $value && $control->disallowTransparent ) {
-			$validity->add( 'vNoTransparent', esc_html__( 'Transparent is not allowed for this setting.' ) );
-		}
-
-		if ( KKcp_Helper::is_rgba( $value ) && ! $control->allowAlpha ) {
-			$validity->add( 'vNoRGBA', esc_html__( 'RGBA color is not allowed for this setting.' ) );
-		}
-
-		if ( !KKcp_Helper::is_hex( $value ) &&
-			!KKcp_Helper::is_rgb( $value ) &&
-			!KKcp_Helper::is_rgba( $value ) &&
-			$value !== 'transparent'
-		) {
-			$validity->add( 'vNoColor', esc_html__( 'Not a valid color.' ) );
-		}
-
-		return $validity;
+		return KKcp_Validate::color( $validity, $value, $setting, $control );
 	}
 }
 

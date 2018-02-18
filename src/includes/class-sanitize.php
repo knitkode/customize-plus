@@ -343,6 +343,34 @@ class KKcp_Sanitize {
 	}
 
 	/**
+	 * Sanitize color
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param mixed         			 $value   The value to sanitize.
+	 * @param WP_Customize_Setting $setting Setting instance.
+	 * @param WP_Customize_Control $control Control instance.
+	 * @return string|number The sanitized value.
+	 */
+	public static function color( $value, $setting, $control ) {
+		$value = preg_replace( '/\s+/', '', $value );
+
+		// @@doubt here there might be a race condition when the developer defines a palette
+		// that have rgba colors without setting `allowAlpha` to `true`. \\
+		if ( KKcp_Helper::is_rgba( $value ) && ! $control->allowAlpha ) {
+			$value = KKcp_Helper::rgba_to_rgb( $value );
+		} else {
+			$value = self::hex( $value );
+		}
+
+		if ( $value ) {
+			return $value;
+		}
+
+		return $setting->default;
+	}
+
+	/**
 	 * Sanitize CSS
 	 *
 	 * @link(http://git.io/vZ05N, source)

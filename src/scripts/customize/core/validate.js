@@ -330,6 +330,51 @@ export function slider( $validity={}, $value, $setting, $control ) {
 }
 
 /**
+ * Validate color
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Error             $validity
+ * @param mixed                $value    The value to validate.
+ * @param WP_Customize_Setting $setting  Setting instance.
+ * @param WP_Customize_Control $control  Control instance.
+ * @return WP_Error
+ */
+export function color( $validity={}, $value, $setting, $control ) {
+  const params = $control.params;
+
+  if (params.showPaletteOnly &&
+    !params.togglePaletteOnly &&
+    _.isArray(params.palette)
+  ) {
+    let allColorsAllowed = _.flatten(params.palette, true);
+    allColorsAllowed = _.map(allColorsAllowed, (color) => {
+      return $control.softenize(color);
+    });
+    if (allColorsAllowed.indexOf($control.softenize(value)) === -1) {
+      $validity = $control._addError( $validity, 'vNotInPalette' );
+    }
+  }
+
+  if (params.disallowTransparent && value === 'transparent') {
+    $validity = $control._addError( $validity, 'vNoTranpsarent' );
+  }
+
+  if (!params.allowAlpha && Helper.isRgba(value)) {
+    $validity = $control._addError( $validity, 'vNoRGBA' );
+  }
+
+  if (!Helper.isHex(value) &&
+      !Helper.isRgb(value) &&
+      !Helper.isRgba(value) &&
+      value !== 'transparent'
+    ) {
+    $validity = $control._addError( $validity, 'vNoColor' );
+  }
+
+  return $validity;
+
+/**
  * Exports the `Validate` object
  */
 export default {
@@ -343,4 +388,5 @@ export default {
   number,
   sizeUnit,
   slider,
+  color,
 };

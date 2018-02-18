@@ -330,4 +330,49 @@ class KKcp_Validate {
 
 		return $validity;
 	}
+
+	/**
+	 * Validate color
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Error 						 $validity
+	 * @param mixed 							 $value    The value to validate.
+	 * @param WP_Customize_Setting $setting  Setting instance.
+	 * @param WP_Customize_Control $control  Control instance.
+	 * @return WP_Error
+	 */
+	public static function color( $validity, $value, $setting, $control ) {
+		$value = preg_replace( '/\s+/', '', $value );
+
+		if ( $control->showPaletteOnly &&
+			! $control->togglePaletteOnly &&
+			is_array( $control->palette )
+		) {
+			$palette_flatten = KKcp_Helper::array_flatten( $control->palette, 1 );
+			$palette_normalized = array_map( 'KKcp_Helper::hex_to_rgb', $palette_flatten );
+			$value_normalized = KKcp_Helper::hex_to_rgb( $value );
+			if ( ! KKcp_Helper::in_array_r( $value_normalized, $palette_normalized ) ) {
+				$validity = $control->add_error( $validity, 'vNotInPalette' );
+			}
+		}
+
+		if ( 'transparent' === $value && $control->disallowTransparent ) {
+			$validity = $control->add_error( $validity, 'vNoTransparent' );
+		}
+
+		if ( KKcp_Helper::is_rgba( $value ) && ! $control->allowAlpha ) {
+			$validity = $control->add_error( $validity, 'vNoRGBA' );
+		}
+
+		if ( !KKcp_Helper::is_hex( $value ) &&
+			!KKcp_Helper::is_rgb( $value ) &&
+			!KKcp_Helper::is_rgba( $value ) &&
+			$value !== 'transparent'
+		) {
+			$validity = $control->add_error( $validity, 'vNoColor' );
+		}
+
+		return $validity;
+	}
 }

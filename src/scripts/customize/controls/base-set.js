@@ -24,7 +24,7 @@ let Control = api.controls.Base.extend({
    * @override
    */
   sanitize: function (value) {
-    return Sanitize.oneOrMoreChoices(value);
+    return Sanitize.oneOrMoreChoices(value, this.setting, this);
   },
   /**
    * @override

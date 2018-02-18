@@ -28,7 +28,7 @@ let Control = ControlBaseChoices.extend({
    * @override
    */
   sanitize: function (value) {
-    return Sanitize.oneOrMoreChoices(value);
+    return Sanitize.oneOrMoreChoices(value, this.setting, this);
   },
   /**
    * Destroy `selectize` instance if any.

@@ -26,7 +26,7 @@ let Control = ControlBaseChoices.extend({
    * @override
    */
   sanitize: function (value) {
-    return Sanitize.singleChoice(value);
+    return Sanitize.singleChoice(value, this.setting, this);
   },
   /**
    * @override

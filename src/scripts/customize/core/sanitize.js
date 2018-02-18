@@ -338,6 +338,42 @@ export function slider( $value, $setting, $control ) {
 }
 
 /**
+ * Sanitize color
+ *
+ * @since 1.0.0
+ *
+ * @param mixed                $value   The value to sanitize.
+ * @param WP_Customize_Setting $setting Setting instance.
+ * @param WP_Customize_Control $control Control instance.
+ * @return string|number The sanitized value.
+ */
+export function color( $value, $setting, $control ) {
+  if (!_.isString($value)) {
+    return JSON.stringify(value);
+  }
+
+  let sanitized = value.replace(/\s/g, '');
+
+  sanitized = Sanitize.hex(sanitized);
+
+  return sanitized;
+  // $value = preg_replace( '/\s+/', '', $value );
+
+  // // @@doubt here there might be a race condition when the developer defines a palette
+  // // that have rgba colors without setting `allowAlpha` to `true`. \\
+  // if ( KKcp_Helper::is_rgba( $value ) && ! $control->allowAlpha ) {
+  //   $value = KKcp_Helper::rgba_to_rgb( $value );
+  // } else {
+  //   $value = self::hex( $value );
+  // }
+
+  // if ( $value ) {
+  //   return $value;
+  // }
+
+  // return $setting->default;
+}
+/**
  * Exports the `Sanitize` object
  */
 export default {
@@ -352,4 +388,5 @@ export default {
   number,
   sizeUnit,
   slider,
+  color,
 };

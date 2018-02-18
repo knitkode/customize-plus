@@ -1,8 +1,8 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
+import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import Helper from '../core/helper';
 /* global tinycolor */
 
 /**
@@ -52,54 +52,14 @@ let Control = api.controls.Base.extend({
   /**
    * @override
    */
-  sanitize: function (value) {
-    if (!_.isString) {
-      return JSON.stringify(value);
-    }
-
-    let sanitized = value.replace(/\s/g, '');
-
-    sanitized = Sanitize.hex(sanitized);
-
-    return sanitized;
+  validate: function (value) {
+    return Validate.color({}, value, this.setting, this);
   },
   /**
    * @override
    */
-  validate: function (value) {
-    let $validity = [];
-    const params = this.params;
-
-    if (params.showPaletteOnly &&
-      !params.togglePaletteOnly &&
-      _.isArray(params.palette)
-    ) {
-      let allColorsAllowed = _.flatten(params.palette, true);
-      allColorsAllowed = _.map(allColorsAllowed, (color) => {
-        return this.softenize(color);
-      });
-      if (allColorsAllowed.indexOf(this.softenize(value)) === -1) {
-        $validity.push({ vNotInPalette: api.l10n['vNotInPalette'] });
-      }
-    }
-
-    if (params.disallowTransparent && value === 'transparent') {
-      $validity.push({ vNoTranpsarent: api.l10n['vNoTranpsarent'] });
-    }
-
-    if (!params.allowAlpha && Helper.isRgba(value)) {
-      $validity.push({ vNoRGBA: api.l10n['vNoRGBA'] });
-    }
-
-    if (!Helper.isHex(value) &&
-        !Helper.isRgb(value) &&
-        !Helper.isRgba(value) &&
-        value !== 'transparent'
-      ) {
-      $validity.push({ vNoColor: api.l10n['vNoColor'] });
-    }
-
-    return $validity;
+  sanitize: function (value) {
+    return Sanitize.color(value, this.setting, this);
   },
   /**
    * @override

@@ -31,7 +31,7 @@ let Control = ControlBaseSet.extend({
    * @return {string}
    */
   sanitize: function (value) {
-    return Sanitize.fontFamily(value);
+    return Sanitize.fontFamily(value, this.setting, this);
   },
   /**
    * Always quote all font families
