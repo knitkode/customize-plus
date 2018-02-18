@@ -170,14 +170,14 @@ gulp.task('_customize-scripts-admin', ['_customize-scripts-admin-rollup'], funct
     PATHS.src.npm + 'spectrum-colorpicker/spectrum.js',
   ]));
   stream.queue(gulp.src('.tmp/customize.js')
-    .pipe(gulpIf(CONFIG.isDist, replace('var DEBUG = true;', 'var DEBUG = !!api.DEBUG;')))
+    .pipe(gulpIf(CONFIG.isDist, replace('var DEBUG = true;', 'var DEBUG = !!window.kkcp.DEBUG;')))
     .pipe(gulpIf(CONFIG.isDist, header(CONFIG.credits, { pkg: pkg })))
   );
   return stream.done()
     .pipe(concat('customize.js', PLUGINS.concat))
     .pipe(gulp.dest(PATHS.build.scripts))
     .pipe(rename({ suffix: '.min' }))
-    .pipe(gulpIf(CONFIG.isDist, replace('var DEBUG = !!api.DEBUG;', '')))
+    .pipe(gulpIf(CONFIG.isDist, replace('var DEBUG = !!window.kkcp.DEBUG;', '')))
     .pipe(gulpIf(CONFIG.isDist, uglify(extend({}, PLUGINS.uglify, PLUGINS.uglifyCustomScripts, {
       nameCache: JSON.parse(fs.readFileSync('../customize-plus-premium/config/uglify--customize-name_cache.json', 'utf8')),
       output: {
