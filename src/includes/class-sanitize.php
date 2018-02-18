@@ -62,19 +62,20 @@ class KKcp_Sanitize {
 	 * Sanitize hex color
 	 *
 	 * Check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or
-	 * 'CCC'. It needs a value cleaned of all whitespaces (sanitized).
-	 * // @@todo with whitespaces should sanitize too \\
+	 * 'CCC'.
 	 *
 	 * @since  1.0.0
 	 * @param  string $input  The input value to sanitize
-	 * @return string|boolean The sanitized input or `false` in case the input
-	 *                        value is not valid.
+	 * @return string|null  	The sanitized input or `null` in case the input
+	 *                        is not valid.
 	 */
 	public static function hex( $input ) {
+		$input = preg_replace( '/\s+/', '', $input );
+
 		if ( preg_match( '/^([A-Fa-f0-9]{3}){1,2}$/', $input ) ) {
 			return '#' . $input;
 		}
-		return $input;
+		return null;
 	}
 
 	/**

@@ -54,20 +54,21 @@ export function array ($input) {
 
 /**
  * Sanitize hex color
- * check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or 'CCC'
  *
- * It needs a value cleaned of all whitespaces (sanitized).
+ * Check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or 'CCC'
  *
  * @since  1.0.0
  * @param  string $input  The input value to sanitize
- * @return string|boolean The sanitized input or `false` in case the input
- *                        value is not valid.
+ * @return string|null    The sanitized input or `false` in case the input
+ *                        is not valid.
  */
 export function hex( $input ) {
+  $input = $input.replace( /\s+/g, '' );
+
   if ( $input.match( /^([A-Fa-f0-9]{3}){1,2}$/ ) ) {
     return `#${$input}`;
   }
-  return $input;
+  return null;
 }
 
 /**

@@ -226,12 +226,12 @@ api.controls.Base = wpApi.Control.extend({
 
       // Add custom validation function overriding the empty function from WP
       // API in `customize-controls.js`, in the constructor `api.Value`
-      if (!this.params['noLiveValidation']) {
+      if (!control.params['noLiveValidation']) {
         control.setting.validate = control._validate.bind(control);
       }
 
       // add sanitization of the value `postMessag`ed to the preview
-      if (!this.params['noLiveSanitization']) {
+      if (!control.params['noLiveSanitization'] && !control.params['loose']) {
         control.setting.sanitize = control.sanitize.bind(control);
       }
 

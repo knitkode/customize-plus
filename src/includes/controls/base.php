@@ -40,12 +40,13 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * an invalid value in the customizer preview, and the last valid value will
 	 * always be the one both previewed and sent to the server.
 	 *
-	 * @see JS: `api.controls.Base->_validate()`
+	 * @see JS kkcp.controls.Base->_validate
+	 * @see JS kkcp.controls.Base->sanitize
 	 *
 	 * @since 1.0.0
 	 * @var bool
 	 */
-	public $loose = true;
+	public $loose = false;
 
 	/**
 	 * Enable live validation of control's default setting value
@@ -55,7 +56,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * get another property only in the less frequent case and prints a slightly
 	 * smaller JSON. In `to_json` this becomes `noLiveValidation`.
 	 *
-	 * @see JS: `api.controls.Base->initialize()`
+	 * @see JS kkcp.controls.Base->initialize
 	 *
 	 * @since 1.0.0
 	 * @var bool
@@ -70,7 +71,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * get another property only in the less frequent case and prints a slightly
 	 * smaller JSON. In `to_json` this becomes `noLiveSanitization`.
 	 *
-	 * @see JS: `api.controls.Base->initialize()`
+	 * @see JS kkcp.controls.Base->initialize
 	 *
 	 * @since 1.0.0
 	 * @var bool
@@ -514,7 +515,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 *
 	 * Shortcut to manage the $validity object during validation
 	 *
-	 * @see  JavaScript: `kkcp.controls.Base.addError()`
+	 * @see  JS kkcp.controls.Base.addError
 	 * @since  1.0.0
 	 * @param WP_Error					$validity
 	 * @param string						$msg_id

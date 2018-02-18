@@ -161,7 +161,11 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 			$value = KKcp_Sanitize::hex( $value );
 		}
 
-		return $value;
+		if ( $value ) {
+			return $value;
+		}
+
+		return $setting->default;
 	}
 
 	/**
