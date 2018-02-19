@@ -101,7 +101,7 @@ let Control = api.controls.Base.extend({
     const _maybeInitializeSpectrum = () => {
       // initialize only once
       if (!pickerIsInitialized) {
-        this.__$picker.spectrum(this._getSpectrumOpts(this));
+        this.__$picker.spectrum(this._getSpectrumOpts());
         pickerIsInitialized = true;
       }
     };
@@ -143,18 +143,15 @@ let Control = api.controls.Base.extend({
       showSelectionPalette: false,
       togglePaletteMoreText: api.l10n['togglePaletteMoreText'],
       togglePaletteLessText: api.l10n['togglePaletteLessText'],
-      allowEmpty: !params.disallowTransparent,
-      showAlpha: params.allowAlpha,
+      allowEmpty: !!params.transparent,
+      showAlpha: !!params.alpha,
       showPalette: !!params.palette,
-      showPaletteOnly: params.showPaletteOnly && params.palette,
-      togglePaletteOnly: params.togglePaletteOnly && params.palette,
+      showPaletteOnly: !!params.palette && (params.picker === 'hidden' || !params.picker),
+      togglePaletteOnly: !!params.palette && (params.picker === 'hidden' || params.picker),
       palette: params.palette,
       color: this.setting(),
       show: () => {
         $container.find('.sp-input').focus();
-        if (params.showInitial) {
-          $container.find('.sp-container').addClass('sp-show-initial');
-        }
       },
       move: (tinycolor) => {
         const color = tinycolor ? tinycolor.toString() : 'transparent';

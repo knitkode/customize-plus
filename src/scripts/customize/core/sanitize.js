@@ -360,8 +360,8 @@ export function color( $value, $setting, $control ) {
   // $value = preg_replace( '/\s+/', '', $value );
 
   // // @@doubt here there might be a race condition when the developer defines a palette
-  // // that have rgba colors without setting `allowAlpha` to `true`. \\
-  // if ( KKcp_Helper::is_rgba( $value ) && ! $control->allowAlpha ) {
+  // // that have rgba colors without setting `alpha` to `true`. \\
+  // if ( KKcp_Helper::is_rgba( $value ) && ! $control->alpha ) {
   //   $value = KKcp_Helper::rgba_to_rgb( $value );
   // } else {
   //   $value = self::hex( $value );

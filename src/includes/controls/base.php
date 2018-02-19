@@ -179,26 +179,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
-	 * Add booleans parameters to JSON
-	 *
-	 * Utility method to easily add truthy values to the control JSON data,
-	 * without adding useless false values in the json params of the controls,
-	 * where checking `if (control.params.param) {}` returns false anyway if
-	 * the key is not set on the object. We save few bytes this way on the
-	 * maybe huge customize JSON data.
-	 *
-	 * @since 1.0.0
-	 * @param array $keys
-	 */
-	protected function add_booleans_params_to_json( $keys = array() ) {
-		foreach ( $keys as $key ) {
-			if ( $this->$key ) {
-				$this->json[ $key ] = true;
-			}
-		}
-	}
-
-	/**
 	 * Add `'attrs'` to JSON checking that the values specifies in the given
 	 * options are allowed to be configured.
 	 *

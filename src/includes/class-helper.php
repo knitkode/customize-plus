@@ -698,42 +698,56 @@ class KKcp_Helper {
   }
 
   /**
-   * Is HEX color
+   * Is keyword color?
    *
    * It needs a value cleaned of all whitespaces (sanitized)
    *
    * @since  1.0.0
    *
    * @param  string $value  The value value to check
-   * @return boolean
+   * @return bool
+   */
+  public static function is_keyword_color( $value ) {
+    return in_array( $value, self::COLORS_KEYWORDS );
+  }
+
+  /**
+   * Is HEX color?
+   *
+   * It needs a value cleaned of all whitespaces (sanitized)
+   *
+   * @since  1.0.0
+   *
+   * @param  string $value  The value value to check
+   * @return bool
    */
   public static function is_hex( $value ) {
     return preg_match( '/^#([A-Fa-f0-9]{3}){1,2}$/', $value );
   }
 
   /**
-   * Is RGB color
+   * Is RGB color?
    *
    * It needs a value cleaned of all whitespaces (sanitized)
    *
    * @since  1.0.0
    *
    * @param  string $value  The value value to check
-   * @return boolean
+   * @return bool
    */
   public static function is_rgb( $value ) {
     return preg_match( '/^rgba\((0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])$/', $value );
   }
 
   /**
-   * Is RGBA color
+   * Is RGBA color?
    *
    * It needs a value cleaned of all whitespaces (sanitized)
    *
    * @since  1.0.0
    *
    * @param  string $value  The value value to check
-   * @return boolean
+   * @return bool
    */
   public static function is_rgba( $value ) {
     return preg_match( '/^rgba\((0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5]),(0?\.[0-9]*[1-9][0-9]*|[01])\)$/', $value );
@@ -759,7 +773,7 @@ class KKcp_Helper {
    * @link(http://php.net/manual/en/function.hexdec.php#99478, original source)
    * @since  1.0.0
    * @param  string  $hex_str          Hexadecimal color value
-   * @param  boolean $return_as_string If set true, returns the value separated
+   * @param  bool    $return_as_string If set true, returns the value separated
    *                                   by the separator character. Otherwise
    *                                   returns associative array
    * @return array|string              Depending on second parameter. Returns

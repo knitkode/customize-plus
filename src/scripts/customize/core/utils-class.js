@@ -53,8 +53,8 @@ class Utils {
    * @return {string}
    */
   _getCleanUrl (url, type) {
-    // return the absolute url
-    var finalUrl = url;
+    let finalUrl = url;
+
     if (!this._isAbsoluteUrl(url)) {
       switch (type) {
         case 'img':
@@ -138,60 +138,6 @@ class Utils {
   }
 
   /**
-   * Reset control -> setting value to the value according
-   * to the given mode argument
-   *
-   * @static
-   * @param  {Control} control  The control whose setting has to be reset
-   * @param  {string} resetType Either `'initial'` or `'factory'`
-   * @return {boolean}          Whether the reset has succeded
-   */
-  resetControl (control, resetType) {
-    const params = {control};
-    if (!control.setting) {
-      return true;
-    }
-    var value;
-    if (resetType === 'last' && !_.isUndefined(params['vLastSaved'])) {
-      value = params['vLastSaved'];
-    } else if (resetType === 'initial') {
-      value = params['vInitial'];
-    } else if (resetType === 'factory') {
-      value = params['vFactory'];
-    }
-    if (value) {
-      control.setting.set(value);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * Check if the given type of reset is needed for a specific control
-   *
-   * @static
-   * @param  {Control} control  The control which need to be checked
-   * @param  {string} resetType Either `'initial'` or `'factory'`
-   * @return {boolean}          Whether the reset has succeded
-   */
-  _isResetNeeded (control, resetType) {
-    var params = control.params;
-    if (!control.kkcp || !control.setting) {
-      return false;
-    }
-    var _softenize = control.softenize;
-    var value = _softenize(control.setting());
-    if (resetType === 'last' && !_.isUndefined(params['vLastSaved'])) {
-      return value !== _softenize(params['vLastSaved']);
-    } else if (resetType === 'initial') {
-      return value !== _softenize(params['vInitial']);
-    } else if (resetType === 'factory') {
-      return value !== _softenize(params['vFactory']);
-    }
-  }
-
-  /**
    * Force `setting.set`.
    * Use case:
    * When a required text control content gets deleted by the user,
@@ -260,47 +206,6 @@ class Utils {
    */
   _isOptionsApi (controlId) {
     return Regexes._optionsApi.test(controlId);
-  }
-
-  /**
-   * Strip HTML from input
-   * {@link http://stackoverflow.com/q/5002111/1938970}
-   *
-   * @static
-   * @param  {string} input
-   * @return {string}
-   */
-  _stripHTML (input) {
-    return $(document.createElement('div')).html(input).text();
-  }
-
-  /**
-   * Selectize render option function
-   *
-   * @abstract
-   * @static
-   * @param  {Object} data     The selectize option object representation.
-   * @param  {function} escape Selectize escape function.
-   * @return {string}          The option template.
-   */
-  _selectizeRenderOptionSize (data, escape) {
-    return '<div class="kkcpsize-selectOption">' +
-        '<i>' + escape(data.valueCSS) + '</i> ' + escape(data.label) +
-      '</div>';
-  }
-
-  /**
-   * Selectize render option function
-   *
-   * @abstract
-   * @static
-   * @param  {Object} data     The selectize option object representation.
-   * @param  {function} escape Selectize escape function.
-   * @return {string}          The option template.
-   */
-  _selectizeRenderOptionColor (data, escape) {
-    return '<div class="kkcpcolor-selectOption" style="border-color:' +
-      escape(data.valueCSS) + '">' + escape(data.label) + '</div>';
   }
 
   /**

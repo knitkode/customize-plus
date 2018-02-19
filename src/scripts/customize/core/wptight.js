@@ -10,7 +10,7 @@ import Utils from './utils';
  *
  * @class api.core.WpTight
  */
-var WpTight = (function () {
+const WpTight = (function () {
 
   /**
    * The id of the WordPress core css with the color schema

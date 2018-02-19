@@ -344,28 +344,24 @@ export function color( $validity={}, $value, $setting, $control ) {
   const params = $control.params;
   $value = $value.replace(/\s/g, '');
 
-  if (params.showPaletteOnly &&
-    !params.togglePaletteOnly &&
-    _.isArray(params.palette)
-  ) {
-    let allColorsAllowed = _.flatten(params.palette, true);
-    allColorsAllowed = _.map(allColorsAllowed, (color) => {
+  debugger;
+  if ( ! params.picker && _.isArray(params.palette) ) {
+    const valueNormalized = $control.softenize($value);
+    let paletteNormalized = _.flatten(params.palette, true);
+    paletteNormalized = _.map(paletteNormalized, (color) => {
       return $control.softenize(color);
     });
-    if (allColorsAllowed.indexOf($control.softenize($value)) === -1) {
+    if (paletteNormalized.indexOf(valueNormalized) === -1) {
       $validity = $control._addError( $validity, 'vNotInPalette' );
     }
   }
-
-  if (params.disallowTransparent && $value === 'transparent') {
-    $validity = $control._addError( $validity, 'vNoTranpsarent' );
+  else if (!params.transparent && $value === 'transparent') {
+    $validity = $control._addError( $validity, 'vNoTransparent' );
   }
-
-  if (!params.allowAlpha && Helper.isRgba($value)) {
+  else if (!params.alpha && Helper.isRgba($value)) {
     $validity = $control._addError( $validity, 'vNoRGBA' );
   }
-
-  if (!Helper.isHex($value) &&
+  else if (!Helper.isHex($value) &&
       !Helper.isRgb($value) &&
       !Helper.isRgba($value) &&
       $value !== 'transparent'

@@ -1,7 +1,6 @@
 import strpos from 'locutus/php/strings/strpos';
 import is_int from 'locutus/php/var/is_int';
 import is_float from 'locutus/php/var/is_float'
-import ValidatorColor from './validator-color';
 
 /**
  * Is setting value (`control.setting()`) empty?
@@ -33,19 +32,21 @@ export function isEmpty (value) {
 }
 
 /**
- * Is HEX color
+ * Is keyword color?
  *
  * It needs a value cleaned of all whitespaces (sanitized)
  *
  * @since  1.0.0
  *
  * @param  string $value  The value value to check
- * @return boolean
+ * @return bool
  */
-export const isHex = ValidatorColor.hex;
+export function isKeywordColor( $value ) {
+  return api['colorsKeywords'].indexOf( $value ) !== -1;
+}
 
 /**
- * Is RGB color
+ * Is HEX color?
  *
  * It needs a value cleaned of all whitespaces (sanitized)
  *
@@ -54,10 +55,51 @@ export const isHex = ValidatorColor.hex;
  * @param  string $value  The value value to check
  * @return boolean
  */
-export const isRgb = ValidatorColor.rgb;
+export function isHex( $value ) {
+  return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test( $value )
+}
 
 /**
- * Is RGBA color
+ * Is RGB color?
+ *
+ * It needs a value cleaned of all whitespaces (sanitized)
+ * Inspired by formvalidation.js by Nguyen Huu Phuoc, aka @nghuuphuoc
+ * and contributors {@link https://github.com/formvalidation/}.
+ *
+ * @since  1.0.0
+ *
+ * @param  string $value  The value value to check
+ * @return boolean
+ */
+export function isRgb( $value ) {
+  const regexInteger = /^rgb\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){2}(\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*)\)$/;
+  const regexPercent = /^rgb\((\s*(\b(0?\d{1,2}|100)\b%)\s*,){2}(\s*(\b(0?\d{1,2}|100)\b%)\s*)\)$/;
+  return regexInteger.test(value) || regexPercent.test(value);
+}
+
+/**
+ * Is RGBA color?
+ *
+ * It needs a value cleaned of all whitespaces (sanitized)
+ * Inspired by formvalidation.js by Nguyen Huu Phuoc, aka @nghuuphuoc
+ * and contributors {@link https://github.com/formvalidation/}.
+ *
+ * @since  1.0.0
+ *
+ * @param  string $value  The value value to check
+ * @return boolean
+ */
+export function isRgba( $value ) {
+  const regexInteger = /^rgba\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;
+  const regexPercent = /^rgba\((\s*(\b(0?\d{1,2}|100)\b%)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;
+  return regexInteger.test(value) || regexPercent.test(value);
+}
+
+// hsl: return /^hsl\((\s*(-?\d+)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*)\)$/.test(value);
+// hsla: return /^hsla\((\s*(-?\d+)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*,){2}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/.test(value);
+
+/**
+ * Is a valid color among the color formats given?
  *
  * It needs a value cleaned of all whitespaces (sanitized)
  *
@@ -66,7 +108,9 @@ export const isRgb = ValidatorColor.rgb;
  * @param  string $value  The value value to check
  * @return boolean
  */
-export const isRgba = ValidatorColor.rgba;
+export function isColor ( $value, $colorFormats ) {
+// @@todoxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+}
 
 /**
  * Normalize font family.
@@ -214,7 +258,7 @@ export function hasHTML (value) {
  *
  * // @@unused \\
  * @param  {string}  str
- * @return {Boolean}
+ * @return {boolean}
  */
 export function isHTML (str) {
   if (window.DOMParser) {
