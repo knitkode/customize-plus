@@ -9,7 +9,7 @@ import pluginApi from 'kkcp';
 
 /** @type {Object} */
 pluginApi.core = pluginApi.core || {};
-/** @type {Object} [description] */
+/** @type {Object} */
 pluginApi.components = pluginApi.components || {};
 /** @type {Object} */
 pluginApi.controls = pluginApi.controls || {};
