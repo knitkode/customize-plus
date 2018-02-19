@@ -1,9 +1,17 @@
-class Logger {
-  error (context, msg) {
-    console.error(context, msg);
-  }
+/**
+ * Log error
+ *
+ * @param  {string} context
+ * @param  {string} msg
+ * @return {void}
+ */
+export function logError (context, msg) {
+  console.error(context, msg);
 }
 
-const logger = new Logger();
-
-export default logger;
+/**
+ * Export logger object (methods are renamed)
+ */
+export default {
+	error: logError,
+}

@@ -5,15 +5,17 @@ import _ from 'underscore';
 import wp from 'wp';
 import pluginApi from 'kkcp';
 
-/** @type {Object} It collects core components */
+// Collectors for Customize Plus public API
+
+/** @type {Object} */
 pluginApi.core = pluginApi.core || {};
-
-/** @type {Object} It collects additional components */
+/** @type {Object} [description] */
 pluginApi.components = pluginApi.components || {};
-
-/** @type {Object} It collects controls, sections and panels prototypes */
+/** @type {Object} */
 pluginApi.controls = pluginApi.controls || {};
+/** @type {Object} */
 pluginApi.sections = pluginApi.sections || {};
+/** @type {Object} */
 pluginApi.panels = pluginApi.panels || {};
 
 // exports Customize Plus API
@@ -51,6 +53,20 @@ const _readyDOM = (fn) => {
 }
 _readyDOM(() => { $readyDOM.resolve(); });
 
+// be sure to have what we need
+if (!wp) {
+  throw new Error('Missing crucial object `wp`');
+  $readyWP.reject();
+  $readyDOM.reject();
+}
+
+// be sure to have what we need
+if (!pluginApi) {
+  throw new Error('Missing crucial object `kkcp`');
+  $readyWP.reject();
+  $readyDOM.reject();
+}
+
 // var DEBUG = true; is injected through rollup
 if (DEBUG) {
   $ready.done(() => { console.log('global $ready.done()'); });
@@ -64,12 +80,3 @@ if (DEBUG) {
   window.api = pluginApi;
   window.wpApi = wpApi;
 }
-
-// // be sure to have what we need, bail otherwise
-// if (!wp) {
-//   throw new Error('Missing crucial object `wp`');
-
-// // be sure to have what we need, bail otherwise
-// if (!pluginApi) {
-//   throw new Error('Missing crucial object `kkcp`');
-// }

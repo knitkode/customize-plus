@@ -10,25 +10,25 @@ import { api, wpApi, $document, $readyDOM } from './globals';
  * @class api.core.Tabs
  * @requires api.components.Screenpreview
  */
-var Tabs = (function () {
+const Tabs = (function () {
 
   /**
    * Class name for a selected tab
    * @type {string}
    */
-  var CLASS_TAB_SELECTED = 'selected';
+  const CLASS_TAB_SELECTED = 'selected';
 
   /**
    * Tab selector (for jQuery)
    * @type {string}
    */
-  var SELECTOR_TAB = '.kkcp-tab';
+  const SELECTOR_TAB = '.kkcp-tab';
 
   /**
    * Tab content selector (for jQuery)
    * @type {string}
    */
-  var SELECTOR_TAB_CONTENT = '.kkcp-tab-content';
+  const SELECTOR_TAB_CONTENT = '.kkcp-tab-content';
 
   /**
    * Uses event delegation so we are able to bind our 'temporary'
@@ -36,24 +36,24 @@ var Tabs = (function () {
    */
   function _init () {
     $document.on('click', SELECTOR_TAB, function() {
-      var area = this.parentNode.parentNode; // kkcptoimprove \\
-      var tabs = area.getElementsByClassName('kkcp-tab');
-      var panels = area.getElementsByClassName('kkcp-tab-content');
-      var isScreenPicker = area.classList.contains('kkcp-screen-picker');
-      var tabAttrName = isScreenPicker ? 'data-screen' : 'data-tab';
-      var target = this.getAttribute(tabAttrName);
+      const area = this.parentNode.parentNode; // kkcptoimprove \\
+      const tabs = area.getElementsByClassName('kkcp-tab');
+      const panels = area.getElementsByClassName('kkcp-tab-content');
+      const isScreenPicker = area.classList.contains('kkcp-screen-picker');
+      const tabAttrName = isScreenPicker ? 'data-screen' : 'data-tab';
+      const target = this.getAttribute(tabAttrName);
 
       // remove 'selected' class from all the other tab links
-      for (var i = tabs.length - 1; i >= 0; i--) {
+      for (let i = tabs.length - 1; i >= 0; i--) {
         tabs[i].classList.remove(CLASS_TAB_SELECTED);
       }
       // add the 'selected' class to the clicked tab link
       this.className += ' ' + CLASS_TAB_SELECTED;
 
       // loop through panels and show the current one
-      for (var j = panels.length - 1; j >= 0; j--) {
-        var panel = panels[j];
-        var $panelInputs = $('input, .ui-slider-handle', panel);
+      for (let j = panels.length - 1; j >= 0; j--) {
+        let panel = panels[j];
+        let $panelInputs = $('input, .ui-slider-handle', panel);
         if (panel.getAttribute(tabAttrName) === target) {
           panel.classList.add(CLASS_TAB_SELECTED);
           // reset manual tabIndex to normal browser behavior
@@ -84,16 +84,16 @@ var Tabs = (function () {
    *                             screen pickers UI DOM
    */
   function _updateScreenPickerTabs (size, $container) {
-    var $screenPickers = $('.kkcp-screen-picker', $container);
+    const $screenPickers = $('.kkcp-screen-picker', $container);
     $screenPickers.each(function () {
-      var $area = $(this);
-      var $tabs = $area.find(SELECTOR_TAB);
-      var $panels = $area.find(SELECTOR_TAB_CONTENT);
-      var filter = function () {
+      const $area = $(this);
+      const $tabs = $area.find(SELECTOR_TAB);
+      const $panels = $area.find(SELECTOR_TAB_CONTENT);
+      const filter = function () {
         return this.getAttribute('data-screen') === size;
       };
-      var $tabActive = $tabs.filter(filter);
-      var $panelActive = $panels.filter(filter);
+      const $tabActive = $tabs.filter(filter);
+      const $panelActive = $panels.filter(filter);
       $tabs.removeClass(CLASS_TAB_SELECTED);
       $panels.removeClass(CLASS_TAB_SELECTED);
       $tabActive.addClass(CLASS_TAB_SELECTED);

@@ -17,10 +17,10 @@ api.core._banner = true;
   /** @type {Object} */
   var adminColors = WpTight._colorSchema;
 
-  /** @type {string} The id of the banner container */
+  /** @type {string} */
   var _ID = _getRandomId(18);
 
-  /** @type {Function} CSS underscore template */
+  /** @type {Function} */
   var _inlineStyleTpl = _.template(
     // container (style on id)
     '#<%- id %> {' +
@@ -174,12 +174,12 @@ api.core._banner = true;
     '}'
   );
 
-  /** @type {Function} underscore template */
+  /** @type {Function} */
   var _tplBtn = _.template(
     '<button class="<%- id %>b" id="<%- id %>e" style="display:none"></button>'
   );
 
-  /** @type {Function} underscore template */
+  /** @type {Function} */
   var _tpl = _.template(
     '<div id="<%- id %>" style="display:none">' +
       '<button class="<%- id %>b" id="<%- id %>c" style="display:none"></button>' +

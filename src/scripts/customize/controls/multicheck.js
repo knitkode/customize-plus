@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
-import logger from '../core/logger';
+import { logError } from '../core/logger';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 import ControlBaseChoices from './base-choices';
@@ -102,7 +102,7 @@ class ControlMulticheck extends ControlBaseChoices {
           this._container.appendChild(itemSortableDOM);
         }
       } else {
-        logger.error('controls.Multicheck->_reorder', `item '${itemValueAsKey}' has no '_sortable' DOM in 'this.__itemsMap'`);
+        logError('controls.Multicheck->_reorder', `item '${itemValueAsKey}' has no '_sortable' DOM in 'this.__itemsMap'`);
       }
     }
   }
@@ -134,7 +134,7 @@ class ControlMulticheck extends ControlBaseChoices {
     const value = this.setting();
 
     if (!_.isArray(value)) {
-      return logger.error('controls.Multicheck->_syncCheckboxes', `setting.value must be an array`);
+      return logError('controls.Multicheck->_syncCheckboxes', `setting.value must be an array`);
     }
 
     for (let i = 0, l = this.__inputs.length; i < l; i++) {

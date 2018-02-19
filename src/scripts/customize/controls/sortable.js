@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import sprintf from 'locutus/php/strings/sprintf';
 import { api, wpApi } from '../core/globals';
-import logger from '../core/logger';
+import { logError } from '../core/logger';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 import ControlBaseChoices from './base-choices';
@@ -88,7 +88,7 @@ class ControlSortable extends ControlBaseChoices {
     const value = this.setting();
 
     if (!_.isArray(value)) {
-      return logger.error('controls.Sortable->_reorder', `setting.value must be an array`);
+      return logError('controls.Sortable->_reorder', `setting.value must be an array`);
     }
 
     for (let i = 0, l = value.length; i < l; i++) {
@@ -99,7 +99,7 @@ class ControlSortable extends ControlBaseChoices {
         itemSortableDOM.parentNode.removeChild(itemSortableDOM);
         this._container.appendChild(itemSortableDOM);
       } else {
-        logger.error('controls.Sortable->_reorder', `item '${itemValueAsKey}' has no '_sortable' DOM in 'this.__itemsMap'`);
+        logError('controls.Sortable->_reorder', `item '${itemValueAsKey}' has no '_sortable' DOM in 'this.__itemsMap'`);
       }
     }
 

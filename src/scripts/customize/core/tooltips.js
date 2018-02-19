@@ -10,19 +10,19 @@ import { api, $document, body, $readyDOM } from './globals';
  * @class api.core.Tooltips
  * @requires jQueryUI.Tooltip
  */
-var Tooltips = (function () {
+const Tooltips = (function () {
 
   /**
    * @const
    * @type {string}
    */
-  var BASE_CLASS = '.kkcpui-tooltip';
+  const BASE_CLASS = '.kkcpui-tooltip';
 
   /**
    * @const
    * @type {Array<Object<string, string>>}
    */
-  var ALLOWED_POSITIONS = [{
+  const ALLOWED_POSITIONS = [{
     _name: 'top',
     _container: $document,
     _position: {
@@ -42,7 +42,7 @@ var Tooltips = (function () {
    * @const
    * @type {Object<string,boolean|string>}
    */
-  var DEFAULT_OPTIONS = {
+  const DEFAULT_OPTIONS = {
     show: false,
     hide: false
   };
@@ -51,9 +51,9 @@ var Tooltips = (function () {
    * Init tooltips for each allowed position
    */
   function _init () {
-    for (var i = ALLOWED_POSITIONS.length - 1; i >= 0; i--) {
-      var custom = ALLOWED_POSITIONS[i];
-      var options = _.defaults({
+    for (let i = ALLOWED_POSITIONS.length - 1; i >= 0; i--) {
+      let custom = ALLOWED_POSITIONS[i];
+      let options = _.defaults({
         items: BASE_CLASS + '--' + custom._name,
         classes: {
           'ui-tooltip': custom._name,

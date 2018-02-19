@@ -1,4 +1,4 @@
-// import './globals'; // @@doubt, import or not? \\
+import './globals';
 import './setup-jquery';
 import './setup-markdown';
 import './regexes';
