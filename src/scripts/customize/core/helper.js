@@ -8,7 +8,6 @@ import is_float from 'locutus/php/var/is_float'
  * Used to check if required control's settings have instead an empty value
  *
  * @see php class method `KKcp_Validate::is_empty()`
- * @static
  * @param  {string}  value
  * @return {boolean}
  */
@@ -42,7 +41,8 @@ export function isEmpty (value) {
  * @return bool
  */
 export function isKeywordColor( $value ) {
-  return api['colorsKeywords'].indexOf( $value ) !== -1;
+  const keywords = api['colorsKeywords'] || [];
+  return keywords.indexOf( $value ) !== -1;
 }
 
 /**
@@ -198,8 +198,8 @@ export function modulus(val, step){
  * otherwise the minor comparison would always return true for negative
  * numbers.
  *
- * @unused This could be a valid alternative to the above `modulus` function.
- * Not that unlike `modulus` the return value here is a boolean.
+ * @ignore This could be a valid alternative to the above `modulus` function.
+ * Note that unlike `modulus` the return value here is a boolean.
  *
  * @param  {string}  val
  * @param  {string}  step
@@ -254,9 +254,9 @@ export function hasHTML (value) {
  *
  * It tries to use the DOMParser object (see Browser compatibility table
  * [here](mzl.la/2kh7HEl)), otherwise it just.
- * Solution inspired by this [stackerflow answer](http://bit.ly/2k6uFLI)
+ * Solution inspired by this {@link http://bit.ly/2k6uFLI, stackerflow answer)
  *
- * // @@unused \\
+ * @ignore Not currently in use
  * @param  {string}  str
  * @return {boolean}
  */
