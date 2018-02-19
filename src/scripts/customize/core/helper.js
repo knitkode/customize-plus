@@ -198,9 +198,10 @@ export function modulus(val, step){
  * otherwise the minor comparison would always return true for negative
  * numbers.
  *
- * @ignore This could be a valid alternative to the above `modulus` function.
+ * This could be a valid alternative to the above `modulus` function.
  * Note that unlike `modulus` the return value here is a boolean.
  *
+ * @ignore
  * @param  {string}  val
  * @param  {string}  step
  * @return {boolean}
@@ -256,7 +257,9 @@ export function hasHTML (value) {
  * [here](mzl.la/2kh7HEl)), otherwise it just.
  * Solution inspired by this {@link http://bit.ly/2k6uFLI, stackerflow answer)
  *
- * @ignore Not currently in use
+ * Not currently in use.
+ *
+ * @ignore
  * @param  {string}  str
  * @return {boolean}
  */
