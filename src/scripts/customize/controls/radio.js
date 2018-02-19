@@ -4,14 +4,8 @@ import ControlBaseRadio from './base-radio';
 /**
  * Control Radio
  *
- * @class wp.customize.controlConstructor.kkcp_radio
- * @constructor
- * @extends api.controls.BaseRadio
- * @augments api.controls.BaseChoices
- * @augments api.controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
+ * @alias api.controls.Radio
+ * @alias wp.customize.controlConstructor.kkcp_radio
+ * @alias api.controls.BaseRadio
  */
-let Control = ControlBaseRadio;
-
-export default wpApi.controlConstructor['kkcp_radio'] = api.controls.Radio = Control;
+export default wpApi.controlConstructor['kkcp_radio'] = api.controls.Radio = ControlBaseRadio;

@@ -1,38 +1,40 @@
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import logger from '../core/logger';
-// import ControlBase from './base';
-import ControlBaseChoices from './base-choices';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
+import ControlBaseChoices from './base-choices';
 
 /**
  * Control Multicheck
  *
- * @class wp.customize.controlConstructor.kkcp_multicheck
- * @constructor
+ * @class api.controls.Multicheck
+ * @alias wp.customize.controlConstructor.kkcp_multicheck
  * @extends api.controls.BaseChoices
  * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = ControlBaseChoices.extend({
+class ControlMulticheck extends ControlBaseChoices {
+
   /**
    * @override
    */
-  validate: function (value) {
+  validate (value) {
     return Validate.multipleChoices({}, value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  sanitize: function (value) {
+  sanitize (value) {
     return Sanitize.multipleChoices(value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  syncUI: function (value) {
+  syncUI (value) {
     if (!_.isEqual(value, this._getValueFromUI())) {
       this._syncCheckboxes();
 
@@ -40,11 +42,12 @@ let Control = ControlBaseChoices.extend({
         this._reorder();
       }
     }
-  },
+  }
+
   /**
    * @override
    */
-  ready: function () {
+  ready () {
     this.__inputs = this._container.getElementsByTagName('input');
 
     // special stuff for sortable multicheck controls
@@ -62,11 +65,12 @@ let Control = ControlBaseChoices.extend({
 
     // sync checked state on checkboxes on ready and bind (argument `true`)
     this._syncCheckboxes(true);
-  },
+  }
+
   /**
    * @override
    */
-  _buildItemsMap: function () {
+  _buildItemsMap () {
     const items = this._container.getElementsByTagName('label');
     this.__itemsMap = {};
 
@@ -76,11 +80,12 @@ let Control = ControlBaseChoices.extend({
         _input: items[i].getElementsByTagName('input')[0]
       };
     }
-  },
+  }
+
   /**
    * @override
    */
-  _reorder: function () {
+  _reorder () {
     // sort first the checked ones
     api.controls['Sortable'].prototype._reorder.apply(this);
 
@@ -100,13 +105,14 @@ let Control = ControlBaseChoices.extend({
         logger.error('controls.Multicheck->_reorder', `item '${itemValueAsKey}' has no '_sortable' DOM in 'this.__itemsMap'`);
       }
     }
-  },
+  }
+
   /**
    * Get sorted value, reaading checkboxes status from the DOM
    *
    * @return {array}
    */
-  _getValueFromUI: function () {
+  _getValueFromUI () {
     let valueSorted = [];
 
     for (let i = 0, l = this.__inputs.length; i < l; i++) {
@@ -116,14 +122,15 @@ let Control = ControlBaseChoices.extend({
       }
     }
     return valueSorted;
-  },
+  }
+
   /**
    * Sync checkboxes and maybe bind change event
    * We need to be fast here, use vanilla js.
    *
    * @param  {boolean} bindAsWell Bind on change?
    */
-  _syncCheckboxes: function (bindAsWell) {
+  _syncCheckboxes (bindAsWell) {
     const value = this.setting();
 
     if (!_.isArray(value)) {
@@ -140,6 +147,6 @@ let Control = ControlBaseChoices.extend({
       }
     }
   }
-});
+}
 
-export default wpApi.controlConstructor['kkcp_multicheck'] = api.controls.Multicheck = Control;
+export default wpApi.controlConstructor['kkcp_multicheck'] = api.controls.Multicheck = ControlMulticheck;

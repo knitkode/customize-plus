@@ -2,18 +2,19 @@ import { api, wpApi } from '../core/globals';
 import { numberToBoolean } from '../core/helper';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-// import ControlBase from './base';
+import ControlBase from './base';
 
 /**
  * Control Checkbox
  *
- * @class wp.customize.controlConstructor.kkcp_checkbox
- * @constructor
+ * @class api.controls.Checkbox
+ * @alias wp.customize.controlConstructor.kkcp_checkbox
  * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = api.controls.Base.extend({
+class ControlCheckbox extends ControlBase {
+
   /**
    * Normalize setting for soft comparison
    *
@@ -26,35 +27,39 @@ let Control = api.controls.Base.extend({
    *                   session value
    * @return {string} The 'normalized' value passed as an argument.
    */
-  softenize: function (value) {
+  softenize (value) {
     return (value === 0 || value === 1) ? value.toString() : value;
-  },
+  }
+
   /**
    * @override
    */
-  validate: function (value) {
+  validate (value) {
     return Validate.checkbox({}, value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  sanitize: function (value) {
+  sanitize (value) {
     return Sanitize.checkbox(value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  syncUI: function (value) {
+  syncUI (value) {
     const valueClean = numberToBoolean(value);
     const inputStatus = numberToBoolean(this.__input.checked);
     if (inputStatus !== valueClean) {
       this.__input.checked = valueClean;
     }
-  },
+  }
+
   /**
    * @override
    */
-  ready: function () {
+  ready () {
     this.__input = this._container.getElementsByTagName('input')[0];
 
     // sync input value on ready
@@ -67,6 +72,6 @@ let Control = api.controls.Base.extend({
       this.setting.set(value);
     }.bind(this);
   }
-});
+}
 
-export default wpApi.controlConstructor['kkcp_checkbox'] = api.controls.Checkbox = Control;
+export default wpApi.controlConstructor['kkcp_checkbox'] = api.controls.Checkbox = ControlCheckbox;

@@ -1,55 +1,59 @@
 import _ from 'underscore';
 import { api } from '../core/globals';
-// import ControlBase from './base';
-import ControlBaseChoices from './base-choices';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
+import ControlBaseChoices from './base-choices';
 
 /**
  * Control Base Radio class
  *
  * @class api.controls.BaseRadio
- * @constructor
  * @extends api.controls.BaseChoices
  * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = ControlBaseChoices.extend({
+class ControlBaseRadio extends ControlBaseChoices {
+
   /**
    * @override
    */
-  validate: function (value) {
+  validate (value) {
     return Validate.singleChoice({}, value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  sanitize: function (value) {
+  sanitize (value) {
     return Sanitize.singleChoice(value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  syncUI: function () {
+  syncUI () {
     this._syncRadios();
-  },
+  }
+
   /**
    * @override
    */
-  ready: function () {
+  ready () {
     this.__inputs = this._container.getElementsByTagName('input');
     // sync checked state on radios on ready and bind (argument `true`)
     this._syncRadios(true);
-  },
+  }
+
   /**
    * Sync radios and maybe bind change event
    * We need to be fast here, use vanilla js.
    *
    * @param  {boolean} bindAsWell Bind on change?
    */
-  _syncRadios: function (bindAsWell) {
-    var value = this.setting();
+  _syncRadios (bindAsWell) {
+    const value = this.setting();
+
     for (var i = 0, l = this.__inputs.length; i < l; i++) {
       var input = this.__inputs[i];
       input.checked = value === input.value;
@@ -60,6 +64,6 @@ let Control = ControlBaseChoices.extend({
       }
     }
   }
-});
+}
 
-export default api.controls.BaseRadio = Control;
+export default api.controls.BaseRadio = ControlBaseRadio;

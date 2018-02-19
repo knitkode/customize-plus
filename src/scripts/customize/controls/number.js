@@ -1,43 +1,45 @@
 import { api, wpApi } from '../core/globals';
-import ControlBaseInput from './base-input';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
+import ControlBaseInput from './base-input';
 
 /**
  * Control Number
  *
- * @class wp.customize.controlConstructor.kkcp_number
- * @alias api.controls.Number
- * @constructor
+ * @class api.controls.Number
+ * @alias wp.customize.controlConstructor.kkcp_number
  * @extends api.controls.BaseInput
  * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = ControlBaseInput.extend({
+class ControlNumber extends ControlBaseInput {
+
   /**
    * @override
    */
-  validate: function (value) {
+  validate (value) {
     return Validate.number({}, value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  sanitize: function (value) {
+  sanitize (value) {
     return Sanitize.number(value, this.setting, this);
-  },
+  }
+
   /**
    * We just neet to convert the value to string for the check, for the rest
    * is the same as in the base input control
    *
    * @override
    */
-  syncUI: function (value) {
+  syncUI (value) {
     if (value && this.__input.value !== value.toString()) {
       this.__input.value = value;
     }
-  },
-});
+  }
+}
 
-export default wpApi.controlConstructor['kkcp_number'] = api.controls.Number = Control;
+export default wpApi.controlConstructor['kkcp_number'] = api.controls.Number = ControlNumber;

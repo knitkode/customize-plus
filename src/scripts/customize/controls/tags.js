@@ -1,46 +1,50 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
-// import ControlBase from './base';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
+import ControlBase from './base';
 
 /**
  * Control Tags class
  *
- * @class wp.customize.controlConstructor.kkcp_tags
- * @constructor
+ * @class api.controls.Tags
+ * @alias wp.customize.controlConstructor.kkcp_tags
  * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = api.controls.Base.extend({
+class ControlTags extends ControlBase {
+
   /**
    * @override
    */
-  validate: function (value) {
+  validate (value) {
     return Validate.tags({}, value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  sanitize: function (value) {
+  sanitize (value) {
     return Sanitize.tags(value, this.setting, this);
-  },
+  }
+
   /**
    * Destroy `selectize` instance if any.
    *
    * @override
    */
-  onDeflate: function () {
+  onDeflate () {
     if (this.__input && this.__input.selectize) {
       this.__input.selectize.destroy();
     }
-  },
+  }
+
   /**
    * @override
    */
-  syncUI: function (value) {
+  syncUI (value) {
     const selectize = this.__input.selectize;
 
     if (selectize && selectize.getValue() !== value) {
@@ -53,11 +57,12 @@ let Control = api.controls.Base.extend({
       selectize.destroy();
       this._initSelectize();
     }
-  },
+  }
+
   /**
    * @override
    */
-  ready: function () {
+  ready () {
     this.__input = this._container.getElementsByTagName('input')[0];
 
     // fill input before to initialize selectize so selectize grabs the value
@@ -65,11 +70,12 @@ let Control = api.controls.Base.extend({
     this.__input.value = this.setting();
 
     this._initSelectize();
-  },
+  }
+
   /**
    * Init selectize on text input
    */
-  _initSelectize: function () {
+  _initSelectize () {
     const selectizeOpts = this.params.selectize || {};
 
     $(this.__input).selectize(_.extend({
@@ -85,6 +91,6 @@ let Control = api.controls.Base.extend({
       }
     }, selectizeOpts));
   }
-});
+}
 
-export default wpApi.controlConstructor['kkcp_tags'] = api.controls.Tags = Control;
+export default wpApi.controlConstructor['kkcp_tags'] = api.controls.Tags = ControlTags;

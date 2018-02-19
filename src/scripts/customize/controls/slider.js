@@ -4,62 +4,67 @@ import { api, wpApi } from '../core/globals';
 import Regexes from '../core/regexes';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-// import ControlBase from './base';
+import ControlBase from './base';
 
 /**
  * Control Slider
  *
- * @class wp.customize.controlConstructor.kkcp_slider
- * @alias api.controls.Slider
- * @constructor
+ * @class api.controls.Slider
+ * @alias wp.customize.controlConstructor.kkcp_slider
  * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  * @requires api.core.Regexes
  */
-let Control = api.controls.Base.extend({
+class ControlSlider extends ControlBase {
+
   /**
    * @override
    */
-  validate: function (value) {
+  validate (value) {
     return Validate.slider({}, value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  sanitize: function (value) {
+  sanitize (value) {
     return Sanitize.slider(value, this.setting, this);
-  },
+  }
+
   /**
    * Let's consider '44' to be equal to 44.
    * @override
    */
-  softenize: function (value) {
+  softenize (value) {
     return value.toString();
-  },
+  }
+
   /**
    * @override
    */
-  syncUI: function (value) {
+  syncUI (value) {
     if (value !== this._getValueFromUI()) {
       this._setPartialValue(value, 'API');
     }
-  },
+  }
+
   /**
    * This function is divided in subfunction to make it easy to reuse part of
    * this control in other controls that extend this, such as `size_dynamic`.
    * @override
    */
-  ready: function () {
+  ready () {
     this._setDOMelements();
     this._initSliderAndBindInputs();
     // update UI with current values (wait for the slider to be initialized)
     this._updateUIcustomControl(this.setting());
-  },
+  }
+
   /**
    * Set DOM element as control properties
    */
-  _setDOMelements: function () {
+  _setDOMelements () {
     const container = this._container;
     /** @type {HTMLElement} */
     this.__inputNumber = container.getElementsByClassName('kkcp-slider-number')[0];
@@ -67,11 +72,12 @@ let Control = api.controls.Base.extend({
     this.__$inputUnits = $(container.getElementsByClassName('kkcp-unit'));
     /** @type {JQuery} */
     this.__$inputSlider = $(container.getElementsByClassName('kkcp-slider')[0]);
-  },
+  }
+
   /**
    * Init slider and bind input UI.
    */
-  _initSliderAndBindInputs: function () {
+  _initSliderAndBindInputs () {
     const self = this;
     const params = self.params;
     const inputNumber = self.__inputNumber;
@@ -113,40 +119,43 @@ let Control = api.controls.Base.extend({
         }
       }
     }));
-  },
+  }
+
   /**
    * Extract first found unit from value
    * @param  {?string} value [description]
    * @return {?string}       [description]
    */
-  _extractFirstUnit: function (value) {
+  _extractFirstUnit (value) {
     const valueOrigin = value || this.setting();
     const matchesUnit = Regexes._extractUnit.exec(valueOrigin);
     if (matchesUnit && matchesUnit[0]) {
       return matchesUnit[0];
     }
     return null;
-  },
+  }
+
   /**
    * Extract first number found in value
    * @param  {?string|number} value [description]
    * @return {?string}              [description]
    */
-  _extractFirstNumber: function (value) {
+  _extractFirstNumber (value) {
     const valueOrigin = value || this.setting();
     const matchesNumber = Regexes._extractNumber.exec(valueOrigin);
     if (matchesNumber && matchesNumber[0]) {
       return matchesNumber[0];
     }
     return null;
-  },
+  }
+
   /**
    * Get current `setting` value from DOM or from given arg
    * @param  {Object<string,string>} value An optional value formed as
    *                                       `{ number: ?, unit: ? }`
    * @return {string}
    */
-  _getValueFromUI: function (value) {
+  _getValueFromUI (value) {
     let output;
 
     if (value && value._number) {
@@ -162,7 +171,8 @@ let Control = api.controls.Base.extend({
       }
     }
     return output;
-  },
+  }
+
   /**
    * Update UI control
    *
@@ -170,7 +180,7 @@ let Control = api.controls.Base.extend({
    * @param {?string} value Optional, the value from where to extract number and unit,
    *                        uses `this.setting()` if a `null` value is passed.
    */
-  _updateUIcustomControl: function (value) {
+  _updateUIcustomControl (value) {
     const params = this.params;
     const number = this._extractFirstNumber(value);
     const unit = this._extractFirstUnit(value);
@@ -185,11 +195,12 @@ let Control = api.controls.Base.extend({
         return this.value === unit;
       }).addClass('kkcp-current');
     }
-  },
+  }
+
   /**
    * Set partial value
    *
-   * Wrap the `setting.set()` function doing some additional stuff.
+   * Wraps `setting.set()` with some additional stuff.
    *
    * @access private
    * @param  {string} value
@@ -197,13 +208,13 @@ let Control = api.controls.Base.extend({
    *                        picker, dynamic fields, expr field) or from the
    *                        API (on programmatic value change).
    */
-  _setPartialValue: function (value, from) {
+  _setPartialValue (value, from) {
     if (from === 'API') {
       this._updateUIcustomControl(value);
     } else {
       this.setting.set(this._getValueFromUI(value));
     }
   }
-});
+}
 
-export default wpApi.controlConstructor['kkcp_slider'] = api.controls.Slider = Control;
+export default wpApi.controlConstructor['kkcp_slider'] = api.controls.Slider = ControlSlider;

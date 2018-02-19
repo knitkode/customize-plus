@@ -1,32 +1,33 @@
 import _ from 'underscore';
 import { api } from '../core/globals';
-// import ControlBase from './base';
+import ControlBase from './base';
 
 /**
  * Control Base Choices class
  *
- * @class api.controls.BaseRadio
- * @constructor
+ * @class api.controls.BaseChoices
  * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = api.controls.Base.extend({
+class ControlBaseChoices extends ControlBase {
+
   /**
    * @override
    */
-  onInit: function () {
-    api.controls.Base.prototype.onInit.apply(this);
+  onInit () {
+    super.onInit();
 
     this._validChoices = this._getValidChoices(this.params.choices)
-  },
+  }
+
   /**
    * Get valid choicesvalues from given choices
    *
    * @param  {array|object} choices
    * @return {array}
    */
-  _getValidChoices: function (choices) {
+  _getValidChoices (choices) {
     if (_.isArray(choices)) {
       return choices;
     }
@@ -41,6 +42,6 @@ let Control = api.controls.Base.extend({
     }
     return [];
   }
-});
+}
 
-export default api.controls.BaseChoices = Control;
+export default api.controls.BaseChoices = ControlBaseChoices;

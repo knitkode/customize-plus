@@ -4,13 +4,8 @@ import ControlCheckbox from './checkbox';
 /**
  * Control Toggle
  *
- * @class wp.customize.controlConstructor.kkcp_toggle
- * @constructor
- * @extends api.controls.Checkbox
- * @augments wp.customize.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
+ * @alias wp.customize.controlConstructor.kkcp_toggle
+ * @alias api.controls.Toggle
+ * @alias api.controls.Checkbox
  */
-let Control = ControlCheckbox;
-
-export default wpApi.controlConstructor['kkcp_toggle'] = api.controls.Toggle = Control;
+export default wpApi.controlConstructor['kkcp_toggle'] = api.controls.Toggle = ControlCheckbox;

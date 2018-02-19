@@ -4,36 +4,36 @@ import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-// import ControlBase from './base';
 import ControlText from './text';
 
 /**
  * Control Textarea class
  *
- * @class wp.customize.controlConstructor.kkcp_textarea
- * @constructor
+ * @class api.controls.Textarea
+ * @alias wp.customize.controlConstructor.kkcp_textarea
  * @extends api.controls.Text
- * @augments api.controls.Control
+ * @augments api.controls.BaseInput
+ * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  * @requires tinyMCE
  */
-let Control = ControlText.extend({
-  // validate: _.noop(),
-  // sanitize: _.noop(),
+class ControlTextarea extends ControlText {
+
   /**
    * @override
    */
-  onInit: function () {
+  onInit () {
     if (this.params.wp_editor) {
       this._wpEditorID = this._getWpEditorId();
     }
-  },
+  }
+
   /**
    * Destroy tinyMCE instance
    * @override
    */
-  onDeflate: function () {
+  onDeflate () {
     if (this.params.wp_editor) {
       // it might be that this method is called too soon, even before tinyMCE
       // has been loaded, so try it and don't break.
@@ -44,11 +44,12 @@ let Control = ControlText.extend({
         }
       } catch(e) {}
     }
-  },
+  }
+
   /**
    * @override
    */
-  syncUI: function (value) {
+  syncUI (value) {
     var lastValue;
     var wpEditorInstance;
     if (this.params.wp_editor) {
@@ -65,11 +66,12 @@ let Control = ControlText.extend({
         this.__textarea.value = value;
       }
     }
-  },
+  }
+
   /**
    * @override
    */
-  ready: function () {
+  ready () {
     this.__textarea = this._container.getElementsByTagName('textarea')[0];
 
     // params.wp_editor can be either a boolean or an object with options
@@ -78,27 +80,30 @@ let Control = ControlText.extend({
     } else {
       this._syncAndListen();
     }
-  },
+  }
+
   /**
    * Get textarea id, add a suffix and replace dashes with underscores
    * as suggested by WordPress Codex.
    *
    * @see https://codex.wordpress.org/Function_Reference/wp_editor -> $editor_id
    */
-  _getWpEditorId: function () {
+  _getWpEditorId () {
     return `${this.id.replace(/-/g, '_')}__textarea`;
-  },
+  }
+
   /**
    * Sync textarea and listen for changes
    */
-  _syncAndListen: function () {
-    var self = this;
+  _syncAndListen () {
+    const self = this;
     $(self.__textarea)
       .val(self.setting())
       .on('change keyup paste', function () {
         self.setting.set(this.value);
       });
-  },
+  }
+
   /**
    * Maybe init wp_editor.
    *
@@ -112,7 +117,7 @@ let Control = ControlText.extend({
    * prepended to the body and we get rid of the doubled `dashicons-css`
    * included in the response, which creates layout problems.
    */
-  _initWpEditor: function () {
+  _initWpEditor () {
     // dynamically set id on textarea, then use it as a target for wp_editor
     this.__textarea.id = this._wpEditorID;
 
@@ -155,6 +160,6 @@ let Control = ControlText.extend({
 
     this._wpEditorIsActive = true;
   }
-});
+}
 
-export default wpApi.controlConstructor['kkcp_textarea'] = api.controls.Textarea = Control;
+export default wpApi.controlConstructor['kkcp_textarea'] = api.controls.Textarea = ControlTextarea;

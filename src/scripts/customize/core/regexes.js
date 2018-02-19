@@ -6,11 +6,13 @@ import { api } from './globals';
  *
  * @class api.core.Regexes
  *
- * It might be that we need a regex that match of available words,
- * in that case it might be that we want to define the words in an
- * array (maybe coming from php?). So for array to regex conversion
- * do: `new RegExp(MY_VAR.join('|'), 'g')`. See {@link
- * http://stackoverflow.com/q/28280920/1938970 stackoverflow}.
+ * It might be that we need a regex that matches a list of words, in that case
+ * we might want to define the words in an array (coming from php perhaps?).
+ * So for array to regex conversion do:
+ * ```
+ * new RegExp(MY_VAR.join('|'), 'g')`
+ * ```
+ * See {@link http://stackoverflow.com/q/28280920/1938970 stackoverflow}.
  */
 const Regexes = {
   /**
@@ -18,7 +20,7 @@ const Regexes = {
    *
    * To clean user input (most often when writing custom expressions)
    * so that it would later on be more easily parsable by our validation
-   * regexes. Use this as follow: `string.replace(Regexes.whitespaces, '')`.
+   * regexes. Use this as follow: `string.replace(Regexes._whitespaces, '')`.
    *
    * {@link http://stackoverflow.com/a/5963202/1938970}
    *

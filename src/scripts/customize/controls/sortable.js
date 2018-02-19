@@ -2,48 +2,50 @@ import _ from 'underscore';
 import sprintf from 'locutus/php/strings/sprintf';
 import { api, wpApi } from '../core/globals';
 import logger from '../core/logger';
-// import ControlBase from './base';
-import ControlBaseChoices from './base-choices';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
+import ControlBaseChoices from './base-choices';
 
 /**
  * Control Sortable
  *
- * @class wp.customize.controlConstructor.kkcp_sortable
- * @alias api.controls.Sortable
- * @constructor
+ * @class api.controls.Sortable
+ * @alias wp.customize.controlConstructor.kkcp_sortable
  * @extends api.controls.BaseChoices
  * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = ControlBaseChoices.extend({
+class ControlSortable extends ControlBaseChoices {
+
   /**
    * @override
    */
-  validate: function (value) {
+  validate (value) {
     return Validate.multipleChoices({}, value, this.setting, this, true);
-  },
+  }
+
   /**
    * @override
    */
-  sanitize: function (value) {
+  sanitize (value) {
     return Sanitize.multipleChoices(value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  syncUI: function (value) {
+  syncUI (value) {
     if (!_.isEqual(value, this.params.lastValue)) {
       this._reorder();
       this.params.lastValue = value;
     }
-  },
+  }
+
   /**
    * @override
    */
-  ready: function () {
+  ready () {
     const setting = this.setting;
     const container = this.container;
 
@@ -59,12 +61,13 @@ let Control = ControlBaseChoices.extend({
         setting.set(newValue);
       }
     });
-  },
+  }
+
   /**
    * Build sortable items map, a key (grabbed from the `data-value` attrbiute)
    * with the corresponding DOM element
    */
-  _buildItemsMap: function () {
+  _buildItemsMap () {
     const items = this._container.getElementsByClassName('kkcp-sortable');
     this.__itemsMap = {};
 
@@ -74,13 +77,14 @@ let Control = ControlBaseChoices.extend({
         _sortable: items[i]
       };
     }
-  },
+  }
+
   /**
    * Manually reorder the sortable list, needed when a programmatic change
    * is triggered. Unfortunately jQuery UI sortable does not have a method
    * to keep in sync the order of an array and its corresponding DOM.
    */
-  _reorder: function () {
+  _reorder () {
     const value = this.setting();
 
     if (!_.isArray(value)) {
@@ -101,6 +105,6 @@ let Control = ControlBaseChoices.extend({
 
     this.container.sortable('refresh');
   }
-});
+}
 
-export default wpApi.controlConstructor['kkcp_sortable'] = api.controls.Sortable = Control;
+export default wpApi.controlConstructor['kkcp_sortable'] = api.controls.Sortable = ControlSortable;

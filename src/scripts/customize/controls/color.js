@@ -3,6 +3,7 @@ import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
+import ControlBase from './base';
 /* global tinycolor */
 
 /**
@@ -15,15 +16,15 @@ $.fn.spectrum.load = false;
 /**
  * Control Color class
  *
- * @class wp.customize.controlConstructor.kkcp_color
- * @alias api.controls.Color
- * @constructor
+ * @class api.controls.Color
+ * @alias wp.customize.controlConstructor.kkcp_color
  * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  * @requires tinycolor
  */
-let Control = api.controls.Base.extend({
+class ControlColor extends ControlBase {
+
   /**
    * Use tinycolor (included in spectrum.js) to always convert colors to their
    * rgb value, so to have the same output result when the input is `red` or
@@ -34,7 +35,7 @@ let Control = api.controls.Base.extend({
    * @override
    * @use tinycolor.toRgbString
    */
-  softenize: function (value) {
+  softenize (value) {
     try {
       const anyColor = tinycolor(value);
       if (!anyColor['_format']) { // whitelisted from uglify \\
@@ -48,39 +49,44 @@ let Control = api.controls.Base.extend({
       }
       return value;
     }
-  },
+  }
+
   /**
    * @override
    */
-  validate: function (value) {
+  validate (value) {
     return Validate.color({}, value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  sanitize: function (value) {
+  sanitize (value) {
     return Sanitize.color(value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  syncUI: function (value) {
+  syncUI (value) {
     this._apply(value, 'API');
-  },
+  }
+
   /**
    * Destroy `spectrum` instances if any.
    *
    * @override
    */
-  onDeflate: function () {
+  onDeflate () {
     if (this.__$picker && this.rendered) {
       this.__$picker.spectrum('destroy');
     }
-  },
+  }
+
   /**
    * @override
    */
-  ready: function () {
+  ready () {
     /** @type {HTMLElement} */
     const container = this._container;
     /** @type {HTMLElement} */
@@ -120,7 +126,8 @@ let Control = api.controls.Base.extend({
       }
       return false;
     };
-  },
+  }
+
   /**
    * Get Spectrum plugin options
    *
@@ -129,7 +136,7 @@ let Control = api.controls.Base.extend({
    * @param  {?object} options Options that override the defaults (optional)
    * @return {object} The spectrum plugin options
    */
-  _getSpectrumOpts: function (options) {
+  _getSpectrumOpts (options) {
     const params = this.params;
     const $container = this.container;
 
@@ -163,19 +170,22 @@ let Control = api.controls.Base.extend({
         }
       }
     }, options || {});
-  },
+  }
+
   /**
    * Update UI preview (the color box on the left hand side)
    */
-  _updateUIpreview: function (newValue) {
+  _updateUIpreview (newValue) {
     this.__preview.style.background = newValue;
-  },
+  }
+
   /**
    * Update UI control (the spectrum color picker)
    */
-  _updateUIcustomControl: function (newValue) {
+  _updateUIcustomControl (newValue) {
     this.__$picker.spectrum('set', newValue);
-  },
+  }
+
   /**
    * Apply, wrap the `setting.set()` function
    * doing some additional stuff.
@@ -186,7 +196,7 @@ let Control = api.controls.Base.extend({
    *                        picker, dynamic fields, expr field) or from the
    *                        API (on programmatic value change).
    */
-  _apply: function (value, from) {
+  _apply (value, from) {
     this.params.valueCSS = value;
 
     if (this.rendered) {
@@ -202,6 +212,6 @@ let Control = api.controls.Base.extend({
       this.setting.set(value);
     }
   }
-});
+}
 
-export default wpApi.controlConstructor['kkcp_color'] = api.controls.Color = Control;
+export default wpApi.controlConstructor['kkcp_color'] = api.controls.Color = ControlColor;

@@ -2,30 +2,32 @@ import _ from 'underscore';
 import { api } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-// import ControlBase from './base';
+import ControlBase from './base';
 
 /**
  * Control Base Set class
  *
  * @class api.controls.BaseSet
- * @constructor
  * @extends api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-let Control = api.controls.Base.extend({
+class ControlBaseSet extends ControlBase {
+
   /**
    * @override
    */
-  validate: function (value) {
+  validate (value) {
     return Validate.oneOrMoreChoices({}, value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    */
-  sanitize: function (value) {
+  sanitize (value) {
     return Sanitize.oneOrMoreChoices(value, this.setting, this);
-  },
+  }
+
   /**
    * @override
    * @see KKcp_Customize_Control_Base_Set->populate_valid_choices where we do
@@ -33,43 +35,47 @@ let Control = api.controls.Base.extend({
    * to extract data for the `<select>` field too, and also because in php
    * arrays are just arrays.
    */
-  onInit: function () {
+  onInit () {
     const filteredSets = this._getFilteredSets(this.params.choices);
     const data = this._getSelectDataFromSets(filteredSets);
     this._options = data._options;
     this._groups = data._groups;
     this._validChoices = data._validChoices;
     // console.log(this._validChoices);
-  },
+  }
+
   /**
    * @override
    */
-  syncUI: function (value) {
+  syncUI (value) {
     if (_.isString(value)) {
       value = [value];
     }
     if (!_.isEqual(value, this._getValueFromUI())) {
       this._updateUI(value);
     }
-  },
+  }
+
   /**
    * Destroy `selectize` instance.
    *
    * @override
    */
-  onDeflate: function () {
+  onDeflate () {
     if (this.__input  && this.__input.selectize) {
       this.__input.selectize.destroy();
     }
-  },
+  }
+
   /**
    * @override
    */
-  ready: function () {
+  ready () {
     this.__input = this._container.getElementsByClassName('kkcp-selectize')[0];
     this._initUI();
     this._updateUI(this.setting())
-  },
+  }
+
   /**
    * Get set from constants
    *
@@ -78,9 +84,10 @@ let Control = api.controls.Base.extend({
    * @param  {string} name
    * @return {array}
    */
-  _getSet: function (name) {
+  _getSet (name) {
     return api.constants[this.params.setVar][name];
-  },
+  }
+
   /**
    * Get flatten set values (bypass the subdivision in groups)
    *
@@ -88,16 +95,17 @@ let Control = api.controls.Base.extend({
    * @param  {object} set
    * @return {array}
    */
-  _getFlattenSetValues: function (set) {
+  _getFlattenSetValues (set) {
     return _.flatten(_.pluck(set, 'values'));
-  },
+  }
+
   /**
    * Get filtered sets
    *
    * @param  {mixed}  choices
    * @return {object}
    */
-  _getFilteredSets: function (choices) {
+  _getFilteredSets (choices) {
     const {supportedSets} = this.params;
     let filteredSets = {};
 
@@ -106,7 +114,8 @@ let Control = api.controls.Base.extend({
       filteredSets[setName] = this._getFilteredSet(setName, choices);
     }
     return filteredSets;
-  },
+  }
+
   /**
    * Get filtered set
    *
@@ -114,7 +123,7 @@ let Control = api.controls.Base.extend({
    * @param  {?string|array|object} filter
    * @return {objcet}
    */
-  _getFilteredSet: function (name, filter) {
+  _getFilteredSet (name, filter) {
     const set = this._getSet(name);
     let filteredSet = {};
 
@@ -168,7 +177,7 @@ let Control = api.controls.Base.extend({
     }
 
     return filteredSet;
-  },
+  }
 
   /**
    * Get select data for this control from the filtered set
@@ -183,7 +192,7 @@ let Control = api.controls.Base.extend({
    * @param  {object<object>} sets
    * @return {object<array,array,array>}
    */
-  _getSelectDataFromSets: function (sets) {
+  _getSelectDataFromSets (sets) {
     let options = [];
     let groups = [];
     let validChoices = [];
@@ -233,7 +242,8 @@ let Control = api.controls.Base.extend({
       _groups: groups,
       _validChoices: validChoices,
     };
-  },
+  }
+
   /**
    * Get selectize options
    *
@@ -241,7 +251,7 @@ let Control = api.controls.Base.extend({
    *
    * @return {object}
    */
-  _getSelectizeOpts: function () {
+  _getSelectizeOpts () {
     const customOpts = this._getSelectizeCustomOpts();
     let defaultOpts = {
       plugins: ['drag_drop','remove_button'],
@@ -268,20 +278,22 @@ let Control = api.controls.Base.extend({
     }
 
     return _.extend(defaultOpts, customOpts, this.params.selectize || {})
-  },
+  }
+
   /**
    * Get selectize custom options (subclasses can implement this)
    *
    * @abstract
    * @return {object}
    */
-  _getSelectizeCustomOpts: function () {
+  _getSelectizeCustomOpts () {
     return {};
-  },
+  }
+
   /**
    * Init UI
    */
-  _initUI: function () {
+  _initUI () {
     // if there is an instance of selectize destroy it
     if (this.__input.selectize) {
       this.__input.selectize.destroy();
@@ -293,7 +305,8 @@ let Control = api.controls.Base.extend({
 
     // init selectize plugin
     $(this.__input).selectize(this._getSelectizeOpts());
-  },
+  }
+
   /**
    * Get value from UI
    *
@@ -308,7 +321,8 @@ let Control = api.controls.Base.extend({
       return selectize.getValue();
     }
     return null; // @@note this should not happen \\
-  },
+  }
+
   /**
    * Update UI
    *
@@ -318,14 +332,15 @@ let Control = api.controls.Base.extend({
    *
    * @param  {array} value
    */
-  _updateUI: function (value) {
+  _updateUI (value) {
     if (this.__input.selectize) {
       this.__input.selectize.setValue(value, true);
     } else {
       this._initUI();
       this._updateUI(value);
     }
-  },
+  }
+
   /**
    * Selectize render item function
    *
@@ -334,28 +349,28 @@ let Control = api.controls.Base.extend({
    * @param  {function} escape Selectize escape function.
    * @return {string}          The option template.
    */
-  _renderItem: function (data, escape) {
-  },
-  /**
-   * Selectize render option function
-   *
-   * @abstract
-   * @param  {Object} data     The selectize option object representation.
-   * @param  {function} escape Selectize escape function.
-   * @return {string}          The option template.
-   */
-  _renderOption: function (data, escape) {
-  },
-  /**
-   * Selectize render option function
-   *
-   * @abstract
-   * @param  {Object} data     The selectize option object representation.
-   * @param  {function} escape Selectize escape function.
-   * @return {string}          The option template.
-   */
-  _renderGroupHeader: function (data, escape) {
-  },
-});
+  _renderItem (data, escape) {}
 
-export default api.controls.BaseSet = Control;
+  /**
+   * Selectize render option function
+   *
+   * @abstract
+   * @param  {Object} data     The selectize option object representation.
+   * @param  {function} escape Selectize escape function.
+   * @return {string}          The option template.
+   */
+  _renderOption (data, escape) {}
+
+  /**
+   * Selectize render option function
+   *
+   * @abstract
+   * @param  {Object} data     The selectize option object representation.
+   * @param  {function} escape Selectize escape function.
+   * @return {string}          The option template.
+   */
+  _renderGroupHeader (data, escape) {}
+
+}
+
+export default api.controls.BaseSet = ControlBaseSet;

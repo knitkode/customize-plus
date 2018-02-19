@@ -5,18 +5,17 @@ import _ from 'underscore';
 import sprintf from 'locutus/php/strings/sprintf';
 import vsprintf from 'locutus/php/strings/vsprintf';
 import { api, wpApi } from '../core/globals';
-import Skeleton from '../core/skeleton';
 import Utils from '../core/utils';
 import Validate from '../core/validate';
 
 /**
  * Control Base class
  *
- * Expands the default Customizer Control class.
+ * Expands the default Customizer Control class (through standard class syntax).
  * Render controls content on demand when their section is expanded then remove
- * the DOM when the section is collapsed. Since we override some 'not-meant-to-
- * be-overriden' methods keep an eye on @link(http://git.io/vZ6Yq, WordPress
- * source code).
+ * the DOM when the section is collapsed (inflation/deflation).
+ * Since we override some 'not-meant-to-be-overriden' methods keep an eye on
+ * @link(http://git.io/vZ6Yq, WordPress source code).
  *
  * @see PHP class KKcp_Customize_Control_Base
  * @since  1.0.0
@@ -24,10 +23,9 @@ import Validate from '../core/validate';
  * @class api.controls.Base
  * @extends wp.customize.Control
  * @augments wp.customize.Class
- * @requires api.core.Skeleton
  * @requires api.core.Utils
  */
-api.controls.Base = wpApi.Control.extend({
+class ControlBase extends wpApi.Control {
   /**
    * {@inheritDoc}
    *
@@ -35,7 +33,7 @@ api.controls.Base = wpApi.Control.extend({
    *
    * @override
    */
-  initialize: function(id, options) {
+  initialize (id, options) {
     var control = this, deferredSettingIds = [], settings, gatherSettings;
 
     control.params = _.extend(
@@ -184,13 +182,14 @@ api.controls.Base = wpApi.Control.extend({
 
     // @note call custom private initialization (not overridable by subclasses)
     this._initialize();
-  },
+  }
+
   /**
    * Private Initialize
    *
    * Collect here the custom initialization additions of Customize Plus controls
    */
-  _initialize: function () {
+  _initialize () {
     // we need to parse the factory value ourselves because we also encode it
     // ourselves in `base.php` control. It is enough to do this once on
     // initialization
@@ -281,7 +280,8 @@ api.controls.Base = wpApi.Control.extend({
         this.notifications.render();
       });
     }
-  },
+  }
+
   /**
    * Get localize string for current control
    *
@@ -293,9 +293,10 @@ api.controls.Base = wpApi.Control.extend({
    * @since  1.0.0
    * @return string
    */
-  _l10n: function ( $key ) {
+  _l10n ( $key ) {
     return api.l10n[ $key ] || '';
-  },
+  }
+
   /**
    * Private `validate` wrap, it only wraps the `setting.validate` function
    * calling each control subclass `validate` method on its default setting.
@@ -308,7 +309,7 @@ api.controls.Base = wpApi.Control.extend({
    * @param  {string} value
    * @return {string} The value validated or the last setting value.
    */
-  _validate: function (value) {
+  _validate (value) {
     let $validity = {};
 
     // immediately check a required value validity
@@ -330,7 +331,8 @@ api.controls.Base = wpApi.Control.extend({
 
     // otherwise choose what to return based on the "looseness" of this control
     return this.params.loose ? value : this.setting();
-  },
+  }
+
   /**
    * Manage validity notifications
    *
@@ -338,7 +340,7 @@ api.controls.Base = wpApi.Control.extend({
    * @access private
    * @param  {object<object<string,string>>} $validity
    */
-  _manageValidityNotifications: function ($validity) {
+  _manageValidityNotifications ($validity) {
     const notifications = this.setting.notifications.get();
     let currentNotificationCodes = [];
 
@@ -365,7 +367,8 @@ api.controls.Base = wpApi.Control.extend({
         }
       }
     }
-  },
+  }
+
   /**
    * Add error
    *
@@ -378,7 +381,7 @@ api.controls.Base = wpApi.Control.extend({
    * @param mixd|array|null   $msg_arguments
    * @return WP_Error
    */
-  _addError: function ( $validity, $msg_id, $msg_arguments ) {
+  _addError ( $validity, $msg_id, $msg_arguments ) {
     const $msg = this._l10n( $msg_id );
 
     // if there is an array of message arguments
@@ -393,7 +396,8 @@ api.controls.Base = wpApi.Control.extend({
       $validity[$msg_id] = $msg;
     }
     return $validity;
-  },
+  }
+
   /**
    * Validate control's default setting value
    *
@@ -401,9 +405,10 @@ api.controls.Base = wpApi.Control.extend({
    * @param  {string} value
    * @return {string} The value validated
    */
-  validate: function (value) {
+  validate (value) {
     return value;
-  },
+  }
+
   /**
    * Sanitize control's default setting value
    *
@@ -411,28 +416,31 @@ api.controls.Base = wpApi.Control.extend({
    * @param  {string} value
    * @return {string} The value sanitized
    */
-  sanitize: function (value) {
+  sanitize (value) {
     return value;
-  },
+  }
+
   /**
    * Sync UI with value coming from API, a programmatic change like a reset.
    *
    * @abstract
    * @param {string} value The new setting value.
    */
-  syncUI: function (value) {},
+  syncUI (value) {}
+
   /**
    * Triggered when the control has been initialized
    *
    * @abstract
    */
-  onInit: function() {},
+  onInit() {}
+
   /**
    * Render the control from its JS template, if it exists.
    *
    * @override
    */
-  renderContent: function () {
+  renderContent () {
     const {_container, templateSelector} = this;
 
     // replaces the container element's content with the control.
@@ -459,23 +467,21 @@ api.controls.Base = wpApi.Control.extend({
     }
 
     this._rerenderNotifications();
-  },
-  /**
-   * We don't need this method
-   */
-  dropdownInit: null,
+  }
+
   /**
    * Triggered just before the control get deflated from DOM
    *
    * @abstract
    */
-  onDeflate: function () {},
+  onDeflate () {}
+
   /**
    * Remove the DOM of the control.
    * In case the DOM store is empty (the first time
    * this method get called) it fills it.
    */
-  deflate: function () {
+  deflate () {
     /* jshint funcscope: true */
     // if (DEBUG) var t = performance.now();
 
@@ -514,7 +520,8 @@ api.controls.Base = wpApi.Control.extend({
         this.rendered = false;
       }
     });
-  },
+  }
+
   /**
    * Inflate
    *
@@ -529,7 +536,7 @@ api.controls.Base = wpApi.Control.extend({
    *                                                 `control.focus()` method)
    *                                                 we need to resolve embed
    */
-  inflate: function (shouldResolveEmbeddedDeferred) {
+  inflate (shouldResolveEmbeddedDeferred) {
     /* jshint funcscope: true */
     if (DEBUG.performances) var t = performance.now();
     if (!this.params.content) {
@@ -555,7 +562,8 @@ api.controls.Base = wpApi.Control.extend({
 
     // if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
     //   ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
-  },
+  }
+
   /**
    * Re-render notifications after content has been re-rendered.
    * This is taken as it is from the core base control class
@@ -567,7 +575,8 @@ api.controls.Base = wpApi.Control.extend({
     if ( ! sectionId || ( wpApi.section.has( sectionId ) && wpApi.section( sectionId ).expanded() ) ) {
       this.notifications.render();
     }
-  },
+  }
+
   /**
    * Softenize
    *
@@ -580,15 +589,16 @@ api.controls.Base = wpApi.Control.extend({
    *                   session value
    * @return {?}       The 'normalized' value passed as an argument.
    */
-  softenize: function (value) {
+  softenize (value) {
     return value;
-  },
+  }
+
   /**
    * Manage the extras dropdown menu of the control.
    *
    * @access private
    */
-  _extras: function () {
+  _extras () {
     const params = this.params;
     /**
      * Reference to abstract method different in various control's subclasses
@@ -758,7 +768,7 @@ api.controls.Base = wpApi.Control.extend({
       };
     }
   }
-});
+}
 
 /**
  * Fix autofocus
@@ -790,4 +800,4 @@ wpApi.bind('save', function () {
   });
 });
 
-export default api.controls.Base;
+export default api.controls.Base = ControlBase;

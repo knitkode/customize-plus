@@ -4,12 +4,12 @@ import ControlBaseRadio from './base-radio';
 /**
  * Control Buttonset
  *
- * @class wp.customize.controlConstructor.kkcp_buttonset
- * @constructor
+ * @class api.controls.Buttonset
+ * @alias wp.customize.controlConstructor.kkcp_buttonset
  * @extends api.controls.BaseRadio
  * @augments api.controls.BaseChoices
  * @augments api.controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-wpApi.controlConstructor['kkcp_buttonset'] = ControlBaseRadio;
+wpApi.controlConstructor['kkcp_buttonset'] = api.controls.Buttonset = ControlBaseRadio;
