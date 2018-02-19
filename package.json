@@ -87,6 +87,7 @@
     "gulp-ignore": "2.0.x",
     "gulp-imagemin": "4.1.x",
     "gulp-include": "2.1.x",
+    "gulp-jsdoc3": "^1.0.1",
     "gulp-load-plugins": "1.2.x",
     "gulp-modernizr": "1.0.0-alpha",
     "gulp-postcss": "7.0.x",

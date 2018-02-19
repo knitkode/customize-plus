@@ -122,3 +122,21 @@ gulp.task('_base-vendor', function() {
     ], { cwd: PATHS.src.vendor, base: PATHS.src.vendor })
     .pipe(gulp.dest(PATHS.build.vendor));
 });
+
+/**
+ * Docs
+ *
+ * @access public
+ */
+gulp.task('docs', ['docs-js']);
+
+/**
+ * Docs JS
+ *
+ * @access public
+ */
+gulp.task('docs-js', function(cb) {
+  var jsdoc = require('gulp-jsdoc3');
+  return gulp.src('./src/scripts/customize/**/*.js')
+        .pipe(jsdoc());
+});
