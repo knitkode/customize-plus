@@ -113,7 +113,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 */
 	public function get_constants() {
 		return array(
-			'colorsKeywords' => KKcp_Helper::COLORS_KEYWORDS,
+			'colorsKeywords' => KKcp_Data::COLORS_KEYWORDS,
 			'colorFormatsSupported' => self::$color_formats_supported
 		);
 	}

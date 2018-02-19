@@ -42,7 +42,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @var array
 	 */
-	public static $allowed_units = KKcp_Helper::CSS_UNITS;
+	public static $allowed_units = KKcp_Data::CSS_UNITS;
 
   /**
    * Constructor

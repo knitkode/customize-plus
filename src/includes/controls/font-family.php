@@ -53,7 +53,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 	 */
 	protected function get_set ( $name ) {
 		if ( $name === 'standard' ) {
-			return KKcp_Helper::get_font_families_standard();
+			return KKcp_Data::get_font_families_standard();
 		}
 
 		return [];
