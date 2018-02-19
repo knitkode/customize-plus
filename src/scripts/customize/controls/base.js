@@ -26,6 +26,7 @@ import Validate from '../core/validate';
  * @requires api.core.Utils
  */
 class ControlBase extends wpApi.Control {
+
   /**
    * {@inheritDoc}
    *
@@ -188,6 +189,10 @@ class ControlBase extends wpApi.Control {
    * Private Initialize
    *
    * Collect here the custom initialization additions of Customize Plus controls
+   *
+   * @since  1.0.0
+   *
+   * @return {void}
    */
   _initialize () {
     // we need to parse the factory value ourselves because we also encode it
