@@ -19,25 +19,25 @@ class ControlIcon extends ControlBaseSet {
    * @override
    */
   _renderItem (data, escape) {
-    return '<div class="kkcp-icon-selectItem kkcpui-tooltip--top" title="' + escape(data.value) + '">' +
-        '<i class="' + escape(this._getIconClassName(data)) + '"></i>' +
-      '</div>';
+    return `<div class="kkcp-icon-selectItem kkcpui-tooltip--top" title="${escape(data.value)}">
+        <i class="${escape(this._getIconClassName(data))}"></i>
+      </div>`;
   }
 
   /**
    * @override
    */
   _renderOption (data, escape) {
-    return '<div class="kkcp-icon-selectOption kkcpui-tooltip--top" title="' + escape(data.value) + '">' +
-        '<i class="' + escape(this._getIconClassName(data)) + '"></i>' +
-      '</div>';
+    return `<div class="kkcp-icon-selectOption kkcpui-tooltip--top" title="${escape(data.value)}">
+        <i class="${escape(this._getIconClassName(data))}"></i>
+      </div>`;
   }
 
   /**
    * @override
    */
   _renderGroupHeader (data, escape) {
-    return '<div class="kkcp-icon-selectHeader">' + escape(data.label) + '</div>';
+    return `<div class="kkcp-icon-selectHeader">${escape(data.label)}</div>`;
   }
 
   /**

@@ -344,7 +344,6 @@ export function color( $validity={}, $value, $setting, $control ) {
   const params = $control.params;
   $value = $value.replace(/\s/g, '');
 
-  debugger;
   if ( ! params.picker && _.isArray(params.palette) ) {
     const valueNormalized = $control.softenize($value);
     let paletteNormalized = _.flatten(params.palette, true);

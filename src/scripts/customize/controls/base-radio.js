@@ -58,9 +58,9 @@ class ControlBaseRadio extends ControlBaseChoices {
       var input = this.__inputs[i];
       input.checked = value === input.value;
       if (bindAsWell) {
-        input.onchange = function (event) {
+        input.onchange = (event) => {
           this.setting.set(event.target.value);
-        }.bind(this);
+        };
       }
     }
   }

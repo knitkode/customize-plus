@@ -66,11 +66,11 @@ class ControlCheckbox extends ControlBase {
     this.__input.checked = numberToBoolean(this.setting());
 
     // bind input on ready
-    this.__input.onchange = function (event) {
+    this.__input.onchange = (event) => {
       event.preventDefault();
       var value = event.target.checked ? 1 : 0;
       this.setting.set(value);
-    }.bind(this);
+    };
   }
 }
 

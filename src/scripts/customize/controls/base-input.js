@@ -28,7 +28,7 @@ class ControlBaseInput extends ControlBase {
    * @override
    */
   ready () {
-    var self = this;
+    const self = this;
     self.__input = self._container.getElementsByTagName('input')[0];
 
     // sync input and listen for changes
