@@ -139,27 +139,3 @@
     margin-bottom: inherit;
   }
 }
-
-/**
- * 'Highlight' hovered control fading out a bit all the others
- *
- */
-// .kkcp-control {
-//   transition: opacity .1s ease;
-
-//   .control-section .accordion-section-content:hover & { // .kkcp-control-section
-//     opacity: .8;
-//   }
-//   .control-section .accordion-section-content &:hover { // .kkcp-control-section
-//     opacity: 1;
-//   }
-//   // on search active we have multple accordion-section visible
-//   // at the same time so we have to target the overall sidebar inner area
-//   // to trigger the hover higlight in the right way
-//   .kkcp-searching #customize-theme-controls:hover & {
-//     opacity: .8;
-//   }
-//   .kkcp-searching #customize-theme-controls &:hover {
-//     opacity: 1;
-//   }
-// }
