@@ -34,11 +34,11 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Set {
 		'dashicons'
 	);
 
-  /**
-   * @since 1.0.0
-   * @inheritDoc
-   */
-  protected $set_js_var = 'iconSets';
+	/**
+	 * @since 1.0.0
+	 * @inheritDoc
+	 */
+	protected $set_js_var = 'iconSets';
 
 	/**
 	 * @since  1.0.0

@@ -214,10 +214,10 @@ class KKcp_Sanitize {
 		else if ( ! $control->html ) {
 			$value = wp_strip_all_tags( $value );
 		}
-    // html is a valid argument for wp_kses_allowed_html
-    else if ( $control->html ) {
-    	$value = wp_kses( $value, wp_kses_allowed_html( $control->html ) );
-    }
+		// html is a valid argument for wp_kses_allowed_html
+		else if ( $control->html ) {
+			$value = wp_kses( $value, wp_kses_allowed_html( $control->html ) );
+		}
 
 		return $value;
 	}
@@ -269,9 +269,9 @@ class KKcp_Sanitize {
 	 * @since 1.0.0
 	 *
 	 * @param string   $unit    			The unit to sanitize
- 	 * @param mixed    $allowed_units The allowed units
+	 * @param mixed    $allowed_units The allowed units
 	 * @return string
- 	 */
+	 */
 	public static function size_unit( $unit, $allowed_units ) {
 		// if no unit is allowed
 		if ( empty( $allowed_units )) {

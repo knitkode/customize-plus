@@ -55,7 +55,7 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
- 	 */
+	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::checkbox( $value, $setting, $control );
 	}
@@ -63,7 +63,7 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
- 	 */
+	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::checkbox( $validity, $value, $setting, $control );
 	}

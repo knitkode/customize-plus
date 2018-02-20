@@ -94,7 +94,7 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
- 	 */
+	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::text( $validity, $value, $setting, $control );
 	}

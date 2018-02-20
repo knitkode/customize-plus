@@ -44,24 +44,24 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	 */
 	public static $allowed_units = KKcp_Data::CSS_UNITS;
 
-  /**
-   * Constructor
-   *
-   * {@inheritDoc}. Override it here in order to manually populate the
-   * `valid_choices` property from the 'globally' defined sets filtered with
-   * the given `choices` param.
-   *
-   * @since 1.0.0
-   * @override
-   */
-  public function __construct( $manager, $id, $args = array() ) {
-    parent::__construct( $manager, $id, $args );
+	/**
+	 * Constructor
+	 *
+	 * {@inheritDoc}. Override it here in order to manually populate the
+	 * `valid_choices` property from the 'globally' defined sets filtered with
+	 * the given `choices` param.
+	 *
+	 * @since 1.0.0
+	 * @override
+	 */
+	public function __construct( $manager, $id, $args = array() ) {
+		parent::__construct( $manager, $id, $args );
 
-    // allowFloat also if input_attrs['step'] is a float number
+		// allowFloat also if input_attrs['step'] is a float number
 		if ( isset( $this->input_attrs['step'] ) && is_float( $this->input_attrs['step'] ) ) {
 			$this->allowFloat = true;
 		}
-  }
+	}
 
 	/**
 	 * @since  1.0.0
@@ -135,7 +135,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
- 	 */
+	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::slider( $value, $setting, $control );
 	}
@@ -143,7 +143,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
- 	 */
+	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::slider( $validity, $value, $setting, $control );
 	}

@@ -86,7 +86,7 @@ if ( ! class_exists( 'KKcp' ) ):
 		/**
 		 * Get asset file, minified or unminified
 		 *
-	   * @since  1.0.0
+		 * @since  1.0.0
 		 * @param  string $filename
 		 * @param  string $type
 		 * @param  string $base_url

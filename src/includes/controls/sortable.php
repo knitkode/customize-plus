@@ -28,21 +28,21 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choice
 		wp_enqueue_script( 'jquery-ui-sortable' );
 	}
 
-  /**
-   * Constructor
-   *
-   * {@inheritDoc}. Set `max` dynamically to the number of choices.
-   *
-   * @since 1.0.0
-   */
-  public function __construct( $manager, $id, $args = array() ) {
-    parent::__construct( $manager, $id, $args );
+	/**
+	 * Constructor
+	 *
+	 * {@inheritDoc}. Set `max` dynamically to the number of choices.
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct( $manager, $id, $args = array() ) {
+		parent::__construct( $manager, $id, $args );
 
-    if ( is_array( $this->choices ) ) {
-    	$this->max = count( $this->choices );
-    }
-    $this->valid_choices = $this->get_valid_choices( $this->choices );
-  }
+		if ( is_array( $this->choices ) ) {
+			$this->max = count( $this->choices );
+		}
+		$this->valid_choices = $this->get_valid_choices( $this->choices );
+	}
 
 	/**
 	 * @override
@@ -81,7 +81,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choice
 	/**
 	 * @override
 	 * @since 1.0.0
- 	 */
+	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::multiple_choices( $value, $setting, $control );
 	}
@@ -89,7 +89,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choice
 	/**
 	 * @override
 	 * @since 1.0.0
- 	 */
+	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::multiple_choices( $validity, $value, $setting, $control, true );
 	}

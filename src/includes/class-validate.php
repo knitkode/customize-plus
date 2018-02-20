@@ -213,10 +213,10 @@ class KKcp_Validate {
 		}
 
 		// html must be escaped
-	  if ( $control->html === 'escape' ) {
-	  }
+		if ( $control->html === 'escape' ) {
+		}
 		// html is dangerously completely allowed
-	  else if ( $control->html === 'dangerous' ) {
+		else if ( $control->html === 'dangerous' ) {
 		}
 		// html is not allowed at all
 		else if ( ! $control->html ) {
@@ -224,12 +224,12 @@ class KKcp_Validate {
 				$validity = $control->add_error( $validity, 'vTextHtml' );
 			}
 		}
-    // html is a valid argument for wp_kses_allowed_html
-    else if ( $control->html ) {
+		// html is a valid argument for wp_kses_allowed_html
+		else if ( $control->html ) {
 			if ( $value != wp_kses( $value, wp_kses_allowed_html( $control->html ) ) ) {
 				$validity = $control->add_error( $validity, 'vTextInvalidHtml' );
 			}
-    }
+		}
 
 		return $validity;
 	}

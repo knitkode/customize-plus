@@ -422,7 +422,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 		public static function get_theme_mods() {
 			$theme_mods = get_theme_mods();
 			if ( ! $theme_mods ) {
-			 	$theme_mods = array();
+				$theme_mods = array();
 			}
 			return array_merge( self::$settings_defaults, $theme_mods );
 		}

@@ -59,19 +59,19 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 		return [];
 	}
 
-  /**
-   * @since 1.0.0
-   * @inheritDoc
-   */
-  protected function get_valid_choices ( $filtered_sets ) {
-    $valid_choices = parent::get_valid_choices( $filtered_sets );
+	/**
+	 * @since 1.0.0
+	 * @inheritDoc
+	 */
+	protected function get_valid_choices ( $filtered_sets ) {
+		$valid_choices = parent::get_valid_choices( $filtered_sets );
 
-    foreach ( $valid_choices as $valid_choice ) {
-      array_push( $valid_choices, KKcp_Helper::normalize_font_family( $valid_choice ) );
-    }
+		foreach ( $valid_choices as $valid_choice ) {
+			array_push( $valid_choices, KKcp_Helper::normalize_font_family( $valid_choice ) );
+		}
 
-    return $valid_choices;
-  }
+		return $valid_choices;
+	}
 
 	/**
 	 * @since 1.0.0

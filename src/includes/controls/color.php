@@ -180,7 +180,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
- 	 */
+	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::color( $value, $setting, $control );
 	}
@@ -188,7 +188,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
- 	 */
+	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::color( $validity, $value, $setting, $control );
 	}

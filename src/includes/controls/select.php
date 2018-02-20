@@ -43,17 +43,17 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 		'sortField' => array( 'sanitizer' => 'string' ),
 	);
 
-  /**
-   * {@inhertDoc}. Populate the `valid_choices` property.
-   *
-   * @since 1.0.0
-   * @override
-   */
-  public function __construct( $manager, $id, $args = array() ) {
-    parent::__construct( $manager, $id, $args );
+	/**
+	 * {@inhertDoc}. Populate the `valid_choices` property.
+	 *
+	 * @since 1.0.0
+	 * @override
+	 */
+	public function __construct( $manager, $id, $args = array() ) {
+		parent::__construct( $manager, $id, $args );
 
-    $this->valid_choices = $this->get_valid_choices( $this->choices );
-  }
+		$this->valid_choices = $this->get_valid_choices( $this->choices );
+	}
 
 	/**
 	 * @since 1.0.0

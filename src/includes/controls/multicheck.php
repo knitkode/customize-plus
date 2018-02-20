@@ -21,7 +21,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 	public $type = 'kkcp_multicheck';
 
 	/**
-   * {@inheritDoc}. Selectize is not meant for radio controls
+	 * {@inheritDoc}. Selectize is not meant for radio controls
 	 *
 	 * @since 1.0.0
 	 * @override
@@ -42,23 +42,23 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 	 */
 	public $sortable = false;
 
-  /**
-   * Constructor
-   *
-   * {@inheritDoc}. Set `max` dynamically to the number of choices if the
-   * developer has not already set it explicitly
-   *
-   * @since 1.0.0
-   */
-  public function __construct( $manager, $id, $args = array() ) {
-    parent::__construct( $manager, $id, $args );
+	/**
+	 * Constructor
+	 *
+	 * {@inheritDoc}. Set `max` dynamically to the number of choices if the
+	 * developer has not already set it explicitly
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct( $manager, $id, $args = array() ) {
+		parent::__construct( $manager, $id, $args );
 
-    $this->valid_choices = $this->get_valid_choices( $this->choices );
+		$this->valid_choices = $this->get_valid_choices( $this->choices );
 
-    if ( is_array( $this->choices ) && ! is_int( $this->max ) ) {
-    	$this->max = count( $this->choices );
-    }
-  }
+		if ( is_array( $this->choices ) && ! is_int( $this->max ) ) {
+			$this->max = count( $this->choices );
+		}
+	}
 
 	/**
 	 * @since  1.0.0
@@ -128,7 +128,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
- 	 */
+	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::multiple_choices( $value, $setting, $control );
 	}
@@ -136,7 +136,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
- 	 */
+	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::multiple_choices( $validity, $value, $setting, $control );
 	}

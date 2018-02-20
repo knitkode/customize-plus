@@ -88,17 +88,17 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 		// Default: false
 	);
 
-  /**
-   * {@inheritDoc}. Override it here in order to force the unset of `wp_editor`
-   * in case the user has no the right capability. Then, if the wp_editor is in
-   * use force a possible `$html => false` property to context `'post'` (this
-   * can stil be tweaked on a per control base).
-   *
-   * @since 1.0.0
-   * @override
-   */
-  public function __construct( $manager, $id, $args = array() ) {
-    parent::__construct( $manager, $id, $args );
+	/**
+	 * {@inheritDoc}. Override it here in order to force the unset of `wp_editor`
+	 * in case the user has no the right capability. Then, if the wp_editor is in
+	 * use force a possible `$html => false` property to context `'post'` (this
+	 * can stil be tweaked on a per control base).
+	 *
+	 * @since 1.0.0
+	 * @override
+	 */
+	public function __construct( $manager, $id, $args = array() ) {
+		parent::__construct( $manager, $id, $args );
 
 		if ( ! user_can_richedit() ) {
 			$this->wp_editor = false;
@@ -107,7 +107,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 		if ( $this->wp_editor && ! $this->html ) {
 			$this->html = 'post';
 		}
-  }
+	}
 
 	/**
 	 * @since 1.0.0
