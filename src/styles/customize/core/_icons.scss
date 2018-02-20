@@ -6,7 +6,8 @@
  * In php we mimic the following style, let's keep this here anyway to
  * add icons to existing plugins or just for reference.
  *
- * To see the wordpress dashicons codes @link( https://developer.wordpress.org/resource/dashicons/ )
+ * To see the wordpress dashicons codes
+ * @link( https://developer.wordpress.org/resource/dashicons/ )
  *
  * @see Customize_Manager class.
  */
@@ -33,8 +34,8 @@ $icons-opacity: .4;
     @include kkcp-icon('\f116');
   }
 
-  // Menu Customizer Plugin (it will probably be embedded in core) // @@pluginsupport \\
-  &-menus > h3:before, &-menus .panel-title:before {
+  // Nav menu Customizer
+  &-nav_menus > h3:before, &-nav_menus .panel-title:before {
     @include kkcp-icon('\f333');
   }
 }
