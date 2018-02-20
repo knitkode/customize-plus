@@ -1,6 +1,7 @@
 import strpos from 'locutus/php/strings/strpos';
 import is_int from 'locutus/php/var/is_int';
 import is_float from 'locutus/php/var/is_float'
+/* global tinycolor */
 
 /**
  * Is setting value (`control.setting()`) empty?
@@ -41,7 +42,7 @@ export function isEmpty (value) {
  * @return bool
  */
 export function isKeywordColor( $value ) {
-  const keywords = api['colorsKeywords'] || [];
+  const keywords = api.constants['colorsKeywords'] || [];
   return keywords.indexOf( $value ) !== -1;
 }
 
@@ -74,7 +75,7 @@ export function isHex( $value ) {
 export function isRgb( $value ) {
   const regexInteger = /^rgb\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){2}(\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*)\)$/;
   const regexPercent = /^rgb\((\s*(\b(0?\d{1,2}|100)\b%)\s*,){2}(\s*(\b(0?\d{1,2}|100)\b%)\s*)\)$/;
-  return regexInteger.test(value) || regexPercent.test(value);
+  return regexInteger.test( $value ) || regexPercent.test( $value );
 }
 
 /**
@@ -92,7 +93,7 @@ export function isRgb( $value ) {
 export function isRgba( $value ) {
   const regexInteger = /^rgba\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;
   const regexPercent = /^rgba\((\s*(\b(0?\d{1,2}|100)\b%)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;
-  return regexInteger.test(value) || regexPercent.test(value);
+  return regexInteger.test( $value ) || regexPercent.test( $value );
 }
 
 // hsl: return /^hsl\((\s*(-?\d+)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*)\)$/.test(value);
@@ -105,12 +106,57 @@ export function isRgba( $value ) {
  *
  * @since  1.0.0
  *
- * @param  string $value  The value value to check
+ * @param  string $value           The value value to check
+ * @param  array $allowed_formats  The allowed color formats
  * @return boolean
  */
-export function isColor ( $value, $colorFormats ) {
-// @@todoxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+export function isColor ( $value, $allowedFormats ) {
+  for (var i = 0; i < $allowedFormats.length; i++) {
+    let $format = $allowedFormats[i];
+
+    if ( $format === 'keyword' && isKeywordColor( $value ) ) {
+      return true;
+    }
+    else if ( $format === 'hex' && isHex( $value ) ) {
+      return true;
+    }
+    else if ( $format === 'rgb' && isRgb( $value ) ) {
+      return true;
+    }
+    else if ( $format === 'rgba' && isRgba( $value ) ) {
+      return true;
+    }
+  }
+
+  return false;
 }
+
+/**
+ * Convert a hexa decimal color code to its RGB equivalent
+ *
+ * @link(http://php.net/manual/en/function.hexdec.php#99478, original source)
+ * @since  1.0.0
+ * @param  string  $value          Hexadecimal color value
+ * @param  bool    $returnAsString If set true, returns the value separated by
+ *                                 the separator character. Otherwise returns an
+ *                                 associative array.
+ * @return array|string            Depending on second parameter. Returns
+ *                                 `false` if invalid hex color value
+ */
+export function hexToRgb( $value, $returnAsString = true ) {
+  return $returnAsString ? tinycolor.toRgbString( $value ) : tinycolor.toRgb( $value );
+}
+
+/**
+ * Converts a RGBA color to a RGB, stripping the alpha channel value
+ *
+ * It needs a value cleaned of all whitespaces (sanitized).
+ *
+ * @since  1.0.0
+ * @param  string $input
+ * @return ?string
+ */
+export const rgbaToRgb = hexToRgb;
 
 /**
  * Normalize font family.
@@ -282,6 +328,9 @@ export default {
   isHex,
   isRgb,
   isRgba,
+  isColor,
+  hexToRgb,
+  rgbaToRgb,
   normalizeFontFamily,
   extractSizeUnit,
   extractNumber,

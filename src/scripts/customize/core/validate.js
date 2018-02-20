@@ -8,6 +8,7 @@ import isURL from 'validator/lib/isURL';
 import isEmail from 'validator/lib/isEmail';
 import { api } from './globals';
 import Helper from '../core/helper';
+/* global tinycolor */
 
 /**
  * Validate a required setting value
@@ -334,6 +335,7 @@ export function slider( $validity={}, $value, $setting, $control ) {
  *
  * @since 1.0.0
  *
+ * @uses tinycolor
  * @param WP_Error             $validity
  * @param mixed                $value    The value to validate.
  * @param WP_Customize_Setting $setting  Setting instance.
@@ -342,29 +344,29 @@ export function slider( $validity={}, $value, $setting, $control ) {
  */
 export function color( $validity={}, $value, $setting, $control ) {
   const params = $control.params;
+
+  if (!_.isString($value)) {
+    return $control._addError( $validity, 'vColorWrongType' );
+  }
   $value = $value.replace(/\s/g, '');
 
-  if ( ! params.picker && _.isArray(params.palette) ) {
+  if ( ! params.transparent && tinycolor($value).toName() === 'transparent' ) {
+    $validity = $control._addError( $validity, 'vNoTransparent' );
+  }
+  else if ( ! params.alpha && Helper.isRgba($value)) {
+    $validity = $control._addError( $validity, 'vNoRGBA' );
+  }
+  else if ( ! params.picker && _.isArray(params.palette) ) {
     const valueNormalized = $control.softenize($value);
     let paletteNormalized = _.flatten(params.palette, true);
     paletteNormalized = _.map(paletteNormalized, (color) => {
       return $control.softenize(color);
     });
-    if (paletteNormalized.indexOf(valueNormalized) === -1) {
+    if ( paletteNormalized.indexOf(valueNormalized) === -1 ) {
       $validity = $control._addError( $validity, 'vNotInPalette' );
     }
   }
-  else if (!params.transparent && $value === 'transparent') {
-    $validity = $control._addError( $validity, 'vNoTransparent' );
-  }
-  else if (!params.alpha && Helper.isRgba($value)) {
-    $validity = $control._addError( $validity, 'vNoRGBA' );
-  }
-  else if (!Helper.isHex($value) &&
-      !Helper.isRgb($value) &&
-      !Helper.isRgba($value) &&
-      $value !== 'transparent'
-    ) {
+  else if ( ! Helper.isColor( $value, api.constants['colorFormatsSupported'] ) ) {
     $validity = $control._addError( $validity, 'vColorInvalid' );
   }
 

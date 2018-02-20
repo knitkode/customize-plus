@@ -98,13 +98,13 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @var array
 	 */
-	private static $color_formats_supported = array(
+	public static $color_formats_supported = array(
 		'hex',
 		'rgb',
 		'rgba',
+		'keyword',
 		// 'hsl',
 		// 'hsla',
-		// 'keyword',
 	);
 
 	/**
@@ -130,9 +130,10 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 			'noColorSelectedText' => esc_html__( 'No color selected' ),
 			'togglePaletteMoreText' => esc_html__( 'Show color picker' ),
 			'togglePaletteLessText' => esc_html__( 'Hide color picker' ),
+			'vColorWrongType' => esc_html__( 'Colors must be strings' ),
 			'vNotInPalette' => esc_html__( 'Color not in the allowed palette' ),
-			'vNoTransparent', esc_html__( 'Transparent is not allowed' ),
-			'vNoRGBA', esc_html__( 'RGBA color is not allowed' ),
+			'vNoTransparent' => esc_html__( 'Transparent is not allowed' ),
+			'vNoRGBA' => esc_html__( 'RGBA color is not allowed' ),
 			'vColorInvalid' => esc_html__( 'Not a valid color' ),
 		);
 	}

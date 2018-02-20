@@ -59,26 +59,6 @@ class KKcp_Sanitize {
 	}
 
 	/**
-	 * Sanitize hex color
-	 *
-	 * Check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or
-	 * 'CCC'.
-	 *
-	 * @since  1.0.0
-	 * @param  string $input  The input value to sanitize
-	 * @return string|null  	The sanitized input or `null` in case the input
-	 *                        is not valid.
-	 */
-	public static function hex( $input ) {
-		$input = preg_replace( '/\s+/', '', $input );
-
-		if ( preg_match( '/^([A-Fa-f0-9]{3}){1,2}$/', $input ) ) {
-			return '#' . $input;
-		}
-		return null;
-	}
-
-	/**
 	 * Sanitize single choice
 	 *
 	 * @since 1.0.0
@@ -345,6 +325,11 @@ class KKcp_Sanitize {
 	/**
 	 * Sanitize color
 	 *
+	 * It escapes HTML, removes spacs and strips the alpha channel if not allowed.
+	 * It checks also for a hex color string like '#c1c2b4' or '#c00' or '#CCc000'
+	 * or 'CCC' and fixes it. If the value is not valid it returns the setting
+	 * default.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param mixed         			 $value   The value to sanitize.
@@ -353,23 +338,23 @@ class KKcp_Sanitize {
 	 * @return string|number The sanitized value.
 	 */
 	public static function color( $value, $setting, $control ) {
-		$value = preg_replace( '/\s+/', '', $value );
+		$value = (string) $value;
+		$value = esc_html( preg_replace( '/\s+/', '', $value ) );
 
-		// @@todo
-		// uppercase hex \\
 		// @@doubt here there might be a race condition when the developer defines
 		// a palette that have rgba colors without setting `alpha` to `true`. \\
 		if ( KKcp_Helper::is_rgba( $value ) && ! $control->alpha ) {
-			$value = KKcp_Helper::rgba_to_rgb( $value );
-		} else {
-			$value = self::hex( $value );
+			return KKcp_Helper::rgba_to_rgb( $value );
 		}
-
-		if ( $value ) {
-			return $value;
+		if ( preg_match( '/^([A-Fa-f0-9]{3}){1,2}$/', $value ) ) {
+			return '#' . $value;
 		}
+		$validity = KKcp_Validate::color( new WP_Error(), $value, $setting, $control );
 
-		return $setting->default;
+		if ( ! empty( $validity->get_error_messages() ) ) {
+			return $setting->default;
+		}
+		return $value;
 	}
 
 	/**

@@ -14,8 +14,8 @@
  * Version:           pkgVersion
  * Author:            KnitKode
  * Author URI:        https://knitkode.com
- * License:           GPLv2 or later (license.txt)
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License:           GPLv3
+ * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       pkgTextdomain
  * Domain Path:       /languages
  */

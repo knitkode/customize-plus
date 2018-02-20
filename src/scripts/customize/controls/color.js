@@ -7,13 +7,6 @@ import ControlBase from './base';
 /* global tinycolor */
 
 /**
- * Load spectrum only on demand
- * {@link https://github.com/bgrins/spectrum/issues/112}
- * @type {Boolean}
- */
-$.fn.spectrum.load = false;
-
-/**
  * Control Color class
  *
  * @class api.controls.Color
@@ -26,8 +19,8 @@ $.fn.spectrum.load = false;
 class ControlColor extends ControlBase {
 
   /**
-   * Use tinycolor (included in spectrum.js) to always convert colors to their
-   * rgb value, so to have the same output result when the input is `red` or
+   * Use tinycolor (included in spectrum.js) to always convert colors to the
+   * same format, so to have the same output result when the input is `red` or
    * `#f00` or `#ff0000` or `rgba(255, 0, 0, 1)`. If it is not an actual color
    * but an expression or a variable tinycolor won't recognize a `_format`
    * (such as hex, name, rgba, etc..), we rely on this do decide what to return

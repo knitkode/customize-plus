@@ -5,6 +5,7 @@ import is_float from 'locutus/php/var/is_float';
 import empty from 'locutus/php/var/empty';
 import round from 'locutus/php/math/round';
 import Helper from './helper';
+import Validate from './validate';
 
 /**
  * Sanitize string
@@ -50,28 +51,6 @@ export function array ($input) {
   }
 
   return sanitized;
-}
-
-/**
- * Sanitize hex color
- *
- * Check for a hex color string like '#c1c2b4' or '#c00' or '#CCc000' or 'CCC'
- *
- * @since  1.0.0
- * @param  string $input  The input value to sanitize
- * @return string|null    The sanitized input or `false` in case the input
- *                        is not valid.
- */
-export function hex( $input ) {
-  $input = $input.replace( /\s+/g, '' );
-
-  if ( $input.match( /^([A-Fa-f0-9]{3}){1,2}$/ ) ) {
-    return `#${$input}`;
-  }
-  if (Helper.isHex($input)) {
-    return $input;
-  }
-  return null;
 }
 
 /**
@@ -339,6 +318,11 @@ export function slider( $value, $setting, $control ) {
 
 /**
  * Sanitize color
+
+ * It escapes HTML, removes spacs and strips the alpha channel if not allowed.
+ * It checks also for a hex color string like '#c1c2b4' or '#c00' or '#CCc000'
+ * or 'CCC' and fixes it. If the value is not valid it returns the setting
+ * default.
  *
  * @since 1.0.0
  *
@@ -351,27 +335,22 @@ export function color( $value, $setting, $control ) {
   if (!_.isString($value)) {
     return JSON.stringify($value);
   }
+  $value = _.escape( $value.replace(/\s/g, '') );
 
-  $value = $value.replace(/\s/g, '');
+  // @@doubt here there might be a race condition when the developer defines
+  // a palette that have rgba colors without setting `alpha` to `true`. \\
+  if ( Helper.isRgba( $value ) && ! $control.params.alpha ) {
+    return Helper.rgbaToRgb( $value );
+  }
+  if ( $value.match( /^([A-Fa-f0-9]{3}){1,2}$/ ) ) {
+    return `#${$value}`;
+  }
+  const $validity = Validate.color( {}, $value, $setting, $control );
 
-  $value = hex($value);
-
+  if ( _.keys( $validity ).length ) {
+    return $setting.default;
+  }
   return $value;
-  // $value = preg_replace( '/\s+/', '', $value );
-
-  // // @@doubt here there might be a race condition when the developer defines a palette
-  // // that have rgba colors without setting `alpha` to `true`. \\
-  // if ( KKcp_Helper::is_rgba( $value ) && ! $control->alpha ) {
-  //   $value = KKcp_Helper::rgba_to_rgb( $value );
-  // } else {
-  //   $value = self::hex( $value );
-  // }
-
-  // if ( $value ) {
-  //   return $value;
-  // }
-
-  // return $setting->default;
 }
 
 /**

@@ -103,17 +103,33 @@ class KKcp_Helper {
   }
 
   /**
-   * Normalize font family
+   * Is a valid color among the color formats given?
    *
-   * Be sure that a font family is trimmed and wrapped in quote, good for
-   * consistency
+   * It needs a value cleaned of all whitespaces (sanitized)
    *
    * @since  1.0.0
-   * @param  string|array $value
-   * @return string
+   *
+   * @param  string $value           The value value to check
+   * @param  array $allowed_formats  The allowed color formats
+   * @return bool
    */
-  public static function normalize_font_family( $value ) {
-    return "'" . trim( str_replace( "'", '', str_replace( '"', '', $value ) ) ) . "'";
+  public static  function is_color ( $value, $allowed_formats ) {
+    foreach ( $allowed_formats as $format ) {
+      if ( $format === 'keyword' && self::is_keyword_color( $value ) ) {
+        return true;
+      }
+      else if ( $format === 'hex' && self::is_hex( $value ) ) {
+        return true;
+      }
+      else if ( $format === 'rgb' && self::is_rgb( $value ) ) {
+        return true;
+      }
+      else if ( $format === 'rgba' && self::is_rgba( $value ) ) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   /**
@@ -121,27 +137,27 @@ class KKcp_Helper {
    *
    * @link(http://php.net/manual/en/function.hexdec.php#99478, original source)
    * @since  1.0.0
-   * @param  string  $hex_str          Hexadecimal color value
+   * @param  string  $value            Hexadecimal color value
    * @param  bool    $return_as_string If set true, returns the value separated
    *                                   by the separator character. Otherwise
    *                                   returns associative array
    * @return array|string              Depending on second parameter. Returns
    *                                   `false` if invalid hex color value
    */
-  public static function hex_to_rgb( $hex_str, $return_as_string = true ) {
-    $hex_str = preg_replace( '/[^0-9A-Fa-f]/ ', '', $hex_str ); // Gets a proper hex string
+  public static function hex_to_rgb( $value, $return_as_string = true ) {
+    $value = preg_replace( '/[^0-9A-Fa-f]/ ', '', $value ); // Gets a proper hex string
     $rgb_array = array();
     // If a proper hex code, convert using bitwise operation. No overhead... faster
-    if ( strlen( $hex_str ) == 6 ) {
-      $color_val = hexdec( $hex_str );
+    if ( strlen( $value ) == 6 ) {
+      $color_val = hexdec( $value );
       $rgb_array['red'] = 0xFF & ( $color_val >> 0x10 );
       $rgb_array['green'] = 0xFF & ( $color_val >> 0x8 );
       $rgb_array['blue'] = 0xFF & $color_val;
     // if shorthand notation, need some string manipulations
-    } else if ( strlen( $hex_str ) == 3 ) {
-      $rgb_array['red'] = hexdec( str_repeat( substr( $hex_str, 0, 1 ), 2 ) );
-      $rgb_array['green'] = hexdec( str_repeat( substr( $hex_str, 1, 1 ), 2 ) );
-      $rgb_array['blue'] = hexdec( str_repeat( substr( $hex_str, 2, 1 ), 2 ) );
+    } else if ( strlen( $value ) == 3 ) {
+      $rgb_array['red'] = hexdec( str_repeat( substr( $value, 0, 1 ), 2 ) );
+      $rgb_array['green'] = hexdec( str_repeat( substr( $value, 1, 1 ), 2 ) );
+      $rgb_array['blue'] = hexdec( str_repeat( substr( $value, 2, 1 ), 2 ) );
     } else {
       return false; //Invalid hex color code
     }
@@ -161,6 +177,20 @@ class KKcp_Helper {
   public static function rgba_to_rgb( $input ) {
     sscanf( $input, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
     return "rgba($red,$green,$blue)";
+  }
+
+  /**
+   * Normalize font family
+   *
+   * Be sure that a font family is trimmed and wrapped in quote, good for
+   * consistency
+   *
+   * @since  1.0.0
+   * @param  string|array $value
+   * @return string
+   */
+  public static function normalize_font_family( $value ) {
+    return "'" . trim( str_replace( "'", '', str_replace( '"', '', $value ) ) ) . "'";
   }
 
   /**
