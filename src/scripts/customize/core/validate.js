@@ -1,4 +1,10 @@
-import $ from 'jquery';
+/**
+ * @fileOverview Collects all validate methods used by Customize Plus controls.
+ * Each function has also a respective PHP version in `class-validate.php`.
+ *
+ * @module Validate
+ * @requires Helper
+ */
 import _ from 'underscore';
 import is_int from 'locutus/php/var/is_int';
 import is_float from 'locutus/php/var/is_float';
@@ -15,11 +21,11 @@ import Helper from '../core/helper';
  *
  * @since 1.0.0
  *
- * @param WP_Error             $validity
- * @param mixed                $value    The value to validate.
- * @param WP_Customize_Setting $setting  Setting instance.
- * @param WP_Customize_Control $control  Control instance.
- * @return WP_Error
+ * @param {WP_Error}             $validity
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {WP_Error}
  */
 export function required( $validity={}, $value, $setting, $control ) {
   if ( !$control.params.optional ) {
@@ -35,11 +41,11 @@ export function required( $validity={}, $value, $setting, $control ) {
  *
  * @since 1.0.0
  *
- * @param WP_Error             $validity
- * @param mixed                $value    The value to validate.
- * @param WP_Customize_Setting $setting  Setting instance.
- * @param WP_Customize_Control $control  Control instance.
- * @return WP_Error
+ * @param {WP_Error}             $validity
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {WP_Error}
  */
 export function singleChoice( $validity={}, $value, $setting, $control ) {
   const choices = $control._validChoices && $control._validChoices.length ? $control._validChoices : $control.params.choices;
@@ -55,15 +61,15 @@ export function singleChoice( $validity={}, $value, $setting, $control ) {
  *
  * @since 1.0.0
  *
- * @param WP_Error             $validity
- * @param array                $value        The value to validate.
- * @param WP_Customize_Setting $setting      Setting instance.
- * @param WP_Customize_Control $control      Control instance.
- * @param boolean              $check_length Should match choices length? e.g.
- *                                           for sortable control where the all
- *                                           the defined choices should be
- *                                           present in the validated value
- * @return WP_Error
+ * @param {WP_Error}             $validity
+ * @param {array}                $value        The value to validate.
+ * @param {WP_Customize_Setting} $setting      Setting instance.
+ * @param {WP_Customize_Control} $control      Control instance.
+ * @param {bool}                 $check_length Should match choices length? e.g.
+ *                                             for sortable control where the
+ *                                             all the defined choices should be
+ *                                             present in the validated value
+ * @return {WP_Error}
  */
 export function multipleChoices( $validity={}, $value, $setting, $control, $check_length = false ) {
   const {params} = $control;
@@ -104,11 +110,11 @@ export function multipleChoices( $validity={}, $value, $setting, $control, $chec
  *
  * @since 1.0.0
  *
- * @param WP_Error             $validity
- * @param mixed                $value    The value to validate.
- * @param WP_Customize_Setting $setting  Setting instance.
- * @param WP_Customize_Control $control  Control instance.
- * @return WP_Error
+ * @param {WP_Error}             $validity
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {WP_Error}
  */
 export function oneOrMoreChoices( $validity={}, $value, $setting, $control ) {
   if ( _.isString( $value ) ) {
@@ -122,11 +128,11 @@ export function oneOrMoreChoices( $validity={}, $value, $setting, $control ) {
  *
  * @since 1.0.0
  *
- * @param WP_Error             $validity
- * @param mixed                $value    The value to validate.
- * @param WP_Customize_Setting $setting  Setting instance.
- * @param WP_Customize_Control $control  Control instance.
- * @return WP_Error
+ * @param {WP_Error}             $validity
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {WP_Error}
  */
 export function checkbox( $validity={}, $value, $setting, $control ) {
   if ( $value != 1 && $value != 0 ) {
@@ -140,11 +146,11 @@ export function checkbox( $validity={}, $value, $setting, $control ) {
  *
  * @since 1.0.0
  *
- * @param WP_Error             $validity
- * @param mixed                $value    The value to validate.
- * @param WP_Customize_Setting $setting  Setting instance.
- * @param WP_Customize_Control $control  Control instance.
- * @return WP_Error
+ * @param {WP_Error}             $validity
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {WP_Error}
  */
 export function tags( $validity={}, $value, $setting, $control ) {
   const {params} = $control;
@@ -173,11 +179,11 @@ export function tags( $validity={}, $value, $setting, $control ) {
  *
  * @since 1.0.0
  *
- * @param WP_Error             $validity
- * @param mixed                $value    The value to validate.
- * @param WP_Customize_Setting $setting  Setting instance.
- * @param WP_Customize_Control $control  Control instance.
- * @return WP_Error
+ * @param {WP_Error}             $validity
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {WP_Error}
  */
 export function text( $validity={}, $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
@@ -237,11 +243,11 @@ export function text( $validity={}, $value, $setting, $control ) {
  *
  * @since 1.0.0
  *
- * @param WP_Error             $validity
- * @param mixed                $value    The value to validate.
- * @param WP_Customize_Setting $setting  Setting instance.
- * @param WP_Customize_Control $control  Control instance.
- * @return WP_Error
+ * @param {WP_Error}             $validity
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {WP_Error}
  */
 export function number( $validity={}, $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
@@ -287,10 +293,10 @@ export function number( $validity={}, $value, $setting, $control ) {
  *
  * @since 1.0.0
  *
- * @param WP_Error                $validity
- * @param mixed    $unit          The unit to validate.
- * @param mixed    $allowed_units The allowed units
- * @return WP_Error
+ * @param {WP_Error}                $validity
+ * @param {mixed}    $unit          The unit to validate.
+ * @param {mixed}    $allowed_units The allowed units
+ * @return {WP_Error}
  */
 export function sizeUnit( $validity, $unit, $allowed_units ) {
   // if it needs a unit and it is missing
@@ -314,11 +320,11 @@ export function sizeUnit( $validity, $unit, $allowed_units ) {
  *
  * @since 1.0.0
  *
- * @param WP_Error             $validity
- * @param mixed                $value    The value to validate.
- * @param WP_Customize_Setting $setting  Setting instance.
- * @param WP_Customize_Control $control  Control instance.
- * @return WP_Error
+ * @param {WP_Error}             $validity
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {WP_Error}
  */
 export function slider( $validity={}, $value, $setting, $control ) {
   let $number = Helper.extractNumber( $value, $control.params.allowFloat );
@@ -335,12 +341,12 @@ export function slider( $validity={}, $value, $setting, $control ) {
  *
  * @since 1.0.0
  *
- * @uses tinycolor
- * @param WP_Error             $validity
- * @param mixed                $value    The value to validate.
- * @param WP_Customize_Setting $setting  Setting instance.
- * @param WP_Customize_Control $control  Control instance.
- * @return WP_Error
+ * @requires tinycolor
+ * @param {WP_Error}             $validity
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {WP_Error}
  */
 export function color( $validity={}, $value, $setting, $control ) {
   const params = $control.params;
@@ -374,9 +380,11 @@ export function color( $validity={}, $value, $setting, $control ) {
 }
 
 /**
- * Exports the `Validate` object
+ * @alias core.Validate
+ * @description  Exposed module <a href="module-Validate.html">Validate</a>
+ * @access package
  */
-export default {
+export default api.core.Validate = {
   required,
   singleChoice,
   multipleChoices,

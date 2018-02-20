@@ -1,11 +1,21 @@
 import { api, wpApi } from '../core/globals';
-import ControlCheckbox from './checkbox';
+import Checkbox from './checkbox';
 
 /**
  * Control Toggle
  *
- * @alias wp.customize.controlConstructor.kkcp_toggle
- * @alias api.controls.Toggle
- * @alias api.controls.Checkbox
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_toggle`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Toggle
+ *
+ * @extends controls.Checkbox
+ * @augments controls.Base
+ * @augments wp.customize.Control
+ * @augments wp.customize.Class
  */
-export default wpApi.controlConstructor['kkcp_toggle'] = api.controls.Toggle = ControlCheckbox;
+class Toggle extends Checkbox {}
+
+export default wpApi.controlConstructor['kkcp_toggle'] = api.controls.Toggle = Toggle;

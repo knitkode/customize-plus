@@ -202,7 +202,6 @@ class KKcp_Sanitize {
 		if ( isset( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
 			$value = substr( $value, 0, $attrs['maxlength'] );
 		}
-
 		// html must be escaped
 		if ( $control->html === 'escape' ) {
 			$value = esc_html( $value );

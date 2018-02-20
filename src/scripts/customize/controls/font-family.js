@@ -2,24 +2,30 @@ import $ from 'jquery';
 import { api, wpApi } from '../core/globals';
 import Helper from '../core/helper';
 import Sanitize from '../core/sanitize';
-import ControlBaseSet from './base-set';
+import BaseSet from './base-set';
 
 /**
  * Font Family Control
  *
- * @class api.controls.FontFamily
- * @alias wp.customize.controlConstructor.kkcp_font_family
- * @extends api.controls.BaseSet
- * @augments api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_font_family`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class FontFamily
+ *
+ * @extends controls.BaseSet
+ * @augments controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ *
+ * @requires Sanitize
+ * @requires Helper
  */
-class ControlFontFamily extends ControlBaseSet {
+class FontFamily extends BaseSet {
 
   /**
    * @override
-   * @param  {string|array} value
-   * @return {array} $validity
    */
   validate (value) {
     if ( _.isString(value)) {
@@ -30,7 +36,6 @@ class ControlFontFamily extends ControlBaseSet {
 
   /**
    * @override
-   * @return {string}
    */
   sanitize (value) {
     return Sanitize.fontFamily(value, this.setting, this);
@@ -38,6 +43,7 @@ class ControlFontFamily extends ControlBaseSet {
 
   /**
    * Always quote all font families
+   *
    * @override
    */
   onInit () {
@@ -128,4 +134,4 @@ class ControlFontFamily extends ControlBaseSet {
 
 }
 
-export default wpApi.controlConstructor['kkcp_font_family'] = api.controls.FontFamily = ControlFontFamily;
+export default wpApi.controlConstructor['kkcp_font_family'] = api.controls.FontFamily = FontFamily;

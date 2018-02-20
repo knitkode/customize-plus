@@ -1,16 +1,20 @@
 import _ from 'underscore';
 import { api } from '../core/globals';
-import ControlBase from './base';
+import Base from './base';
 
 /**
  * Control Base Choices class
  *
- * @class api.controls.BaseChoices
- * @extends api.controls.Base
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class BaseChoices
+ *
+ * @extends controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-class ControlBaseChoices extends ControlBase {
+class BaseChoices extends Base {
 
   /**
    * @override
@@ -24,8 +28,11 @@ class ControlBaseChoices extends ControlBase {
   /**
    * Get valid choicesvalues from given choices
    *
-   * @param  {array|object} choices
-   * @return {array}
+   * @since   1.0.0
+   * @memberof! controls.BaseChoices#
+   *
+   * @param  {Array<string>|Object<string, Object>} choices
+   * @return {Array<string>}
    */
   _getValidChoices (choices) {
     if (_.isArray(choices)) {
@@ -44,4 +51,4 @@ class ControlBaseChoices extends ControlBase {
   }
 }
 
-export default api.controls.BaseChoices = ControlBaseChoices;
+export default api.controls.BaseChoices = BaseChoices;

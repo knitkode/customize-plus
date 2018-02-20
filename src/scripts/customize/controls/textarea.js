@@ -4,21 +4,29 @@ import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlText from './text';
+import Text from './text';
 
 /**
  * Control Textarea class
  *
- * @class api.controls.Textarea
- * @alias wp.customize.controlConstructor.kkcp_textarea
- * @extends api.controls.Text
- * @augments api.controls.BaseInput
- * @augments api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_textarea`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Textarea
+ *
+ * @extends controls.Text
+ * @augments controls.BaseInput
+ * @augments controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ *
+ * @requires Validate
+ * @requires Sanitize
  * @requires tinyMCE
  */
-class ControlTextarea extends ControlText {
+class Textarea extends Text {
 
   /**
    * @override
@@ -31,6 +39,7 @@ class ControlTextarea extends ControlText {
 
   /**
    * Destroy tinyMCE instance
+   *
    * @override
    */
   onDeflate () {
@@ -87,6 +96,10 @@ class ControlTextarea extends ControlText {
    * as suggested by WordPress Codex.
    *
    * @see https://codex.wordpress.org/Function_Reference/wp_editor -> $editor_id
+   *
+   * @since   1.0.0
+   * @memberof! controls.Textarea#
+   * @access protected
    */
   _getWpEditorId () {
     return `${this.id.replace(/-/g, '_')}__textarea`;
@@ -94,6 +107,10 @@ class ControlTextarea extends ControlText {
 
   /**
    * Sync textarea and listen for changes
+   *
+   * @since   1.0.0
+   * @memberof! controls.Textarea#
+   * @access protected
    */
   _syncAndListen () {
     const self = this;
@@ -116,6 +133,10 @@ class ControlTextarea extends ControlText {
    * later on). Once loaded the response (with the needed scripts) is
    * prepended to the body and we get rid of the doubled `dashicons-css`
    * included in the response, which creates layout problems.
+   *
+   * @since   1.0.0
+   * @memberof! controls.Textarea#
+   * @access protected
    */
   _initWpEditor () {
     // dynamically set id on textarea, then use it as a target for wp_editor
@@ -162,4 +183,4 @@ class ControlTextarea extends ControlText {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_textarea'] = api.controls.Textarea = ControlTextarea;
+export default wpApi.controlConstructor['kkcp_textarea'] = api.controls.Textarea = Textarea;

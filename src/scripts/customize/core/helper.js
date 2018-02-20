@@ -1,3 +1,10 @@
+/**
+ * @fileOverview An helper class containing helper methods. This has its PHP
+ * equivalent in `class-helper.php`
+ *
+ * @module Helper
+ * @requires tinycolor
+ */
 import strpos from 'locutus/php/strings/strpos';
 import is_int from 'locutus/php/var/is_int';
 import is_float from 'locutus/php/var/is_float'
@@ -10,7 +17,7 @@ import is_float from 'locutus/php/var/is_float'
  *
  * @see php class method `KKcp_Validate::is_empty()`
  * @param  {string}  value
- * @return {boolean}
+ * @return {bool}
  */
 export function isEmpty (value) {
   // first try to compare it to empty primitives
@@ -38,7 +45,7 @@ export function isEmpty (value) {
  *
  * @since  1.0.0
  *
- * @param  string $value  The value value to check
+ * @param  {string} $value  The value value to check
  * @return bool
  */
 export function isKeywordColor( $value ) {
@@ -53,8 +60,8 @@ export function isKeywordColor( $value ) {
  *
  * @since  1.0.0
  *
- * @param  string $value  The value value to check
- * @return boolean
+ * @param  {string} $value  The value value to check
+ * @return {bool}
  */
 export function isHex( $value ) {
   return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test( $value )
@@ -69,8 +76,8 @@ export function isHex( $value ) {
  *
  * @since  1.0.0
  *
- * @param  string $value  The value value to check
- * @return boolean
+ * @param  {string} $value  The value value to check
+ * @return {bool}
  */
 export function isRgb( $value ) {
   const regexInteger = /^rgb\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){2}(\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*)\)$/;
@@ -87,8 +94,8 @@ export function isRgb( $value ) {
  *
  * @since  1.0.0
  *
- * @param  string $value  The value value to check
- * @return boolean
+ * @param  {string} $value  The value value to check
+ * @return {bool}
  */
 export function isRgba( $value ) {
   const regexInteger = /^rgba\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;
@@ -106,9 +113,9 @@ export function isRgba( $value ) {
  *
  * @since  1.0.0
  *
- * @param  string $value           The value value to check
- * @param  array $allowed_formats  The allowed color formats
- * @return boolean
+ * @param  {string} $value           The value value to check
+ * @param  {Array} $allowed_formats  The allowed color formats
+ * @return {bool}
  */
 export function isColor ( $value, $allowedFormats ) {
   for (var i = 0; i < $allowedFormats.length; i++) {
@@ -136,12 +143,12 @@ export function isColor ( $value, $allowedFormats ) {
  *
  * @link(http://php.net/manual/en/function.hexdec.php#99478, original source)
  * @since  1.0.0
- * @param  string  $value          Hexadecimal color value
- * @param  bool    $returnAsString If set true, returns the value separated by
- *                                 the separator character. Otherwise returns an
- *                                 associative array.
- * @return array|string            Depending on second parameter. Returns
- *                                 `false` if invalid hex color value
+ * @param  {string} $value          Hexadecimal color value
+ * @param  {bool}   $returnAsString If set true, returns the value separated by
+ *                                  the separator character. Otherwise returns an
+ *                                  associative array.
+ * @return {array|string} Depending on second parameter. Returns `false` if
+ *                        invalid hex color value
  */
 export function hexToRgb( $value, $returnAsString = true ) {
   return $returnAsString ? tinycolor.toRgbString( $value ) : tinycolor.toRgb( $value );
@@ -152,8 +159,9 @@ export function hexToRgb( $value, $returnAsString = true ) {
  *
  * It needs a value cleaned of all whitespaces (sanitized).
  *
+ * @method
  * @since  1.0.0
- * @param  string $input
+ * @param  {string} $input
  * @return ?string
  */
 export const rgbaToRgb = hexToRgb;
@@ -164,8 +172,8 @@ export const rgbaToRgb = hexToRgb;
  * Be sure that a font family is wrapped in quote, good for consistency
  *
  * @since  1.0.0
- * @param  string|array $value
- * @return string
+ * @param  {string|array} $value
+ * @return {string}
  */
 export function normalizeFontFamily( $value ) {
   $value = $value.replace(/'/g, '').replace(/"/g, '');
@@ -176,10 +184,10 @@ export function normalizeFontFamily( $value ) {
  * Extract number from value, returns 0 otherwise
  *
  * @since  1.0.0
- * @param  string         $value         The value from to extract from
- * @param  bool|null      $allowed_float Whether float numbers are allowed
- * @return int|float|null The extracted number or null if the value does not
- *                        contain any digit.
+ * @param  {string}         $value         The value from to extract from
+ * @param  {bool|null}      $allowed_float Whether float numbers are allowed
+ * @return {int|float|null} The extracted number or null if the value does not
+ *                          contain any digit.
  */
 export function extractNumber( $value, $allowed_float ) {
   let $number_extracted;
@@ -202,9 +210,9 @@ export function extractNumber( $value, $allowed_float ) {
  * Extract unit (like `px`, `em`, `%`, etc.) from an array of allowed units
  *
  * @since  1.0.0
- * @param  string     $value          The value from to extract from
- * @param  null|array $allowed_units  An array of allowed units
- * @return string                     The first valid unit found.
+ * @param  {string}     $value          The value from to extract from
+ * @param  {null|array} $allowed_units  An array of allowed units
+ * @return {string}                     The first valid unit found.
  */
 export function extractSizeUnit( $value, $allowed_units ) {
   if ( _.isArray( $allowed_units ) ) {
@@ -250,7 +258,7 @@ export function modulus(val, step){
  * @ignore
  * @param  {string}  val
  * @param  {string}  step
- * @return {boolean}
+ * @return {bool}
  */
 export function isMultipleOf (val, step) {
   var a = Math.abs(val);
@@ -265,7 +273,7 @@ export function isMultipleOf (val, step) {
  *
  * @static
  * @param  {string|number} value
- * @return {boolean}
+ * @return {bool}
  */
 export function numberToBoolean (value) {
   return typeof value === 'boolean' ? value : !!parseInt(value, 10);
@@ -290,7 +298,7 @@ export function stripHTML (value) {
  *
  * @see https://stackoverflow.com/a/15458987
  * @param  {string}  value
- * @return {boolean}
+ * @return {bool}
  */
 export function hasHTML (value) {
   return /<[a-z][\s\S]*>/i.test(value);
@@ -307,7 +315,7 @@ export function hasHTML (value) {
  *
  * @ignore
  * @param  {string}  str
- * @return {boolean}
+ * @return {bool}
  */
 export function isHTML (str) {
   if (window.DOMParser) {
@@ -321,7 +329,9 @@ export function isHTML (str) {
 }
 
 /**
- * Exports the `Helper` object
+ * @alias core.Helper
+ * @description  Exposed module <a href="module-Helper.html">Helper</a>
+ * @access package
  */
 export default {
   isEmpty,

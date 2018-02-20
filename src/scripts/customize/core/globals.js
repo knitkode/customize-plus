@@ -5,42 +5,160 @@ import _ from 'underscore';
 import wp from 'wp';
 import pluginApi from 'kkcp';
 
-// Collectors for Customize Plus public API
-
-/** @type {Object} */
+/**
+ * Accessible on `window.kkcp.core`
+ *
+ * @since  1.0.0
+ * @namespace core
+ * @type {Object}
+ */
 pluginApi.core = pluginApi.core || {};
-/** @type {Object} */
+
+/**
+ * Accessible on `window.kkcp.components`
+ *
+ * @since  1.0.0
+ * @namespace components
+ * @type {Object}
+ */
 pluginApi.components = pluginApi.components || {};
-/** @type {Object} */
+
+/**
+ * Accessible on `window.kkcp.settings`
+ *
+ * @since  1.0.0
+ * @namespace settings
+ * @type {Object}
+ */
+pluginApi.settings = pluginApi.settings || {};
+
+/**
+ * Accessible on `window.kkcp.controls`
+ *
+ * @since  1.0.0
+ * @namespace controls
+ * @type {Object}
+ */
 pluginApi.controls = pluginApi.controls || {};
-/** @type {Object} */
+
+/**
+ * Accessible on `window.kkcp.sections`
+ *
+ * @since  1.0.0
+ * @namespace sections
+ * @type {Object}
+ */
 pluginApi.sections = pluginApi.sections || {};
-/** @type {Object} */
+
+/**
+ * Accessible on `window.kkcp.panels`
+ *
+ * @since  1.0.0
+ * @namespace panels
+ * @type {Object}
+ */
 pluginApi.panels = pluginApi.panels || {};
 
-// exports Customize Plus API
-export var api = pluginApi;
+/**
+ * Accessible on `window.kkcp.l10n`, populated by PHP via JSON
+ *
+ * @see PHP KKcp_Customize->get_l10n()
+ * @since  1.0.0
+ * @namespace l10n
+ * @readonly
+ * @type {Object}
+ */
+pluginApi.l10n = pluginApi.l10n || {};
 
-/** @type {jQuery} */
-export const $window = $(window);
+/**
+ * Accessible on `window.kkcp.constants`, populated by PHP via JSON
+ *
+ * @see PHP KKcp_Customize->get_constants()
+ * @since  1.0.0
+ * @namespace constants
+ * @readonly
+ * @type {Object}
+ */
+pluginApi.constants = pluginApi.constants || {};
 
-/** @type {jQuery} */
-export const $document = $(document);
+/**
+ * Customize Plus public API
+ *
+ * Accessible on `window.kkcp` during production and on `window.api`
+ * during development.
+ *
+ * @since  1.0.0
+ * @type {Object}
+ */
+export const api = pluginApi;
 
-/** @type {HTMLElement} */
-export const body = document.getElementsByTagName('body')[0];
-
-/** @type {Object} */
+/**
+ * WordPress Customize public API
+ *
+ * Accessible on `window.wp.customize` during production and on `window.wpApi`
+ * during development.
+ *
+ * @since  1.0.0
+ * @access package
+ * @type {Object}
+ */
 export const wpApi = wp.customize;
 
-/** @type {jQuery.Deferred} */
+/**
+ * Reuse the same jQuery wrapped `window` object
+ *
+ * @since  1.0.0
+ * @access package
+ * @type {jQuery}
+ */
+export const $window = $(window);
+
+/**
+ * Reuse the same jQuery wrapped `document` object
+ *
+ * @since  1.0.0
+ * @access package
+ * @type {jQuery}
+ */
+export const $document = $(document);
+
+/**
+ * Reuse the same `body` element
+ *
+ * @since  1.0.0
+ * @access package
+ * @type {HTMLElement}
+ */
+export const body = document.getElementsByTagName('body')[0];
+
+/**
+ * Reuse the same jQuery wrapped WordPress API ready deferred object
+ *
+ * @since  1.0.0
+ * @access package
+ * @type {jQuery.Deferred}
+ */
 export const $readyWP = $.Deferred();
 
-/** @type {jQuery.Deferred} */
+/**
+ * Reuse the same jQuery wrapped DOM ready deferred object
+ *
+ * @since  1.0.0
+ * @access package
+ * @type {jQuery.Deferred}
+ */
 export const $readyDOM = $.Deferred();
 
-/** @type {jQuery.Deferred} */
+/**
+ * Reuse the same WordPress API and DOM ready deferred object. Resolved when
+ * both of them are resolved.
+ *
+ * @since  1.0.0
+ * @access package
+ * @type {jQuery.Deferred}
+ */
 export const $ready = $.when($readyDOM, $readyWP);
+
 
 wpApi.bind('ready', () => { $readyWP.resolve(); });
 
@@ -77,6 +195,6 @@ if (DEBUG) {
   };
 
   // just useful aliases for debugging
-  window.api = pluginApi;
+  window.api = api;
   window.wpApi = wpApi;
 }

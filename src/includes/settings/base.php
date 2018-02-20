@@ -25,10 +25,27 @@ class KKcp_Customize_Setting_Base extends WP_Customize_Setting {
 	public $transport = 'postMessage';
 
 	/**
+	 * Sanitize the setting's default factory value for use in JavaScript.
+	 *
+	 * @see  PHP WP_Customize_Setting->js_value
+	 * @since 1.0.0
+	 *
+	 * @return mixed The requested escaped value.
+	 */
+	public function js_value_default() {
+		if ( is_string( $this->default ) )
+			return html_entity_decode( $this->default, ENT_QUOTES, 'UTF-8');
+
+		return $this->default;
+	}
+
+	/**
 	 * {@inheritDoc}. Change type in order to use our custom JavaScript
 	 * constructor without changin the `type` property, which should remain
 	 * either `theme_mod` or `option` as defined in the customize tree, default to
 	 * `theme_mod`. Settings are initialized in `customize-controls.js#7836`.
+	 * Finally add the factory value of the setting (its default as defined by the
+	 * theme developer).
 	 *
 	 * @since 1.0.0
 	 * @override
@@ -39,6 +56,7 @@ class KKcp_Customize_Setting_Base extends WP_Customize_Setting {
 			'transport' => $this->transport,
 			'dirty'     => $this->dirty,
 			'type'      => 'kkcp_base', // $this->type,
+			'default'  => $this->js_value_default(),
 		);
 	}
 
@@ -46,5 +64,4 @@ class KKcp_Customize_Setting_Base extends WP_Customize_Setting {
 	// public function sanitize( $value ) {}
 	// public function validate( $value ) {}
 	// public function js_value() {}
-	// public function json() {}
 }

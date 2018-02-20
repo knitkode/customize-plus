@@ -7,7 +7,7 @@ import WpTight from './wptight';
 /**
  * Banner for free plugin
  *
- * @requires api.core.WpTight
+ * @requires core.WpTight
  */
 /** @type {Boolean} */
 api.core._banner = true;

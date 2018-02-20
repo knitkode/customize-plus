@@ -4,19 +4,27 @@ import { api, wpApi } from '../core/globals';
 import { logError } from '../core/logger';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlBaseChoices from './base-choices';
+import BaseChoices from './base-choices';
 
 /**
  * Control Sortable
  *
- * @class api.controls.Sortable
- * @alias wp.customize.controlConstructor.kkcp_sortable
- * @extends api.controls.BaseChoices
- * @augments api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_sortable`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Sortable
+ *
+ * @extends controls.BaseChoices
+ * @augments controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ *
+ * @requires Validate
+ * @requires Sanitize
  */
-class ControlSortable extends ControlBaseChoices {
+class Sortable extends BaseChoices {
 
   /**
    * @override
@@ -64,8 +72,14 @@ class ControlSortable extends ControlBaseChoices {
   }
 
   /**
-   * Build sortable items map, a key (grabbed from the `data-value` attrbiute)
-   * with the corresponding DOM element
+   * Build items map
+   *
+   * It creates a sortable items map, a key (grabbed from the `data-value`
+   * attribute) with the corresponding DOM element
+   *
+   * @since   1.0.0
+   * @memberof! controls.Sortable#
+   * @access protected
    */
   _buildItemsMap () {
     const items = this._container.getElementsByClassName('kkcp-sortable');
@@ -83,6 +97,10 @@ class ControlSortable extends ControlBaseChoices {
    * Manually reorder the sortable list, needed when a programmatic change
    * is triggered. Unfortunately jQuery UI sortable does not have a method
    * to keep in sync the order of an array and its corresponding DOM.
+   *
+   * @since   1.0.0
+   * @memberof! controls.Sortable#
+   * @access protected
    */
   _reorder () {
     const value = this.setting();
@@ -107,4 +125,4 @@ class ControlSortable extends ControlBaseChoices {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_sortable'] = api.controls.Sortable = ControlSortable;
+export default wpApi.controlConstructor['kkcp_sortable'] = api.controls.Sortable = Sortable;

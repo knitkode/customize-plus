@@ -2,18 +2,26 @@ import { api, wpApi } from '../core/globals';
 import { numberToBoolean } from '../core/helper';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlBase from './base';
+import Base from './base';
 
 /**
  * Control Checkbox
  *
- * @class api.controls.Checkbox
- * @alias wp.customize.controlConstructor.kkcp_checkbox
- * @extends api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_checkbox`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Checkbox
+ *
+ * @extends controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ *
+ * @requires Validate
+ * @requires Sanitize
  */
-class ControlCheckbox extends ControlBase {
+class Checkbox extends Base {
 
   /**
    * Normalize setting for soft comparison
@@ -22,10 +30,6 @@ class ControlCheckbox extends ControlBase {
    * due to the fact that we can't use a real soft comparison (`==`).
    *
    * @override
-   * @static
-   * @param  {?} value Could be the factory, the initial, or the current
-   *                   session value
-   * @return {string} The 'normalized' value passed as an argument.
    */
   softenize (value) {
     return (value === 0 || value === 1) ? value.toString() : value;
@@ -74,4 +78,4 @@ class ControlCheckbox extends ControlBase {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_checkbox'] = api.controls.Checkbox = ControlCheckbox;
+export default wpApi.controlConstructor['kkcp_checkbox'] = api.controls.Checkbox = Checkbox;

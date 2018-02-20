@@ -7,35 +7,47 @@ import { api, wpApi, $document, $readyDOM } from './globals';
  *
  * Manage tabbed content inside controls
  *
- * @class api.core.Tabs
- * @requires api.components.Screenpreview
+ * @since 1.0.0
+ * @access private
+ *
+ * @class Tabs
+ * @requires components.Screenpreview
  */
-const Tabs = (function () {
+class Tabs {
+
+  constructor () {
+    /**
+     * Class name for a selected tab
+     * @type {string}
+     */
+    this._CLASS_TAB_SELECTED = 'selected';
+
+    /**
+     * Tab selector (for jQuery)
+     * @type {string}
+     */
+    this._SELECTOR_TAB = '.kkcp-tab';
+
+    /**
+     * Tab content selector (for jQuery)
+     * @type {string}
+     */
+    this._SELECTOR_TAB_CONTENT = '.kkcp-tab-content';
+
+    // bootstraps on DOM ready
+    $readyDOM.then(this._$onReady.bind(this));
+  }
 
   /**
-   * Class name for a selected tab
-   * @type {string}
-   */
-  const CLASS_TAB_SELECTED = 'selected';
-
-  /**
-   * Tab selector (for jQuery)
-   * @type {string}
-   */
-  const SELECTOR_TAB = '.kkcp-tab';
-
-  /**
-   * Tab content selector (for jQuery)
-   * @type {string}
-   */
-  const SELECTOR_TAB_CONTENT = '.kkcp-tab-content';
-
-  /**
+   * On DOM ready
+   *
    * Uses event delegation so we are able to bind our 'temporary'
    * DOM removed and reappended by the controls
    */
-  function _init () {
-    $document.on('click', SELECTOR_TAB, function() {
+  _$onReady () {
+    const self = this;
+
+    $document.on('click', self._SELECTOR_TAB, function() {
       const area = this.parentNode.parentNode; // kkcptoimprove \\
       const tabs = area.getElementsByClassName('kkcp-tab');
       const panels = area.getElementsByClassName('kkcp-tab-content');
@@ -45,21 +57,21 @@ const Tabs = (function () {
 
       // remove 'selected' class from all the other tab links
       for (let i = tabs.length - 1; i >= 0; i--) {
-        tabs[i].classList.remove(CLASS_TAB_SELECTED);
+        tabs[i].classList.remove(self._CLASS_TAB_SELECTED);
       }
       // add the 'selected' class to the clicked tab link
-      this.className += ' ' + CLASS_TAB_SELECTED;
+      this.className += ' ' + self._CLASS_TAB_SELECTED;
 
       // loop through panels and show the current one
       for (let j = panels.length - 1; j >= 0; j--) {
         let panel = panels[j];
         let $panelInputs = $('input, .ui-slider-handle', panel);
         if (panel.getAttribute(tabAttrName) === target) {
-          panel.classList.add(CLASS_TAB_SELECTED);
+          panel.classList.add(self._CLASS_TAB_SELECTED);
           // reset manual tabIndex to normal browser behavior
           $panelInputs.attr('tabIndex', '0');
         } else {
-          panel.classList.remove(CLASS_TAB_SELECTED);
+          panel.classList.remove(self._CLASS_TAB_SELECTED);
           // exclude hidden `<input>` fields from keyboard navigation
           $panelInputs.attr('tabIndex', '-1');
         }
@@ -83,54 +95,57 @@ const Tabs = (function () {
    * @param  {JQuery} $container An element to use as context to look for
    *                             screen pickers UI DOM
    */
-  function _updateScreenPickerTabs (size, $container) {
+  _updateScreenPickerTabs (size, $container) {
+    const self = this;
     const $screenPickers = $('.kkcp-screen-picker', $container);
+
     $screenPickers.each(function () {
       const $area = $(this);
-      const $tabs = $area.find(SELECTOR_TAB);
-      const $panels = $area.find(SELECTOR_TAB_CONTENT);
+      const $tabs = $area.find(self._SELECTOR_TAB);
+      const $panels = $area.find(self._SELECTOR_TAB_CONTENT);
       const filter = function () {
         return this.getAttribute('data-screen') === size;
       };
       const $tabActive = $tabs.filter(filter);
       const $panelActive = $panels.filter(filter);
-      $tabs.removeClass(CLASS_TAB_SELECTED);
-      $panels.removeClass(CLASS_TAB_SELECTED);
-      $tabActive.addClass(CLASS_TAB_SELECTED);
-      $panelActive.addClass(CLASS_TAB_SELECTED);
+      $tabs.removeClass(self._CLASS_TAB_SELECTED);
+      $panels.removeClass(self._CLASS_TAB_SELECTED);
+      $tabActive.addClass(self._CLASS_TAB_SELECTED);
+      $panelActive.addClass(self._CLASS_TAB_SELECTED);
     });
   }
 
-  // @access public
-  return {
-    init: _init,
-    /**
-     * Update statuses of all tabs on page up to given screen size.
-     *
-     * @param  {string} size Screenpreview size (`xs`, `sm`, `md`, `lg`)
-     */
-    changeSize: function (size) {
-      _updateScreenPickerTabs(size, document);
-    },
-    /**
-     * Sync the tabs within the given container
-     * with current Screenpreview size
-     *
-     * @param {JQuery} $container A container with tabbed areas (probably a
-     *                            control container)
-     */
-    syncSize: function ($container) {
-      // we might not have the Screenpreview component enabled
-      try {
-        _updateScreenPickerTabs(api.components.Screenpreview.getSize(), $container);
-      } catch(e) {
-        console.warn('Tabs tried to use Screenpreview, which is undefined.', e);
-      }
+  /**
+   * Update statuses of all tabs on page up to given screen size.
+   *
+   * @param  {string} size Screenpreview size (`xs`, `sm`, `md`, `lg`)
+   */
+  changeSize (size) {
+    this._updateScreenPickerTabs(size, document);
+  }
+
+  /**
+   * Sync the tabs within the given container
+   * with current Screenpreview size
+   *
+   * @param {JQuery} $container A container with tabbed areas (probably a
+   *                            control container)
+   */
+  syncSize ($container) {
+    // we might not have the Screenpreview component enabled
+    try {
+      this._updateScreenPickerTabs(api.components.Screenpreview.getSize(), $container);
+    } catch(e) {
+      console.warn('Tabs tried to use Screenpreview, which is undefined.', e);
     }
-  };
-})();
+  }
+}
 
-$readyDOM.then(Tabs.init.bind(Tabs));
-
-// export to public API
-export default api.core.Tabs = Tabs;
+/**
+ * @name tabs
+ * @description  Instance of {@link Tabs}
+ *
+ * @instance
+ * @memberof core
+ */
+export default api.core.tabs = new Tabs();

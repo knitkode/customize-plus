@@ -1,19 +1,24 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
-import ControlBaseSet from './base-set';
+import BaseSet from './base-set';
 
 /**
  * Control Icon
  *
- * @class api.controls.Icon
- * @alias wp.customize.controlConstructor.kkcp_icon
- * @extends api.controls.BaseSet
- * @augments api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_icon`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Icon
+ *
+ * @extends controls.BaseSet
+ * @augments controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-class ControlIcon extends ControlBaseSet {
+class Icon extends BaseSet {
 
   /**
    * @override
@@ -43,7 +48,11 @@ class ControlIcon extends ControlBaseSet {
   /**
    * Get option icon class name
    *
-   * @param  {object} data The single option data
+   * @since   1.0.0
+   * @memberof! controls.Icon#
+   * @access protected
+   *
+   * @param  {Object} data The single option data
    * @return {string}
    */
   _getIconClassName (data) {
@@ -51,4 +60,4 @@ class ControlIcon extends ControlBaseSet {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_icon'] = api.controls.Icon = ControlIcon;
+export default wpApi.controlConstructor['kkcp_icon'] = api.controls.Icon = Icon;

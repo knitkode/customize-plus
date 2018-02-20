@@ -2,19 +2,27 @@ import _ from 'underscore';
 import { api } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlBase from './base';
+import Base from './base';
 
 /**
  * Control Base Set class
  *
- * @class api.controls.BaseSet
- * @extends api.controls.Base
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class BaseSet
+ *
+ * @extends controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ *
+ * @requires Validate
+ * @requires Sanitize
  */
-class ControlBaseSet extends ControlBase {
+class BaseSet extends Base {
 
   /**
+   * @since   1.0.0
    * @override
    */
   validate (value) {
@@ -22,6 +30,7 @@ class ControlBaseSet extends ControlBase {
   }
 
   /**
+   * @since   1.0.0
    * @override
    */
   sanitize (value) {
@@ -29,11 +38,13 @@ class ControlBaseSet extends ControlBase {
   }
 
   /**
-   * @override
    * @see KKcp_Customize_Control_Base_Set->populate_valid_choices where we do
    * kind of the same extraction but a bit differently because we don't need
-   * to extract data for the `<select>` field too, and also because in php
-   * arrays are just arrays.
+   * to extract data for the `<select>Select</select>` field too, and also
+   * because in php arrays are just arrays.
+   *
+   * @since   1.0.0
+   * @override
    */
   onInit () {
     const filteredSets = this._getFilteredSets(this.params.choices);
@@ -45,6 +56,7 @@ class ControlBaseSet extends ControlBase {
   }
 
   /**
+   * @since   1.0.0
    * @override
    */
   syncUI (value) {
@@ -59,6 +71,7 @@ class ControlBaseSet extends ControlBase {
   /**
    * Destroy `selectize` instance.
    *
+   * @since   1.0.0
    * @override
    */
   onDeflate () {
@@ -68,6 +81,7 @@ class ControlBaseSet extends ControlBase {
   }
 
   /**
+   * @since   1.0.0
    * @override
    */
   ready () {
@@ -81,8 +95,11 @@ class ControlBaseSet extends ControlBase {
    *
    * It uses the `setVar` added in `base-set.php` control class
    *
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
+   *
    * @param  {string} name
-   * @return {array}
+   * @return {Object}
    */
   _getSet (name) {
     return api.constants[this.params.setVar][name];
@@ -91,9 +108,12 @@ class ControlBaseSet extends ControlBase {
   /**
    * Get flatten set values (bypass the subdivision in groups)
    *
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
    * @static
-   * @param  {object} set
-   * @return {array}
+   *
+   * @param  {Object} set
+   * @return {Array}
    */
   _getFlattenSetValues (set) {
     return _.flatten(_.pluck(set, 'values'));
@@ -102,8 +122,11 @@ class ControlBaseSet extends ControlBase {
   /**
    * Get filtered sets
    *
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
+   *
    * @param  {mixed}  choices
-   * @return {object}
+   * @return {Object}
    */
   _getFilteredSets (choices) {
     const {supportedSets} = this.params;
@@ -119,9 +142,12 @@ class ControlBaseSet extends ControlBase {
   /**
    * Get filtered set
    *
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
+   *
    * @param  {string} name
-   * @param  {?string|array|object} filter
-   * @return {objcet}
+   * @param  {?string|Array|Object} filter
+   * @return {Object}
    */
   _getFilteredSet (name, filter) {
     const set = this._getSet(name);
@@ -189,8 +215,11 @@ class ControlBaseSet extends ControlBase {
    * entries we just define them globally and then use them as in the other
    * select-like controls on the `params.choices` to provide validation.
    *
-   * @param  {object<object>} sets
-   * @return {object<array,array,array>}
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
+   *
+   * @param  {Object<Object>} sets
+   * @return {Object<string,Array<string>,string,Array<string>,string,Array<string>>}
    */
   _getSelectDataFromSets (sets) {
     let options = [];
@@ -249,7 +278,10 @@ class ControlBaseSet extends ControlBase {
    *
    * The select can either have or not have options divided by groups.
    *
-   * @return {object}
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
+   *
+   * @return {Object}
    */
   _getSelectizeOpts () {
     const customOpts = this._getSelectizeCustomOpts();
@@ -283,8 +315,11 @@ class ControlBaseSet extends ControlBase {
   /**
    * Get selectize custom options (subclasses can implement this)
    *
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
    * @abstract
-   * @return {object}
+   *
+   * @return {Object}
    */
   _getSelectizeCustomOpts () {
     return {};
@@ -292,6 +327,9 @@ class ControlBaseSet extends ControlBase {
 
   /**
    * Init UI
+   *
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
    */
   _initUI () {
     // if there is an instance of selectize destroy it
@@ -310,7 +348,10 @@ class ControlBaseSet extends ControlBase {
   /**
    * Get value from UI
    *
-   * @return {?array}
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
+   *
+   * @return {?string|Array}
    */
   _getValueFromUI () {
     if (!this.__input) {
@@ -330,7 +371,10 @@ class ControlBaseSet extends ControlBase {
    * Pass `true` as second argument to perform a `silent` update, that does
    * not trigger the `onChange` event of `selectize`.
    *
-   * @param  {array} value
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
+   *
+   * @param  {string|Array} value
    */
   _updateUI (value) {
     if (this.__input.selectize) {
@@ -344,7 +388,10 @@ class ControlBaseSet extends ControlBase {
   /**
    * Selectize render item function
    *
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
    * @abstract
+   *
    * @param  {Object} data     The selectize option object representation.
    * @param  {function} escape Selectize escape function.
    * @return {string}          The option template.
@@ -354,7 +401,10 @@ class ControlBaseSet extends ControlBase {
   /**
    * Selectize render option function
    *
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
    * @abstract
+   *
    * @param  {Object} data     The selectize option object representation.
    * @param  {function} escape Selectize escape function.
    * @return {string}          The option template.
@@ -364,7 +414,10 @@ class ControlBaseSet extends ControlBase {
   /**
    * Selectize render option function
    *
+   * @since   1.0.0
+   * @memberof! controls.BaseSet#
    * @abstract
+   *
    * @param  {Object} data     The selectize option object representation.
    * @param  {function} escape Selectize escape function.
    * @return {string}          The option template.
@@ -373,4 +426,4 @@ class ControlBaseSet extends ControlBase {
 
 }
 
-export default api.controls.BaseSet = ControlBaseSet;
+export default api.controls.BaseSet = BaseSet;

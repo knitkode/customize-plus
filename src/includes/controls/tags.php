@@ -71,9 +71,9 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	 */
 	public function get_l10n() {
 		return array(
+			'vTagsType' => esc_html__( 'Tags must be a string' ),
 			'vTagsMin' => esc_html__( 'Minimum %s tags required' ),
 			'vTagsMax' => esc_html__( 'Maximum %s tags allowed' ),
-			'vTagsType' => esc_html__( 'Tags must be a string' ),
 		);
 	}
 

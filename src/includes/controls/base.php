@@ -142,11 +142,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 			$this->json['noLiveSanitization'] = true;
 		}
 
-		// add setting factory default value
-		if ( is_object( $this->setting ) ) {
-			$this->json['vFactory'] = json_encode( $this->setting->default );
-		}
-
 		// remove description if not specified
 		if ( ! $this->description ) {
 			unset( $this->json['description'] );
@@ -379,7 +374,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @return string The sanitized value.
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return $value;
+		return esc_html( $value );
 		// return wp_kses_post( $value );
 	}
 
@@ -410,7 +405,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		$validity = KKcp_Validate::required( $validity, $value, $setting, $control );
 
 		// if a required value is not supplied only perform one validation routine
-		if ( is_wp_error( $validity ) ) {
+		if ( ! empty( $validity->get_error_messages() ) ) {
 			return $validity;
 		}
 

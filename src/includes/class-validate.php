@@ -219,7 +219,7 @@ class KKcp_Validate {
 	  else if ( $control->html === 'dangerous' ) {
 		}
 		// html is not allowed at all
-		if ( ! $control->html ) {
+		else if ( ! $control->html ) {
 			if ( $value != strip_tags( $value ) ) {
 				$validity = $control->add_error( $validity, 'vTextHtml' );
 			}

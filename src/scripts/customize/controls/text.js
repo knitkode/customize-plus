@@ -1,19 +1,27 @@
 import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlBaseInput from './base-input';
+import BaseInput from './base-input';
 
 /**
  * Control Text class
  *
- * @class api.controls.Text
- * @alias wp.customize.controlConstructor.kkcp_text
- * @extends api.controls.BaseInput
- * @augments api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_text`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Text
+ *
+ * @extends controls.BaseInput
+ * @augments controls.Base
  * @augments wp.customize.Control
- * @augments wp.customize.Classnds
+ * @augments wp.customize.Class
+ *
+ * @requires Validate
+ * @requires Sanitize
  */
-class ControlText extends ControlBaseInput {
+class Text extends BaseInput {
 
   /**
    * @override
@@ -30,4 +38,4 @@ class ControlText extends ControlBaseInput {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_text'] = api.controls.Text = ControlText;
+export default wpApi.controlConstructor['kkcp_text'] = api.controls.Text = Text;

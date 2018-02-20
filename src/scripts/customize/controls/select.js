@@ -3,19 +3,27 @@ import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlBaseChoices from './base-choices';
+import BaseChoices from './base-choices';
 
 /**
  * Control Select class
  *
- * @class api.controls.Select
- * @alias wp.customize.controlConstructor.kkcp_select
- * @extends api.controls.BaseChoices
- * @augments api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_select`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Select
+ *
+ * @extends controls.BaseChoices
+ * @augments controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ *
+ * @requires Validate
+ * @requires Sanitize
  */
-class ControlSelect extends ControlBaseChoices {
+class Select extends BaseChoices {
 
   /**
    * @override
@@ -87,7 +95,11 @@ class ControlSelect extends ControlBaseChoices {
   /**
    * Get value from UI
    *
-   * @return {?array}
+   * @since   1.0.0
+   * @memberof! controls.Select#
+   * @access protected
+   *
+   * @return {?Array<string>}
    */
   _getValueFromUI () {
     if (!this.__select) {
@@ -106,7 +118,11 @@ class ControlSelect extends ControlBaseChoices {
    * Pass `true` as second argument to perform a `silent` update, that does
    * not trigger the `onChange` event of `selectize`.
    *
-   * @param {string|array} value
+   * @since   1.0.0
+   * @memberof! controls.Select#
+   * @access protected
+   *
+   * @param {string|Array<string>} value
    */
   _updateUI (value) {
     // use selectize
@@ -123,4 +139,4 @@ class ControlSelect extends ControlBaseChoices {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_select'] = api.controls.Select = ControlSelect;
+export default wpApi.controlConstructor['kkcp_select'] = api.controls.Select = Select;

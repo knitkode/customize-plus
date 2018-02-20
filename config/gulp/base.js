@@ -137,6 +137,20 @@ gulp.task('docs', ['docs-js']);
  */
 gulp.task('docs-js', function(cb) {
   var jsdoc = require('gulp-jsdoc3');
-  return gulp.src('./src/scripts/customize/**/*.js')
-        .pipe(jsdoc());
+  return gulp.src(['./README.md', './src/scripts/customize/**/*.js'])
+        .pipe(jsdoc({
+            opts: {
+              destination: './docs/js',
+              private: true,
+            },
+            templates: {
+              theme: 'simplex',
+              // footer: '',
+              // copyright: '',
+              // analytics: { ua: '', domain: '' },
+            },
+            source: {
+              excludePattern: '(^|\\/|\\\\)_'
+            }
+          }));
 });

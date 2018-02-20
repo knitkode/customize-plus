@@ -1,4 +1,15 @@
-import $ from 'jquery';
+/**
+ * @fileOverview Collects all sanitization methods used by Customize Plus
+ * controls. Each function has also a respective PHP version in
+ * `class-sanitize.php`.
+ *
+ * @since 1.0.0
+ * @access package
+ *
+ * @module Sanitize
+ * @requires Helper
+ * @requires Validate
+ */
 import _ from 'underscore';
 import is_int from 'locutus/php/var/is_int';
 import is_float from 'locutus/php/var/is_float';
@@ -11,8 +22,8 @@ import Validate from './validate';
  * Sanitize string
  *
  * @since 1.0.0
- * @param mixed                $input   The value to sanitize.
- * @return string The sanitized value.
+ * @param {mixed}                $input   The value to sanitize.
+ * @return {string} The sanitized value.
  */
 export function string ($input) {
   if (!_.isString($input)) {
@@ -25,8 +36,8 @@ export function string ($input) {
  * Sanitize array
  *
  * @since 1.0.0
- * @param mixed                $input   The value to sanitize.
- * @return array The sanitized value.
+ * @param {mixed}                $input   The value to sanitize.
+ * @return {array} The sanitized value.
  */
 export function array ($input) {
   let sanitized = [];
@@ -57,10 +68,10 @@ export function array ($input) {
  * Sanitize single choice
  *
  * @since 1.0.0
- * @param string               $value   The value to sanitize.
- * @param WP_Customize_Setting $setting Setting instance.
- * @param WP_Customize_Control $control Control instance.
- * @return string The sanitized value.
+ * @param {string}               $value   The value to sanitize.
+ * @param {WP_Customize_Setting} $setting Setting instance.
+ * @param {WP_Customize_Control} $control Control instance.
+ * @return {string} The sanitized value.
  */
 export function singleChoice ($value, $setting, $control) {
   return string($value);
@@ -70,10 +81,10 @@ export function singleChoice ($value, $setting, $control) {
  * Sanitize multiple choices
  *
  * @since 1.0.0
- * @param array                $value   The value to sanitize.
- * @param WP_Customize_Setting $setting Setting instance.
- * @param WP_Customize_Control $control Control instance.
- * @return array The sanitized value.
+ * @param {array}                $value   The value to sanitize.
+ * @param {WP_Customize_Setting} $setting Setting instance.
+ * @param {WP_Customize_Control} $control Control instance.
+ * @return {array} The sanitized value.
  */
 export function multipleChoices($value, $setting, $control) {
   return array($value);
@@ -83,10 +94,10 @@ export function multipleChoices($value, $setting, $control) {
  * Sanitize one or more choices
  *
  * @since 1.0.0
- * @param mixed                $value   The value to sanitize.
- * @param WP_Customize_Setting $setting Setting instance.
- * @param WP_Customize_Control $control Control instance.
- * @return array The sanitized value.
+ * @param {mixed}                $value   The value to sanitize.
+ * @param {WP_Customize_Setting} $setting Setting instance.
+ * @param {WP_Customize_Control} $control Control instance.
+ * @return {array} The sanitized value.
  */
 export function oneOrMoreChoices ($value, $setting, $control) {
   if (_.isArray($value)) {
@@ -105,10 +116,10 @@ export function oneOrMoreChoices ($value, $setting, $control) {
  * Sanitize font family
  *
  * @since  1.0.0
- * @param string|array         $value   The value to sanitize.
- * @param WP_Customize_Setting $setting Setting instance.
- * @param WP_Customize_Control $control Control instance.
- * @return string The sanitized value.
+ * @param {string|array}         $value   The value to sanitize.
+ * @param {WP_Customize_Setting} $setting Setting instance.
+ * @param {WP_Customize_Control} $control Control instance.
+ * @return {string} The sanitized value.
  */
 export function fontFamily( $value ) {
   let $sanitized = [];
@@ -129,11 +140,10 @@ export function fontFamily( $value ) {
  * Sanitize checkbox
  *
  * @since 1.0.0
- * @override
- * @param mixed                $value    The value to validate.
- * @param WP_Customize_Setting $setting  Setting instance.
- * @param WP_Customize_Control $control  Control instance.
- * @return number
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {number}
  */
 export function checkbox( $value, $setting, $control ) {
   return Boolean( $value ) ? '1' : '0';
@@ -143,10 +153,10 @@ export function checkbox( $value, $setting, $control ) {
  * Sanitize tags
  *
  * @since 1.0.0
- * @param mixed                $value   The value to sanitize.
- * @param WP_Customize_Setting $setting Setting instance.
- * @param WP_Customize_Control $control Control instance.
- * @return string The sanitized value.
+ * @param {mixed}                $value   The value to sanitize.
+ * @param {WP_Customize_Setting} $setting Setting instance.
+ * @param {WP_Customize_Control} $control Control instance.
+ * @return {string} The sanitized value.
  */
 export function tags( $value, $setting, $control ) {
   if (_.isString($value )) {
@@ -172,10 +182,10 @@ export function tags( $value, $setting, $control ) {
  * Sanitize text
  *
  * @since 1.0.0
- * @param mixed                $value   The value to sanitize.
- * @param WP_Customize_Setting $setting Setting instance.
- * @param WP_Customize_Control $control Control instance.
- * @return string The sanitized value.
+ * @param {mixed}                $value   The value to sanitize.
+ * @param {WP_Customize_Setting} $setting Setting instance.
+ * @param {WP_Customize_Control} $control Control instance.
+ * @return {string} The sanitized value.
  */
 export function text( $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
@@ -195,18 +205,17 @@ export function text( $value, $setting, $control ) {
   if ( is_int( $attrs['maxlength'] ) && $value.length > $attrs['maxlength'] ) {
     $value = $value.substr( 0, $attrs['maxlength'] );
   }
-
-  // html is not allowed at all
-  if ( ! $control.params.html ) {
-    $value = Helper.stripHTML($value);
-  }
   // html must be escaped
-  else if ( $control.params.html === 'escape' ) {
+  if ( $control.params.html === 'escape' ) {
     $value = _.escape( $value );
   }
   // html is dangerously completely allowed
   else if ( $control.params.html === 'dangerous' ) {
     $value = $value;
+  }
+  // html is not allowed at all
+  else if ( ! $control.params.html ) {
+    $value = Helper.stripHTML($value);
   }
   // @@todo find some smart way to javascriptify the following html sanitization
   // html is a valid argument for wp_kses_allowed_html
@@ -222,10 +231,10 @@ export function text( $value, $setting, $control ) {
  * Sanitize number
  *
  * @since 1.0.0
- * @param mixed                $value   The value to sanitize.
- * @param WP_Customize_Setting $setting Setting instance.
- * @param WP_Customize_Control $control Control instance.
- * @return number The sanitized value.
+ * @param {mixed}                $value   The value to sanitize.
+ * @param {WP_Customize_Setting} $setting Setting instance.
+ * @param {WP_Customize_Control} $control Control instance.
+ * @return {number} The sanitized value.
  */
 export function number( $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
@@ -262,9 +271,9 @@ export function number( $value, $setting, $control ) {
  * Sanitize CSS size unit
  *
  * @since 1.0.0
- * @param string   $unit          The unit to sanitize
- * @param mixed    $allowed_units The allowed units
- * @return string
+ * @param {string}   $unit          The unit to sanitize
+ * @param {mixed}    $allowed_units The allowed units
+ * @return {string}
  */
 export function sizeUnit( $unit, $allowed_units ) {
   $allowed_units = $allowed_units || [];
@@ -293,10 +302,10 @@ export function sizeUnit( $unit, $allowed_units ) {
  * Sanitize slider
  *
  * @since 1.0.0
- * @param mixed                $value   The value to sanitize.
- * @param WP_Customize_Setting $setting Setting instance.
- * @param WP_Customize_Control $control Control instance.
- * @return string The sanitized value.
+ * @param {mixed}                $value   The value to sanitize.
+ * @param {WP_Customize_Setting} $setting Setting instance.
+ * @param {WP_Customize_Control} $control Control instance.
+ * @return {string} The sanitized value.
  */
 export function slider( $value, $setting, $control ) {
   let $number = Helper.extractNumber( $value, $control.params.allowFloat );
@@ -326,10 +335,10 @@ export function slider( $value, $setting, $control ) {
  *
  * @since 1.0.0
  *
- * @param mixed                $value   The value to sanitize.
- * @param WP_Customize_Setting $setting Setting instance.
- * @param WP_Customize_Control $control Control instance.
- * @return string|number The sanitized value.
+ * @param {mixed}                $value   The value to sanitize.
+ * @param {WP_Customize_Setting} $setting Setting instance.
+ * @param {WP_Customize_Control} $control Control instance.
+ * @return {string|number} The sanitized value.
  */
 export function color( $value, $setting, $control ) {
   if (!_.isString($value)) {
@@ -354,10 +363,11 @@ export function color( $value, $setting, $control ) {
 }
 
 /**
- * Exports the `Sanitize` object
+ * @alias core.Sanitize
+ * @description  Exposed module <a href="module-Sanitize.html">Sanitize</a>
+ * @access package
  */
 export default {
-  hex,
   singleChoice,
   oneOrMoreChoices,
   multipleChoices,

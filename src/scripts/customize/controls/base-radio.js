@@ -2,20 +2,28 @@ import _ from 'underscore';
 import { api } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlBaseChoices from './base-choices';
+import BaseChoices from './base-choices';
 
 /**
  * Control Base Radio class
  *
- * @class api.controls.BaseRadio
- * @extends api.controls.BaseChoices
- * @augments api.controls.Base
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class controls.BaseRadio
+ *
+ * @extends controls.BaseChoices
+ * @augments controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ *
+ * @requires Validate
+ * @requires Sanitize
  */
-class ControlBaseRadio extends ControlBaseChoices {
+class BaseRadio extends BaseChoices {
 
   /**
+   * @since   1.0.0
    * @override
    */
   validate (value) {
@@ -23,6 +31,7 @@ class ControlBaseRadio extends ControlBaseChoices {
   }
 
   /**
+   * @since   1.0.0
    * @override
    */
   sanitize (value) {
@@ -30,6 +39,7 @@ class ControlBaseRadio extends ControlBaseChoices {
   }
 
   /**
+   * @since   1.0.0
    * @override
    */
   syncUI () {
@@ -37,6 +47,7 @@ class ControlBaseRadio extends ControlBaseChoices {
   }
 
   /**
+   * @since   1.0.0
    * @override
    */
   ready () {
@@ -48,6 +59,9 @@ class ControlBaseRadio extends ControlBaseChoices {
   /**
    * Sync radios and maybe bind change event
    * We need to be fast here, use vanilla js.
+   *
+   * @since   1.0.0
+   * @memberof! controls.BaseRadio#
    *
    * @param  {boolean} bindAsWell Bind on change?
    */
@@ -66,4 +80,4 @@ class ControlBaseRadio extends ControlBaseChoices {
   }
 }
 
-export default api.controls.BaseRadio = ControlBaseRadio;
+export default api.controls.BaseRadio = BaseRadio;

@@ -3,19 +3,27 @@ import { api, wpApi } from '../core/globals';
 import { logError } from '../core/logger';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlBaseChoices from './base-choices';
+import BaseChoices from './base-choices';
 
 /**
  * Control Multicheck
  *
- * @class api.controls.Multicheck
- * @alias wp.customize.controlConstructor.kkcp_multicheck
- * @extends api.controls.BaseChoices
- * @augments api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_multicheck`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Multicheck
+ *
+ * @extends controls.BaseChoices
+ * @augments controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ *
+ * @requires Validate
+ * @requires Sanitize
  */
-class ControlMulticheck extends ControlBaseChoices {
+class Multicheck extends BaseChoices {
 
   /**
    * @override
@@ -68,7 +76,11 @@ class ControlMulticheck extends ControlBaseChoices {
   }
 
   /**
-   * @override
+   * Build items map
+   *
+   * @since   1.0.0
+   * @memberof! controls.Multicheck#
+   * @access protected
    */
   _buildItemsMap () {
     const items = this._container.getElementsByTagName('label');
@@ -108,9 +120,13 @@ class ControlMulticheck extends ControlBaseChoices {
   }
 
   /**
-   * Get sorted value, reaading checkboxes status from the DOM
+   * Get sorted value, reading checkboxes status from the DOM
    *
-   * @return {array}
+   * @since   1.0.0
+   * @memberof! controls.Multicheck#
+   * @access protected
+   *
+   * @return {Array}
    */
   _getValueFromUI () {
     let valueSorted = [];
@@ -127,6 +143,10 @@ class ControlMulticheck extends ControlBaseChoices {
   /**
    * Sync checkboxes and maybe bind change event
    * We need to be fast here, use vanilla js.
+   *
+   * @since   1.0.0
+   * @memberof! controls.Multicheck#
+   * @access protected
    *
    * @param  {boolean} bindAsWell Bind on change?
    */
@@ -149,4 +169,4 @@ class ControlMulticheck extends ControlBaseChoices {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_multicheck'] = api.controls.Multicheck = ControlMulticheck;
+export default wpApi.controlConstructor['kkcp_multicheck'] = api.controls.Multicheck = Multicheck;

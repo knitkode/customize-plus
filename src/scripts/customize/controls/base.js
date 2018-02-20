@@ -20,18 +20,25 @@ import Validate from '../core/validate';
  * @see PHP class KKcp_Customize_Control_Base
  * @since  1.0.0
  *
- * @class api.controls.Base
+ * @memberof controls
+ * @class Base
+ *
  * @extends wp.customize.Control
  * @augments wp.customize.Class
- * @requires api.core.Utils
+ *
+ * @requires Utils
+ * @requires Validate
  */
-class ControlBase extends wpApi.Control {
+class Base extends wpApi.Control {
 
   /**
    * {@inheritDoc}
    *
    * Tweak the initialize method.
    *
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
    * @override
    */
   initialize (id, options) {
@@ -190,23 +197,13 @@ class ControlBase extends wpApi.Control {
    *
    * Collect here the custom initialization additions of Customize Plus controls
    *
-   * @since  1.0.0
+   * @since 1.0.0
    *
+   * @memberof! controls.Base#
+   * @access package
    * @return {void}
    */
   _initialize () {
-    // we need to parse the factory value ourselves because we also encode it
-    // ourselves in `base.php` control. It is enough to do this once on
-    // initialization
-    if (!_.isUndefined(this.params['vFactory'])) {
-      this.params['vFactory'] = JSON.parse(this.params['vFactory']);
-      // These values seem to get copied on the main constructor at a certain
-      // point instead of staying only on the `params` where we define them
-      // (this seems to happen since WordPress 4.9)
-      // delete this['vFactory'];
-      // delete this['vInitial'];
-    }
-
     // an @abstract method to override (this needs to be called here, before than
     // the `ready` method)
     this.onInit();
@@ -224,27 +221,21 @@ class ControlBase extends wpApi.Control {
     wpApi.section(this.section()).expanded.bind((expanded) => {
       // @@doubt \\
       // either deflate and re-inflate dom each time...
-      // if (expanded) {
-      //   _.defer(this.inflate.bind(this));
-      // } else {
-      //   this.deflate();
-      // }
-      // ...or just do it the first time a this is expanded
-      if (expanded && !this.rendered) {
+      if (expanded) {
         _.defer(this.inflate.bind(this));
+      } else {
+        this.deflate();
       }
+      // ...or just do it the first time a control is expanded
+      // if (expanded && !this.rendered) {
+      //   _.defer(this.inflate.bind(this));
+      // }
     });
 
     // controls can be setting-less from 4.5, so check
     if (this.setting) {
 
-      // always add the initial setting value and the last saved value on
-      // initialization without printing them to JSON via PHP `to_json`
-      // this method
-      this.params['vInitial'] = this.setting();
-      this.params['vLastSaved'] = this.params['vInitial'];
-
-      // Add custom validation function overriding the empty function from WP
+      // add custom validation function overriding the empty function from WP
       // API in `customize-thiss.js`, in the constructor `api.Value`
       if (!this.params['noLiveValidation']) {
         this.setting.validate = this._validate.bind(this);
@@ -256,8 +247,12 @@ class ControlBase extends wpApi.Control {
       }
 
       // bind setting change to this method to reflect a programmatic
-      // change on the UI, only if the this is rendered
+      // change on the UI, only if the control is rendered
       this.setting.bind((value) => {
+        // @@todo maybe do this section expanded check as well
+        // const sectionId = this.section();
+        // if ( ! sectionId || ( wpApi.section.has( sectionId ) && wpApi.section( sectionId ).expanded() ) ) {
+        // \\
         if (this.rendered) {
           this.syncUI.call(this, value);
         }
@@ -294,9 +289,13 @@ class ControlBase extends wpApi.Control {
    * useful during validation to define the validation messages only once both
    * for JavaScript and PHP validation.
    *
-   * @see  PHP: `KKcp_Customize_Control_Base->l10n()`
-   * @since  1.0.0
-   * @return string
+   * @see  PHP KKcp_Customize_Control_Base->l10n()
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access package
+   * @param {string} $key
+   * @return {string}
    */
   _l10n ( $key ) {
     return api.l10n[ $key ] || '';
@@ -310,7 +309,10 @@ class ControlBase extends wpApi.Control {
    * if it pass the check call the control specific abstract `validate` method.
    *
    * @see  PHP KKcp_Customize_Control_Base::validate_callback
-   * @access private
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access package
    * @param  {string} value
    * @return {string} The value validated or the last setting value.
    */
@@ -341,8 +343,11 @@ class ControlBase extends wpApi.Control {
   /**
    * Manage validity notifications
    *
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access package
    * @abstract
-   * @access private
    * @param  {object<object<string,string>>} $validity
    */
   _manageValidityNotifications ($validity) {
@@ -379,12 +384,15 @@ class ControlBase extends wpApi.Control {
    *
    * Shortcut to manage the $validity object during validation
    *
-   * @see  PHP: `KKcp_Customize_Control_Base->add_error()`
-   * @since  1.0.0
-   * @param WP_Error          $validity
-   * @param string            $msg_id
-   * @param mixd|array|null   $msg_arguments
-   * @return WP_Error
+   * @see  PHP KKcp_Customize_Control_Base->add_error()
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access package
+   * @param {WP_Error}          $validity
+   * @param {string}            $msg_id
+   * @param {mixed|array|null}   $msg_arguments
+   * @return {WP_Error}
    */
   _addError ( $validity, $msg_id, $msg_arguments ) {
     const $msg = this._l10n( $msg_id );
@@ -406,6 +414,10 @@ class ControlBase extends wpApi.Control {
   /**
    * Validate control's default setting value
    *
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access public
    * @abstract
    * @param  {string} value
    * @return {string} The value validated
@@ -417,6 +429,10 @@ class ControlBase extends wpApi.Control {
   /**
    * Sanitize control's default setting value
    *
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access public
    * @abstract
    * @param  {string} value
    * @return {string} The value sanitized
@@ -428,6 +444,10 @@ class ControlBase extends wpApi.Control {
   /**
    * Sync UI with value coming from API, a programmatic change like a reset.
    *
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access protected
    * @abstract
    * @param {string} value The new setting value.
    */
@@ -436,6 +456,10 @@ class ControlBase extends wpApi.Control {
   /**
    * Triggered when the control has been initialized
    *
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access protected
    * @abstract
    */
   onInit() {}
@@ -443,6 +467,10 @@ class ControlBase extends wpApi.Control {
   /**
    * Render the control from its JS template, if it exists.
    *
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access protected
    * @override
    */
   renderContent () {
@@ -477,14 +505,24 @@ class ControlBase extends wpApi.Control {
   /**
    * Triggered just before the control get deflated from DOM
    *
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access protected
    * @abstract
    */
   onDeflate () {}
 
   /**
-   * Remove the DOM of the control.
-   * In case the DOM store is empty (the first time
-   * this method get called) it fills it.
+   * Removes the DOM of the control.
+   *
+   * In case the DOM store is empty (the first time this method get called) it
+   * fills it.
+   *
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access public
    */
   deflate () {
     /* jshint funcscope: true */
@@ -537,11 +575,16 @@ class ControlBase extends wpApi.Control {
    * `rendered` on the control instance to indicate whether the control is
    * rendered or not.
    *
-   * @param  {boolean} shouldResolveEmbeddedDeferred Sometimes (i.e. for the
-   *                                                 `control.focus()` method)
-   *                                                 we need to resolve embed
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access public
+   *
+   * @param  {boolean} resolveEmbeddedDeferred Sometimes (i.e. for the
+   *                                           `control.focus()` method) we need
+   *                                           to resolve the deffered embed.
    */
-  inflate (shouldResolveEmbeddedDeferred) {
+  inflate (resolveEmbeddedDeferred) {
     /* jshint funcscope: true */
     if (DEBUG.performances) var t = performance.now();
     if (!this.params.content) {
@@ -560,7 +603,7 @@ class ControlBase extends wpApi.Control {
     }
     this.rendered = true;
     this.ready();
-    if (shouldResolveEmbeddedDeferred) {
+    if (resolveEmbeddedDeferred) {
       this.deferred.embedded.resolve();
     }
     this._extras();
@@ -571,8 +614,14 @@ class ControlBase extends wpApi.Control {
 
   /**
    * Re-render notifications after content has been re-rendered.
+   *
    * This is taken as it is from the core base control class
    * (`wp.customize.Control`)in the end of the `renderContent` method
+   *
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access package
    */
   _rerenderNotifications () {
     this.notifications.container = this.getNotificationsContainerElement();
@@ -587,9 +636,12 @@ class ControlBase extends wpApi.Control {
    *
    * Normalize setting for soft comparison.
    *
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access public
    * @abstract
    * @static
-   * @access private
    * @param  {?} value Could be the original, the current, or the initial
    *                   session value
    * @return {?}       The 'normalized' value passed as an argument.
@@ -601,20 +653,18 @@ class ControlBase extends wpApi.Control {
   /**
    * Manage the extras dropdown menu of the control.
    *
-   * @access private
+   * @since 1.0.0
+   *
+   * @memberof! controls.Base#
+   * @access package
    */
   _extras () {
-    const params = this.params;
-    /**
-     * Reference to abstract method different in various control's subclasses
-     * @type {function(*)}
-     */
-    const _softenize = this.softenize;
     // constants
-    const CLASS_RESET_LAST = ' kkcp-extras-reset_last';
-    const CLASS_RESET_INITIAL = ' kkcp-extras-reset_initial';
+    const CLASS_OPEN = 'kkcp-extras-open';
+    const CLASS_RESET_LAST = 'kkcp-extras-reset_last';
+    const CLASS_RESET_INITIAL = 'kkcp-extras-reset_initial';
     const CLASS_RESET_FACTORY = 'kkcp-extras-reset_factory';
-    const CLASS_DISABLED = ' kkcp-disabled';
+    const CLASS_DISABLED = 'kkcp-disabled';
     // DOM
     const container = this._container;
     const area = container.getElementsByClassName('kkcp-extras')[0];
@@ -624,89 +674,66 @@ class ControlBase extends wpApi.Control {
     const btnResetFactory = container.getElementsByClassName(CLASS_RESET_FACTORY)[0];
     // value variables, uses closure
     const setting = this.setting;
-    const initialValue = params['vInitial'];
-    const factoryValue = params['vFactory'];
     // state
     let isOpen = false;
+    const {vLastSaved, vInitial, vFactory} = setting;
 
     // handlers
     const _closeExtras = function () {
-      container.classList.remove('kkcp-extras-open');
+      container.classList.remove(CLASS_OPEN);
     };
-    /**
-     * Reset setting to the last saved value
-     * It closes the `extras` dropdown.
-     *
-     */
+    // reset setting to the last saved value and closes the `extras` dropdown.
     const _resetLastValue = function () {
-      Utils._forceSettingSet(setting, params['vLastSaved']);
+      setting.forceSet(vLastSaved);
       _closeExtras();
     };
-    /**
-     * Reset setting to the value at the beginning of the session.
-     * It closes the `extras` dropdown.
-     *
-     */
+    // reset setting to the value at the beginning of the session. and closes
+    // the `extras` dropdown.
     const _resetInitialValue = function () {
-      Utils._forceSettingSet(setting, initialValue);
+      setting.forceSet(vInitial);
       _closeExtras();
     };
-    /**
-     * Reset setting to the value at the factory state
-     * (as defined in the theme defaults).
-     * It closes the `extras` dropdown.
-     *
-     */
+    // reset setting to the value at the factory state (as defined in the theme
+    // defaults) and closes the `extras` dropdown.
     const _resetFactoryValue = function () {
-      Utils._forceSettingSet(setting, factoryValue);
+      setting.forceSet(vFactory);
       _closeExtras();
     };
-    /**
-     * Enable button responsible for: resetting to last saved value
-     */
+    // enable button responsible for: resetting to last saved value
     const _enableBtnLast = function () {
       btnResetLast.className = CLASS_RESET_LAST;
       btnResetLast.onclick = _resetLastValue;
     };
-    /**
-     * Disable button responsible for: resetting to initial value
-     */
+    // disable button responsible for: resetting to initial value
     const _disableBtnLast = function () {
-      btnResetLast.className = CLASS_RESET_LAST + CLASS_DISABLED;
+      btnResetLast.className = `${CLASS_RESET_LAST} ${CLASS_DISABLED}`;
       btnResetLast.onclick = '';
     };
-    /**
-     * Enable button responsible for: resetting to initial value
-     */
+    // enable button responsible for: resetting to initial value
     const _enableBtnInitial = function () {
       btnResetInitial.className = CLASS_RESET_INITIAL;
       btnResetInitial.onclick = _resetInitialValue;
     };
-    /**
-     * Disable button responsible for: resetting to initial value
-     */
+    // disable button responsible for: resetting to initial value
     const _disableBtnInitial = function () {
-      btnResetInitial.className = CLASS_RESET_INITIAL + CLASS_DISABLED;
+      btnResetInitial.className = `${CLASS_RESET_INITIAL} ${CLASS_DISABLED}`;
       btnResetInitial.onclick = '';
     };
-    /**
-     * Enable button responsible for: resetting to factory / theme-default value
-     */
+    // enable button responsible for: resetting to factory / theme-default value
     const _enableBtnFactory = function () {
       btnResetFactory.className = CLASS_RESET_FACTORY;
       btnResetFactory.onclick = _resetFactoryValue;
     };
-    /**
-     * Disable button responsible for: resetting to factory / theme-default value
-     */
+    // disable button responsible for: resetting to factory / theme-default value
     const _disableBtnFactory = function () {
-      btnResetFactory.className = CLASS_RESET_FACTORY + CLASS_DISABLED;
+      btnResetFactory.className = `${CLASS_RESET_FACTORY} ${CLASS_DISABLED}`;
       btnResetFactory.onclick = '';
     };
-    /**
-     * Update status (enable / disable)
-     * for each control in the `extras` menu.
-     */
+
+    // update status (enable / disable) for each control in the `extras` menu.
+    // when the extras dropdown is open determine which actions are enabled and
+    // bind them. If the current value is the same as the one the action effect
+    // would give disable the action.
     const _onExtrasOpen = () => {
       // if the control current value is not valid enable both reset buttons
       if (this._currentValueHasError) {
@@ -715,38 +742,32 @@ class ControlBase extends wpApi.Control {
         return;
       }
 
-      const currentValue = _softenize(setting());
-      const lastSavedValue = params['vLastSaved'];
+      const currentValue = this.softenize(setting());
 
-      if (_.isEqual(currentValue, _softenize(lastSavedValue))) {
+      if (_.isEqual(currentValue, this.softenize(vLastSaved))) {
         _disableBtnLast();
       } else {
         _enableBtnLast();
       }
-      if (_.isEqual(currentValue, _softenize(initialValue))) {
+      if (_.isEqual(currentValue, this.softenize(vInitial))) {
         _disableBtnInitial();
       } else {
         _enableBtnInitial();
       }
-      if (_.isEqual(currentValue, _softenize(factoryValue))) {
+      if (_.isEqual(currentValue, this.softenize(vFactory))) {
         _disableBtnFactory();
       } else {
         _enableBtnFactory();
       }
     };
 
-    /**
-     * When the extras dropdown is open determine which actions are
-     * enabled and bind them. If the current value is the same
-     * as the one the action effect would give disable the action.
-     */
     if (toggle) {
       if (DEBUG) {
         toggle.title = 'Click to dump control object into console';
       }
       toggle.onclick = () => {
         isOpen = !isOpen;
-        container.classList.toggle('kkcp-extras-open', isOpen);
+        container.classList.toggle(CLASS_OPEN, isOpen);
         if (isOpen) {
           _onExtrasOpen();
         }
@@ -759,15 +780,16 @@ class ControlBase extends wpApi.Control {
     if (area) {
       area.onmouseenter = () => {
         isOpen = true;
-        container.classList.add('kkcp-extras-open');
+        container.classList.add(CLASS_OPEN);
         _onExtrasOpen();
       };
       area.onmouseleave = () => {
         isOpen = false;
-        // don't close immediately, wait a bit and see if the mouse is still out of the area
+        // don't close immediately, wait a bit and see if the mouse is still out
+        // of the area
         setTimeout(() => {
           if (!isOpen) {
-            container.classList.remove('kkcp-extras-open');
+            container.classList.remove(CLASS_OPEN);
           }
         }, 200);
       };
@@ -800,9 +822,9 @@ wpApi.bind('save', function () {
   Utils._eachControl(function (control) {
     if (control && control.setting && control.setting['_dirty']) { // whitelisted from uglify \\
       // console.log(control.id, 'is dirty on save with value:', control.setting());
-      control.params['vLastSaved'] = control.setting();
+      control.setting['vLastSaved'] = control.setting();
     }
   });
 });
 
-export default api.controls.Base = ControlBase;
+export default api.controls.Base = Base;

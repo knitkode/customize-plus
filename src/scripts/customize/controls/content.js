@@ -1,16 +1,21 @@
 import { api, wpApi } from '../core/globals';
-import ControlBase from './base';
+import Base from './base';
 
 /**
  * Control Content class
  *
- * @class api.controls.Content
- * @alias wp.customize.controlConstructor.kkcp_content
- * @extends api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_content`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Content
+ *
+ * @extends controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-class ControlContent extends ControlBase {
+class Content extends Base {
   /**
    * Some methods are not needed here
    *
@@ -25,4 +30,4 @@ class ControlContent extends ControlBase {
   // _extras: $.noop,
 }
 
-export default wpApi.controlConstructor['kkcp_content'] = api.controls.Content = ControlContent;
+export default wpApi.controlConstructor['kkcp_content'] = api.controls.Content = Content;

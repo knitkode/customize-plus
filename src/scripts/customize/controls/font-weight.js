@@ -1,11 +1,22 @@
 import { api, wpApi } from '../core/globals';
-import ControlSelect from './select';
+import Select from './select';
 
 /**
  * Control Font Weight
  *
- * @alias api.controls.FontWeight
- * @alias wp.customize.controlConstructor.kkcp_font_weight
- * @alias api.controls.Select
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_font_weight`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class FontWeight
+ *
+ * @extends controls.Select
+ * @augments controls.BaseChoices
+ * @augments controls.Base
+ * @augments wp.customize.Control
+ * @augments wp.customize.Class
  */
-export default wpApi.controlConstructor['kkcp_font_weight'] = api.controls.FontWeight = ControlSelect;
+class FontWeight extends Select {}
+
+export default wpApi.controlConstructor['kkcp_font_weight'] = api.controls.FontWeight = FontWeight;

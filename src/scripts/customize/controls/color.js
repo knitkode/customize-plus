@@ -3,20 +3,28 @@ import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlBase from './base';
+import Base from './base';
 /* global tinycolor */
 
 /**
  * Control Color class
  *
- * @class api.controls.Color
- * @alias wp.customize.controlConstructor.kkcp_color
- * @extends api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_color`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Color
+ *
+ * @extends controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  * @requires tinycolor
+ *
+ * @requires Validate
+ * @requires Sanitize
  */
-class ControlColor extends ControlBase {
+class Color extends Base {
 
   /**
    * Use tinycolor (included in spectrum.js) to always convert colors to the
@@ -26,7 +34,7 @@ class ControlColor extends ControlBase {
    * (such as hex, name, rgba, etc..), we rely on this do decide what to return
    *
    * @override
-   * @use tinycolor.toRgbString
+   * @requires tinycolor.toRgbString
    */
   softenize (value) {
     try {
@@ -126,6 +134,10 @@ class ControlColor extends ControlBase {
    *
    * {@link https://bgrins.github.io/spectrum/ spectrum API}
    *
+   * @since   1.0.0
+   * @memberof! controls.Color#
+   * @access protected
+   *
    * @param  {?object} options Options that override the defaults (optional)
    * @return {object} The spectrum plugin options
    */
@@ -167,6 +179,10 @@ class ControlColor extends ControlBase {
 
   /**
    * Update UI preview (the color box on the left hand side)
+   *
+   * @since   1.0.0
+   * @memberof! controls.Color#
+   * @access protected
    */
   _updateUIpreview (newValue) {
     this.__preview.style.background = newValue;
@@ -174,6 +190,10 @@ class ControlColor extends ControlBase {
 
   /**
    * Update UI control (the spectrum color picker)
+   *
+   * @since   1.0.0
+   * @memberof! controls.Color#
+   * @access protected
    */
   _updateUIcustomControl (newValue) {
     this.__$picker.spectrum('set', newValue);
@@ -183,7 +203,10 @@ class ControlColor extends ControlBase {
    * Apply, wrap the `setting.set()` function
    * doing some additional stuff.
    *
-   * @access private
+   * @since   1.0.0
+   * @memberof! controls.Color#
+   *
+   * @access protected
    * @param  {string} value
    * @param  {string} from  Where the value come from (could be from the UI:
    *                        picker, dynamic fields, expr field) or from the
@@ -207,4 +230,4 @@ class ControlColor extends ControlBase {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_color'] = api.controls.Color = ControlColor;
+export default wpApi.controlConstructor['kkcp_color'] = api.controls.Color = Color;

@@ -7,54 +7,63 @@ import { api, $document, body, $readyDOM } from './globals';
  *
  * Manage tooltips using jQuery UI Tooltip
  *
- * @class api.core.Tooltips
+ * @since 1.0.0
+ * @access private
+ *
+ * @class Tooltips
  * @requires jQueryUI.Tooltip
  */
-const Tooltips = (function () {
+class Tooltips {
+
+  constructor () {
+
+    /**
+     * @member
+     * @type {string}
+     */
+    this._BASE_CLASS = '.kkcpui-tooltip';
+
+    /**
+     * @type {Array<Object<string, string>>}
+     */
+    this._ALLOWED_POSITIONS = [{
+      _name: 'top',
+      _container: $document,
+      _position: {
+        my: 'center bottom-2',
+        at: 'center top-5'
+      }
+    }, {
+      _name: 'bottom',
+      _container: $(body),
+      _position: {
+        my: 'center top+2',
+        at: 'center bottom+5'
+      }
+    }];
+
+    /**
+     * @type {Object<string,boolean|string>}
+     */
+    this._DEFAULT_OPTIONS = {
+      show: false,
+      hide: false
+    };
+
+    // bootstraps on DOM ready
+    $readyDOM.then(this._$onReady.bind(this));
+  }
 
   /**
-   * @const
-   * @type {string}
-   */
-  const BASE_CLASS = '.kkcpui-tooltip';
-
-  /**
-   * @const
-   * @type {Array<Object<string, string>>}
-   */
-  const ALLOWED_POSITIONS = [{
-    _name: 'top',
-    _container: $document,
-    _position: {
-      my: 'center bottom-2',
-      at: 'center top-5'
-    }
-  }, {
-    _name: 'bottom',
-    _container: $(body),
-    _position: {
-      my: 'center top+2',
-      at: 'center bottom+5'
-    }
-  }];
-
-  /**
-   * @const
-   * @type {Object<string,boolean|string>}
-   */
-  const DEFAULT_OPTIONS = {
-    show: false,
-    hide: false
-  };
-
-  /**
+   * On DOM ready
+   *
    * Init tooltips for each allowed position
    */
-  function _init () {
-    for (let i = ALLOWED_POSITIONS.length - 1; i >= 0; i--) {
-      let custom = ALLOWED_POSITIONS[i];
+  _$onReady () {
+    for (let i = this._ALLOWED_POSITIONS.length - 1; i >= 0; i--) {
+      let custom = this._ALLOWED_POSITIONS[i];
       let options = _.defaults({
-        items: BASE_CLASS + '--' + custom._name,
+        items: this._BASE_CLASS + '--' + custom._name,
         classes: {
           'ui-tooltip': custom._name,
         },
@@ -63,7 +72,7 @@ const Tooltips = (function () {
         // yet, @see http://api.jqueryui.com/tooltip/#option-classes \\
         tooltipClass: custom._name,
         position: custom._position
-      }, DEFAULT_OPTIONS);
+      }, this._DEFAULT_OPTIONS);
 
       // this should stay the same
       options.position.collision = 'flipfit';
@@ -74,14 +83,13 @@ const Tooltips = (function () {
       custom._container.tooltip(options);
     }
   }
+}
 
-  // @access public
-  return {
-    init: _init
-  };
-})();
-
-$readyDOM.then(Tooltips.init.bind(Tooltips));
-
-// export to public API
-export default api.core.Tooltips = Tooltips;
+/**
+ * @name tooltips
+ * @description  Instance of {@link Tooltips}
+ *
+ * @instance
+ * @memberof core
+ */
+export default api.core.tooltips = new Tooltips();

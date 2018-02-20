@@ -1,24 +1,25 @@
 import $ from 'jquery';
 import { api } from '../core/globals';
-import ControlBase from './base';
+import Base from './base';
 
 /**
  * Control Base Input class
  *
- * @class api.controls.BaseInput
- * @extends api.controls.Base
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class controls.BaseInput
+ *
+ * @extends controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-class ControlBaseInput extends ControlBase {
+class BaseInput extends Base {
 
   /**
-   * Sync UI with value coming from API, a programmatic change like a reset.
    * @override
-   * @param {string} value The new setting value.
    */
   syncUI (value) {
-    // here value can be undefined if it doesn't pass the validate function
     if (value && this.__input.value !== value) {
       this.__input.value = value;
     }
@@ -40,4 +41,4 @@ class ControlBaseInput extends ControlBase {
   }
 }
 
-export default api.controls.BaseInput = ControlBaseInput;
+export default api.controls.BaseInput = BaseInput;

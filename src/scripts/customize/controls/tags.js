@@ -3,18 +3,26 @@ import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlBase from './base';
+import Base from './base';
 
 /**
  * Control Tags class
  *
- * @class api.controls.Tags
- * @alias wp.customize.controlConstructor.kkcp_tags
- * @extends api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_tags`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Tags
+ *
+ * @extends controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ *
+ * @requires Validate
+ * @requires Sanitize
  */
-class ControlTags extends ControlBase {
+class Tags extends Base {
 
   /**
    * @override
@@ -74,6 +82,10 @@ class ControlTags extends ControlBase {
 
   /**
    * Init selectize on text input
+   *
+   * @since   1.0.0
+   * @memberof! controls.Tags#
+   * @access protected
    */
   _initSelectize () {
     const selectizeOpts = this.params.selectize || {};
@@ -93,4 +105,4 @@ class ControlTags extends ControlBase {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_tags'] = api.controls.Tags = ControlTags;
+export default wpApi.controlConstructor['kkcp_tags'] = api.controls.Tags = Tags;

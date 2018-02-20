@@ -4,19 +4,27 @@ import { api, wpApi } from '../core/globals';
 import Regexes from '../core/regexes';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlBase from './base';
+import Base from './base';
 
 /**
  * Control Slider
  *
- * @class api.controls.Slider
- * @alias wp.customize.controlConstructor.kkcp_slider
- * @extends api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_slider`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Slider
+ *
+ * @extends controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
- * @requires api.core.Regexes
+ *
+ * @requires Regexes
+ * @requires Validate
+ * @requires Sanitize
  */
-class ControlSlider extends ControlBase {
+class Slider extends Base {
 
   /**
    * @override
@@ -52,17 +60,21 @@ class ControlSlider extends ControlBase {
   /**
    * This function is divided in subfunction to make it easy to reuse part of
    * this control in other controls that extend this, such as `size_dynamic`.
+   *
    * @override
    */
   ready () {
     this._setDOMelements();
     this._initSliderAndBindInputs();
-    // update UI with current values (wait for the slider to be initialized)
     this._updateUIcustomControl(this.setting());
   }
 
   /**
    * Set DOM element as control properties
+   *
+   * @since   1.0.0
+   * @memberof! controls.Slider#
+   * @access protected
    */
   _setDOMelements () {
     const container = this._container;
@@ -76,6 +88,10 @@ class ControlSlider extends ControlBase {
 
   /**
    * Init slider and bind input UI.
+   *
+   * @since   1.0.0
+   * @memberof! controls.Slider#
+   * @access protected
    */
   _initSliderAndBindInputs () {
     const self = this;
@@ -123,8 +139,13 @@ class ControlSlider extends ControlBase {
 
   /**
    * Extract first found unit from value
-   * @param  {?string} value [description]
-   * @return {?string}       [description]
+   *
+   * @since   1.0.0
+   * @memberof! controls.Slider#
+   * @access protected
+   *
+   * @param  {?string} value
+   * @return {?string}
    */
   _extractFirstUnit (value) {
     const valueOrigin = value || this.setting();
@@ -137,8 +158,13 @@ class ControlSlider extends ControlBase {
 
   /**
    * Extract first number found in value
-   * @param  {?string|number} value [description]
-   * @return {?string}              [description]
+   *
+   * @since   1.0.0
+   * @memberof! controls.Slider#
+   * @access protected
+   *
+   * @param  {?string|number} value
+   * @return {?string}
    */
   _extractFirstNumber (value) {
     const valueOrigin = value || this.setting();
@@ -151,6 +177,11 @@ class ControlSlider extends ControlBase {
 
   /**
    * Get current `setting` value from DOM or from given arg
+   *
+   * @since   1.0.0
+   * @memberof! controls.Slider#
+   * @access protected
+   *
    * @param  {Object<string,string>} value An optional value formed as
    *                                       `{ number: ?, unit: ? }`
    * @return {string}
@@ -177,6 +208,11 @@ class ControlSlider extends ControlBase {
    * Update UI control
    *
    * Reflect a programmatic setting change on the UI.
+   *
+   * @since   1.0.0
+   * @memberof! controls.Slider#
+   * @access protected
+   *
    * @param {?string} value Optional, the value from where to extract number and unit,
    *                        uses `this.setting()` if a `null` value is passed.
    */
@@ -202,7 +238,10 @@ class ControlSlider extends ControlBase {
    *
    * Wraps `setting.set()` with some additional stuff.
    *
-   * @access private
+   * @since   1.0.0
+   * @memberof! controls.Slider#
+   * @access protected
+   *
    * @param  {string} value
    * @param  {string} from  Where the value come from (could be from the UI:
    *                        picker, dynamic fields, expr field) or from the
@@ -217,4 +256,4 @@ class ControlSlider extends ControlBase {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_slider'] = api.controls.Slider = ControlSlider;
+export default wpApi.controlConstructor['kkcp_slider'] = api.controls.Slider = Slider;

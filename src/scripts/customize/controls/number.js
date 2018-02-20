@@ -1,19 +1,27 @@
 import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
-import ControlBaseInput from './base-input';
+import BaseInput from './base-input';
 
 /**
  * Control Number
  *
- * @class api.controls.Number
- * @alias wp.customize.controlConstructor.kkcp_number
- * @extends api.controls.BaseInput
- * @augments api.controls.Base
+ * Accessible globally on `wp.customize.controlConstructor.kkcp_number`
+ *
+ * @since  1.0.0
+ *
+ * @memberof controls
+ * @class Number
+ *
+ * @extends controls.BaseInput
+ * @augments controls.Base
  * @augments wp.customize.Control
  * @augments wp.customize.Class
+ *
+ * @requires Validate
+ * @requires Sanitize
  */
-class ControlNumber extends ControlBaseInput {
+class Number extends BaseInput {
 
   /**
    * @override
@@ -42,4 +50,4 @@ class ControlNumber extends ControlBaseInput {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_number'] = api.controls.Number = ControlNumber;
+export default wpApi.controlConstructor['kkcp_number'] = api.controls.Number = Number;

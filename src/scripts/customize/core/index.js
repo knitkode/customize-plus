@@ -1,10 +1,11 @@
+import './types';
 import './globals';
-import './setup-jquery';
-import './setup-markdown';
-import './regexes';
-import './utils';
+import './_setup-jquery';
+import './_setup-markdown';
 import './wptight';
-// import './banner'; // @@disabledfornow \\
+// import './regexes';
+// import './utils';
+// import './_banner'; // @@disabledfornow \\
 import './skeleton';
 import './tabs';
 import './tooltips';
