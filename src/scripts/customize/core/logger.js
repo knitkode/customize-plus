@@ -21,5 +21,5 @@ export function logError (context, msg) {
  * @access package
  */
 export default {
-	error: logError,
+  error: logError,
 }

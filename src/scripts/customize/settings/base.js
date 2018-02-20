@@ -18,68 +18,68 @@ import { api, wpApi } from '../core/globals';
  * @augments wp.customize.Class
  */
 const Base = wpApi.Setting.extend({
-	/**
-	 * {@inheritDoc}. Add the initial and lastSave values for reset value actions.
-	 * The `factory` value is added in the PHP Setting class constructor.
-	 *
-	 * @memberof! settings.Base#
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	initialize: function( id, value, options ) {
-		wpApi.Setting.prototype.initialize.call(this, id, value, options);
+  /**
+   * {@inheritDoc}. Add the initial and lastSave values for reset value actions.
+   * The `factory` value is added in the PHP Setting class constructor.
+   *
+   * @memberof! settings.Base#
+   *
+   * @since 1.0.0
+   * @override
+   */
+  initialize: function( id, value, options ) {
+    wpApi.Setting.prototype.initialize.call(this, id, value, options);
 
-		// we need to grab this manually because the json data of a setting class is
-		// not passed over in its entirety to the JavaScript constructor, only
-		// `transport`, `previewer` and `dirty` are given as argument when WordPress
-		// create Settings in `customize-controls.js`#7836
-		const data = wpApi.settings.settings[id];
-		if (data) {
-			this.vFactory = data['default'];
-		}
-		this.vInitial = this();
+    // we need to grab this manually because the json data of a setting class is
+    // not passed over in its entirety to the JavaScript constructor, only
+    // `transport`, `previewer` and `dirty` are given as argument when WordPress
+    // create Settings in `customize-controls.js`#7836
+    const data = wpApi.settings.settings[id];
+    if (data) {
+      this.vFactory = data['default'];
+    }
+    this.vInitial = this();
     this.vLastSaved = this.vInitial;
-	},
-	/**
-	 * {@inheritDoc}. Sanitize value before sending it to the preview via
-	 * `postMessage`.
-	 *
-	 * @memberof! settings.Base#
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	preview: function() {
-		var setting = this, transport;
-		transport = setting.transport;
+  },
+  /**
+   * {@inheritDoc}. Sanitize value before sending it to the preview via
+   * `postMessage`.
+   *
+   * @memberof! settings.Base#
+   *
+   * @since 1.0.0
+   * @override
+   */
+  preview: function() {
+    var setting = this, transport;
+    transport = setting.transport;
 
-		if ( 'postMessage' === transport && ! wpApi.state( 'previewerAlive' ).get() ) {
-			transport = 'refresh';
-		}
+    if ( 'postMessage' === transport && ! wpApi.state( 'previewerAlive' ).get() ) {
+      transport = 'refresh';
+    }
 
-		if ( 'postMessage' === transport ) {
-			// we just add here a sanitization method
-			setting.previewer.send( 'setting', [ setting.id, this.sanitize(setting()) ] );
-		} else if ( 'refresh' === transport ) {
-			setting.previewer.refresh();
-		}
-	},
-	/**
-	 * Sanitize setting
-	 *
-	 * This is here to allow controls to define a sanitization method before then
-	 * the setting value is sent to the preview via `postMessage`
-	 *
-	 * @memberof! settings.Base#
-	 *
-	 * @abstract
-	 * @param  {mixed} value
-	 * @return {mixed}
-	 */
-	sanitize: function (value) {
-		return value;
-	},
+    if ( 'postMessage' === transport ) {
+      // we just add here a sanitization method
+      setting.previewer.send( 'setting', [ setting.id, this.sanitize(setting()) ] );
+    } else if ( 'refresh' === transport ) {
+      setting.previewer.refresh();
+    }
+  },
+  /**
+   * Sanitize setting
+   *
+   * This is here to allow controls to define a sanitization method before then
+   * the setting value is sent to the preview via `postMessage`
+   *
+   * @memberof! settings.Base#
+   *
+   * @abstract
+   * @param  {mixed} value
+   * @return {mixed}
+   */
+  sanitize: function (value) {
+    return value;
+  },
   /**
    * Force `set`.
    *
