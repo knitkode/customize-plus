@@ -1,6 +1,6 @@
 <?php defined( 'ABSPATH' ) or die;
 
-if ( class_exists( 'KKcp_Singleton' ) ):
+if ( ! class_exists( 'KKcp_Theme' ) && class_exists( 'KKcp_Singleton' ) ):
 
 	/**
 	 * Theme
@@ -435,8 +435,6 @@ endif;
 
 /**
  * Export useful functions to global namespace
- *
- * @since 1.0.0
  */
 
 /**

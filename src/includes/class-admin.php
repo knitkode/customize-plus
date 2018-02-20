@@ -1,6 +1,7 @@
 <?php defined( 'ABSPATH' ) or die;
 
 if ( class_exists( 'KKcp_Singleton' ) ):
+
 	/**
 	 * Admin
 	 *
