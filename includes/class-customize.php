@@ -3,26 +3,31 @@
 if ( ! class_exists( 'KKcp_Customize' ) ):
 
 	/**
-	 * Contains methods for customizing the theme customization screen.
+	 * Customize
+	 *
+	 * Manage the actual customize WordPress screen. In here we define all panels,
+	 * sections, controls and settings managed by Customize Plus building a
+	 * customize tree. Here all JavaScripts and CSSs are enqueued and data from
+	 * backend is provided to the JavaScript.
 	 *
 	 * @package    Customize_Plus
 	 * @subpackage Customize
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
-	 * @copyright  2017 KnitKode
-	 * @license    GPL-2.0+
-	 * @version    Release: pkgVersion
-	 * @link       https://knitkode.com/customize-plus
+	 * @copyright  2018 KnitKode
+	 * @license    GPLv3
+	 * @version    Release: 1.0.0
+	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp_Customize {
 
 		/**
-		 * Custom types for panels, sections controls and settings.
-		 * Each type must be declared with its shortname and name of its php class.
+		 * Native types for panels, sections controls and settings.
+		 *
 		 *
 		 * @since  1.0.0
 		 * @var array
 		 */
-		public static $custom_types = array(
+		public static $native_types = array(
 			'panels' => array(
 				// WordPress panels
 				// 'themes' => 'WP_Customize_Themes_Panel',
@@ -32,7 +37,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				// 'sidebar' => 'WP_Customize_Sidebar_Section',
 				// 'themes' => 'WP_Customize_Themes_Section',
 			),
-			'controls' => array( // @@note search for `$this->register_control_type` in core \\
+			'controls' => array(
 				// WordPress controls
 				'background' => 'WP_Customize_Background_Image_Control',
 				'background_position' => 'WP_Customize_Background_Position_Control',
@@ -53,8 +58,25 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'theme' => 'WP_Customize_Theme_Control',
 				'upload' => 'WP_Customize_Media_Control',
 				// 'widget_form' => 'WP_Widget_Form_Customize_Control',
+			),
+			'settings' => array(
+			),
+		);
 
-				// Customize Plus controls
+		/**
+		 * Custom types for panels, sections controls and settings.
+		 *
+		 * Each type must be declared with its shortname and name of its php class.
+		 *
+		 * @since  1.0.0
+		 * @var array
+		 */
+		public static $custom_types = array(
+			'panels' => array(
+			),
+			'sections' => array(
+			),
+			'controls' => array(
 				'kkcp_buttonset' => 'KKcp_Customize_Control_Buttonset',
 				'kkcp_checkbox' => 'KKcp_Customize_Control_Checkbox',
 				'kkcp_color' => 'KKcp_Customize_Control_Color',
@@ -66,6 +88,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'kkcp_number' => 'KKcp_Customize_Control_Number',
 				'kkcp_radio' => 'KKcp_Customize_Control_Radio',
 				'kkcp_radio_image' => 'KKcp_Customize_Control_Radio_Image',
+				'kkcp_password' => 'KKcp_Customize_Control_Password',
 				'kkcp_select' => 'KKcp_Customize_Control_Select',
 				'kkcp_slider' => 'KKcp_Customize_Control_Slider',
 				'kkcp_sortable' => 'KKcp_Customize_Control_Sortable',
@@ -74,7 +97,10 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'kkcp_textarea' => 'KKcp_Customize_Control_Textarea',
 				'kkcp_toggle' => 'KKcp_Customize_Control_Toggle',
 			),
-			'settings' => array(),
+			'settings' => array(
+				'kkcp_base' => 'KKcp_Customize_Setting_Base',
+				'kkcp_font_family' => 'KKcp_Customize_Setting_Font_Family',
+			),
 		);
 
 		/**
@@ -83,7 +109,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @since  1.0.0
 		 * @var array
 		 */
-		private static $controls_l10n = array();
+		protected static $controls_l10n = array();
 
 		/**
 		 * Temporary store for localized strings defined through control classes
@@ -91,7 +117,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @since  1.0.0
 		 * @var array
 		 */
-		private static $controls_constants = array();
+		protected static $controls_constants = array();
 
 		/**
 		 * CSS shared for all the icons
@@ -140,6 +166,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		public function __construct() {
 			add_action( 'customize_register', array( __CLASS__, 'register_custom_classes' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_css_admin' ) );
+			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_notifications_tpls' ) );
 			add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'enqueue_js_admin' ) );
 			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_view_loader' ) );
 			add_action( 'customize_controls_enqueue_scripts', array( __CLASS__, 'add_controls_js_vars' ) );
@@ -157,7 +184,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			do_action( 'kkcp_customize_enqueue_css_admin_pre', 'kkcp-customize' );
 
 			if ( ! class_exists( 'KKcpp_Customize' ) ) {
-				wp_enqueue_style( 'kkcp-customize', KKcp_Utils::get_asset( 'customize', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
+				wp_enqueue_style( 'kkcp-customize', KKcp::get_asset( 'customize', 'css', KKCP_PLUGIN_FILE ), array( 'dashicons' ), KKCP_PLUGIN_VERSION );
 				wp_add_inline_style( 'kkcp-customize', self::$css_icons );
 			}
 
@@ -176,7 +203,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			do_action( 'kkcp_customize_enqueue_js_admin_pre', 'kkcp-customize' );
 
 			if ( ! class_exists( 'KKcpp_Customize' ) ) {
-				wp_register_script( 'kkcp-customize', KKcp_Utils::get_asset( 'customize', 'js', KKCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, KKCP_PLUGIN_VERSION, false );
+				wp_register_script( 'kkcp-customize', KKcp::get_asset( 'customize', 'js', KKCP_PLUGIN_FILE ), self::JS_BASE_DEPENDECIES, KKCP_PLUGIN_VERSION, false );
 				wp_localize_script( 'kkcp-customize', self::JS_API_NAMESPACE, self::get_script_localization() );
 				wp_enqueue_script( 'kkcp-customize' );
 			}
@@ -212,6 +239,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'THEME_URL' => get_stylesheet_directory_uri(),
 				'IMAGES_BASE_URL' => KKcp_Theme::$images_base_url,
 				'DOCS_BASE_URL' => KKcp_Theme::$docs_base_url,
+				'DYNAMIC_CONTROLS_RENDERING' => KKcp_Theme::$dynamic_controls_rendering,
 			);
 			$additional = (array) apply_filters( 'kkcp_customize_get_js_constants', array() );
 			return array_merge( $required, self::$controls_constants, $additional );
@@ -245,12 +273,12 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			$required = array(
 				'introTitle' => 'Customize Plus',
 				/* translators %s is the Plugin name */
-				'introText' => sprintf( esc_html__( 'Welcome to %s' ), 'Customize Plus' ),
-				'back' => esc_html__( 'Back' ),
+				'introText' => sprintf( esc_html__( 'Welcome to %s', 'kkcp' ), 'Customize Plus' ),
+				'back' => esc_html__( 'Back', 'kkcp' ),
 				'pluginName' => 'Customize Plus',
-				'tools' => esc_html__( 'Tools' ),
-				'vRequired' => esc_html__( 'A value is required' ),
-				'vInvalid' => esc_html__( 'Invalid value' ),
+				'tools' => esc_html__( 'Tools', 'kkcp' ),
+				'vRequired' => esc_html__( 'A value is required', 'kkcp' ),
+				'vInvalid' => esc_html__( 'Invalid value', 'kkcp' ),
 			);
 			$additional = (array) apply_filters( 'kkcp_customize_get_js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );
@@ -295,7 +323,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 
 			do_action( 'kkcp_customize_enqueue_js_preview_pre' );
 
-			wp_register_script( 'kkcp-customize-preview', KKcp_Utils::get_asset( 'customize-preview', 'js', KKCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), KKCP_PLUGIN_VERSION, true );
+			wp_register_script( 'kkcp-customize-preview', KKcp::get_asset( 'customize-preview', 'js', KKCP_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), KKCP_PLUGIN_VERSION, true );
 			wp_localize_script( 'kkcp-customize-preview', 'kkcp', array(
 					'constants' => self::get_js_constants(),
 					'l10n' => self::get_js_l10n(),
@@ -313,22 +341,22 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 *
 		 * @since  1.0.0
 		 */
-		public static function get_view_loader() { // @@wptight-layout \\
+		public static function get_view_loader() {
 			?>
 			<div id="kkcp-loader-preview" class="wp-full-overlay-main kkcp-overlay--preview">
 				<div class="kkcpui-midpoint-wrap">
 					<div class="kkcpui-midpoint">
 						<img id="kkcp-loader-img" src="<?php echo esc_url( plugins_url( 'assets/images/logo-white.png', KKCP_PLUGIN_FILE ) ); ?>">
 						<?php if ( isset ( $_GET['kkcp_import'] ) ): // input var okay ?>
-							<h1 id="kkcp-loader-title" class="kkcp-text"><?php esc_html_e( 'Import done' ); ?></h1>
-							<h3 id="kkcp-loader-text" class="kkcp-text"><?php esc_html_e( 'All options have been succesfully imported and saved' ); ?></h3>
+							<h1 id="kkcp-loader-title" class="kkcp-text"><?php esc_html_e( 'Import done', 'kkcp' ); ?></h1>
+							<h3 id="kkcp-loader-text" class="kkcp-text"><?php esc_html_e( 'All options have been succesfully imported and saved', 'kkcp' ); ?></h3>
 						<?php else : ?>
 							<h1 id="kkcp-loader-title" class="kkcp-text">Customize Plus</h1>
 							<h3 id="kkcp-loader-text" class="kkcp-text"></h3>
 						<?php endif; ?>
 						<div class="kkcp-text">
 							<span class="spinner"></span>
-							<?php esc_html_e( 'Loading preview...' ); ?>
+							<?php esc_html_e( 'Loading preview...', 'kkcp' ); ?>
 						</div>
 					</div>
 				</div>
@@ -338,11 +366,31 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					<div class="kkcpui-midpoint">
 						<div class="kkcp-text">
 							<span class="spinner"></span>
-							<?php esc_html_e( 'Loading ...' ); ?>
+							<?php esc_html_e( 'Loading ...', 'kkcp' ); ?>
 						</div>
 					</div>
 				</div>
 			</div>
+			<?php
+		}
+
+		/**
+		 * Get custom notification templates
+		 *
+		 * For now it's the same as the WordPress default one plus markdown support
+		 *
+		 * @since  1.0.0
+		 */
+		public static function get_notifications_tpls() {
+			?>
+			<script type="text/html" id="tmpl-customize-notification-kkcp">
+				<li class="notice notice-{{ data.type || 'info' }} {{ data.alt ? 'notice-alt' : '' }} {{ data.dismissible ? 'is-dismissible' : '' }} {{ data.containerClasses || '' }} kkcp-notification" data-code="{{ data.code }}" data-type="{{ data.type }}">
+					<# if (marked) { #>{{{ marked(data.message || data.code) }}}<# } else { #><div class="notification-message">{{{ data.message || data.code }}}</div><# } #>
+					<# if ( data.dismissible ) { #>
+						<button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php esc_html( 'Dismiss' ) ?></span></button>
+					<# } #>
+				</li>
+			</script>
 			<?php
 		}
 
@@ -462,7 +510,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					$wp_customize->add_panel( new $panel_type_class( $wp_customize, $panel_id, $panel_args ) );
 				// if the desired class doesn't exist just use the plain WordPress API
 				} else {
-					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for panel type %s.' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $panel_type_class . '</code>', '<code><b>' . $panel_type . '</b></code>' ) );
+					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for panel type %s.', 'kkcp' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $panel_type_class . '</code>', '<code><b>' . $panel_type . '</b></code>' ) );
 				}
 			// if the desired panel type is not specified just use the plain WordPress API
 			} else {
@@ -539,7 +587,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					$wp_customize->add_section( new $section_type_class( $wp_customize, $section['id'], $section_args ) );
 				// if the desired class doesn't exist report the error
 				} else {
-					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for section type %s.' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $section_type_class . '</code>', '<code><b>' . $section_type . '</b></code>' ) );
+					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for section type %s.', 'kkcp' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $section_type_class . '</code>', '<code><b>' . $section_type . '</b></code>' ) );
 				}
 			// if the desired control type is not specified just use the plain WordPress API
 			} else {
@@ -567,31 +615,45 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		private static function tree_add_field( $section_id, $field_id, $field_args ) {
 			global $wp_customize;
 
-			// manage control first
+			$control_type_class = null;
+			$setting_type_class = null;
+
+			// grab control arguments
 			$control_args = $field_args['control'];
 
-			// augment control args array with section id
-			$control_args['section'] = $section_id;
+			// grab setting arguments
+			$setting_args = isset( $field_args['setting'] ) ? $field_args['setting'] : null;
 
 			// get type (required)
 			$control_type = $control_args['type'];
 
+			// get type (required) this is not meant for custom settings class for now
+			$setting_type = 'kkcp_base'; // $setting_args['type'];
+
+			// if a native setting type has been set try to use its class
+			if ( $setting_type && isset( self::$native_types['settings'][ $setting_type ] ) ) {
+				$setting_type_class = self::$native_types['settings'][ $setting_type ];
+			}
 			// check if a custom class is needed for this control
 			if ( $control_type && isset( self::$custom_types['controls'][ $control_type ] ) ) {
 				$control_type_class = self::$custom_types['controls'][ $control_type ];
-			} else {
-				$control_type_class = null;
+
+				// only if it does check whther we have a custom setting type for this control
+				if ( !$setting_type_class && $control_type && isset( self::$custom_types['settings'][ $control_type ] ) ) {
+					$setting_type_class = self::$custom_types['settings'][ $control_type ];
+				}
+				// otherwise use our custom setting base class
+				else if ( !$setting_type_class && $setting_type && isset( self::$custom_types['settings'][ $setting_type ] ) ) {
+					$setting_type_class = self::$custom_types['settings'][ $setting_type ];
+				}
+			}
+			// check if type matches a native control type
+			else if ( $control_type && isset( self::$native_types['controls'][ $control_type ] ) ) {
+				$control_type_class = self::$native_types['controls'][ $control_type ];
 			}
 
-			// then add setting
-			$setting_args = isset( $field_args['setting'] ) ? $field_args['setting'] : null;
-
-			// @@todo remove the following 3 lines
-			// @see track https://core.trac.wordpress.org/ticket/34290#ticket \\
-			// % symbols get stripped out, we need to replace it with a double one \\
-			if ( isset( $setting_args['default'] ) ) {
-				$setting_args['default'] = str_replace( '%', '%%', $setting_args['default'] );
-			}
+			// augment control args array with section id
+			$control_args['section'] = $section_id;
 
 			// by default the setting id is the same as the control, so the field id
 			$setting_id = $field_id;
@@ -631,18 +693,30 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					}
 				}
 
-				// add setting to WordPress
-				$wp_customize->add_setting( $setting_id, $setting_args );
+				// check if a custom type/class has been specified
+				if ( $setting_type_class ) {
+					// if the class exists use it
+					if ( class_exists( $setting_type_class ) ) {
+						$wp_customize->add_setting( new $setting_type_class( $wp_customize, $setting_id, $setting_args ) );
+					// if the desired class doesn't exist report the error
+					} else {
+						wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for setting type %s.', 'kkcp' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $setting_type_class . '</code>', '<code><b>' . $setting_type . '</b></code>' ) );
+					}
+				// if the desired control type is not specified use the plain WordPress API
+				} else {
+					// add setting to WordPress
+					$wp_customize->add_setting( $setting_id, $setting_args );
+				}
 
 			// if no settings args are passed
 			} else {
 				// a setting-less control, pass empty array,
-				// @see https://make.wordpress.org/core/2016/03/10/customizer-improvements-in-4-5/
+				// @see http://bit.ly/1pc3obI
 				$control_args['settings'] = array();
 			}
 
-			// finally add control
-			$control_id = $setting_id; // @@doubt, maybe do something different... \\
+			// finally add control with same `id` as setting
+			$control_id = $setting_id;
 
 			// check if a custom type/class has been specified
 			if ( $control_type_class ) {
@@ -651,7 +725,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 					$wp_customize->add_control( new $control_type_class( $wp_customize, $control_id, $control_args ) );
 				// if the desired class doesn't exist report the error
 				} else {
-					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for control type %s.' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $control_type_class . '</code>', '<code><b>' . $control_type . '</b></code>' ) );
+					wp_die( sprintf( wp_kses( __( 'Customize Plus: missing class %s for control type %s.', 'kkcp' ), array( 'code' => array(), 'b' => array() ) ), '<code>' . $control_type_class . '</code>', '<code><b>' . $control_type . '</b></code>' ) );
 				}
 			// if the desired control type is not specified use the plain WordPress API
 			} else {
@@ -663,9 +737,10 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * Add the needed css to display a dashicon for the given panel
 		 *
 		 * @since  1.0.0
-		 * @param  string $panel_id      The panel which will show the specified dashicon.
-		 * @param  int    $dashicon_code The dashicon code number, the `\f` is automatically
-		 *                               added.
+		 * @param  string $panel_id      The panel which will show the specified
+		 *                               dashicon.
+		 * @param  int    $dashicon_code The dashicon code number, the `\f` is
+		 *                               automatically added.
 		 */
 		private static function add_css_panel_dashicon( $panel_id = '', $dashicon_code ) {
 			if ( ! absint( $dashicon_code ) ) {
@@ -678,9 +753,10 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * Add the needed css to display a dashicon for the given section
 		 *
 		 * @since  1.0.0
-		 * @param  string $section_id    The section which will show the specified dashicon.
-		 * @param  int    $dashicon_code The dashicon code number, the `\f` is automatically
-		 *                               added.
+		 * @param  string $section_id    The section which will show the specified
+		 *                               dashicon.
+		 * @param  int    $dashicon_code The dashicon code number, the `\f` is
+		 *                               automatically added.
 		 */
 		private static function add_css_section_dashicon( $section_id = '', $dashicon_code ) {
 			if ( ! absint( $dashicon_code ) ) {

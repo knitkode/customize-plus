@@ -1,6 +1,6 @@
 /*
  * classList.js: Cross-browser full element.classList implementation.
- * 1.1.20170112
+ * 1.2.20171210
  *
  * By Eli Grey, http://eligrey.com
  * License: Dedicated to the public domain.
@@ -15,8 +15,11 @@ if ("document" in self) {
 
 // Full polyfill for browsers with no classList support
 // Including IE < Edge missing SVGElement.classList
-if (!("classList" in document.createElement("_")) 
-	|| document.createElementNS && !("classList" in document.createElementNS("http://www.w3.org/2000/svg","g"))) {
+if (
+	   !("classList" in document.createElement("_")) 
+	|| document.createElementNS
+	&& !("classList" in document.createElementNS("http://www.w3.org/2000/svg","g"))
+) {
 
 (function (view) {
 
@@ -54,13 +57,13 @@ var
 		if (token === "") {
 			throw new DOMEx(
 				  "SYNTAX_ERR"
-				, "An invalid or illegal string was specified"
+				, "The token must not be empty."
 			);
 		}
 		if (/\s/.test(token)) {
 			throw new DOMEx(
 				  "INVALID_CHARACTER_ERR"
-				, "String contains an invalid character"
+				, "The token must not contain space characters."
 			);
 		}
 		return arrIndexOf.call(classList, token);
@@ -91,8 +94,7 @@ classListProto.item = function (i) {
 	return this[i] || null;
 };
 classListProto.contains = function (token) {
-	token += "";
-	return checkTokenAndGetIndex(this, token) !== -1;
+	return ~checkTokenAndGetIndex(this, token + "");
 };
 classListProto.add = function () {
 	var
@@ -104,7 +106,7 @@ classListProto.add = function () {
 	;
 	do {
 		token = tokens[i] + "";
-		if (checkTokenAndGetIndex(this, token) === -1) {
+		if (!~checkTokenAndGetIndex(this, token)) {
 			this.push(token);
 			updated = true;
 		}
@@ -127,7 +129,7 @@ classListProto.remove = function () {
 	do {
 		token = tokens[i] + "";
 		index = checkTokenAndGetIndex(this, token);
-		while (index !== -1) {
+		while (~index) {
 			this.splice(index, 1);
 			updated = true;
 			index = checkTokenAndGetIndex(this, token);
@@ -140,8 +142,6 @@ classListProto.remove = function () {
 	}
 };
 classListProto.toggle = function (token, force) {
-	token += "";
-
 	var
 		  result = this.contains(token)
 		, method = result ?
@@ -160,6 +160,13 @@ classListProto.toggle = function (token, force) {
 		return !result;
 	}
 };
+classListProto.replace = function (token, replacement_token) {
+	var index = checkTokenAndGetIndex(token + "");
+	if (~index) {
+		this.splice(index, 1, replacement_token);
+		this._updateClassName();
+	}
+}
 classListProto.toString = function () {
 	return this.join(" ");
 };
@@ -186,7 +193,8 @@ if (objCtr.defineProperty) {
 
 }(self));
 
-} else {
+}
+
 // There is full or partial native classList support, so just check if we need
 // to normalize the add/remove and toggle APIs.
 
@@ -233,14 +241,26 @@ if (objCtr.defineProperty) {
 
 	}
 
+	// replace() polyfill
+	if (!("replace" in document.createElement("_").classList)) {
+		DOMTokenList.prototype.replace = function (token, replacement_token) {
+			var
+				  tokens = this.toString().split(" ")
+				, index = tokens.indexOf(token + "")
+			;
+			if (~index) {
+				tokens = tokens.slice(index);
+				this.remove.apply(this, tokens);
+				this.add(replacement_token);
+				this.add.apply(this, tokens.slice(1));
+			}
+		}
+	}
+
 	testElement = null;
 }());
 
 }
-
-}
-
-
 
 
 /*!
@@ -646,6 +666,7 @@ if (objCtr.defineProperty) {
  */
 
 ;(function() {
+'use strict';
 
 /**
  * Block-Level Grammar
@@ -1090,21 +1111,21 @@ Lexer.prototype.token = function(src, top, bq) {
 
 var inline = {
   escape: /^\\([\\`*{}\[\]()#+\-.!_>])/,
-  autolink: /^<([^ >]+(@|:\/)[^ >]+)>/,
+  autolink: /^<([^ <>]+(@|:\/)[^ <>]+)>/,
   url: noop,
-  tag: /^<!--[\s\S]*?-->|^<\/?\w+(?:"[^"]*"|'[^']*'|[^'">])*?>/,
+  tag: /^<!--[\s\S]*?-->|^<\/?\w+(?:"[^"]*"|'[^']*'|[^<'">])*?>/,
   link: /^!?\[(inside)\]\(href\)/,
   reflink: /^!?\[(inside)\]\s*\[([^\]]*)\]/,
   nolink: /^!?\[((?:\[[^\]]*\]|[^\[\]])*)\]/,
   strong: /^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/,
   em: /^\b_((?:[^_]|__)+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,
-  code: /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,
+  code: /^(`+)([\s\S]*?[^`])\1(?!`)/,
   br: /^ {2,}\n(?!\s*$)/,
   del: noop,
   text: /^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/
 };
 
-inline._inside = /(?:\[[^\]]*\]|[^\[\]]|\](?=[^\[]*\]))*/;
+inline._inside = /(?:\[[^\]]*\]|\\[\[\]]|[^\[\]]|\](?=[^\[]*\]))*/;
 inline._href = /\s*<?([\s\S]*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*/;
 
 inline.link = replace(inline.link)
@@ -1219,9 +1240,11 @@ InlineLexer.prototype.output = function(src) {
     if (cap = this.rules.autolink.exec(src)) {
       src = src.substring(cap[0].length);
       if (cap[2] === '@') {
-        text = cap[1].charAt(6) === ':'
+        text = escape(
+          cap[1].charAt(6) === ':'
           ? this.mangle(cap[1].substring(7))
-          : this.mangle(cap[1]);
+          : this.mangle(cap[1])
+        );
         href = this.mangle('mailto:') + text;
       } else {
         text = escape(cap[1]);
@@ -1302,7 +1325,7 @@ InlineLexer.prototype.output = function(src) {
     // code
     if (cap = this.rules.code.exec(src)) {
       src = src.substring(cap[0].length);
-      out += this.renderer.codespan(escape(cap[2], true));
+      out += this.renderer.codespan(escape(cap[2].trim(), true));
       continue;
     }
 
@@ -1514,11 +1537,14 @@ Renderer.prototype.link = function(href, title, text) {
         .replace(/[^\w:]/g, '')
         .toLowerCase();
     } catch (e) {
-      return '';
+      return text;
     }
-    if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0) {
-      return '';
+    if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0 || prot.indexOf('data:') === 0) {
+      return text;
     }
+  }
+  if (this.options.baseUrl && !originIndependentUrl.test(href)) {
+    href = resolveUrl(this.options.baseUrl, href);
   }
   var out = '<a href="' + href + '"';
   if (title) {
@@ -1529,6 +1555,9 @@ Renderer.prototype.link = function(href, title, text) {
 };
 
 Renderer.prototype.image = function(href, title, text) {
+  if (this.options.baseUrl && !originIndependentUrl.test(href)) {
+    href = resolveUrl(this.options.baseUrl, href);
+  }
   var out = '<img src="' + href + '" alt="' + text + '"';
   if (title) {
     out += ' title="' + title + '"';
@@ -1735,8 +1764,8 @@ function escape(html, encode) {
 }
 
 function unescape(html) {
-	// explicitly match decimal, hex, and named HTML entities 
-  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/g, function(_, n) {
+	// explicitly match decimal, hex, and named HTML entities
+  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig, function(_, n) {
     n = n.toLowerCase();
     if (n === 'colon') return ':';
     if (n.charAt(0) === '#') {
@@ -1759,6 +1788,30 @@ function replace(regex, opt) {
     return self;
   };
 }
+
+function resolveUrl(base, href) {
+  if (!baseUrls[' ' + base]) {
+    // we can ignore everything in base after the last slash of its path component,
+    // but we might need to add _that_
+    // https://tools.ietf.org/html/rfc3986#section-3
+    if (/^[^:]+:\/*[^/]*$/.test(base)) {
+      baseUrls[' ' + base] = base + '/';
+    } else {
+      baseUrls[' ' + base] = base.replace(/[^/]*$/, '');
+    }
+  }
+  base = baseUrls[' ' + base];
+
+  if (href.slice(0, 2) === '//') {
+    return base.replace(/:[\s\S]*/, ':') + href;
+  } else if (href.charAt(0) === '/') {
+    return base.replace(/(:\/*[^/]*)[\s\S]*/, '$1') + href;
+  } else {
+    return base + href;
+  }
+}
+var baseUrls = {};
+var originIndependentUrl = /^$|^[a-z][a-z0-9+.-]*:|^[?#]/i;
 
 function noop() {}
 noop.exec = noop;
@@ -1861,7 +1914,7 @@ function marked(src, opt, callback) {
   } catch (e) {
     e.message += '\nPlease report this to https://github.com/chjj/marked.';
     if ((opt || marked.defaults).silent) {
-      return '<p>An error occured:</p><pre>'
+      return '<p>An error occurred:</p><pre>'
         + escape(e.message + '', true)
         + '</pre>';
     }
@@ -1894,7 +1947,8 @@ marked.defaults = {
   smartypants: false,
   headerPrefix: '',
   renderer: new Renderer,
-  xhtml: false
+  xhtml: false,
+  baseUrl: null
 };
 
 /**
@@ -8903,66 +8957,249 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 /*!
  * Customize Plus v1.0.0 (https://knitkode.com/products/customize-plus)
  * Enhance and extend the WordPress Customizer.
- * Copyright (c) 2014-2017 KnitKode <dev@knitkode.com> (https://knitkode.com/)
- * @license SEE LICENSE IN license.txt (Last change on: 29-11-2017)
- */(function ($,marked,hljs,window$1,document,_,wp$1,pluginApi,Modernizr) {
+ * Copyright (c) 2014-2018 KnitKode <dev@knitkode.com> (https://knitkode.com/)
+ * @license SEE LICENSE IN license.txt (Last change on: 21-1-2018)
+ */(function (window$1,document$1,$$1,_$1,wp$1,pluginApi,marked,hljs,Modernizr) {
   'use strict';
 
-  var DEBUG = !!api.DEBUG;
+  var DEBUG = !!window.kkcp.DEBUG;
 
   /**
-   * Set default speed of jQuery animations
+   * @fileOverview Lists of custom types used in Customize Plus JavaScript
+   *
    */
-  $.fx.speeds['_default'] = 180; // whitelisted from uglify \\
 
-  /** @type {Object} It collects core components */
+  /**
+   * Shim type for PHP `array`
+   * @typedef {Array} array
+   */
+
+  /**
+   * Shim type for PHP `bool`
+   * @typedef {boolean} bool
+   */
+
+  /**
+   * Shim type for PHP (`int|float`)
+   * @typedef {number} number
+   */
+
+  /**
+   * Shim type for PHP `integer`
+   * @typedef {number} int
+   */
+
+  /**
+   * Shim type for PHP `float`
+   * @typedef {number} float
+   */
+
+  /**
+   * Shim type for PHP `null`
+   * @typedef {?} null
+   */
+
+  /**
+   * Shim type for PHP `mixed`
+   * @typedef {(number|string|Array.<mixed>|Object.<string|number, mixed>)} mixed
+   */
+
+  /**
+   * Shim type for WordPress `WP_Error`
+   * @typedef {Object.<string, string>} WP_Error
+   */
+
+  /**
+   * Shim type for WordPress `WP_Customize_Setting`
+   * @typedef {settings.Base} WP_Customize_Setting
+   */
+
+  /**
+   * Shim type for WordPress `WP_Customize_Control`
+   * @typedef {controls.Base} WP_Customize_Control
+   */
+
+  /**
+   * Accessible on `window.kkcp.core`
+   *
+   * @since  1.0.0
+   * @namespace core
+   * @type {Object}
+   */
   pluginApi.core = pluginApi.core || {};
 
-  /** @type {Object} It collects additional components */
+  /**
+   * Accessible on `window.kkcp.components`
+   *
+   * @since  1.0.0
+   * @namespace components
+   * @type {Object}
+   */
   pluginApi.components = pluginApi.components || {};
 
-  /** @type {Object} It collects controls, sections and panels prototypes */
+  /**
+   * Accessible on `window.kkcp.settings`
+   *
+   * @since  1.0.0
+   * @namespace settings
+   * @type {Object}
+   */
+  pluginApi.settings = pluginApi.settings || {};
+
+  /**
+   * Accessible on `window.kkcp.controls`
+   *
+   * @since  1.0.0
+   * @namespace controls
+   * @type {Object}
+   */
   pluginApi.controls = pluginApi.controls || {};
+
+  /**
+   * Accessible on `window.kkcp.sections`
+   *
+   * @since  1.0.0
+   * @namespace sections
+   * @type {Object}
+   */
   pluginApi.sections = pluginApi.sections || {};
+
+  /**
+   * Accessible on `window.kkcp.panels`
+   *
+   * @since  1.0.0
+   * @namespace panels
+   * @type {Object}
+   */
   pluginApi.panels = pluginApi.panels || {};
 
-  // exports Customize Plus API
-  var api = pluginApi;
+  /**
+   * Accessible on `window.kkcp.l10n`, populated by PHP via JSON
+   *
+   * @see PHP KKcp_Customize->get_l10n()
+   * @since  1.0.0
+   * @namespace l10n
+   * @readonly
+   * @type {Object}
+   */
+  pluginApi.l10n = pluginApi.l10n || {};
 
-  /** @type {jQuery} */
-  var $window = $(window$1);
+  /**
+   * Accessible on `window.kkcp.constants`, populated by PHP via JSON
+   *
+   * @see PHP KKcp_Customize->get_constants()
+   * @since  1.0.0
+   * @namespace constants
+   * @readonly
+   * @type {Object}
+   */
+  pluginApi.constants = pluginApi.constants || {};
 
-  /** @type {jQuery} */
-  var $document = $(document);
+  /**
+   * Customize Plus public API
+   *
+   * Accessible on `window.kkcp` during production and on `window.api`
+   * during development.
+   *
+   * @since  1.0.0
+   * @type {Object}
+   */
+  var api$1 = pluginApi;
 
-  /** @type {HTMLElement} */
-  var body = document.getElementsByTagName('body')[0];
-
-  /** @type {Object} */
+  /**
+   * WordPress Customize public API
+   *
+   * Accessible on `window.wp.customize` during production and on `window.wpApi`
+   * during development.
+   *
+   * @since  1.0.0
+   * @access package
+   * @type {Object}
+   */
   var wpApi = wp$1.customize;
 
-  /** @type {jQuery.Deferred} */
-  var $readyWP = $.Deferred();
+  /**
+   * Reuse the same jQuery wrapped `window` object
+   *
+   * @since  1.0.0
+   * @access package
+   * @type {jQuery}
+   */
+  var $window = $$1(window$1);
 
-  /** @type {jQuery.Deferred} */
-  var $readyDOM = $.Deferred();
+  /**
+   * Reuse the same jQuery wrapped `document` object
+   *
+   * @since  1.0.0
+   * @access package
+   * @type {jQuery}
+   */
+  var $document = $$1(document$1);
 
-  /** @type {jQuery.Deferred} */
-  var $ready = $.when($readyDOM, $readyWP);
+  /**
+   * Reuse the same `body` element
+   *
+   * @since  1.0.0
+   * @access package
+   * @type {HTMLElement}
+   */
+  var body = document$1.getElementsByTagName('body')[0];
+
+  /**
+   * Reuse the same jQuery wrapped WordPress API ready deferred object
+   *
+   * @since  1.0.0
+   * @access package
+   * @type {jQuery.Deferred}
+   */
+  var $readyWP = $$1.Deferred();
+
+  /**
+   * Reuse the same jQuery wrapped DOM ready deferred object
+   *
+   * @since  1.0.0
+   * @access package
+   * @type {jQuery.Deferred}
+   */
+  var $readyDOM = $$1.Deferred();
+
+  /**
+   * Reuse the same WordPress API and DOM ready deferred object. Resolved when
+   * both of them are resolved.
+   *
+   * @since  1.0.0
+   * @access package
+   * @type {jQuery.Deferred}
+   */
+  var $ready = $$1.when($readyDOM, $readyWP);
+
 
   wpApi.bind('ready', function () { $readyWP.resolve(); });
 
   var _readyDOM = function (fn) {
-    if (document.readyState !== 'loading') {
+    if (document$1.readyState !== 'loading') {
       fn();
     } else {
-      document.addEventListener('DOMContentLoaded', fn);
+      document$1.addEventListener('DOMContentLoaded', fn);
     }
   };
   _readyDOM(function () { $readyDOM.resolve(); });
 
-  // @@todo \\
-  // var DEBUG = !!api.DEBUG; is injected through rollup
+  // be sure to have what we need
+  if (!wp$1) {
+    throw new Error('Missing crucial object `wp`');
+    $readyWP.reject();
+    $readyDOM.reject();
+  }
+
+  // be sure to have what we need
+  if (!pluginApi) {
+    throw new Error('Missing crucial object `kkcp`');
+    $readyWP.reject();
+    $readyDOM.reject();
+  }
+
+  // var DEBUG = !!window.kkcp.DEBUG; is injected through rollup
   if (DEBUG) {
     $ready.done(function () { console.log('global $ready.done()'); });
 
@@ -8970,23 +9207,16 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       performances: false,
       compiler: false
     };
-    // shim for Opera // @@todo remove these two lines \\
-    window$1.performance = window$1.performance || { now: function(){} };
-    // var t = performance.now();
 
     // just useful aliases for debugging
-    window$1.api = pluginApi;
+    window$1.api = api$1;
     window$1.wpApi = wpApi;
   }
 
-  // // be sure to have what we need, bail otherwise
-  // if (!wp) {
-  //   throw new Error('Missing crucial object `wp`');
-
-  // // be sure to have what we need, bail otherwise
-  // if (!pluginApi) {
-  //   throw new Error('Missing crucial object `kkcp`');
-  // }
+  /**
+   * Set default speed of jQuery animations
+   */
+  $$1.fx.speeds['_default'] = 180; // whitelisted from uglify \\
 
   /**
    * Markdown init (with marked.js)
@@ -9042,180 +9272,133 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
   })();
 
-  /* jshint maxlen: 1000 */
+  /**
+   * @fileOverview A wrapper to contain all regexes used.
+   * It might be that we need a regex that matches a list of words, in that case
+   * we might want to define the words in an array (coming from php perhaps?).
+   * So for array to regex conversion do:
+   * ```
+   * new RegExp(MY_VAR.join('|'), 'g')`
+   * ```
+   * See {@link http://stackoverflow.com/q/28280920/1938970 stackoverflow}.
+   *
+   * @module Regexes
+   */
+  /**
+   * Whitespaces global match
+   *
+   * To clean user input (most often when writing custom expressions)
+   * so that it would later on be more easily parsable by our validation
+   * regexes. Use this as follow: `string.replace(Regexes._whitespaces, '')`.
+   *
+   * {@link http://stackoverflow.com/a/5963202/1938970}
+   *
+   * @const
+   * @type {RegExp}
+   */
+  var _whitespaces = /\s+/g;
 
   /**
-   * Regexes
+   * Extract unit, it returns the first matched, so the units are sorted by
+   * popularity (approximately).
    *
-   * @class api.core.Regexes
-   *
-   * It might be that we need a regex that match of available words,
-   * in that case it might be that we want to define the words in an
-   * array (maybe coming from php?). So for array to regex conversion
-   * do: `new RegExp(MY_VAR.join('|'), 'g')`. See {@link
-   * http://stackoverflow.com/q/28280920/1938970 stackoverflow}.
+   * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
+   * @const
+   * @type {RegExp}
    */
-  var Regexes = {
-    /**
-     * Whitespaces global match
-     *
-     * To clean user input (most often when writing custom expressions)
-     * so that it would later on be more easily parsable by our validation
-     * regexes. Use this as follow: `string.replace(Regexes.whitespaces, '')`.
-     *
-     * {@link http://stackoverflow.com/a/5963202/1938970}
-     *
-     * @const
-     * @type {RegExp}
-     */
-    _whitespaces: /\s+/g,
-    /**
-     * Grab all variables (sanitized user input)
-     *
-     * It capture a group from each `@variable-name` found
-     *
-     * @const
-     * @type {RegExp}
-     */
-    _variables_match: /@([a-zA-Z-_0-9]+)/g,
-    /**
-     * Simple color function (raw user input)
-     *
-     * This just checks if the user input looks like a valid simple function
-     * expression, so it's gentle with whitespace. It capture the number
-     * (`amount`) but not to use it.
-     *
-     * {@link http://regex101.com/r/wC5aO9/3}
-     *
-     * @const
-     * @type {RegExp}
-     */
-    _colorSimpleFunction_test: /^\s*[a-z]+\(\s*@[a-zA-Z-_0-9]+\,\s*(0\.[0-9]*[1-9][0-9]*|100|[1-9]\d?|[1-9]\d?\.[0-9]+)%?\s*\)\s*$/,
-    /**
-     * Simple color function (sanitized user input)
-     *
-     * This works only after having stripped all whitespaces,
-     * it capture three groups: 'functionName', varName', 'amount'
-     *
-     * {@link http://regex101.com/r/nC7iA2/2}
-     *
-     * @const
-     * @type {RegExp}
-     */
-    _colorSimpleFunction_match: /^([a-z]+)\(@([a-zA-Z-_0-9]+)\,(0\.[0-9]*[1-9][0-9]*|100|[1-9]\d?|[1-9]\d?\.[0-9]+)%?\)$/,
-    /**
-     * Simple variable (raw user input)
-     *
-     * This just checks if the user input looks like a single variable,
-     * so it's gentle with whitespace.
-     *
-     * {@link https://regex101.com/r/aP9mJ1/1}
-     *
-     * @const
-     * @type {RegExp}
-     */
-    _simpleVariable_test: /^\s*@[a-zA-Z-_0-9]+\s*$/,
-    /**
-     * Simple variable (sanitized user input)
-     *
-     * This works only after having stripped all whitespaces,
-     * it capture one group: the `varName'
-     *
-     * {@link https://regex101.com/r/aO6fI9/2}
-     *
-     * @const
-     * @type {RegExp}
-     */
-    _simpleVariable_match: /^@([a-zA-Z-_0-9]+)$/,
-    /**
-     * Variable (just grab a variable wherever it is)
-     *
-     * it capture one group: the `varName'
-     *
-     * @const
-     * @type {RegExp}
-     */
-    _variable_match: /@([a-zA-Z-_0-9]+)/,
-    /**
-     * Extract unit, it returns the first matched, so the units are sorted by
-     * popularity (approximately).
-     *
-     * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
-     * @const
-     * @type {RegExp}
-     */
-    _extractUnit: /(px|%|em|rem|vh|vw|vmin|vmax|cm|mm|in|pt|pc|ch|ex)/,
-    /**
-     * Extract number from string (both integers or float)
-     *
-     * @see http://stackoverflow.com/a/17885985/1938970
-     * @const
-     * @type {RegExp}
-     */
-    _extractNumber: /(\+|-)?((\d+(\.\d+)?)|(\.\d+))/,
-    /**
-     * Detects if the shape of the string is that of a setting saved or to be
-     * saved through the options API, e.g. `mytheme[a_setting_id]``
-     *
-     * @type {RegExp}
-     */
-    _optionsApi: new RegExp(api.constants['OPTIONS_PREFIX'] + '\\[.*\\]'),
-    /**
-     * Helps to understand if a url is absolute or relative
-     *
-     * @@todo test
-     * @const
-     * @type {RegExp}
-     */
-    _absoluteUrl: /^(?:[a-z]+:)?\/\//i,
-    /**
-     * Multiple slashes
-     *
-     * @@todo test
-     * @const
-     * @type {RegExp}
-     */
-    _multipleSlashes: /[a-z-A-Z-0-9_]{1}(\/\/+)/g
-  };
-
-  // export to public API
-  var Regexes$1 = api.core.Regexes = Regexes;
+  var _extractUnit = /(px|%|em|rem|vh|vw|vmin|vmax|cm|mm|in|pt|pc|ch|ex)/;
 
   /**
-   * Utils
+   * Extract number from string (both integers or float)
    *
-   * @class api.core.Utils
+   * @see http://stackoverflow.com/a/17885985/1938970
+   * @const
+   * @type {RegExp}
    */
-  var Utils$1 = function Utils () {
+  var _extractNumber = /(\+|-)?((\d+(\.\d+)?)|(\.\d+))/;
 
-    /** @type {string} */
-    this._IMAGES_BASE_URL = api.constants['IMAGES_BASE_URL'];
+  /**
+   * Detects if the shape of the string is that of a setting saved or to be
+   * saved through the options API, e.g. `mytheme[a_setting_id]``
+   *
+   * @type {RegExp}
+   */
+  var _optionsApi = new RegExp(api$1.constants['OPTIONS_PREFIX'] + '\\[.*\\]');
 
-    /** @type {string} */
-    this._DOCS_BASE_URL = api.constants['DOCS_BASE_URL'];
-  };
+  /**
+   * Helps to understand if a url is absolute or relative
+   *
+   * @const
+   * @type {RegExp}
+   */
+  var _absoluteUrl = /^(?:[a-z]+:)?\/\//i;
+
+  /**
+   * Multiple slashes
+   *
+   * @const
+   * @type {RegExp}
+   */
+  var _multipleSlashes = /[a-z-A-Z-0-9_]{1}(\/\/+)/g;
+
+  /**
+   * @alias core.Regexes
+   * @description  Exposed module <a href="module-Regexes.html">Regexes</a>
+   * @access package
+   */
+  var Regexes = api$1.core.Regexes = {
+    _whitespaces: _whitespaces,
+    _extractUnit: _extractUnit,
+    _extractNumber: _extractNumber,
+    _optionsApi: _optionsApi,
+    _absoluteUrl: _absoluteUrl,
+    _multipleSlashes: _multipleSlashes,
+  }
+
+  /**
+   * @fileOverview An helper class containing helper methods. This has its PHP
+   * equivalent in `class-helper.php`
+   *
+   * @module Utils
+   * @requires Regexes
+   */
+  /**
+   * Images base url
+   *
+   * @type {string}
+   */
+  var _IMAGES_BASE_URL = api$1.constants['IMAGES_BASE_URL'];
+
+  /**
+   * Docs base url
+   *
+   * @type {string}
+   */
+  var _DOCS_BASE_URL = api$1.constants['DOCS_BASE_URL'];
 
   /**
    * Is it an absolute URL?
    *
-   * {@link http://stackoverflow.com/a/19709846/1938970}
-   * @param{string}url The URL to test
-   * @return {Boolean}   Whether is absolute or relative
+   * @see {@link http://stackoverflow.com/a/19709846/1938970}
+   *
+   * @param  {string}  url The URL to test
+   * @return {boolean}     Whether is absolute or relative
    */
-  Utils$1.prototype._isAbsoluteUrl = function _isAbsoluteUrl (url) {
-    return Regexes$1._absoluteUrl.test(url);
-  };
+  function _isAbsoluteUrl (url) {
+    return Regexes._absoluteUrl.test(url);
+  }
+
   /**
    * Clean URL from multiple slashes
    *
    * Strips possible multiple slashes caused by the string concatenation or dev errors
    *
-   * @param{string} url
+   * @param  {string} url
    * @return {string}
    */
-  Utils$1.prototype._cleanUrlFromMultipleSlashes = function _cleanUrlFromMultipleSlashes (url) {
-    return url.replace(Regexes$1._multipleSlashes, '/');
-  };
+  function _cleanUrlFromMultipleSlashes (url) {
+    return url.replace(Regexes._multipleSlashes, '/');
+  }
 
   /**
    * Get a clean URL
@@ -9223,304 +9406,72 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * If an absolute URL is passed we just strip multiple slashes,
    * if a relative URL is passed we also prepend the right base url.
    *
-   * @param{string} url
-   * @param{string} type
+   * @param  {string} url
+   * @param  {string} type
    * @return {string}
    */
-  Utils$1.prototype._getCleanUrl = function _getCleanUrl (url, type) {
-    // return the absolute url
+  function _getCleanUrl (url, type) {
     var finalUrl = url;
-    if (!this._isAbsoluteUrl(url)) {
+
+    if (!_isAbsoluteUrl(url)) {
       switch (type) {
         case 'img':
-          finalUrl = this._IMAGES_BASE_URL + url;
+          finalUrl = _IMAGES_BASE_URL + url;
           break;
         case 'docs':
-          finalUrl = this._DOCS_BASE_URL + url;
+          finalUrl = _DOCS_BASE_URL + url;
           break;
         default:
           break;
       }
     }
-    return this._cleanUrlFromMultipleSlashes(finalUrl);
-  };
-
-  /**
-   * Get image url
-   *
-   * @static
-   * @param{string} url The image URL, relative or absolute
-   * @return {string}   The absolute URL of the image
-   */
-  Utils$1.prototype.getImageUrl = function getImageUrl (url) {
-    return this._getCleanUrl(url, 'img');
-  };
-
-  /**
-   * Get docs url
-   *
-   * @static
-   * @param{string} url The docs URL, relative or absolute
-   * @return {string}   The absolute URL of the docs
-   */
-  Utils$1.prototype.getDocsUrl = function getDocsUrl (url) {
-    return this._getCleanUrl(url, 'docs');
-  };
-
-  /**
-   * Bind a link element or directly link to a specific control to focus
-   *
-   * @static
-   * @param{HTMLElement} linkEl The link DOM element `<a>`
-   * @param{string} controlId The control id to link to
-   */
-  Utils$1.prototype.linkControl = function linkControl (linkEl, controlId) {
-      var this$1 = this;
-
-    var controlToFocus = wpApi.control(controlId);
-
-    // be sure there is the control and update dynamic color message text
-    if (controlToFocus) {
-      if (linkEl) {
-        linkEl.onclick = function () {
-          this$1.focus(controlToFocus);
-        };
-      } else {
-        this.focus(controlToFocus);
-      }
-    }
-  };
-
-  /**
-   * Wrap WordPress control focus with some custom stuff
-   *
-   * @param {wp.customize.control} control
-   */
-  Utils$1.prototype.focus = function focus (control) {
-    try {
-      // try this so it become possible to use this function even
-      // with WordPress native controls which don't have this method
-      control.inflate(true);
-
-      // always disable search, it could be that we click on this
-      // link from a search result try/catch because search is not
-      // always enabled
-      api.components.Search.disable();
-    } catch(e) {}
-    control.focus();
-    control.container.addClass('kkcp-control-focused');
-    setTimeout(function () {
-      control.container.removeClass('kkcp-control-focused');
-    }, 2000);
-  };
-
-  /**
-   * Reset control -> setting value to the value according
-   * to the given mode argument
-   *
-   * @static
-   * @param{Control} controlThe control whose setting has to be reset
-   * @param{string} resetType Either `'initial'` or `'factory'`
-   * @return {boolean}        Whether the reset has succeded
-   */
-  Utils$1.prototype.resetControl = function resetControl (control, resetType) {
-    var params = control.params;
-    if (!control.setting) {
-      return true;
-    }
-    var value;
-    if (resetType === 'last' && !_.isUndefined(params.vLast)) {
-      value = params.vLast;
-    } else if (resetType === 'initial') {
-      value = params.vInitial;
-    } else if (resetType === 'factory') {
-      value = params.vFactory;
-    }
-    if (value) {
-      control.setting.set(value);
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  /**
-   * Check if the given type of reset is needed for a specific control
-   *
-   * @static
-   * @param{Control} controlThe control which need to be checked
-   * @param{string} resetType Either `'initial'` or `'factory'`
-   * @return {boolean}        Whether the reset has succeded
-   */
-  Utils$1.prototype._isResetNeeded = function _isResetNeeded (control, resetType) {
-    var params = control.params;
-    if (!control.kkcp || !control.setting) {
-      return false;
-    }
-    var _softenize = control.softenize;
-    var value = _softenize(control.setting());
-    if (resetType === 'last' && !_.isUndefined(params.vLast)) {
-      return value !== _softenize(params.vLast);
-    } else if (resetType === 'initial') {
-      return value !== _softenize(params.vInitial);
-    } else if (resetType === 'factory') {
-      return value !== _softenize(params.vFactory);
-    }
-  };
-
-  /**
-   * Force `setting.set`.
-   * Use case:
-   * When a required text control content gets deleted by the user,
-   * the extras dropdown shows the reset buttons enabled but clicking on any
-   * of them doesn't give any effect in the UI. Why? Because when the input
-   * field gets emptied the validate function set the setting to the last
-   * value using `return this.setting()`, this returning value it is likely
-   * to be the same as the initial session or the factory value, therefore
-   * before and after the user has clicked the reset button the value of the
-   * setting could stay the same. Despite this make sense, the input field
-   * gets out of sync, it becomes empty, while the setting value remains the
-   * latest valid value).
-   * The callback that should be called on reset (the `syncUIfromAPI` method)
-   * in this scenario doesn't get called because in the WordPress
-   * `customize-base.js#187` there is a check that return the function if the
-   * setting has been set with the same value as the last one, preventing so
-   * to fire the callbacks binded to the setting and, with these, also our
-   * `syncUIfromAPI` that would update the UI, that is our input field with
-   * the resetted value. To overcome this problem we can force the setting to
-   * set anyway by temporarily set the private property `_value` to a dummy
-   * value and then re-setting the setting to the desired value, in this way
-   * the callbacks are fired and the UI get back in sync.
-   *
-   * @static
-   * @param{wp.customize.Setting} setting
-   * @param{string} value
-   */
-  Utils$1.prototype._forceSettingSet = function _forceSettingSet (setting, value, dummyValue) {
-    setting['_value'] = dummyValue || 'dummy'; // whitelisted from uglify \\
-    setting.set(value);
-  };
-
-  /**
-   * Is setting value (`control.setting()`) empty?
-   * Used to check if required control's settings have instead an empty value
-   *
-   * @see php class method `KKcp_Sanitize::is_setting_value_empty()`
-   * @static
-   * @param{string}value
-   * @return {Boolean}
-   */
-  Utils$1.prototype._isSettingValueEmpty = function _isSettingValueEmpty (value) {
-    // first try to compare it to an empty string
-    if (value === '') {
-      return true;
-    } else {
-      // if it's a jsonized value try to parse it
-      try {
-        value = JSON.parse(value);
-      } catch(e) {}
-
-      // and then see if we have an empty array or an empty object
-      if ((_.isArray(value) || _.isObject(value)) && _.isEmpty(value)) {
-        return true;
-      }
-
-      return false;
-    }
-  };
+    return _cleanUrlFromMultipleSlashes(finalUrl);
+  }
 
   /**
    * Each control execute callback with control as argument
    *
-   * @static
    * @param {function} callback
    */
-  Utils$1.prototype._eachControl = function _eachControl (callback) {
+  function _eachControl (callback) {
     var wpApiControl = wpApi.control;
+
     for (var controlId in wpApi.settings.controls) {
-      var control = wpApiControl(controlId);
-      // @@doubt, probably unneeded check \\
-      if (control && control.setting) {
-        callback(control);
-      }
+      callback(wpApiControl(controlId));
     }
-  };
+  }
 
   /**
    * Is the control's setting using the `theme_mods` API?
    *
-   * @static
-   * @param{string}controlId The control id
-   * @return {Boolean}
+   * @param  {string}  controlId The control id
+   * @return {boolean}
    */
-  Utils$1.prototype._isThemeModsApi = function _isThemeModsApi (controlId) {
-    return !Regexes$1._optionsApi.test(controlId);
-  };
+  function _isThemeModsApi (controlId) {
+    return !Regexes._optionsApi.test(controlId);
+  }
 
   /**
    * Is the control's setting using the `options` API?
    * Deduced by checking that the control id is structured as:
    * `themeprefix[setting-id]`
    *
-   * @static
-   * @param{string}controlId The control id
-   * @return {Boolean}
+   * @param  {string}  controlId The control id
+   * @return {boolean}
    */
-  Utils$1.prototype._isOptionsApi = function _isOptionsApi (controlId) {
-    return Regexes$1._optionsApi.test(controlId);
-  };
-
-  /**
-   * Strip HTML from input
-   * {@link http://stackoverflow.com/q/5002111/1938970}
-   *
-   * @static
-   * @param{string} input
-   * @return {string}
-   */
-  Utils$1.prototype._stripHTML = function _stripHTML (input) {
-    return $(document.createElement('div')).html(input).text();
-  };
-
-  /**
-   * Selectize render option function
-   *
-   * @abstract
-   * @static
-   * @param{Object} data   The selectize option object representation.
-   * @param{function} escape Selectize escape function.
-   * @return {string}        The option template.
-   */
-  Utils$1.prototype._selectizeRenderOptionSize = function _selectizeRenderOptionSize (data, escape) {
-    return '<div class="kkcpsize-selectOption">' +
-        '<i>' + escape(data.valueCSS) + '</i> ' + escape(data.label) +
-      '</div>';
-  };
-
-  /**
-   * Selectize render option function
-   *
-   * @abstract
-   * @static
-   * @param{Object} data   The selectize option object representation.
-   * @param{function} escape Selectize escape function.
-   * @return {string}        The option template.
-   */
-  Utils$1.prototype._selectizeRenderOptionColor = function _selectizeRenderOptionColor (data, escape) {
-    return '<div class="kkcpcolor-selectOption" style="border-color:' +
-      escape(data.valueCSS) + '">' + escape(data.label) + '</div>';
-  };
+  function _isOptionsApi (controlId) {
+    return Regexes._optionsApi.test(controlId);
+  }
 
   /**
    * Get stylesheet by Node id
    *
    * @abstract
-   * @static
-   * @param{string} nodeId
+   * @param  {string} nodeId
    * @return {?HTMLElement}
    */
-  Utils$1.prototype._getStylesheetById = function _getStylesheetById (nodeId) {
-    var stylesheets = document.styleSheets;
+  function _getStylesheetById (nodeId) {
+    var stylesheets = document$1.styleSheets;
     try {
       for (var i = 0, l = stylesheets.length; i < l; i++) {
         if (stylesheets[i].ownerNode.id === nodeId) {
@@ -9530,19 +9481,19 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     } catch(e) {
       return null;
     }
-  };
+  }
 
   /**
    * Get rules from stylesheet for the given selector
    *
    * @abstract
-   * @static
-   * @param{HTMLElement} stylesheet
-   * @param{string} selector
+   * @param  {HTMLElement} stylesheet
+   * @param  {string} selector
    * @return {string}
    */
-  Utils$1.prototype._getRulesFromStylesheet = function _getRulesFromStylesheet (stylesheet, selector) {
+  function _getRulesFromStylesheet (stylesheet, selector) {
     var output = '';
+
     if (stylesheet) {
       var rules = stylesheet.rules || stylesheet.cssRules;
       for (var i = 0, l = rules.length; i < l; i++) {
@@ -9552,7 +9503,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       }
     }
     return output;
-  };
+  }
 
   /**
    * Get CSS (property/value pairs) from the given rules.
@@ -9560,356 +9511,103 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * Basically it just clean the `rules` string removing the selector and
    * the brackets.
    *
-   * @param{string} rules
-   * @param{string} selector
+   * @param  {string} rules
+   * @param  {string} selector
    * @return {string}
    */
-  Utils$1.prototype._getCssRulesContent = function _getCssRulesContent (rules, selector) {
+  function _getCssRulesContent (rules, selector) {
     var regex = new RegExp(selector, 'g');
     var output = rules.replace(regex, '');
     output = output.replace(/({|})/g, '');
     return output.trim();
-  };
-
-  // export to public API
-  var Utils = api.core.Utils = new Utils$1();
-
-  function unwrapExports (x) {
-  	return x && x.__esModule ? x['default'] : x;
   }
 
-  function createCommonjsModule(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+  /**
+   * Get image url
+   *
+   * @param  {string} url The image URL, relative or absolute
+   * @return {string}     The absolute URL of the image
+   */
+  function getImageUrl (url) {
+    return _getCleanUrl(url, 'img');
   }
 
-  var assertString_1 = createCommonjsModule(function (module, exports) {
-  'use strict';
+  /**
+   * Get docs url
+   *
+   * @param  {string} url The docs URL, relative or absolute
+   * @return {string}     The absolute URL of the docs
+   */
+  function getDocsUrl (url) {
+    return _getCleanUrl(url, 'docs');
+  }
 
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = assertString;
-  function assertString(input) {
-    if (typeof input !== 'string') {
-      throw new TypeError('This library (validator.js) validates strings only');
+  /**
+   * Bind a link element or directly link to a specific control to focus
+   *
+   * @param  {HTMLElement} linkEl The link DOM element `<a>`
+   * @param  {string} controlId   The control id to link to
+   */
+  function linkControl (linkEl, controlId) {
+    var controlToFocus = wpApi.control(controlId);
+
+    // be sure there is the control and update dynamic color message text
+    if (controlToFocus) {
+      if (linkEl) {
+        linkEl.onclick = function () {
+          focus(controlToFocus);
+        };
+      } else {
+        focus(controlToFocus);
+      }
     }
   }
-  module.exports = exports['default'];
-  });
 
-  var isHexColor_1 = createCommonjsModule(function (module, exports) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = isHexColor;
-
-  var _assertString = assertString_1;
-
-  var _assertString2 = _interopRequireDefault(_assertString);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  var hexcolor = /^#?([0-9A-F]{3}|[0-9A-F]{6})$/i;
-
-  function isHexColor(str) {
-    (0, _assertString2.default)(str);
-    return hexcolor.test(str);
-  }
-  module.exports = exports['default'];
-  });
-
-  var isHexColor = unwrapExports(isHexColor_1);
-
-  var matches_1 = createCommonjsModule(function (module, exports) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = matches;
-
-  var _assertString = assertString_1;
-
-  var _assertString2 = _interopRequireDefault(_assertString);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  function matches(str, pattern, modifiers) {
-    (0, _assertString2.default)(str);
-    if (Object.prototype.toString.call(pattern) !== '[object RegExp]') {
-      pattern = new RegExp(pattern, modifiers);
-    }
-    return pattern.test(str);
-  }
-  module.exports = exports['default'];
-  });
-
-  // import { api } from './globals';
   /**
-   * Color validation utility
+   * Wrap WordPress control focus with some custom stuff
    *
-   * Heavily inspired by formvalidation.js
-   * by Nguyen Huu Phuoc, aka @nghuuphuoc and contributors
-   * {@link https://github.com/formvalidation/}
-   *
-   * @type {Object}
+   * @param {WP_Customize_Control} control
    */
-  var _validatorColor = {
-    types: [ 'hex', 'rgb', 'rgba', 'hsl', 'hsla', 'keyword' ],
-    // available also on `less.js` global var `less.data.colors` as Object
-    keywords: {
-      'aliceblue': 0,
-      'antiquewhite': 0,
-      'aqua': 0,
-      'aquamarine': 0,
-      'azure': 0,
-      'beige': 0,
-      'bisque': 0,
-      'black': 0,
-      'blanchedalmond': 0,
-      'blue': 0,
-      'blueviolet': 0,
-      'brown': 0,
-      'burlywood': 0,
-      'cadetblue': 0,
-      'chartreuse': 0,
-      'chocolate': 0,
-      'coral': 0,
-      'cornflowerblue': 0,
-      'cornsilk': 0,
-      'crimson': 0,
-      'cyan': 0,
-      'darkblue': 0,
-      'darkcyan': 0,
-      'darkgoldenrod': 0,
-      'darkgray': 0,
-      'darkgreen': 0,
-      'darkgrey': 0,
-      'darkkhaki': 0,
-      'darkmagenta': 0,
-      'darkolivegreen': 0,
-      'darkorange': 0,
-      'darkorchid': 0,
-      'darkred': 0,
-      'darksalmon': 0,
-      'darkseagreen': 0,
-      'darkslateblue': 0,
-      'darkslategray': 0,
-      'darkslategrey': 0,
-      'darkturquoise': 0,
-      'darkviolet': 0,
-      'deeppink': 0,
-      'deepskyblue': 0,
-      'dimgray': 0,
-      'dimgrey': 0,
-      'dodgerblue': 0,
-      'firebrick': 0,
-      'floralwhite': 0,
-      'forestgreen': 0,
-      'fuchsia': 0,
-      'gainsboro': 0,
-      'ghostwhite': 0,
-      'gold': 0,
-      'goldenrod': 0,
-      'gray': 0,
-      'green': 0,
-      'greenyellow': 0,
-      'grey': 0,
-      'honeydew': 0,
-      'hotpink': 0,
-      'indianred': 0,
-      'indigo': 0,
-      'ivory': 0,
-      'khaki': 0,
-      'lavender': 0,
-      'lavenderblush': 0,
-      'lawngreen': 0,
-      'lemonchiffon': 0,
-      'lightblue': 0,
-      'lightcoral': 0,
-      'lightcyan': 0,
-      'lightgoldenrodyellow': 0,
-      'lightgray': 0,
-      'lightgreen': 0,
-      'lightgrey': 0,
-      'lightpink': 0,
-      'lightsalmon': 0,
-      'lightseagreen': 0,
-      'lightskyblue': 0,
-      'lightslategray': 0,
-      'lightslategrey': 0,
-      'lightsteelblue': 0,
-      'lightyellow': 0,
-      'lime': 0,
-      'limegreen': 0,
-      'linen': 0,
-      'magenta': 0,
-      'maroon': 0,
-      'mediumaquamarine': 0,
-      'mediumblue': 0,
-      'mediumorchid': 0,
-      'mediumpurple': 0,
-      'mediumseagreen': 0,
-      'mediumslateblue': 0,
-      'mediumspringgreen': 0,
-      'mediumturquoise': 0,
-      'mediumvioletred': 0,
-      'midnightblue': 0,
-      'mintcream': 0,
-      'mistyrose': 0,
-      'moccasin': 0,
-      'navajowhite': 0,
-      'navy': 0,
-      'oldlace': 0,
-      'olive': 0,
-      'olivedrab': 0,
-      'orange': 0,
-      'orangered': 0,
-      'orchid': 0,
-      'palegoldenrod': 0,
-      'palegreen': 0,
-      'paleturquoise': 0,
-      'palevioletred': 0,
-      'papayawhip': 0,
-      'peachpuff': 0,
-      'peru': 0,
-      'pink': 0,
-      'plum': 0,
-      'powderblue': 0,
-      'purple': 0,
-      'red': 0,
-      'rosybrown': 0,
-      'royalblue': 0,
-      'saddlebrown': 0,
-      'salmon': 0,
-      'sandybrown': 0,
-      'seagreen': 0,
-      'seashell': 0,
-      'sienna': 0,
-      'silver': 0,
-      'skyblue': 0,
-      'slateblue': 0,
-      'slategray': 0,
-      'slategrey': 0,
-      'snow': 0,
-      'springgreen': 0,
-      'steelblue': 0,
-      'tan': 0,
-      'teal': 0,
-      'thistle': 0,
-      'tomato': 0,
-      'transparent': 0,
-      'turquoise': 0,
-      'violet': 0,
-      'wheat': 0,
-      'white': 0,
-      'whitesmoke': 0,
-      'yellow': 0,
-      'yellowgreen': 0
-    },
-    hex: function(value) {
-      return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(value);
-    },
-    hsl: function(value) {
-      return /^hsl\((\s*(-?\d+)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*)\)$/.test(value);
-    },
-    hsla: function(value) {
-      return /^hsla\((\s*(-?\d+)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*,){2}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/.test(value);
-    },
-    keyword: function(value) {
-      return !!this.keywords[value];
-    },
-    rgb: function(value) {
-      var regexInteger = /^rgb\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){2}(\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*)\)$/;
-      var regexPercent = /^rgb\((\s*(\b(0?\d{1,2}|100)\b%)\s*,){2}(\s*(\b(0?\d{1,2}|100)\b%)\s*)\)$/;
-      return regexInteger.test(value) || regexPercent.test(value);
-    },
-    rgba: function(value) {
-      var regexInteger = /^rgba\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;
-      var regexPercent = /^rgba\((\s*(\b(0?\d{1,2}|100)\b%)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;
-      return regexInteger.test(value) || regexPercent.test(value);
-    }
-  };
+  function focus (control) {
+    try {
+      // try this so it become possible to use this function even
+      // with WordPress native controls which don't have this method
+      control.inflate(true);
 
-  /**
-   * Is Color
-   * @param  {string} str The string to validate
-   * @return {boolean}    Whether is valid or not.
-   */
-
-
-  /**
-   * Is keyword Color
-   * @param  {string} str The string to validate
-   * @return {boolean}    Whether is valid or not.
-   */
-
-
-  /**
-   * Is rgba Color
-   * @param  {string} str The string to validate
-   * @return {boolean}    Whether is valid or not.
-   */
-  function isRgbaColor (str) {
-    return _validatorColor.rgba(str);
+      // always disable search, it could be that we click on this
+      // link from a search result try/catch because search is not
+      // always enabled
+      api$1.components.Search.disable();
+    } catch(e) {}
+    control.focus();
+    control.container.addClass('kkcp-control-focused');
+    setTimeout(function () {
+      control.container.removeClass('kkcp-control-focused');
+    }, 2000);
   }
 
   /**
-   * Is Var
-   * @param  {string} str The string to validate
-   * @return {boolean}    Whether is valid or not.
+   * @alias core.Utils
+   * @description  Exposed module <a href="module-Utils.html">Utils</a>
+   * @access package
    */
-
-
-  /**
-   * Is Multiple of
-   *
-   * Take a look at the {@link http://stackoverflow.com/q/12429362/1938970
-   * stackoverflow question} about this topic. This solution is an ok
-   * compromise. We use `Math.abs` to convert negative number to positive
-   * otherwise the minor comparison would always return true for negative
-   * numbers.
-   *
-   * @param  {string}  number   [description]
-   * @param  {string}  multiple [description]
-   * @return {Boolean}          [description]
-   */
-  function isMultipleOf (number1, number2) {
-    var a = Math.abs(number1);
-    var b = Math.abs(number2);
-    var result = Math.round( Math.round(a * 100000) % Math.round(b * 100000) ) / 100000;
-    return result < 1e-5;
+  var Utils = api$1.core.Utils = {
+    _IMAGES_BASE_URL: _IMAGES_BASE_URL,
+    _DOCS_BASE_URL: _DOCS_BASE_URL,
+    _isAbsoluteUrl: _isAbsoluteUrl,
+    _cleanUrlFromMultipleSlashes: _cleanUrlFromMultipleSlashes,
+    _getCleanUrl: _getCleanUrl,
+    _eachControl: _eachControl,
+    _isThemeModsApi: _isThemeModsApi,
+    _isOptionsApi: _isOptionsApi,
+    _getStylesheetById: _getStylesheetById,
+    _getRulesFromStylesheet: _getRulesFromStylesheet,
+    _getCssRulesContent: _getCssRulesContent,
+    getImageUrl: getImageUrl,
+    getDocsUrl: getDocsUrl,
+    linkControl: linkControl,
+    focus: focus,
   }
-
-  /**
-   * Is HTML?
-   *
-   * It tries to use the DOMParser object (see Browser compatibility table
-   * [here](mzl.la/2kh7HEl)), otherwise it just.
-   * Solution inspired by this [stackerflow answer](http://bit.ly/2k6uFLI)
-   *
-   * // @@unused \\
-   * @param  {string}  str
-   * @return {Boolean}
-   */
-
-
-  /**
-   * To Boolean
-   * '0' or '1' to boolean
-   *
-   * @static
-   * @param  {strin|number} value
-   * @return {boolean}
-   */
-  function numberToBoolean (value) {
-    return typeof value === 'boolean' ? value : !!parseInt(value, 10);
-  }
-
-  // export to public API
-  // export default api.core.Validators = Validators;
 
   /**
    * WordPress Tight
@@ -9917,9 +9615,40 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * We can put some logic in private functions to grab the
    * right things in case WordPress change stuff across versions
    *
-   * @class api.core.WpTight
+   * @since 1.0.0
+   * @access private
+   *
+   * @class WpTight
+   * @requires Utils
    */
-  var WpTight = (function () {
+  var WpTight = function WpTight () {
+
+    /**
+     * WordPress UI elements
+     *
+     * @type {Object.<string, jQuery|HTMLElement>}
+     */
+    this.el = {};
+
+    /**
+     * WordPress query parameters used in the customize app url
+     *
+     * @private
+     * @internal
+     * @type {Array}
+     */
+    this._customizeQueryParamsKeys = [
+      'changeset_uuid', // e.g. e6ba8e82-e628-4d6e-b7b4-39a480bc043c
+      'customize_snapshot_uuid' // e.g. 52729bb7-9686-496e-90fa-7170405a5502
+    ];
+
+    /**
+     * The suffix appended to the styles ids by WordPress when enqueuing them
+     * through `wp_enqueue_style`
+     *
+     * @type {string}
+     */
+    this.cssSuffix = '-css';
 
     /**
      * The id of the WordPress core css with the color schema
@@ -9928,7 +9657,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * @internal
      * @type {string}
      */
-    var _colorSchemaCssId = 'colors-css';
+    this._colorSchemaCssId = 'colors-css';
 
     /**
      * The WordPress color schema useful selectors
@@ -9937,7 +9666,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * @internal
      * @type {Object}
      */
-    var _colorSchemaSelectors = {
+    this._colorSchemaSelectors = {
       _primary: '.wp-core-ui .wp-ui-primary',
       _textPrimary: '.wp-core-ui .wp-ui-text-primary',
       _linksPrimary: '#adminmenu .wp-submenu .wp-submenu-head',
@@ -9948,354 +9677,358 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     };
 
     /**
-     * Get WordPress Admin colors
+     * WordPress Admin colors
      *
-     * @abstract
-     * @return {object}
+     * @private
+     * @internal
+     * @type {Object}
      */
-    function _getWpAdminColors () {
-      var stylesheet = Utils._getStylesheetById(_colorSchemaCssId);
-      var schema = _colorSchemaSelectors;
-      var output = {};
-      for (var key in schema) {
-        if (schema.hasOwnProperty(key)) {
-          var selector = schema[key];
-          var rules = Utils._getRulesFromStylesheet(stylesheet, selector);
-          output[key] = Utils._getCssRulesContent(rules, selector);
-        }
-      }
-      return output;
-    }
+    this._colorSchema = this._getWpAdminColors();
 
-    // @access public
-    return {
-      /**
-       * Init
-       *
-       * @return {void}
-       */
-      init: function () {
-        /**
-         * WordPress UI elements
-         *
-         * @type {Object.<string, jQuery|HTMLElement>}
-         */
-        var el = this.el = {};
-
-        /** @type {JQuery} */
-        el.container = $('.wp-full-overlay');
-        /** @type {JQuery} */
-        el.controls = $('#customize-controls');
-        /** @type {JQuery} */
-        el.themeControls = $('#customize-theme-controls');
-        /** @type {JQuery} */
-        el.preview = $('#customize-preview');
-        /** @type {JQuery} */
-        el.header = $('#customize-header-actions');
-        /** @type {JQuery} */
-        el.footer = $('#customize-footer-actions');
-        /** @type {JQuery} */
-        el.devices = el.footer.find('.devices');
-        /** @type {JQuery} */
-        el.close = el.header.find('.customize-controls-close');
-        /** @type {JQuery} */
-        el.sidebar = $('.wp-full-overlay-sidebar-content');
-        /** @type {JQuery} */
-        el.info = $('#customize-info');
-        /** @type {JQuery} */
-        el.customizeControls = $('#customize-theme-controls').find('ul').first();
-      },
-      /**
-       * The suffix appended to the styles ids by WordPress when enqueuing them
-       * through `wp_enqueue_style`
-       *
-       * @type {string}
-       */
-      cssSuffix: '-css',
-      /**
-       * WordPress Admin colors
-       *
-       * @private
-       * @internal
-       * @type {object}
-       */
-      _colorSchema: _getWpAdminColors(),
-      /**
-       * WordPress query parameters used in the customize app url
-       */
-      _customizeQueryParamsKeys: [
-        'changeset_uuid', // e.g. e6ba8e82-e628-4d6e-b7b4-39a480bc043c
-        'customize_snapshot_uuid' // e.g. 52729bb7-9686-496e-90fa-7170405a5502
-      ]
-    };
-  })();
-
-  $readyDOM.then(WpTight.init.bind(WpTight));
-
-  // export to public API
-  api.core.WpTight = WpTight;
+    // bootstraps on DOM ready
+    $readyDOM.then(this._$onReady.bind(this));
+  };
 
   /**
-   * Skeleton element wrappers
+   * On DOM ready
    *
-   * @class api.core.Skeleton
-   * @requires Modernizr
+   * @return {void}
    */
-  var Skeleton = (function () {
+  WpTight.prototype._$onReady = function _$onReady () {
+    var el = this.el;
 
     /** @type {JQuery} */
-    var _$deferredDom = $.Deferred(); // @@todo to check if I still need it, see $reaadyDOM \\
+    el.container = $$1('.wp-full-overlay');
+    /** @type {JQuery} */
+    el.controls = $$1('#customize-controls');
+    /** @type {JQuery} */
+    el.themeControls = $$1('#customize-theme-controls');
+    /** @type {JQuery} */
+    el.preview = $$1('#customize-preview');
+    /** @type {JQuery} */
+    el.header = $$1('#customize-header-actions');
+    /** @type {JQuery} */
+    el.footer = $$1('#customize-footer-actions');
+    /** @type {JQuery} */
+    el.devices = el.footer.find('.devices');
+    /** @type {JQuery} */
+    el.close = el.header.find('.customize-controls-close');
+    /** @type {JQuery} */
+    el.sidebar = $$1('.wp-full-overlay-sidebar-content');
+    /** @type {JQuery} */
+    el.info = $$1('#customize-info');
+    /** @type {JQuery} */
+    el.customizeControls = $$1('#customize-theme-controls').find('ul').first();
+  };
 
-    // @access public
-    return {
-      /**
-       * Init
-       */
-      init: function () {
-        $readyDOM.then(this._initOnDomReady.bind(this));
-      },
-      /**
-       * Init on DOM ready
-       */
-      _initOnDomReady: function () {
-        // set elements as properties
-        this._loader = document.getElementById('kkcp-loader-preview');
-        this.$loader = $(this._loader);
-        this.img = document.getElementById('kkcp-loader-img');
-        this.title = document.getElementById('kkcp-loader-title');
-        this.text = document.getElementById('kkcp-loader-text');
-        this._loaderSidebar = document.getElementById('kkcp-loader-sidebar');
-        this.$loaderSidebar = $(this._loaderSidebar);
-
-        _$deferredDom.resolve();
-        // the first time the iframe preview has loaded hide the skeleton loader
-        wpApi.previewer.targetWindow.bind(this._hideLoaderPreview.bind(this));
-      },
-      /**
-       * Trigger loading UI state (changes based on added css class)
-       */
-      loading: function () {
-        body.classList.add('kkcp-loading');
-      },
-      /**
-       * Remove loading UI state
-       */
-      loaded: function () {
-        body.classList.remove('kkcp-loading');
-      },
-      /**
-       * Show 'full page' loader
-       */
-      show: function (what) {
-        var this$1 = this;
-
-        _$deferredDom.done(function () {
-          if (!what || what === 'preview') {
-            this$1._loader.style.display = 'block';
-          }
-          if (!what || what === 'sidebar') {
-            this$1._loaderSidebar.style.display = 'block';
-          }
-        });
-      },
-      /**
-       * Hide loaders overlays, use jQuery animation if the browser supports
-       * WebWorkers (this is related to the Premium Compiler component)
-       * @param {string} what What to hide: 'preview' or 'sidebar' (pass nothing
-       *                      to hide both)
-       */
-      hide: function (what) {
-        var this$1 = this;
-
-        _$deferredDom.done(function () {
-          var shouldFade = Modernizr.webworkers;
-          if (!what || what === 'preview') {
-            if (shouldFade) {
-              this$1.$loader.fadeOut();
-            } else {
-              this$1._loader.style.display = 'none';
-            }
-          }
-          if (!what || what === 'sidebar') {
-            if (shouldFade) {
-              this$1.$loaderSidebar.fadeOut();
-            } else {
-              this$1._loaderSidebar.style.display = 'none';
-            }
-          }
-        });
-      },
-      /**
-       * Hide loader and unbind itself
-       * (we could also take advantage of the underscore `once` utility)
-       */
-      _hideLoaderPreview: function () {
-        this.hide('preview');
-        wpApi.previewer.targetWindow.unbind(this._hideLoaderPreview);
+  /**
+   * Get WordPress Admin colors
+   *
+   * @return {Object}
+   */
+  WpTight.prototype._getWpAdminColors = function _getWpAdminColors () {
+    var stylesheet = Utils._getStylesheetById(this._colorSchemaCssId);
+    var schema = this._colorSchemaSelectors;
+    var output = {};
+    for (var key in schema) {
+      if (schema.hasOwnProperty(key)) {
+        var selector = schema[key];
+        var rules = Utils._getRulesFromStylesheet(stylesheet, selector);
+        output[key] = Utils._getCssRulesContent(rules, selector);
       }
-    };
-  })();
+    }
+    return output;
+  };
 
-  // Initialize
-  Skeleton.init();
+  /**
+   * @name wpTight
+   * @description  Instance of {@link WpTight}
+   *
+   * @instance
+   * @memberof core
+   */
+  api$1.core.wpTight = new WpTight();
 
-  // export to public API
-  api.core.Skeleton = Skeleton;
+  /**
+   * Skeleton
+   *
+   * Element wrappers for Customize Plus Skeleton DOM.
+   *
+   * @since 1.0.0
+   * @access private
+   *
+   * @class Skeleton
+   * @requires Modernizr
+   */
+  var Skeleton = function Skeleton () {
+    var this$1 = this;
+
+    $readyDOM.then(function () {
+
+      // set elements as properties
+      this$1._loader = document$1.getElementById('kkcp-loader-preview');
+      this$1.$loader = $$1(this$1._loader);
+      this$1.img = document$1.getElementById('kkcp-loader-img');
+      this$1.title = document$1.getElementById('kkcp-loader-title');
+      this$1.text = document$1.getElementById('kkcp-loader-text');
+      this$1._loaderSidebar = document$1.getElementById('kkcp-loader-sidebar');
+      this$1.$loaderSidebar = $$1(this$1._loaderSidebar);
+
+      // the first time the iframe preview has loaded hide the skeleton loader
+      wpApi.previewer.targetWindow.bind(this$1._hideLoaderPreview.bind(this$1));
+    });
+  };
+
+  /**
+   * Trigger loading UI state (changes based on added css class)
+   *
+   */
+  Skeleton.prototype.loading = function loading () {
+    body.classList.add('kkcp-loading');
+  };
+
+  /**
+   * Remove loading UI state
+   *
+   */
+  Skeleton.prototype.loaded = function loaded () {
+    body.classList.remove('kkcp-loading');
+  };
+
+  /**
+   * Show 'full page' loader
+   *
+   */
+  Skeleton.prototype.show = function show (what) {
+      var this$1 = this;
+
+    $readyDOM.done(function () {
+      if (!what || what === 'preview') {
+        this$1._loader.style.display = 'block';
+      }
+      if (!what || what === 'sidebar') {
+        this$1._loaderSidebar.style.display = 'block';
+      }
+    });
+  };
+
+  /**
+   * Hide loaders overlays, use jQuery animation if the browser supports
+   * WebWorkers (this is related to the Premium Compiler component)
+   *
+   * @requires Modernizr
+   * @param {string} what What to hide: 'preview' or 'sidebar' (pass nothing
+   *                    to hide both)
+   */
+  Skeleton.prototype.hide = function hide (what) {
+      var this$1 = this;
+
+    $readyDOM.done(function () {
+      var shouldFade = Modernizr.webworkers;
+      if (!what || what === 'preview') {
+        if (shouldFade) {
+          this$1.$loader.fadeOut();
+        } else {
+          this$1._loader.style.display = 'none';
+        }
+      }
+      if (!what || what === 'sidebar') {
+        if (shouldFade) {
+          this$1.$loaderSidebar.fadeOut();
+        } else {
+          this$1._loaderSidebar.style.display = 'none';
+        }
+      }
+    });
+  };
+
+  /**
+   * Hide loader and unbind itself
+   * (we could also take advantage of the underscore `once` utility)
+   *
+   * @access package
+   */
+  Skeleton.prototype._hideLoaderPreview = function _hideLoaderPreview () {
+    this.hide('preview');
+    wpApi.previewer.targetWindow.unbind(this._hideLoaderPreview);
+  };
+
+  /**
+   * @name skeleton
+   * @description  Instance of {@link Skeleton}
+   *
+   * @instance
+   * @memberof core
+   */
+  api$1.core.skeleton = new Skeleton();
 
   /**
    * Tabs
    *
    * Manage tabbed content inside controls
    *
-   * @class api.core.Tabs
-   * @requires api.components.Screenpreview
+   * @since 1.0.0
+   * @access private
+   *
+   * @class Tabs
+   * @requires components.Screenpreview
    */
-  var Tabs = (function () {
-
+  var Tabs = function Tabs () {
     /**
      * Class name for a selected tab
      * @type {string}
      */
-    var CLASS_TAB_SELECTED = 'selected';
+    this._CLASS_TAB_SELECTED = 'selected';
 
     /**
      * Tab selector (for jQuery)
      * @type {string}
      */
-    var SELECTOR_TAB = '.kkcp-tab';
+    this._SELECTOR_TAB = '.kkcp-tab';
 
     /**
      * Tab content selector (for jQuery)
      * @type {string}
      */
-    var SELECTOR_TAB_CONTENT = '.kkcp-tab-content';
+    this._SELECTOR_TAB_CONTENT = '.kkcp-tab-content';
 
-    /**
-     * Uses event delegation so we are able to bind our 'temporary'
-     * DOM removed and reappended by the controls
-     */
-    function _init () {
-      $document.on('click', SELECTOR_TAB, function() {
-        var area = this.parentNode.parentNode; // kkcptoimprove \\
-        var tabs = area.getElementsByClassName('kkcp-tab');
-        var panels = area.getElementsByClassName('kkcp-tab-content');
-        var isScreenPicker = area.classList.contains('kkcp-screen-picker');
-        var tabAttrName = isScreenPicker ? 'data-screen' : 'data-tab';
-        var target = this.getAttribute(tabAttrName);
+    // bootstraps on DOM ready
+    $readyDOM.then(this._$onReady.bind(this));
+  };
 
-        // remove 'selected' class from all the other tab links
-        for (var i = tabs.length - 1; i >= 0; i--) {
-          tabs[i].classList.remove(CLASS_TAB_SELECTED);
+  /**
+   * On DOM ready
+   *
+   * Uses event delegation so we are able to bind our 'temporary'
+   * DOM removed and reappended by the controls
+   */
+  Tabs.prototype._$onReady = function _$onReady () {
+    var self = this;
+
+    $document.on('click', self._SELECTOR_TAB, function() {
+      var area = this.parentNode.parentNode; // kkcptoimprove \\
+      var tabs = area.getElementsByClassName('kkcp-tab');
+      var panels = area.getElementsByClassName('kkcp-tab-content');
+      var isScreenPicker = area.classList.contains('kkcp-screen-picker');
+      var tabAttrName = isScreenPicker ? 'data-screen' : 'data-tab';
+      var target = this.getAttribute(tabAttrName);
+
+      // remove 'selected' class from all the other tab links
+      for (var i = tabs.length - 1; i >= 0; i--) {
+        tabs[i].classList.remove(self._CLASS_TAB_SELECTED);
+      }
+      // add the 'selected' class to the clicked tab link
+      this.className += ' ' + self._CLASS_TAB_SELECTED;
+
+      // loop through panels and show the current one
+      for (var j = panels.length - 1; j >= 0; j--) {
+        var panel = panels[j];
+        var $panelInputs = $$1('input, .ui-slider-handle', panel);
+        if (panel.getAttribute(tabAttrName) === target) {
+          panel.classList.add(self._CLASS_TAB_SELECTED);
+          // reset manual tabIndex to normal browser behavior
+          $panelInputs.attr('tabIndex', '0');
+        } else {
+          panel.classList.remove(self._CLASS_TAB_SELECTED);
+          // exclude hidden `<input>` fields from keyboard navigation
+          $panelInputs.attr('tabIndex', '-1');
         }
-        // add the 'selected' class to the clicked tab link
-        this.className += ' ' + CLASS_TAB_SELECTED;
+      }
 
-        // loop through panels and show the current one
-        for (var j = panels.length - 1; j >= 0; j--) {
-          var panel = panels[j];
-          var $panelInputs = $('input, .ui-slider-handle', panel);
-          if (panel.getAttribute(tabAttrName) === target) {
-            panel.classList.add(CLASS_TAB_SELECTED);
-            // reset manual tabIndex to normal browser behavior
-            $panelInputs.attr('tabIndex', '0');
-          } else {
-            panel.classList.remove(CLASS_TAB_SELECTED);
-            // exclude hidden `<input>` fields from keyboard navigation
-            $panelInputs.attr('tabIndex', '-1');
-          }
-        }
-
-        // if this tabbed area is related to the screenpreview then notify it
-        if (isScreenPicker) {
-          // we might not have the Screenpreview component enabled
-          try {
-            api.components.Screenpreview.setDevice(target);
-          } catch(e) {
-            console.warn('Tabs tried to use Screenpreview, which is undefined.', e);
-          }
-        }
-      });
-    }
-
-    /**
-     * Update Screen Picker Tabs
-     * @param  {int|string} size   The size to which update the tabs
-     * @param  {JQuery} $container An element to use as context to look for
-     *                             screen pickers UI DOM
-     */
-    function _updateScreenPickerTabs (size, $container) {
-      var $screenPickers = $('.kkcp-screen-picker', $container);
-      $screenPickers.each(function () {
-        var $area = $(this);
-        var $tabs = $area.find(SELECTOR_TAB);
-        var $panels = $area.find(SELECTOR_TAB_CONTENT);
-        var filter = function () {
-          return this.getAttribute('data-screen') === size;
-        };
-        var $tabActive = $tabs.filter(filter);
-        var $panelActive = $panels.filter(filter);
-        $tabs.removeClass(CLASS_TAB_SELECTED);
-        $panels.removeClass(CLASS_TAB_SELECTED);
-        $tabActive.addClass(CLASS_TAB_SELECTED);
-        $panelActive.addClass(CLASS_TAB_SELECTED);
-      });
-    }
-
-    // @access public
-    return {
-      init: _init,
-      /**
-       * Update statuses of all tabs on page up to given screen size.
-       *
-       * @param  {string} size Screenpreview size (`xs`, `sm`, `md`, `lg`)
-       */
-      changeSize: function (size) {
-        _updateScreenPickerTabs(size, document);
-      },
-      /**
-       * Sync the tabs within the given container
-       * with current Screenpreview size
-       *
-       * @param {JQuery} $container A container with tabbed areas (probably a
-       *                            control container)
-       */
-      syncSize: function ($container) {
+      // if this tabbed area is related to the screenpreview then notify it
+      if (isScreenPicker) {
         // we might not have the Screenpreview component enabled
         try {
-          _updateScreenPickerTabs(api.components.Screenpreview.getSize(), $container);
+          api$1.components.Screenpreview.setDevice(target);
         } catch(e) {
           console.warn('Tabs tried to use Screenpreview, which is undefined.', e);
         }
       }
-    };
-  })();
+    });
+  };
 
-  $readyDOM.then(Tabs.init.bind(Tabs));
+  /**
+   * Update Screen Picker Tabs
+   * @param{int|string} size The size to which update the tabs
+   * @param{JQuery} $container An element to use as context to look for
+   *                           screen pickers UI DOM
+   */
+  Tabs.prototype._updateScreenPickerTabs = function _updateScreenPickerTabs (size, $container) {
+    var self = this;
+    var $screenPickers = $$1('.kkcp-screen-picker', $container);
 
-  // export to public API
-  api.core.Tabs = Tabs;
+    $screenPickers.each(function () {
+      var $area = $$1(this);
+      var $tabs = $area.find(self._SELECTOR_TAB);
+      var $panels = $area.find(self._SELECTOR_TAB_CONTENT);
+      var filter = function () {
+        return this.getAttribute('data-screen') === size;
+      };
+      var $tabActive = $tabs.filter(filter);
+      var $panelActive = $panels.filter(filter);
+      $tabs.removeClass(self._CLASS_TAB_SELECTED);
+      $panels.removeClass(self._CLASS_TAB_SELECTED);
+      $tabActive.addClass(self._CLASS_TAB_SELECTED);
+      $panelActive.addClass(self._CLASS_TAB_SELECTED);
+    });
+  };
+
+  /**
+   * Update statuses of all tabs on page up to given screen size.
+   *
+   * @param{string} size Screenpreview size (`xs`, `sm`, `md`, `lg`)
+   */
+  Tabs.prototype.changeSize = function changeSize (size) {
+    this._updateScreenPickerTabs(size, document$1);
+  };
+
+  /**
+   * Sync the tabs within the given container
+   * with current Screenpreview size
+   *
+   * @param {JQuery} $container A container with tabbed areas (probably a
+   *                          control container)
+   */
+  Tabs.prototype.syncSize = function syncSize ($container) {
+    // we might not have the Screenpreview component enabled
+    try {
+      this._updateScreenPickerTabs(api$1.components.Screenpreview.getSize(), $container);
+    } catch(e) {
+      console.warn('Tabs tried to use Screenpreview, which is undefined.', e);
+    }
+  };
+
+  /**
+   * @name tabs
+   * @description  Instance of {@link Tabs}
+   *
+   * @instance
+   * @memberof core
+   */
+  api$1.core.tabs = new Tabs();
 
   /**
    * Tooltips
    *
    * Manage tooltips using jQuery UI Tooltip
    *
-   * @class api.core.Tooltips
+   * @since 1.0.0
+   * @access private
+   *
+   * @class Tooltips
    * @requires jQueryUI.Tooltip
    */
-  var Tooltips = (function () {
+  var Tooltips = function Tooltips () {
 
     /**
-     * @const
      * @type {string}
      */
-    var BASE_CLASS = '.kkcpui-tooltip';
+    this._BASE_CLASS = '.kkcpui-tooltip';
 
     /**
-     * @const
      * @type {Array<Object<string, string>>}
      */
-    var ALLOWED_POSITIONS = [{
+    this._ALLOWED_POSITIONS = [{
       _name: 'top',
       _container: $document,
       _position: {
@@ -10304,7 +10037,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       }
     }, {
       _name: 'bottom',
-      _container: $(body),
+      _container: $$1(body),
       _position: {
         my: 'center top+2',
         at: 'center bottom+5'
@@ -10312,1683 +10045,55 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     }];
 
     /**
-     * @const
      * @type {Object<string,boolean|string>}
      */
-    var DEFAULT_OPTIONS = {
+    this._DEFAULT_OPTIONS = {
       show: false,
       hide: false
     };
 
-    /**
-     * Init tooltips for each allowed position
-     */
-    function _init () {
-      for (var i = ALLOWED_POSITIONS.length - 1; i >= 0; i--) {
-        var custom = ALLOWED_POSITIONS[i];
-        var options = _.defaults({
-          items: BASE_CLASS + '--' + custom._name,
-          classes: {
-            'ui-tooltip': custom._name,
-          },
-          // @@tomonitor this option is deprecated since jQuery UI 1.12 and
-          // replaced by the above option `classes`. WordPress has not updated
-          // yet, @see http://api.jqueryui.com/tooltip/#option-classes \\
-          tooltipClass: custom._name,
-          position: custom._position
-        }, DEFAULT_OPTIONS);
-
-        // this should stay the same
-        options.position.collision = 'flipfit';
-
-        // init tooltip (it uses event delegation)
-        // to have different tooltips positining we need a different container
-        // for each initialisation otherwise each overlap each other.
-        custom._container.tooltip(options);
-      }
-    }
-
-    // @access public
-    return {
-      init: _init
-    };
-  })();
-
-  $readyDOM.then(Tooltips.init.bind(Tooltips));
-
-  // export to public API
-  api.core.Tooltips = Tooltips;
+    // bootstraps on DOM ready
+    $readyDOM.then(this._$onReady.bind(this));
+  };
 
   /**
-   * Control Base class
+   * On DOM ready
    *
-   * Change a bit the default Customizer Control class.
-   * Render controls content on demand when their section is expanded then remove
-   * the DOM when the section is collapsed. Since we override the `initialize`
-   * and `renderContent` methods keep an eye on
-   * @link(http://git.io/vZ6Yq, WordPress source code).
-   *
-   * @see PHP class KKcp_Customize_Control_Base.
-   *
-   * @class api.controls.Base
-   * @extends wp.customize.Control
-   * @augments wp.customize.Class
-   * @requires api.core.Skeleton
-   * @requires api.core.Utils
+   * Init tooltips for each allowed position
    */
-  api.controls.Base = wpApi.Control.extend({
-    /**
-     * Tweak the initialize methods.
-     * @param {string} id                       - Unique identifier for the control instance.
-       * @param {object} options                  - Options hash for the control instance.
-       * @param {object} options.type             - Type of control (e.g. text, radio, dropdown-pages, etc.)
-       * @param {string} [options.content]        - The HTML content for the control or at least its container. This should normally be left blank and instead supplying a templateId.
-       * @param {string} [options.templateId]     - Template ID for control's content.
-       * @param {string} [options.priority=10]    - Order of priority to show the control within the section.
-       * @param {string} [options.active=true]    - Whether the control is active.
-       * @param {string} options.section          - The ID of the section the control belongs to.
-       * @param {mixed}  [options.setting]        - The ID of the main setting or an instance of this setting.
-       * @param {mixed}  options.settings         - An object with keys (e.g. default) that maps to setting IDs or Setting/Value objects, or an array of setting IDs or Setting/Value objects.
-       * @param {mixed}  options.settings.default - The ID of the setting the control relates to.
-       * @param {string} options.settings.data    - @todo Is this used?
-       * @param {string} options.label            - Label.
-       * @param {string} options.description      - Description.
-       * @param {number} [options.instanceNumber] - Order in which this instance was created in relation to other instances.
-       * @param {object} [options.params]         - Deprecated wrapper for the above properties.
-       * @returns {void}
-       */
-    initialize: function(id, options) {
-      var control = this;
-      var deferredSettingIds = [];
-      var gatherSettings;
-      var settings;
-      var advancedClass;
-
-      control.params = _.extend(
-        {},
-        control.defaults,
-        control.params || {}, // In case sub-class already defines.
-        options.params || options || {} // The options.params property is deprecated, but it is checked first for back-compat.
-      );
-
-      if ( ! wpApi.Control.instanceCounter ) {
-        wpApi.Control.instanceCounter = 0;
-      }
-      wpApi.Control.instanceCounter++;
-      if ( ! control.params.instanceNumber ) {
-        control.params.instanceNumber = wpApi.Control.instanceCounter;
-      }
-
-      // Look up the type if one was not supplied.
-      if ( ! control.params.type ) {
-        _.find( wpApi.controlConstructor, function( Constructor, type ) {
-          if ( Constructor === control.constructor ) {
-            control.params.type = type;
-            return true;
-          }
-          return false;
-        } );
-      }
-
-      // if ( ! control.params.content ) {
-      //   control.params.content = $( '<li></li>', {
-      //     id: 'customize-control-' + id.replace( /]/g, '' ).replace( /\[/g, '-' ),
-      //     'class': 'customize-control customize-control-' + control.params.type
-      //   } );
-      // }
-
-      advancedClass = control.params.advanced ? ' kkcp-control-advanced' : '';
-
-      var container = document.createElement('li');
-      container.id = 'customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
-      container.className = 'customize-control kkcp-control customize-control-'
-        + control.params.type + advancedClass;
-
-      // add a flag so that we are able to recognize our custom controls, let's
-      // keep it short, so we need only to check `if (control.kkcp)`
-      control.kkcp = 1;
-
-      control.id = id;
-      // control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
-      // control.templateSelector = 'customize-control-' + control.params.type + '-content';
-      // if ( control.params.content ) {
-      //   control.container = $( control.params.content );
-      // } else {
-      //   control.container = $( control.selector ); // Likely dead, per above. See #28709.
-      // }
-      control.container = $(container);
-
-      // save a reference of the raw DOM node, we're gonna use it more
-      // than the jQuery object `container` (which we can't change, because it's
-      // used by methods which we don't override)
-      control._container = container;
-
-      if ( control.params.templateId ) {
-        control.templateSelector = control.params.templateId;
-      } else {
-        control.templateSelector = 'customize-control-' + control.params.type + '-content';
-      }
-
-      control.deferred = _.extend( control.deferred || {}, {
-        embedded: new $.Deferred()
-      } );
-      control.section = new wpApi.Value();
-      control.priority = new wpApi.Value();
-      control.active = new wpApi.Value();
-      control.activeArgumentsQueue = [];
-      control.notifications = new wpApi.Notifications({
-        alt: control.altNotice
-      });
-
-      control.elements = [];
-
-      control.active.bind( function ( active ) {
-        var args = control.activeArgumentsQueue.shift();
-        args = $.extend( {}, control.defaultActiveArguments, args );
-        control.onChangeActive( active, args );
-      } );
-
-      control.section.set( control.params.section );
-      control.priority.set( isNaN( control.params.priority ) ? 10 : control.params.priority );
-      control.active.set( control.params.active );
-
-      wpApi.utils.bubbleChildValueChanges( control, [ 'section', 'priority', 'active' ] );
-
-      control.settings = {};
-
-      settings = {};
-      if ( control.params.setting ) {
-        settings['default'] = control.params.setting;
-      }
-      _.extend( settings, control.params.settings );
-
-      // Note: Settings can be an array or an object, with values being either setting IDs or Setting (or Value) objects.
-      _.each( settings, function( value, key ) {
-        var setting;
-        if ( _.isObject( value ) && _.isFunction( value.extended ) && value.extended( wpApi.Value ) ) {
-          control.settings[ key ] = value;
-        } else if ( _.isString( value ) ) {
-          setting = wpApi( value );
-          if ( setting ) {
-            control.settings[ key ] = setting;
-          } else {
-            deferredSettingIds.push( value );
-          }
-        }
-      } );
-
-      gatherSettings = function() {
-
-        // Fill-in all resolved settings.
-        _.each( settings, function ( settingId, key ) {
-          if ( ! control.settings[ key ] && _.isString( settingId ) ) {
-            control.settings[ key ] = wpApi( settingId );
-          }
-        } );
-
-        // Make sure settings passed as array gets associated with default.
-        if ( control.settings[0] && ! control.settings['default'] ) {
-          control.settings['default'] = control.settings[0];
-        }
-
-        // Identify the main setting.
-        control.setting = control.settings['default'] || null;
-
-        // control.linkElements(); // @@note this way of managing controls is disabled here \\
-        // control.embed(); // @@note disable here for on demand rendering/inflation \\
-      };
-
-      if ( 0 === deferredSettingIds.length ) {
-        gatherSettings();
-      } else {
-        wpApi.apply( wpApi, deferredSettingIds.concat( gatherSettings ) );
-      }
-
-      // an @abstract method to override (this needs to be called here, before than
-      // the `ready` method)
-      control.onInit();
-
-      // After the control is embedded on the page, invoke the "ready" method.
-      control.deferred.embedded.done( function () {
-        // control.linkElements(); // @@note this way of managing controls is disabled here \\
-        control.setupNotifications();
-        control.ready();
-      });
-
-      // embed controls only when the parent section get clicked to keep the DOM light,
-      // to make this work all data can't be stored in the DOM, which is good
-      wpApi.section(control.section()).expanded.bind(function (expanded) {
-        // @@doubt \\
-        // either deflate and re-inflate dom each time...
-        // if (expanded) {
-        //   _.defer(control.inflate.bind(control));
-        // } else {
-        //   control.deflate();
-        // }
-        // ...or just do it the first time a control is expanded
-        if (expanded && !control.rendered) {
-          _.defer(control.inflate.bind(control));
-        }
-      });
-
-      // controls can be setting-less from 4.5
-      if (control.setting) {
-        // Add custom validation function overriding the empty function from WP
-        // API in `customize-controls.js`, in the constructor `api.Value`
-        control.setting.validate = control._validateWrap.bind(control);
-
-        // bind setting change to control method to reflect a programmatic
-        // change on the UI, only if the control is rendered
-        control.setting.bind(function (value) {
-          if (control.rendered) {
-            control.syncUI.call(control, value);
-          }
-        });
-      }
-    },
-    /**
-     * Validate wrap function.
-     * Always check that required setting (not `optional`) are not empty,
-     * if it pass the check call the control specific abstract `validate` method.
-     *
-     * // @@doubt not sure whether this should be private or not \\
-     * @access private
-     * @param  {string} newValue
-     * @return {string} The newValue validated or the last setting value.
-     */
-    _validateWrap: function (newValue) {
-      if (!this.params.optional && Utils._isSettingValueEmpty(newValue)) {
-        this._onValidateError({ error: true, msg: api.l10n['vRequired'] });
-        this._currentValueHasError = true;
-        return this.setting();
-
-      } else {
-        newValue = this.sanitize(newValue);
-        var validationResult = this.validate(newValue);
-
-        if (validationResult.error) {
-          this._onValidateError(validationResult);
-          this._currentValueHasError = true;
-          return this.setting();
-        } else {
-          this._onValidateSuccess(validationResult);
-          this._currentValueHasError = false;
-          return validationResult;
-        }
-      }
-    },
-    /**
-     * On validation error (optionally override it in subclasses)
-     * @abstract
-     * @access private
-     * @param  {Object<string,boolean|string>} error `{ error: true, msg: string }`
-     */
-    _onValidateError: function (error) {
-      var msg = error && error.msg ? error.msg : api.l10n['vInvalid'];
-      var id = (this.id) + "__error_" + (msg.replace(/\s/g, ''));
-
-      if (!this._currentNotificationId || id !== this._currentNotificationId) {
-        console.log(("Control adds notification with id: " + id));
-        var notification = new wpApi.Notification(id, { type: 'error', message: msg });
-        // debugger;
-        this.notifications.add(notification);
-        this.notifications.render();
-
-        this._currentNotificationId = id;
-      }
-    },
-    /**
-     * On validation success (optionally override it in subclasses)
-     * @abstract
-     * @access private
-     */
-    _onValidateSuccess: function () {
-      if (this._currentNotificationId) {
-        this.notifications.remove(this._currentNotificationId);
-        this.notifications.render();
-        console.log(("Control removes notification with id: " + (this._currentNotificationId)));
-        this._currentNotificationId = false;
-      }
-    },
-    /**
-     * Validate
-     *
-     * @abstract
-     * @param  {string} newValue
-     * @return {string} The newValue validated
-     */
-    validate: function (newValue) {
-      return newValue;
-    },
-    /**
-     * Sanitize
-     *
-     * @abstract
-     * @param  {string} newValue
-     * @return {string} The newValue sanitized
-     */
-    sanitize: function (newValue) {
-      return newValue;
-    },
-    /**
-     * Sync UI with value coming from API, a programmatic change like a reset.
-     *
-     * @abstract
-     * @param {string} value The new setting value.
-     */
-    /* jshint unused: false */
-    syncUI: function (value) {},
-    /**
-     * Triggered when the control has been initialized
-     *
-     * @abstract
-     */
-    onInit: function() {},
-    /**
-     * Render the control from its JS template, if it exists.
-     *
-     * @override
-     */
-    renderContent: function () {
-      var control = this;
-      var _container = control._container;
-      var templateId = control.templateSelector;
-      var template;
-
-      // Replace the container element's content with the control.
-      if (document.getElementById('tmpl-' + templateId)) {
-        template = wp.template(templateId);
-        if (template && _container) {
-
-          /* jshint funcscope: true */
-          if (DEBUG.performances) { var t = performance.now(); }
-
-          // render and store it in the params
-          control.template = _container.innerHTML = template(control.params).trim();
-
-          // var frag = document.createDocumentFragment();
-          // var tplNode = document.createElement('div');
-          // tplNode.innerHTML = template( control.params ).trim();
-          // frag.appendChild(tplNode);
-          // control.template = frag;
-          // _container.appendChild(frag);
-
-          if (DEBUG.performances) { console.log('%c renderContent of ' + control.params.type + '(' +
-            control.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7'); }
-        }
-      }
-
-      this._rerenderNotifications();
-    },
-    /**
-     * We don't need this method
-     */
-    dropdownInit: null,
-    /**
-     * Triggered just before the control get deflated from DOM
-     *
-     * @abstract
-     */
-    onDeflate: function () {},
-    /**
-     * Remove the DOM of the control.
-     * In case the DOM store is empty (the first time
-     * this method get called) it fills it.
-     */
-    deflate: function () {
-      /* jshint funcscope: true */
-      // if (DEBUG) var t = performance.now();
-
-      var container = this._container;
-
-      if (!this.template) {
-        this.template = container.innerHTML.trim();
-      }
-
-      // call the abstract method
-      this.onDeflate();
-
-      // and empty the DOM from the container deferred
-      // the slide out animation of the section doesn't freeze
-      _.defer(function () {
-        // due to the timeout we need to be sure that the section is not expanded
-        if (!wpApi.section(this.section.get()).expanded.get()) {
-
-          /* jshint funcscope: true */
-          if (DEBUG.performances) { var t = performance.now(); }
-
-          // Super fast empty DOM element
-          // {@link http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/20}
-          // while (container.lastChild) {
-          //   container.removeChild(container.lastChild);
-          // }
-
-          // @@doubt, most of the times innerHTML seems to be faster, maybe when
-          // there are many DOM elements to remove, investigate here \\
-          container.innerHTML = '';
-
-          if (DEBUG.performances) { console.log('%c deflate of ' + this.params.type + '(' + this.id +
-            ') took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1'); }
-
-          // flag control that it's not rendered
-          this.rendered = false;
-        }
-      }.bind(this));
-    },
-    /**
-     * Inflate
-     *
-     * Render or 'inflate' the template of the control. The first time render it
-     * from the js template, afterward retrieve the DOM string from the `template`
-     * param store. After the template has been rendered call the `ready` method,
-     * overridden in each control with their own specific logic. Also put a flag
-     * `rendered` on the control instance to indicate whether the control is
-     * rendered or not.
-     *
-     * @param  {boolean} shouldResolveEmbeddedDeferred Sometimes (i.e. for the
-     *                                                 `control.focus()` method)
-     *                                                 we need to resolve embed
-     */
-    inflate: function (shouldResolveEmbeddedDeferred) {
-      /* jshint funcscope: true */
-      if (DEBUG.performances) { var t = performance.now(); }
-      if (!this.template) {
-        this.renderContent();
-
-        if (DEBUG.performances) { console.log('%c inflate DOM of ' + this.params.type +
-          ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7'); }
-      } else {
-        if (!this.rendered) {
-          this._container.innerHTML = this.template;
-          this._rerenderNotifications();
-
-          if (DEBUG.performances) { console.log('%c inflate DOM of ' + this.params.type +
-            ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7'); }
-        }
-      }
-      this.rendered = true;
-      this.ready();
-      if (shouldResolveEmbeddedDeferred) {
-        this.deferred.embedded.resolve();
-      }
-      this._extras();
-      // errors get resetted because on ready we fill the values in the UI with
-      // the value of `this.setting()` which can never be not valid (see the
-      // `_validateWrap` method above)
-      this._onValidateSuccess();
-
-      // if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
-      //   ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
-    },
-    /**
-     * Re-render notifications after content has been re-rendered.
-     * This is taken as it is from the core base control class
-     * (`wp.customize.Control`)in the end of the `renderContent` method
-     */
-    _rerenderNotifications: function _rerenderNotifications (){
-      this.notifications.container = this.getNotificationsContainerElement();
-      var sectionId = this.section();
-      if ( ! sectionId || ( wpApi.section.has( sectionId ) && wpApi.section( sectionId ).expanded() ) ) {
-        this.notifications.render();
-      }
-    },
-    /**
-     * Softenize
-     *
-     * Normalize setting for soft comparison.
-     *
-     * @abstract
-     * @static
-     * @access private
-     * @param  {?} value Could be the original, the current, or the initial
-     *                   session value
-     * @return {string} The 'normalized' value passed as an argument.
-     */
-    softenize: function (value) {
-      return value;
-    },
-    /**
-     * Manage the extras dropdown menu of the control.
-     *
-     * @access private
-     */
-    _extras: function () {
-      var self = this;
-      var params = this.params;
-      /**
-       * Reference to abstract method different in various control's subclasses
-       * @type {function(*)}
-       */
-      var _softenize = this.softenize;
-      // constants
-      var CLASS_RESET_LAST = ' kkcp-extras-reset_last';
-      var CLASS_RESET_INITIAL = ' kkcp-extras-reset_initial';
-      var CLASS_RESET_FACTORY = 'kkcp-extras-reset_factory';
-      var CLASS_DISABLED = ' kkcp-disabled';
-      // DOM
-      var container = this._container;
-      var area = container.getElementsByClassName('kkcp-extras')[0];
-      var toggle = container.getElementsByClassName('kkcp-extras-btn')[0];
-      var btnResetLast = container.getElementsByClassName(CLASS_RESET_LAST)[0];
-      var btnResetInitial = container.getElementsByClassName(CLASS_RESET_INITIAL)[0];
-      var btnResetFactory = container.getElementsByClassName(CLASS_RESET_FACTORY)[0];
-      // value variables, uses closure
-      var setting = this.setting;
-      var initialValue = this.params.vInitial;
-      var factoryValue = this.params.vFactory;
-      // state
-      var isOpen = false;
-
-      // handlers
-      var _closeExtras = function () {
-        container.classList.remove('kkcp-extras-open');
-      };
-      /**
-       * Reset setting to the last saved value
-       * It closes the `extras` dropdown.
-       *
-       */
-      var _resetLastValue = function () {
-        Utils._forceSettingSet(setting, params.vLast);
-        _closeExtras();
-      };
-      /**
-       * Reset setting to the value at the beginning of the session.
-       * It closes the `extras` dropdown.
-       *
-       */
-      var _resetInitialValue = function () {
-        Utils._forceSettingSet(setting, initialValue);
-        _closeExtras();
-      };
-      /**
-       * Reset setting to the value at the factory state
-       * (as defined in the theme defaults).
-       * It closes the `extras` dropdown.
-       *
-       */
-      var _resetFactoryValue = function () {
-        Utils._forceSettingSet(setting, factoryValue);
-        _closeExtras();
-      };
-      /**
-       * Enable button responsible for: resetting to last saved value
-       */
-      var _enableBtnLast = function () {
-        btnResetLast.className = CLASS_RESET_LAST;
-        btnResetLast.onclick = _resetLastValue;
-      };
-      /**
-       * Disable button responsible for: resetting to initial value
-       */
-      var _disableBtnLast = function () {
-        btnResetLast.className = CLASS_RESET_LAST + CLASS_DISABLED;
-        btnResetLast.onclick = '';
-      };
-      /**
-       * Enable button responsible for: resetting to initial value
-       */
-      var _enableBtnInitial = function () {
-        btnResetInitial.className = CLASS_RESET_INITIAL;
-        btnResetInitial.onclick = _resetInitialValue;
-      };
-      /**
-       * Disable button responsible for: resetting to initial value
-       */
-      var _disableBtnInitial = function () {
-        btnResetInitial.className = CLASS_RESET_INITIAL + CLASS_DISABLED;
-        btnResetInitial.onclick = '';
-      };
-      /**
-       * Enable button responsible for: resetting to factory / theme-default value
-       */
-      var _enableBtnFactory = function () {
-        btnResetFactory.className = CLASS_RESET_FACTORY;
-        btnResetFactory.onclick = _resetFactoryValue;
-      };
-      /**
-       * Disable button responsible for: resetting to factory / theme-default value
-       */
-      var _disableBtnFactory = function () {
-        btnResetFactory.className = CLASS_RESET_FACTORY + CLASS_DISABLED;
-        btnResetFactory.onclick = '';
-      };
-      /**
-       * Update status (enable / disable)
-       * for each control in the `extras` menu.
-       */
-      var _onExtrasOpen = function () {
-        // if the control current value is not valid enable both reset buttons
-        if (self._currentValueHasError) {
-          _enableBtnInitial();
-          _enableBtnFactory();
-          return;
-        }
-
-        var currentValue = _softenize(setting());
-        var lastValue = params.vLast;
-
-        // the last saved value is not always there like the others, we don't put
-        // it in the big json through php, to save bytes, in the end. We check
-        // here if the last value is `undefined`
-        if (_.isUndefined(lastValue) || currentValue === _softenize(lastValue)) {
-          _disableBtnLast();
-        } else {
-          _enableBtnLast();
-        }
-        if (currentValue === _softenize(initialValue)) {
-          _disableBtnInitial();
-        } else {
-          _enableBtnInitial();
-        }
-        if (currentValue === _softenize(factoryValue)) {
-          _disableBtnFactory();
-        } else {
-          _enableBtnFactory();
-        }
-      };
-
-      /**
-       * When the extras dropdown is open determine which actions are
-       * enabled and bind them. If the current value is the same
-       * as the one the action effect would give disable the action.
-       */
-      if (toggle) {
-        if (DEBUG) {
-          toggle.title = 'Click to dump control object into console';
-        }
-        toggle.onclick = function () {
-          isOpen = !isOpen;
-          container.classList.toggle('kkcp-extras-open', isOpen);
-          if (isOpen) {
-            _onExtrasOpen();
-          }
-          if (DEBUG) {
-            console.info('Control[' + self.id + '] ', self);
-          }
-        };
-      }
-
-      if (area) {
-        area.onmouseenter = function () {
-          isOpen = true;
-          container.classList.add('kkcp-extras-open');
-          _onExtrasOpen();
-        };
-        area.onmouseleave = function () {
-          isOpen = false;
-          // don't close immediately, wait a bit and see if the mouse is still out of the area
-          setTimeout(function () {
-            if (!isOpen) {
-              container.classList.remove('kkcp-extras-open');
-            }
-          }, 200);
-        };
-      }
-    }
-  });
-
-  /**
-   * Fix autofocus
-   *
-   * This is needed if autofocus is set to one of our 'post-rendered' controls
-   */
-  wpApi.bind('ready', function () {
-    try {
-      var controlToFocusID = window$1._wpCustomizeSettings.autofocus.control;
-      if (controlToFocusID) {
-        Utils.linkControl(null, controlToFocusID);
-      }
-    } catch(e) {
-      console.warn('Fix autofocus', e);
-    }
-  });
-
-  /**
-   * Save last saved value on each control instance on `saved` hook. With this in
-   * the extras menu users will be able to reset the setting value to the last
-   * saved value.
-   */
-  wpApi.bind('save', function () {
-    Utils._eachControl(function (control) {
-      if (control.setting && control.setting['_dirty']) { // whitelisted from uglify \\
-        // console.log(control.id, 'is dirty on save with value:', control.setting());
-        control.params.vLast = control.setting();
-      }
-    });
-  });
-
-  // import './globals'; // @@doubt, import or not?
-  // import './banner'; // @@disabledfornow
-
-  // import ControlBase from './base';
-
-  /**
-   * Control Base Input class
-   *
-   * @class api.controls.BaseInput
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control = api.controls.Base.extend({
-    /**
-     * Sync UI with value coming from API, a programmatic change like a reset.
-     * @override
-     * @param {string} value The new setting value.
-     */
-    syncUI: function (value) {
-      // here value can be undefined if it doesn't pass the validate function
-      if (value && this.__input.value !== value) {
-        this.__input.value = value;
-      }
-    },
-    /**
-     * @override
-     */
-    ready: function () {
-      var self = this;
-      self.__input = self._container.getElementsByTagName('input')[0];
-
-      // sync input and listen for changes
-      $(self.__input)
-        .val(self.setting())
-        .on('change keyup paste', function () {
-          self.setting.set(this.value);
-        });
-    }
-  });
-
-  var ControlBaseInput = api.controls.BaseInput = Control;
-
-  // import ControlBase from './base';
-
-  /**
-   * Control Base Radio class
-   *
-   * @class api.controls.BaseRadio
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control$1 = api.controls.Base.extend({
-    /**
-     * @override
-     */
-    validate: function (newValue) {
-      // validate value as a string
-      if (_.isString(newValue) && this.params.choices.hasOwnProperty(newValue)) {
-        return newValue;
-      }
-      // otherwise return last value
-      else {
-        return { error: true };
-      }
-    },
-    /**
-     * @override
-     */
-    syncUI: function () {
-      this._syncRadios();
-    },
-    /**
-     * @override
-     */
-    ready: function () {
-      this.__inputs = this._container.getElementsByTagName('input');
-      // sync checked state on radios on ready and bind (argument `true`)
-      this._syncRadios(true);
-    },
-    /**
-     * Sync radios and maybe bind change event
-     * We need to be fast here, use vanilla js.
-     *
-     * @param  {boolean} bindAsWell Bind on change?
-     */
-    _syncRadios: function (bindAsWell) {
+  Tooltips.prototype._$onReady = function _$onReady () {
       var this$1 = this;
 
-      var value = this.setting();
-      for (var i = 0, l = this.__inputs.length; i < l; i++) {
-        var input = this$1.__inputs[i];
-        input.checked = value === input.value;
-        if (bindAsWell) {
-          input.onchange = function (event) {
-            this.setting.set(event.target.value);
-          }.bind(this$1);
-        }
-      }
-    }
-  });
-
-  var ControlBaseRadio = api.controls.BaseRadio = Control$1;
-
-  /**
-   * Control Buttonset
-   *
-   * @class wp.customize.controlConstructor.kkcp_buttonset
-   * @constructor
-   * @extends api.controls.BaseRadio
-   * @augments api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  wpApi.controlConstructor['kkcp_buttonset'] = ControlBaseRadio;
-
-  // import ControlBase from './base';
-
-  /**
-   * Control Checkbox
-   *
-   * @class wp.customize.controlConstructor.kkcp_checkbox
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control$2 = api.controls.Base.extend({
-    /**
-     * Normalize setting for soft comparison
-     *
-     * We need this to fix situations like: `'1' === 1` returning false,
-     * due to the fact that we can't use a real soft comparison (`==`).
-     *
-     * @override
-     * @static
-     * @param  {?} value Could be the factory, the initial, or the current
-     *                   session value
-     * @return {string} The 'normalized' value passed as an argument.
-     */
-    softenize: function (value) {
-      return (value === 0 || value === 1) ? value.toString() : value;
-    },
-    /**
-     * @override
-     */
-    validate: function (newValue) {
-      return numberToBoolean(newValue) ? 1 : 0;
-    },
-    /**
-     * @override
-     */
-    syncUI: function (value) {
-      var valueClean = numberToBoolean(value);
-      var inputStatus = numberToBoolean(this.__input.checked);
-      if (inputStatus !== valueClean) {
-        this.__input.checked = valueClean;
-      }
-    },
-    /**
-     * @override
-     */
-    ready: function () {
-      this.__input = this._container.getElementsByTagName('input')[0];
-
-      // sync input value on ready
-      this.__input.checked = numberToBoolean(this.setting());
-
-      // bind input on ready
-      this.__input.onchange = function (event) {
-        event.preventDefault();
-        var value = event.target.checked ? 1 : 0;
-        this.setting.set(value);
-      }.bind(this);
-    }
-  });
-
-  var ControlCheckbox = wpApi.controlConstructor['kkcp_checkbox'] = api.controls.Checkbox = Control$2;
-
-  /* global tinycolor */
-
-  /**
-   * Load spectrum only on demand
-   * {@link https://github.com/bgrins/spectrum/issues/112}
-   * @type {Boolean}
-   */
-  $.fn.spectrum.load = false;
-
-  /**
-   * Control Color class
-   *
-   * @class wp.customize.controlConstructor.kkcp_color
-   * @alias api.controls.Color
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   * @requires tinycolor
-   */
-  var Control$3 = api.controls.Base.extend({
-    /**
-     * Use tinycolor (included in spectrum.js) to always convert colors to their
-     * rgb value, so to have the same output result when the input is `red` or
-     * `#f00` or `#ff0000` or `rgba(255, 0, 0, 1)`. If it is not an actual color
-     * but an expression or a variable tinycolor won't recognize a `_format`
-     * (such as hex, name, rgba, etc..), we rely on this do decide what to return
-     *
-     * @override
-     * @use tinycolor.toRgbString
-     */
-    softenize: function (value) {
-      try {
-        var anyColor = tinycolor(value);
-        if (!anyColor['_format']) { // whitelisted from uglify \\
-          return value;
-        } else {
-          return anyColor.toRgbString();
-        }
-      } catch(e) {
-        console.warn('Control->Color->softenize: tinycolor conversion failed', e);
-        return value;
-      }
-    },
-    /**
-     * @override
-     */
-    validate: function (value) {
-      var params = this.params;
-      var softenize = this.softenize;
-      if (params.showPaletteOnly &&
-        !params.togglePaletteOnly &&
-        _.isArray(params.palette)
-      ) {
-        var allColorsAllowed = _.flatten(params.palette, true);
-        allColorsAllowed = _.map(allColorsAllowed, function (color) {
-          return softenize(color);
-        });
-        if (allColorsAllowed.indexOf(softenize(value)) !== -1) {
-          return value;
-        } else {
-          return { error: true, msg: api.l10n['vNotInPalette'] };
-        }
-      }
-      else if (
-        (!params.disallowTransparent && value === 'transparent') ||
-        isHexColor(value) ||
-        (params.allowAlpha && isRgbaColor(value))
-      ) {
-        return value;
-      } else {
-        return { error: true };
-      }
-    },
-    /**
-     * @override
-     */
-    syncUI: function (value) {
-      this._apply(value, 'API');
-    },
-    /**
-     * Destroy `spectrum` instances if any.
-     *
-     * @override
-     */
-    onDeflate: function () {
-      if (this.__$picker && this.rendered) {
-        this.__$picker.spectrum('destroy');
-      }
-    },
-    /**
-     * @override
-     */
-    ready: function () {
-      var self = this;
-      /** @type {HTMLElement} */
-      var container = this._container;
-      /** @type {HTMLElement} */
-      var btnCustom = container.getElementsByClassName('kkcpui-toggle')[0];
-
-      /** @type {HTMLElement} */
-      this.__preview = container.getElementsByClassName('kkcpcolor-current-overlay')[0];
-      /** @type {JQuery} */
-      this.__$picker = $(container.getElementsByClassName('kkcpcolor-input')[0]);
-      /** @type {JQuery} */
-      this.__$expander = $(container.getElementsByClassName('kkcp-expander')[0]).hide();
-
-      self._updateUIpreview(self.setting());
-
-
-      var isOpen = false;
-      var pickerIsInitialized = false;
-      var _maybeInitializeSpectrum = function () {
-        // initialize only once
-        if (!pickerIsInitialized) {
-          self.__$picker.spectrum(self._getSpectrumOpts(self));
-          pickerIsInitialized = true;
-        }
-      };
-
-      btnCustom.onmouseover = _maybeInitializeSpectrum;
-
-      btnCustom.onclick = function() {
-        isOpen = !isOpen;
-        _maybeInitializeSpectrum();
-
-        // and toggle
-        if (isOpen) {
-          self.__$expander.slideDown();
-        } else {
-          self.__$expander.slideUp();
-        }
-        return false;
-      };
-    },
-    /**
-     * Get Spectrum plugin options
-     *
-     * {@link https://bgrins.github.io/spectrum/ spectrum API}
-     * @param  {Object} options Options that override the defaults (optional)
-     * @return {Object} The spectrum plugin options
-     */
-    _getSpectrumOpts: function (options) {
-      var self = this;
-      var params = self.params;
-      var $container = self.container;
-      return _.extend({
-        preferredFormat: 'hex',
-        flat: true,
-        showInput: true,
-        showInitial: false,
-        showButtons: false,
-        // localStorageKey: 'kkcp_spectrum',
-        showSelectionPalette: false,
-        togglePaletteMoreText: api.l10n['togglePaletteMoreText'],
-        togglePaletteLessText: api.l10n['togglePaletteLessText'],
-        allowEmpty: !params.disallowTransparent,
-        showAlpha: params.allowAlpha,
-        showPalette: !!params.palette,
-        showPaletteOnly: params.showPaletteOnly && params.palette,
-        togglePaletteOnly: params.togglePaletteOnly && params.palette,
-        palette: params.palette,
-        color: self.setting(),
-        show: function () {
-          $container.find('.sp-input').focus();
-          if (params.showInitial) {
-            $container.find('.sp-container').addClass('sp-show-initial');
-          }
+    for (var i = this._ALLOWED_POSITIONS.length - 1; i >= 0; i--) {
+      var custom = this$1._ALLOWED_POSITIONS[i];
+      var options = _$1.defaults({
+        items: ((this$1._BASE_CLASS) + "--" + (custom._name)),
+        classes: {
+          'ui-tooltip': custom._name,
         },
-        move: function (tinycolor) {
-          var color = tinycolor ? tinycolor.toString() : 'transparent';
-          self._apply(color);
-        },
-        change: function (tinycolor) {
-          if (!tinycolor) {
-            $container.find('.sp-input').val('transparent');
-          }
-        }
-      }, options || {});
-    },
-    /**
-     * Update UI preview (the color box on the left hand side)
-     */
-    _updateUIpreview: function (newValue) {
-      this.__preview.style.background = newValue;
-    },
-    /**
-     * Update UI control (the spectrum color picker)
-     */
-    _updateUIcustomControl: function (newValue) {
-      this.__$picker.spectrum('set', newValue);
-    },
-    /**
-     * Apply, wrap the `setting.set()` function
-     * doing some additional stuff.
-     *
-     * @access private
-     * @param  {string} value
-     * @param  {string} from  Where the value come from (could be from the UI:
-     *                        picker, dynamic fields, expr field) or from the
-     *                        API (on programmatic value change).
-     */
-    _apply: function (value, from) {
-      this.params.valueCSS = value;
+       
+        tooltipClass: custom._name,
+        position: custom._position
+      }, this$1._DEFAULT_OPTIONS);
 
-      if (this.rendered) {
-        this._updateUIpreview(value);
+      // this should stay the same
+      options.position.collision = 'flipfit';
 
-        if (from === 'API') {
-          this._updateUIcustomControl(value);
-        }
-      }
-
-      if (from !== 'API') {
-        // set new value
-        this.setting.set(value);
-      }
+      // init tooltip (it uses event delegation)
+      // to have different tooltips positioning we need a different container
+      // for each initialisation otherwise each overlap each other.
+      custom._container.tooltip(options);
     }
-  });
-
-  wpApi.controlConstructor['kkcp_color'] = api.controls.Color = Control$3;
+  };
 
   /**
-   * Control Content class
+   * @name tooltips
+   * @description  Instance of {@link Tooltips}
    *
-   * @class api.controls.Content
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
+   * @instance
+   * @memberof core
    */
-  var Control$4 = api.controls.Base.extend({
-    /**
-     * Some methods are not needed here
-     *
-     * @override
-     */
-    _validateWrap: function () {},
-    _onValidateError: function () {},
-    _onValidateSuccess: function () {},
-    validate: function () {},
-    sanitize: function () {},
-    syncUI: function () {},
-    softenize: function () {},
-    _extras: function () {}
-  });
-
-  wpApi.controlConstructor['kkcp_content'] = api.controls.Content = Control$4;
-
-  // import ControlBase from './base';
-
-  /**
-   * Font Family Control
-   *
-   * @class wp.customize.controlConstructor.kkcp_font_family
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control$5 = api.controls.Base.extend({
-    /**
-     * @override
-     * @see php `KKcp_Sanitize::font_families`
-     * @param  {string|array} value [description]
-     * @return {string}       [description]
-     */
-    validate: function (value) {
-      // treat value only if it's a string (unlike the php function)
-      // because here we always have to get a string.
-      if (typeof value === 'string') {
-        return value;
-      } else {
-        return { error: true };
-      }
-    },
-    /**
-     * @override
-     */
-    sanitize: function (value) {
-      var sanitized = [];
-      var singleValues = value.split(',');
-      for (var i = 0, l = singleValues.length; i < l; i++) {
-        var valueUnquoted = singleValues[i].replace(/'/g, '').replace(/"/g, '');
-        sanitized.push('\'' + valueUnquoted.trim() + '\'');
-      }
-      return sanitized.join(',');
-    },
-    /**
-     * @override
-     */
-    syncUI: function (value) {
-      if (value !== this.__input.value) {
-        this._updateUI(value);
-      }
-    },
-    /**
-     * Destroy `selectize` instance.
-     *
-     * @override
-     */
-    onDeflate: function () {
-      if (this.__input  && this.__input.selectize) {
-        this.__input.selectize.destroy();
-      }
-    },
-    /**
-     * @override
-     */
-    ready: function () {
-      this.__input = this._container.getElementsByClassName('kkcp-selectize')[0];
-      this._fontFamilies = api.constants['font_families'].map(function (fontFamilyName) {
-        return { item: fontFamilyName };
-      });
-      this._updateUI();
-    },
-    /**
-     * Update UI
-     *
-     * @param  {string} value
-     */
-    _updateUI: function (value) {
-      var setting = this.setting;
-
-      // if there is an instance of selectize destroy it
-      if (this.__input.selectize) {
-        this.__input.selectize.destroy();
-      }
-
-      this.__input.value = value || setting();
-
-      // init selectize plugin
-      $(this.__input).selectize({
-        plugins: ['drag_drop','remove_button'],
-        delimiter: ',',
-        maxItems: 10,
-        persist: false,
-        hideSelected: true,
-        options: this._fontFamilies,
-        labelField: 'item',
-        valueField: 'item',
-        sortField: 'item',
-        searchField: 'item',
-        create: function (input) {
-          return {
-            value: input,
-            text: input.replace(/'/g, '') // remove quotes from UI only
-          };
-        },
-        render: {
-          item: this._selectizeRenderItemAndOption,
-          option: this._selectizeRenderItemAndOption
-        }
-      })
-      .on('change', function () {
-        setting.set(this.value);
-      })
-      .on('item_remove', function (e,b) {
-        if (DEBUG) { console.log(this, e, b); }
-      });
-    },
-    /**
-     * Selectize render item and option function
-     *
-     * @static
-     * @param  {Object} data     The selectize option object representation.
-     * @param  {function} escape Selectize escape function.
-     * @return {string}          The option template.
-     */
-    _selectizeRenderItemAndOption: function (data, escape) {
-      var value = escape(data.item);
-      return '<div style="font-family:' + value + '">' + value.replace(/'/g, '').replace(/"/g, '') + '</div>';
-    }
-  });
-
-  wpApi.controlConstructor['kkcp_font_family'] = api.controls.FontFamily = Control$5;
-
-  // import ControlBase from './base';
-
-  /**
-   * Control Icon
-   *
-   * @class wp.customize.controlConstructor.kkcp_icon
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control$6 = api.controls.Base.extend({
-    /**
-     * @override
-     * @see php `KKcp_Sanitize::font_families`
-     * @param  {string|array} value [description]
-     * @return {string}       [description]
-     */
-    validate: function (value) {
-      // treat value only if it's a string (unlike the php function)
-      // because here we always have to get a string.
-      // @@todo
-      if (_.isArray(value)) {
-        return value;
-      }
-      if (typeof value === 'string') {
-        return value;
-      } else {
-        return { error: true };
-      }
-    },
-    /**
-     * @override
-     * @return {array|string}
-     */
-    sanitize: function (value) {
-      if (!_.isArray(value)) {
-        value.toString().split(',');
-      }
-      var sanitized = [];
-      for (var i = 0, l = value.length; i < l; i++) {
-        sanitized.push(value[i].trim());
-      }
-      // if the array has more than one element return an array
-      if (sanitized.length > 1) {
-        return sanitized;
-        // @@doubt or return a string even here? like `a,b,c`
-        // return sanitized.join(',');
-      }
-      // or if it's just one element return a simple string
-      return sanitized[0];
-    },
-    /**
-     * @override
-     */
-    syncUI: function (value) {
-      if (value !== this.__input.value) {
-        this._updateUI(value);
-      }
-    },
-    /**
-     * Destroy `selectize` instance.
-     *
-     * @override
-     */
-    onDeflate: function () {
-      if (this.__input  && this.__input.selectize) {
-        this.__input.selectize.destroy();
-      }
-    },
-    /**
-     * @override
-     */
-    ready: function () {
-      this.__input = this._container.getElementsByClassName('kkcp-selectize')[0];
-      this._iconSet = this._getIconsSet();
-
-      var selectizeStuff = this._getSelectizeDataFromIconsSet(api.constants[this._iconSet]);
-      this._iconOptions = selectizeStuff._options;
-      this._iconGroups = selectizeStuff._groups;
-
-      this._updateUI();
-    },
-    /**
-     * Get Icons set
-     * @return {String} [description]
-     */
-    _getIconsSet: function () {
-      var choices = this.params.choices;
-      if (_.isString(choices)) {
-        return choices;
-      }
-      // @@todo api error? \\
-    },
-    /**
-     * Get selectize items from icon set
-     * @param  {Object} set
-     * @return {Object<Array,Array>}
-     */
-    _getSelectizeDataFromIconsSet: function (set) {
-      var selectizeOptions = [];
-      var selectizeGroups = [];
-      for (var groupId in set) {
-        if (set.hasOwnProperty(groupId)) {
-          var group = set[groupId];
-          selectizeGroups.push({
-            id: groupId,
-            label: group.label
-          });
-          var icons = group.icons;
-          for (var i = 0; i < icons.length; i++) {
-            selectizeOptions.push({
-              id: icons[i],
-              group: groupId
-            });
-          }
-        }
-      }
-      return {
-        _options: selectizeOptions,
-        _groups: selectizeGroups
-      };
-    },
-    /**
-     * Update UI
-     *
-     * @param  {string} value
-     */
-    _updateUI: function (value) {
-      var setting = this.setting;
-      var selectizeOpts = this.params.selectize || {};
-
-      // if there is an instance of selectize destroy it
-      if (this.__input.selectize) {
-        this.__input.selectize.destroy();
-      }
-
-      this.__input.value = value || setting();
-
-      // init selectize plugin
-      $(this.__input).selectize(_.extend({
-        plugins: ['drag_drop','remove_button'],
-        maxItems: null,
-        options: this._iconOptions,
-        optgroups: this._iconGroups,
-        optgroupField: 'group',
-        optgroupValueField: 'id',
-        lockOptgroupOrder: true,
-        valueField: 'id',
-        sortField: 'id',
-        searchField: ['id'],
-        render: {
-          item: this._selectizeRenderItem.bind(this),
-          option: this._selectizeRenderOption.bind(this),
-          optgroup_header: this._selectizeRenderGroupHeader.bind(this),
-        },
-        onChange: function (value) {
-          console.log(value);
-          setting.set(value);
-        }
-      }, selectizeOpts));
-    },
-    /**
-     * Selectize render item function
-     *
-     * @static
-     * @param  {Object} data     The selectize option object representation.
-     * @param  {function} escape Selectize escape function.
-     * @return {string}          The option template.
-     */
-    _selectizeRenderItem: function (data, escape) {
-      var value = data.id;
-      return '<div class="kkcp-icon-selectItem kkcpui-tooltip--top" title="' + escape(value) + '">' +
-          '<i class="' + escape(this._getIconClassName(value)) + '"></i>' +
-        '</div>';
-    },
-    /**
-     * Selectize render option function
-     *
-     * @static
-     * @param  {Object} data     The selectize option object representation.
-     * @param  {function} escape Selectize escape function.
-     * @return {string}          The option template.
-     */
-    _selectizeRenderOption: function (data, escape) {
-      var value = data.id;
-      return '<div class="kkcp-icon-selectOption kkcpui-tooltip--top" title="' + escape(value) + '">' +
-          '<i class="' + escape(this._getIconClassName(value)) + '"></i>' +
-        '</div>';
-    },
-    /**
-     * Selectize render option function
-     *
-     * @static
-     * @param  {Object} data     The selectize option object representation.
-     * @param  {function} escape Selectize escape function.
-     * @return {string}          The option template.
-     */
-    _selectizeRenderGroupHeader: function (data, escape) {
-      return '<div class="kkcp-icon-selectHeader">' + escape(data.label) + '</div>';
-    },
-    /**
-     * Get icon class name
-     * @param  {[type]} icon [description]
-     * @return {[type]}      [description]
-     */
-    _getIconClassName: function (icon) {
-      var iconsSetName = this._iconSet;
-      return iconsSetName + ' ' + iconsSetName + '-' + icon;
-    }
-  });
-
-  wpApi.controlConstructor['kkcp_icon'] = api.controls.Icon = Control$6;
-
-  // import ControlBase from './base';
-
-  /**
-   * Control Multicheck
-   *
-   * @class wp.customize.controlConstructor.kkcp_multicheck
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control$7 = api.controls.Base.extend({
-    /**
-     * @override
-     * @return {string|object<string,boolean>} A JSONified Array
-     */
-    validate: function (rawNewValue) {
-      var this$1 = this;
-
-      var newValue = rawNewValue;
-      // in case the value come from a reset action it is a json
-      // string (as it is saed in the db) so we need to parse it
-      try {
-        newValue = JSON.parse(rawNewValue);
-      } catch(e) {}
-      if(_.isArray(newValue)) {
-        var validArray = [];
-        for (var i = 0; i < newValue.length; i++) {
-          // only if it is an allowed choice...
-          if (this$1.params.choices.hasOwnProperty(newValue[i])) {
-            validArray.push( newValue[i] );
-          }
-        }
-        return JSON.stringify(validArray);
-      } else {
-        return { error: true };
-      }
-    },
-    /**
-     * @override
-     */
-    syncUI: function (value) {
-      if (value !== this._getValueFromUI(true)) {
-        this._syncCheckboxes();
-
-        if (this.params.sortable) {
-          this._reorder();
-        }
-      }
-    },
-    /**
-     * @override
-     */
-    ready: function () {
-      this.__inputs = this._container.getElementsByTagName('input');
-
-      // special stuff for sortable multicheck controls
-      if (this.params.sortable) {
-        var self = this;
-        var setting = self.setting;
-
-        this.container.sortable({
-          items: '> label',
-          cursor: 'move',
-          update: function () {
-            setting.set(self._getValueFromUI());
-          }
-        });
-
-        this._buildItemsMap();
-      }
-
-      // sync checked state on checkboxes on ready and bind (argument `true`)
-      this._syncCheckboxes(true);
-    },
-    /**
-     * @override
-     */
-    _buildItemsMap: function () {
-      var this$1 = this;
-
-      var items = this._container.getElementsByTagName('label');
-      this.__itemsMap = {};
-
-      for (var i = 0, l = items.length; i < l; i++) {
-        this$1.__itemsMap[items[i].title] = {
-          _sortable: items[i],
-          _input: items[i].getElementsByTagName('input')[0]
-        };
-      }
-    },
-    /**
-     * @override
-     */
-    _reorder: function () {
-      var this$1 = this;
-
-      // sort first the checked ones
-      api.controls['Sortable'].prototype._reorder.apply(this);
-
-      // then sort the unchecked ones
-      var valueAsArray = JSON.parse(this.setting());
-      for (var key in this$1.params.choices) {
-        if (valueAsArray.indexOf(key) === -1) {
-          var itemDOM = this$1.__itemsMap[key]._sortable;
-          itemDOM.parentNode.removeChild(itemDOM);
-          this$1._container.appendChild(itemDOM);
-        }
-      }
-    },
-    /**
-     * Get sorted value, reaading checkboxes status from the DOM
-     *
-     * @param {boolean} jsonize Whether to stringify the array or not
-     * @return {array|string} It could be a normal array or a JSONized one based
-     *                        on the argument `jsonize`.
-     */
-    _getValueFromUI: function (jsonize) {
-      var this$1 = this;
-
-      var valueSorted = [];
-      for (var i = 0, l = this.__inputs.length; i < l; i++) {
-        var input = this$1.__inputs[i];
-        if (input.checked) {
-          valueSorted.push(input.value);
-        }
-      }
-      return jsonize ? JSON.stringify(valueSorted) : valueSorted;
-    },
-    /**
-     * Sync checkboxes and maybe bind change event
-     * We need to be fast here, use vanilla js.
-     *
-     * @param  {boolean} bindAsWell Bind on change?
-     */
-    _syncCheckboxes: function (bindAsWell) {
-      var this$1 = this;
-
-      var valueAsArray = [];
-      try {
-        valueAsArray = JSON.parse(this.setting());
-      } catch(e) {
-        console.warn('Control->Multicheck: setting value of ' + this.id +
-          ' is not a valid json array', this.setting());
-      }
-      for (var i = 0, l = this.__inputs.length; i < l; i++) {
-        var input = this$1.__inputs[i];
-        input.checked = valueAsArray.indexOf(input.value) !== -1;
-        if (bindAsWell) {
-          input.onchange = function () {
-            this.setting.set(this._getValueFromUI());
-          }.bind(this$1);
-        }
-      }
-    }
-  });
-
-  wpApi.controlConstructor['kkcp_multicheck'] = api.controls.Multicheck = Control$7;
+  api$1.core.tooltips = new Tooltips();
 
   var sprintf = function sprintf() {
     //  discuss at: http://locutus.io/php/sprintf/
@@ -12013,7 +10118,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     //   example 5: sprintf('%-03s', 'E')
     //   returns 5: 'E00'
 
-    var regex = /%%|%(\d+\$)?([\-+'#0 ]*)(\*\d+\$|\*|\d+)?(?:\.(\*\d+\$|\*|\d+))?([scboxXuideEfFgG])/g;
+    var regex = /%%|%(\d+\$)?([-+'#0 ]*)(\*\d+\$|\*|\d+)?(?:\.(\*\d+\$|\*|\d+))?([scboxXuideEfFgG])/g;
     var a = arguments;
     var i = 0;
     var format = a[i++];
@@ -12176,6 +10281,40 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     return format.replace(regex, doFormat);
   };
 
+  var vsprintf = function vsprintf(format, args) {
+    //  discuss at: http://locutus.io/php/vsprintf/
+    // original by: ejsanders
+    //   example 1: vsprintf('%04d-%02d-%02d', [1988, 8, 1])
+    //   returns 1: '1988-08-01'
+
+    var sprintf$$1 = sprintf;
+
+    return sprintf$$1.apply(this, [format].concat(args));
+  };
+
+  var is_int = function is_int(mixedVar) {
+    // eslint-disable-line camelcase
+    //  discuss at: http://locutus.io/php/is_int/
+    // original by: Alex
+    // improved by: Kevin van Zonneveld (http://kvz.io)
+    // improved by: WebDevHobo (http://webdevhobo.blogspot.com/)
+    // improved by: Rafał Kukawski (http://blog.kukawski.pl)
+    //  revised by: Matt Bradley
+    // bugfixed by: Kevin van Zonneveld (http://kvz.io)
+    //      note 1: 1.0 is simplified to 1 before it can be accessed by the function, this makes
+    //      note 1: it different from the PHP implementation. We can't fix this unfortunately.
+    //   example 1: is_int(23)
+    //   returns 1: true
+    //   example 2: is_int('23')
+    //   returns 2: false
+    //   example 3: is_int(23.5)
+    //   returns 3: false
+    //   example 4: is_int(true)
+    //   returns 4: false
+
+    return mixedVar === +mixedVar && isFinite(mixedVar) && !(mixedVar % 1);
+  };
+
   var is_float = function is_float(mixedVar) {
     // eslint-disable-line camelcase
     //  discuss at: http://locutus.io/php/is_float/
@@ -12191,745 +10330,109 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     return +mixedVar === mixedVar && (!isFinite(mixedVar) || !!(mixedVar % 1));
   };
 
-  var isInt_1 = createCommonjsModule(function (module, exports) {
-  'use strict';
+  var is_numeric = function is_numeric(mixedVar) {
+    // eslint-disable-line camelcase
+    //  discuss at: http://locutus.io/php/is_numeric/
+    // original by: Kevin van Zonneveld (http://kvz.io)
+    // improved by: David
+    // improved by: taith
+    // bugfixed by: Tim de Koning
+    // bugfixed by: WebDevHobo (http://webdevhobo.blogspot.com/)
+    // bugfixed by: Brett Zamir (http://brett-zamir.me)
+    // bugfixed by: Denis Chenu (http://shnoulle.net)
+    //   example 1: is_numeric(186.31)
+    //   returns 1: true
+    //   example 2: is_numeric('Kevin van Zonneveld')
+    //   returns 2: false
+    //   example 3: is_numeric(' +186.31e2')
+    //   returns 3: true
+    //   example 4: is_numeric('')
+    //   returns 4: false
+    //   example 5: is_numeric([])
+    //   returns 5: false
+    //   example 6: is_numeric('1 ')
+    //   returns 6: false
 
+    var whitespace = [' ', '\n', '\r', '\t', '\f', '\x0b', '\xa0', '\u2000', '\u2001', '\u2002', '\u2003', '\u2004', '\u2005', '\u2006', '\u2007', '\u2008', '\u2009', '\u200A', '\u200B', '\u2028', '\u2029', '\u3000'].join('');
+
+    // @todo: Break this up using many single conditions with early returns
+    return (typeof mixedVar === 'number' || typeof mixedVar === 'string' && whitespace.indexOf(mixedVar.slice(-1)) === -1) && mixedVar !== '' && !isNaN(mixedVar);
+  };
+
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+  var empty = function empty(mixedVar) {
+    //  discuss at: http://locutus.io/php/empty/
+    // original by: Philippe Baumann
+    //    input by: Onno Marsman (https://twitter.com/onnomarsman)
+    //    input by: LH
+    //    input by: Stoyan Kyosev (http://www.svest.org/)
+    // bugfixed by: Kevin van Zonneveld (http://kvz.io)
+    // improved by: Onno Marsman (https://twitter.com/onnomarsman)
+    // improved by: Francesco
+    // improved by: Marc Jansen
+    // improved by: Rafał Kukawski (http://blog.kukawski.pl)
+    //   example 1: empty(null)
+    //   returns 1: true
+    //   example 2: empty(undefined)
+    //   returns 2: true
+    //   example 3: empty([])
+    //   returns 3: true
+    //   example 4: empty({})
+    //   returns 4: true
+    //   example 5: empty({'aFunc' : function () { alert('humpty'); } })
+    //   returns 5: false
+
+    var undef;
+    var key;
+    var i;
+    var len;
+    var emptyValues = [undef, null, false, 0, '', '0'];
+
+    for (i = 0, len = emptyValues.length; i < len; i++) {
+      if (mixedVar === emptyValues[i]) {
+        return true;
+      }
+    }
+
+    if ((typeof mixedVar === 'undefined' ? 'undefined' : _typeof(mixedVar)) === 'object') {
+      for (key in mixedVar) {
+        if (mixedVar.hasOwnProperty(key)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    return false;
+  };
+
+  function unwrapExports (x) {
+  	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+  }
+
+  function createCommonjsModule(fn, module) {
+  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+  }
+
+  var assertString_1 = createCommonjsModule(function (module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = isInt;
+  exports.default = assertString;
+  function assertString(input) {
+    var isString = typeof input === 'string' || input instanceof String;
 
-  var _assertString = assertString_1;
-
-  var _assertString2 = _interopRequireDefault(_assertString);
-
-  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-  var int = /^(?:[-+]?(?:0|[1-9][0-9]*))$/;
-  var intLeadingZeroes = /^[-+]?[0-9]+$/;
-
-  function isInt(str, options) {
-    (0, _assertString2.default)(str);
-    options = options || {};
-
-    // Get the regex to use for testing, based on whether
-    // leading zeroes are allowed or not.
-    var regex = options.hasOwnProperty('allow_leading_zeroes') && !options.allow_leading_zeroes ? int : intLeadingZeroes;
-
-    // Check min/max/lt/gt
-    var minCheckPassed = !options.hasOwnProperty('min') || str >= options.min;
-    var maxCheckPassed = !options.hasOwnProperty('max') || str <= options.max;
-    var ltCheckPassed = !options.hasOwnProperty('lt') || str < options.lt;
-    var gtCheckPassed = !options.hasOwnProperty('gt') || str > options.gt;
-
-    return regex.test(str) && minCheckPassed && maxCheckPassed && ltCheckPassed && gtCheckPassed;
+    if (!isString) {
+      throw new TypeError('This library (validator.js) validates strings only');
+    }
   }
   module.exports = exports['default'];
   });
 
-  var isInt = unwrapExports(isInt_1);
-
-  /**
-   * Control Number
-   *
-   * @class wp.customize.controlConstructor.kkcp_number
-   * @alias api.controls.Number
-   * @constructor
-   * @extends api.controls.BaseInput
-   * @augments api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control$8 = ControlBaseInput.extend({
-    /**
-     * We just neet to convert the value to string for the check, for the rest
-     * is the same as in the base input control
-     *
-     * @override
-     */
-    syncUI: function (value) {
-      if (value && this.__input.value !== value.toString()) {
-        this.__input.value = value;
-      }
-    },
-    /**
-     * @override
-     */
-    sanitize: function (value) {
-      return Number(value);
-    },
-    /**
-     * @override
-     */
-    validate: function (value) {
-      var params = this.params;
-      var attrs = params.attrs;
-      var errorMsg = '';
-
-      if (isNaN(value)) {
-        errorMsg += api.l10n['vNotAnumber'];
-      } else {
-
-      }
-      if (!params.allowFloat) {
-        if (is_float(value)) {
-          errorMsg += api.l10n['vNoFloat'] + ' ';
-        } else if (!isInt(value.toString())) {
-          errorMsg += api.l10n['vNotAnInteger'] + ' ';
-        }
-      }
-      if (attrs) {
-        if (attrs.min && value < attrs.min) {
-          errorMsg += sprintf(api.l10n['vNumberLow'], attrs.min) + ' ';
-        }
-        if (attrs.max && value > attrs.max) {
-          errorMsg += sprintf(api.l10n['vNumberHigh'], attrs.max) + ' ';
-        }
-        if (attrs.step && !isMultipleOf(value.toString(), attrs.step)) {
-          errorMsg += sprintf(api.l10n['vNumberStep'], attrs.step) + ' ';
-        }
-      }
-
-      // if there is an error return it
-      if (errorMsg) {
-        return {
-          error: true,
-          msg: errorMsg
-        };
-      // otherwise return the valid value
-      } else {
-        return value;
-      }
-    }
-  });
-
-  wpApi.controlConstructor['kkcp_number'] = api.controls.Number = Control$8;
-
-  /**
-   * Control Radio
-   *
-   * @class wp.customize.controlConstructor.kkcp_radio
-   * @constructor
-   * @extends api.controls.BaseRadio
-   * @augments api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control$9 = ControlBaseRadio;
-
-  wpApi.controlConstructor['kkcp_radio'] = api.controls.Radio = Control$9;
-
-  /**
-   * Control Radio Image
-   *
-   * @class wp.customize.controlConstructor.kkcp_radio_image
-   * @constructor
-   * @extends api.controls.BaseRadio
-   * @augments api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control$10 = ControlBaseRadio;
-
-  wpApi.controlConstructor['kkcp_radio_image'] = api.controls.RadioImage = Control$10;
-
-  // import ControlBase from './base';
-
-  /**
-   * Control Select class
-   *
-   * @class wp.customize.controlConstructor.kkcp_select
-   * @alias api.controls.Select
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control$11 = api.controls.Base.extend({
-    /**
-     * override
-     */
-    validate: function (rawNewValue) {
-      var choices = this.params.choices;
-      var newValue;
-      // it could come as a stringified array through a programmatic change
-      // of the setting (i.e. from a a reset action)
-      try {
-        newValue = JSON.parse(rawNewValue);
-      } catch(e) {
-        newValue = rawNewValue;
-      }
-      // validate array of values
-      if (_.isArray(newValue) && this.params.selectize) {
-        var validatedArray = [];
-        for (var i = 0, l = newValue.length; i < l; i++) {
-          var item = newValue[i];
-          if (choices.hasOwnProperty(item)) {
-            validatedArray.push(item);
-          }
-        }
-        return JSON.stringify(validatedArray);
-      }
-      // validate string value
-      if (choices.hasOwnProperty(newValue)) {
-        return newValue;
-      }
-      // otherwise return error
-      return { error: true };
-    },
-    /**
-     * Destroy `selectize` instance if any.
-     *
-     * @override
-     */
-    onDeflate: function () {
-      if (this.__select && this.__select.selectize) {
-        this.__select.selectize.destroy();
-      }
-    },
-    /**
-     * @override
-     */
-    syncUI: function () {
-      this._syncOptions();
-    },
-    /**
-     * @override
-     */
-    ready: function () {
-      var this$1 = this;
-
-      var selectizeOpts = this.params.selectize || false;
-      var setting = this.setting;
-
-      this.__select = this._container.getElementsByTagName('select')[0];
-      this.__options = this._container.getElementsByTagName('option');
-
-      // use selectize
-      if (selectizeOpts) {
-        $(this.__select).selectize(_.extend({
-          onChange: function (value) {
-            // if it's an array be sure the value is actually different and not
-            // just a JSON vs non-JSON situation
-            if (_.isArray(value)) {
-              if (!this$1._isSameAsSetting(value)) {
-                setting.set(value);
-              }
-            } else {
-              setting.set(value);
-            }
-          }
-        }, selectizeOpts));
-      // or use normal DOM API
-      } else {
-        this.__select.onchange = function () {
-          setting.set(this.value);
-        };
-      }
-
-      // sync selected state on options on ready
-      this._syncOptions();
-    },
-    /**
-     * Sync options and maybe bind change event
-     *
-     * We need to be fast here, use vanilla js.
-     * We do a comparison with two equals `==` because sometimes we want to
-     * compare `500` to `'500'` (like in the font-weight dropdown) and return
-     * true from that.
-     * // @@doubt We could use `.toString()` on the two values to compare, not
-     * if those value can be `null` or `undefined`, probably they can \\
-     */
-    _syncOptions: function () {
-      var this$1 = this;
-
-      var value = this.setting();
-
-      // use selectize
-      if (this.params.selectize) {
-        // it could be a json array or a simple string
-        try {
-          this.__select.selectize.setValue(JSON.parse(value));
-        } catch(e) {
-          this.__select.selectize.setValue(value);
-        }
-      }
-      // or use normal DOM API
-      else {
-        for (var i = this.__options.length; i--;) {
-          var option = this$1.__options[i];
-          option.selected = (value == option.value);
-        }
-      }
-    },
-    /**
-     * Check if the given value is the same as the current setting value,
-     * this will return `true` even in the scenario where the two values
-     * are one a real JS array and the other its JSONified version. This
-     * equality (that shouldn't trigger a `setting.set`) happens e.g. on load
-     *
-     * @param  {Array}  value
-     * @return {Boolean}
-     */
-    _isSameAsSetting: function _isSameAsSetting (value) {
-      var settingValue = this.setting.get();
-      var valueToCompare = value;
-
-      try {
-        settingValue = JSON.parse(settingValue);
-      } catch (e) {
-        settingValue = JSON.stringify(settingValue);
-        valueToCompare = JSON.stringify(valueToCompare);
-      }
-      return _.isEqual(settingValue, valueToCompare);
-    }
-  });
-
-  var ControlSelect = wpApi.controlConstructor['kkcp_select'] = api.controls.Select = Control$11;
-
-  /**
-   * Control Font Weight
-   *
-   * @class wp.customize.controlConstructor.kkcp_font_weight
-   * @constructor
-   * @extends api.controls.Select
-   * @augments api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control$12 = ControlSelect;
-
-  wpApi.controlConstructor['kkcp_font_weight'] = api.controls.FontWeight = Control$12;
-
-  // import ControlBase from './base';
-
-  /**
-   * Control Slider
-   *
-   * @class wp.customize.controlConstructor.kkcp_slider
-   * @alias api.controls.Slider
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   * @requires api.core.Regexes
-   */
-  var Control$13 = api.controls.Base.extend({
-    /**
-     * Let's consider '44' to be equal to 44.
-     * @override
-     */
-    softenize: function (value) {
-      return value.toString();
-    },
-    /**
-     * @override
-     */
-    validate: function (newValue) {
-      var params = this.params;
-      var errorMsg = '';
-      var unit = '';
-      var number = '';
-
-      if (params.units) {
-        unit = this._extractFirstUnit(newValue);
-        if (!unit || params.units.indexOf(unit) === -1) {
-          errorMsg = api.l10n['vInvalidUnit'];
-          unit = params.units[0];
-        }
-      }
-
-      // validate number with the api.controls.Number method
-      number = api.controls.Number.prototype.validate.call(this,
-        this._extractFirstNumber(newValue));
-
-      if (number.error) {
-        errorMsg += ' ' + number.msg;
-      }
-
-      if (errorMsg) {
-        return {
-          error: true,
-          msg: errorMsg
-        };
-      } else {
-        return number.toString() + unit;
-      }
-    },
-    /**
-     * @override
-     */
-    syncUI: function (value) {
-      if (value !== this._getValueFromUI()) {
-        this._setPartialValue(value, 'API');
-      }
-    },
-    /**
-     * This function is divided in subfunction to make it easy to reuse part of
-     * this control in other controls that extend this, such as `size_dynamic`.
-     * @override
-     */
-    ready: function () {
-      this._setDOMelements();
-      this._initSliderAndBindInputs();
-      // update UI with current values (wait for the slider to be initialized)
-      this._updateUIcustomControl(this.setting());
-    },
-    /**
-     * Set DOM element as control properties
-     */
-    _setDOMelements: function () {
-      var container = this._container;
-      /** @type {HTMLElement} */
-      this.__inputNumber = container.getElementsByClassName('kkcp-slider-number')[0];
-      /** @type {JQuery} */
-      this.__$inputUnits = $(container.getElementsByClassName('kkcp-unit'));
-      /** @type {JQuery} */
-      this.__$inputSlider = $(container.getElementsByClassName('kkcp-slider')[0]);
-    },
-    /**
-     * Init slider and bind input UI.
-     */
-    _initSliderAndBindInputs: function () {
-      var self = this;
-      var params = self.params;
-      var inputNumber = self.__inputNumber;
-      var $inputSlider = self.__$inputSlider;
-
-      // Bind click action to unit picker
-      // (only if there is more than one unit allowed)
-      if (params.units && params.units.length > 1) {
-        var $inputUnits = self.__$inputUnits;
-        $inputUnits.on('click', function () {
-          $inputUnits.removeClass('kkcp-current');
-          this.className += ' kkcp-current';
-          self._setPartialValue({ _unit: this.value });
-        });
-      }
-
-      // Bind number input
-      inputNumber.onchange = function () {
-        var value = this.value;
-        $inputSlider.slider('value', value);
-        self._setPartialValue({ _number: value });
-      };
-
-      // Init Slider
-      var sliderOptions = params.attrs || {};
-      $inputSlider.slider(_.extend(sliderOptions, {
-        value: self._extractFirstNumber(),
-        slide: function(event, ui) {
-          inputNumber.value = ui.value;
-          self._setPartialValue({ _number: ui.value });
-        },
-        change: function(event, ui) {
-          // trigger change effect only on user input, @see
-          // https://forum.jquery.com/topic/setting-a-sliders-value-without-triggering-the-change-event
-          if (event.originalEvent) {
-            self._setPartialValue({ _number: ui.value });
-          }
-        }
-      }));
-    },
-    /**
-     * Extract first found unit from value
-     * @param  {?string} value [description]
-     * @return {?string}       [description]
-     */
-    _extractFirstUnit: function (value) {
-      var valueOrigin = value || this.setting();
-      var matchesUnit = Regexes$1._extractUnit.exec(valueOrigin);
-      if (matchesUnit && matchesUnit[0]) {
-        return matchesUnit[0];
-      }
-      return null;
-    },
-    /**
-     * Extract first number found in value
-     * @param  {?string|number} value [description]
-     * @return {?string}              [description]
-     */
-    _extractFirstNumber: function (value) {
-      var valueOrigin = value || this.setting();
-      var matchesNumber = Regexes$1._extractNumber.exec(valueOrigin);
-      if (matchesNumber && matchesNumber[0]) {
-        return matchesNumber[0];
-      }
-      return null;
-    },
-    /**
-     * Get current `setting` value from DOM or from given arg
-     * @param  {Object<string,string>} value An optional value formed as
-     *                                       `{ number: ?, unit: ? }`
-     * @return {string}
-     */
-    _getValueFromUI: function (value) {
-      var output;
-      if (value && value._number) {
-        output = value._number.toString();
-      } else {
-        output = this.__inputNumber.value;
-      }
-      if (this.params.units) {
-        if (value && value._unit) {
-          output += value._unit;
-        } else {
-          output += this.__$inputUnits.filter('.kkcp-current').val();
-        }
-      }
-      return output;
-    },
-    /**
-     * Update UI control
-     *
-     * Reflect a programmatic setting change on the UI.
-     * @param {?string} value Optional, the value from where to extract number and unit,
-     *                        uses `this.setting()` if a `null` value is passed.
-     */
-    _updateUIcustomControl: function (value) {
-      var params = this.params;
-      var number = this._extractFirstNumber(value);
-      var unit = this._extractFirstUnit(value);
-
-      // update number input
-      this.__inputNumber.value = number;
-      // update number slider
-      this.__$inputSlider.slider('value', number);
-      // update unit picker
-      if (params.units) {
-        this.__$inputUnits.removeClass('kkcp-current').filter(function () {
-          return this.value === unit;
-        }).addClass('kkcp-current');
-      }
-    },
-    /**
-     * Set partial value
-     *
-     * Wrap the `setting.set()` function doing some additional stuff.
-     *
-     * @access private
-     * @param  {string} value
-     * @param  {string} from  Where the value come from (could be from the UI:
-     *                        picker, dynamic fields, expr field) or from the
-     *                        API (on programmatic value change).
-     */
-    _setPartialValue: function (value, from) {
-      if (from === 'API') {
-        this._updateUIcustomControl(value);
-      } else {
-        this.setting.set(this._getValueFromUI(value));
-      }
-    }
-  });
-
-  wpApi.controlConstructor['kkcp_slider'] = api.controls.Slider = Control$13;
-
-  // import ControlBase from './base';
-
-  /**
-   * Control Sortable
-   *
-   * @class wp.customize.controlConstructor.kkcp_sortable
-   * @alias api.controls.Sortable
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   */
-  var Control$14 = api.controls.Base.extend({
-    /**
-     * @override
-     */
-    validate: function (rawNewValue) {
-      var choices = this.params.choices;
-      var newValue;
-      // it could come as a stringified array through a programmatic change
-      // of the setting (i.e. from a a reset action)
-      try {
-        newValue = JSON.parse(rawNewValue);
-      } catch(e) {
-        newValue = rawNewValue;
-      }
-      // validate array of values
-      if (_.isArray(newValue)) {
-        var validatedArray = [];
-        for (var i = 0, l = newValue.length; i < l; i++) {
-          var item = newValue[i];
-          if (choices.hasOwnProperty(item)) {
-            validatedArray.push(item);
-          }
-        }
-        return JSON.stringify(validatedArray);
-      }
-      else {
-        return { error: true };
-      }
-    },
-    /**
-     * @override
-     */
-    syncUI: function (value) {
-      if (value !== this.params.lastValue) {
-        this._reorder();
-        this.params.lastValue = value;
-      }
-    },
-    /**
-     * @override
-     */
-    ready: function () {
-      var setting = this.setting;
-      var container = this.container;
-
-      this._buildItemsMap();
-
-      this.params.lastValue = this.setting();
-
-      container.sortable({
-        items: '.kkcp-sortable',
-        cursor: 'move',
-        update: function () {
-          setting.set(container.sortable('toArray', { attribute: 'title' }));
-        }
-      });
-    },
-    /**
-     * Build sortable items map, a key (grabbed from the `title` attrbiute)
-     * with the corresponding DOM element
-     */
-    _buildItemsMap: function () {
-      var this$1 = this;
-
-      var items = this._container.getElementsByClassName('kkcp-sortable');
-      this.__itemsMap = {};
-
-      for (var i = 0, l = items.length; i < l; i++) {
-        this$1.__itemsMap[items[i].title] = {
-          _sortable: items[i]
-        };
-      }
-    },
-    /**
-     * Manually reorder the sortable list, needed when a programmatic change
-     * is triggered. Unfortunately jQuery UI sortable does not have a method
-     * to keep in sync the order of an array and its corresponding DOM.
-     */
-    _reorder: function () {
-      var this$1 = this;
-
-      var valueAsArray = JSON.parse(this.setting());
-
-      for (var i = 0, l = valueAsArray.length; i < l; i++) {
-        var itemValue = valueAsArray[i];
-        var itemDOM = this$1.__itemsMap[itemValue]._sortable;
-        itemDOM.parentNode.removeChild(itemDOM);
-        this$1._container.appendChild(itemDOM);
-      }
-
-      this.container.sortable('refresh');
-    }
-  });
-
-  wpApi.controlConstructor['kkcp_sortable'] = api.controls.Sortable = Control$14;
-
-  // import ControlBase from './base';
-
-  /**
-   * Control Tags class
-   *
-   * @class wp.customize.controlConstructor.kkcp_tags
-   * @constructor
-   * @extends api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   * @requires api.core.Utils
-   */
-  var Control$15 = api.controls.Base.extend({
-    /**
-     * @override
-     */
-    validate: function (rawNewValue) {
-      if (_.isString(rawNewValue)) {
-        var newValue = rawNewValue;
-        newValue = _.map(newValue.split(','), function (string) {
-          return string.trim();
-        });
-        newValue = _.uniq(newValue);
-        var maxItems = this.params.selectize ? this.params.selectize.maxItems : null;
-        if (maxItems && _.isNumber(maxItems)) {
-          if (newValue.length > maxItems) {
-            newValue = newValue.slice(0, maxItems);
-          }
-        }
-        return Utils._stripHTML(newValue.join(','));
-      }
-      return { error: true };
-    },
-    /**
-     * Destroy `selectize` instance if any.
-     *
-     * @override
-     */
-    onDeflate: function () {
-      if (this.__input && this.__input.selectize) {
-        this.__input.selectize.destroy();
-      }
-    },
-    /**
-     * @override
-     */
-    syncUI: function (value) {
-      var selectize = this.__input.selectize;
-      if (selectize && selectize.getValue() !== value) {
-        this.__input.value = value;
-        // this is due to a bug, we should use:
-        // selectize.setValue(value, true);
-        // but @see https://github.com/brianreavis/selectize.js/issues/568
-        // so first we have to destroy thene to reinitialize, this happens
-        // only through a programmatic change such as a reset action
-        selectize.destroy();
-        this._initSelectize();
-      }
-    },
-    /**
-     * @override
-     */
-    ready: function () {
-      this.__input = this._container.getElementsByTagName('input')[0];
-
-      // fill input before to initialize selectize
-      // so it grabs the value directly from the DOM
-      this.__input.value = this.setting();
-
-      this._initSelectize();
-    },
-    /**
-     * Init selectize on text input
-     */
-    _initSelectize: function () {
-      var setting = this.setting;
-      var selectizeOpts = this.params.selectize || {};
-
-      $(this.__input).selectize(_.extend({
-        persist: false,
-        create: function (input) {
-          return {
-            value: input,
-            text: input
-          };
-        },
-        onChange: function (value) {
-          setting.set(value);
-        }
-      }, selectizeOpts));
-    }
-  });
-
-  wpApi.controlConstructor['kkcp_tags'] = api.controls.Tags = Control$15;
+  unwrapExports(assertString_1);
 
   var merge_1 = createCommonjsModule(function (module, exports) {
-  'use strict';
-
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
@@ -12948,21 +10451,21 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   module.exports = exports['default'];
   });
 
-  var isFQDN = createCommonjsModule(function (module, exports) {
-  'use strict';
+  unwrapExports(merge_1);
 
+  var isFQDN_1 = createCommonjsModule(function (module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = isFDQN;
+  exports.default = isFQDN;
 
-  var _assertString = assertString_1;
 
-  var _assertString2 = _interopRequireDefault(_assertString);
 
-  var _merge = merge_1;
+  var _assertString2 = _interopRequireDefault(assertString_1);
 
-  var _merge2 = _interopRequireDefault(_merge);
+
+
+  var _merge2 = _interopRequireDefault(merge_1);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12972,7 +10475,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     allow_trailing_dot: false
   };
 
-  function isFDQN(str, options) {
+  function isFQDN(str, options) {
     (0, _assertString2.default)(str);
     options = (0, _merge2.default)(options, default_fqdn_options);
 
@@ -12986,6 +10489,10 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       if (!parts.length || !/^([a-z\u00a1-\uffff]{2,}|xn[a-z0-9-]{2,})$/i.test(tld)) {
         return false;
       }
+      // disallow spaces
+      if (/[\s\u2002-\u200B\u202F\u205F\u3000\uFEFF\uDB40\uDC20]/.test(tld)) {
+        return false;
+      }
     }
     for (var part, i = 0; i < parts.length; i++) {
       part = parts[i];
@@ -12995,8 +10502,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       if (!/^[a-z\u00a1-\uffff0-9-]+$/i.test(part)) {
         return false;
       }
+      // disallow full-width chars
       if (/[\uff01-\uff5e]/.test(part)) {
-        // disallow full-width chars
         return false;
       }
       if (part[0] === '-' || part[part.length - 1] === '-') {
@@ -13008,17 +10515,17 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   module.exports = exports['default'];
   });
 
-  var isIP_1 = createCommonjsModule(function (module, exports) {
-  'use strict';
+  unwrapExports(isFQDN_1);
 
+  var isIP_1 = createCommonjsModule(function (module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.default = isIP;
 
-  var _assertString = assertString_1;
 
-  var _assertString2 = _interopRequireDefault(_assertString);
+
+  var _assertString2 = _interopRequireDefault(assertString_1);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13092,29 +10599,29 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   module.exports = exports['default'];
   });
 
-  var isURL_1 = createCommonjsModule(function (module, exports) {
-  'use strict';
+  unwrapExports(isIP_1);
 
+  var isURL_1 = createCommonjsModule(function (module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.default = isURL;
 
-  var _assertString = assertString_1;
 
-  var _assertString2 = _interopRequireDefault(_assertString);
 
-  var _isFQDN = isFQDN;
+  var _assertString2 = _interopRequireDefault(assertString_1);
 
-  var _isFQDN2 = _interopRequireDefault(_isFQDN);
 
-  var _isIP = isIP_1;
 
-  var _isIP2 = _interopRequireDefault(_isIP);
+  var _isFQDN2 = _interopRequireDefault(isFQDN_1);
 
-  var _merge = merge_1;
 
-  var _merge2 = _interopRequireDefault(_merge);
+
+  var _isIP2 = _interopRequireDefault(isIP_1);
+
+
+
+  var _merge2 = _interopRequireDefault(merge_1);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13182,6 +10689,10 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     }
     url = split.join('://');
 
+    if (url === '') {
+      return false;
+    }
+
     split = url.split('/');
     url = split.shift();
 
@@ -13198,7 +10709,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     }
     hostname = split.join('@');
 
-    port_str = ipv6 = null;
+    port_str = null;
+    ipv6 = null;
     var ipv6_match = hostname.match(wrapped_ipv6);
     if (ipv6_match) {
       host = '';
@@ -13219,7 +10731,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       }
     }
 
-    if (!(0, _isIP2.default)(host) && !(0, _isFQDN2.default)(host, options) && (!ipv6 || !(0, _isIP2.default)(ipv6, 6)) && host !== 'localhost') {
+    if (!(0, _isIP2.default)(host) && !(0, _isFQDN2.default)(host, options) && (!ipv6 || !(0, _isIP2.default)(ipv6, 6))) {
       return false;
     }
 
@@ -13240,8 +10752,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   var isURL = unwrapExports(isURL_1);
 
   var isByteLength_1 = createCommonjsModule(function (module, exports) {
-  'use strict';
-
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
@@ -13250,9 +10760,9 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
   exports.default = isByteLength;
 
-  var _assertString = assertString_1;
 
-  var _assertString2 = _interopRequireDefault(_assertString);
+
+  var _assertString2 = _interopRequireDefault(assertString_1);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13275,29 +10785,29 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   module.exports = exports['default'];
   });
 
-  var isEmail_1 = createCommonjsModule(function (module, exports) {
-  'use strict';
+  unwrapExports(isByteLength_1);
 
+  var isEmail_1 = createCommonjsModule(function (module, exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.default = isEmail;
 
-  var _assertString = assertString_1;
 
-  var _assertString2 = _interopRequireDefault(_assertString);
 
-  var _merge = merge_1;
+  var _assertString2 = _interopRequireDefault(assertString_1);
 
-  var _merge2 = _interopRequireDefault(_merge);
 
-  var _isByteLength = isByteLength_1;
 
-  var _isByteLength2 = _interopRequireDefault(_isByteLength);
+  var _merge2 = _interopRequireDefault(merge_1);
 
-  var _isFQDN = isFQDN;
 
-  var _isFQDN2 = _interopRequireDefault(_isFQDN);
+
+  var _isByteLength2 = _interopRequireDefault(isByteLength_1);
+
+
+
+  var _isFQDN2 = _interopRequireDefault(isFQDN_1);
 
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13310,7 +10820,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
   /* eslint-disable max-len */
   /* eslint-disable no-control-regex */
-  var displayName = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\.\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\.\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF\s]*<(.+)>$/i;
+  var displayName = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\.\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\,\.\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF\s]*<(.+)>$/i;
   var emailUserPart = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~]+$/i;
   var quotedEmailUser = /^([\s\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e]|(\\[\x01-\x09\x0b\x0c\x0d-\x7f]))*$/i;
   var emailUserUtf8Part = /^[a-z\d!#\$%&'\*\+\-\/=\?\^_`{\|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+$/i;
@@ -13340,7 +10850,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       user = user.replace(/\./g, '').toLowerCase();
     }
 
-    if (!(0, _isByteLength2.default)(user, { max: 64 }) || !(0, _isByteLength2.default)(domain, { max: 256 })) {
+    if (!(0, _isByteLength2.default)(user, { max: 64 }) || !(0, _isByteLength2.default)(domain, { max: 254 })) {
       return false;
     }
 
@@ -13369,106 +10879,4525 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
   var isEmail = unwrapExports(isEmail_1);
 
+  var strpos = function strpos(haystack, needle, offset) {
+    //  discuss at: http://locutus.io/php/strpos/
+    // original by: Kevin van Zonneveld (http://kvz.io)
+    // improved by: Onno Marsman (https://twitter.com/onnomarsman)
+    // improved by: Brett Zamir (http://brett-zamir.me)
+    // bugfixed by: Daniel Esteban
+    //   example 1: strpos('Kevin van Zonneveld', 'e', 5)
+    //   returns 1: 14
+
+    var i = (haystack + '').indexOf(needle, offset || 0);
+    return i === -1 ? false : i;
+  };
+
   /**
-   * Control Text class
+   * @fileOverview An helper class containing helper methods. This has its PHP
+   * equivalent in `class-helper.php`
    *
-   * @class wp.customize.controlConstructor.kkcp_text
-   * @constructor
-   * @extends api.controls.BaseInput
-   * @augments api.controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Classnds
-   * @requires api.core.Utils
+   * @module Helper
+   * @requires tinycolor
    */
-  var Control$16 = ControlBaseInput.extend({
-    /**
-     * @override
-     * @inheritdoc api.controls.Base.validate
-     */
-    validate: function (value) {
-      var attrs = this.params.attrs;
-      var inputType = attrs.type || 'text';
-      var errorMsg = '';
+  /* global tinycolor */
 
-      // max length
-      if (attrs.maxlength && value.length > attrs.maxlength) {
-        errorMsg += api.l10n['vTooLong'];
-      }
-      // url
-      if (inputType === 'url' && !isURL(value)) {
-        errorMsg += api.l10n['vInvalidUrl'];
-      }
-      // email
-      else if (inputType === 'email' && !isEmail(value)) {
-        errorMsg += api.l10n['vInvalidEmail'];
-      }
-      // text
-      else {
-        // always strip HTML
-        value = Utils._stripHTML(value);
+  /**
+   * Is setting value (`control.setting()`) empty?
+   *
+   * Used to check if required control's settings have instead an empty value
+   *
+   * @see php class method `KKcp_Validate::is_empty()`
+   * @param  {string}  value
+   * @return {bool}
+   */
+  function isEmpty (value) {
+    // first try to compare it to empty primitives
+    if (value === null || value === undefined || value === '') {
+      return true;
+    } else {
+      // if it's a jsonized value try to parse it
+      try {
+        value = JSON.parse(value);
+      } catch(e) {}
+
+      // and then see if we have an empty array or an empty object
+      if ((_.isArray(value) || _.isObject(value)) && _.isEmpty(value)) {
+        return true;
       }
 
-      if (errorMsg) {
-        return {
-          error: true,
-          msg: errorMsg
-        };
+      return false;
+    }
+  }
+
+  /**
+   * Is keyword color?
+   *
+   * It needs a value cleaned of all whitespaces (sanitized)
+   *
+   * @since  1.0.0
+   *
+   * @param  {string} $value  The value value to check
+   * @return bool
+   */
+  function isKeywordColor( $value ) {
+    var keywords = api.constants['colorsKeywords'] || [];
+    return keywords.indexOf( $value ) !== -1;
+  }
+
+  /**
+   * Is HEX color?
+   *
+   * It needs a value cleaned of all whitespaces (sanitized)
+   *
+   * @since  1.0.0
+   *
+   * @param  {string} $value  The value value to check
+   * @return {bool}
+   */
+  function isHex( $value ) {
+    return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test( $value )
+  }
+
+  /**
+   * Is RGB color?
+   *
+   * It needs a value cleaned of all whitespaces (sanitized)
+   * Inspired by formvalidation.js by Nguyen Huu Phuoc, aka @nghuuphuoc
+   * and contributors {@link https://github.com/formvalidation/}.
+   *
+   * @since  1.0.0
+   *
+   * @param  {string} $value  The value value to check
+   * @return {bool}
+   */
+  function isRgb( $value ) {
+    var regexInteger = /^rgb\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){2}(\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*)\)$/;
+    var regexPercent = /^rgb\((\s*(\b(0?\d{1,2}|100)\b%)\s*,){2}(\s*(\b(0?\d{1,2}|100)\b%)\s*)\)$/;
+    return regexInteger.test( $value ) || regexPercent.test( $value );
+  }
+
+  /**
+   * Is RGBA color?
+   *
+   * It needs a value cleaned of all whitespaces (sanitized)
+   * Inspired by formvalidation.js by Nguyen Huu Phuoc, aka @nghuuphuoc
+   * and contributors {@link https://github.com/formvalidation/}.
+   *
+   * @since  1.0.0
+   *
+   * @param  {string} $value  The value value to check
+   * @return {bool}
+   */
+  function isRgba( $value ) {
+    var regexInteger = /^rgba\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;
+    var regexPercent = /^rgba\((\s*(\b(0?\d{1,2}|100)\b%)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;
+    return regexInteger.test( $value ) || regexPercent.test( $value );
+  }
+
+  // hsl: return /^hsl\((\s*(-?\d+)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*)\)$/.test(value);
+  // hsla: return /^hsla\((\s*(-?\d+)\s*,)(\s*(\b(0?\d{1,2}|100)\b%)\s*,){2}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/.test(value);
+
+  /**
+   * Is a valid color among the color formats given?
+   *
+   * It needs a value cleaned of all whitespaces (sanitized)
+   *
+   * @since  1.0.0
+   *
+   * @param  {string} $value           The value value to check
+   * @param  {Array} $allowed_formats  The allowed color formats
+   * @return {bool}
+   */
+  function isColor ( $value, $allowedFormats ) {
+    for (var i = 0; i < $allowedFormats.length; i++) {
+      var $format = $allowedFormats[i];
+
+      if ( $format === 'keyword' && isKeywordColor( $value ) ) {
+        return true;
+      }
+      else if ( $format === 'hex' && isHex( $value ) ) {
+        return true;
+      }
+      else if ( $format === 'rgb' && isRgb( $value ) ) {
+        return true;
+      }
+      else if ( $format === 'rgba' && isRgba( $value ) ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Convert a hexa decimal color code to its RGB equivalent
+   *
+   * @link(http://php.net/manual/en/function.hexdec.php#99478, original source)
+   * @since  1.0.0
+   * @param  {string} $value          Hexadecimal color value
+   * @param  {bool}   $returnAsString If set true, returns the value separated by
+   *                                  the separator character. Otherwise returns an
+   *                                  associative array.
+   * @return {array|string} Depending on second parameter. Returns `false` if
+   *                        invalid hex color value
+   */
+  function hexToRgb( $value, $returnAsString ) {
+    if ( $returnAsString === void 0 ) $returnAsString = true;
+
+    return $returnAsString ? tinycolor.toRgbString( $value ) : tinycolor.toRgb( $value );
+  }
+
+  /**
+   * Converts a RGBA color to a RGB, stripping the alpha channel value
+   *
+   * It needs a value cleaned of all whitespaces (sanitized).
+   *
+   * @method
+   * @since  1.0.0
+   * @param  {string} $input
+   * @return ?string
+   */
+  var rgbaToRgb = hexToRgb;
+
+  /**
+   * Normalize font family.
+   *
+   * Be sure that a font family is wrapped in quote, good for consistency
+   *
+   * @since  1.0.0
+   *
+   * @param  {string} $value
+   * @return {string}
+   */
+  function normalizeFontFamily( $value ) {
+    $value = $value.replace(/'/g, '').replace(/"/g, '');
+    return ("'" + ($value.trim()) + "'");
+  }
+
+  /**
+   * Normalize font families
+   *
+   * Be sure that one or multiple font families are all trimmed and wrapped in
+   * quotes, good for consistency
+   *
+   * @since  1.0.0
+   *
+   * @param {string|array} $value
+   * @return {string|null}
+   */
+  function normalizeFontFamilies( $value ) {
+    var $sanitized = [];
+
+    if ( _.isString( $value ) ) {
+      $value = $value.split(',');
+    }
+    if ( _.isArray( $value ) ) {
+      for (var i = 0; i < $value.length; i++) {
+        $sanitized.push( normalizeFontFamily( $value[i] ));
+      }
+      return $sanitized.join(',');
+    }
+
+    return null;
+  }
+
+  /**
+   * Extract number from value, returns 0 otherwise
+   *
+   * @since  1.0.0
+   * @param  {string}         $value         The value from to extract from
+   * @param  {bool|null}      $allowed_float Whether float numbers are allowed
+   * @return {int|float|null} The extracted number or null if the value does not
+   *                          contain any digit.
+   */
+  function extractNumber( $value, $allowed_float ) {
+    var $number_extracted;
+
+    if ( is_int( $value ) || ( is_float( $value ) && $allowed_float ) ) {
+      return $value;
+    }
+    if ( $allowed_float ) {
+      $number_extracted = parseFloat( $value ); // filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+    } else {
+      $number_extracted = parseInt( $value, 10 ); // filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
+    }
+    if ( $number_extracted || 0 === $number_extracted ) {
+      return $number_extracted;
+    }
+    return null;
+  }
+
+  /**
+   * Extract unit (like `px`, `em`, `%`, etc.) from an array of allowed units
+   *
+   * @since  1.0.0
+   * @param  {string}     $value          The value from to extract from
+   * @param  {null|array} $allowed_units  An array of allowed units
+   * @return {string}                     The first valid unit found.
+   */
+  function extractSizeUnit( $value, $allowed_units ) {
+    if ( _.isArray( $allowed_units ) ) {
+      for (var i = 0; i < $allowed_units.length; i++) {
+        if ( strpos( $value, $allowed_units[i] ) ) {
+          return $allowed_units[i];
+        }
+      }
+      return $allowed_units[0] || '';
+    }
+    return '';
+  }
+
+  /**
+   * Modulus
+   *
+   * @source https://stackoverflow.com/a/31711034
+   * @param  {number} val
+   * @param  {number} step
+   * @return {number}
+   */
+  function modulus(val, step){
+    var valDecCount = (val.toString().split('.')[1] || '').length;
+    var stepDecCount = (step.toString().split('.')[1] || '').length;
+    var decCount = valDecCount > stepDecCount? valDecCount : stepDecCount;
+    var valInt = parseInt(val.toFixed(decCount).replace('.',''));
+    var stepInt = parseInt(step.toFixed(decCount).replace('.',''));
+    return (valInt % stepInt) / Math.pow(10, decCount);
+  }
+
+  /**
+   * Is Multiple of
+   *
+   * Take a look at the {@link http://stackoverflow.com/q/12429362/1938970
+   * stackoverflow question} about this topic. This solution is an ok
+   * compromise. We use `Math.abs` to convert negative number to positive
+   * otherwise the minor comparison would always return true for negative
+   * numbers.
+   *
+   * This could be a valid alternative to the above `modulus` function.
+   * Note that unlike `modulus` the return value here is a boolean.
+   *
+   * @ignore
+   * @param  {string}  val
+   * @param  {string}  step
+   * @return {bool}
+   */
+
+
+  /**
+   * To Boolean
+   * '0' or '1' to boolean
+   *
+   * @static
+   * @param  {string|number} value
+   * @return {bool}
+   */
+  function numberToBoolean (value) {
+    return typeof value === 'boolean' ? value : !!parseInt(value, 10);
+  }
+
+  /**
+   * Strip HTML from value
+   * {@link http://stackoverflow.com/q/5002111/1938970}
+   *
+   * @static
+   * @param  {string} value
+   * @return {string}
+   */
+  function stripHTML (value) {
+    return $(document.createElement('div')).html(value).text();
+  }
+
+  /**
+   * Does string value contains HTML?
+   *
+   * This is just to warn the user, actual sanitization is done backend side.
+   *
+   * @see https://stackoverflow.com/a/15458987
+   * @param  {string}  value
+   * @return {bool}
+   */
+  function hasHTML (value) {
+    return /<[a-z][\s\S]*>/i.test(value);
+  }
+
+  /**
+   * Is HTML?
+   *
+   * It tries to use the DOMParser object (see Browser compatibility table
+   * [here](mzl.la/2kh7HEl)), otherwise it just.
+   * Solution inspired by this {@link http://bit.ly/2k6uFLI, stackerflow answer)
+   *
+   * Not currently in use.
+   *
+   * @ignore
+   * @param  {string}  str
+   * @return {bool}
+   */
+
+
+  /**
+   * @alias core.Helper
+   * @description  Exposed module <a href="module-Helper.html">Helper</a>
+   * @access package
+   */
+  var Helper = {
+    isEmpty: isEmpty,
+    isHex: isHex,
+    isRgb: isRgb,
+    isRgba: isRgba,
+    isColor: isColor,
+    hexToRgb: hexToRgb,
+    rgbaToRgb: rgbaToRgb,
+    normalizeFontFamily: normalizeFontFamily,
+    normalizeFontFamilies: normalizeFontFamilies,
+    extractSizeUnit: extractSizeUnit,
+    extractNumber: extractNumber,
+    modulus: modulus,
+    // These don't have a PHP equivalent in the KKcp_Helper class:
+    numberToBoolean: numberToBoolean,
+    stripHTML: stripHTML,
+    hasHTML: hasHTML,
+  }
+
+  /**
+   * @fileOverview Collects all validate methods used by Customize Plus controls.
+   * Each function has also a respective PHP version in `class-validate.php`.
+   *
+   * @module Validate
+   * @requires Helper
+   */
+  /* global tinycolor */
+
+  /**
+   * Validate a required setting value
+   *
+   * @since 1.0.0
+   *
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
+   */
+  function required( $validity, $value, $setting, $control ) {
+    if ( $validity === void 0 ) $validity={};
+
+    if ( !$control.params.optional ) {
+      if ( Helper.isEmpty( $value ) ) {
+        $validity = $control._addError( $validity, 'vRequired' );
+      }
+    }
+    return $validity;
+  }
+
+  /**
+   * Validate a single choice
+   *
+   * @since 1.0.0
+   *
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
+   */
+  function singleChoice( $validity, $value, $setting, $control ) {
+    if ( $validity === void 0 ) $validity={};
+
+    var _validChoices = $control._validChoices;
+    var $choices = _validChoices && _validChoices.length ? _validChoices : $control.params.choices;
+
+    if ( _$1.isArray( $choices ) && $choices.indexOf( $value ) === -1 ) {
+      $validity = $control._addError( $validity, 'vNotAChoice', $value );
+    }
+
+    return $validity;
+  }
+
+  /**
+   * Validate an array of choices
+   *
+   * @since 1.0.0
+   *
+   * @param {WP_Error}             $validity
+   * @param {array}                $value        The value to validate.
+   * @param {WP_Customize_Setting} $setting      Setting instance.
+   * @param {WP_Customize_Control} $control      Control instance.
+   * @param {bool}                 $check_length Should match choices length? e.g.
+   *                                             for sortable control where the
+   *                                             all the defined choices should be
+   *                                             present in the validated value
+   * @return {WP_Error}
+   */
+  function multipleChoices( $validity, $value, $setting, $control, $check_length ) {
+    if ( $validity === void 0 ) $validity={};
+    if ( $check_length === void 0 ) $check_length = false;
+
+    var _validChoices = $control._validChoices;
+    var params = $control.params;
+    var $choices = _validChoices && _validChoices.length ? _validChoices : params.choices;
+
+    if ( !_$1.isArray( $value ) ) {
+      $validity = $control._addError( $validity, 'vNotArray' );
+    } else {
+
+      // check that the length of the value array is correct
+      if ( $check_length && $choices.length !== $value.length ) {
+        $validity = $control._addError( $validity, 'vNotExactLengthArray', $choices.length );
+      }
+
+      // check the minimum number of choices selectable
+      if ( is_int( params.min ) && $value.length < params.min ) {
+        $validity = $control._addError( $validity, 'vNotMinLengthArray', params.min );
+      }
+
+      // check the maximum number of choices selectable
+      if ( is_int( params.max ) && $value.length > params.max ) {
+        $validity = $control._addError( $validity, 'vNotMaxLengthArray', params.max );
+      }
+
+      // now check that the selected values are allowed choices
+      for (var i = 0; i < $value.length; i++) {
+        if ( $choices.indexOf( $value[i] ) === -1 ) {
+          $validity = $control._addError( $validity, 'vNotAChoice', $value[i] );
+        }
+      }
+    }
+
+    return $validity;
+  }
+
+  /**
+   * Validate one or more choices
+   *
+   * @since 1.0.0
+   *
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
+   */
+  function oneOrMoreChoices( $validity, $value, $setting, $control ) {
+    if ( $validity === void 0 ) $validity={};
+
+    if ( _$1.isString( $value ) ) {
+      return singleChoice( $validity, $value, $setting, $control );
+    }
+    return multipleChoices( $validity, $value, $setting, $control );
+  }
+
+  /**
+   * Validate font family
+   *
+   * @since 1.0.0
+   *
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
+   */
+  function fontFamily( $validity, $value, $setting, $control ) {
+    if ( _$1.isString( $value ) ) {
+      $value = $value.split( ',' );
+    }
+    // this is enough to do in JavaScript only, there is sanitization anyway
+    if ( _$1.isArray( $value ) ) {
+      $value = _$1.map( $value, function (v) { return Helper.normalizeFontFamily( v ); } );
+    }
+    return multipleChoices( $validity, $value, $setting, $control );
+  }
+
+  /**
+   * Validate checkbox
+   *
+   * @since 1.0.0
+   *
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
+   */
+  function checkbox( $validity, $value, $setting, $control ) {
+    if ( $validity === void 0 ) $validity={};
+
+    if ( $value != 1 && $value != 0 ) {
+      $validity = $control._addError( $validity, 'vCheckbox' );
+    }
+    return $validity;
+  }
+
+  /**
+   * Validate tags
+   *
+   * @since 1.0.0
+   *
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
+   */
+  function tags( $validity, $value, $setting, $control ) {
+    if ( $validity === void 0 ) $validity={};
+
+    var params = $control.params;
+
+    if ( !_$1.isString( $value ) ) {
+      $validity = $control._addError( $validity, 'vTagsType' );
+    }
+    if (!_$1.isArray($value)) {
+      $value = $value.split(',');
+    }
+
+    // maybe check the minimum number of choices selectable
+    if ( is_int( params.min ) && $value.length < params.min ) {
+      $validity = $control._addError( $validity, 'vTagsMin', params.min );
+    }
+    // maybe check the maxmimum number of choices selectable
+    if ( is_int( params.max ) && $value.length > params.max ) {
+      $validity = $control._addError( $validity, 'vTagsMax', params.max );
+    }
+
+    return $validity;
+  }
+
+  /**
+   * Validate text
+   *
+   * @since 1.0.0
+   *
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
+   */
+  function text( $validity, $value, $setting, $control ) {
+    if ( $validity === void 0 ) $validity={};
+
+    var $attrs = $control.params['attrs'] || {};
+    var $type = $attrs.type || 'text';
+
+    // type
+    if ( ! _$1.isString( $value ) ) {
+      $validity = $control._addError( $validity, 'vTextType' );
+    }
+    // url
+    // make the `isURL` function behaving like php's `filter_var( $value, FILTER_VALIDATE_URL )`
+    if ( $type === 'url' && !isURL( $value, { require_tld: false, allow_trailing_dot: true } ) ) {
+      $validity = $control._addError( $validity, 'vInvalidUrl' );
+    }
+    // email
+    else if ( $type === 'email' && !isEmail( $value ) ) {
+      $validity = $control._addError( $validity, 'vInvalidEmail' );
+    }
+    // max length
+    if ( is_int( $attrs['maxlength'] ) && $value.length > $attrs['maxlength'] ) {
+      $validity = $control._addError( $validity, 'vTextTooLong', $attrs['maxlength'] );
+    }
+    // min length
+    if ( is_int( $attrs['minlength'] ) && $value.length < $attrs['minlength'] ) {
+      $validity = $control._addError( $validity, 'vTextTooShort', $attrs['minlength'] );
+    }
+    // pattern
+    if ( _$1.isString( $attrs['pattern'] ) && ! $value.match( new RegExp( $attrs['pattern'] ) ) ) {
+      $validity = $control._addError( $validity, 'vTextPatternMismatch', $attrs['pattern'] );
+    }
+
+    // html must be escaped
+    if ( $control.params.html === 'escape' ) {
+      // if ( Helper.hasHTML( $value ) ) {
+      //   $validity = $control._addWarning( $validity, 'vTextEscaped' );
+      // }
+    }
+    // html is dangerously completely allowed
+    else if ( $control.params.html === 'dangerous' ) {
+      // $validity = $control._addWarning( $validity, 'vTextDangerousHtml' );
+    }
+    // html is not allowed at all
+    else if ( ! $control.params.html ) {
+      if ( Helper.hasHTML( $value ) ) {
+        $validity = $control._addError( $validity, 'vTextHtml' );
+      }
+    }
+   
+
+    return $validity;
+  }
+
+  /**
+   * Validate number
+   *
+   * @since 1.0.0
+   *
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
+   */
+  function number( $validity, $value, $setting, $control ) {
+    if ( $validity === void 0 ) $validity={};
+
+    var $attrs = $control.params.attrs || {};
+
+    // coerce to number
+    $value = Number($value);
+
+    // no number
+    if ( ! is_numeric( $value ) ) {
+      $validity = $control._addError( $validity, 'vNotAnumber' );
+      return $validity;
+    }
+    // unallowed float
+    if ( is_float( $value ) && !$attrs['float'] ) {
+      $validity = $control._addError( $validity, 'vNoFloat' );
+    }
+    // must be an int but it is not
+    else if ( ! is_int( $value ) && !$attrs['float'] ) {
+      $validity = $control._addError( $validity, 'vNotAnInteger' );
+    }
+
+    if ( $attrs ) {
+      // if doesn't respect the step given
+      if ( is_numeric( $attrs['step'] ) && Helper.modulus($value, $attrs['step']) !== 0 ) {
+        $validity = $control._addError( $validity, 'vNumberStep', $attrs['step'] );
+      }
+      // if it's lower than the minimum
+      if ( is_numeric( $attrs['min'] ) && $value < $attrs['min'] ) {
+        $validity = $control._addError( $validity, 'vNumberLow', $attrs['min'] );
+      }
+      // if it's higher than the maxmimum
+      if ( is_numeric( $attrs['max'] ) && $value > $attrs['max'] ) {
+        $validity = $control._addError( $validity, 'vNumberHigh', $attrs['max'] );
+      }
+    }
+
+    return $validity;
+  }
+
+  /**
+   * Validate css unit
+   *
+   * @since 1.0.0
+   *
+   * @param {WP_Error}                $validity
+   * @param {mixed}    $unit          The unit to validate.
+   * @param {mixed}    $allowed_units The allowed units
+   * @return {WP_Error}
+   */
+  function sizeUnit( $validity, $unit, $allowed_units ) {
+    // if it needs a unit and it is missing
+    if ( ! empty( $allowed_units ) && ! $unit ) {
+      $validity = $control._addError( $validity, 'vSliderMissingUnit' );
+    }
+    // if the unit specified is not in the allowed ones
+    else if ( ! empty( $allowed_units ) && $unit && $allowed_units.indexOf( $unit ) === -1 ) {
+      $validity = $control._addError( $validity, 'vSliderInvalidUnit', $unit );
+    }
+    // if a unit is specified but none is allowed
+    else if ( empty( $allowed_units ) && $unit ) {
+      $validity = $control._addError( $validity, 'vSliderNoUnit' );
+    }
+
+    return $validity;
+  }
+
+  /**
+   * Validate slider
+   *
+   * @since 1.0.0
+   *
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
+   */
+  function slider( $validity, $value, $setting, $control ) {
+    if ( $validity === void 0 ) $validity={};
+
+    var $params = $control.$params;
+    var $attrs = $params.attrs || {};
+
+    var $number = Helper.extractNumber( $value, !!$attrs['float'] );
+    var $unit = Helper.extractSizeUnit( $value, $params['units'] );
+
+    $validity = number( $validity, $number, $setting, $control );
+    $validity = sizeUnit( $validity, $unit, $params['units'] );
+
+    return $validity;
+  }
+
+  /**
+   * Validate color
+   *
+   * @since 1.0.0
+   *
+   * @requires tinycolor
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
+   */
+  function color( $validity, $value, $setting, $control ) {
+    if ( $validity === void 0 ) $validity={};
+
+    var params = $control.params;
+
+    if (!_$1.isString($value)) {
+      return $control._addError( $validity, 'vColorWrongType' );
+    }
+    $value = $value.replace(/\s/g, '');
+
+    if ( ! params.transparent && tinycolor($value).toName() === 'transparent' ) {
+      $validity = $control._addError( $validity, 'vNoTransparent' );
+    }
+    else if ( ! params.alpha && Helper.isRgba($value)) {
+      $validity = $control._addError( $validity, 'vNoRGBA' );
+    }
+    else if ( ! params.picker && _$1.isArray(params.palette) ) {
+      var valueNormalized = $control.softenize($value);
+      var paletteNormalized = _$1.flatten(params.palette, true);
+      paletteNormalized = _$1.map(paletteNormalized, function (color) {
+        return $control.softenize(color);
+      });
+      if ( paletteNormalized.indexOf(valueNormalized) === -1 ) {
+        $validity = $control._addError( $validity, 'vNotInPalette' );
+      }
+    }
+    else if ( ! Helper.isColor( $value, api$1.constants['colorFormatsSupported'] ) ) {
+      $validity = $control._addError( $validity, 'vColorInvalid' );
+    }
+
+    return $validity;
+  }
+
+  /**
+   * @alias core.Validate
+   * @description  Exposed module <a href="module-Validate.html">Validate</a>
+   * @access package
+   */
+  var Validate = api$1.core.Validate = {
+    required: required,
+    singleChoice: singleChoice,
+    multipleChoices: multipleChoices,
+    oneOrMoreChoices: oneOrMoreChoices,
+    fontFamily: fontFamily,
+    checkbox: checkbox,
+    tags: tags,
+    text: text,
+    number: number,
+    sizeUnit: sizeUnit,
+    slider: slider,
+    color: color,
+  };
+
+  /**
+   * Notification
+   *
+   * @since 1.0.0
+   *
+   * @memberof core
+   * @class Notification
+   * @extends wp.customize.Notification
+   * @augments wp.customize.Class
+   */
+  var Notification = (function (superclass) {
+  	function Notification (code, params) {
+  		params.templateId = 'customize-notification-kkcp';
+
+  		superclass.prototype.initialize.call(this, code, params);
+  	}
+
+  	if ( superclass ) Notification.__proto__ = superclass;
+  	Notification.prototype = Object.create( superclass && superclass.prototype );
+  	Notification.prototype.constructor = Notification;
+
+  	return Notification;
+  }(wpApi.Notification));
+
+  var Notification$1 = api$1.core.Notification = Notification;
+
+  /**
+   * Control Base class
+   *
+   * Expands the default Customizer Control class (through standard class syntax).
+   * Render controls content on demand when their section is expanded then remove
+   * the DOM when the section is collapsed (inflation/deflation).
+   * Since we override some 'not-meant-to-be-overriden' methods keep an eye on
+   * @link(http://git.io/vZ6Yq, WordPress source code).
+   *
+   * @see PHP class KKcp_Customize_Control_Base
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Base
+   *
+   * @extends wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Utils
+   * @requires Validate
+   */
+  var Base = (function (superclass) {
+    function Base () {
+      superclass.apply(this, arguments);
+    }
+
+    if ( superclass ) Base.__proto__ = superclass;
+    Base.prototype = Object.create( superclass && superclass.prototype );
+    Base.prototype.constructor = Base;
+
+    Base.prototype.initialize = function initialize (id, options) {
+      var control = this, deferredSettingIds = [], settings, gatherSettings;
+
+      control.params = _$1.extend(
+        {},
+        control.defaults,
+        control.params || {}, // In case sub-class already defines.
+        options.params || options || {} // The options.params property is deprecated but it is checked first for back-compat.
+      );
+
+      if ( ! wpApi.Control.instanceCounter ) {
+        wpApi.Control.instanceCounter = 0;
+      }
+      wpApi.Control.instanceCounter++;
+      if ( ! control.params.instanceNumber ) {
+        control.params.instanceNumber = wpApi.Control.instanceCounter;
+      }
+
+      // Look up the type if one was not supplied.
+      if ( ! control.params.type ) {
+        _$1.find( wpApi.controlConstructor, function( Constructor, type ) {
+          if ( Constructor === control.constructor ) {
+            control.params.type = type;
+            return true;
+          }
+          return false;
+        } );
+      }
+
+      // @note `control.params.content` is managed differently in `inflate` and
+      // `deflate` methods
+      // if ( ! control.params.content ) {
+      //   control.params.content = $( '<li></li>', {
+      //     id: 'customize-control-' + id.replace( /]/g, '' ).replace( /\[/g, '-' ),
+      //     'class': 'customize-control customize-control-' + control.params.type
+      //   } );
+      // }
+
+      var container = document$1.createElement('li');
+      container.id = 'customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
+      container.className = 'customize-control kkcp-control customize-control-'
+        + control.params.type;
+
+      // @note add a flag so that we are able to recognize our custom controls,
+      // let's keep it short, so we need only to check `if (control.kkcp)`
+      control.kkcp = 1;
+
+      control.id = id;
+      // @note all this stuff is not needed in Customize Plus Controls
+      // control.selector = '#customize-control-' + id.replace( /\]/g, '' ).replace( /\[/g, '-' );
+      // control.templateSelector = 'customize-control-' + control.params.type + '-content';
+      // if ( control.params.content ) {
+      //   control.container = $( control.params.content );
+      // } else {
+      //   control.container = $( control.selector ); // Likely dead, per above. See #28709.
+      // }
+      control.container = $$1(container);
+
+      // @note save a reference of the raw DOM node, we're gonna use it more
+      // than the jQuery object `container` (which we can't change, because it's
+      // used by methods which we don't override)
+      control._container = container;
+
+      if ( control.params.templateId ) {
+        control.templateSelector = control.params.templateId;
       } else {
+        control.templateSelector = 'customize-control-' + control.params.type + '-content';
+      }
+
+      control.deferred = _$1.extend( control.deferred || {}, {
+        embedded: new $$1.Deferred()
+      } );
+      control.section = new wpApi.Value();
+      control.priority = new wpApi.Value();
+      control.active = new wpApi.Value();
+      control.activeArgumentsQueue = [];
+      control.notifications = new wpApi.Notifications({
+        alt: control.altNotice
+      });
+
+      control.elements = [];
+
+      control.active.bind( function ( active ) {
+        var args = control.activeArgumentsQueue.shift();
+        args = $$1.extend( {}, control.defaultActiveArguments, args );
+        control.onChangeActive( active, args );
+      } );
+
+      control.section.set( control.params.section );
+      control.priority.set( isNaN( control.params.priority ) ? 10 : control.params.priority );
+      control.active.set( control.params.active );
+
+      wpApi.utils.bubbleChildValueChanges( control, [ 'section', 'priority', 'active' ] );
+
+      control.settings = {};
+
+      settings = {};
+      if ( control.params.setting ) {
+        settings['default'] = control.params.setting;
+      }
+      _$1.extend( settings, control.params.settings );
+
+      // Note: Settings can be an array or an object, with values being either setting IDs or Setting (or Value) objects.
+      _$1.each( settings, function( value, key ) {
+        var setting;
+        if ( _$1.isObject( value ) && _$1.isFunction( value.extended ) && value.extended( wpApi.Value ) ) {
+          control.settings[ key ] = value;
+        } else if ( _$1.isString( value ) ) {
+          setting = wpApi( value );
+          if ( setting ) {
+            control.settings[ key ] = setting;
+          } else {
+            deferredSettingIds.push( value );
+          }
+        }
+      } );
+
+      gatherSettings = function() {
+
+        // Fill-in all resolved settings.
+        _$1.each( settings, function ( settingId, key ) {
+          if ( ! control.settings[ key ] && _$1.isString( settingId ) ) {
+            control.settings[ key ] = wpApi( settingId );
+          }
+
+        } );
+
+        // Make sure settings passed as array gets associated with default.
+        if ( control.settings[0] && ! control.settings['default'] ) {
+          control.settings['default'] = control.settings[0];
+        }
+
+        // Identify the main setting.
+        control.setting = control.settings['default'] || null;
+
+        // @note this way of managing controls is disabled here
+        // control.linkElements();
+
+        // @note disable here for on demand rendering/inflation
+        if (!api$1.constants['DYNAMIC_CONTROLS_RENDERING']) {
+          control.embed();
+        }
+      };
+
+      if ( 0 === deferredSettingIds.length ) {
+        gatherSettings();
+      } else {
+        wpApi.apply( wpApi, deferredSettingIds.concat( gatherSettings ) );
+      }
+
+      // @note call custom private initialization (not overridable by subclasses)
+      this._initialize();
+    };
+
+    /**
+     * Private Initialize
+     *
+     * Collect here the custom initialization additions of Customize Plus controls
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @return {void}
+     */
+    Base.prototype._initialize = function _initialize () {
+      var this$1 = this;
+
+      // an @abstract method to override (this needs to be called here, before than
+      // the `ready` method)
+      this.onInit();
+
+      // After the control is embedded on the page, invoke the "ready" method.
+      this.deferred.embedded.done(function () {
+        // @note this way of managing controls is disabled
+        // this.linkElements();
+        if (!api$1.constants['DYNAMIC_CONTROLS_RENDERING']) {
+          this$1.inflate();
+        }
+        this$1.setupNotifications();
+        // this.ready(); // @note ready is called within inflate
+      });
+
+      if (api$1.constants['DYNAMIC_CONTROLS_RENDERING']) {
+        // embed control only when the parent section get clicked to keep the DOM
+        // light,to make this work no data must be stored in the DOM
+        wpApi.section(this.section()).expanded.bind(function (expanded) {
+         
+          // either deflate and re-inflate dom each time...
+          if (expanded) {
+            _$1.defer(this$1.inflate.bind(this$1));
+          } else {
+            this$1.deflate();
+          }
+          // ...or just do it the first time a control is expanded
+          // if (expanded && !this.rendered) {
+          //   _.defer(this.inflate.bind(this));
+          // }
+        });
+      }
+
+      // controls can be setting-less from 4.5, so check
+      if (this.setting) {
+
+        // add custom validation function overriding the empty function from WP
+        // API in `customize-thiss.js`, in the constructor `api.Value`
+        if (!this.params['noLiveValidation']) {
+          this.setting.validate = this._validate.bind(this);
+        }
+
+        // add sanitization of the value `postMessag`ed to the preview
+        if (!this.params['noLiveSanitization'] && !this.params['loose']) {
+          this.setting.sanitize = this.sanitize.bind(this);
+        }
+
+        // bind setting change to this method to reflect a programmatic
+        // change on the UI, only if the control is rendered
+        this.setting.bind(function (value) {
+         
+          var sectionId = this$1.section();
+          if ( ! sectionId || ( wpApi.section.has( sectionId ) && wpApi.section( sectionId ).expanded() ) ) {
+            if (this$1.rendered) {
+              this$1.syncUI.call(this$1, value);
+            }
+          }
+        });
+
+        if (api$1.constants['DYNAMIC_CONTROLS_RENDERING']) {
+          // this is needed to render a setting notification in its this
+          this.setting.notifications.bind('add', function (notification) {
+            // if (DEBUG) {
+            //   console.log(`Notification add [${notification.code}] for default
+            //    setting of this '${this.id}'`);
+            // }
+            this$1.notifications.add(new Notification$1(notification.code,
+              { message: notification.message })
+            );
+            this$1.notifications.render();
+          });
+
+          // this is needed to render a setting notification in its this
+          this.setting.notifications.bind('removed', function (notification) {
+            // if (DEBUG) {
+            //   console.log(`Notification remove [${notification.code}] for default
+            //    setting of this '${this.id}'`);
+            // }
+            this$1.notifications.remove(notification.code);
+            this$1.notifications.render();
+          });
+        }
+      }
+    };
+
+    /**
+     * Get localize string for current control
+     *
+     * Allows control classes to get a localized string by its key value. This is
+     * useful during validation to define the validation messages only once both
+     * for JavaScript and PHP validation.
+     *
+     * @see  PHP KKcp_Customize_Control_Base->l10n()
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @param {string} $key
+     * @return {string}
+     */
+    Base.prototype._l10n = function _l10n ( $key ) {
+      return api$1.l10n[ $key ] || '';
+    };
+
+    /**
+     * Private `validate` wrap, it only wraps the `setting.validate` function
+     * calling each control subclass `validate` method on its default setting.
+     *
+     * Always check that required setting (not `optional`) are not empty,
+     * if it pass the check call the control specific abstract `validate` method.
+     *
+     * @see  PHP KKcp_Customize_Control_Base::validate_callback
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @param  {string} value
+     * @return {string} The value validated or the last setting value.
+     */
+    Base.prototype._validate = function _validate (value) {
+      var $validity = {};
+
+      // immediately check a required value validity
+      $validity = Validate.required($validity, value, this.setting, this);
+
+      // if a required value is not supplied only perform one validation routine
+      if (!_$1.keys($validity).length) {
+
+        // otherwise apply the specific control/setting validation
+        $validity = this.validate(value);
+      }
+
+      this._manageValidityNotifications($validity);
+
+      // if there are no errors return the given new value
+      if (!_$1.keys($validity).length) {
         return value;
       }
+
+      // otherwise choose what to return based on the "looseness" of this control
+      return this.params.loose ? value : this.setting();
+    };
+
+    /**
+     * Manage validity notifications
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @abstract
+     * @param  {object<object<string,string>>} $validity
+     */
+    Base.prototype._manageValidityNotifications = function _manageValidityNotifications ($validity) {
+      var this$1 = this;
+
+      var notifications = this.setting.notifications.get();
+      var currentNotificationCodes = [];
+
+      // flag used somewhere else (see below)
+      this._currentValueHasError = !!_$1.keys($validity).length;
+
+      for (var i = 0; i < notifications.length; i++) {
+        var code = notifications[i]['code'];
+        currentNotificationCodes.push(code);
+        // if an existing notification is now valid remove it
+        if (!$validity[code]) {
+          this$1.setting.notifications.remove(code);
+        }
+      }
+
+      for (var code$1 in $validity) {
+        if ($validity.hasOwnProperty(code$1)) {
+          // if the notification is not there already add it
+          if (currentNotificationCodes.indexOf(code$1) === -1) {
+
+            this$1.setting.notifications.add(new Notification$1(
+              code$1, { message: $validity[code$1] || api$1.l10n['vInvalid'] }
+            ));
+          }
+        }
+      }
+    };
+
+    /**
+     * Add error
+     *
+     * Shortcut to manage the $validity object during validation
+     *
+     * @see  PHP KKcp_Customize_Control_Base->add_error()
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @param {WP_Error}          $validity
+     * @param {string}            $msg_id
+     * @param {mixed|array|null}   $msg_arguments
+     * @return {WP_Error}
+     */
+    Base.prototype._addError = function _addError ( $validity, $msg_id, $msg_arguments ) {
+      var $msg = this._l10n( $msg_id );
+
+      // if there is an array of message arguments
+      if ( _$1.isArray( $msg_arguments ) ) {
+        $validity[$msg_id] = vsprintf( $msg, $msg_arguments );
+      }
+      // if there is just one message argument
+      else if ( $msg_arguments ) {
+        $validity[$msg_id] = sprintf( $msg, $msg_arguments );
+      // if it is a simple string message
+      } else {
+        $validity[$msg_id] = $msg;
+      }
+      return $validity;
+    };
+
+    /**
+     * Validate control's default setting value
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access public
+     * @abstract
+     * @param  {string} value
+     * @return {string} The value validated
+     */
+    Base.prototype.validate = function validate (value) {
+      return value;
+    };
+
+    /**
+     * Sanitize control's default setting value
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access public
+     * @abstract
+     * @param  {string} value
+     * @return {string} The value sanitized
+     */
+    Base.prototype.sanitize = function sanitize (value) {
+      return value;
+    };
+
+    /**
+     * Sync UI with value coming from API, a programmatic change like a reset.
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access protected
+     * @abstract
+     * @param {string} value The new setting value.
+     */
+    Base.prototype.syncUI = function syncUI (value) {};
+
+    /**
+     * Triggered when the control has been initialized
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access protected
+     * @abstract
+     */
+    Base.prototype.onInit = function onInit () {};
+
+    /**
+     * Render the control from its JS template, if it exists.
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access protected
+     * @override
+     */
+    Base.prototype.renderContent = function renderContent () {
+      var ref = this;
+      var _container = ref._container;
+      var templateSelector = ref.templateSelector;
+
+      // replaces the container element's content with the control.
+      if (document$1.getElementById(("tmpl-" + templateSelector))) {
+        var template = wp.template(templateSelector);
+        if (template && _container) {
+
+          /* jshint funcscope: true */
+          if (DEBUG.performances) { var t = performance.now(); }
+
+          // render and store it in the params
+          this.params.content = _container.innerHTML = template(this.params).trim();
+
+          // var frag = document.createDocumentFragment();
+          // var tplNode = document.createElement('div');
+          // tplNode.innerHTML = template( this.params ).trim();
+          // frag.appendChild(tplNode);
+          // this.params.content = frag;
+          // _container.appendChild(frag);
+
+          if (DEBUG.performances) { console.log('%c renderContent of ' + this.params.type + '(' +
+            this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7'); }
+        }
+      }
+
+      this._rerenderNotifications();
+    };
+
+    /**
+     * Triggered just before the control get deflated from DOM
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access protected
+     * @abstract
+     */
+    Base.prototype.onDeflate = function onDeflate () {};
+
+    /**
+     * Removes the DOM of the control.
+     *
+     * In case the DOM store is empty (the first time this method get called) it
+     * fills it.
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access public
+     */
+    Base.prototype.deflate = function deflate () {
+      var this$1 = this;
+
+      /* jshint funcscope: true */
+      // if (DEBUG) var t = performance.now();
+
+      var container = this._container;
+
+      if (!this.params.content) {
+        this.params.content = container.innerHTML.trim();
+      }
+
+      // call the abstract method
+      this.onDeflate();
+
+      // and empty the DOM from the container deferred
+      // the slide out animation of the section doesn't freeze
+      _$1.defer(function () {
+        // due to the timeout we need to be sure that the section is not expanded
+        if (!wpApi.section(this$1.section.get()).expanded.get()) {
+
+          /* jshint funcscope: true */
+          if (DEBUG.performances) { var t = performance.now(); }
+
+          // Super fast empty DOM element
+          // {@link http://jsperf.com/jquery-html-vs-empty-vs-innerhtml/20}
+          // while (container.lastChild) {
+          //   container.removeChild(container.lastChild);
+          // }
+
+         
+          container.innerHTML = '';
+
+          if (DEBUG.performances) { console.log('%c deflate of ' + this$1.params.type + '(' + this$1.id +
+            ') took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1'); }
+
+          // flag control that it's not rendered
+          this$1.rendered = false;
+        }
+      });
+    };
+
+    /**
+     * Inflate
+     *
+     * Render or 'inflate' the template of the control. The first time render it
+     * from the js template, afterward retrieve the DOM string from the `template`
+     * param store. After the template has been rendered call the `ready` method,
+     * overridden in each control with their own specific logic. Also put a flag
+     * `rendered` on the control instance to indicate whether the control is
+     * rendered or not.
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access public
+     *
+     * @param  {boolean} resolveEmbeddedDeferred Sometimes (i.e. for the
+     *                                           `control.focus()` method) we need
+     *                                           to resolve the deffered embed.
+     */
+    Base.prototype.inflate = function inflate (resolveEmbeddedDeferred) {
+      /* jshint funcscope: true */
+      if (DEBUG.performances) { var t = performance.now(); }
+      if (!this.params.content) {
+        this.renderContent();
+
+        if (DEBUG.performances) { console.log('%c inflate DOM of ' + this.params.type +
+          ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7'); }
+      } else {
+        if (!this.rendered) {
+          this._container.innerHTML = this.params.content;
+          this._rerenderNotifications();
+
+          if (DEBUG.performances) { console.log('%c inflate DOM of ' + this.params.type +
+            ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7'); }
+        }
+      }
+      this.rendered = true;
+      this.ready();
+      if (resolveEmbeddedDeferred) {
+        this.deferred.embedded.resolve();
+      }
+      this._extras();
+
+      // if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
+      //   ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
+    };
+
+    /**
+     * Re-render notifications after content has been re-rendered.
+     *
+     * This is taken as it is from the core base control class
+     * (`wp.customize.Control`)in the end of the `renderContent` method
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     */
+    Base.prototype._rerenderNotifications = function _rerenderNotifications () {
+      this.notifications.container = this.getNotificationsContainerElement();
+      var sectionId = this.section();
+      if ( ! sectionId || ( wpApi.section.has( sectionId ) && wpApi.section( sectionId ).expanded() ) ) {
+        this.notifications.render();
+      }
+    };
+
+    /**
+     * Softenize
+     *
+     * Normalize setting for soft comparison.
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access public
+     * @abstract
+     * @static
+     * @param  {?} value Could be the original, the current, or the initial
+     *                   session value
+     * @return {?}       The 'normalized' value passed as an argument.
+     */
+    Base.prototype.softenize = function softenize (value) {
+      return value;
+    };
+
+    /**
+     * Manage the extras dropdown menu of the control.
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     */
+    Base.prototype._extras = function _extras () {
+      var this$1 = this;
+
+      // constants
+      var CLASS_OPEN = 'kkcp-extras-open';
+      var CLASS_RESET_LAST = 'kkcp-extras-reset_last';
+      var CLASS_RESET_INITIAL = 'kkcp-extras-reset_initial';
+      var CLASS_RESET_FACTORY = 'kkcp-extras-reset_factory';
+      var CLASS_DISABLED = 'kkcp-disabled';
+      // DOM
+      var container = this._container;
+      var area = container.getElementsByClassName('kkcp-extras')[0];
+      var toggle = container.getElementsByClassName('kkcp-extras-btn')[0];
+      var btnResetLast = container.getElementsByClassName(CLASS_RESET_LAST)[0];
+      var btnResetInitial = container.getElementsByClassName(CLASS_RESET_INITIAL)[0];
+      var btnResetFactory = container.getElementsByClassName(CLASS_RESET_FACTORY)[0];
+      // setting, uses closure
+      var setting = this.setting;
+      // state
+      var isOpen = false;
+
+      // handlers
+      var _closeExtras = function () {
+        container.classList.remove(CLASS_OPEN);
+      };
+      // reset setting to the last saved value and closes the `extras` dropdown.
+      var _resetLastValue = function () {
+        setting.forceSet(setting['vLastSaved']);
+        _closeExtras();
+      };
+      // reset setting to the value at the beginning of the session. and closes
+      // the `extras` dropdown.
+      var _resetInitialValue = function () {
+        setting.forceSet(setting['vInitial']);
+        _closeExtras();
+      };
+      // reset setting to the value at the factory state (as defined in the theme
+      // defaults) and closes the `extras` dropdown.
+      var _resetFactoryValue = function () {
+        setting.forceSet(setting['vFactory']);
+        _closeExtras();
+      };
+      // enable button responsible for: resetting to last saved value
+      var _enableBtnLast = function () {
+        btnResetLast.className = CLASS_RESET_LAST;
+        btnResetLast.onclick = _resetLastValue;
+      };
+      // disable button responsible for: resetting to initial value
+      var _disableBtnLast = function () {
+        btnResetLast.className = CLASS_RESET_LAST + " " + CLASS_DISABLED;
+        btnResetLast.onclick = '';
+      };
+      // enable button responsible for: resetting to initial value
+      var _enableBtnInitial = function () {
+        btnResetInitial.className = CLASS_RESET_INITIAL;
+        btnResetInitial.onclick = _resetInitialValue;
+      };
+      // disable button responsible for: resetting to initial value
+      var _disableBtnInitial = function () {
+        btnResetInitial.className = CLASS_RESET_INITIAL + " " + CLASS_DISABLED;
+        btnResetInitial.onclick = '';
+      };
+      // enable button responsible for: resetting to factory / theme-default value
+      var _enableBtnFactory = function () {
+        btnResetFactory.className = CLASS_RESET_FACTORY;
+        btnResetFactory.onclick = _resetFactoryValue;
+      };
+      // disable button responsible for: resetting to factory / theme-default value
+      var _disableBtnFactory = function () {
+        btnResetFactory.className = CLASS_RESET_FACTORY + " " + CLASS_DISABLED;
+        btnResetFactory.onclick = '';
+      };
+
+      // update status (enable / disable) for each control in the `extras` menu.
+      // when the extras dropdown is open determine which actions are enabled and
+      // bind them. If the current value is the same as the one the action effect
+      // would give disable the action.
+      var _onExtrasOpen = function () {
+        // if the control current value is not valid enable both reset buttons
+        if (this$1._currentValueHasError) {
+          _enableBtnInitial();
+          _enableBtnFactory();
+          return;
+        }
+
+        var currentValue = this$1.softenize(setting());
+
+        if (_$1.isEqual(currentValue, this$1.softenize(setting['vLastSaved']))) {
+          _disableBtnLast();
+        } else {
+          _enableBtnLast();
+        }
+        if (_$1.isEqual(currentValue, this$1.softenize(setting['vInitial']))) {
+          _disableBtnInitial();
+        } else {
+          _enableBtnInitial();
+        }
+        if (_$1.isEqual(currentValue, this$1.softenize(setting['vFactory']))) {
+          _disableBtnFactory();
+        } else {
+          _enableBtnFactory();
+        }
+      };
+
+      if (toggle) {
+        if (DEBUG) {
+          toggle.title = 'Click to dump control object into console';
+        }
+        toggle.onclick = function () {
+          isOpen = !isOpen;
+          container.classList.toggle(CLASS_OPEN, isOpen);
+          if (isOpen) {
+            _onExtrasOpen();
+          }
+          if (DEBUG) {
+            console.info(("Control[" + (this$1.id) + "] "), this$1);
+          }
+        };
+      }
+
+      if (area) {
+        area.onmouseenter = function () {
+          isOpen = true;
+          container.classList.add(CLASS_OPEN);
+          _onExtrasOpen();
+        };
+        area.onmouseleave = function () {
+          isOpen = false;
+          // don't close immediately, wait a bit and see if the mouse is still out
+          // of the area
+          setTimeout(function () {
+            if (!isOpen) {
+              container.classList.remove(CLASS_OPEN);
+            }
+          }, 200);
+        };
+      }
+    };
+
+    return Base;
+  }(wpApi.Control));
+
+  /**
+   * Fix autofocus
+   *
+   * This is needed if autofocus is set to one of our 'post-rendered' controls
+   */
+  wpApi.bind('ready', function () {
+    try {
+      var controlToFocusID = window$1._wpCustomizeSettings.autofocus.control;
+      if (controlToFocusID) {
+        Utils.linkControl(null, controlToFocusID);
+      }
+    } catch(e) {
+      console.warn('Fix autofocus', e);
     }
   });
 
-  wpApi.controlConstructor['kkcp_text'] = api.controls.Text = Control$16;
+  /**
+   * Save last saved value on each control instance on `saved` hook. With this in
+   * the extras menu users will be able to reset the setting value to the last
+   * saved value.
+   */
+  wpApi.bind('save', function () {
+    Utils._eachControl(function (control) {
+      if (control && control.setting && control.setting['_dirty']) { // whitelisted from uglify \\
+        // console.log(control.id, 'is dirty on save with value:', control.setting());
+        control.setting['vLastSaved'] = control.setting();
+      }
+    });
+  });
 
-  // import ControlBase from './base';
+  var Base$1 = api$1.controls.Base = Base;
+
+  // import './regexes';
+  // import './utils';
+  // import './_banner';
+
+  /**
+   * Control Base Choices class
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class BaseChoices
+   *
+   * @extends controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   */
+  var BaseChoices = (function (Base) {
+    function BaseChoices () {
+      Base.apply(this, arguments);
+    }
+
+    if ( Base ) BaseChoices.__proto__ = Base;
+    BaseChoices.prototype = Object.create( Base && Base.prototype );
+    BaseChoices.prototype.constructor = BaseChoices;
+
+    BaseChoices.prototype.onInit = function onInit () {
+      Base.prototype.onInit.call(this);
+
+      this._validChoices = this._getValidChoices(this.params.choices);
+    };
+
+    /**
+     * Get valid choicesvalues from given choices
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseChoices#
+     *
+     * @param  {Array<string>|Object<string, Object>} choices
+     * @return {Array<string>}
+     */
+    BaseChoices.prototype._getValidChoices = function _getValidChoices (choices) {
+      if (_$1.isArray(choices)) {
+        return choices;
+      }
+      if (!_$1.isUndefined(choices)) {
+        var validChoices = [];
+        for (var choiceKey in choices) {
+          if (choices.hasOwnProperty(choiceKey)) {
+            validChoices.push(choiceKey);
+          }
+        }
+        return validChoices;
+      }
+      return [];
+    };
+
+    return BaseChoices;
+  }(Base$1));
+
+  var BaseChoices$1 = api$1.controls.BaseChoices = BaseChoices;
+
+  /**
+   * Control Base Input class
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class controls.BaseInput
+   *
+   * @extends controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   */
+  var BaseInput = (function (Base) {
+    function BaseInput () {
+      Base.apply(this, arguments);
+    }
+
+    if ( Base ) BaseInput.__proto__ = Base;
+    BaseInput.prototype = Object.create( Base && Base.prototype );
+    BaseInput.prototype.constructor = BaseInput;
+
+    BaseInput.prototype.syncUI = function syncUI (value) {
+      if (value && this.__input.value !== value) {
+        this.__input.value = value;
+      }
+    };
+
+    /**
+     * @override
+     */
+    BaseInput.prototype.ready = function ready () {
+      var self = this;
+      self.__input = self._container.getElementsByTagName('input')[0];
+
+      // sync input and listen for changes
+      $$1(self.__input)
+        .val(self.setting())
+        .on('change keyup paste', function () {
+          self.setting.set(this.value);
+        });
+    };
+
+    return BaseInput;
+  }(Base$1));
+
+  var BaseInput$1 = api$1.controls.BaseInput = BaseInput;
+
+  var round = function round(value, precision, mode) {
+    //  discuss at: http://locutus.io/php/round/
+    // original by: Philip Peterson
+    //  revised by: Onno Marsman (https://twitter.com/onnomarsman)
+    //  revised by: T.Wild
+    //  revised by: Rafał Kukawski (http://blog.kukawski.pl)
+    //    input by: Greenseed
+    //    input by: meo
+    //    input by: William
+    //    input by: Josep Sanz (http://www.ws3.es/)
+    // bugfixed by: Brett Zamir (http://brett-zamir.me)
+    //      note 1: Great work. Ideas for improvement:
+    //      note 1: - code more compliant with developer guidelines
+    //      note 1: - for implementing PHP constant arguments look at
+    //      note 1: the pathinfo() function, it offers the greatest
+    //      note 1: flexibility & compatibility possible
+    //   example 1: round(1241757, -3)
+    //   returns 1: 1242000
+    //   example 2: round(3.6)
+    //   returns 2: 4
+    //   example 3: round(2.835, 2)
+    //   returns 3: 2.84
+    //   example 4: round(1.1749999999999, 2)
+    //   returns 4: 1.17
+    //   example 5: round(58551.799999999996, 2)
+    //   returns 5: 58551.8
+
+    var m, f, isHalf, sgn; // helper variables
+    // making sure precision is integer
+    precision |= 0;
+    m = Math.pow(10, precision);
+    value *= m;
+    // sign of the number
+    sgn = value > 0 | -(value < 0);
+    isHalf = value % 1 === 0.5 * sgn;
+    f = Math.floor(value);
+
+    if (isHalf) {
+      switch (mode) {
+        case 'PHP_ROUND_HALF_DOWN':
+          // rounds .5 toward zero
+          value = f + (sgn < 0);
+          break;
+        case 'PHP_ROUND_HALF_EVEN':
+          // rouds .5 towards the next even integer
+          value = f + f % 2 * sgn;
+          break;
+        case 'PHP_ROUND_HALF_ODD':
+          // rounds .5 towards the next odd integer
+          value = f + !(f % 2);
+          break;
+        default:
+          // rounds .5 away from zero
+          value = f + (sgn > 0);
+      }
+    }
+
+    return (isHalf ? value : Math.round(value)) / m;
+  };
+
+  /**
+   * @fileOverview Collects all sanitization methods used by Customize Plus
+   * controls. Each function has also a respective PHP version in
+   * `class-sanitize.php`.
+   *
+   * @since 1.0.0
+   * @access package
+   *
+   * @module Sanitize
+   * @requires Helper
+   * @requires Validate
+   */
+  /**
+   * Sanitize string
+   *
+   * @since 1.0.0
+   * @param {mixed}                $input   The value to sanitize.
+   * @return {string} The sanitized value.
+   */
+  function string ($input) {
+    if (!_$1.isString($input)) {
+      return JSON.stringify($input);
+    }
+    return $input;
+  }
+
+  /**
+   * Sanitize single choice
+   *
+   * @since 1.0.0
+   * @param {string}               $value   The value to sanitize.
+   * @param {WP_Customize_Setting} $setting Setting instance.
+   * @param {WP_Customize_Control} $control Control instance.
+   * @return {string|null} The sanitized value.
+   */
+  function singleChoice$1 ( $value, $setting, $control ) {
+    var _validChoices = $control._validChoices;
+    var choices = _validChoices && _validChoices.length ? _validChoices : $control.params.choices;
+
+    // if it is an allowed choice return it escaped
+    if ( _$1.isArray( choices ) && choices.indexOf( $value ) !== -1 ) {
+      // return _.escape( $value );
+      return Helper.stripHTML( $value );
+    }
+
+    return null;
+  }
+
+  /**
+   * Sanitize multiple choices
+   *
+   * @since 1.0.0
+   * @param {array}                $value   The value to sanitize.
+   * @param {WP_Customize_Setting} $setting Setting instance.
+   * @param {WP_Customize_Control} $control Control instance.
+   * @param {bool}                 $check_length Should match choices length? e.g.
+   *                                             for sortable control where the
+   *                                             all the defined choices should be
+   *                                             present in the sanitized value
+   * @return {array|null} The sanitized value.
+   */
+  function multipleChoices$1( $value, $setting, $control, $check_length ) {
+    if ( $check_length === void 0 ) $check_length = false;
+
+    var _validChoices = $control._validChoices;
+    var params = $control.params;
+    var $choices = _validChoices && _validChoices.length ? _validChoices : params.choices;
+
+    if ( !_$1.isArray( $value ) ) {
+      $value = [ $value ];
+    }
+
+    // filter out the not alowed choices and sanitize the others
+    var $valueClean = [];
+    for (var i = 0; i < $value.length; i++) {
+      if ( $choices.indexOf( $value[i] ) !== -1 ) {
+        // $valueClean.push( _.escape( $value[i] ) );
+        $valueClean.push( Helper.stripHTML( $value[i] ) );
+      }
+    }
+    $value = $valueClean;
+
+    // if the selection was all wrong return the default, otherwise go on and try
+    // to fix it
+    if ( ! $value.length ) {
+      return null;
+    }
+
+    // fill the array if there are not enough values
+    if ( $check_length && $choices.length !== $value.length ) {
+      $value = _$1.uniq( _$1.union( $value, $choices ) );
+      return $value.slice( 0, $choices.length );
+    }
+
+    // fill the array if there are not enough values
+    if ( is_int( params.min ) && $value.length < params.min ) {
+      var $availableChoices = _$1.difference( $choices, $value );
+      $value = $value.concat( $availableChoices.slice( 0, $value.length - params.min ) );
+    }
+
+    // slice the array if there are too many values
+    if ( is_int( params.max ) && $value.length > params.max ) {
+      $value = $value.slice( 0, params.max );
+    }
+
+    return $value;
+  }
+
+  /**
+   * Sanitize one or more choices
+   *
+   * @since 1.0.0
+   * @param {mixed}                $value   The value to sanitize.
+   * @param {WP_Customize_Setting} $setting Setting instance.
+   * @param {WP_Customize_Control} $control Control instance.
+   * @return {string|array|null} The sanitized value.
+   */
+  function oneOrMoreChoices$1 ( $value, $setting, $control ) {
+    if ( _$1.isString( $value ) ) {
+      return singleChoice$1( $value, $setting, $control );
+    }
+    if ( _$1.isArray( $value ) ) {
+      return multipleChoices$1( $value, $setting, $control );
+    }
+    return null;
+  }
+
+  /**
+   * Sanitize font family
+   *
+   * @since 1.0.0
+   *
+   * @param {string|array}         $value   The value to sanitize.
+   * @param {WP_Customize_Setting} $setting Setting instance.
+   * @param {WP_Customize_Control} $control Control instance.
+   * @return {string|null} The sanitized value.
+   */
+  function fontFamily$1( $value, $setting, $control ) {
+    $value = Helper.normalizeFontFamilies( $value );
+
+    if ( _$1.isString( $value ) ) {
+      $value = $value.split( ',' );
+    }
+    $value = multipleChoices$1( $value, $setting, $control );
+
+    if ( _$1.isArray( $value ) ) {
+      return $value.join( ',' );
+    }
+
+    return null;
+  }
+
+  /**
+   * Sanitize checkbox
+   *
+   * @since 1.0.0
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {string:0|1}
+   */
+  function checkbox$1( $value, $setting, $control ) {
+    return Boolean( $value ) ? '1' : '0';
+  }
+
+  /**
+   * Sanitize tags
+   *
+   * @since 1.0.0
+   * @param {mixed}                $value   The value to sanitize.
+   * @param {WP_Customize_Setting} $setting Setting instance.
+   * @param {WP_Customize_Control} $control Control instance.
+   * @return {string} The sanitized value.
+   */
+  function tags$1( $value, $setting, $control ) {
+    var params = $control.params;
+
+    if ( _$1.isString( $value ) ) {
+      $value = $value.split(',');
+    }
+    if ( ! _$1.isArray( $value ) ) {
+      $value = [ string( $value ) ];
+    }
+    $value = _$1.map( $value, function (value) { return value.trim() });
+
+    if ( is_int( params.max ) && $value.length > params.max ) {
+      $value = $value.slice( 0, params.max );
+    }
+
+    // return _.escape( $value.join(',') );
+    return Helper.stripHTML( $value.join(',') );
+  }
+
+  /**
+   * Sanitize text
+   *
+   * @since 1.0.0
+   * @param {mixed}                $value   The value to sanitize.
+   * @param {WP_Customize_Setting} $setting Setting instance.
+   * @param {WP_Customize_Control} $control Control instance.
+   * @return {string} The sanitized value.
+   */
+  function text$1( $value, $setting, $control ) {
+    var $attrs = $control.params['attrs'] || {};
+    var $input_type = $attrs.type || 'text';
+
+    $value = string( $value );
+
+    // url
+    if ( 'url' === $input_type ) {
+      $value = $value.trim();
+    }
+    // email
+    else if ( 'email' === $input_type ) {
+      $value = $value.trim();
+    }
+    // max length
+    if ( is_int( $attrs['maxlength'] ) && $value.length > $attrs['maxlength'] ) {
+      $value = $value.substr( 0, $attrs['maxlength'] );
+    }
+    // min length
+    if ( is_int( $attrs['minlength'] ) && $value.length < $attrs['minlength'] ) {
+      return null;
+    }
+    // pattern
+    if ( _$1.isString( $attrs['pattern'] ) && ! $value.match( new RegExp( $attrs['pattern'] ) ) ) {
+      return null;
+    }
+    // html must be escaped
+    if ( $control.params.html === 'escape' ) {
+      $value = _$1.escape( $value );
+    }
+    // html is dangerously completely allowed
+    else if ( $control.params.html === 'dangerous' ) {
+      $value = $value;
+    }
+    // html is not allowed at all
+    else if ( ! $control.params.html ) {
+      $value = Helper.stripHTML($value);
+    }
+   
+
+    return $value;
+  }
+
+  /**
+   * Sanitize number
+   *
+   * @since 1.0.0
+   * @param {mixed}                $value   The value to sanitize.
+   * @param {WP_Customize_Setting} $setting Setting instance.
+   * @param {WP_Customize_Control} $control Control instance.
+   * @return {number|null} The sanitized value.
+   */
+  function number$1( $value, $setting, $control ) {
+    var $attrs = $control.params['attrs'] || {};
+    var $number = Helper.extractNumber( $value, $attrs['float'] );
+
+    if ( $number === null ) {
+      return null;
+    }
+
+    // if it's a float but it is not allowed to be it round it
+    if ( is_float( $number ) && !$attrs['float'] ) {
+      $number = round( $number );
+    }
+    // if doesn't respect the step given round it to the closest
+    // then do the min and max checks
+    if ( _$1.isNumber( $attrs['step'] ) && Helper.modulus($number, $attrs['step']) !== 0 ) {
+      $number = round( $number / $attrs['step'] ) * $attrs['step'];
+    }
+    // if it's lower than the minimum return the minimum
+    if ( _$1.isNumber( $attrs['min'] ) && $number < $attrs['min'] ) {
+      return $attrs['min'];
+    }
+    // if it's higher than the maxmimum return the maximum
+    if ( _$1.isNumber( $attrs['max'] ) && $number > $attrs['max'] ) {
+      return $attrs['max'];
+    }
+
+    return $number;
+  }
+
+  /**
+   * Sanitize CSS size unit
+   *
+   * @since 1.0.0
+   * @param {string}   $unit          The unit to sanitize
+   * @param {mixed}    $allowed_units The allowed units
+   * @return {string}
+   */
+  function sizeUnit$1( $unit, $allowed_units ) {
+    $allowed_units = $allowed_units || [];
+
+    // if no unit is allowed
+    if ( !$allowed_units.length ) {
+      return '';
+    }
+    // if it needs a unit and it is missing
+    else if ( $allowed_units.length && ! $unit ) {
+      return $allowed_units[0];
+    }
+    // if the unit specified is not in the allowed ones
+    else if ( $allowed_units.length && $unit && $allowed_units.indexOf( $unit ) === -1 ) {
+      return $allowed_units[0];
+    }
+    // if the unit specified is in the allowed ones
+    else if ( $allowed_units.length && $unit && $allowed_units.indexOf( $unit ) !== -1 ) {
+      return $unit;
+    }
+
+    return '';
+  }
+
+  /**
+   * Sanitize slider
+   *
+   * @since 1.0.0
+   * @param {mixed}                $value   The value to sanitize.
+   * @param {WP_Customize_Setting} $setting Setting instance.
+   * @param {WP_Customize_Control} $control Control instance.
+   * @return {string|number|null} The sanitized value.
+   */
+  function slider$1( $value, $setting, $control ) {
+    var $params = $control.$params;
+    var $attrs = $params.attrs || {};
+
+    var $number = Helper.extractNumber( $value, !!$attrs['float'] );
+    var $unit = Helper.extractSizeUnit( $value, $params['units'] );
+
+    $number = number$1( $number, $setting, $control );
+    $unit = sizeUnit$1( $unit, $params['units'] );
+
+    if ( $number === null ) {
+      return null;
+    }
+
+    if ( $unit ) {
+      return $number + $unit;
+    }
+
+    return $number;
+  }
+
+  /**
+   * Sanitize color
+
+   * It escapes HTML, removes spacs and strips the alpha channel if not allowed.
+   * It checks also for a hex color string like '#c1c2b4' or '#c00' or '#CCc000'
+   * or 'CCC' and fixes it. If the value is not valid it returns the setting
+   * default.
+   *
+   * @since 1.0.0
+   *
+   * @param {mixed}                $value   The value to sanitize.
+   * @param {WP_Customize_Setting} $setting Setting instance.
+   * @param {WP_Customize_Control} $control Control instance.
+   * @return {string|number} The sanitized value.
+   */
+  function color$1( $value, $setting, $control ) {
+    if (!_$1.isString($value)) {
+      return JSON.stringify($value);
+    }
+    $value = _$1.escape( $value.replace(/\s/g, '') );
+
+   
+    if ( Helper.isRgba( $value ) && ! $control.params.alpha ) {
+      return Helper.rgbaToRgb( $value );
+    }
+    if ( $value.match( /^([A-Fa-f0-9]{3}){1,2}$/ ) ) {
+      return ("#" + $value);
+    }
+    var $validity = Validate.color( {}, $value, $setting, $control );
+
+    if ( _$1.keys( $validity ).length ) {
+      return null;
+    }
+    return $value;
+  }
+
+  /**
+   * @alias core.Sanitize
+   * @description  Exposed module <a href="module-Sanitize.html">Sanitize</a>
+   * @access package
+   */
+  var Sanitize = {
+    singleChoice: singleChoice$1,
+    multipleChoices: multipleChoices$1,
+    oneOrMoreChoices: oneOrMoreChoices$1,
+    fontFamily: fontFamily$1,
+    checkbox: checkbox$1,
+    tags: tags$1,
+    text: text$1,
+    number: number$1,
+    sizeUnit: sizeUnit$1,
+    slider: slider$1,
+    color: color$1,
+  };
+
+  /**
+   * Control Base Radio class
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class controls.BaseRadio
+   *
+   * @extends controls.BaseChoices
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var BaseRadio = (function (BaseChoices) {
+    function BaseRadio () {
+      BaseChoices.apply(this, arguments);
+    }
+
+    if ( BaseChoices ) BaseRadio.__proto__ = BaseChoices;
+    BaseRadio.prototype = Object.create( BaseChoices && BaseChoices.prototype );
+    BaseRadio.prototype.constructor = BaseRadio;
+
+    BaseRadio.prototype.validate = function validate (value) {
+      return Validate.singleChoice({}, value, this.setting, this);
+    };
+
+    /**
+     * @since   1.0.0
+     * @override
+     */
+    BaseRadio.prototype.sanitize = function sanitize (value) {
+      return Sanitize.singleChoice(value, this.setting, this);
+    };
+
+    /**
+     * @since   1.0.0
+     * @override
+     */
+    BaseRadio.prototype.syncUI = function syncUI () {
+      this._syncRadios();
+    };
+
+    /**
+     * @since   1.0.0
+     * @override
+     */
+    BaseRadio.prototype.ready = function ready () {
+      this.__inputs = this._container.getElementsByTagName('input');
+      // sync checked state on radios on ready and bind (argument `true`)
+      this._syncRadios(true);
+    };
+
+    /**
+     * Sync radios and maybe bind change event
+     * We need to be fast here, use vanilla js.
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseRadio#
+     *
+     * @param  {boolean} bindAsWell Bind on change?
+     */
+    BaseRadio.prototype._syncRadios = function _syncRadios (bindAsWell) {
+      var this$1 = this;
+
+      var value = this.setting();
+
+      for (var i = 0, l = this.__inputs.length; i < l; i++) {
+        var input = this$1.__inputs[i];
+        input.checked = value === input.value;
+        if (bindAsWell) {
+          input.onchange = function (event) {
+            this$1.setting.set(event.target.value);
+          };
+        }
+      }
+    };
+
+    return BaseRadio;
+  }(BaseChoices$1));
+
+  var BaseRadio$1 = api$1.controls.BaseRadio = BaseRadio;
+
+  /**
+   * Control Base Set class
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class BaseSet
+   *
+   * @extends controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var BaseSet = (function (Base) {
+    function BaseSet () {
+      Base.apply(this, arguments);
+    }
+
+    if ( Base ) BaseSet.__proto__ = Base;
+    BaseSet.prototype = Object.create( Base && Base.prototype );
+    BaseSet.prototype.constructor = BaseSet;
+
+    BaseSet.prototype.validate = function validate (value) {
+      return Validate.oneOrMoreChoices({}, value, this.setting, this);
+    };
+
+    /**
+     * @since   1.0.0
+     * @override
+     */
+    BaseSet.prototype.sanitize = function sanitize (value) {
+      return Sanitize.oneOrMoreChoices(value, this.setting, this);
+    };
+
+    /**
+     * @see KKcp_Customize_Control_Base_Set->populate_valid_choices where we do
+     * kind of the same extraction but a bit differently because we don't need
+     * to extract data for the `<select>Select</select>` field too, and also
+     * because in php arrays are just arrays.
+     *
+     * @since   1.0.0
+     * @override
+     */
+    BaseSet.prototype.onInit = function onInit () {
+      var filteredSets = this._getFilteredSets(this.params.choices);
+      var data = this._getSelectDataFromSets(filteredSets);
+      this._options = data._options;
+      this._groups = data._groups;
+      this._validChoices = data._validChoices;
+      // console.log(this._validChoices);
+    };
+
+    /**
+     * @since   1.0.0
+     * @override
+     */
+    BaseSet.prototype.syncUI = function syncUI (value) {
+      if (_$1.isString(value)) {
+        value = [value];
+      }
+      if (!_$1.isEqual(value, this._getValueFromUI())) {
+        this._updateUI(value);
+      }
+    };
+
+    /**
+     * @since   1.0.0
+     * @override
+     */
+    BaseSet.prototype.onDeflate = function onDeflate () {
+      if (this.__input  && this.__input.selectize) {
+        this.__input.selectize.destroy();
+      }
+    };
+
+    /**
+     * @since   1.0.0
+     * @override
+     */
+    BaseSet.prototype.ready = function ready () {
+      this.__input = this._container.getElementsByClassName('kkcp-select')[0];
+      this._initUI();
+      this._updateUI(this.setting());
+    };
+
+    /**
+     * Get set from constants
+     *
+     * It uses the `setVar` added in `base-set.php` control class
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     *
+     * @param  {string} name
+     * @return {Object}
+     */
+    BaseSet.prototype._getSet = function _getSet (name) {
+      return api$1.constants[this.params.setVar][name];
+    };
+
+    /**
+     * Get flatten set values (bypass the subdivision in groups)
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     * @static
+     *
+     * @param  {Object} set
+     * @return {Array}
+     */
+    BaseSet.prototype._getFlattenSetValues = function _getFlattenSetValues (set) {
+      return _$1.flatten(_$1.pluck(set, 'values'));
+    };
+
+    /**
+     * Get filtered sets
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     *
+     * @param  {mixed}  choices
+     * @return {Object}
+     */
+    BaseSet.prototype._getFilteredSets = function _getFilteredSets (choices) {
+      var this$1 = this;
+
+      var ref = this.params;
+      var supportedSets = ref.supportedSets;
+      var filteredSets = {};
+
+      for (var i = 0; i < supportedSets.length; i++) {
+        var setName = supportedSets[i];
+        filteredSets[setName] = this$1._getFilteredSet(setName, choices);
+      }
+      return filteredSets;
+    };
+
+    /**
+     * Get filtered set
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     *
+     * @param  {string} name
+     * @param  {?string|Array|Object} filter
+     * @return {Object}
+     */
+    BaseSet.prototype._getFilteredSet = function _getFilteredSet (name, filter) {
+      var this$1 = this;
+
+      var set = this._getSet(name);
+      var filteredSet = {};
+
+      // choices filter is a single set name
+      if (_$1.isString(filter) && name === filter) {
+        filteredSet = set;
+      }
+      // choices filter is an array of set names
+      else if (_$1.isArray(filter) && filter.indexOf(name) !== -1) {
+        filteredSet = set;
+      }
+      // choices filter is a more complex filter that filters per set
+      else if (!_$1.isUndefined(filter)) {
+        for (var filterGroupKey in filter) {
+          if (filter.hasOwnProperty(filterGroupKey)) {
+            var filterGroups = filter[filterGroupKey];
+
+            // whitelist based on a filter string
+            if (_$1.isString(filterGroups)) {
+              // whitelist simply a group by its name
+              if (set[filterGroups]) {
+                filteredSet[filterGroups] = set[filterGroups];
+              } else {
+                // whitelist with a quickChoices filter, which filter by values
+                // on all the set groups regardless of the set group names.
+                var quickChoices = filterGroups.split(',');
+                if (quickChoices.length) {
+                  filteredSet = _$1.intersection(this$1._getFlattenSetValues(set), quickChoices);
+                  // we can break here, indeed, this is a quick filter...
+                  break;
+                }
+              }
+            }
+            // whitelist multiple groups of a set
+            else if (_$1.isArray(filterGroups)) {
+              filteredSet = _$1.pick(set, filterGroups);
+            }
+            // whitelist specific values per each group of the set
+            else if (!_$1.isUndefined(filterGroups)) {
+              for (var filterGroupKey$1 in filterGroups) {
+                if (filterGroups.hasOwnProperty(filterGroupKey$1)) {
+                  filteredSet[filterGroupKey$1] = _$1.intersection(set[filterGroupKey$1]['values'], filterGroups[filterGroupKey$1]);
+                }
+              }
+            }
+          }
+        }
+      // choices filter is not present, just use all the set
+      } else {
+        filteredSet = set;
+      }
+
+      return filteredSet;
+    };
+
+    /**
+     * Get select data for this control from the filtered set
+     *
+     * Besides the creation of the `options` and `groups` array to populate
+     * the `<select>` field we also create the `choices` array. We do this
+     * here in order to avoid defining it in each icon php control that would
+     * print a lot of duplicated JSON data, since icons sets have usually many
+     * entries we just define them globally and then use them as in the other
+     * select-like controls on the `params.choices` to provide validation.
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     *
+     * @param  {Object<Object>} sets
+     * @return {Object<string,Array<string>,string,Array<string>,string,Array<string>>}
+     */
+    BaseSet.prototype._getSelectDataFromSets = function _getSelectDataFromSets (sets) {
+      var options = [];
+      var groups = [];
+      var validChoices = [];
+
+      for (var setName in sets) {
+        if (sets.hasOwnProperty(setName)) {
+          var set = sets[setName];
+
+          // set can be a flat array ... (e.g. when is filtered by a quickChoices)
+          if (_$1.isArray(set)) {
+            for (var i = 0; i < set.length; i++) {
+              var value = set[i];
+
+              options.push({
+                value: value,
+                set: setName,
+              });
+
+              validChoices.push(value);
+            }
+          // set can be an object, and here we divide the select data in groups
+          } else {
+            for (var groupId in set) {
+              if (set.hasOwnProperty(groupId)) {
+                var group = set[groupId];
+                groups.push({
+                  value: groupId,
+                  label: group['label']
+                });
+                var values = group['values'];
+                for (var i$1 = 0; i$1 < values.length; i$1++) {
+                  options.push({
+                    value: values[i$1],
+                    group: groupId,
+                    set: setName,
+                  });
+                  validChoices.push(values[i$1]);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      return {
+        _options: options,
+        _groups: groups,
+        _validChoices: validChoices,
+      };
+    };
+
+    /**
+     * Get select options
+     *
+     * The select can either have or not have options divided by groups.
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     *
+     * @return {Object}
+     */
+    BaseSet.prototype._getSelectOpts = function _getSelectOpts () {
+      var this$1 = this;
+
+      var customOpts = this._getSelectCustomOpts();
+
+      var defaultOpts = {
+        plugins: ['drag_drop','remove_button'],
+        maxItems: this.params.max,
+        options: this._options,
+        valueField: 'value',
+        sortField: 'value',
+        searchField: ['value'],
+        render: {
+          item: this._renderItem.bind(this),
+          option: this._renderOption.bind(this)
+        },
+        onChange: function (value) {
+          this$1.setting.set(value);
+        }
+      };
+
+      if (this._groups.length) {
+        defaultOpts['optgroups'] = this._groups;
+        defaultOpts['optgroupField'] = 'group';
+        defaultOpts['optgroupValueField'] = 'value';
+        defaultOpts['lockOptgroupOrder'] = true;
+        defaultOpts['render']['optgroup_header'] = this._renderGroupHeader.bind(this);
+      }
+
+      return _$1.extend(defaultOpts, customOpts)
+    };
+
+    /**
+     * Get select custom options (subclasses can implement this)
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     * @abstract
+     *
+     * @return {Object}
+     */
+    BaseSet.prototype._getSelectCustomOpts = function _getSelectCustomOpts () {
+      return {};
+    };
+
+    /**
+     * Init UI
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     */
+    BaseSet.prototype._initUI = function _initUI () {
+      if (this.__input.selectize) {
+        this.__input.selectize.destroy();
+      }
+
+      $(this.__input).selectize(this._getSelectOpts());
+    };
+
+    /**
+     * Get value from UI
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     *
+     * @return {?string|Array}
+     */
+    BaseSet.prototype._getValueFromUI = function _getValueFromUI () {
+      if (!this.__input) {
+        return null;
+      }
+      if (this.__input.selectize) {
+        return this.__input.selectize.getValue();
+      }
+      return null;
+    };
+
+    /**
+     * Update UI
+     *
+     * Pass `true` as second argument to perform a `silent` update, that does
+     * not trigger the `onChange` event.
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     *
+     * @param  {string|Array} value
+     */
+    BaseSet.prototype._updateUI = function _updateUI (value) {
+      if (this.__input.selectize) {
+        this.__input.selectize.setValue(value, true);
+      } else {
+        this._initUI();
+        this._updateUI(value);
+      }
+    };
+
+    /**
+     * Select render item function
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     * @abstract
+     *
+     * @param  {Object} data     The selct option object representation.
+     * @return {string}          The option template.
+     */
+    BaseSet.prototype._renderItem = function _renderItem (data) {};
+
+    /**
+     * Select render option function
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     * @abstract
+     *
+     * @param  {Object} data     The selct option object representation.
+     * @return {string}          The option template.
+     */
+    BaseSet.prototype._renderOption = function _renderOption (data) {};
+
+    /**
+     * Select render option function
+     *
+     * @since   1.0.0
+     * @memberof! controls.BaseSet#
+     * @abstract
+     *
+     * @param  {Object} data     The select option object representation.
+     * @return {string}          The option template.
+     */
+    BaseSet.prototype._renderGroupHeader = function _renderGroupHeader (data) {};
+
+    return BaseSet;
+  }(Base$1));
+
+  var BaseSet$1 = api$1.controls.BaseSet = BaseSet;
+
+  /**
+   * Control Buttonset
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_buttonset`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Buttonset
+   *
+   * @extends controls.BaseRadio
+   * @augments controls.BaseChoices
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   */
+  var Buttonset = (function (BaseRadio) {
+  	function Buttonset () {
+  		BaseRadio.apply(this, arguments);
+  	}if ( BaseRadio ) Buttonset.__proto__ = BaseRadio;
+  	Buttonset.prototype = Object.create( BaseRadio && BaseRadio.prototype );
+  	Buttonset.prototype.constructor = Buttonset;
+
+  	
+
+  	return Buttonset;
+  }(BaseRadio$1));
+
+  wpApi.controlConstructor['kkcp_buttonset'] = api$1.controls.Buttonset = Buttonset;
+
+  /**
+   * Control Checkbox
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_checkbox`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Checkbox
+   *
+   * @extends controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var Checkbox = (function (Base) {
+    function Checkbox () {
+      Base.apply(this, arguments);
+    }
+
+    if ( Base ) Checkbox.__proto__ = Base;
+    Checkbox.prototype = Object.create( Base && Base.prototype );
+    Checkbox.prototype.constructor = Checkbox;
+
+    Checkbox.prototype.softenize = function softenize (value) {
+      return (value === 0 || value === 1) ? value.toString() : value;
+    };
+
+    /**
+     * @override
+     */
+    Checkbox.prototype.validate = function validate (value) {
+      return Validate.checkbox({}, value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Checkbox.prototype.sanitize = function sanitize (value) {
+      return Sanitize.checkbox(value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Checkbox.prototype.syncUI = function syncUI (value) {
+      var valueClean = numberToBoolean(value);
+      var inputStatus = numberToBoolean(this.__input.checked);
+      if (inputStatus !== valueClean) {
+        this.__input.checked = valueClean;
+      }
+    };
+
+    /**
+     * @override
+     */
+    Checkbox.prototype.ready = function ready () {
+      var this$1 = this;
+
+      this.__input = this._container.getElementsByTagName('input')[0];
+
+      // sync input value on ready
+      this.__input.checked = numberToBoolean(this.setting());
+
+      // bind input on ready
+      this.__input.onchange = function (event) {
+        event.preventDefault();
+        var value = event.target.checked ? 1 : 0;
+        this$1.setting.set(value);
+      };
+    };
+
+    return Checkbox;
+  }(Base$1));
+
+  var Checkbox$1 = wpApi.controlConstructor['kkcp_checkbox'] = api$1.controls.Checkbox = Checkbox;
+
+  /* global tinycolor */
+
+  /**
+   * Control Color class
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_color`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Color
+   *
+   * @extends controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   * @requires tinycolor
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var Color = (function (Base) {
+    function Color () {
+      Base.apply(this, arguments);
+    }
+
+    if ( Base ) Color.__proto__ = Base;
+    Color.prototype = Object.create( Base && Base.prototype );
+    Color.prototype.constructor = Color;
+
+    Color.prototype.softenize = function softenize (value) {
+      try {
+        var anyColor = tinycolor(value);
+        if (!anyColor['_format']) { // whitelisted from uglify \\
+          return value;
+        } else {
+          return anyColor.toRgbString();
+        }
+      } catch(e) {
+        if (DEBUG) {
+          console.warn('Control->Color->softenize: tinycolor conversion failed', e);
+        }
+        return value;
+      }
+    };
+
+    /**
+     * @override
+     */
+    Color.prototype.validate = function validate (value) {
+      return Validate.color({}, value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Color.prototype.sanitize = function sanitize (value) {
+      return Sanitize.color(value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Color.prototype.syncUI = function syncUI (value) {
+      this._apply(value, 'API');
+    };
+
+    /**
+     * Destroy `spectrum` instances if any.
+     *
+     * @override
+     */
+    Color.prototype.onDeflate = function onDeflate () {
+      if (this.__$picker && this.rendered) {
+        this.__$picker.spectrum('destroy');
+      }
+    };
+
+    /**
+     * @override
+     */
+    Color.prototype.ready = function ready () {
+      var this$1 = this;
+
+      /** @type {HTMLElement} */
+      var container = this._container;
+      /** @type {HTMLElement} */
+      var btnCustom = container.getElementsByClassName('kkcpui-toggle')[0];
+
+      /** @type {HTMLElement} */
+      this.__preview = container.getElementsByClassName('kkcpcolor-current-overlay')[0];
+      /** @type {JQuery} */
+      this.__$picker = $$1(container.getElementsByClassName('kkcpcolor-input')[0]);
+      /** @type {JQuery} */
+      this.__$expander = $$1(container.getElementsByClassName('kkcp-expander')[0]).hide();
+
+      this._updateUIpreview(this.setting());
+
+      var isOpen = false;
+      var pickerIsInitialized = false;
+
+      var _maybeInitializeSpectrum = function () {
+        // initialize only once
+        if (!pickerIsInitialized) {
+          this$1.__$picker.spectrum(this$1._getSpectrumOpts());
+          pickerIsInitialized = true;
+        }
+      };
+
+      btnCustom.onmouseover = _maybeInitializeSpectrum;
+
+      btnCustom.onclick = function () {
+        isOpen = !isOpen;
+        _maybeInitializeSpectrum();
+
+        // and toggle
+        if (isOpen) {
+          this$1.__$expander.slideDown();
+        } else {
+          this$1.__$expander.slideUp();
+        }
+        return false;
+      };
+    };
+
+    /**
+     * Get Spectrum plugin options
+     *
+     * {@link https://bgrins.github.io/spectrum/ spectrum API}
+     *
+     * @since   1.0.0
+     * @memberof! controls.Color#
+     * @access protected
+     *
+     * @param  {?object} options Options that override the defaults (optional)
+     * @return {object} The spectrum plugin options
+     */
+    Color.prototype._getSpectrumOpts = function _getSpectrumOpts (options) {
+      var this$1 = this;
+
+      var params = this.params;
+      var $container = this.container;
+
+      return _$1.extend({
+        preferredFormat: 'hex',
+        flat: true,
+        showInput: true,
+        showInitial: false,
+        showButtons: false,
+        // localStorageKey: 'kkcp_spectrum',
+        showSelectionPalette: false,
+        togglePaletteMoreText: api$1.l10n['togglePaletteMoreText'],
+        togglePaletteLessText: api$1.l10n['togglePaletteLessText'],
+        allowEmpty: !!params.transparent,
+        showAlpha: !!params.alpha,
+        showPalette: !!params.palette,
+        showPaletteOnly: !!params.palette && (params.picker === 'hidden' || !params.picker),
+        togglePaletteOnly: !!params.palette && (params.picker === 'hidden' || params.picker),
+        palette: params.palette,
+        color: this.setting(),
+        show: function () {
+          $container.find('.sp-input').focus();
+        },
+        move: function (tinycolor) {
+          var color$$1 = tinycolor ? tinycolor.toString() : 'transparent';
+          this$1._apply(color$$1);
+        },
+        change: function (tinycolor) {
+          if (!tinycolor) {
+            $container.find('.sp-input').val('transparent');
+          }
+        }
+      }, options || {});
+    };
+
+    /**
+     * Update UI preview (the color box on the left hand side)
+     *
+     * @since   1.0.0
+     * @memberof! controls.Color#
+     * @access protected
+     */
+    Color.prototype._updateUIpreview = function _updateUIpreview (newValue) {
+      this.__preview.style.background = newValue;
+    };
+
+    /**
+     * Update UI control (the spectrum color picker)
+     *
+     * @since   1.0.0
+     * @memberof! controls.Color#
+     * @access protected
+     */
+    Color.prototype._updateUIcustomControl = function _updateUIcustomControl (newValue) {
+      this.__$picker.spectrum('set', newValue);
+    };
+
+    /**
+     * Apply, wrap the `setting.set()` function
+     * doing some additional stuff.
+     *
+     * @since   1.0.0
+     * @memberof! controls.Color#
+     *
+     * @access protected
+     * @param  {string} value
+     * @param  {string} from  Where the value come from (could be from the UI:
+     *                        picker, dynamic fields, expr field) or from the
+     *                        API (on programmatic value change).
+     */
+    Color.prototype._apply = function _apply (value, from) {
+      this.params.valueCSS = value;
+
+      if (this.rendered) {
+        this._updateUIpreview(value);
+
+        if (from === 'API') {
+          this._updateUIcustomControl(value);
+        }
+      }
+
+      if (from !== 'API') {
+        // set new value
+        this.setting.set(value);
+      }
+    };
+
+    return Color;
+  }(Base$1));
+
+  wpApi.controlConstructor['kkcp_color'] = api$1.controls.Color = Color;
+
+  /**
+   * Control Content class
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_content`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Content
+   *
+   * @extends controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   */
+  var Content = (function (Base) {
+    function Content () {
+      Base.apply(this, arguments);
+    }if ( Base ) Content.__proto__ = Base;
+    Content.prototype = Object.create( Base && Base.prototype );
+    Content.prototype.constructor = Content;
+
+    
+
+    return Content;
+  }(Base$1));
+
+  wpApi.controlConstructor['kkcp_content'] = api$1.controls.Content = Content;
+
+  /**
+   * Font Family Control
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_font_family`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class FontFamily
+   *
+   * @extends controls.BaseSet
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   * @requires Helper
+   */
+  var FontFamily = (function (BaseSet) {
+    function FontFamily () {
+      BaseSet.apply(this, arguments);
+    }
+
+    if ( BaseSet ) FontFamily.__proto__ = BaseSet;
+    FontFamily.prototype = Object.create( BaseSet && BaseSet.prototype );
+    FontFamily.prototype.constructor = FontFamily;
+
+    FontFamily.prototype.validate = function validate (value) {
+      return Validate.fontFamily({}, value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    FontFamily.prototype.sanitize = function sanitize (value) {
+      return Sanitize.fontFamily(value, this.setting, this);
+    };
+
+    /**
+     * Always quote all font families
+     *
+     * @override
+     */
+    FontFamily.prototype.onInit = function onInit () {
+      BaseSet.prototype.onInit.call(this);
+
+      this._options = _$1.map(this._options, function (option) {
+        option.value = Helper.normalizeFontFamily(option.value);
+        return option;
+      });
+      this._validChoices = _$1.map(this._validChoices, function (value) { return Helper.normalizeFontFamily(value); });
+    };
+
+    /**
+     * @override
+     */
+    FontFamily.prototype.syncUI = function syncUI (value) {
+      if (_$1.isArray(value)) {
+        value = value.join(',');
+      }
+      if (!_$1.isEqual(value, this.__input.selectize.getValue())) {
+        this._initUI(value);
+      }
+    };
+
+    /**
+     * @override
+     */
+    FontFamily.prototype.ready = function ready () {
+      this.__input = this._container.getElementsByClassName('kkcp-select')[0];
+      this._initUI(this.setting());
+    };
+
+    /**
+     * @override
+     */
+    FontFamily.prototype._initUI = function _initUI (value) {
+      // this is due to a bug, we should use:
+      // this.__input.selectize.setValue(value, true);
+      // @see https://github.com/brianreavis/selectize.js/issues/568
+      // instead here first we have to destroy thene to reinitialize, this
+      // happens only through a programmatic change such as a reset action
+      if (this.__input.selectize) {
+        this.__input.selectize.destroy();
+      }
+
+      this.__input.value = value;
+
+      // init select plugin
+      $$1(this.__input).selectize(this._getSelectOpts());
+    };
+
+    /**
+     * @override
+     */
+    FontFamily.prototype._getSelectCustomOpts = function _getSelectCustomOpts () {
+      return {
+        hideSelected: true,
+        delimiter: ',',
+      }
+    };
+
+    /**
+     * @override
+     */
+    FontFamily.prototype._renderItem = function _renderItem (data) {
+      var value = _$1.escape(data.value);
+      return ("<div style=\"font-family:" + value + "\">" + (value.replace(/'/g, '').replace(/"/g, '')) + "</div>");
+    };
+
+    /**
+     * @override
+     */
+    FontFamily.prototype._renderOption = function _renderOption (data) {
+      var value = _$1.escape(data.value);
+      return ("<div style=\"font-family:" + value + "\">" + (value.replace(/'/g, '').replace(/"/g, '')) + "</div>");
+    };
+
+    /**
+     * @override
+     */
+    FontFamily.prototype._renderGroupHeader = function _renderGroupHeader (data) {
+      return ("<div class=\"kkcp-icon-selectHeader\">" + (_$1.escape(data.label)) + "</div>");
+    };
+
+    return FontFamily;
+  }(BaseSet$1));
+
+  wpApi.controlConstructor['kkcp_font_family'] = api$1.controls.FontFamily = FontFamily;
+
+  /**
+   * Control Icon
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_icon`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Icon
+   *
+   * @extends controls.BaseSet
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   */
+  var Icon = (function (BaseSet) {
+    function Icon () {
+      BaseSet.apply(this, arguments);
+    }
+
+    if ( BaseSet ) Icon.__proto__ = BaseSet;
+    Icon.prototype = Object.create( BaseSet && BaseSet.prototype );
+    Icon.prototype.constructor = Icon;
+
+    Icon.prototype._renderItem = function _renderItem (data) {
+      return ("<div class=\"kkcp-icon-selectItem kkcpui-tooltip--top\" title=\"" + (_$1.escape(data.value)) + "\">\n        <i class=\"" + (_$1.escape(this._getIconClassName(data))) + "\"></i>\n      </div>");
+    };
+
+    /**
+     * @override
+     */
+    Icon.prototype._renderOption = function _renderOption (data) {
+      return ("<div class=\"kkcp-icon-selectOption kkcpui-tooltip--top\" title=\"" + (_$1.escape(data.value)) + "\">\n        <i class=\"" + (_$1.escape(this._getIconClassName(data))) + "\"></i>\n      </div>");
+    };
+
+    /**
+     * @override
+     */
+    Icon.prototype._renderGroupHeader = function _renderGroupHeader (data) {
+      return ("<div class=\"kkcp-icon-selectHeader\">" + (_$1.escape(data.label)) + "</div>");
+    };
+
+    /**
+     * Get option icon class name
+     *
+     * @since   1.0.0
+     * @memberof! controls.Icon#
+     * @access protected
+     *
+     * @param  {Object} data The single option data
+     * @return {string}
+     */
+    Icon.prototype._getIconClassName = function _getIconClassName (data) {
+      return ((data.set) + " " + (data.set) + "-" + (data.value));
+    };
+
+    return Icon;
+  }(BaseSet$1));
+
+  wpApi.controlConstructor['kkcp_icon'] = api$1.controls.Icon = Icon;
+
+  /**
+   * @fileOverview A simple logger utility.
+   *
+   * @module Logger
+   */
+
+  /**
+   * Log error
+   *
+   * @param  {string} context
+   * @param  {string} msg
+   * @return {void}
+   */
+  function logError (context, msg) {
+    console.error(context, msg);
+  }
+
+  /**
+   * Control Multicheck
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_multicheck`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Multicheck
+   *
+   * @extends controls.BaseChoices
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var Multicheck = (function (BaseChoices) {
+    function Multicheck () {
+      BaseChoices.apply(this, arguments);
+    }
+
+    if ( BaseChoices ) Multicheck.__proto__ = BaseChoices;
+    Multicheck.prototype = Object.create( BaseChoices && BaseChoices.prototype );
+    Multicheck.prototype.constructor = Multicheck;
+
+    Multicheck.prototype.validate = function validate (value) {
+      return Validate.multipleChoices({}, value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Multicheck.prototype.sanitize = function sanitize (value) {
+      return Sanitize.multipleChoices(value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Multicheck.prototype.syncUI = function syncUI (value) {
+      if (!_$1.isEqual(value, this._getValueFromUI())) {
+        this._syncCheckboxes();
+
+        if (this.params.sortable) {
+          this._reorder();
+        }
+      }
+    };
+
+    /**
+     * @override
+     */
+    Multicheck.prototype.ready = function ready () {
+      var this$1 = this;
+
+      this.__inputs = this._container.getElementsByTagName('input');
+
+      // special stuff for sortable multicheck controls
+      if (this.params.sortable) {
+        this.container.sortable({
+          items: '> label',
+          cursor: 'move',
+          update: function () {
+            this$1.setting.set(this$1._getValueFromUI());
+          }
+        });
+
+        this._buildItemsMap();
+      }
+
+      // sync checked state on checkboxes on ready and bind (argument `true`)
+      this._syncCheckboxes(true);
+    };
+
+    /**
+     * Build items map
+     *
+     * @since   1.0.0
+     * @memberof! controls.Multicheck#
+     * @access protected
+     */
+    Multicheck.prototype._buildItemsMap = function _buildItemsMap () {
+      var this$1 = this;
+
+      var items = this._container.getElementsByTagName('label');
+      this.__itemsMap = {};
+
+      for (var i = 0, l = items.length; i < l; i++) {
+        this$1.__itemsMap[items[i].title] = {
+          _sortable: items[i],
+          _input: items[i].getElementsByTagName('input')[0]
+        };
+      }
+    };
+
+    /**
+     * @override
+     */
+    Multicheck.prototype._reorder = function _reorder () {
+      var this$1 = this;
+
+      // sort first the checked ones
+      api$1.controls['Sortable'].prototype._reorder.apply(this);
+
+      // then sort the unchecked ones
+      var value = this.setting();
+
+      for (var itemValueAsKey in this$1.params.choices) {
+        var item = this$1.__itemsMap[itemValueAsKey];
+
+        if (item) {
+          if (value.indexOf(itemValueAsKey) === -1) {
+            var itemSortableDOM = item._sortable;
+            itemSortableDOM.parentNode.removeChild(itemSortableDOM);
+            this$1._container.appendChild(itemSortableDOM);
+          }
+        } else {
+          logError('controls.Multicheck->_reorder', ("item '" + itemValueAsKey + "' has no '_sortable' DOM in 'this.__itemsMap'"));
+        }
+      }
+    };
+
+    /**
+     * Get sorted value, reading checkboxes status from the DOM
+     *
+     * @since   1.0.0
+     * @memberof! controls.Multicheck#
+     * @access protected
+     *
+     * @return {Array}
+     */
+    Multicheck.prototype._getValueFromUI = function _getValueFromUI () {
+      var this$1 = this;
+
+      var valueSorted = [];
+
+      for (var i = 0, l = this.__inputs.length; i < l; i++) {
+        var input = this$1.__inputs[i];
+        if (input.checked) {
+          valueSorted.push(input.value);
+        }
+      }
+      return valueSorted;
+    };
+
+    /**
+     * Sync checkboxes and maybe bind change event
+     * We need to be fast here, use vanilla js.
+     *
+     * @since   1.0.0
+     * @memberof! controls.Multicheck#
+     * @access protected
+     *
+     * @param  {boolean} bindAsWell Bind on change?
+     */
+    Multicheck.prototype._syncCheckboxes = function _syncCheckboxes (bindAsWell) {
+      var this$1 = this;
+
+      var value = this.setting();
+
+      if (!_$1.isArray(value)) {
+        return logError('controls.Multicheck->_syncCheckboxes', "setting.value must be an array");
+      }
+
+      for (var i = 0, l = this.__inputs.length; i < l; i++) {
+        var input = this$1.__inputs[i];
+        input.checked = value.indexOf(input.value) !== -1;
+        if (bindAsWell) {
+          input.onchange = function () {
+            this$1.setting.set(this$1._getValueFromUI());
+          };
+        }
+      }
+    };
+
+    return Multicheck;
+  }(BaseChoices$1));
+
+  wpApi.controlConstructor['kkcp_multicheck'] = api$1.controls.Multicheck = Multicheck;
+
+  /**
+   * Control Number
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_number`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Number
+   *
+   * @extends controls.BaseInput
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var Number$1 = (function (BaseInput) {
+    function Number () {
+      BaseInput.apply(this, arguments);
+    }
+
+    if ( BaseInput ) Number.__proto__ = BaseInput;
+    Number.prototype = Object.create( BaseInput && BaseInput.prototype );
+    Number.prototype.constructor = Number;
+
+    Number.prototype.validate = function validate (value) {
+      return Validate.number({}, value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Number.prototype.sanitize = function sanitize (value) {
+      return Sanitize.number(value, this.setting, this);
+    };
+
+    /**
+     * We just neet to convert the value to string for the check, for the rest
+     * is the same as in the base input control
+     *
+     * @override
+     */
+    Number.prototype.syncUI = function syncUI (value) {
+      if (value && this.__input.value !== value.toString()) {
+        this.__input.value = value;
+      }
+    };
+
+    return Number;
+  }(BaseInput$1));
+
+  wpApi.controlConstructor['kkcp_number'] = api$1.controls.Number = Number$1;
+
+  /**
+   * Control Text class
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_text`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Text
+   *
+   * @extends controls.BaseInput
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var Text = (function (BaseInput) {
+    function Text () {
+      BaseInput.apply(this, arguments);
+    }
+
+    if ( BaseInput ) Text.__proto__ = BaseInput;
+    Text.prototype = Object.create( BaseInput && BaseInput.prototype );
+    Text.prototype.constructor = Text;
+
+    Text.prototype.validate = function validate (value) {
+      return Validate.text({}, value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Text.prototype.sanitize = function sanitize (value) {
+      return Sanitize.text(value, this.setting, this);
+    };
+
+    return Text;
+  }(BaseInput$1));
+
+  var Text$1 = wpApi.controlConstructor['kkcp_text'] = api$1.controls.Text = Text;
+
+  /**
+   * Control Password class
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_password`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Password
+   *
+   * @extends controls.Text
+   * @augments controls.BaseInput
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var Password = (function (Text) {
+    function Password () {
+      Text.apply(this, arguments);
+    }
+
+    if ( Text ) Password.__proto__ = Text;
+    Password.prototype = Object.create( Text && Text.prototype );
+    Password.prototype.constructor = Password;
+
+    Password.prototype.syncUI = function syncUI (value) {
+      if (value && this.__input.value !== value) {
+        this.__input.value = value;
+        this.__text.value = value;
+      }
+    };
+
+    /**
+     * @override
+     */
+    Password.prototype.ready = function ready (value) {
+      var self = this;
+      var ref = this;
+      var setting = ref.setting;
+      var ref$1 = this.params || {};
+      var attrs = ref$1.attrs;
+
+      self.__input = self._container.getElementsByTagName('input')[0];
+
+      if (attrs['visibility']) {
+
+        self.__text = self._container.getElementsByTagName('input')[1];
+
+        // bind the visibility toggle button
+        self.container.find('.kkcp-password__toggle').click(function (event) {
+          if (event) {
+            event.preventDefault();
+          }
+          self.__isVisible = !self.__isVisible;
+          self._toggleVisibility(self.__isVisible);
+        });
+
+        // sync the text preview to the input password
+        $(self.__text)
+          .val(setting())
+          .on('change keyup paste', function () {
+            setting.set(this.value);
+            self.__input.value = this.value;
+          });
+      }
+
+      // sync input and listen for changes
+      $(self.__input)
+        .val(setting())
+        .on('change keyup paste', function () {
+          setting.set(this.value);
+          self.__text.value = this.value;
+        });
+    };
+
+    /**
+     * Toggle password visiblity
+     *
+     * @since   1.0.0
+     * @memberof! controls.Password#
+     * @access protected
+     *
+     * @param  {boolean} isVisible
+     */
+    Password.prototype._toggleVisibility = function _toggleVisibility (isVisible) {
+      if (isVisible) {
+        this.container.addClass('kkcp-password-visible');
+        this.__text.focus();
+      } else {
+        this.container.removeClass('kkcp-password-visible');
+        this.__input.focus();
+      }
+    };
+
+    return Password;
+  }(Text$1));
+
+  wpApi.controlConstructor['kkcp_password'] = api$1.controls.Password = Password;
+
+  /**
+   * Control Radio
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_radio`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Radio
+   *
+   * @extends controls.BaseRadio
+   * @augments controls.BaseChoices
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   */
+  var Radio = (function (BaseRadio) {
+  	function Radio () {
+  		BaseRadio.apply(this, arguments);
+  	}if ( BaseRadio ) Radio.__proto__ = BaseRadio;
+  	Radio.prototype = Object.create( BaseRadio && BaseRadio.prototype );
+  	Radio.prototype.constructor = Radio;
+
+  	
+
+  	return Radio;
+  }(BaseRadio$1));
+
+  wpApi.controlConstructor['kkcp_radio'] = api$1.controls.Radio = Radio;
+
+  /**
+   * Control Radio Image
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_radio_image`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class RadioImage
+   *
+   * @extends controls.BaseRadio
+   * @augments controls.BaseChoices
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   */
+  var RadioImage = (function (BaseRadio) {
+  	function RadioImage () {
+  		BaseRadio.apply(this, arguments);
+  	}if ( BaseRadio ) RadioImage.__proto__ = BaseRadio;
+  	RadioImage.prototype = Object.create( BaseRadio && BaseRadio.prototype );
+  	RadioImage.prototype.constructor = RadioImage;
+
+  	
+
+  	return RadioImage;
+  }(BaseRadio$1));
+
+  wpApi.controlConstructor['kkcp_radio_image'] = api$1.controls.RadioImage = RadioImage;
+
+  /**
+   * Control Select class
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_select`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Select
+   *
+   * @extends controls.BaseChoices
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var Select = (function (BaseChoices) {
+    function Select () {
+      BaseChoices.apply(this, arguments);
+    }
+
+    if ( BaseChoices ) Select.__proto__ = BaseChoices;
+    Select.prototype = Object.create( BaseChoices && BaseChoices.prototype );
+    Select.prototype.constructor = Select;
+
+    Select.prototype.validate = function validate (value) {
+      return Validate.oneOrMoreChoices({}, value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Select.prototype.sanitize = function sanitize (value) {
+      return Sanitize.oneOrMoreChoices(value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Select.prototype.onDeflate = function onDeflate () {
+      if (this.__select && this.__select.selectize) {
+        this.__select.selectize.destroy();
+      }
+    };
+
+    /**
+     * We do a comparison with two equals `==` because sometimes we want to
+     * compare `500` to `'500'` (like in the font-weight dropdown) and return
+     * true from that.
+     *
+     * @override
+     */
+    Select.prototype.syncUI = function syncUI (value) {
+      if (!_$1.isEqual(value, this._getValueFromUI())) {
+        this._updateUI(value);
+      }
+    };
+
+    /**
+     * @override
+     */
+    Select.prototype.ready = function ready () {
+      var attrs = this.params['attrs'] || {};
+      var setting = this.setting;
+
+      this.__select = this._container.getElementsByTagName('select')[0];
+
+      // or use normal DOM API
+      if (attrs['native']) {
+        this.__options = this._container.getElementsByTagName('option');
+
+        this.__select.onchange = function () {
+          setting.set(this.value);
+        };
+      // use select plugin
+      } else {
+        var pluginOptions = {
+          plugins: [],
+          maxItems: this.params.max,
+          onChange: function (value) {
+            setting.set(value);
+          }
+        };
+
+        if (attrs['hide_selected']) {
+          pluginOptions.hideSelected = true;
+        }
+        if (attrs['sort']) {
+          pluginOptions.sortField = 'text';
+        }
+        if (attrs['removable']) {
+          pluginOptions.plugins.push('remove_button');
+        }
+        if (attrs['draggable']) {
+          pluginOptions.plugins.push('drag_drop');
+        }
+        if (attrs['restore_on_backspace']) {
+          pluginOptions.plugins.push('restore_on_backspace');
+        }
+
+        $$1(this.__select).selectize(pluginOptions);
+      }
+
+      // sync selected state on options on ready
+      this._updateUI(this.setting());
+    };
+
+    /**
+     * Get value from UI
+     *
+     * @since   1.0.0
+     * @memberof! controls.Select#
+     * @access protected
+     *
+     * @return {?Array<string>}
+     */
+    Select.prototype._getValueFromUI = function _getValueFromUI () {
+      if (!this.__select) {
+        return null;
+      }
+      if (this.__select.selectize) {
+        return this.__select.selectize.getValue();
+      }
+      return this.__select.value;
+    };
+
+    /**
+     * Update UI syncing options values
+     *
+     * Pass `true` as second argument to perform a `silent` update, that does
+     * not trigger the `onChange` event
+     *
+     * @since   1.0.0
+     * @memberof! controls.Select#
+     * @access protected
+     *
+     * @param {string|Array<string>} value
+     */
+    Select.prototype._updateUI = function _updateUI (value) {
+      var this$1 = this;
+
+      // use plugin
+      if (this.__select.selectize) {
+        this.__select.selectize.setValue(value, true);
+      }
+      // or use normal DOM API
+      else {
+        for (var i = this.__options.length; i--;) {
+          var option = this$1.__options[i];
+          option.selected = (value == option.value);
+        }
+      }
+    };
+
+    return Select;
+  }(BaseChoices$1));
+
+  var Select$1 = wpApi.controlConstructor['kkcp_select'] = api$1.controls.Select = Select;
+
+  /**
+   * Control Font Weight
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_font_weight`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class FontWeight
+   *
+   * @extends controls.Select
+   * @augments controls.BaseChoices
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   */
+  var FontWeight = (function (Select) {
+  	function FontWeight () {
+  		Select.apply(this, arguments);
+  	}if ( Select ) FontWeight.__proto__ = Select;
+  	FontWeight.prototype = Object.create( Select && Select.prototype );
+  	FontWeight.prototype.constructor = FontWeight;
+
+  	
+
+  	return FontWeight;
+  }(Select$1));
+
+  wpApi.controlConstructor['kkcp_font_weight'] = api$1.controls.FontWeight = FontWeight;
+
+  /**
+   * Control Slider
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_slider`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Slider
+   *
+   * @extends controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Regexes
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var Slider = (function (Base) {
+    function Slider () {
+      Base.apply(this, arguments);
+    }
+
+    if ( Base ) Slider.__proto__ = Base;
+    Slider.prototype = Object.create( Base && Base.prototype );
+    Slider.prototype.constructor = Slider;
+
+    Slider.prototype.validate = function validate (value) {
+      return Validate.slider({}, value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Slider.prototype.sanitize = function sanitize (value) {
+      return Sanitize.slider(value, this.setting, this);
+    };
+
+    /**
+     * Let's consider '44' to be equal to 44.
+     * @override
+     */
+    Slider.prototype.softenize = function softenize (value) {
+      return value.toString();
+    };
+
+    /**
+     * @override
+     */
+    Slider.prototype.syncUI = function syncUI (value) {
+      if (value !== this._getValueFromUI()) {
+        this._setPartialValue(value, 'API');
+      }
+    };
+
+    /**
+     * This function is divided in subfunction to make it easy to reuse part of
+     * this control in other controls that extend this, such as `size_dynamic`.
+     *
+     * @override
+     */
+    Slider.prototype.ready = function ready () {
+      this._setDOMelements();
+      this._initSliderAndBindInputs();
+      this._updateUIcustomControl(this.setting());
+    };
+
+    /**
+     * Set DOM element as control properties
+     *
+     * @since   1.0.0
+     * @memberof! controls.Slider#
+     * @access protected
+     */
+    Slider.prototype._setDOMelements = function _setDOMelements () {
+      var container = this._container;
+      /** @type {HTMLElement} */
+      this.__inputNumber = container.getElementsByClassName('kkcp-slider-number')[0];
+      /** @type {JQuery} */
+      this.__$inputUnits = $$1(container.getElementsByClassName('kkcp-unit'));
+      /** @type {JQuery} */
+      this.__$inputSlider = $$1(container.getElementsByClassName('kkcp-slider')[0]);
+    };
+
+    /**
+     * Init slider and bind input UI.
+     *
+     * @since   1.0.0
+     * @memberof! controls.Slider#
+     * @access protected
+     */
+    Slider.prototype._initSliderAndBindInputs = function _initSliderAndBindInputs () {
+      var self = this;
+      var params = self.params;
+      var inputNumber = self.__inputNumber;
+      var $inputSlider = self.__$inputSlider;
+      var onInputNumberChange = function () {
+        var value = this.value;
+        $inputSlider.slider('value', value);
+        self._setPartialValue({ _number: value });
+      };
+
+      // Bind click action to unit picker
+      // (only if there is more than one unit allowed)
+      if (params['units'] && params['units'].length > 1) {
+        var $inputUnits = self.__$inputUnits;
+        $inputUnits.on('click', function () {
+          $inputUnits.removeClass('kkcp-current');
+          this.className += ' kkcp-current';
+          self._setPartialValue({ _unit: this.value });
+        });
+      }
+
+      // Bind number input
+      inputNumber.onchange = onInputNumberChange;
+      inputNumber.onkeyup = onInputNumberChange;
+
+      // Init Slider
+      var sliderOptions = params['attrs'] || {};
+      $inputSlider.slider(_$1.extend(sliderOptions, {
+        value: self._extractFirstNumber(),
+        slide: function(event, ui) {
+          inputNumber.value = ui.value;
+          self._setPartialValue({ _number: ui.value });
+        },
+        change: function(event, ui) {
+          // trigger change effect only on user input, @see
+          // https://forum.jquery.com/topic/setting-a-sliders-value-without-triggering-the-change-event
+          if (event.originalEvent) {
+            self._setPartialValue({ _number: ui.value });
+          }
+        }
+      }));
+    };
+
+    /**
+     * Extract first found unit from value
+     *
+     * @since   1.0.0
+     * @memberof! controls.Slider#
+     * @access protected
+     *
+     * @param  {?string} value
+     * @return {?string}
+     */
+    Slider.prototype._extractFirstUnit = function _extractFirstUnit (value) {
+      var valueOrigin = value || this.setting();
+      var matchesUnit = Regexes._extractUnit.exec(valueOrigin);
+      if (matchesUnit && matchesUnit[0]) {
+        return matchesUnit[0];
+      }
+      return null;
+    };
+
+    /**
+     * Extract first number found in value
+     *
+     * @since   1.0.0
+     * @memberof! controls.Slider#
+     * @access protected
+     *
+     * @param  {?string|number} value
+     * @return {?string}
+     */
+    Slider.prototype._extractFirstNumber = function _extractFirstNumber (value) {
+      var valueOrigin = value || this.setting();
+      var matchesNumber = Regexes._extractNumber.exec(valueOrigin);
+      if (matchesNumber && matchesNumber[0]) {
+        return matchesNumber[0];
+      }
+      return null;
+    };
+
+    /**
+     * Get current `setting` value from DOM or from given arg
+     *
+     * @since   1.0.0
+     * @memberof! controls.Slider#
+     * @access protected
+     *
+     * @param  {Object<string,string>} value An optional value formed as
+     *                                       `{ number: ?, unit: ? }`
+     * @return {string}
+     */
+    Slider.prototype._getValueFromUI = function _getValueFromUI (value) {
+      var output;
+
+      if (value && value._number) {
+        output = value._number.toString();
+      } else {
+        output = this.__inputNumber.value;
+      }
+      if (this.params['units']) {
+        if (value && value._unit) {
+          output += value._unit;
+        } else {
+          output += this.__$inputUnits.filter('.kkcp-current').val();
+        }
+      }
+      return output;
+    };
+
+    /**
+     * Update UI control
+     *
+     * Reflect a programmatic setting change on the UI.
+     *
+     * @since   1.0.0
+     * @memberof! controls.Slider#
+     * @access protected
+     *
+     * @param {?string} value Optional, the value from where to extract number and unit,
+     *                        uses `this.setting()` if a `null` value is passed.
+     */
+    Slider.prototype._updateUIcustomControl = function _updateUIcustomControl (value) {
+      var params = this.params;
+      var number$$1 = this._extractFirstNumber(value);
+      var unit = this._extractFirstUnit(value);
+
+      // update number input
+      this.__inputNumber.value = number$$1;
+      // update number slider
+      this.__$inputSlider.slider('value', number$$1);
+      // update unit picker
+      if (params['units']) {
+        this.__$inputUnits.removeClass('kkcp-current').filter(function () {
+          return this.value === unit;
+        }).addClass('kkcp-current');
+      }
+    };
+
+    /**
+     * Set partial value
+     *
+     * Wraps `setting.set()` with some additional stuff.
+     *
+     * @since   1.0.0
+     * @memberof! controls.Slider#
+     * @access protected
+     *
+     * @param  {string} value
+     * @param  {string} from  Where the value come from (could be from the UI:
+     *                        picker, dynamic fields, expr field) or from the
+     *                        API (on programmatic value change).
+     */
+    Slider.prototype._setPartialValue = function _setPartialValue (value, from) {
+      if (from === 'API') {
+        this._updateUIcustomControl(value);
+      } else {
+        this.setting.set(this._getValueFromUI(value));
+      }
+    };
+
+    return Slider;
+  }(Base$1));
+
+  wpApi.controlConstructor['kkcp_slider'] = api$1.controls.Slider = Slider;
+
+  /**
+   * Control Sortable
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_sortable`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Sortable
+   *
+   * @extends controls.BaseChoices
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var Sortable = (function (BaseChoices) {
+    function Sortable () {
+      BaseChoices.apply(this, arguments);
+    }
+
+    if ( BaseChoices ) Sortable.__proto__ = BaseChoices;
+    Sortable.prototype = Object.create( BaseChoices && BaseChoices.prototype );
+    Sortable.prototype.constructor = Sortable;
+
+    Sortable.prototype.validate = function validate (value) {
+      return Validate.multipleChoices({}, value, this.setting, this, true);
+    };
+
+    /**
+     * @override
+     */
+    Sortable.prototype.sanitize = function sanitize (value) {
+      return Sanitize.multipleChoices(value, this.setting, this, true);
+    };
+
+    /**
+     * @override
+     */
+    Sortable.prototype.syncUI = function syncUI (value) {
+      if (!_$1.isEqual(value, this.params.lastValue)) {
+        this._reorder();
+        this.params.lastValue = value;
+      }
+    };
+
+    /**
+     * @override
+     */
+    Sortable.prototype.ready = function ready () {
+      var setting = this.setting;
+      var container = this.container;
+
+      this._buildItemsMap();
+
+      this.params.lastValue = this.setting();
+
+      container.sortable({
+        items: '.kkcp-sortable',
+        cursor: 'move',
+        update: function () {
+          var newValue = container.sortable('toArray', { attribute: 'data-value' });
+          setting.set(newValue);
+        }
+      });
+    };
+
+    /**
+     * Build items map
+     *
+     * It creates a sortable items map, a key (grabbed from the `data-value`
+     * attribute) with the corresponding DOM element
+     *
+     * @since   1.0.0
+     * @memberof! controls.Sortable#
+     * @access protected
+     */
+    Sortable.prototype._buildItemsMap = function _buildItemsMap () {
+      var this$1 = this;
+
+      var items = this._container.getElementsByClassName('kkcp-sortable');
+      this.__itemsMap = {};
+
+      for (var i = 0, l = items.length; i < l; i++) {
+        var itemKey = items[i].getAttribute('data-value');
+        this$1.__itemsMap[itemKey] = {
+          _sortable: items[i]
+        };
+      }
+    };
+
+    /**
+     * Manually reorder the sortable list, needed when a programmatic change
+     * is triggered. Unfortunately jQuery UI sortable does not have a method
+     * to keep in sync the order of an array and its corresponding DOM.
+     *
+     * @since   1.0.0
+     * @memberof! controls.Sortable#
+     * @access protected
+     */
+    Sortable.prototype._reorder = function _reorder () {
+      var this$1 = this;
+
+      var value = this.setting();
+
+      if (!_$1.isArray(value)) {
+        return logError('controls.Sortable->_reorder', "setting.value must be an array");
+      }
+
+      for (var i = 0, l = value.length; i < l; i++) {
+        var itemValueAsKey = value[i];
+        var item = this$1.__itemsMap[itemValueAsKey];
+        if (item) {
+          var itemSortableDOM = item._sortable;
+          itemSortableDOM.parentNode.removeChild(itemSortableDOM);
+          this$1._container.appendChild(itemSortableDOM);
+        } else {
+          logError('controls.Sortable->_reorder', ("item '" + itemValueAsKey + "' has no '_sortable' DOM in 'this.__itemsMap'"));
+        }
+      }
+
+      this.container.sortable('refresh');
+    };
+
+    return Sortable;
+  }(BaseChoices$1));
+
+  wpApi.controlConstructor['kkcp_sortable'] = api$1.controls.Sortable = Sortable;
+
+  /**
+   * Control Tags class
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_tags`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Tags
+   *
+   * @extends controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var Tags = (function (Base) {
+    function Tags () {
+      Base.apply(this, arguments);
+    }
+
+    if ( Base ) Tags.__proto__ = Base;
+    Tags.prototype = Object.create( Base && Base.prototype );
+    Tags.prototype.constructor = Tags;
+
+    Tags.prototype.validate = function validate (value) {
+      return Validate.tags({}, value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Tags.prototype.sanitize = function sanitize (value) {
+      return Sanitize.tags(value, this.setting, this);
+    };
+
+    /**
+     * @override
+     */
+    Tags.prototype.onDeflate = function onDeflate () {
+      if (this.__input && this.__input.selectize) {
+        this.__input.selectize.destroy();
+      }
+    };
+
+    /**
+     * @override
+     */
+    Tags.prototype.syncUI = function syncUI (value) {
+      var selectize = this.__input.selectize;
+
+      if (selectize && selectize.getValue() !== value) {
+        // this is due to a bug, we should use:
+        // selectize.setValue(value, true);
+        // @see https://github.com/brianreavis/selectize.js/issues/568
+        // instead here first we have to destroy thene to reinitialize, this
+        // happens only through a programmatic change such as a reset action
+        selectize.destroy();
+        this._initUI(value);
+      }
+    };
+
+    /**
+     * @override
+     */
+    Tags.prototype.ready = function ready () {
+      this.__input = this._container.getElementsByTagName('input')[0];
+
+      this._initUI(this.setting());
+    };
+
+    /**
+     * Init select plugin on text input
+     *
+     * @since   1.0.0
+     * @memberof! controls.Tags#
+     * @access protected
+     *
+     * @param {string} value
+     */
+    Tags.prototype._initUI = function _initUI (value) {
+      var this$1 = this;
+
+      var attrs = this.params['attrs'] || {};
+
+      var pluginOptions = {
+        plugins: [],
+        persist: false,
+        create: function (input) {
+          return {
+            value: input,
+            text: input
+          };
+        },
+        onChange: function (value) {
+          this$1.setting.set(value);
+        }
+      };
+
+      if (attrs['persist']) {
+        pluginOptions.persist = true;
+      }
+      if (attrs['removable']) {
+        pluginOptions.plugins.push('remove_button');
+      }
+      if (attrs['draggable']) {
+        pluginOptions.plugins.push('drag_drop');
+      }
+      if (attrs['restore_on_backspace']) {
+        pluginOptions.plugins.push('restore_on_backspace');
+      }
+
+      $$1(this.__input).selectize(pluginOptions);
+      this.__input.selectize.setValue(value);
+    };
+
+    return Tags;
+  }(Base$1));
+
+  wpApi.controlConstructor['kkcp_tags'] = api$1.controls.Tags = Tags;
 
   /**
    * Control Textarea class
    *
-   * @class wp.customize.controlConstructor.kkcp_textarea
-   * @constructor
-   * @extends api.controls.Base
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_textarea`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Textarea
+   *
+   * @extends controls.Text
+   * @augments controls.BaseInput
+   * @augments controls.Base
    * @augments wp.customize.Control
    * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
    * @requires tinyMCE
    */
-  var Control$17 = api.controls.Base.extend({
-    /**
-     * @override
-     */
-    sanitize: function (newValue) {
-      if (!this.params.allowHTML && !this.params.wp_editor) {
-        return _.escape(newValue);
-      } else {
-        return newValue;
-      }
-    },
-    /**
-     * @override
-     */
-    validate: function (newValue) {
-      // @@todo block here if it contains html, otherwise the textarea get crazy
-      // escaping it while you type \\
-      if (_.isString(newValue)) {
-        return newValue;
-      } else {
-        return { error: true };
-      }
-    },
-    /**
-     * @override
-     */
-    onInit: function () {
+  var Textarea = (function (Text) {
+    function Textarea () {
+      Text.apply(this, arguments);
+    }
+
+    if ( Text ) Textarea.__proto__ = Text;
+    Textarea.prototype = Object.create( Text && Text.prototype );
+    Textarea.prototype.constructor = Textarea;
+
+    Textarea.prototype.onInit = function onInit () {
       if (this.params.wp_editor) {
         this._wpEditorID = this._getWpEditorId();
       }
-    },
+    };
+
     /**
      * Destroy tinyMCE instance
+     *
      * @override
      */
-    onDeflate: function () {
+    Textarea.prototype.onDeflate = function onDeflate () {
       if (this.params.wp_editor) {
         // it might be that this method is called too soon, even before tinyMCE
         // has been loaded, so try it and don't break.
@@ -13479,11 +15408,12 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
           }
         } catch(e) {}
       }
-    },
+    };
+
     /**
      * @override
      */
-    syncUI: function (value) {
+    Textarea.prototype.syncUI = function syncUI (value) {
       var lastValue;
       var wpEditorInstance;
       if (this.params.wp_editor) {
@@ -13494,23 +15424,18 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         lastValue = this.__textarea.value;
       }
       if (value && lastValue !== value) {
-        // additional check to prevent the textarea content to be escaped
-        // while you type if html is not allowed
-        if (!this.params.allowHTML && !this.params.wp_editor
-            && _.escape(lastValue) === value) {
-          return;
-        }
         if (this.params.wp_editor) {
           wpEditorInstance.setContent(value);
         } else {
           this.__textarea.value = value;
         }
       }
-    },
+    };
+
     /**
      * @override
      */
-    ready: function () {
+    Textarea.prototype.ready = function ready () {
       this.__textarea = this._container.getElementsByTagName('textarea')[0];
 
       // params.wp_editor can be either a boolean or an object with options
@@ -13519,27 +15444,38 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       } else {
         this._syncAndListen();
       }
-    },
+    };
+
     /**
      * Get textarea id, add a suffix and replace dashes with underscores
      * as suggested by WordPress Codex.
      *
      * @see https://codex.wordpress.org/Function_Reference/wp_editor -> $editor_id
+     *
+     * @since   1.0.0
+     * @memberof! controls.Textarea#
+     * @access protected
      */
-    _getWpEditorId: function () {
+    Textarea.prototype._getWpEditorId = function _getWpEditorId () {
       return ((this.id.replace(/-/g, '_')) + "__textarea");
-    },
+    };
+
     /**
      * Sync textarea and listen for changes
+     *
+     * @since   1.0.0
+     * @memberof! controls.Textarea#
+     * @access protected
      */
-    _syncAndListen: function () {
+    Textarea.prototype._syncAndListen = function _syncAndListen () {
       var self = this;
-      $(self.__textarea)
+      $$1(self.__textarea)
         .val(self.setting())
         .on('change keyup paste', function () {
           self.setting.set(this.value);
         });
-    },
+    };
+
     /**
      * Maybe init wp_editor.
      *
@@ -13552,18 +15488,22 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * later on). Once loaded the response (with the needed scripts) is
      * prepended to the body and we get rid of the doubled `dashicons-css`
      * included in the response, which creates layout problems.
+     *
+     * @since   1.0.0
+     * @memberof! controls.Textarea#
+     * @access protected
      */
-    _initWpEditor: function () {
+    Textarea.prototype._initWpEditor = function _initWpEditor () {
       // dynamically set id on textarea, then use it as a target for wp_editor
       this.__textarea.id = this._wpEditorID;
 
       var setting = this.setting;
 
       // get wp_editor custom options defined by the developer through the php API
-      var optionsCustom = _.isObject(this.params.wp_editor) ? this.params.wp_editor : {};
+      var optionsCustom = _$1.isObject(this.params.wp_editor) ? this.params.wp_editor : {};
 
       // set default options
-      var optionsDefaults = $.extend(true, {}, window$1.wp.editor.getDefaultSettings(), {
+      var optionsDefaults = $$1.extend(true, {}, window$1.wp.editor.getDefaultSettings(), {
         teeny: true,
         mediaButtons: false,
       });
@@ -13572,7 +15512,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       // setup callback with our bindings to the WordPRess customize API)
       // in this way we make sure the required options can't be overwritten
       // by developers when declaring wp_editor support through an array of opts
-      var options = $.extend(true, optionsDefaults, optionsCustom, {
+      var options = $$1.extend(true, optionsDefaults, optionsCustom, {
         // elements: this.__textarea.id,
         tinymce: {
           target: this.__textarea,
@@ -13595,55 +15535,156 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       window$1.wp.editor.initialize(this._wpEditorID, options);
 
       this._wpEditorIsActive = true;
-    }
-  });
+    };
 
-  wpApi.controlConstructor['kkcp_textarea'] = api.controls.Textarea = Control$17;
+    return Textarea;
+  }(Text$1));
+
+  wpApi.controlConstructor['kkcp_textarea'] = api$1.controls.Textarea = Textarea;
 
   /**
    * Control Toggle
    *
-   * @class wp.customize.controlConstructor.kkcp_toggle
-   * @constructor
-   * @extends api.controls.Checkbox
-   * @augments wp.customize.Base
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_toggle`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Toggle
+   *
+   * @extends controls.Checkbox
+   * @augments controls.Base
    * @augments wp.customize.Control
    * @augments wp.customize.Class
    */
-  var Control$18 = ControlCheckbox;
+  var Toggle = (function (Checkbox) {
+  	function Toggle () {
+  		Checkbox.apply(this, arguments);
+  	}if ( Checkbox ) Toggle.__proto__ = Checkbox;
+  	Toggle.prototype = Object.create( Checkbox && Checkbox.prototype );
+  	Toggle.prototype.constructor = Toggle;
 
-  wpApi.controlConstructor['kkcp_toggle'] = api.controls.Toggle = Control$18;
+  	
+
+  	return Toggle;
+  }(Checkbox$1));
+
+  wpApi.controlConstructor['kkcp_toggle'] = api$1.controls.Toggle = Toggle;
 
   /**
-   * Temp
+   * Setting Base class
    *
-   * Temporary js to inject
+   * Accessible globally on `wp.customize.settingConstructor.kkcp_base`
+   *
+   * @see PHP class KKcp_Customize_Setting_Base
+   * @since  1.0.0
+   *
+   * @memberof settings
+   * @class Base
+   *
+   * @extends wp.customize.Setting
+   * @augments wp.customize.Value
+   * @augments wp.customize.Class
    */
-  // if (DEBUG) {
-  //   wpApi.bind('ready', function() {
-  //     console.log('wp API ready', this, arguments);
-  //   });
-  //   wpApi.bind('save', function() {
-  //     console.log('wp API saving ...', this, arguments);
-  //   });
-  //   wpApi.bind('saved', function() {
-  //     console.log('wp API saved !', this, arguments);
-  //   });
-  //   wpApi.bind('activated', function() {
-  //     console.log('wp API activated ????', this, arguments);
-  //   });
-  //   wpApi.previewer.bind('url', function () {
-  //     console.log("wpApi.previewer.bind('url'", this, arguments);
-  //   });
-  // }
+  var Base$2 = wpApi.Setting.extend({
+    /**
+     * {@inheritDoc}. Add the initial and lastSave values for reset value actions.
+     * The `factory` value is added in the PHP Setting class constructor.
+     *
+     * @memberof! settings.Base#
+     *
+     * @since 1.0.0
+     * @override
+     */
+    initialize: function( id, value, options ) {
+      wpApi.Setting.prototype.initialize.call(this, id, value, options);
 
+      // we need to grab this manually because the json data of a setting class is
+      // not passed over in its entirety to the JavaScript constructor, only
+      // `transport`, `previewer` and `dirty` are given as argument when WordPress
+      // create Settings in `customize-controls.js`#7836
+      var data = wpApi.settings.settings[id];
+      if (data) {
+        this.vFactory = data['default'];
+      }
+      this.vInitial = this();
+      this.vLastSaved = this.vInitial;
+    },
+    /**
+     * {@inheritDoc}. Sanitize value before sending it to the preview via
+     * `postMessage`.
+     *
+     * @memberof! settings.Base#
+     *
+     * @since 1.0.0
+     * @override
+     */
+    preview: function() {
+      var setting = this, transport;
+      transport = setting.transport;
 
-  // // from: https://make.wordpress.org/core/2014/10/27/toward-a-complete-javascript-api-for-the-customizer/
-  // wpApi.section.each(function ( section ) {
-  //   if ( ! section.panel() ) {
-  //     section.expand({ allowMultiple: true });
-  //   }
-  // });
-  //
+      if ( 'postMessage' === transport && ! wpApi.state( 'previewerAlive' ).get() ) {
+        transport = 'refresh';
+      }
 
-}(jQuery,marked,hljs,window,document,_,wp,kkcp,Modernizr));
+      if ( 'postMessage' === transport ) {
+        // we just add here a sanitization method
+        setting.previewer.send( 'setting', [ setting.id, this.sanitize(setting()) ] );
+      } else if ( 'refresh' === transport ) {
+        setting.previewer.refresh();
+      }
+    },
+    /**
+     * Sanitize setting
+     *
+     * This is here to allow controls to define a sanitization method before then
+     * the setting value is sent to the preview via `postMessage`
+     *
+     * @memberof! settings.Base#
+     *
+     * @abstract
+     * @param  {mixed} value
+     * @return {mixed}
+     */
+    sanitize: function (value) {
+      return value;
+    },
+    /**
+     * Force `set`.
+     *
+     * Use case:
+     * When a required text control content gets deleted by the user,
+     * the extras dropdown shows the reset buttons enabled but clicking on any
+     * of them doesn't give any effect in the UI. Why? Because when the input
+     * field gets emptied the validate function set the setting to the last
+     * value using `return this.setting()`, this returning value it is likely
+     * to be the same as the initial session or the factory value, therefore
+     * before and after the user has clicked the reset button the value of the
+     * setting could stay the same. Despite this make sense, the input field
+     * gets out of sync, it becomes empty, while the setting value remains the
+     * latest valid value).
+     * The callback that should be called on reset (the `syncUI` method)
+     * in this scenario doesn't get called because in the WordPress
+     * `customize-base.js#187` there is a check that return the function if the
+     * setting has been set with the same value as the last one, preventing so
+     * to fire the callbacks binded to the setting and, with these, also our
+     * `syncUIfromAPI` that would update the UI, that is our input field with
+     * the resetted value. To overcome this problem we can force the setting to
+     * set anyway by temporarily set the private property `_value` to a dummy
+     * value and then re-setting the setting to the desired value, in this way
+     * the callbacks are fired and the UI get back in sync.
+     *
+     * @memberof! settings.Base#
+     *
+     * @param  {WP_Customize_Setting} setting
+     * @param  {string} value
+     */
+    forceSet: function forceSet (value, dummyValue) {
+      this['_value'] = dummyValue || 'dummy'; // whitelisted from uglify \\
+      this.set(value);
+    }
+  });
+
+  wpApi.settingConstructor['kkcp_base'] = api$1.settings.Base = Base$2;
+
+}(window,document,jQuery,_,wp,kkcp,marked,hljs,Modernizr));

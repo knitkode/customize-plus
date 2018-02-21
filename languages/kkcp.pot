@@ -1,513 +1,499 @@
-# Copyright (C) 2017 KnitKode
-# This file is distributed under the GPLv2 or later (license.txt).
+# Copyright (C) 2018 customize-plus
+# This file is distributed under the same license as the customize-plus package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Customize Plus 1.0.0\n"
-"Report-Msgid-Bugs-To: https://github.com/knitkode/customize-plus/issues\n"
-"POT-Creation-Date: 2017-12-29 15:12:57+00:00\n"
+"Project-Id-Version: customize-plus\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <dev@knitkode.com>\n"
-"X-Generator: grunt-wp-i18n 0.4.9\n"
-"X-Poedit-KeywordsList: "
-"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
-"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
-"Language: en\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Country: United States\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Basepath: ../\n"
+"Report-Msgid-Bugs-To: https://github.com/knitkode/customize-plus/issues\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Poedit-Bookmarks: \n"
-"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: includes/class-admin-about.php:42 includes/class-core.php:67
+#: includes/class-admin-about.php:44, includes/class-core.php:64
 msgid "About"
 msgstr ""
 
-#: includes/class-admin-about.php:77
+#: includes/class-admin-about.php:79
 msgid "Enhance and extend the WordPress Customize."
 msgstr ""
 
-#: includes/class-admin-about.php:79 includes/class-core.php:82
+#: includes/class-admin-about.php:81
 msgid "Project homepage"
 msgstr ""
 
-#: includes/class-admin-about.php:80
+#: includes/class-admin-about.php:82
 msgid "Documentation"
 msgstr ""
 
-#: includes/class-admin-about.php:81 includes/class-core.php:83
+#: includes/class-admin-about.php:83
 msgid "Support"
 msgstr ""
 
-#: includes/class-admin-about.php:82 includes/class-core.php:84
+#: includes/class-admin-about.php:84
 msgid "Changelog"
 msgstr ""
 
-#: includes/class-admin-about.php:83
+#: includes/class-admin-about.php:85
 msgid "View on GitHub"
 msgstr ""
 
-#: includes/class-admin-about.php:92
-msgid "Plugin features"
+#: includes/class-admin-about.php:94
+msgid "Features coming soon"
 msgstr ""
 
-#: includes/class-admin-about.php:95
-msgid "Fully integrated in WordPress"
-msgstr ""
-
-#: includes/class-admin-about.php:96
-msgid ""
-"The code, the admin UI and the API totally looks like WordPress, as it "
-"should be."
-msgstr ""
-
-#: includes/class-admin-about.php:99
-msgid "Powerful Custom Controls"
-msgstr ""
-
-#: includes/class-admin-about.php:100
-msgid ""
-"Customize Plus extend the WordPress API to create all the controls you need "
-"leveraging the JavaScript API. All the theme_mods or options managed by "
-"Customize Plus controls are automatically validated and sanitized. You do "
-"not even need to define the fallback value when retrieving them."
-msgstr ""
-
-#: includes/class-admin-about.php:100 includes/class-admin-about.php:108
-#: includes/class-admin-about.php:119
-msgid "Learn more"
-msgstr ""
-
-#: includes/class-admin-about.php:103
-msgid "Reset control values"
-msgstr ""
-
-#: includes/class-admin-about.php:104
-msgid ""
-"Users will be able to reset the control values to the initial session or "
-"factory value"
-msgstr ""
-
-#: includes/class-admin-about.php:107
-msgid "Documented API"
-msgstr ""
-
-#: includes/class-admin-about.php:108
-msgid "The documentation makes use of JSdocs and phpdocs."
-msgstr ""
-
-#: includes/class-admin-about.php:112
-msgid "Coming soon"
-msgstr ""
-
-#: includes/class-admin-about.php:114
+#: includes/class-admin-about.php:97
 msgid "Controls, controls and controls"
 msgstr ""
 
-#: includes/class-admin-about.php:115
+#: includes/class-admin-about.php:98
 msgid "We'll keep adding controls both to the free and premium version."
 msgstr ""
 
-#: includes/class-admin-about.php:115
+#: includes/class-admin-about.php:98
 msgid "Roadmap"
 msgstr ""
 
-#: includes/class-admin-about.php:118
+#: includes/class-admin-about.php:101
 msgid "Instant Controls Search"
 msgstr ""
 
-#: includes/class-admin-about.php:118 includes/class-admin-about.php:122
-#: includes/class-admin-about.php:126 includes/class-admin-about.php:130
-#: includes/class-admin-about.php:134
+#: includes/class-admin-about.php:101, includes/class-admin-about.php:105, includes/class-admin-about.php:109, includes/class-admin-about.php:113, includes/class-admin-about.php:117
 msgid "Premium"
 msgstr ""
 
-#: includes/class-admin-about.php:119
-msgid ""
-"Use the javascript search engine lunr.js to instantly find the control you "
-"need."
+#: includes/class-admin-about.php:102
+msgid "Use the javascript search engine lunr.js to instantly find the control you need."
 msgstr ""
 
-#: includes/class-admin-about.php:122
-msgid "Explanatory guides"
+#: includes/class-admin-about.php:102
+msgid "Learn more"
 msgstr ""
 
-#: includes/class-admin-about.php:123
+#: includes/class-admin-about.php:105
+msgid "Explanatory info popovers"
+msgstr ""
+
+#: includes/class-admin-about.php:106
 msgid "Show users some help or extra information for each control."
 msgstr ""
 
-#: includes/class-admin-about.php:126
+#: includes/class-admin-about.php:109
 msgid "Live Less Compiler"
 msgstr ""
 
-#: includes/class-admin-about.php:127
+#: includes/class-admin-about.php:110
 msgid "Use the power of less.js to "
 msgstr ""
 
-#: includes/class-admin-about.php:130
+#: includes/class-admin-about.php:113
 msgid "Hide & Show controls"
 msgstr ""
 
-#: includes/class-admin-about.php:131
-msgid ""
-"If your product has a lot of options you will be able to hide them. And in "
-"case, to show them again."
+#: includes/class-admin-about.php:114
+msgid "If your product has a lot of options you will be able to hide them. And in case, to show them again."
 msgstr ""
 
-#: includes/class-admin-about.php:134
+#: includes/class-admin-about.php:117
 msgid "Responsive screen Previews"
 msgstr ""
 
-#: includes/class-admin-about.php:135
+#: includes/class-admin-about.php:118
 msgid "Preview and test your website responsiveness on different screen sizes."
 msgstr ""
 
-#. Description of the plugin/theme
+#: includes/class-admin.php:109, includes/class-admin.php:110, includes/class-admin.php:122
+msgid "Customize Plus"
+msgstr ""
+
+#: includes/class-admin.php:171
+msgid "$active_tab"
+msgstr ""
+
+#: includes/class-admin.php:175
+msgid "$active_class"
+msgstr ""
+
+#: includes/class-admin.php:175, includes/class-requirements.php:149, includes/class-requirements.php:149
+msgstr ""
+
+#: includes/class-core.php:27
 msgid "Enhance and extend the WordPress Customizer."
 msgstr ""
 
-#: includes/class-customize.php:248
+#: includes/class-customize.php:276
 msgid "Welcome to %s"
 msgstr ""
 
-#: includes/class-customize.php:249
+#: includes/class-customize.php:277
 msgid "Back"
 msgstr ""
 
-#: includes/class-customize.php:251
+#: includes/class-customize.php:279
 msgid "Tools"
 msgstr ""
 
-#: includes/class-customize.php:252
+#: includes/class-customize.php:280
 msgid "A value is required"
 msgstr ""
 
-#: includes/class-customize.php:253
+#: includes/class-customize.php:281
 msgid "Invalid value"
 msgstr ""
 
-#: includes/class-customize.php:323
+#: includes/class-customize.php:351
 msgid "Import done"
 msgstr ""
 
-#: includes/class-customize.php:324
+#: includes/class-customize.php:352
 msgid "All options have been succesfully imported and saved"
 msgstr ""
 
-#: includes/class-customize.php:331
+#: includes/class-customize.php:359
 msgid "Loading preview..."
 msgstr ""
 
-#: includes/class-customize.php:341
+#: includes/class-customize.php:369
 msgid "Loading ..."
 msgstr ""
 
-#: includes/class-customize.php:465
+#: includes/class-customize.php:513
 msgid "Customize Plus: missing class %s for panel type %s."
 msgstr ""
 
-#: includes/class-customize.php:542
+#: includes/class-customize.php:590
 msgid "Customize Plus: missing class %s for section type %s."
 msgstr ""
 
-#: includes/class-customize.php:653
+#: includes/class-customize.php:703
+msgid "Customize Plus: missing class %s for setting type %s."
+msgstr ""
+
+#: includes/class-customize.php:728
 msgid "Customize Plus: missing class %s for control type %s."
 msgstr ""
 
-#: includes/class-requirements.php:90
-msgid ""
-"<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible "
-"with your PHP version (%s).<br />Reccomended PHP version &ndash; %s (or "
-"higher).</p><a href=\"%s\">&larr; Return to the plugins screen</a>"
-msgstr ""
-
-#: includes/class-requirements.php:107
-msgid ""
-"<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible "
-"with your version of WordPress (%s).<br />Reccomended WordPress version "
-"&ndash; %s (or higher).</p><a href=\"%s\">&larr; Return to the plugins "
-"screen</a> <a href=\"%s\"%s>Continue and activate anyway &rarr;</a>"
-msgstr ""
-
-#: includes/class-sanitize.php:599
-msgid "Customize Plus | API error: value %s must be numeric or null."
-msgstr ""
-
-#: includes/class-sanitize.php:618
-msgid "Customize Plus | API error: value %s must be a integer."
-msgstr ""
-
-#: includes/class-sanitize.php:634
-msgid "Customize Plus | API error: value %1$s must be one of %2$s."
-msgstr ""
-
-#: includes/class-sanitize.php:649
-msgid "Customize Plus | API error: value %s must be a boolean."
-msgstr ""
-
-#: includes/class-sanitize.php:664
-msgid "Customize Plus | API error: value %s must be a string."
-msgstr ""
-
-#: includes/class-theme.php:174
-#. translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code)
-msgid "%1$s no %2$s given."
-msgstr ""
-
-#: includes/class-theme.php:182 includes/class-theme.php:195
-#. translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code)
-msgid "%1$s %2$s must be an array."
-msgstr ""
-
-#: includes/class-theme.php:186
-#. translators: %1$s is 'Plugin_Name: ', %2$s is the object (code)
-msgid "%1$s no %2$s array given."
-msgstr ""
-
-#: includes/class-theme.php:280
-#. translators: %1$s is 'Plugin_Name: ', %2$s and %3$s pieces of code
-msgid "%1$s %2$s root components need a %3$s value."
-msgstr ""
-
-#: includes/class-theme.php:321
-#. translators: %1$s is 'Plugin_Name: ', %2$s is the type of value (code)
-msgid "%1$s every setting must have a %2$s value."
-msgstr ""
-
-#: includes/class-validate.php:31
-msgid "The value should be a list."
-msgstr ""
-
-#: includes/class-validate.php:35
-msgid "The value %s is not a choice."
-msgstr ""
-
-#: includes/class-validate.php:55
-msgid "The value is not an allowed choice."
-msgstr ""
-
-#: includes/controls/base.php:279 includes/customize-classes.php:300
-msgid "Click to show some help"
-msgstr ""
-
-#: includes/controls/base.php:311 includes/customize-classes.php:332
-msgid "Reset to last saved value"
-msgstr ""
-
-#: includes/controls/base.php:312 includes/customize-classes.php:333
-msgid "Reset to initial session value"
-msgstr ""
-
-#: includes/controls/base.php:313 includes/customize-classes.php:334
-msgid "Reset to factory value"
-msgstr ""
-
-#: includes/controls/base.php:399 includes/customize-classes.php:420
-msgid "You must supply a value."
-msgstr ""
-
-#: includes/controls/checkbox.php:78 includes/customize-classes.php:792
-msgid "The checkbox should be either checked or unchecked."
-msgstr ""
-
-#: includes/controls/color.php:85 includes/customize-classes.php:886
-msgid "Cancel"
-msgstr ""
-
-#: includes/controls/color.php:86 includes/customize-classes.php:887
-msgid "Choose"
-msgstr ""
-
-#: includes/controls/color.php:87 includes/customize-classes.php:888
-msgid "Clear selection"
-msgstr ""
-
-#: includes/controls/color.php:88 includes/customize-classes.php:889
-msgid "No color selected"
-msgstr ""
-
-#: includes/controls/color.php:89 includes/customize-classes.php:890
-msgid "Show color picker"
-msgstr ""
-
-#: includes/controls/color.php:90 includes/customize-classes.php:891
-msgid "Hide color picker"
-msgstr ""
-
-#: includes/controls/color.php:91 includes/customize-classes.php:892
-msgid "Color not in the allowed palette."
-msgstr ""
-
-#: includes/controls/color.php:132 includes/customize-classes.php:933
-msgid "Select Color"
-msgstr ""
-
-#: includes/controls/color.php:198 includes/customize-classes.php:999
-msgid "The color is not in the palette."
-msgstr ""
-
-#: includes/controls/color.php:202 includes/customize-classes.php:1003
-msgid "Transparent is not allowed for this setting."
-msgstr ""
-
-#: includes/controls/color.php:205 includes/customize-classes.php:1006
-msgid "RGBA color is not allowed for this setting."
-msgstr ""
-
-#: includes/controls/font-family.php:91 includes/customize-classes.php:1188
-msgid "Enable Google fonts"
-msgstr ""
-
-#: includes/controls/icon.php:73 includes/customize-classes.php:1284
+#: includes/class-data.php:270
 msgid "Admin Menu"
 msgstr ""
 
-#: includes/controls/icon.php:98 includes/customize-classes.php:1309
+#: includes/class-data.php:295
 msgid "Welcome Screen"
 msgstr ""
 
-#: includes/controls/icon.php:109 includes/customize-classes.php:1320
+#: includes/class-data.php:306
 msgid "Post Formats"
 msgstr ""
 
-#: includes/controls/icon.php:128 includes/customize-classes.php:1339
+#: includes/class-data.php:325
 msgid "Media"
 msgstr ""
 
-#: includes/controls/icon.php:153 includes/customize-classes.php:1364
+#: includes/class-data.php:350
 msgid "Image Editing"
 msgstr ""
 
-#: includes/controls/icon.php:167 includes/customize-classes.php:1378
+#: includes/class-data.php:364
 msgid "Tinymce"
 msgstr ""
 
-#: includes/controls/icon.php:203 includes/customize-classes.php:1414
+#: includes/class-data.php:400
 msgid "Posts"
 msgstr ""
 
-#: includes/controls/icon.php:222 includes/customize-classes.php:1433
+#: includes/class-data.php:419
 msgid "Sorting"
 msgstr ""
 
-#: includes/controls/icon.php:246 includes/customize-classes.php:1457
+#: includes/class-data.php:443
 msgid "Social"
 msgstr ""
 
-#: includes/controls/icon.php:262 includes/customize-classes.php:1473
+#: includes/class-data.php:459
 msgid "Wordpress Org"
 msgstr ""
 
-#: includes/controls/icon.php:279 includes/customize-classes.php:1490
+#: includes/class-data.php:476
 msgid "Products"
 msgstr ""
 
-#: includes/controls/icon.php:294 includes/customize-classes.php:1505
+#: includes/class-data.php:491
 msgid "Taxonomies"
 msgstr ""
 
-#: includes/controls/icon.php:301 includes/customize-classes.php:1512
+#: includes/class-data.php:498
 msgid "Widgets"
 msgstr ""
 
-#: includes/controls/icon.php:309 includes/customize-classes.php:1520
+#: includes/class-data.php:506
 msgid "Notifications"
 msgstr ""
 
-#: includes/controls/icon.php:327 includes/customize-classes.php:1538
+#: includes/class-data.php:524
 msgid "Misc"
 msgstr ""
 
-#: includes/controls/number.php:55 includes/customize-classes.php:1858
-msgid "The value is not a number."
+#: includes/class-requirements.php:93
+msgid "<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your PHP version (%s).<br />Reccomended PHP version &ndash; %s (or higher).</p><a href=\"%s\">&larr; Return to the plugins screen</a>"
 msgstr ""
 
-#: includes/controls/number.php:56 includes/customize-classes.php:1859
-msgid "The value must be an integer, not a float."
+#: includes/class-requirements.php:110
+msgid "<h1>Oops! Plugin not activated&hellip;</h1><p>%s is not fully compatible with your version of WordPress (%s).<br />Reccomended WordPress version &ndash; %s (or higher).</p><a href=\"%s\">&larr; Return to the plugins screen</a> <a href=\"%s\"%s>Continue and activate anyway &rarr;</a>"
 msgstr ""
 
-#: includes/controls/number.php:57 includes/customize-classes.php:1860
-msgid "The value must be an integer number."
+#: includes/class-sanitizejs.php:78
+msgid "Customize Plus | API error: a sanitizer function must be specified for %s"
 msgstr ""
 
-#: includes/controls/number.php:58 includes/customize-classes.php:1861
-msgid "The number must be higher than %s."
+#: includes/class-sanitizejs.php:165
+msgid "Customize Plus | API error: value %s must be a number."
 msgstr ""
 
-#: includes/controls/number.php:59 includes/customize-classes.php:1862
-msgid "The number must be lower than %s."
+#: includes/class-sanitizejs.php:188
+msgid "Customize Plus | API error: value %s must be a integer."
 msgstr ""
 
-#: includes/controls/number.php:60 includes/customize-classes.php:1863
-msgid "The value must be a multiple of %s."
+#: includes/class-sanitizejs.php:208, includes/class-sanitizejs.php:215
+msgid "Customize Plus | API error: value %1$s must be one of %2$s."
 msgstr ""
 
-#: includes/controls/number.php:97 includes/customize-classes.php:1900
-msgid "The value must be a number."
+#: includes/class-sanitizejs.php:241
+msgid "Customize Plus | API error: value %s must be an array."
 msgstr ""
 
-#: includes/controls/number.php:101 includes/customize-classes.php:1904
-msgid "The number can not be a float."
+#: includes/class-sanitizejs.php:259
+msgid "Customize Plus | API error: value %s must be a boolean."
 msgstr ""
 
-#: includes/controls/number.php:109 includes/customize-classes.php:1912
-msgid "The number must be a multiple of %s."
+#: includes/class-sanitizejs.php:277
+msgid "Customize Plus | API error: value %s must be a string."
 msgstr ""
 
-#: includes/controls/number.php:113 includes/customize-classes.php:1916
-msgid "The number must be a higher than %s."
+#: includes/class-sanitizejs.php:296
+msgid "Customize Plus | API error: value must be one of: %s"
 msgstr ""
 
-#: includes/controls/number.php:117 includes/customize-classes.php:1920
-msgid "The number must be a lower than %s."
+#. translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code)
+#: includes/class-theme.php:194
+msgid "%1$s no %2$s given."
 msgstr ""
 
-#: includes/controls/select.php:150 includes/customize-classes.php:2175
-msgid "The value must be a string or a JSONified string."
+#. translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code)
+#: includes/class-theme.php:202, includes/class-theme.php:232
+msgid "%1$s %2$s must be an array."
 msgstr ""
 
-#: includes/controls/select.php:158 includes/customize-classes.php:2183
-msgid "The value %s is not selectable."
+#. translators: %1$s is 'Plugin_Name: ', %2$s is the object (code)
+#: includes/class-theme.php:206
+msgid "%1$s no %2$s array given."
 msgstr ""
 
-#: includes/controls/select.php:162 includes/customize-classes.php:2187
-msgid "The value %s must be a well formed array."
+#. translators: %1$s is 'Plugin_Name: ', %2$s and %3$s pieces of code
+#: includes/class-theme.php:305
+msgid "%1$s %2$s root components need a %3$s value."
 msgstr ""
 
-#: includes/controls/select.php:166 includes/customize-classes.php:2191
-msgid "The value %s is not an allowed selection."
+#. translators: %1$s is 'Plugin_Name: ', %2$s is the type of value (code)
+#: includes/class-theme.php:347
+msgid "%1$s every setting must have a %2$s value."
 msgstr ""
 
-#: includes/controls/slider.php:115 includes/customize-classes.php:2387
-msgid "The CSS unit is invalid."
+#: includes/customize-classes.php:424
+msgid "Click to expand"
 msgstr ""
 
-#: includes/controls/slider.php:162 includes/customize-classes.php:2434
-msgid "A unit must be specified."
+#: includes/customize-classes.php:456
+msgid "Reset to last saved value"
 msgstr ""
 
-#: includes/controls/text.php:34 includes/customize-classes.php:2690
-msgid "The value is too long."
+#: includes/customize-classes.php:457
+msgid "Reset to initial session value"
 msgstr ""
 
-#: includes/controls/text.php:35 includes/customize-classes.php:2691
-msgid "Invalid url."
+#: includes/customize-classes.php:458
+msgid "Reset to factory value"
 msgstr ""
 
-#: includes/controls/text.php:36 includes/controls/text.php:97
-#: includes/customize-classes.php:2692 includes/customize-classes.php:2753
-msgid "Invalid email."
+#: includes/customize-classes.php:735
+msgid "It must be a list of values"
 msgstr ""
 
-#: includes/controls/text.php:93 includes/customize-classes.php:2749
-msgid "Invalid URL."
+#: includes/customize-classes.php:736
+msgid "**%s** is not an allowed choice"
 msgstr ""
 
-#: includes/controls/text.php:101 includes/customize-classes.php:2757
-msgid "The text must be shorter than %s."
+#: includes/customize-classes.php:737
+msgid "It must contain exactly **%s** values"
+msgstr ""
+
+#: includes/customize-classes.php:738
+msgid "It must contain minimum **%s** values"
+msgstr ""
+
+#: includes/customize-classes.php:739
+msgid "It must contain maximum **%s** values"
+msgstr ""
+
+#: includes/customize-classes.php:1071
+msgid "Customize Plus | API error: set %s must follow the `set` strucure with values in `values` array."
+msgstr ""
+
+#: includes/customize-classes.php:1308
+msgid "It must be either checked or unchecked"
+msgstr ""
+
+#: includes/customize-classes.php:1473
+msgid "Cancel"
+msgstr ""
+
+#: includes/customize-classes.php:1474
+msgid "Choose"
+msgstr ""
+
+#: includes/customize-classes.php:1475
+msgid "Clear selection"
+msgstr ""
+
+#: includes/customize-classes.php:1476
+msgid "No color selected"
+msgstr ""
+
+#: includes/customize-classes.php:1477
+msgid "Show color picker"
+msgstr ""
+
+#: includes/customize-classes.php:1478
+msgid "Hide color picker"
+msgstr ""
+
+#: includes/customize-classes.php:1479
+msgid "Colors must be strings"
+msgstr ""
+
+#: includes/customize-classes.php:1480
+msgid "Color not in the allowed palette"
+msgstr ""
+
+#: includes/customize-classes.php:1481
+msgid "Transparent is not allowed"
+msgstr ""
+
+#: includes/customize-classes.php:1482
+msgid "RGBA color is not allowed"
+msgstr ""
+
+#: includes/customize-classes.php:1483
+msgid "Not a valid color"
+msgstr ""
+
+#: includes/customize-classes.php:1519
+msgid "Select Color"
+msgstr ""
+
+#: includes/customize-classes.php:1838, includes/customize-classes.php:1838
+msgid "Search icon by name..."
+msgstr ""
+
+#: includes/customize-classes.php:2028
+msgid "It must be a number"
+msgstr ""
+
+#: includes/customize-classes.php:2029
+msgid "It must be an integer, not a float"
+msgstr ""
+
+#: includes/customize-classes.php:2030
+msgid "It must be an integer number"
+msgstr ""
+
+#: includes/customize-classes.php:2031
+msgid "It must be a multiple of **%s**"
+msgstr ""
+
+#: includes/customize-classes.php:2032
+msgid "It must be higher than **%s**"
+msgstr ""
+
+#: includes/customize-classes.php:2033
+msgid "It must be lower than **%s**"
+msgstr ""
+
+#: includes/customize-classes.php:2381
+msgid "A CSS unit must be specified"
+msgstr ""
+
+#: includes/customize-classes.php:2382
+msgid "CSS unit `%` is invalid"
+msgstr ""
+
+#: includes/customize-classes.php:2383
+msgid "It does not accept a CSS unit"
+msgstr ""
+
+#: includes/customize-classes.php:2618
+msgid "Tags must be a string"
+msgstr ""
+
+#: includes/customize-classes.php:2619
+msgid "Minimum **%s** tags required"
+msgstr ""
+
+#: includes/customize-classes.php:2620
+msgid "Maximum **%s** tags allowed"
+msgstr ""
+
+#: includes/customize-classes.php:2744
+msgid "It must be a string"
+msgstr ""
+
+#: includes/customize-classes.php:2745
+msgid "Invalid URL"
+msgstr ""
+
+#: includes/customize-classes.php:2746
+msgid "Invalid email"
+msgstr ""
+
+#: includes/customize-classes.php:2747
+msgid "It must be shorter than **%s** chars"
+msgstr ""
+
+#: includes/customize-classes.php:2748
+msgid "It must be longer than **%s** chars"
+msgstr ""
+
+#: includes/customize-classes.php:2749
+msgid "It must follow this pattern **%s**"
+msgstr ""
+
+#: includes/customize-classes.php:2750
+msgid "HTML is not allowed. It will be stripped out on save"
+msgstr ""
+
+#: includes/customize-classes.php:2751
+msgid "This text contains some unallowed HTML. It will be stripped out on save"
+msgstr ""
+
+#: includes/customize-classes.php:2752
+msgid "The following HTML tags are not allowed: **%s**. They will be stripped out on save"
+msgstr ""
+
+#: includes/customize-classes.php:2753
+msgid "HTML code will be escaped on save"
+msgstr ""
+
+#: includes/customize-classes.php:2754
+msgid "HTML code is dangerously allowed here"
+msgstr ""
+
+#: includes/customize-classes.php:2841
+msgid "Hide password"
+msgstr ""
+
+#: includes/customize-classes.php:2842
+msgid "Show password"
 msgstr ""

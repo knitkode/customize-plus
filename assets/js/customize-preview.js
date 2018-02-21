@@ -1,8 +1,8 @@
 /*!
  * Customize Plus v1.0.0 (https://knitkode.com/products/customize-plus)
  * Enhance and extend the WordPress Customizer.
- * Copyright (c) 2014-2017 KnitKode <dev@knitkode.com> (https://knitkode.com/)
- * @license SEE LICENSE IN license.txt (Last change on: 29-11-2017)
+ * Copyright (c) 2014-2018 KnitKode <dev@knitkode.com> (https://knitkode.com/)
+ * @license SEE LICENSE IN license.txt (Last change on: 21-1-2018)
  *//* jshint unused: false */
 
 (function (window, document, $, wp, api) {
@@ -48,14 +48,34 @@
 
   /**
    * Get option id
-   * Given a simple option id (saved through the WordPress Options API) it
-   * returns the real id with the right theme prefix
-   * @param  {string} key The option id in its short form
-   * @return {string} The actual setting id as saved in the database under a
-   *                  common namespace (theme options prefix)
+   * Since its simplicity and possible overuse in many loops this function is
+   * not actually used, but 'inlined' in other functions, it's here just for
+   * reference.
+   *
+   * @since  1.0.0
+   *
+   * @see  PHP: `KKcp_Theme::get_option_id()`
+   * @param  {string} optName The simple setting id (without theme prefix)
+   * @return {string} The real setting id (with theme prefix)
    */
-  api.getOptionId = function (key) {
-    return constants.OPTIONS_PREFIX + '[' + key + ']';
+  api.getOptionId = function (optName) {
+    return constants.OPTIONS_PREFIX + '[' + optName + ']';
+  };
+
+  /**
+   * Get option id attribute
+   *
+   * Same as `get_option_id` but return a valid HTML attribute name (square
+   * brackets are not allowed in HTML ids or class names).
+   *
+   * @since  1.0.0
+   *
+   * @see  PHP: `KKcp_Theme::get_option_id_attr()`
+   * @param  {string} optName The simple setting id (without theme prefix)
+   * @return {string} The real setting id (with theme prefix) HTML ready
+   */
+  api.getOptionIdAttr = function (optName) {
+    return constants.OPTIONS_PREFIX + '__' + optName;
   };
 
 })(window, document, jQuery, wp, kkcp);

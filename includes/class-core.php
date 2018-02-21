@@ -3,17 +3,17 @@
 if ( ! class_exists( 'KKcp' ) ):
 
 	/**
-	 * Short description for class
+	 * Core
 	 *
-	 * Long description (if any) ...
+	 * Simple core class for this plugin.
 	 *
 	 * @package    Customize_Plus
 	 * @subpackage Core
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
-	 * @copyright  2017 KnitKode
-	 * @license    GPL-2.0+
-	 * @version    Release: pkgVersion
-	 * @link       https://knitkode.com/customize-plus
+	 * @copyright  2018 KnitKode
+	 * @license    GPLv3
+	 * @version    Release: 1.0.0
+	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp {
 
@@ -24,14 +24,11 @@ if ( ! class_exists( 'KKcp' ) ):
 		 */
 		public function __construct() {
 			// translate plugin meta
-			esc_html__( 'pkgDescription' );
+			esc_html__( 'Enhance and extend the WordPress Customizer.', 'kkcp' );
 
 			if ( is_admin() ) {
 				// Add plugin actions links
 				add_filter( 'plugin_action_links_' . plugin_basename( KKCP_PLUGIN_FILE ), array( __CLASS__, 'actions_links' ), -10 );
-
-				// Add plugin meta links
-				add_filter( 'plugin_row_meta', array( __CLASS__, 'meta_links' ), 10, 2 );
 			}
 
 			add_action( 'plugins_loaded', array( __CLASS__, 'init' ) );
@@ -49,11 +46,11 @@ if ( ! class_exists( 'KKcp' ) ):
 		 */
 		public static function init() {
 			// The "plugin_locale" filter is also used in load_plugin_textdomain()
-			$locale = apply_filters( 'plugin_locale', get_locale(), 'pkgTextDomain' );
+			$locale = apply_filters( 'plugin_locale', get_locale(), 'kkcp' );
 
 			// Make plugin available for translation
-			load_textdomain( 'pkgTextDomain', WP_LANG_DIR . '/customize-plus/pkgTextDomain-' . $locale . '.mo' );
-			load_plugin_textdomain( 'pkgTextDomain', false, dirname( plugin_basename( KKCP_PLUGIN_FILE ) ) . '/languages/' );
+			load_textdomain( 'kkcp', WP_LANG_DIR . '/customize-plus/kkcp-' . $locale . '.mo' );
+			load_plugin_textdomain( 'kkcp', false, dirname( plugin_basename( KKCP_PLUGIN_FILE ) ) . '/languages/' );
 		}
 
 		/**
@@ -64,25 +61,7 @@ if ( ! class_exists( 'KKcp' ) ):
 		 * @return array Processed links.
 		 */
 		public static function actions_links( $links ) {
-			$links[] = '<a href="' . add_query_arg( array( 'page' => 'customize-plus', 'tab' => 'about' ), admin_url( 'options-general.php' ) ) . '">' . esc_html__( 'About' ) . '</a>';
-			return $links;
-		}
-
-		/**
-		 * Add plugin meta links
-		 *
-		 * @since  1.0.0
-		 * @param  array  $links Links array in which we would prepend our link.
-		 * @param  string $file  Plugin file name
-		 */
-		public static function meta_links( $links, $file ) {
-			// Check plugin
-			if ( $file === plugin_basename( KKCP_PLUGIN_FILE ) ) {
-				unset( $links[2] );
-				$links[] = '<a href="https://knitkode.com/products/customize-plus" target="_blank">' . esc_html__( 'Project homepage' ) . '</a>';
-				$links[] = '<a href="https://knitkode.com/support" target="_blank">' . esc_html__( 'Support' ) . '</a>';
-				$links[] = '<a href="http://wordpress.org/extend/plugins/customize-plus/changelog/" target="_blank">' . esc_html__( 'Changelog' ) . '</a>';
-			}
+			$links[] = '<a href="' . add_query_arg( array( 'page' => 'customize-plus', 'tab' => 'about' ), admin_url( 'options-general.php' ) ) . '">' . esc_html__( 'About', 'kkcp' ) . '</a>';
 			return $links;
 		}
 
@@ -102,6 +81,25 @@ if ( ! class_exists( 'KKcp' ) ):
 		 */
 		public static function deactivation() {
 			do_action( 'kkcp_deactivation' );
+		}
+
+		/**
+		 * Get asset file, minified or unminified
+		 *
+		 * @since  1.0.0
+		 * @param  string $filename
+		 * @param  string $type
+		 * @param  string $base_url
+		 * @param  string $ext
+		 * @return string
+		 */
+		public static function get_asset( $filename, $type, $base_url, $ext = '' ) {
+			if ( ! $ext ) {
+				$ext = $type;
+			}
+			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+			return plugins_url( "assets/$type/$filename$min.$ext", $base_url );
 		}
 	}
 

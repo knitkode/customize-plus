@@ -1,8 +1,8 @@
 /*!
  * Customize Plus v1.0.0 (https://knitkode.com/products/customize-plus)
  * Enhance and extend the WordPress Customizer.
- * Copyright (c) 2014-2017 KnitKode <dev@knitkode.com> (https://knitkode.com/)
- * @license SEE LICENSE IN license.txt (Last change on: 29-11-2017)
+ * Copyright (c) 2014-2018 KnitKode <dev@knitkode.com> (https://knitkode.com/)
+ * @license SEE LICENSE IN license.txt (Last change on: 21-1-2018)
  */
 /**
  * Variables: WordPress
@@ -40,7 +40,8 @@
   display: inline-block;
   width: 150px;
   text-rendering: optimizeLegibility;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   background: url(../images/logo-white.png) center 24px/85px 85px no-repeat #464646;
 }
 
@@ -56,6 +57,14 @@
   position: absolute;
   top: 0;
   right: 20px;
+}
+
+/**
+ * Base style for Admin UI
+ *
+ */
+.kkcp-title {
+  font-weight: normal;
 }
 
 /**

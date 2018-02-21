@@ -19,9 +19,15 @@
  * @param  {List} $ignorList...
  * @return {@content}
  */
+/**
+ * Markdown styling
+ *
+ * A good reference for this style is the github markdown css styling
+ * @link(https://git.io/Svc8RQ, source)
+ */
 /*!
  * WordPress CSS Spinner
- * @license GPL-2.0+
+ * @license GPLv3
  * @author KnitKode <dev@knitkode.com> (https://knitkode.com)
  */
 @-webkit-keyframes infinite-spinning {
@@ -109,7 +115,8 @@
   min-height: 16px;
   border-radius: 2px;
   background: #dedddd;
-  box-shadow: inset rgba(0, 0, 0, 0.1) 0 1px 0;
+  -webkit-box-shadow: inset rgba(0, 0, 0, 0.1) 0 1px 0;
+          box-shadow: inset rgba(0, 0, 0, 0.1) 0 1px 0;
   -webkit-transition: all 0.28s ease;
   transition: all 0.28s ease;
 }
@@ -122,7 +129,8 @@
 .kkcpui-switch.switch-light > span > a {
   border-radius: 2px;
   background: #fafafa;
-  box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 2px -2px rgba(0, 0, 0, 0.2), 0 0px 4px 0 rgba(0, 0, 0, 0.12);
+  -webkit-box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 2px -2px rgba(0, 0, 0, 0.2), 0 0px 4px 0 rgba(0, 0, 0, 0.12);
+          box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 2px -2px rgba(0, 0, 0, 0.2), 0 0px 4px 0 rgba(0, 0, 0, 0.12);
   width: 22px;
   right: 58%;
   height: 130%;
@@ -133,7 +141,8 @@
 
 .kkcpui-switch.switch-light a:active,
 .kkcpui-switch.switch-light span:active ~ a {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), inset 0 0 2px 1px rgba(30, 140, 190, 0.8);
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), inset 0 0 2px 1px rgba(30, 140, 190, 0.8);
+          box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), inset 0 0 2px 1px rgba(30, 140, 190, 0.8);
 }
 
 .kkcpui-switch.switch-light input:checked ~ span {
@@ -142,7 +151,8 @@
 
 .kkcpui-switch.switch-light input:focus ~ span a {
   border-color: #5b9dd9;
-  box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
+  -webkit-box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
+          box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
 }
 
 .kkcpui-switch.switch-light input:focus ~ span a,
@@ -246,7 +256,8 @@
   border: 1px solid #ddd;
   border-radius: 2px;
   background: #fafafa;
-  box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 2px -2px rgba(0, 0, 0, 0.2), 0 0px 4px 0 rgba(0, 0, 0, 0.12);
+  -webkit-box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 2px -2px rgba(0, 0, 0, 0.2), 0 0px 4px 0 rgba(0, 0, 0, 0.12);
+          box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 2px -2px rgba(0, 0, 0, 0.2), 0 0px 4px 0 rgba(0, 0, 0, 0.12);
 }
 
 .switch-light.kkcpui-switch__labelsauto > span > span:last-of-type {
@@ -259,12 +270,14 @@
 }
 
 .switch-light.kkcpui-switch__labelsauto > span > span:active {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), inset 0 0 2px 1px rgba(30, 140, 190, 0.8);
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), inset 0 0 2px 1px rgba(30, 140, 190, 0.8);
+          box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08), inset 0 0 2px 1px rgba(30, 140, 190, 0.8);
 }
 
 .switch-light.kkcpui-switch__labelsauto a:active,
 .switch-light.kkcpui-switch__labelsauto span:active ~ a {
-  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
 }
 
 .switch-light.kkcpui-switch__labelsauto input:checked ~ span {
@@ -277,7 +290,8 @@
   margin: 0;
   border-color: transparent;
   background: 0;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .switch-light.kkcpui-switch__labelsauto input:checked ~ span span:last-of-type {
@@ -288,23 +302,27 @@
   border: 1px solid #ddd;
   border-radius: 2px;
   background: #fafafa;
-  box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 2px -2px rgba(0, 0, 0, 0.2), 0 0px 4px 0 rgba(0, 0, 0, 0.12);
+  -webkit-box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 2px -2px rgba(0, 0, 0, 0.2), 0 0px 4px 0 rgba(0, 0, 0, 0.12);
+          box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 2px -2px rgba(0, 0, 0, 0.2), 0 0px 4px 0 rgba(0, 0, 0, 0.12);
 }
 
 .switch-light.kkcpui-switch__labelsauto input:focus ~ span a {
   border-color: transparent;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .switch-light.kkcpui-switch__labelsauto input:focus ~ span span:first-of-type,
 .switch-light.kkcpui-switch__labelsauto input:checked:focus ~ span span:last-of-type {
   border-color: #5b9dd9;
-  box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+  -webkit-box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+          box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
 }
 
 .switch-light.kkcpui-switch__labelsauto input:checked:focus ~ span span:first-of-type {
   border-color: transparent;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 /**
@@ -312,7 +330,8 @@
  */
 .kkcpui-switch.switch-toggle {
   border: 1px solid #ccc;
-  box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
+          box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
   background-color: #f7f7f7;
 }
 
@@ -336,7 +355,8 @@
 
 .kkcpui-switch.switch-toggle a {
   background-color: #e8e8e8;
-  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(0, 0, 0, 0.08);
+          box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(0, 0, 0, 0.08);
   -webkit-transition: none;
   transition: none;
 }
@@ -348,13 +368,15 @@
 
 .kkcpui-switch.switch-toggle input:checked + label:hover {
   background-color: #e8e8e8;
-  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(0, 0, 0, 0.08);
+          box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(0, 0, 0, 0.08);
 }
 
 .kkcpui-switch.switch-toggle input:focus + label,
 .kkcpui-switch.switch-toggle input:focus + label:hover {
   border-color: #5b9dd9;
-  box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+  -webkit-box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+          box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
   outline: 0;
 }
 
@@ -914,11 +936,13 @@ the new label colours shown */
 
 .kkcp-slider.ui-slider.ui-slider-horizontal .ui-slider-handle:focus {
   outline: none;
-  box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
+  -webkit-box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
+          box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
 }
 
 .ui-slider:hover .kkcp-slider.ui-slider.ui-slider-horizontal .ui-slider-handle {
-  box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.05);
+          box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .kkcp-slider.ui-slider.ui-slider-horizontal .ui-slider-handle.ui-state-focus {
@@ -1003,21 +1027,6 @@ the new label colours shown */
   border-top-color: transparent;
 }
 
-/*!
- * selectize.css (v0.12.4)
- * Copyright (c) 2013–2015 Brian Reavis & contributors
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at:
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
- * ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- *
- * @author Brian Reavis <brian@thirdroute.com>
- */
 /**
  * selectize.css (v0.12.4)
  * Copyright (c) 2013–2015 Brian Reavis & contributors
@@ -1038,6 +1047,7 @@ the new label colours shown */
   background: #f2f2f2 !important;
   background: rgba(0, 0, 0, 0.06) !important;
   border: 0 none !important;
+  -webkit-box-shadow: inset 0 0 12px 4px #ffffff;
   box-shadow: inset 0 0 12px 4px #ffffff;
 }
 
@@ -1047,6 +1057,7 @@ the new label colours shown */
 }
 
 .selectize-control.plugin-drag_drop .ui-sortable-helper {
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -1077,6 +1088,7 @@ the new label colours shown */
   border-right: 1px solid #f2f2f2;
   border-top: 0 none;
   float: left;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -1115,6 +1127,7 @@ the new label colours shown */
   padding: 2px 0 0 0;
   border-left: 1px solid #d0d0d0;
   border-radius: 0 2px 2px 0;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -1170,7 +1183,9 @@ the new label colours shown */
   overflow: hidden;
   position: relative;
   z-index: 1;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
   border-radius: 3px;
 }
@@ -1189,6 +1204,7 @@ the new label colours shown */
 }
 
 .selectize-input.focus {
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
@@ -1238,6 +1254,7 @@ the new label colours shown */
   background: none !important;
   line-height: inherit !important;
   -webkit-user-select: auto !important;
+  -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
 
@@ -1273,7 +1290,9 @@ the new label colours shown */
   background: #ffffff;
   margin: -1px 0 0 0;
   border-top: 0 none;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border-radius: 0 0 3px 3px;
 }
@@ -1381,17 +1400,20 @@ the new label colours shown */
   font-size: 14px;
   outline: 0;
   border: 1px solid #ddd;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
 }
 
 .selectize-input.focus {
   border-color: #5b9dd9;
-  box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+  -webkit-box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+          box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
 }
 
 .selectize-dropdown {
   border-color: #5b9dd9;
-  box-shadow: 0 0 2px rgba(30, 140, 190, 0.8), 0 10px 10px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 0 2px rgba(30, 140, 190, 0.8), 0 10px 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 0 2px rgba(30, 140, 190, 0.8), 0 10px 10px rgba(0, 0, 0, 0.1);
   border-radius: 0;
 }
 
@@ -1426,6 +1448,7 @@ the new label colours shown */
 /* Fix for * { box-sizing: border-box; } */
 .sp-container,
 .sp-container * {
+  -webkit-box-sizing: content-box;
   box-sizing: content-box;
 }
 
@@ -1564,26 +1587,21 @@ the new label colours shown */
 
 /* Gradients for hue, saturation and value instead of images.  Not pretty... but it works */
 .sp-sat {
-  background-image: -webkit-gradient(linear, 0 0, 100% 0, from(#FFF), to(rgba(204, 154, 129, 0)));
-  background-image: -webkit-linear-gradient(left, #FFF, rgba(204, 154, 129, 0));
-  background-image: -webkit-linear-gradient(left, #fff, rgba(204, 154, 129, 0));
+  background-image: -webkit-gradient(linear, left top, right top, from(#fff), to(rgba(204, 154, 129, 0)));
   background-image: linear-gradient(to right, #fff, rgba(204, 154, 129, 0));
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType = 1, startColorstr=#FFFFFFFF, endColorstr=#00CC9A81)";
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType = 1, startColorstr='#FFFFFFFF', endColorstr='#00CC9A81');
 }
 
 .sp-val {
-  background-image: -webkit-gradient(linear, 0 100%, 0 0, from(#000000), to(rgba(204, 154, 129, 0)));
-  background-image: -webkit-linear-gradient(bottom, #000000, rgba(204, 154, 129, 0));
-  background-image: -webkit-linear-gradient(bottom, #000, rgba(204, 154, 129, 0));
+  background-image: -webkit-gradient(linear, left bottom, left top, from(#000), to(rgba(204, 154, 129, 0)));
   background-image: linear-gradient(to top, #000, rgba(204, 154, 129, 0));
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#00CC9A81, endColorstr=#FF000000)";
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00CC9A81', endColorstr='#FF000000');
 }
 
 .sp-hue {
-  background: -webkit-gradient(linear, left top, left bottom, from(#ff0000), color-stop(0.17, #ffff00), color-stop(0.33, #00ff00), color-stop(0.5, #00ffff), color-stop(0.67, #0000ff), color-stop(0.83, #ff00ff), to(#ff0000));
-  background: -webkit-linear-gradient(top, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+  background: -webkit-gradient(linear, left top, left bottom, from(#ff0000), color-stop(17%, #ffff00), color-stop(33%, #00ff00), color-stop(50%, #00ffff), color-stop(67%, #0000ff), color-stop(83%, #ff00ff), to(#ff0000));
   background: linear-gradient(to bottom, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
 }
 
@@ -1678,7 +1696,8 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
   z-index: 1;
   position: relative;
   width: 100%;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   padding: 0 8px;
   max-width: 270px;
 }
@@ -1716,7 +1735,8 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 
 input[type=text].sp-input {
   width: 100%;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 input[type=text].sp-input.sp-validation-error {
@@ -1736,7 +1756,8 @@ input[type=text].sp-input.sp-validation-error {
 .sp-clear,
 .sp-alpha-inner {
   border-radius: 3px;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+          box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
   border: 0;
 }
 
@@ -1753,7 +1774,8 @@ input[type=text].sp-input.sp-validation-error {
   border: 5px solid #aaa;
   border-radius: 50%;
   border-color: rgba(128, 128, 128, 0.5);
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   width: 8px;
   height: 8px;
   margin-top: 4px;
@@ -1765,7 +1787,8 @@ input[type=text].sp-input.sp-validation-error {
 .sp-dragger:hover {
   border-color: #999;
   opacity: .8;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.75);
+          box-shadow: 0 0 2px rgba(0, 0, 0, 0.75);
 }
 
 .sp-dragger::after {
@@ -1802,7 +1825,8 @@ input[type=text].sp-input.sp-validation-error {
   height: 4px;
   margin-top: -2px;
   border-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   opacity: .9;
   cursor: ns-resize;
 }
@@ -1836,7 +1860,8 @@ input[type=text].sp-input.sp-validation-error {
   width: 4px;
   margin-left: -4px;
   border-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   opacity: .9;
   cursor: ew-resize;
 }
@@ -1937,7 +1962,8 @@ input[type=text].sp-input.sp-validation-error {
   padding: 8px 0 0;
   background: 0;
   border: 0;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   color: #0099d5;
   text-align: center;
   outline: none;
@@ -1974,17 +2000,26 @@ input[type=text].sp-input.sp-validation-error {
 /*!
  * Customize Plus v1.0.0 (https://knitkode.com/products/customize-plus)
  * Enhance and extend the WordPress Customizer.
- * Copyright (c) 2014-2017 KnitKode <dev@knitkode.com> (https://knitkode.com/)
- * @license SEE LICENSE IN license.txt (Last change on: 29-11-2017)
+ * Copyright (c) 2014-2018 KnitKode <dev@knitkode.com> (https://knitkode.com/)
+ * @license SEE LICENSE IN license.txt (Last change on: 21-1-2018)
  */
 /**
  * Shadow on sidebar
  *
- * Add a subtle shadow to the customize sidebar
- * // @@doubt not sure if it's good to alter the iframe displayment this way \\
+ * Add a subtle shadow to the customize sidebar when hovering it
  */
 .wp-full-overlay.expanded .wp-full-overlay-sidebar {
-  box-shadow: 50px 0 85px -65px rgba(0, 0, 0, 0.15);
+  -webkit-transition: -webkit-box-shadow .3s ease-in-out;
+  transition: -webkit-box-shadow .3s ease-in-out;
+  transition: box-shadow .3s ease-in-out;
+  transition: box-shadow .3s ease-in-out, -webkit-box-shadow .3s ease-in-out;
+  -webkit-box-shadow: 0 0 0 0 transparent;
+          box-shadow: 0 0 0 0 transparent;
+}
+
+.wp-full-overlay.expanded .wp-full-overlay-sidebar:hover {
+  -webkit-box-shadow: 50px 0 85px -65px rgba(0, 0, 0, 0.15);
+          box-shadow: 50px 0 85px -65px rgba(0, 0, 0, 0.15);
 }
 
 /**
@@ -2005,14 +2040,9 @@ input[type=text].sp-input.sp-validation-error {
 /**
  * Overflow fix.
  *
- * This allow to use custom dropdowns or typeahead elements
- * without having to attach them to the body (which is not a
- * very common feature in those js libraries...).
- *
- * WordPress uses `overflow: hidden` on sections
- * but this prevent us to use popovers, dropdowns or typeahead
- * elements dynamically appended to the controls without having
- * to attach them to the body (which is not a very common
+ * WordPress uses `overflow: hidden` on sections but this prevent us to use
+ * popovers, dropdowns or typeahead elements dynamically appended to the
+ * controls without having to attach them to the body (which is not a very common
  * feature in those js libraries...).
  */
 #customize-theme-controls .customize-pane-child.open {
@@ -2029,7 +2059,115 @@ input[type=text].sp-input.sp-validation-error {
 .customize-controls-close:focus,
 .customize-section-back:focus,
 .customize-panel-back:focus {
-  box-shadow: inset 0 0 0 1px rgba(30, 140, 190, 0.5), inset 0 0 6px 1px rgba(30, 140, 190, 0.2);
+  -webkit-box-shadow: inset 0 0 0 1px rgba(30, 140, 190, 0.5), inset 0 0 6px 1px rgba(30, 140, 190, 0.2);
+          box-shadow: inset 0 0 0 1px rgba(30, 140, 190, 0.5), inset 0 0 6px 1px rgba(30, 140, 190, 0.2);
+}
+
+/**
+ * Control changes, class applied on wrapper div inside the `<li>`
+ * container of each of our custom controls.
+ *
+ */
+.kkcp-control {
+  position: relative;
+}
+
+/**
+ * Overall area
+ * a wrapper, needed to bind the `mouseenter`, `mouseleave`
+ * events on only one DOM element.
+ */
+/**
+ * Toggle button
+ *
+ * @use `.kkcpui-control-btn`
+ */
+.kkcp-extras-btn {
+  top: 6px;
+  left: 1px;
+  /**
+   * Open state
+   */
+}
+
+.kkcp-extras-open .kkcp-extras-btn {
+  color: #333;
+  opacity: 1;
+}
+
+/**
+ * List inside extras menu
+ *
+ */
+.kkcp-extras-list {
+  z-index: 11;
+  display: none;
+  position: absolute;
+  top: 29px;
+  left: 20px;
+  width: 256px;
+  margin: 0 0 6px;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.kkcp-has-scrollbar .kkcp-extras-list {
+  width: 240px;
+}
+
+.kkcp-extras-open .kkcp-extras-list {
+  display: block;
+}
+
+.kkcp-extras-list li {
+  padding: 6px 9px;
+  margin: 0;
+  border-bottom: 1px solid #eee;
+}
+
+.kkcp-extras-list li:last-child {
+  border-bottom: 0;
+}
+
+.kkcp-extras-list li:hover {
+  margin: 0 -6px;
+  padding: 6px 15px;
+  background: #f6f6f6;
+  cursor: pointer;
+}
+
+.kkcp-extras-list li.kkcp-disabled {
+  cursor: default;
+  opacity: .5;
+}
+
+.kkcp-extras-list li:before {
+  font-size: 14px;
+  font-weight: normal;
+  font-family: 'dashicons';
+  margin-right: 3px;
+}
+
+.kkcp-extras-reset_last:before {
+  content: "\f474";
+}
+
+.kkcp-extras-reset_initial:before {
+  content: "\f321";
+}
+
+.kkcp-extras-reset_factory:before {
+  content: "\f308";
+}
+
+.kkcp-extras-hide:before {
+  content: "\f177";
 }
 
 /**
@@ -2111,21 +2249,6 @@ input[type=text].sp-input.sp-validation-error {
 }
 
 /**
- * Change WordPress animations.
- *
- * With a lot of controls they get clunky.
- * We remove transitions if there is no csstransform support,
- * otherwise we use transform translateX to animate, resetting
- * the left positions.
- * We're using here the same selectors as WordPress // @@wptight-css
- *
- * This cause a bug on chrome when autofocus on load, where the sidebar is empty
- * until any kind of event on any target occur (click, resizes, etc.). It is probably
- * something related to redraw/repaint. On firefox works for instance.
- * Anyway let's disable it for now. Try something like this url to test:
- * http://localhost/WPlayground/wp-admin/customize.php?autofocus[control]=jumbotron-font-size
- */
-/**
  * Icons for panels and sections
  *
  * Add icon beside panel titles. This is now done dyanimaclly
@@ -2133,7 +2256,8 @@ input[type=text].sp-input.sp-validation-error {
  * In php we mimic the following style, let's keep this here anyway to
  * add icons to existing plugins or just for reference.
  *
- * To see the wordpress dashicons codes @link( https://developer.wordpress.org/resource/dashicons/ )
+ * To see the wordpress dashicons codes
+ * @link( https://developer.wordpress.org/resource/dashicons/ )
  *
  * @see Customize_Manager class.
  */
@@ -2151,7 +2275,7 @@ input[type=text].sp-input.sp-validation-error {
   font-family: 'dashicons';
 }
 
-#accordion-panel-menus > h3:before, #accordion-panel-menus .panel-title:before {
+#accordion-panel-nav_menus > h3:before, #accordion-panel-nav_menus .panel-title:before {
   content: "";
   position: relative;
   top: 4px;
@@ -2193,9 +2317,159 @@ input[type=text].sp-input.sp-validation-error {
 }
 
 /**
+ * When markdown on control's descriptions and titles is enabled it
+ * automatically wraps a simple text in a `<p>`, so we need to remove the
+ * margin to it.
+ */
+.kkcp-markdown-supported .customize-control-title > p,
+.kkcp-markdown-supported .customize-control-description p:first-child {
+  margin: 0;
+}
+
+.kkcp-markdown-supported .kkcp-control code {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.kkcp-markdown-supported .kkcp-control .description code {
+  font-style: normal;
+  color: #c7254e;
+}
+
+/**
+ * Generic class to apply some basic markdown styling
+ * This style reset some of the WordPress style on the markdown to html areas.
+ *
+ * For instance used by the Content control.
+ */
+.kkcp-markdown {
+  font-style: normal;
+}
+
+.kkcp-markdown h1,
+.kkcp-markdown h2,
+.kkcp-markdown h3 {
+  font-weight: 400;
+}
+
+.kkcp-markdown h1 {
+  font-size: 30px;
+}
+
+.kkcp-markdown h2 {
+  font-size: 23px;
+}
+
+.kkcp-markdown h3 {
+  font-size: 17px !important;
+}
+
+.kkcp-markdown ul {
+  list-style: disc;
+  margin: 0 0 1em 1em;
+}
+
+.kkcp-markdown ul ol, .kkcp-markdown ul ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.kkcp-markdown li > ul,
+.kkcp-markdown li > ol {
+  margin-top: 6px;
+}
+
+.kkcp-markdown ol {
+  list-style: decimal;
+  margin: 0 0 1em 1em;
+}
+
+.kkcp-markdown ol ol, .kkcp-markdown ol ul {
+  margin-bottom: 1em;
+}
+
+.kkcp-markdown code {
+  font-size: 12px;
+  color: #c7254e;
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.kkcp-markdown table {
+  margin: 1.3em 0;
+  width: 100%;
+  background: #f9f9f9;
+  border-collapse: collapse;
+}
+
+.kkcp-markdown th {
+  background: #fdfdfd;
+}
+
+.kkcp-markdown th,
+.kkcp-markdown td {
+  padding: 4px 8px;
+  border: 1px solid #eee;
+}
+
+.kkcp-markdown pre {
+  word-wrap: normal;
+  background: rgba(0, 0, 0, 0.07);
+  padding: 6px 8px;
+  line-height: 1.4em;
+}
+
+.kkcp-markdown pre > code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.kkcp-markdown blockquote {
+  padding: 0 1em;
+  color: #6a737d;
+  border-left: 0.25em solid #e1e1e1;
+}
+
+.kkcp-markdown hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.kkcp-markdown hr:before {
+  display: table;
+  content: "";
+}
+
+.kkcp-markdown hr:after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+/**
+ * Custom notification template (with markdown)
+ */
+.kkcp-notification.notice p {
+  margin: 0;
+  padding: 0;
+}
+
+#customize-controls .kkcp-control .customize-control-notifications-container {
+  margin-top: 9px;
+}
+
+/**
  * Style scrollbar of controls sidebar.
- * To turn it to be less obtrusive make it thiner
- * and hide the arrow buttons.
+ *
+ * To make the scrollbar less obtrusive make it thiner and hide the arrows.
  *
  */
 #customize-controls ::-webkit-scrollbar {
@@ -2249,132 +2523,6 @@ input[type=text].sp-input.sp-validation-error {
 }
 
 /**
- * Change the scrollbar of the iframe on webkit only
- */
-/**
- * UI module, used within control's areas
- * This 'module' is extended in the Premium version of Customize Plus
- *
- */
-.kkcpui {
-  /**
-   * Alternative small and simple spinner, three rounded squares in a row
-   * from http://preloaders.net/en/rectangular
-   */
-  /**
-   * Toggle button
-   *
-   * Used for toggle button within controls (i.e. in color and dynamic controls)
-   */
-  /**
-   * Textarea
-   */
-  /**
-   * Control button
-   *
-   * Shared style applied to button which are common for all the controls and
-   * that are meant to be used as additional control specific content. Used for
-   * the `extras` menu and `guide` button. Buttons using this class should add
-   * their specific class to determine their position inside the control area.
-   */
-  /**
-   * Vertically align content (wrapper)
-   */
-  /**
-   * Vertically align content
-   */
-  /**
-   * Visibility
-   */
-  /**
-   * Light text
-   */
-  /**
-   * Lighter text
-   */
-}
-
-.kkcpui-spinner {
-  display: inline-block;
-  width: 45px;
-  height: 14px;
-  background: url(data:image/gif;base64,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) center no-repeat;
-}
-
-.kkcpui-toggle {
-  display: inline-block;
-  vertical-align: top;
-  padding: 0px 9px;
-  line-height: 22px;
-  border-radius: 0;
-  border: 1px solid #ccc;
-  background: #f7f7f7;
-  box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
-  color: #555;
-  font-size: 11px;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.kkcpui-toggle:hover, .kkcpui-toggle:focus {
-  background: #fafafa;
-  border-color: #999;
-  color: #222;
-}
-
-.kkcpui-textarea {
-  width: 100%;
-}
-
-.kkcpui-control-btn {
-  z-index: 3;
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  line-height: 21px;
-  font-size: 15px;
-  color: #aaa;
-  opacity: 0;
-  -webkit-transition: opacity .18s ease, color .18s ease;
-  transition: opacity .18s ease, color .18s ease;
-  cursor: pointer;
-}
-
-.kkcp-control:hover .kkcpui-control-btn {
-  opacity: 1;
-}
-
-.kkcpui-midpoint-wrap {
-  text-align: center;
-  vertical-align: middle;
-  height: 100%;
-}
-
-.kkcpui-midpoint-wrap:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-}
-
-.kkcpui-midpoint {
-  vertical-align: middle;
-  display: inline-block;
-}
-
-.kkcpui-hidden {
-  display: none;
-}
-
-.kkcpui-light {
-  color: #666;
-}
-
-.kkcpui-lighter {
-  color: #bbb;
-}
-
-/**
  * Tabs
  *
  */
@@ -2416,7 +2564,8 @@ input[type=text].sp-input.sp-validation-error {
   display: none;
   float: left;
   width: 100%;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   padding: 8px;
   padding-top: 12px;
   font-size: 13px;
@@ -2424,6 +2573,178 @@ input[type=text].sp-input.sp-validation-error {
 
 .kkcp-tabs > div.selected {
   display: block;
+}
+
+/**
+ * UI module, used within control's areas
+ * This 'module' is extended in the Premium version of Customize Plus
+ *
+ */
+.kkcpui {
+  /**
+   * Alternative small and simple spinner, three rounded squares in a row
+   * from http://preloaders.net/en/rectangular
+   */
+  /**
+   * Toggle button
+   *
+   * Used for toggle button within controls (i.e. in color and dynamic controls)
+   */
+  /**
+   * Textarea
+   */
+  /**
+   * Control button
+   *
+   * Shared style applied to button which are common for all the controls and
+   * that are meant to be used as additional control specific content. Used for
+   * the `extras` menu and `info` button. Buttons using this class should add
+   * their specific class to determine their position inside the control area.
+   */
+  /**
+   * Vertically align content
+   */
+  /**
+   * Visibility
+   */
+  /**
+   * Light text
+   */
+  /**
+   * Lighter text
+   */
+}
+
+.kkcpui-spinner {
+  display: inline-block;
+  width: 45px;
+  height: 14px;
+  background: url(data:image/gif;base64,R0lGODlhLQAOAOMAANTS1Ozq7Nze3PT29Nza3PTy9OTm5Pz+/NTW1Ozu7OTi5Pz6/P///wAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQJBgAMACwAAAAALQAOAAAEh5AtI4i9RC3GWVLYJSRHN1WhYGwLAbxwDAxcIN8GtyC3PBg9mYAx4AVhNODxJRAsYYfC82U4uJ6I63OQmAKqxqd2eehOq+NjOsj1gr3hZXuqOMSPzulg4LZ61z1zT3V3QYA3ZX2HMkpPRF4BDHlLCHxPCRyNRyWWS5gDkzeYHAeaQiUcRUeYEQAh+QQJBgAUACwAAAAALQAOAISsrqzc2tzExsTs7uy8urzk5uT8+vzU0tS0trTk4uT09vTEwsS0srTc3tzMzsz08vS8vrzs6uz8/vzU1tT///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAF0yClTAtUmqajUCz1NEEsB80gtUYBz3RhUAYCgAEoEo2MB6twODicz+ihwDJMnNCsY2ItGr1HgEBilZqxK+bZnFgMvXAjwfBYY6O2wH0fDbjjgAwGA3yFeXZSExBvgF5zdYVmERIBiFgkcURHmoORewMGlZ5PmI1hDBKQlg6HoweKp4xvgqqjoKKWpYFgdKtNk7ieurNgAI+uDqyUyHqNcAwLBgauTUoJvg0KQsTPESwRqwk3I6MTK3UEDOnrBAveVRExEwHz8wEFNywKCfX0/gkrQgAAIfkECQYAGAAsAAAAAC0ADgCEjIqM1NLUrKqs7OrsnJqc3N7cvLq89Pb0lJaU3NrctLa09PL0pKak5ObkxMLE/P78jI6M1NbUrK6s7O7snJ6c5OLkvL68/Pr8////AAAAAAAAAAAAAAAAAAAAAAAAAAAABfggdjhMaZbGhK3YUiRwnBTTw17NK8/NJVIACGBIDCIGq0FgyWwGGqtLxEkdFa9EyePCdCy9junygGl0A+BvpCIIuoXwIeEyoQbE3sDkklDf/0wRDFhFQgh0aGphYV81Yl0Ri1OCb5VDEId1j39TYRE1fZKPkRGUhEJDCA91aJ2kfw6Oga1OlHGob5l2pJ6grZ6/k4NXuKmIwU2dspOtzGGDcZe5x0uutJ8PfbSKpabSWKp1jJ7AYbKQnGgFFtG3QQxbpbXNemXXyBEFCwjfxFD240h1amDjAJ5RjMhMUEABQUMKDyX8w7CqQCmLFvPVYHEAY7eLBciEAAAh+QQJBgAbACwAAAAALQAOAIRsamzU0tSUkpTs6ux8fnykpqTc3tz09vR0dnSkoqSMiozc2tycmpz08vS0srTk5uT8/vxsbmzU1tSUlpTs7uyEgoSsqqzk4uT8+vx8enyMjoz///8AAAAAAAAAAAAAAAAFzuDWOJpSKaaiFcPmbtS1zPRiUNCLPUY9Gw+MiAAoGo+Ih2sQaDqfAeUGI4FaD46j1jiBYKzgw+YBhho02y0CQylDH5CF21GVKNJaxKHxpAf8fnByTQ6EdU12eEgHbVZVAY84j0+TTneKRXp8bk5wlW6XmHqNfmWCc4+hipqIToCPnoZ/n4mYABEQjWCTsZCtVmi2rJxNp8QSFrYAGhAHrp+zYgZgpZAUCLYSLmS+spAGOQeP1YZiDwkI6erpGgYvjBLx8QbycO/09PLxD2IhACH5BAkGABsALAAAAAAtAA4AhIyKjMTGxOTm5KyqrNTW1PT29Ly6vJyanOzu7LSytNze3JSWlNTS1Pz+/MTCxKSmpIyOjMzKzOzq7KyurNza3Pz6/Ly+vJyenPTy9LS2tOTi5P///wAAAAAAAAAAAAAAAAX+4FY4T2mWBrKtmxBZjgXLkdawlaBQfK8IFdEFAAEYj8SFZEWZOCcJZ9TJuFUIjAgju9VGCBUHcnycNArRqXMgHSRUAm6WoN1uFQOivsg3HioSTwluhE8TNhRfdV1yBA9kSEULOVBshoNTChUUdlmKdKCPfX1GEJMCgoWpCg2JXJ+fjpB6RqeDl6oJFK1doLAMsqNHfKdtt21Ou65zsKFkRUjFx5XGysy+oMCitHtJlMjUT5pY182yw5ALDQJqx5hurJzlvsAWpMIQD2dpbNNSSxq8YPukAMOCUpAgCFjBwFCldxFuFCDX7AuBAhsQZLiwgOMFjxMWrmigwIGBkxkQUFqgEGRFAQUKCMScKRNjCAAh+QQJBgAbACwAAAAALQAOAISMiozExsTk5uSsrqzU1tT09vScmpy8urzMzszs7uzc3tyUkpS0trT8/vykoqTEwsSMjozMyszs6uy0srTc2tz8+vy8vrzU0tT08vTk4uSkpqT///8AAAAAAAAAAAAAAAAF8OBWEI9VmiZSbGxDTZoTzwPRsFslKFTvK4JK7jCYDI5G5ATDigCe0CjEcqsQLghsFrElWI9IcHIQaGAWAEh6rX5CJBsBdr6lZx5FsB55qCiigGpqFy51hnMke4pFFRSCbIAACIV0lVkEFnmLR30UkZBqkxSHh4l6RkmojY9tgaKklaaKYxMugZBPr5axFrSaeRN+uFJpurCXeIsTDqqeUKxRxrvIp0XMSX1/rcShlMcXV8p6DxUJaKBSAhsZ31kKBUTAYkVwGw+fjww3I98EKxgRDhyYIHDggQf1ciDQYKChw4ZlcBTIQIBCxYsU3m0IAQAh+QQJBgAaACwAAAAALQAOAIRsamy8urzc3tyUlpT09vTU0tR8fnzs6uysqqzExsR0cnTk5uScnpz8/vzc2tyEhoRsbmzEwsTk4uScmpz8+vzU1tTs7uysrqzMysyMioz///8AAAAAAAAAAAAAAAAAAAAF26BGLYJjno5EaWxTTE8Wz1PSsCKJmsKyUo4CpiAkDgsVAisAaDqfAMSNUilah5jK6Fo5FgUaiwJKhkg0i6PXWxAIiHCjsFtpVMj4SCMYVxcrDlhCWYRVdRh4ZAF2RRiFWUQVb3OPXUguiVCLVXOUXUOAanSVFIiZTot8lZBZk6t0dQWnqIyvhYGej0gEsrMAm0ajwpLBr4e+v4y5w0G2dHbINm/OWQvFwq1oEL4VGtPYdG0EVc5KDRezAzfjy4VKBAsVkvMCkkotAQ8GCvv9Bhf3NMCjN6/CAiUhAAAh+QQJBgAaACwAAAAALQAOAISMiozMyszk5uSsrqzc2tz09vScmpy8urzU0tTs7uyUkpS0trTk4uT8/vykoqTEwsSMjozMzszs6uy0srTc3tz8+vy8vrzU1tT08vSkpqT///8AAAAAAAAAAAAAAAAAAAAF/qBWCRRhngRTaWxDTJkTz8PVsFqBPBbf94iCiBBBRIpHY+Qi1AQggKhUCrHcKoeBdjDZag8YgRExRpIjDA1GEYW6AVC4RBPRdrfde4Bi7o9tFHBTg1EIDRZ3Xl4TBwRlj0gXFYFtgm9QEYeKmwMLRJCPkgSChFSZiIubBxSgfTajlrFxmVl4dreNfn6SlKWmDQ+cXHiOumWvsrFRERUWtonDua1/k76VEKfQwxMOeazGkQ2Bl6RSmcG3A93DAwcC4GMUGglshJcCTqmJXQ8VF9NFmlggNwXCghUYJkDj1sXBgTmTCFyQSPECgyYiImQwYEABx48PbrBIEOAAowMoBVEGmBMCACH5BAkGABwALAAAAAAtAA4AhIyKjMTGxKyqrOTm5JyanNTW1Ly6vPT29LSytOzu7KSipNze3JSSlNTS1MTCxPz+/MzKzKyurOzq7JyenNza3Ly+vPz6/LS2tPTy9KSmpOTi5JSWlP///wAAAAAAAAAAAAX+IGcNC2WelGZxLDdAlVPFM6Q9LVYJStb3mQpGRGlAGkbksVE4sCiRaAQRpUYbOAwBwO16CYlB0lhYJhecA9UqiLYRAkSCU/Hau5cFcq8kQwoPElJwa1JRKgp3dxMUR45/kAVMDwNTbW6WcBELDxOKdht6fmWkRwUjVXGqgxEUD4mfXYxLkbWAA5qGhJcLFp6xXKFKpcSnlZmXgwK9sMCzo7WTuMm7mgiuv86itpFNx7mGEW2uzbGM0MR/geLI1RGIXhuKE2LokWgYCODhUxIcF8C4RDggiRspJxwapKrWBgKOBPJibRiQZkCBAgswalyAkMODBQ4uGDAgkqQDCisMWCS4MKGly5YXKIYAACH5BAkGABkALAAAAAAtAA4AhGxqbNTS1IyOjOzq7Hx+fNze3KSipPT29HR2dNza3JyanPTy9ISGhOTm5KyqrPz+/HRydNTW1Ozu7OTi5Pz6/Hx6fJyenIyKjKyurP///wAAAAAAAAAAAAAAAAAAAAAAAAW8YEY1RWKeyURlbCZN6FlIT7s4wsXouuBIokRgSCwGDqyBcdlgSSqAqHSKGDSWy0LmEMEakY6pWGopeI2PxbnYeDDGY4JwPTxI6MP2G06dDzFEgEQPd0WCf3lufH14R4V0eotSCF14hI2RkgAIZnh2gWcNFHuSCH6gaI9GhwGZpX6ClUUHB5iKmghXZ4BatXhAFpoAAr5nEUgZnahEETUNEJpNB2ZdshEFyBkPDZXXEdUFNSwNCgjm5+YCTSEAIfkECQYAGAAsAAAAAC0ADgCEjIqM1NLUpKak7OrsnJqc3N7ctLa09Pb0lJKU3NrctLK09PL0pKKk5ObkvL68/P781NbUrKqs7O7snJ6c5OLkvLq8/Pr8lJaU////AAAAAAAAAAAAAAAAAAAAAAAAAAAABd8gZjVFYp4JZWEsJlHoWUhPuzgRI+i64CyiRGBILAYOrIFx2WAtCICodEqQNIgOLIRYwBy2SyOyMi1LDYWwFvJYDLMBuBwisTDM5onQAeYvHxJqRg0PE3hlF0JhfkOAS4xENIaHUnqCRY5xRFt+fIR3lFGJb6RvYAeBRX5gQ5KhUZaPEKyZi2CEhgihsaYBrHyZc0Osn68AE2lxs1q+bG5FnNEBrlMXeVdGfKxdB6pbYGASGA7GBt1rWkgY2NmchC7WlBdNBwWz9rOzDepeEvn59mbUYCHBwISDCA8aaBICACH5BAkGABQALAAAAAAtAA4AhKyurNza3MzKzOzu7Ly6vOTm5Pz6/NTS1LS2tOTi5PT29MTCxLSytNze3MzOzPTy9Ly+vOzq7Pz+/NTW1P///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXcIGUUTWCeQWJQLDUk6NkMUqscC5Tr+qGIAcfBISQOHZMfJXJsFg8FloEAqAIY1irhURgevM9hgqKYPM/en6OKtWLbggYaPZE8wPgnbZHtswkBeXl1A4JoEQYQbX5WCEGGXhMGD3N5NBB9i1YEDZBFdZSeQ3tZbaYAgJVPkoWqXoiYjIsMga5IdrajEnxsV6Woj66Soa4HERJUmb5snbaguQ6kvpq+BAW5DSKiQj8C1NQLBhOiSl2uCTUPs34MDyIlEwHx8wlKIgMm8/ImBTUsDwIIEGAwsKCACBRCAAA7) center no-repeat;
+}
+
+.kkcpui-toggle {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0px 9px;
+  line-height: 22px;
+  border-radius: 0;
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  -webkit-box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
+          box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
+  color: #555;
+  font-size: 11px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.kkcpui-toggle:hover, .kkcpui-toggle:focus {
+  background: #fafafa;
+  border-color: #999;
+  color: #222;
+}
+
+.kkcpui-textarea {
+  width: 100%;
+}
+
+.kkcpui-control-btn {
+  z-index: 3;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  line-height: 21px;
+  font-size: 15px;
+  color: #aaa;
+  opacity: 0;
+  -webkit-transition: opacity .18s ease, color .18s ease;
+  transition: opacity .18s ease, color .18s ease;
+  cursor: pointer;
+}
+
+.kkcp-control:hover .kkcpui-control-btn {
+  opacity: 1;
+}
+
+.kkcpui-midpoint {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.kkcpui-midpoint-wrap {
+  text-align: center;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.kkcpui-midpoint-wrap:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.kkcpui-hidden {
+  display: none;
+}
+
+.kkcpui-light {
+  color: #666;
+}
+
+.kkcpui-lighter {
+  color: #bbb;
+}
+
+/**
+ * Alert UI
+ *
+ * Used for instance in `kkcp_content` control
+ */
+.kkcpui-alert {
+  border: 1px solid transparent;
+  padding: 10px 15px;
+  -webkit-box-shadow: 0 8px 14px -12px rgba(0, 0, 0, 0.18);
+          box-shadow: 0 8px 14px -12px rgba(0, 0, 0, 0.18);
+  border-radius: 3px;
+}
+
+.kkcpui-alert.light {
+  background-color: white;
+  border-color: #d9d9d9;
+  color: #333333;
+}
+
+.kkcpui-alert.danger {
+  background-color: #ffeeee;
+  border-color: #eb9b9b;
+  color: #3b0000;
+}
+
+.kkcpui-alert.warning {
+  background-color: #ffffe6;
+  border-color: #eaea95;
+  color: #333300;
+}
+
+.kkcpui-alert.success {
+  background-color: #ecffe7;
+  border-color: #a8ea95;
+  color: #0b3400;
+}
+
+.kkcpui-alert.info {
+  background-color: #e7f5ff;
+  border-color: #95c8ea;
+  color: #001f34;
+}
+
+.kkcpui-alert p {
+  margin: 5px 0;
+}
+
+.kkcpui-alert span.description {
+  font-style: normal;
 }
 
 /**
@@ -2454,12 +2775,13 @@ input[type=text].sp-input.sp-validation-error {
  * Control changes, class applied on `<li>` container of each of our custom
  * controls and WordPress native control as well
  *
- * Do not apply this on: @@todo
+ * Do not apply this on:
  * - `code_editor` native WordPress control
  * - `theme` native WordPress control
  */
 .customize-control {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   margin: 0;
   padding-top: 6px;
   padding-bottom: 6px;
@@ -2489,7 +2811,15 @@ input[type=text].sp-input.sp-validation-error {
 .customize-control.has-error .selectize-input,
 .customize-control.has-error .selectize-dropdown {
   border-color: #eb9b9b;
-  box-shadow: 0 0 4px #c00;
+}
+
+.customize-control.has-error input:focus,
+.customize-control.has-error textarea:focus,
+.customize-control.has-error select:focus,
+.customize-control.has-error .selectize-input:focus,
+.customize-control.has-error .selectize-dropdown:focus {
+  -webkit-box-shadow: 0 0 4px #eb9b9b;
+          box-shadow: 0 0 4px #eb9b9b;
 }
 
 /**
@@ -2497,11 +2827,11 @@ input[type=text].sp-input.sp-validation-error {
  * adding the class `.kkcp-control-focused` to the `control.container`
  */
 .kkcp-control-focused {
-  -webkit-transform-origin: left center;
-      -ms-transform-origin: left center;
-          transform-origin: left center;
-  -webkit-animation: focus-control 1.8s ease;
-          animation: focus-control 1.8s ease;
+  -webkit-transform-origin: center center;
+      -ms-transform-origin: center center;
+          transform-origin: center center;
+  -webkit-animation: focus-control 2s ease;
+          animation: focus-control 2s ease;
 }
 
 .kkcp-control-focused .no-cssanimations {
@@ -2510,33 +2840,49 @@ input[type=text].sp-input.sp-validation-error {
 
 @-webkit-keyframes focus-control {
   0% {
-    box-shadow: 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 transparent;
+            box-shadow: 0 0 0 transparent;
     background: #eee;
+    -webkit-transform: scale(1);
+            transform: scale(1);
   }
-  50% {
-    box-shadow: 0 0 80px rgba(0, 0, 0, 0.38);
+  70% {
+    -webkit-box-shadow: 0 0 80px rgba(0, 0, 0, 0.38);
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.38);
     background: #ffc;
-    margin: 24px 0;
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
   }
   100% {
-    box-shadow: 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 transparent;
+            box-shadow: 0 0 0 transparent;
     background: #eee;
+    -webkit-transform: scale(1);
+            transform: scale(1);
   }
 }
 
 @keyframes focus-control {
   0% {
-    box-shadow: 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 transparent;
+            box-shadow: 0 0 0 transparent;
     background: #eee;
+    -webkit-transform: scale(1);
+            transform: scale(1);
   }
-  50% {
-    box-shadow: 0 0 80px rgba(0, 0, 0, 0.38);
+  70% {
+    -webkit-box-shadow: 0 0 80px rgba(0, 0, 0, 0.38);
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.38);
     background: #ffc;
-    margin: 24px 0;
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
   }
   100% {
-    box-shadow: 0 0 0 transparent;
+    -webkit-box-shadow: 0 0 0 transparent;
+            box-shadow: 0 0 0 transparent;
     background: #eee;
+    -webkit-transform: scale(1);
+            transform: scale(1);
   }
 }
 
@@ -2544,7 +2890,7 @@ input[type=text].sp-input.sp-validation-error {
  * Add a subtle background to section description areas
  */
 .customize-section-description-container {
-  background: -webkit-linear-gradient(white 45%, transparent 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(45%, white), to(transparent));
   background: linear-gradient(white 45%, transparent 100%);
 }
 
@@ -2595,90 +2941,6 @@ input[type=text].sp-input.sp-validation-error {
 }
 
 /**
- * 'Highlight' hovered control fading out a bit all the others
- *
- */
-/**
- * When markdown on control's descriptions and titles is enabled
- * it automatically wraps a simple text in a `<p>`, so we need to
- * remove the margin to it.
- */
-.kkcp-markdown-supported .customize-control-title > p,
-.kkcp-markdown-supported .customize-control-description p:first-child {
-  margin: 0;
-}
-
-.kkcp-markdown-supported .kkcp-control code {
-  font-size: 12px;
-  font-weight: normal;
-}
-
-.kkcp-markdown-supported .kkcp-control .description code {
-  font-style: normal;
-  color: #c7254e;
-}
-
-/**
- * Content/presentation controls accept a markdown parameter,
- * this style reset some of the WordPress style on the markdown to html areas.
- */
-.customize-control-markdown {
-  font-style: normal;
-}
-
-.customize-control-markdown h1,
-.customize-control-markdown h2,
-.customize-control-markdown h3 {
-  font-weight: 400;
-  padding: 0;
-  margin: .3em 0;
-}
-
-.customize-control-markdown h1 {
-  font-size: 30px;
-}
-
-.customize-control-markdown h2 {
-  font-size: 23px;
-}
-
-.customize-control-markdown h3 {
-  font-size: 17px !important;
-}
-
-.customize-control-markdown ul {
-  list-style: disc;
-  margin: 0 0 30px 30px;
-}
-
-.customize-control-markdown ol {
-  list-style: decimal;
-  margin: 0 0 30px 30px;
-}
-
-.customize-control-markdown code {
-  font-size: 12px;
-  color: #c7254e;
-}
-
-.customize-control-markdown table {
-  margin: 1.3em 0;
-  width: 100%;
-  background: #f9f9f9;
-  border-collapse: collapse;
-}
-
-.customize-control-markdown th {
-  background: #fdfdfd;
-}
-
-.customize-control-markdown th,
-.customize-control-markdown td {
-  padding: 4px 8px;
-  border: 1px solid #eee;
-}
-
-/**
  * Control Buttonset
  *
  */
@@ -2689,15 +2951,21 @@ input[type=text].sp-input.sp-validation-error {
 .kkcpcolor-toggle {
   margin-left: -1px;
   border-radius: 0 3px 3px 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .kkcpcolor-current {
   display: inline-block;
-  width: 30px;
+  width: 26px;
   height: 22px;
   border: 1px solid #ccc;
   border-radius: 3px 0 0 3px;
-  box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
+          box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
+  margin-left: 4px;
 }
 
 .kkcpcolor-current-bg {
@@ -2705,8 +2973,11 @@ input[type=text].sp-input.sp-validation-error {
 }
 
 .kkcpcolor-current-overlay {
-  box-shadow: none;
-  margin-left: -32px;
+  position: relative;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  left: -37px;
+  margin-right: -40px;
 }
 
 .kkcpcolor-input {
@@ -2722,24 +2993,15 @@ input[type=text].sp-input.sp-validation-error {
 }
 
 /**
- * Control Divider
+ * Control Content
  *
  */
-.kkcp-control-divider {
-  margin-top: -7px;
-  margin-left: -20px;
-  margin-bottom: 6px;
-  margin-right: -12px;
-  padding: 12px 12px 12px 20px;
-  background: #dadada;
-  background: -webkit-linear-gradient(#dadada, #eee);
-  background: linear-gradient(#dadada, #eee);
-  border-top: 1px solid #cacaca;
-  text-align: center;
+.customize-control-kkcp_content:hover {
+  background: inherit;
 }
 
-.kkcp-control-divider .customize-control-title {
-  margin: 0;
+.customize-control-kkcp_content .kkcpui-alert {
+  margin-left: -7px;
 }
 
 /**
@@ -2759,18 +3021,21 @@ input[type=text].sp-input.sp-validation-error {
 
 .customize-control-kkcp_font_family .selectize-input {
   border-color: transparent;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .customize-control-kkcp_font_family:hover .selectize-input {
   border-color: #ddd;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
 }
 
 .customize-control-kkcp_font_family:hover .selectize-input.focus,
 .customize-control-kkcp_font_family .selectize-input.focus {
   border-color: #5b9dd9;
-  box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+  -webkit-box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+          box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
 }
 
 /**
@@ -2778,156 +3043,14 @@ input[type=text].sp-input.sp-validation-error {
  *
  */
 /**
- * Control changes, class applied on wrapper div inside the `<li>`
- * container (wrapper present only in case we have a control divider),
- * and on the container itself (for controls without a divider)
- * of each of our custom controls.
- *
- */
-.kkcp-control,
-.kkcp-control-wrap {
-  position: relative;
-}
-
-/**
- * Overall area
- * a wrapper, needed to bind the `mouseenter`, `mouseleave`
- * events on only one DOM element.
- */
-/**
- * Toggle button
- *
- * @use `.kkcpui-control-btn`
- */
-.kkcp-extras-btn {
-  top: 6px;
-  left: 1px;
-  /**
-   * Open state
-   */
-}
-
-.kkcp-control-wrap .kkcp-extras-btn {
-  top: 0;
-  left: -21px;
-}
-
-.kkcp-extras-open .kkcp-extras-btn {
-  color: #333;
-  opacity: 1;
-}
-
-/**
- * List inside extras menu
- *
- */
-.kkcp-extras-list {
-  z-index: 11;
-  display: none;
-  position: absolute;
-  top: 29px;
-  left: 20px;
-  width: 256px;
-  margin: 0 0 6px;
-  padding: 6px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-
-.kkcp-control-wrap .kkcp-extras-list {
-  top: 23px;
-  left: 0;
-}
-
-.kkcp-has-scrollbar .kkcp-extras-list {
-  width: 240px;
-}
-
-.kkcp-extras-open .kkcp-extras-list {
-  display: block;
-}
-
-.kkcp-extras-list li {
-  padding: 6px 9px;
-  margin: 0;
-  border-bottom: 1px solid #eee;
-}
-
-.kkcp-extras-list li:last-child {
-  border-bottom: 0;
-}
-
-.kkcp-extras-list li:hover {
-  margin: 0 -6px;
-  padding: 6px 15px;
-  background: #f6f6f6;
-  cursor: pointer;
-}
-
-.kkcp-extras-list li.kkcp-disabled {
-  cursor: default;
-  opacity: .5;
-}
-
-.kkcp-extras-list li:before {
-  font-size: 14px;
-  font-weight: normal;
-  font-family: 'dashicons';
-  margin-right: 3px;
-}
-
-.kkcp-extras-reset_last:before {
-  content: "\f474";
-}
-
-.kkcp-extras-reset_initial:before {
-  content: "\f321";
-}
-
-.kkcp-extras-reset_factory:before {
-  content: "\f308";
-}
-
-.kkcp-extras-hide:before {
-  content: "\f177";
-}
-
-/**
- * Undo action (with timer) after having hided a control
- *
- */
-.kkcp-hide-undo {
-  display: block;
-  padding: 6px 0;
-  text-align: center;
-  cursor: pointer;
-}
-
-.kkcp-hide-undo:before {
-  font-family: 'dashicons';
-  content: "\f171";
-  margin-right: 3px;
-}
-
-.kkcp-timer {
-  color: #888;
-}
-
-.kkcp-timer:before {
-  content: "... ";
-}
-
-/**
  * Control Icon
  *
  */
 .customize-control-kkcp_icon .selectize-input {
   background: transparent;
   border: 0;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 /**
@@ -2950,7 +3073,8 @@ input[type=text].sp-input.sp-validation-error {
  */
 [data-selectable].kkcp-icon-selectOption {
   display: inline-block;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   width: 14.2857142857%;
   padding: 10px;
   overflow: visible;
@@ -2961,7 +3085,8 @@ input[type=text].sp-input.sp-validation-error {
 [data-selectable].kkcp-icon-selectOption.active {
   opacity: 1;
   color: #000;
-  box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
+  -webkit-box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
+          box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
 }
 
 .selectize-control.plugin-remove_button .kkcp-icon-selectOption {
@@ -3045,7 +3170,8 @@ input[type=text].sp-input.sp-validation-error {
 
 .customize-control-kkcp_multicheck.ui-sortable .ui-sortable-placeholder {
   background: #dbdbdb;
-  box-shadow: inset 0 0 8px 5px #eee;
+  -webkit-box-shadow: inset 0 0 8px 5px #eee;
+          box-shadow: inset 0 0 8px 5px #eee;
   border-radius: 5px;
   visibility: visible !important;
 }
@@ -3054,6 +3180,56 @@ input[type=text].sp-input.sp-validation-error {
  * Control Number
  *
  */
+/**
+ * Control Password
+ *
+ */
+.customize-control-kkcp_password .kkcp-password {
+  display: block;
+  position: relative;
+}
+
+.customize-control-kkcp_password .kkcp-password input[type="password"], .customize-control-kkcp_password .kkcp-password__preview {
+  padding-right: 36px;
+}
+
+.customize-control-kkcp_password .kkcp-password__toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+  background: transparent;
+  color: #aaa;
+  height: 100%;
+  width: 40px;
+  cursor: pointer;
+}
+
+.customize-control-kkcp_password .kkcp-password__toggle:hover, .customize-control-kkcp_password .kkcp-password__toggle:focus {
+  color: #333;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  outline: none;
+}
+
+.customize-control-kkcp_password .kkcp-password input[type="password"], .customize-control-kkcp_password .kkcp-password__show {
+  display: block;
+}
+
+.customize-control-kkcp_password .kkcp-password__preview, .customize-control-kkcp_password .kkcp-password__hide {
+  display: none;
+}
+
+.customize-control-kkcp_password.kkcp-password-visible .kkcp-password__show,
+.customize-control-kkcp_password.kkcp-password-visible input[type="password"] {
+  display: none;
+}
+
+.customize-control-kkcp_password.kkcp-password-visible .kkcp-password__preview,
+.customize-control-kkcp_password.kkcp-password-visible .kkcp-password__hide {
+  display: block;
+}
+
 /**
  * Control Radio Image
  *
@@ -3087,7 +3263,8 @@ input[type=radio].kkcp-radio-image:checked + label img {
 
 input[type=radio].kkcp-radio-image:focus + label img {
   border-color: #5b9dd9;
-  box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+  -webkit-box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+          box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
 }
 
 /**
@@ -3164,7 +3341,8 @@ input[type=number].kkcp-slider-number {
   max-width: 32px;
   padding: 3px 0;
   border: 0;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   font-weight: bold;
   background: transparent;
   margin: 0;
@@ -3199,7 +3377,8 @@ input[type=text].kkcp-unit {
   padding: 0 3px;
   border: 1px solid #dbdbdb;
   background: #f7f7f7;
-  box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
+  -webkit-box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
+          box-shadow: inset 0 1px 0 #fff, 0 1px 0 rgba(0, 0, 0, 0.08);
   font-size: 11px;
   text-align: center;
   cursor: pointer;
@@ -3222,7 +3401,8 @@ input[type=text].kkcp-unit.kkcp-current {
   padding: 0;
   border-color: transparent;
   background: transparent;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
   font-weight: bold;
   cursor: default;
   font-size: 12px;
@@ -3236,11 +3416,19 @@ input[type=text].kkcp-unit.kkcp-current {
   overflow-x: hidden;
 }
 
+.customize-control-kkcp_sortable .kkcp-sortable {
+  cursor: move;
+}
+
 .kkcp-sortable {
   padding: 4px 7px;
   border-bottom: 1px solid #dbdbdb;
   margin-bottom: 4px;
   background: #fbfbfb;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .kkcp-sortable:after {
@@ -3262,7 +3450,8 @@ input[type=text].kkcp-unit.kkcp-current {
 
 .kkcp-sortable.ui-sortable-placeholder {
   background: #dbdbdb;
-  box-shadow: inset 0 0 8px 5px #eee;
+  -webkit-box-shadow: inset 0 0 8px 5px #eee;
+          box-shadow: inset 0 0 8px 5px #eee;
   border-radius: 5px;
   visibility: visible !important;
   border-color: transparent;
@@ -3289,7 +3478,8 @@ input[type=text].kkcp-unit.kkcp-current {
   margin-top: 1px;
   background: transparent;
   border-color: transparent;
-  box-shadow: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 .mce-floatpanel {
@@ -3309,40 +3499,41 @@ input[type=text].kkcp-unit.kkcp-current {
  *
  */
 
-@media only screen{
+@media only screen {
   /* Checkbox
  */
-  .switch-light{
+  .switch-light {
     position: relative;
     display: block;
     /* simulate default browser focus outlines on the switch,
    * when the inputs are focused.
    */
   }
-  .switch-light::after{
+  .switch-light::after {
     clear: both;
     content: "";
     display: table;
   }
   .switch-light *,
   .switch-light *:before,
-  .switch-light *:after{
-    box-sizing: border-box;
+  .switch-light *:after {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
   }
-  .switch-light a{
+  .switch-light a {
     display: block;
     -webkit-transition: all 0.2s ease-out;
     transition: all 0.2s ease-out;
   }
   .switch-light label,
-  .switch-light > span{
+  .switch-light > span {
     /* breathing room for bootstrap/foundation classes.
      */
     line-height: 2em;
     vertical-align: middle;
   }
   .switch-light input:focus ~ span a,
-  .switch-light input:focus + label{
+  .switch-light input:focus + label {
     outline-width: 2px;
     outline-style: solid;
     outline-color: Highlight;
@@ -3351,20 +3542,20 @@ input[type=text].kkcp-unit.kkcp-current {
   }
   /* don't hide the input from screen-readers and keyboard access
  */
-  .switch-light input{
+  .switch-light input {
     position: absolute;
     opacity: 0;
     z-index: 3;
   }
-  .switch-light input:checked ~ span a{
+  .switch-light input:checked ~ span a {
     right: 0%;
   }
   /* inherit from label
  */
-  .switch-light strong{
+  .switch-light strong {
     font-weight: inherit;
   }
-  .switch-light > span{
+  .switch-light > span {
     position: relative;
     overflow: hidden;
     display: block;
@@ -3375,7 +3566,7 @@ input[type=text].kkcp-unit.kkcp-current {
     padding: 0;
     text-align: left;
   }
-  .switch-light span span{
+  .switch-light span span {
     position: relative;
     z-index: 2;
     display: block;
@@ -3387,7 +3578,7 @@ input[type=text].kkcp-unit.kkcp-current {
     -ms-user-select: none;
     user-select: none;
   }
-  .switch-light a{
+  .switch-light a {
     position: absolute;
     right: 50%;
     top: 0;
@@ -3399,7 +3590,7 @@ input[type=text].kkcp-unit.kkcp-current {
   }
   /* Radio Switch
  */
-  .switch-toggle{
+  .switch-toggle {
     position: relative;
     display: block;
     /* simulate default browser focus outlines on the switch,
@@ -3419,42 +3610,43 @@ input[type=text].kkcp-unit.kkcp-current {
     /* 6 items
    */
   }
-  .switch-toggle::after{
+  .switch-toggle::after {
     clear: both;
     content: "";
     display: table;
   }
   .switch-toggle *,
   .switch-toggle *:before,
-  .switch-toggle *:after{
-    box-sizing: border-box;
+  .switch-toggle *:after {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
   }
-  .switch-toggle a{
+  .switch-toggle a {
     display: block;
     -webkit-transition: all 0.2s ease-out;
     transition: all 0.2s ease-out;
   }
   .switch-toggle label,
-  .switch-toggle > span{
+  .switch-toggle > span {
     /* breathing room for bootstrap/foundation classes.
      */
     line-height: 2em;
     vertical-align: middle;
   }
   .switch-toggle input:focus ~ span a,
-  .switch-toggle input:focus + label{
+  .switch-toggle input:focus + label {
     outline-width: 2px;
     outline-style: solid;
     outline-color: Highlight;
     /* Chrome/Opera gets its native focus styles.
      */
   }
-  .switch-toggle input{
+  .switch-toggle input {
     position: absolute;
     left: 0;
     opacity: 0;
   }
-  .switch-toggle input + label{
+  .switch-toggle input + label {
     position: relative;
     z-index: 2;
     display: block;
@@ -3463,7 +3655,7 @@ input[type=text].kkcp-unit.kkcp-current {
     margin: 0;
     text-align: center;
   }
-  .switch-toggle a{
+  .switch-toggle a {
     position: absolute;
     top: 0;
     left: 0;
@@ -3474,103 +3666,103 @@ input[type=text].kkcp-unit.kkcp-current {
   }
   .switch-toggle label:nth-child(2):nth-last-child(4),
   .switch-toggle label:nth-child(2):nth-last-child(4) ~ label,
-  .switch-toggle label:nth-child(2):nth-last-child(4) ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(4) ~ a {
     width: 50%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(4) ~ input:checked:nth-child(3) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(4) ~ input:checked:nth-child(3) + label ~ a {
     left: 50%;
   }
   .switch-toggle label:nth-child(2):nth-last-child(6),
   .switch-toggle label:nth-child(2):nth-last-child(6) ~ label,
-  .switch-toggle label:nth-child(2):nth-last-child(6) ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(6) ~ a {
     width: 33.33%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(6) ~ input:checked:nth-child(3) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(6) ~ input:checked:nth-child(3) + label ~ a {
     left: 33.33%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(6) ~ input:checked:nth-child(5) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(6) ~ input:checked:nth-child(5) + label ~ a {
     left: 66.66%;
   }
   .switch-toggle label:nth-child(2):nth-last-child(8),
   .switch-toggle label:nth-child(2):nth-last-child(8) ~ label,
-  .switch-toggle label:nth-child(2):nth-last-child(8) ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(8) ~ a {
     width: 25%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(8) ~ input:checked:nth-child(3) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(8) ~ input:checked:nth-child(3) + label ~ a {
     left: 25%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(8) ~ input:checked:nth-child(5) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(8) ~ input:checked:nth-child(5) + label ~ a {
     left: 50%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(8) ~ input:checked:nth-child(7) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(8) ~ input:checked:nth-child(7) + label ~ a {
     left: 75%;
   }
   .switch-toggle label:nth-child(2):nth-last-child(10),
   .switch-toggle label:nth-child(2):nth-last-child(10) ~ label,
-  .switch-toggle label:nth-child(2):nth-last-child(10) ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(10) ~ a {
     width: 20%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(10) ~ input:checked:nth-child(3) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(10) ~ input:checked:nth-child(3) + label ~ a {
     left: 20%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(10) ~ input:checked:nth-child(5) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(10) ~ input:checked:nth-child(5) + label ~ a {
     left: 40%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(10) ~ input:checked:nth-child(7) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(10) ~ input:checked:nth-child(7) + label ~ a {
     left: 60%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(10) ~ input:checked:nth-child(9) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(10) ~ input:checked:nth-child(9) + label ~ a {
     left: 80%;
   }
   .switch-toggle label:nth-child(2):nth-last-child(12),
   .switch-toggle label:nth-child(2):nth-last-child(12) ~ label,
-  .switch-toggle label:nth-child(2):nth-last-child(12) ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(12) ~ a {
     width: 16.6%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(12) ~ input:checked:nth-child(3) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(12) ~ input:checked:nth-child(3) + label ~ a {
     left: 16.6%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(12) ~ input:checked:nth-child(5) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(12) ~ input:checked:nth-child(5) + label ~ a {
     left: 33.2%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(12) ~ input:checked:nth-child(7) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(12) ~ input:checked:nth-child(7) + label ~ a {
     left: 49.8%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(12) ~ input:checked:nth-child(9) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(12) ~ input:checked:nth-child(9) + label ~ a {
     left: 66.4%;
   }
-  .switch-toggle label:nth-child(2):nth-last-child(12) ~ input:checked:nth-child(11) + label ~ a{
+  .switch-toggle label:nth-child(2):nth-last-child(12) ~ input:checked:nth-child(11) + label ~ a {
     left: 83%;
   }
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 0){
+@media only screen and (-webkit-min-device-pixel-ratio: 0) {
   .switch-light input:focus ~ span a,
-  .switch-light input:focus + label{
+  .switch-light input:focus + label {
     outline-color: -webkit-focus-ring-color;
     outline-style: auto;
   }
   .switch-toggle input:focus ~ span a,
-  .switch-toggle input:focus + label{
+  .switch-toggle input:focus + label {
     outline-color: -webkit-focus-ring-color;
     outline-style: auto;
   }
 }
 
-@media (max-device-width: 480px){
-  .sp-color{
+@media (max-device-width: 480px) {
+  .sp-color {
     right: 40%;
   }
-  .sp-hue{
+  .sp-hue {
     left: 63%;
   }
-  .sp-fill{
+  .sp-fill {
     padding-top: 60%;
   }
 }
 
-@media (max-width: 782px){
-  .sp-initial .sp-thumb-el{
+@media (max-width: 782px) {
+  .sp-initial .sp-thumb-el {
     height: 31px;
   }
 }
