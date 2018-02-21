@@ -220,7 +220,7 @@ class Base extends wpApi.Control {
         this.inflate();
       }
       this.setupNotifications();
-      this.ready();
+      // this.ready(); // @note ready is called within inflate
     });
 
     if (api.constants['DYNAMIC_CONTROLS_RENDERING']) {
