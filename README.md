@@ -5,6 +5,7 @@
 
 > Enhance and extend the WordPress Customize.
 
+**JavaScript API** is documented with [JSdoc here](https://knitkode.com/docs/customize-plus/js/)
 
 Bugs
 ---------------
