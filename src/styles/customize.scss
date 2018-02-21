@@ -20,13 +20,14 @@
 
 // customize - core
 @import "customize/core/base";
+@import "customize/core/extras";
 @import "customize/core/loaders";
 @import "customize/core/icons";
 @import "customize/core/markdown";
 @import "customize/core/notification";
 @import "customize/core/scrollbars";
-@import "customize/core/ui";
 @import "customize/core/tabs";
+@import "customize/core/ui";
 
 // customize - controls
 @import "customize/controls/base";
@@ -35,7 +36,6 @@
 @import "customize/controls/content";
 @import "customize/controls/font-family";
 @import "customize/controls/font-weight";
-@import "customize/controls/helpers-extras";
 @import "customize/controls/icon";
 @import "customize/controls/multicheck";
 @import "customize/controls/number";
