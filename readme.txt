@@ -23,12 +23,16 @@ Customize Plus brings powerful custom controls fully integrated in the WordPress
 * [Project page](https://knitkode.com/products/customize-plus)
 * [Documentation](https://knitkode.com/docs/customize-plus)
 * [Development](https://github.com/knitkode/customize-plus/tree/develop) and [issues](https://github.com/knitkode/customize-plus/issues) on [github](https://github.com/knitkode/customize-plus)
+* [Demo](https://github.com/knitkode/customize-plus-demo)
 
 = What does this plugin do? =
 Improve the WordPress Customize experience both for theme developers and their users. Note that themes' end users will not have any benefit without a theme that actively implements Customize Plus.
 
 = Who is this Plugin ideal for? =
 Anyone interested in using the WordPress Customize interface. Especially theme developers who want to build rich Customize experiences for their users.
+
+= Can I see a quick demo? =
+Yes, try out the always up to date [official demo theme](https://github.com/knitkode/customize-plus-demo).
 
 = Features =
 * Controls can be reset individually
@@ -91,7 +95,8 @@ Checkout the [documentation here](https://knitkode.com/docs/customize-plus/getti
 Documentation can be found at [knitkode.com/docs/customize-plus](https://knitkode.com/docs/customize-plus?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=faq&utm_campaign=readme)
 
 = How do I get help? =
-First be sure.............Help is provided via the plugin support forum only, personal support by email is not available for this plugin.
+
+Help is provided via the plugin support forum only. Please visit the [support page](https://knitkode.com/support) to see other options.
 
 
 == Changelog ==
