@@ -47,7 +47,7 @@
 			<p class="description"><?php esc_html_e( 'Use the javascript search engine lunr.js to instantly find the control you need.' ); ?> <a href="https://knitkode.com/products/customize-plus-premium/components/search"><?php esc_html_e( 'Learn more' ) ?></a></p>
 		</li>
 		<li class="kkcp-premium"><i class="dashicons dashicons-admin-comments"></i>
-			<b><?php esc_html_e( 'Explanatory guides' ); ?></b> <em class="description">(<?php esc_html_e( 'Premium' ); ?>)</em>
+			<b><?php esc_html_e( 'Explanatory info popovers' ); ?></b> <em class="description">(<?php esc_html_e( 'Premium' ); ?>)</em>
 			<p class="description"><?php esc_html_e( 'Show users some help or extra information for each control.' ); ?></p>
 		</li>
 		<!-- <li class="kkcp-premium"><i class="dashicons dashicons-update"></i>

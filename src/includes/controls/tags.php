@@ -40,15 +40,10 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	public $min = null;
 
 	/**
-	 * Allowed input attributes
-	 *
-	 * Sanitize methods must be class methods of `KKcp_SanitizeJS` or global
-	 * functions
-	 *
 	 * @since 1.0.0
-	 * @var array
+	 * @inheritDoc
 	 */
-	private static $input_attrs_allowed = array(
+	protected $allowed_input_attrs = array(
 		'persist' => array( 'sanitizer' => 'bool' ),
 		'removable' => array( 'sanitizer' => 'bool' ),
 		'draggable' => array( 'sanitizer' => 'bool' ),
@@ -72,12 +67,8 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	 * @inheritDoc
 	 */
 	protected function add_to_json() {
-		$this->json['max'] = KKcp_SanitizeJS::int_or_null( $this->max );
-		$this->json['min'] = KKcp_SanitizeJS::int_or_null( $this->min );
-
-		if ( ! empty( $this->input_attrs ) ) {
-			$this->json['input_attrs'] = KKcp_SanitizeJS::options( $this->input_attrs, self::$input_attrs_allowed );
-		}
+		$this->json['max'] = KKcp_SanitizeJS::int( false, $this->max );
+		$this->json['min'] = KKcp_SanitizeJS::int( false, $this->min );
 	}
 
 	/**

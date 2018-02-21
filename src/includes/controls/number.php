@@ -24,7 +24,8 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	 * @since 1.0.0
 	 * @ineritDoc
 	 */
-	protected $input_attrs_allowed = array(
+	protected $allowed_input_attrs = array(
+		'tooltip' => array( 'sanitizer' => 'string' ),
 		'float' => array( 'sanitizer' => 'bool' ),
 		'min' => array( 'sanitizer' => 'number' ),
 		'max' => array( 'sanitizer' => 'number' ),

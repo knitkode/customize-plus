@@ -24,13 +24,12 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
-	protected $input_attrs_allowed = array(
-		'title' => array( 'sanitizer' => 'string' ),
+	protected $allowed_input_attrs = array(
+		'tooltip' => array( 'sanitizer' => 'string' ),
 		'type' => array( 'sanitizer' => 'enum', 'values' => array( 'text', 'tel', 'url', 'email', ) ),
 		'autocomplete' => array( 'sanitizer' => 'string' ),
-		'disabled' => array( 'sanitizer' => 'bool' ),
-		'maxlength' => array( 'sanitizer' => 'number' ),
-		'minlength' => array( 'sanitizer' => 'number' ),
+		'maxlength' => array( 'sanitizer' => 'int' ),
+		'minlength' => array( 'sanitizer' => 'int' ),
 		'pattern' => array( 'sanitizer' => 'string' ),
 		'placeholder' => array( 'sanitizer' => 'string' ),
 		'spellcheck' => array( 'sanitizer' => 'bool' ),
@@ -76,10 +75,12 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
 	 */
 	public function get_l10n() {
 		return array(
-			'vTextType' => esc_html__( 'Text must be a string' ),
+			'vTextType' => esc_html__( 'It must be a string' ),
 			'vInvalidUrl' => esc_html__( 'Invalid URL' ),
 			'vInvalidEmail' => esc_html__( 'Invalid email' ),
-			'vTextTooLong' => esc_html__( 'Text must be shorter than **%s** chars' ),
+			'vTextTooLong' => esc_html__( 'It must be shorter than **%s** chars' ),
+			'vTextTooShort' => esc_html__( 'It must be longer than **%s** chars' ),
+			'vTextPatternMismatch' => esc_html__( 'It must follow this pattern **%s**' ),
 			'vTextHtml' => esc_html__( 'HTML is not allowed. It will be stripped out on save' ),
 			'vTextInvalidHtml' => esc_html__( 'This text contains some unallowed HTML. It will be stripped out on save' ),
 			'vTextHtmlTags' => esc_html__( 'The following HTML tags are not allowed: **%s**. They will be stripped out on save' ),

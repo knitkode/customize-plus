@@ -21,6 +21,17 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	public $type = 'kkcp_slider';
 
 	/**
+	 * @since 1.0.0
+	 * @ineritDoc
+	 */
+	protected $allowed_input_attrs = array(
+		'float' => array( 'sanitizer' => 'bool' ),
+		'min' => array( 'sanitizer' => 'number' ),
+		'max' => array( 'sanitizer' => 'number' ),
+		'step' => array( 'sanitizer' => 'number' ),
+	);
+
+	/**
 	 * Units
 	 *
 	 * @since  1.0.0
@@ -34,25 +45,29 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @var array
 	 */
-	public static $allowed_units = KKcp_Data::CSS_UNITS;
+	protected static $allowed_units = KKcp_Data::CSS_UNITS;
 
 	/**
-	 * Constructor
-	 *
-	 * {@inheritDoc}. Override it here in order to manually populate the
-	 * `valid_choices` property from the 'globally' defined sets filtered with
-	 * the given `choices` param.
+	 * {@inheritDoc}. Override it here in order to implicitly allow float numbers
+	 * if input_attrs['step'] is a float number. Check also that the given units
+	 * are supported.
 	 *
 	 * @since 1.0.0
 	 * @override
 	 */
 	public function __construct( $manager, $id, $args = array() ) {
-		parent::__construct( $manager, $id, $args );
-
-		// allow float also implicitly  if input_attrs['step'] is a float number
-		if ( isset( $this->input_attrs['step'] ) && is_float( $this->input_attrs['step'] ) ) {
-			$this->input_attrs['float'] = true;
+		if ( isset( $args['step'] ) && is_float( $args['step'] ) ) {
+			$args['float'] = true;
 		}
+
+		if ( isset( $args['units'] ) && ! empty( $args['units'] ) ) {
+			$args['units'] = KKcp_SanitizeJS::item_in_array( false, $args['units'], self::$allowed_units );
+			if ( is_string( $args['units'] ) ) {
+				$args['units'] = array( $args['units'] );
+			}
+		}
+
+		parent::__construct( $manager, $id, $args );
 	}
 
 	/**
@@ -80,11 +95,8 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	 * @inheritDoc
 	 */
 	protected function add_to_json() {
-		if ( is_array( $this->input_attrs ) && ! empty( $this->input_attrs ) ) {
-			$this->json['attrs'] = $this->input_attrs;
-		}
 		if ( ! empty( $this->units ) ) {
-			$this->json['units'] = KKcp_SanitizeJS::in_array( $this->units, self::$allowed_units );
+			$this->json['units'] = $this->units;
 		}
 	}
 
@@ -100,12 +112,14 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 		?>
 		<# if (data.units) { #>
 		<div class="kkcp-inputs-wrap">
-			<input type="number" class="kkcp-slider-number" value="<?php // filled through js ?>" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
+			<input type="number" class="kkcp-slider-number" value="<?php // filled through js ?>" tabindex="-1"
+				<# for (var key in data.attrs) { if (data.attrs.hasOwnProperty(key)) { #>{{ key }}="{{ data.attrs[key] }}" <# } } #>>
 			<div class="kkcp-unit-wrap"><# for (var i = 0, l = data.units.length; i < l; i++) { #><input type="text" class="kkcp-unit" readonly="true" tabindex="-1" value="{{ data.units[i] }}"><# } #></div>
 		</div>
 		<# } else { #>
-		<input type="number" class="kkcp-slider-number" value="<?php // filled through js ?>" tabindex="-1" <# var p = data.attrs; for (var key in p) { if (p.hasOwnProperty(key)) { #>{{ key }}="{{ p[key] }}" <# } } #>>
-		<# } #>
+			<input type="number" class="kkcp-slider-number" value="<?php // filled through js ?>" tabindex="-1"
+				<# for (var key in data.attrs) { if (data.attrs.hasOwnProperty(key)) { #>{{ key }}="{{ data.attrs[key] }}" <# } } #>>
+			<# } #>
 		<div class="kkcp-slider-wrap">
 			<div class="kkcp-slider"></div>
 		</div>

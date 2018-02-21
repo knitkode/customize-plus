@@ -24,11 +24,10 @@ class KKcp_Customize_Control_Password extends KKcp_Customize_Control_Text {
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
-	protected $input_attrs_allowed = array(
+	protected $allowed_input_attrs = array(
 		'autocomplete' => array( 'sanitizer' => 'string' ),
-		'disabled' => array( 'sanitizer' => 'bool' ),
-		'maxlength' => array( 'sanitizer' => 'number' ),
-		'minlength' => array( 'sanitizer' => 'number' ),
+		'maxlength' => array( 'sanitizer' => 'int' ),
+		'minlength' => array( 'sanitizer' => 'int' ),
 		'pattern' => array( 'sanitizer' => 'string' ),
 		'placeholder' => array( 'sanitizer' => 'string' ),
 	);

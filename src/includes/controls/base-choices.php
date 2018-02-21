@@ -101,17 +101,18 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 	 * @override
 	 */
 	protected function add_to_json() {
-		$this->json['id'] = KKcp_SanitizeJS::string( $this->id );
-		$this->json['max'] = KKcp_SanitizeJS::int_or_null( $this->max );
-		$this->json['min'] = KKcp_SanitizeJS::int_or_null( $this->min );
+		$this->json['id'] = KKcp_SanitizeJS::string( true, $this->id );
+		$this->json['max'] = KKcp_SanitizeJS::int( false, $this->max );
+		$this->json['min'] = KKcp_SanitizeJS::int( false, $this->min );
 		$this->json['choices'] = $this->choices;
 	}
 
 	/**
 	 * Js template
 	 *
-	 * Choice supports both a string if you only want to pass a label
-	 * or an object with label, sublabel, help, help_title, etc.
+	 * Choice supports both a string if you only want to pass a label or an array
+	 * with `label`, `sublabel`, `tooltip`, `popover_title`, `popover_txt`, etc.
+	 *
 	 * {@inheritDoc}
 	 *
 	 * @since 1.0.0
@@ -153,22 +154,31 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 		<# if (choices.hasOwnProperty(val)) {
 			var label;
 			var choice = choices[val];
-			var helpClass = '';
-			var helpAttrs = '';
+			var classes = '';
+			var attributes = '';
+			var tooltip = '';
 			var id = data.id + idx++;
 			if (!_.isUndefined(choice.label)) {
 				label = choice.label;
-				if (choice.help) {
-					helpClass = 'kkcp-help';
-					helpAttrs = ' data-help=' + choice.help;
-					if (choice.help_title) helpAttrs += ' data-title=' + choice.help_title;
-					if (choice.help_img) helpAttrs += ' data-img=' + choice.help_img;
-					if (choice.help_text) helpAttrs += ' data-text=' + choice.help_text;
-					if (choice.help_video) helpAttrs += ' data-video=' + choice.help_video;
+				if (choice.popover) {
+					classes += 'kkcpui-popover ';
+					if (choice.popover.title) attributes += ' data-title="' + choice.popover.title + '"';
+					if (choice.popover.img) attributes += ' data-img="' + choice.popover.img + '"';
+					if (choice.popover.text) attributes += ' data-text="' + choice.popover.text + '"';
+					if (choice.popover.video) attributes += ' data-video="' + choice.popover.video + '"';
+				}
+				if (choice.tooltip) {
+					classes += 'kkcpui-tooltip--top ';
+					attributes += ' title="' + choice.tooltip + '"';
+					tooltip = choice.tooltip;
 				}
 			} else {
 				label = choice;
-			} #>
+			}
+			if (!tooltip) {
+				tooltip = label;
+			}
+		#>
 			<?php $this->js_tpl_choice_ui(); ?>
 		<# } #>
 		<?php

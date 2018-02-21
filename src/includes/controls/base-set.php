@@ -216,7 +216,7 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
 	protected function add_to_json() {
 		parent::add_to_json();
 
-		$this->json['setVar'] = KKcp_SanitizeJS::string( $this->set_js_var );
-		$this->json['supportedSets'] = KKcp_SanitizeJS::array( $this->supported_sets );
+		$this->json['setVar'] = KKcp_SanitizeJS::string( true, $this->set_js_var );
+		$this->json['supportedSets'] = KKcp_SanitizeJS::array( true, $this->supported_sets );
 	}
 }

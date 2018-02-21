@@ -21,15 +21,10 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 	public $type = 'kkcp_select';
 
 	/**
-	 * Allowed input attributes
-	 *
-	 * Sanitize methods must be class methods of `KKcp_SanitizeJS` or global
-	 * functions
-	 *
 	 * @since 1.0.0
-	 * @var array
+	 * @inheritDoc
 	 */
-	private static $input_attrs_allowed = array(
+	protected $allowed_input_attrs = array(
 		'native' => array( 'sanitizer' => 'bool' ),
 		'hide_selected' => array( 'sanitizer' => 'bool' ),
 		'sort' => array( 'sanitizer' => 'bool' ),
@@ -55,22 +50,10 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
-	protected function add_to_json() {
-		parent::add_to_json();
-
-		if ( ! empty( $this->input_attrs ) ) {
-			$this->json['input_attrs'] = KKcp_SanitizeJS::options( $this->input_attrs, self::$input_attrs_allowed );
-		}
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
 	protected function js_tpl_choice_ui() {
 		?>
-			<option class="{{helpClass}}"{{{ helpAttrs }}} value="{{ val }}"<?php // `selected` status synced through js in `control.ready()` ?><# if (choice.sublabel) { #> data-sublabel="{{{ choice.sublabel }}}"<# } #>>
-				{{{ label }}}
+			<option class="{{ classes }}" {{ attributes }} value="{{ val }}"<?php // `selected` status synced through js in `control.ready()` ?><# if (choice.sublabel) { #> data-sublabel="{{{ choice.sublabel }}}"<# } #>>
+				{{ label }}
 			</option>
 		<?php
 	}

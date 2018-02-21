@@ -238,6 +238,15 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 			if ( isset( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
 				$value = substr( $value, 0, $attrs['maxlength'] );
 			}
+			// min length
+			if ( isset( $attrs['minlength'] ) && is_int( $attrs['minlength'] ) && strlen( $value ) < $attrs['minlength'] ) {
+				return null;
+			}
+			// pattern
+			if ( isset( $attrs['pattern'] ) && is_string( $attrs['pattern'] ) && ! preg_match( '/'.$attrs['pattern'].'/', $value ) ) {
+				return null;
+			}
+
 			// html must be escaped
 			if ( $control->html === 'escape' ) {
 				$value = esc_html( $value );
@@ -278,7 +287,7 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 			$attrs = $control->input_attrs;
 
 			// if it's a float but it is not allowed to be it round it
-			if ( is_float( $number ) && ! isset( $control->input_attrs['float'] ) ) {
+			if ( is_float( $number ) && ! isset( $attrs['float'] ) ) {
 				$number = round( $number );
 			}
 			if ( $attrs ) {

@@ -106,7 +106,7 @@ class Slider extends Base {
 
     // Bind click action to unit picker
     // (only if there is more than one unit allowed)
-    if (params.units && params.units.length > 1) {
+    if (params['units'] && params['units'].length > 1) {
       let $inputUnits = self.__$inputUnits;
       $inputUnits.on('click', function () {
         $inputUnits.removeClass('kkcp-current');
@@ -120,7 +120,7 @@ class Slider extends Base {
     inputNumber.onkeyup = onInputNumberChange;
 
     // Init Slider
-    let sliderOptions = params.attrs || {};
+    let sliderOptions = params['attrs'] || {};
     $inputSlider.slider(_.extend(sliderOptions, {
       value: self._extractFirstNumber(),
       slide: function(event, ui) {

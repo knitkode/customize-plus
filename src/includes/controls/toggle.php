@@ -15,22 +15,28 @@
 class KKcp_Customize_Control_Toggle extends KKcp_Customize_Control_Checkbox {
 
 	/**
-	 * Control type.
-	 *
 	 * @since 1.0.0
-	 * @var string
+	 * @inheritDoc
 	 */
 	public $type = 'kkcp_toggle';
 
 	/**
-	 * Render a JS template for the content of the text control.
-	 *
 	 * @since 1.0.0
+	 * @inheritDoc
+	 */
+	protected $allowed_input_attrs = array(
+		'label_false' => array( 'sanitizer' => 'string' ),
+		'label_true' => array( 'sanitizer' => 'string' ),
+	);
+
+	/**
+	 * @since 1.0.0
+	 * @inheritDoc
 	 */
 	protected function js_tpl() {
 		?>
 		<?php $this->js_tpl_header(); ?>
-		<# var labelFalse = data.attrs.label_false; labelTrue = data.attrs.label_true; #>
+		<# var labelFalse = data.attrs ? data.attrs.label_false : ''; labelTrue = data.attrs ? data.attrs.label_true : ''; #>
 		<label class="switch-light kkcpui-switch<# if (labelFalse && labelTrue) { var l0l = labelFalse.length, l1l = labelTrue.length; #><# if ((l0l && l1l) && (Math.abs(l0l - l1l) > 1) || l0l > 6 || l1l > 6) { #> kkcpui-switch__labelsauto<# } else { #> kkcpui-switch__labels<# } } #>" onclick="">
 			<input type="checkbox" name="_customize-kkcp_toggle-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #><# if (data.value) { #> checked<# } #>>
 			<span<# if (!labelFalse && !labelTrue) { #> aria-hidden="true"<# } #>>

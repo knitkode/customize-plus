@@ -27,19 +27,19 @@ class KKcp_Customize_Control_Font_Weight extends KKcp_Customize_Control_Select {
 	public $choices = array(
 		'normal' => array(
 			'label' => 'Normal',
-			'help_txt' => 'Defines a normal text. This is default',
+			'tooltip' => 'Defines a normal text. This is default',
 		),
 		'bold' => array(
 			'label' => 'Bold',
-			'help_txt' => 'Defines thick characters',
+			'tooltip' => 'Defines thick characters',
 		),
 		'bolder' => array(
 			'label' => 'Bolder',
-			'help_txt' => 'Defines thicker characters',
+			'tooltip' => 'Defines thicker characters',
 		),
 		'lighter' => array(
 			'label' => 'Lighter',
-			'help_txt' => 'Defines lighter characters',
+			'tooltip' => 'Defines lighter characters',
 		),
 		'100' => '100',
 		'200' => '200',
@@ -52,11 +52,11 @@ class KKcp_Customize_Control_Font_Weight extends KKcp_Customize_Control_Select {
 		'900' => '900',
 		'initial' => array(
 			'label' => 'Initial',
-			'help_txt' => 'Sets this property to its default value',
+			'tooltip' => 'Sets this property to its default value',
 		),
 		'inherit' => array(
 			'label' => 'Inherit',
-			'help_txt' => 'Inherits this property from its parent element',
+			'tooltip' => 'Inherits this property from its parent element',
 		),
 	);
 }

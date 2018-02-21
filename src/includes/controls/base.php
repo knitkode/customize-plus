@@ -116,6 +116,36 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $searchable = true;
 
 	/**
+	 * Allowed input attributes
+	 *
+	 * Whitelist the input attrbutes that can be set on this type of control.
+	 * Subclasses can override this with a custom array whose sanitize methods
+	 * must be class methods of `KKcp_SanitizeJS` or global functions.
+	 *
+	 * For a list of valid HTML attributes
+	 * @see  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+	 *
+	 * @abstract
+	 * @since 1.0.0
+	 * @var array
+	 */
+	protected $allowed_input_attrs = array();
+
+	/**
+	 * {@inhertDoc}. Filter only the valid `input_attrs` values
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct( $manager, $id, $args = array() ) {
+
+		if ( isset( $args['input_attrs'] ) && ! empty( $args['input_attrs'] ) && ! empty( $this->allowed_input_attrs ) ) {
+			$args['input_attrs'] = KKcp_SanitizeJS::options( $args['input_attrs'], $this->allowed_input_attrs );
+		}
+
+		parent::__construct( $manager, $id, $args );
+	}
+
+	/**
 	 * {inheritDoc}
 	 *
 	 * Change parent method adding more default data shared by all the controls
@@ -140,6 +170,11 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		}
 		if ( ! $this->live_sanitization ) {
 			$this->json['noLiveSanitization'] = true;
+		}
+
+		// input attrs is widely used in all Customize Plus controls
+		if ( ! empty( $this->input_attrs ) ) {
+			$this->json['attrs'] = $this->input_attrs;
 		}
 
 		// remove description if not specified
@@ -206,7 +241,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @override
 	 */
 	public function content_template() {
-		$this->js_tpl_guide();
+		$this->js_tpl_info();
 		$this->js_tpl_extras();
 		$this->js_tpl();
 		$this->js_tpl_notifications();
@@ -224,16 +259,16 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
-	 * Subclasses can have their own 'guid' template overriding this method
+	 * Subclasses can have their own 'info' template overriding this method
 	 *
 	 * @premium A Customize Plus Premium feature.
 	 * @since 1.0.0
 	 */
-	protected function js_tpl_guide() {
+	protected function js_tpl_info() {
 		if ( class_exists( 'KKcpp' ) ) {
 		?>
-			<# if (data.guide) { #>
-				<i class="kkcp-guide kkcpui-control-btn dashicons dashicons-editor-help" title="<?php esc_html_e( 'Click to show some help' ); ?>"></i>
+			<# if (data.info) { #>
+				<i class="kkcp-info kkcpui-control-btn dashicons dashicons-editor-help" title="<?php esc_html_e( 'Click to expand' ); ?>"></i>
 			<# } #>
 		<?php
 		}

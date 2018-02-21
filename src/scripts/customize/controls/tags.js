@@ -83,7 +83,7 @@ class Tags extends Base {
    * @param {string} value
    */
   _initUI (value) {
-    const attrs = this.params['input_attrs'] || {};
+    const attrs = this.params['attrs'] || {};
 
     let pluginOptions = {
       plugins: [],

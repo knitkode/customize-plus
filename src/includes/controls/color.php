@@ -155,7 +155,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 			$this->json['picker'] = $this->picker;
 		}
 		if ( $this->palette ) {
-			$this->json['palette'] = KKcp_SanitizeJS::array( $this->palette );
+			$this->json['palette'] = KKcp_SanitizeJS::array( false, $this->palette );
 		}
 
 		$this->json['mode'] = 'custom';

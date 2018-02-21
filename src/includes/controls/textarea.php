@@ -21,6 +21,20 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 	public $type = 'kkcp_textarea';
 
 	/**
+	 * @since 1.0.0
+	 * @inheritDoc
+	 */
+	protected $allowed_input_attrs = array(
+		'tooltip' => array( 'sanitizer' => 'string' ),
+		'rows' => array( 'sanitizer' => 'int' ),
+		'autocomplete' => array( 'sanitizer' => 'string' ),
+		'maxlength' => array( 'sanitizer' => 'int' ),
+		'minlength' => array( 'sanitizer' => 'int' ),
+		'placeholder' => array( 'sanitizer' => 'string' ),
+		'spellcheck' => array( 'sanitizer' => 'bool' ),
+	);
+
+	/**
 	 * Enable TinyMCE textarea (default = `false`)
 	 *
 	 * @since 1.0.0
@@ -120,7 +134,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 			if ( is_array( $this->wp_editor ) ) {
 				$this->json['wp_editor'] = KKcp_SanitizeJS::options( $this->wp_editor, self::$allowed_wp_editor_options );
 			} else {
-				$this->json['wp_editor'] = KKcp_SanitizeJS::bool( $this->wp_editor );
+				$this->json['wp_editor'] = KKcp_SanitizeJS::bool( false, $this->wp_editor );
 			}
 			wp_enqueue_editor();
 		}
@@ -133,8 +147,13 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 	protected function js_tpl() {
 		?>
 		<label>
-			<?php $this->js_tpl_header(); ?><# var a = data.attrs; #>
-			<textarea class="kkcpui-textarea<# if (data.wp_editor && data.wp_editor.editorClass) { #> {{ data.wp_editor.editorClass }}<# } #>" <# for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> rows="<# if (data.wp_editor && data.wp_editor.textareaRows) { #>{{ data.wp_editor.textareaRows }}<# } else if (a.rows) { #>{{ a.rows }}<# } else { #>4<# } #>"<# if (data.wp_editor && data.wp_editor.editorHeight) { #> style="height:{{ data.wp_editor.editorHeight }}px"<# } #>><?php // filled through js ?></textarea>
+			<?php $this->js_tpl_header(); ?><# var attrs = data.attrs; #>
+			<textarea class="kkcpui-textarea<# if (data.wp_editor && data.wp_editor.editorClass) { #> {{ data.wp_editor.editorClass }}<# } #>"
+				<# for (var key in attrs) { if (attrs.hasOwnProperty(key)) { #>{{ key }}="{{ attrs[key] }}" <# } } #>
+					rows="<# if (data.wp_editor && data.wp_editor.textareaRows) { #>{{ data.wp_editor.textareaRows }}<# } else if (attrs && attrs.rows) { #>{{ attrs.rows }}<# } else { #>4<# } #>"
+					<# if (data.wp_editor && data.wp_editor.editorHeight) { #> style="height:{{ data.wp_editor.editorHeight }}px"
+				<# } #>>
+			</textarea>
 		</label>
 		<?php
 	}

@@ -211,7 +211,7 @@ export function tags( $validity={}, $value, $setting, $control ) {
  */
 export function text( $validity={}, $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
-  const $input_type = $attrs.type || 'text';
+  const $type = $attrs.type || 'text';
 
   // type
   if ( ! _.isString( $value ) ) {
@@ -219,16 +219,24 @@ export function text( $validity={}, $value, $setting, $control ) {
   }
   // url
   // make the `isURL` function behaving like php's `filter_var( $value, FILTER_VALIDATE_URL )`
-  if ( $input_type === 'url' && !isURL( $value, { require_tld: false, allow_trailing_dot: true } ) ) {
+  if ( $type === 'url' && !isURL( $value, { require_tld: false, allow_trailing_dot: true } ) ) {
     $validity = $control._addError( $validity, 'vInvalidUrl' );
   }
   // email
-  else if ( $input_type === 'email' && !isEmail( $value ) ) {
+  else if ( $type === 'email' && !isEmail( $value ) ) {
     $validity = $control._addError( $validity, 'vInvalidEmail' );
   }
   // max length
   if ( is_int( $attrs['maxlength'] ) && $value.length > $attrs['maxlength'] ) {
     $validity = $control._addError( $validity, 'vTextTooLong', $attrs['maxlength'] );
+  }
+  // min length
+  if ( is_int( $attrs['minlength'] ) && $value.length < $attrs['minlength'] ) {
+    $validity = $control._addError( $validity, 'vTextTooShort', $attrs['minlength'] );
+  }
+  // pattern
+  if ( _.isString( $attrs['pattern'] ) && ! $value.match( new RegExp( $attrs['pattern'] ) ) ) {
+    $validity = $control._addError( $validity, 'vTextPatternMismatch', $attrs['pattern'] );
   }
 
   // html must be escaped

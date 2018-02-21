@@ -55,7 +55,7 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 	 * @inheritDoc
 	 */
 	public function content_template() {
-		$this->js_tpl_guide();
+		$this->js_tpl_info();
 		$this->js_tpl();
 	}
 

@@ -53,35 +53,36 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 			$sanitizer_function = null;
 
 			if ( ! isset( $allowed[ $opt_key ] ) || ! isset( $allowed[ $opt_key ]['sanitizer'] ) ) {
-				// @@todo api warning \\
+				// @@todo api warning fif $strict \\
 				return $sanitized;
 			}
 
 			$sanitizer = $allowed[ $opt_key ]['sanitizer'];
+			$strict = isset( $allowed[ $opt_key ]['strict'] );
 
-			// allow the use of global functions to sanitize
-			if ( function_exists( $sanitizer ) ) {
-				$sanitizer_function = $sanitizer;
-			}
-			// otherwise check on this class methods
+			// first check on this class methods
 			if ( method_exists( 'KKcp_SanitizeJS', $sanitizer ) ) {
 				$sanitizer_function = 'KKcp_SanitizeJS::' . $sanitizer;
+			}
+
+			// otherwise see if a global functions has been indicated
+			if ( function_exists( $sanitizer ) ) {
+				$sanitizer_function = $sanitizer;
 			}
 
 			// if we don't have nested sanitization to do just call the sanitize method
 			if ( ! isset( $allowed[ $opt_key ]['values'] ) ) {
 				if ( $sanitizer_function ) {
-					$sanitized[ $opt_key ] = call_user_func_array( $sanitizer_function, array( $opt_value ) );
+					$sanitized[ $opt_key ] = call_user_func_array( $sanitizer_function, array( $strict, $opt_value ) );
 				} else {
-					// $sanitized[ $opt_key ] = $opt_value;
-					// @@todo api warning \\
+					wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: a sanitizer function must be specified for %s' ), $opt_key ) );
 				}
 
 			// if we have nested sanitization
 			} else {
 				// if we want one string among a predefined set
 				if ( $sanitizer === 'enum' ) {
-					$sanitized[ $opt_key ] = self::enum( $opt_value, $allowed[ $opt_key ]['values'] );
+					$sanitized[ $opt_key ] = self::enum( $strict, $opt_value, $allowed[ $opt_key ]['values'] );
 				}
 				// if we want to have a normal JavaScript Array (that is a flatten php array)
 				else if ( $sanitizer === 'array' ) {
@@ -90,14 +91,14 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 					// either loop through the given options and check if they are allowed
 					if ( is_array( $opt_value ) ) {
 						foreach ( $opt_value as $opt_value_item ) {
-							if ( self::in_array( $opt_value_item, $allowed[ $opt_key ]['values'] ) ) {
+							if ( self::item_in_array( $strict, $opt_value_item, $allowed[ $opt_key ]['values'] ) ) {
 								array_push( $sanitized[ $opt_key ], $opt_value_item );
 							}
 						}
 					}
 					// or let the user define a string only instead of a single array element
 					else if ( is_string( $opt_value ) ) {
-						if ( self::in_array( $opt_value, $allowed[ $opt_key ]['values'] ) ) {
+						if ( self::item_in_array( $strict, $opt_value, $allowed[ $opt_key ]['values'] ) ) {
 							// but the output in js is always an array
 							array_push( $sanitized[ $opt_key ], $opt_value );
 						}
@@ -142,106 +143,100 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 		}
 
 		/**
-		 * Sanitization for js value: ?number
+		 * Sanitization for js value: number
+		 *
+		 * The input might comes as a string so let's use a generic way to coerce it
+		 * to a number either int or float, @see http://bit.ly/2kh6mx9
 		 *
 		 * @since 1.0.0
+		 * @param  bool  $strict If true it returns `null` and no API error
 		 * @param  mixed $input
-		 * @return ?number
+		 * @return number|null
 		 */
-		public static function number_or_null( $input ) {
-			if ( is_null( $input ) ) {
-				return null;
-			}
-			// The input might comes as a string, this is a generic way to coerce it
-			// to a number either int or float, @see http://bit.ly/2kh6mx9
+		public static function number( $strict, $input ) {
 			$input = $input + 0;
 
 			if ( is_numeric( $input ) ) {
 				return $input;
 			}
-
-			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be numeric or null.' ), $input ) );
-		}
-
-		/**
-		 * Sanitization for js value: integer or null
-		 *
-		 * @since 1.0.0
-		 * @param  mixed   $input
-		 * @return ?number integer or null
-		 */
-		public static function int_or_null( $input ) {
-			if ( is_null( $input ) ) {
+			if ( ! $strict ) {
 				return null;
 			}
-			// The input might comes as a string, this is a generic way to coerce it
-			// to a number either int or float, @see http://bit.ly/2kh6mx9
-			$input = $input + 0;
-
-			if ( is_int( $input ) ) {
-				return $input;
-			}
-
-			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a integer or null.' ), $input ) );
+			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a number.' ), $input ) );
 		}
 
 		/**
 		 * Sanitization for js value: integer
 		 *
+		 * The input might comes as a string so let's use a generic way to coerce it
+		 * to a number either int or float, @see http://bit.ly/2kh6mx9
+		 *
 		 * @since 1.0.0
+		 * @param  bool  $strict If true it returns `null` and no API error
 		 * @param  mixed $input
-		 * @return ?int
+		 * @return int|null
 		 */
-		public static function int( $input ) {
-			// The input might comes as a string, this is a generic way to coerce it
-			// to a number either int or float, @see http://bit.ly/2kh6mx9
+		public static function int( $strict, $input ) {
 			$input = $input + 0;
 
 			if ( is_int( $input ) ) {
 				return $input;
 			}
-
+			if ( ! $strict ) {
+				return null;
+			}
 			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a integer.' ), $input ) );
 		}
 
 		/**
-		 * Sanitization for js value: in array
+		 * Sanitization for js value: item in array
 		 *
 		 * @since 1.0.0
+		 * @param  bool  $strict If true it returns `null` and no API error
 		 * @param  mixed $input
 		 * @param  array $list
-		 * @return mixed
+		 * @return mixed|null
 		 */
-		public static function in_array ( $input, $list = array() ) {
+		public static function item_in_array ( $strict, $input, $list = array() ) {
 			if ( is_string( $input ) ) {
 				if ( in_array( $input, $list ) ) {
 					return $input;
+				}
+				if ( ! $strict ) {
+					return null;
 				}
 				wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input, implode( ', ', $list ) ) );
 			} else if ( is_array( $input ) ) {
 				foreach ( $input as $input_value ) {
 					if ( ! in_array( $input_value, $list ) ) {
+						if ( ! $strict ) {
+							return null;
+						}
 						wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %1$s must be one of %2$s.' ), $input_value, implode( ', ', $list ) ) );
+					} else {
+						return $input;
 					}
-					return $input;
 				}
 			}
-
 		}
 
 		/**
 		 * Sanitization for js value: array
 		 *
+		 * @note we might want to force a flat array check with
+		 * ! KKcp_Helper::is_assoc( $input )
+		 *
 		 * @since 1.0.0
+		 * @param  bool  $strict If true it returns `null` and no API error
 		 * @param  mixed $input
-		 * @return ?array
+		 * @return array|null
 		 */
-		public static function array ( $input ) {
+		public static function array ( $strict, $input ) {
 			if ( is_array( $input ) ) {
 				return $input;
 			}
-			if ( KKcp_Helper::is_assoc( $input ) ) {
-				wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a flat array.' ), $input ) );
+			if ( ! $strict ) {
+				return null;
 			}
 			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be an array.' ), $input ) );
 		}
@@ -250,14 +245,17 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 		 * Sanitization for js value: boolean
 		 *
 		 * @since 1.0.0
+		 * @param  bool  $strict If true it returns `null` and no API error
 		 * @param  mixed $input
-		 * @return ?bool
+		 * @return bool|null
 		 */
-		public static function bool ( $input ) {
+		public static function bool ( $strict, $input ) {
 			if ( is_bool( $input ) ) {
 				return $input;
 			}
-
+			if ( ! $strict ) {
+				return null;
+			}
 			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a boolean.' ), $input ) );
 		}
 
@@ -265,14 +263,17 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 		 * Sanitization for js value: string
 		 *
 		 * @since 1.0.0
+		 * @param  bool  $strict If true it returns `null` and no API error
 		 * @param  mixed $input
-		 * @return ?string
+		 * @return string|null
 		 */
-		public static function string ( $input ) {
+		public static function string ( $strict, $input ) {
 			if ( is_string( $input ) ) {
 				return $input;
 			}
-
+			if ( ! $strict ) {
+				return null;
+			}
 			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a string.' ), $input ) );
 		}
 
@@ -280,17 +281,19 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 		 * Sanitization for js value: enum
 		 *
 		 * @since 1.0.0
-		 * @param  array $options
-		 * @param  array $allowed_options
-		 * @return ?string
+		 * @param  bool  $strict If true it returns `null` and no API error
+		 * @param  array $input
+		 * @param  array $list
+		 * @return string
 		 */
-		public static function enum ( $input, $allowed_values ) {
-			if ( is_string( $input ) && in_array( $input, $allowed_values ) ) {
+		public static function enum ( $strict, $input, $list ) {
+			if ( is_string( $input ) && in_array( $input, $list ) ) {
 				return $input;
 			}
-			return $allowed_values[0];
-
-			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value must be one of: %s' ), implode( $allowed_values, ', ' ) ) );
+			if ( ! $strict ) {
+				return $list[0];
+			}
+			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value must be one of: %s' ), implode( $list, ', ' ) ) );
 		}
 	}
 

@@ -26,10 +26,10 @@ class KKcp_Customize_Control_Radio extends KKcp_Customize_Control_Base_Radio {
 	 */
 	protected function js_tpl_choice_ui() {
 		?>
-			<label class="{{helpClass}}"{{{ helpAttrs }}}>
+			<label class="{{ classes }}" {{{ attributes }}}>
 				<input type="radio" value="{{ val }}" name="_customize-kkcp_radio-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
-				{{{ label }}}
-				<# if (choice.sublabel) { #><small> ({{{ choice.sublabel }}})</small><# } #>
+				{{ label }}
+				<# if (choice.sublabel) { #><small> ({{ choice.sublabel }})</small><# } #>
 			</label>
 		<?php
 	}

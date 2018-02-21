@@ -35,7 +35,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 	 * @override
 	 */
 	protected function add_to_json() {
-		$this->json['id'] = KKcp_SanitizeJS::string( $this->id );
+		$this->json['id'] = KKcp_SanitizeJS::string( true, $this->id );
 		$this->json['choices'] = $this->choices;
 	}
 

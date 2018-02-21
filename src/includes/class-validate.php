@@ -212,24 +212,31 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 		 */
 		public static function text( $validity, $value, $setting, $control ) {
 			$attrs = $control->input_attrs;
-
-			$input_type = isset( $attrs['type'] ) ? $attrs['type'] : 'text';
+			$type = isset( $attrs['type'] ) ? $attrs['type'] : 'text';
 
 			// type
 			if ( ! is_string( $value ) ) {
 				$validity = $control->add_error( $validity, 'vTextType' );
 			}
 			// url
-			if ( 'url' === $input_type && ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
+			if ( 'url' === $type && ! filter_var( $value, FILTER_VALIDATE_URL ) ) {
 				$validity = $control->add_error( $validity, 'vInvalidUrl' );
 			}
 			// email
-			else if ( 'email' === $input_type && ! is_email( $value ) ) {
+			else if ( 'email' === $type && ! is_email( $value ) ) {
 				$validity = $control->add_error( $validity, 'vInvalidEmail' );
 			}
 			// max length
 			if ( isset( $attrs['maxlength'] ) && is_int( $attrs['maxlength'] ) && strlen( $value ) > $attrs['maxlength'] ) {
 				$validity = $control->add_error( $validity, 'vTextTooLong', $attrs['maxlength'] );
+			}
+			// min length
+			if ( isset( $attrs['minlength'] ) && is_int( $attrs['minlength'] ) && strlen( $value ) < $attrs['minlength'] ) {
+				$validity = $control->add_error( $validity, 'vTextTooShort', $attrs['minlength'] );
+			}
+			// pattern
+			if ( isset( $attrs['pattern'] ) && is_string( $attrs['pattern'] ) && ! preg_match( '/'.$attrs['pattern'].'/', $value ) ) {
+				$validity = $control->add_error( $validity, 'vTextPatternMismatch', $attrs['pattern'] );
 			}
 
 			// html must be escaped

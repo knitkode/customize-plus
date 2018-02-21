@@ -65,7 +65,7 @@ class Select extends BaseChoices {
    * @override
    */
   ready () {
-    const attrs = this.params['input_attrs'] || {};
+    const attrs = this.params['attrs'] || {};
     const setting = this.setting;
 
     this.__select = this._container.getElementsByTagName('select')[0];

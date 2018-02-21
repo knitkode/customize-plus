@@ -223,6 +223,14 @@ export function text( $value, $setting, $control ) {
   if ( is_int( $attrs['maxlength'] ) && $value.length > $attrs['maxlength'] ) {
     $value = $value.substr( 0, $attrs['maxlength'] );
   }
+  // min length
+  if ( is_int( $attrs['minlength'] ) && $value.length < $attrs['minlength'] ) {
+    return null;
+  }
+  // pattern
+  if ( _.isString( $attrs['pattern'] ) && ! $value.match( new RegExp( $attrs['pattern'] ) ) ) {
+    return null;
+  }
   // html must be escaped
   if ( $control.params.html === 'escape' ) {
     $value = _.escape( $value );
