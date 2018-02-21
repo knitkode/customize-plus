@@ -30,6 +30,7 @@ if ( ! class_exists( 'KKcp_Theme' ) && class_exists( 'KKcp_Singleton' ) ):
 			'customize_tree',
 			'images_base_url',
 			'docs_base_url',
+			'dynamic_controls_rendering',
 			'styles',
 		);
 
@@ -87,6 +88,21 @@ if ( ! class_exists( 'KKcp_Theme' ) && class_exists( 'KKcp_Singleton' ) ):
 		 * @var string
 		 */
 		public static $docs_base_url = '';
+
+
+		/**
+		 * Dynamic controls rendering (experimental)
+		 *
+		 * This optional property is defined by the theme through
+		 * `add_theme_support( 'kkcp-customize' )`.
+		 * If `true` Customize Plus Controls in the Customize screen will be rendered
+		 * "on demand", that is only when their section is open. This is opt-in for
+		 * now.
+		 *
+		 * @since 1.0.0
+		 * @var boolean
+		 */
+		public static $dynamic_controls_rendering = false;
 
 		/**
 		 * Theme settings default values
@@ -190,16 +206,6 @@ if ( ! class_exists( 'KKcp_Theme' ) && class_exists( 'KKcp_Singleton' ) ):
 						wp_die( sprintf( esc_html__( '%1$s no %2$s array given.' ), 'Customize Plus', '`customize_tree`' ) );
 					}
 					break;
-				case 'styles':
-					if ( isset( $configuration[ 'styles' ] ) ) {
-						if ( is_array( $configuration[ 'styles' ] ) ) {
-							return $configuration[ 'styles' ];
-						} else {
-							/* translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code) */
-							wp_die( sprintf( esc_html__( '%1$s %2$s must be an array.' ), 'Customize Plus', '`styles`' ) );
-						}
-					}
-					break;
 				case 'images_base_url':
 					if ( isset( $configuration['images_base_url'] ) ) {
 						return esc_url( trailingslashit( $configuration['images_base_url'] ) );
@@ -212,6 +218,19 @@ if ( ! class_exists( 'KKcp_Theme' ) && class_exists( 'KKcp_Singleton' ) ):
 						return esc_url( trailingslashit( $configuration['docs_base_url'] ) );
 					} else {
 						return '';
+					}
+					break;
+				case 'dynamic_controls_rendering':
+					return isset( $configuration['dynamic_controls_rendering'] );
+					break;
+				case 'styles':
+					if ( isset( $configuration[ 'styles' ] ) ) {
+						if ( is_array( $configuration[ 'styles' ] ) ) {
+							return $configuration[ 'styles' ];
+						} else {
+							/* translators: %1$s is 'Plugin_Name: ', %2$s is the subject (code) */
+							wp_die( sprintf( esc_html__( '%1$s %2$s must be an array.' ), 'Customize Plus', '`styles`' ) );
+						}
 					}
 					break;
 				default:

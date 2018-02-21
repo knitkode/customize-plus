@@ -179,8 +179,11 @@ class Base extends wpApi.Control {
 
       // @note this way of managing controls is disabled here
       // control.linkElements();
+
       // @note disable here for on demand rendering/inflation
-      // control.embed();
+      if (!api.constants['DYNAMIC_CONTROLS_RENDERING']) {
+        control.embed();
+      }
     };
 
     if ( 0 === deferredSettingIds.length ) {
@@ -209,29 +212,34 @@ class Base extends wpApi.Control {
     // the `ready` method)
     this.onInit();
 
-    // After the this is embedded on the page, invoke the "ready" method.
+    // After the control is embedded on the page, invoke the "ready" method.
     this.deferred.embedded.done(() => {
-      // @note this way of managing thiss is disabled
+      // @note this way of managing controls is disabled
       // this.linkElements();
+      if (!api.constants['DYNAMIC_CONTROLS_RENDERING']) {
+        this.inflate();
+      }
       this.setupNotifications();
       this.ready();
     });
 
-    // embed control only when the parent section get clicked to keep the DOM
-    // light,to make this work all data can't be stored in the DOM, which is ok
-    wpApi.section(this.section()).expanded.bind((expanded) => {
-      // @@doubt \\
-      // either deflate and re-inflate dom each time...
-      if (expanded) {
-        _.defer(this.inflate.bind(this));
-      } else {
-        this.deflate();
-      }
-      // ...or just do it the first time a control is expanded
-      // if (expanded && !this.rendered) {
-      //   _.defer(this.inflate.bind(this));
-      // }
-    });
+    if (api.constants['DYNAMIC_CONTROLS_RENDERING']) {
+      // embed control only when the parent section get clicked to keep the DOM
+      // light,to make this work no data must be stored in the DOM
+      wpApi.section(this.section()).expanded.bind((expanded) => {
+        // @@doubt \\
+        // either deflate and re-inflate dom each time...
+        if (expanded) {
+          _.defer(this.inflate.bind(this));
+        } else {
+          this.deflate();
+        }
+        // ...or just do it the first time a control is expanded
+        // if (expanded && !this.rendered) {
+        //   _.defer(this.inflate.bind(this));
+        // }
+      });
+    }
 
     // controls can be setting-less from 4.5, so check
     if (this.setting) {
@@ -251,35 +259,38 @@ class Base extends wpApi.Control {
       // change on the UI, only if the control is rendered
       this.setting.bind((value) => {
         // @@todo maybe do this section expanded check as well
-        // const sectionId = this.section();
-        // if ( ! sectionId || ( wpApi.section.has( sectionId ) && wpApi.section( sectionId ).expanded() ) ) {
         // \\
-        if (this.rendered) {
-          this.syncUI.call(this, value);
+        const sectionId = this.section();
+        if ( ! sectionId || ( wpApi.section.has( sectionId ) && wpApi.section( sectionId ).expanded() ) ) {
+          if (this.rendered) {
+            this.syncUI.call(this, value);
+          }
         }
       });
 
-      // this is needed to render a setting notification in its this
-      this.setting.notifications.bind('add', (notification) => {
-        // if (DEBUG) {
-        //   console.log(`Notification add [${notification.code}] for default
-        //    setting of this '${this.id}'`);
-        // }
-        this.notifications.add(new Notification(notification.code,
-          { message: notification.message })
-        );
-        this.notifications.render();
-      });
+      if (api.constants['DYNAMIC_CONTROLS_RENDERING']) {
+        // this is needed to render a setting notification in its this
+        this.setting.notifications.bind('add', (notification) => {
+          // if (DEBUG) {
+          //   console.log(`Notification add [${notification.code}] for default
+          //    setting of this '${this.id}'`);
+          // }
+          this.notifications.add(new Notification(notification.code,
+            { message: notification.message })
+          );
+          this.notifications.render();
+        });
 
-      // this is needed to render a setting notification in its this
-      this.setting.notifications.bind('removed', (notification) => {
-        // if (DEBUG) {
-        //   console.log(`Notification remove [${notification.code}] for default
-        //    setting of this '${this.id}'`);
-        // }
-        this.notifications.remove(notification.code);
-        this.notifications.render();
-      });
+        // this is needed to render a setting notification in its this
+        this.setting.notifications.bind('removed', (notification) => {
+          // if (DEBUG) {
+          //   console.log(`Notification remove [${notification.code}] for default
+          //    setting of this '${this.id}'`);
+          // }
+          this.notifications.remove(notification.code);
+          this.notifications.render();
+        });
+      }
     }
   }
 

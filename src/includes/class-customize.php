@@ -240,6 +240,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'THEME_URL' => get_stylesheet_directory_uri(),
 				'IMAGES_BASE_URL' => KKcp_Theme::$images_base_url,
 				'DOCS_BASE_URL' => KKcp_Theme::$docs_base_url,
+				'DYNAMIC_CONTROLS_RENDERING' => KKcp_Theme::$dynamic_controls_rendering,
 			);
 			$additional = (array) apply_filters( 'kkcp_customize_get_js_constants', array() );
 			return array_merge( $required, self::$controls_constants, $additional );
