@@ -177,8 +177,8 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * Add parameters passed to the JavaScript via JSON. This free us to override
 	 * the `to_json` method calling everytime the parent method.
 	 *
-	 * @override
 	 * @since 1.0.0
+	 * @override
 	 */
 	protected function add_to_json() {}
 
@@ -186,24 +186,24 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * Never render any content for controls from PHP. We rely completely on js,
 	 * and declare the control `<li>` container in the js control base class.
 	 *
-	 * @override
 	 * @since 1.0.0
+	 * @override
 	 */
 	protected function render() {}
 
 	/**
 	 * Never render any inner content for controls from PHP.
 	 *
-	 * @override
 	 * @since 1.0.0
+	 * @override
 	 */
 	public function render_content() {}
 
 	/**
 	 * Compose and minify js template rendered in the `js_tpl` function.
 	 *
-	 * @override
 	 * @since 1.0.0
+	 * @override
 	 */
 	public function content_template() {
 		$this->js_tpl_guide();
@@ -438,7 +438,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since  1.0.0
 	 * @param WP_Error					$validity
 	 * @param string						$msg_id
-	 * @param mixd|array|null 	$msg_arguments
+	 * @param mixed|array|null 	$msg_arguments
 	 * @return WP_Error
 	 */
 	public function add_error( $validity, $msg_id, $msg_arguments ) {
