@@ -20,8 +20,8 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	/**
 	 * Optional value
 	 *
-	 * Whether this control is optional, in other words, when its setting is
-	 * allowed to be empty.
+	 * Whether this control setting value is optional, in other words, when its
+	 * setting is allowed to be empty.
 	 *
 	 * @since 1.0.0
 	 * @var bool
@@ -79,15 +79,15 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $live_sanitization = true;
 
 	/**
-	 * Guide
+	 * Info
 	 *
-	 * The control guide data, optional. It displays some help in a popover.
+	 * The control info data, optional. It displays the given content in a popover.
+	 *
 	 * @premium A Customize Plus Premium feature.
-	 *
 	 * @since 1.0.0
 	 * @var array
 	 */
-	public $guide;
+	public $info;
 
 	/**
 	 * Advanced
@@ -153,14 +153,14 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 
 		// @premium A Customize Plus Premium features.
 		if ( class_exists( 'KKcpp' ) ) {
-			// add guide if any
-			if ( $this->guide ) {
-				$this->json['guide'] = $this->guide;
+			// add info data if any
+			if ( $this->info ) {
+				$this->json['info'] = $this->info;
 			}
 
-			// add advanced flag if specified
+			// add advanced data if specified
 			if ( $this->advanced ) {
-				$this->json['advanced'] = true;
+				$this->json['advanced'] = $this->advanced;
 			}
 
 			// add unsearchable flag if specified
@@ -171,62 +171,6 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 
 		// call a function to add data to `control.params`
 		$this->add_to_json();
-	}
-
-	/**
-	 * Add `'attrs'` to JSON checking that the values specifies in the given
-	 * options are allowed to be configured.
-	 *
-	 * @since 1.0.0
-	 * @param array $allowed The array contianing the allowed option keys.
-	 * @param array $options The associative array with the customized options.
-	 */
-	protected function add_attrs_allowed_to_json( $allowed = array(), $options = array() ) {
-		if ( is_array( $options ) && ! empty( $options ) ) {
-			$attrs = array();
-			foreach ( $options as $key => $value ) {
-				if ( in_array( $key, $allowed ) ) {
-					$attrs[ $key ] = $value;
-				}
-			}
-			if ( ! empty( $attrs ) ) {
-				$this->json['attrs'] = $attrs;
-			}
-		}
-	}
-
-	/**
-	 * Add `'attrs'` to JSON merging them with the given defaults.
-	 * Important is that null values are removed from the attrs array,
-	 * so we use the defaults array both to check that the custom options
-	 * are actually configurable (check if key exist on the defaults) and
-	 * also to merge required default values using a value different than
-	 * `null` in the given #defaults array.
-	 *
-	 * @since 1.0.0
-	 * @param array $defaults Associative array with the default values.
-	 * @param array $options  Associative array with the custom value.
-	 */
-	protected function add_attrs_with_defaults_to_json( $defaults = array(), $options = array() ) {
-		$attrs = (array) $defaults;
-		if ( is_array( $options ) && ! empty( $options ) ) {
-			$options_cleaned = array();
-			foreach ( $options as $key => $value ) {
-				if ( $defaults[ $key ] ) {
-					$options_cleaned[ $key ] = $value;
-				}
-			}
-			$attrs = array_merge( $defaults, $options_cleaned );
-		}
-		// now remove null values
-		foreach( $attrs as $key => $value ) {
-			if( is_null( $value ) ) {
-				unset( $attrs[ $key ] );
-			}
-		}
-		if ( ! empty( $attrs ) ) {
-			$this->json['attrs'] = $attrs;
-		}
 	}
 
 	/**
@@ -331,7 +275,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	}
 
 	/**
-	 * To override in subclasses with js templates
+	 * To override in subclasses with a js template
 	 *
 	 * @abstract
 	 * @since 1.0.0
