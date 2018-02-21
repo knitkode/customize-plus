@@ -46,7 +46,6 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 	 */
 	protected $set_js_var = 'fontFamiliesSets';
 
-
 	/**
 	 * @since  1.0.0
 	 * @inheritDoc
@@ -99,10 +98,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 	 * @inheritDoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		if ( is_string( $value ) ) {
-			$value = explode( ',', $value );
-		}
-		return parent::validate( $validity, $value, $setting, $control );
+		return KKcp_Validate::font_family( $validity, $value, $setting, $control );
 	}
 }
 

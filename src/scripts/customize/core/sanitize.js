@@ -33,48 +33,25 @@ export function string ($input) {
 }
 
 /**
- * Sanitize array
- *
- * @since 1.0.0
- * @param {mixed}                $input   The value to sanitize.
- * @return {array} The sanitized value.
- */
-export function array ($input) {
-  let sanitized = [];
-  let inputAsArray = $input;
-
-  // in the edge case it comes as a stringified array
-  if (_.isString($input)) {
-    try {
-      inputAsArray = JSON.parse($input);
-    } catch(e) {
-      inputAsArray = $input;
-    }
-  }
-
-  // coerce in any case to an array, the rest will be dealt during validation
-  if (!_.isArray(inputAsArray)) {
-    inputAsArray = [$input];
-  }
-
-  for (let i = 0; i < inputAsArray.length; i++) {
-    sanitized.push(string(inputAsArray[i]));
-  }
-
-  return sanitized;
-}
-
-/**
  * Sanitize single choice
  *
  * @since 1.0.0
  * @param {string}               $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
  * @param {WP_Customize_Control} $control Control instance.
- * @return {string} The sanitized value.
+ * @return {string|null} The sanitized value.
  */
-export function singleChoice ($value, $setting, $control) {
-  return string($value);
+export function singleChoice ( $value, $setting, $control ) {
+  const {_validChoices} = $control;
+  const choices = _validChoices && _validChoices.length ? _validChoices : $control.params.choices;
+
+  // if it is an allowed choice return it escaped
+  if ( _.isArray( choices ) && choices.indexOf( $value ) !== -1 ) {
+    // return _.escape( $value );
+    return Helper.stripHTML( $value );
+  }
+
+  return null;
 }
 
 /**
@@ -84,10 +61,54 @@ export function singleChoice ($value, $setting, $control) {
  * @param {array}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
  * @param {WP_Customize_Control} $control Control instance.
- * @return {array} The sanitized value.
+ * @param {bool}                 $check_length Should match choices length? e.g.
+ *                                             for sortable control where the
+ *                                             all the defined choices should be
+ *                                             present in the sanitized value
+ * @return {array|null} The sanitized value.
  */
-export function multipleChoices($value, $setting, $control) {
-  return array($value);
+export function multipleChoices( $value, $setting, $control, $check_length = false ) {
+  const {_validChoices, params} = $control;
+  const $choices = _validChoices && _validChoices.length ? _validChoices : params.choices;
+
+  if ( !_.isArray( $value ) ) {
+    $value = [ $value ];
+  }
+
+  // filter out the not alowed choices and sanitize the others
+  let $valueClean = [];
+  for (let i = 0; i < $value.length; i++) {
+    if ( $choices.indexOf( $value[i] ) !== -1 ) {
+      // $valueClean.push( _.escape( $value[i] ) );
+      $valueClean.push( Helper.stripHTML( $value[i] ) );
+    }
+  }
+  $value = $valueClean;
+
+  // if the selection was all wrong return the default, otherwise go on and try
+  // to fix it
+  if ( ! $value.length ) {
+    return null;
+  }
+
+  // fill the array if there are not enough values
+  if ( $check_length && $choices.length !== $value.length ) {
+    $value = _.uniq( _.union( $value, $choices ) );
+    return $value.slice( 0, $choices.length );
+  }
+
+  // fill the array if there are not enough values
+  if ( is_int( params.min ) && $value.length < params.min ) {
+    const $availableChoices = _.difference( $choices, $value );
+    $value = $value.concat( $availableChoices.slice( 0, $value.length - params.min ) );
+  }
+
+  // slice the array if there are too many values
+  if ( is_int( params.max ) && $value.length > params.max ) {
+    $value = $value.slice( 0, params.max );
+  }
+
+  return $value;
 }
 
 /**
@@ -97,43 +118,41 @@ export function multipleChoices($value, $setting, $control) {
  * @param {mixed}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
  * @param {WP_Customize_Control} $control Control instance.
- * @return {array} The sanitized value.
+ * @return {string|array|null} The sanitized value.
  */
-export function oneOrMoreChoices ($value, $setting, $control) {
-  if (_.isArray($value)) {
-    if ($value.length === 1) {
-      return $value[0];
-    }
-    return $value;
+export function oneOrMoreChoices ( $value, $setting, $control ) {
+  if ( _.isString( $value ) ) {
+    return singleChoice( $value, $setting, $control );
   }
-  if (_.isString($value)) {
-    return $value;
+  if ( _.isArray( $value ) ) {
+    return multipleChoices( $value, $setting, $control );;
   }
-  return [JSON.stringify($value)];
+  return null;
 }
 
 /**
  * Sanitize font family
  *
- * @since  1.0.0
+ * @since 1.0.0
+ *
  * @param {string|array}         $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
  * @param {WP_Customize_Control} $control Control instance.
- * @return {string} The sanitized value.
+ * @return {string|null} The sanitized value.
  */
-export function fontFamily( $value ) {
-  let $sanitized = [];
+export function fontFamily( $value, $setting, $control ) {
+  $value = Helper.normalizeFontFamilies( $value );
 
   if ( _.isString( $value ) ) {
-    $value = $value.split(',');
+    $value = $value.split( ',' );
   }
+  $value = multipleChoices( $value, $setting, $control );
+
   if ( _.isArray( $value ) ) {
-    for (let i = 0; i < $value.length; i++) {
-      $sanitized.push(Helper.normalizeFontFamily($value[i]));
-    }
-    $sanitized = $sanitized.join(',');
+    return $value.join( ',' );
   }
-  return $sanitized;
+
+  return null;
 }
 
 /**
@@ -143,7 +162,7 @@ export function fontFamily( $value ) {
  * @param {mixed}                $value    The value to validate.
  * @param {WP_Customize_Setting} $setting  Setting instance.
  * @param {WP_Customize_Control} $control  Control instance.
- * @return {number}
+ * @return {string:0|1}
  */
 export function checkbox( $value, $setting, $control ) {
   return Boolean( $value ) ? '1' : '0';
@@ -159,23 +178,22 @@ export function checkbox( $value, $setting, $control ) {
  * @return {string} The sanitized value.
  */
 export function tags( $value, $setting, $control ) {
-  if (_.isString($value )) {
+  const {params} = $control;
+
+  if ( _.isString( $value ) ) {
     $value = $value.split(',');
   }
-  if (!_.isArray($value)) {
-    $value = [string($value)];
+  if ( ! _.isArray( $value ) ) {
+    $value = [ string( $value ) ];
   }
-  $value = _.map($value, value => { return value.trim() });
-  $value = _.unique($value);
+  $value = _.map( $value, value => { return value.trim() });
 
-  if ( $control.params.max ) {
-   let $max_items = parseInt( $control.params.max, 10 );
-
-   if ( $value.length > $max_items ) {
-     $value = $value.slice( 0, $max_items );
-   }
+  if ( is_int( params.max ) && $value.length > params.max ) {
+    $value = $value.slice( 0, params.max );
   }
-  return Helper.stripHTML($value.join(','));
+
+  // return _.escape( $value.join(',') );
+  return Helper.stripHTML( $value.join(',') );
 }
 
 /**
@@ -234,7 +252,7 @@ export function text( $value, $setting, $control ) {
  * @param {mixed}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
  * @param {WP_Customize_Control} $control Control instance.
- * @return {number} The sanitized value.
+ * @return {number|null} The sanitized value.
  */
 export function number( $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
@@ -242,7 +260,7 @@ export function number( $value, $setting, $control ) {
   let $number = Helper.extractNumber( $value, $control.params.allowFloat );
 
   if ( $number === null ) {
-    return $setting.default;
+    return null;;
   }
 
   // if it's a float but it is not allowed to be it round it
@@ -305,7 +323,7 @@ export function sizeUnit( $unit, $allowed_units ) {
  * @param {mixed}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
  * @param {WP_Customize_Control} $control Control instance.
- * @return {string} The sanitized value.
+ * @return {string|number|null} The sanitized value.
  */
 export function slider( $value, $setting, $control ) {
   let $number = Helper.extractNumber( $value, $control.params.allowFloat );
@@ -315,7 +333,7 @@ export function slider( $value, $setting, $control ) {
   $unit = sizeUnit( $unit, $control.params.units );
 
   if ( $number === null ) {
-    return $setting.default;
+    return null;
   }
 
   if ( $unit ) {
@@ -357,7 +375,7 @@ export function color( $value, $setting, $control ) {
   const $validity = Validate.color( {}, $value, $setting, $control );
 
   if ( _.keys( $validity ).length ) {
-    return $setting.default;
+    return null;
   }
   return $value;
 }
@@ -369,10 +387,10 @@ export function color( $value, $setting, $control ) {
  */
 export default {
   singleChoice,
-  oneOrMoreChoices,
   multipleChoices,
-  checkbox,
+  oneOrMoreChoices,
   fontFamily,
+  checkbox,
   tags,
   text,
   number,

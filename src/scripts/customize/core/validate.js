@@ -48,11 +48,13 @@ export function required( $validity={}, $value, $setting, $control ) {
  * @return {WP_Error}
  */
 export function singleChoice( $validity={}, $value, $setting, $control ) {
-  const choices = $control._validChoices && $control._validChoices.length ? $control._validChoices : $control.params.choices;
+  const {_validChoices} = $control;
+  const $choices = _validChoices && _validChoices.length ? _validChoices : $control.params.choices;
 
-  if ( choices.indexOf( $value ) === -1 ) {
+  if ( _.isArray( $choices ) && $choices.indexOf( $value ) === -1 ) {
     $validity = $control._addError( $validity, 'vNotAChoice', $value );
   }
+
   return $validity;
 }
 
@@ -72,31 +74,31 @@ export function singleChoice( $validity={}, $value, $setting, $control ) {
  * @return {WP_Error}
  */
 export function multipleChoices( $validity={}, $value, $setting, $control, $check_length = false ) {
-  const {params} = $control;
-  const choices = $control._validChoices && $control._validChoices.length ? $control._validChoices : params.choices;
+  const {_validChoices, params} = $control;
+  const $choices = _validChoices && _validChoices.length ? _validChoices : params.choices;
 
   if ( !_.isArray( $value ) ) {
     $validity = $control._addError( $validity, 'vNotArray' );
   } else {
 
-    // maybe check that the length of the value array is correct
-    if ( $check_length && choices.length !== $value.length ) {
-      $validity = $control._addError( $validity, 'vNotExactLengthArray', choices.length );
+    // check that the length of the value array is correct
+    if ( $check_length && $choices.length !== $value.length ) {
+      $validity = $control._addError( $validity, 'vNotExactLengthArray', $choices.length );
     }
 
-    // maybe check the minimum number of choices selectable
+    // check the minimum number of choices selectable
     if ( is_int( params.min ) && $value.length < params.min ) {
       $validity = $control._addError( $validity, 'vNotMinLengthArray', params.min );
     }
 
-    // maybe check the maxmimum number of choices selectable
+    // check the maximum number of choices selectable
     if ( is_int( params.max ) && $value.length > params.max ) {
       $validity = $control._addError( $validity, 'vNotMaxLengthArray', params.max );
     }
 
     // now check that the selected values are allowed choices
     for (let i = 0; i < $value.length; i++) {
-      if ( choices.indexOf( $value[i] ) === -1 ) {
+      if ( $choices.indexOf( $value[i] ) === -1 ) {
         $validity = $control._addError( $validity, 'vNotAChoice', $value[i] );
       }
     }
@@ -119,6 +121,28 @@ export function multipleChoices( $validity={}, $value, $setting, $control, $chec
 export function oneOrMoreChoices( $validity={}, $value, $setting, $control ) {
   if ( _.isString( $value ) ) {
     return singleChoice( $validity, $value, $setting, $control );
+  }
+  return multipleChoices( $validity, $value, $setting, $control );
+}
+
+/**
+ * Validate font family
+ *
+ * @since 1.0.0
+ *
+ * @param {WP_Error}             $validity
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {WP_Error}
+ */
+export function fontFamily( $validity, $value, $setting, $control ) {
+  if ( _.isString( $value ) ) {
+    $value = $value.split( ',' );
+  }
+  // this is enough to do in JavaScript only, there is sanitization anyway
+  if ( _.isArray( $value ) ) {
+    $value = _.map( $value, v => Helper.normalizeFontFamily( v ) );
   }
   return multipleChoices( $validity, $value, $setting, $control );
 }
@@ -389,6 +413,7 @@ export default api.core.Validate = {
   singleChoice,
   multipleChoices,
   oneOrMoreChoices,
+  fontFamily,
   checkbox,
   tags,
   text,

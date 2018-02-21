@@ -37,7 +37,7 @@ class Sortable extends BaseChoices {
    * @override
    */
   sanitize (value) {
-    return Sanitize.multipleChoices(value, this.setting, this);
+    return Sanitize.multipleChoices(value, this.setting, this, true);
   }
 
   /**

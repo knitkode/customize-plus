@@ -32,32 +32,7 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 			if ( ! is_string( $input ) ) {
 				$input = (string) $input;
 			}
-			return sanitize_text_field( $input );
-		}
-
-		/**
-		 * Sanitize array
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param mixed      		   	   $input   The value to sanitize.
-		 * @return array The sanitized value.
-		 */
-		public static function array( $input ) {
-			if ( ! is_array( $input ) ) {
-				$input = (array) $input;
-			}
-
-			$input_sanitized = array();
-
-			foreach ( $input as $key ) {
-				if ( is_string( $key ) ) {
-					array_push( $input_sanitized, sanitize_text_field( $key ) );
-				} else {
-					array_push( $input_sanitized, $key );
-				}
-			}
-			return $input_sanitized;
+			return $input;
 		}
 
 		/**
@@ -68,10 +43,22 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		 * @param string         			 $value   The value to sanitize.
 		 * @param WP_Customize_Setting $setting Setting instance.
 		 * @param WP_Customize_Control $control Control instance.
-		 * @return string The sanitized value.
+		 * @return string|null The sanitized value.
 		 */
 		public static function single_choice( $value, $setting, $control ) {
-			return self::string( $value );
+			if ( isset( $control->valid_choices ) && ! empty( $control->valid_choices ) ) {
+				$choices = $control->valid_choices;
+			} else {
+				$choices = $control->choices;
+			}
+
+			// if it is an allowed choice return it escaped
+			if ( is_array( $choices ) && in_array( $value, $choices ) ) {
+				// return esc_html( $value );
+				return wp_strip_all_tags( $value );
+			}
+
+			return null;
 		}
 
 		/**
@@ -82,10 +69,58 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		 * @param array         			 $value   The value to sanitize.
 		 * @param WP_Customize_Setting $setting Setting instance.
 		 * @param WP_Customize_Control $control Control instance.
-		 * @return array The sanitized value.
+		 * @param boolean  						 $check_length Should match choices length? e.g.
+		 *                                      		 for sortable control where the
+		 *                                         	 all the defined choices should be
+		 *                                           present in the sanitized value
+		 * @return array|null The sanitized value.
 		 */
-		public static function multiple_choices( $value, $setting, $control ) {
-			return self::array( $value );
+		public static function multiple_choices( $value, $setting, $control, $check_length = false ) {
+			if ( isset( $control->valid_choices ) && ! empty( $control->valid_choices ) ) {
+				$choices = $control->valid_choices;
+			} else {
+				$choices = $control->choices;
+			}
+
+			if ( ! is_array( $value ) ) {
+				$value = array( $value );
+			}
+
+			// filter out the not allowed choices and sanitize the others
+			$i = -1;
+			$value_clean = array();
+			foreach ( $value as $single_value ) {
+				$i++;
+				if ( in_array( $single_value, $choices ) ) {
+					// array_push( $value_clean, esc_html( $single_value ) );
+					array_push( $value_clean, wp_strip_all_tags( $single_value ) );
+				}
+			}
+			$value = $value_clean;
+
+			// if the selection was all wrong return the default, otherwise go on and
+			// try to fix it
+			if ( empty( $value ) ) {
+				return null;
+			}
+
+			// fill the array if there are not enough values
+			if ( $check_length && count( $choices ) !== count( $value ) ) {
+				$value = array_unique( array_merge( $value, $choices ) );
+				return array_slice( $value, 0, count( $choices ) );
+			}
+			// fill the array if there are not enough values
+			if ( isset( $control->min ) && is_int( $control->min ) && count( $value ) < $control->min ) {
+				$available_choices = array_diff( $choices, $value );
+				$value = array_merge( $value, array_slice( $available_choices, 0, count( $value ) - $control->min ) );
+			}
+
+			// slice the array if there are too many values
+			if ( isset( $control->max ) && is_int( $control->max ) && count( $value ) > $control->max ) {
+				$value = array_slice( $value, 0, $control->max );
+			}
+
+			return $value;
 		}
 
 		/**
@@ -96,39 +131,41 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		 * @param string|array         $value   The value to sanitize.
 		 * @param WP_Customize_Setting $setting Setting instance.
 		 * @param WP_Customize_Control $control Control instance.
-		 * @return string|array The sanitized value.
+		 * @return string|array|null The sanitized value.
 		 */
 		public static function one_or_more_choices( $value, $setting, $control ) {
 			if ( is_string( $value ) ) {
-				return self::single_choice( $value );
+				return self::single_choice( $value, $setting, $control );
 			}
-
-			return self::multiple_choices( $value );
+			if ( is_array( $value ) ) {
+				return self::multiple_choices( $value, $setting, $control );
+			}
+			return null;
 		}
 
 		/**
 		 * Sanitize font family
 		 *
-		 * @since  1.0.0
+		 * @since 1.0.0
 		 *
 		 * @param string|array         $value   The value to sanitize.
 		 * @param WP_Customize_Setting $setting Setting instance.
 		 * @param WP_Customize_Control $control Control instance.
-		 * @return string The sanitized value.
+		 * @return string|null The sanitized value.
 		 */
-		public static function font_family( $value ) {
-			$sanitized = array();
+		public static function font_family( $value, $setting, $control ) {
+			$value = KKcp_Helper::normalize_font_families( $value );
 
 			if ( is_string( $value ) ) {
 				$value = explode( ',', $value );
 			}
+			$value = self::multiple_choices( $value, $setting, $control );
+
 			if ( is_array( $value ) ) {
-				foreach ( $value as $font_family ) {
-					array_push( $sanitized, KKcp_Helper::normalize_font_family( $font_family ) );
-				}
-				$sanitized = implode( ',', $sanitized );
+				return implode( ',', $value );
 			}
-			return $sanitized;
+
+			return null;
 		}
 
 		/**
@@ -164,15 +201,12 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 				$value = array( self::string( $value ) );
 			}
 			$value = array_map( 'trim', $value );
-			$value = array_unique( $value );
 
-			if ( isset( $control->max ) ) {
-				$max_items = filter_var( $control->max, FILTER_SANITIZE_NUMBER_INT );
-
-				if ( count( $value ) > $max_items ) {
-					$value = array_slice( $value, $max_items );
-				}
+			if ( isset( $control->max ) && is_int( $control->max ) && count( $value ) > $control->max ) {
+				$value = array_slice( $value, 0, $control->max );
 			}
+
+			// return esc_html( implode( ',', $value ) );
 			return wp_strip_all_tags( implode( ',', $value ) );
 		}
 
@@ -232,13 +266,13 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		 * @param mixed         			 $value   The value to sanitize.
 		 * @param WP_Customize_Setting $setting Setting instance.
 		 * @param WP_Customize_Control $control Control instance.
-		 * @return number The sanitized value.
+		 * @return number|null The sanitized value.
 		 */
 		public static function number( $value, $setting, $control ) {
 			$number = KKcp_Helper::extract_number( $value, $control );
 
 			if ( is_null( $number ) ) {
-				return $setting->default;
+				return null;
 			}
 
 			$attrs = $control->input_attrs;
@@ -254,11 +288,11 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 					$number = round( $number / $attrs['step'] ) * $attrs['step'];
 				}
 				// if it's lower than the minimum return the minimum
-				if ( isset( $attrs['min'] ) && $number < $attrs['min'] ) {
+				if ( isset( $attrs['min'] ) && is_numeric( $attrs['min'] ) && $number < $attrs['min'] ) {
 					return $attrs['min'];
 				}
 				// if it's higher than the maxmimum return the maximum
-				if ( isset( $attrs['max'] ) && $number > $attrs['max'] ) {
+				if ( isset( $attrs['max'] ) && is_numeric( $attrs['max'] ) && $number > $attrs['max'] ) {
 					return $attrs['max'];
 				}
 			}
@@ -303,7 +337,7 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		 * @param mixed         			 $value   The value to sanitize.
 		 * @param WP_Customize_Setting $setting Setting instance.
 		 * @param WP_Customize_Control $control Control instance.
-		 * @return string|number The sanitized value.
+		 * @return string|number|null The sanitized value.
 		 */
 		public static function slider( $value, $setting, $control ) {
 			$number = KKcp_Helper::extract_number( $value, $control->allowFloat );
@@ -313,7 +347,7 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 			$unit = self::size_unit( $unit, $control->units );
 
 			if ( is_null( $number ) ) {
-				return $setting->default;
+				return null;
 			}
 
 			if ( $unit ) {
@@ -353,7 +387,7 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 			$validity = KKcp_Validate::color( new WP_Error(), $value, $setting, $control );
 
 			if ( ! empty( $validity->get_error_messages() ) ) {
-				return $setting->default;
+				return null;
 			}
 			return $value;
 		}

@@ -672,11 +672,10 @@ class Base extends wpApi.Control {
     const btnResetLast = container.getElementsByClassName(CLASS_RESET_LAST)[0];
     const btnResetInitial = container.getElementsByClassName(CLASS_RESET_INITIAL)[0];
     const btnResetFactory = container.getElementsByClassName(CLASS_RESET_FACTORY)[0];
-    // value variables, uses closure
+    // setting, uses closure
     const setting = this.setting;
     // state
     let isOpen = false;
-    const {vLastSaved, vInitial, vFactory} = setting;
 
     // handlers
     const _closeExtras = function () {
@@ -684,19 +683,19 @@ class Base extends wpApi.Control {
     };
     // reset setting to the last saved value and closes the `extras` dropdown.
     const _resetLastValue = function () {
-      setting.forceSet(vLastSaved);
+      setting.forceSet(setting['vLastSaved']);
       _closeExtras();
     };
     // reset setting to the value at the beginning of the session. and closes
     // the `extras` dropdown.
     const _resetInitialValue = function () {
-      setting.forceSet(vInitial);
+      setting.forceSet(setting['vInitial']);
       _closeExtras();
     };
     // reset setting to the value at the factory state (as defined in the theme
     // defaults) and closes the `extras` dropdown.
     const _resetFactoryValue = function () {
-      setting.forceSet(vFactory);
+      setting.forceSet(setting['vFactory']);
       _closeExtras();
     };
     // enable button responsible for: resetting to last saved value
@@ -744,17 +743,17 @@ class Base extends wpApi.Control {
 
       const currentValue = this.softenize(setting());
 
-      if (_.isEqual(currentValue, this.softenize(vLastSaved))) {
+      if (_.isEqual(currentValue, this.softenize(setting['vLastSaved']))) {
         _disableBtnLast();
       } else {
         _enableBtnLast();
       }
-      if (_.isEqual(currentValue, this.softenize(vInitial))) {
+      if (_.isEqual(currentValue, this.softenize(setting['vInitial']))) {
         _disableBtnInitial();
       } else {
         _enableBtnInitial();
       }
-      if (_.isEqual(currentValue, this.softenize(vFactory))) {
+      if (_.isEqual(currentValue, this.softenize(setting['vFactory']))) {
         _disableBtnFactory();
       } else {
         _enableBtnFactory();

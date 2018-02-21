@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { api, wpApi } from '../core/globals';
 import Helper from '../core/helper';
+import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 import BaseSet from './base-set';
 
@@ -19,6 +20,7 @@ import BaseSet from './base-set';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
+ * @requires Validate
  * @requires Sanitize
  * @requires Helper
  */
@@ -28,10 +30,7 @@ class FontFamily extends BaseSet {
    * @override
    */
   validate (value) {
-    if ( _.isString(value)) {
-      value = value.split(',');
-    }
-    return super.validate(value);
+    return Validate.fontFamily({}, value, this.setting, this);
   }
 
   /**
@@ -54,9 +53,6 @@ class FontFamily extends BaseSet {
       return option;
     });
     this._validChoices = _.map(this._validChoices, value => Helper.normalizeFontFamily(value));
-
-    this.params['vInitial'] = Sanitize.fontFamily(this.params['vInitial']);
-    this.params['vFactory'] = Sanitize.fontFamily(this.params['vFactory']);
   }
 
   /**
@@ -91,7 +87,7 @@ class FontFamily extends BaseSet {
       this.__input.selectize.destroy();
     }
 
-    this.__input.value = Sanitize.fontFamily(value);
+    this.__input.value = this.setting();
 
     // init selectize plugin
     const opts = this._getSelectizeOpts();

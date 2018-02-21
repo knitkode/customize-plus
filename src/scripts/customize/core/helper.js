@@ -172,12 +172,40 @@ export const rgbaToRgb = hexToRgb;
  * Be sure that a font family is wrapped in quote, good for consistency
  *
  * @since  1.0.0
- * @param  {string|array} $value
+ *
+ * @param  {string} $value
  * @return {string}
  */
 export function normalizeFontFamily( $value ) {
   $value = $value.replace(/'/g, '').replace(/"/g, '');
   return `'${$value.trim()}'`;
+}
+
+/**
+ * Normalize font families
+ *
+ * Be sure that one or multiple font families are all trimmed and wrapped in
+ * quotes, good for consistency
+ *
+ * @since  1.0.0
+ *
+ * @param {string|array} $value
+ * @return {string|null}
+ */
+export function normalizeFontFamilies( $value ) {
+  let $sanitized = [];
+
+  if ( _.isString( $value ) ) {
+    $value = $value.split(',');
+  }
+  if ( _.isArray( $value ) ) {
+    for (var i = 0; i < $value.length; i++) {
+      $sanitized.push( normalizeFontFamily( $value[i] ));
+    }
+    return $sanitized.join(',');
+  }
+
+  return null;
 }
 
 /**
@@ -342,6 +370,7 @@ export default {
   hexToRgb,
   rgbaToRgb,
   normalizeFontFamily,
+  normalizeFontFamilies,
   extractSizeUnit,
   extractNumber,
   modulus,

@@ -99,6 +99,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			),
 			'settings' => array(
 				'kkcp_base' => 'KKcp_Customize_Setting_Base',
+				'kkcp_font_family' => 'KKcp_Customize_Setting_Font_Family',
 			),
 		);
 
@@ -580,7 +581,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			// get type (required) this is not meant for custom settings class for now
 			$setting_type = 'kkcp_base'; // $setting_args['type'];
 
-			// if a native setting type has been try to use its class
+			// if a native setting type has been set try to use its class
 			if ( $setting_type && isset( self::$native_types['settings'][ $setting_type ] ) ) {
 				$setting_type_class = self::$native_types['settings'][ $setting_type ];
 			}
@@ -588,8 +589,12 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			if ( $control_type && isset( self::$custom_types['controls'][ $control_type ] ) ) {
 				$control_type_class = self::$custom_types['controls'][ $control_type ];
 
-				// only if it does use also our custom setting base class
-				if ( !$setting_type_class && $setting_type && isset( self::$custom_types['settings'][ $setting_type ] ) ) {
+				// only if it does check whther we have a custom setting type for this control
+				if ( !$setting_type_class && $control_type && isset( self::$custom_types['settings'][ $control_type ] ) ) {
+					$setting_type_class = self::$custom_types['settings'][ $control_type ];
+				}
+				// otherwise use our custom setting base class
+				else if ( !$setting_type_class && $setting_type && isset( self::$custom_types['settings'][ $setting_type ] ) ) {
 					$setting_type_class = self::$custom_types['settings'][ $setting_type ];
 				}
 			}

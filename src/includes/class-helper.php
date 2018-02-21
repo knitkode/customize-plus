@@ -188,11 +188,38 @@ if ( ! class_exists( 'KKcp_Helper' ) ):
 		 * consistency
 		 *
 		 * @since  1.0.0
-		 * @param  string|array $value
+		 * @param  string $value
 		 * @return string
 		 */
 		public static function normalize_font_family( $value ) {
 			return "'" . trim( str_replace( "'", '', str_replace( '"', '', $value ) ) ) . "'";
+		}
+
+		/**
+		 * Normalize font families
+		 *
+		 * Be sure that one or multiple font families are all trimmed and wrapped in
+		 * quotes, good for consistency
+		 *
+		 * @since  1.0.0
+		 *
+		 * @param string|array value
+		 * @return string|null
+		 */
+		public static function normalize_font_families( $value ) {
+			$sanitized = array();
+
+			if ( is_string( $value ) ) {
+				$value = explode( ',', $value );
+			}
+			if ( is_array( $value ) ) {
+				foreach ( $value as $font_family ) {
+					array_push( $sanitized, self::normalize_font_family( $font_family ) );
+				}
+				return implode( ',', $sanitized );
+			}
+
+			return null;
 		}
 
 		/**

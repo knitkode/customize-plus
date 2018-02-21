@@ -51,13 +51,13 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 		 * @return WP_Error
 		 */
 		public static function single_choice( $validity, $value, $setting, $control ) {
-			if ( isset( $control->valid_choices ) && !empty( $control->valid_choices ) ) {
+			if ( isset( $control->valid_choices ) && ! empty( $control->valid_choices ) ) {
 				$choices = $control->valid_choices;
 			} else {
 				$choices = $control->choices;
 			}
 
-			if ( ! in_array( $value, $choices ) ) {
+			if ( is_array( $choices ) && ! in_array( $value, $choices ) ) {
 				$validity = $control->add_error( $validity, 'vNotAChoice', $value );
 			}
 			return $validity;
@@ -79,7 +79,7 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 		 * @return WP_Error
 		 */
 		public static function multiple_choices( $validity, $value, $setting, $control, $check_length = false ) {
-			if ( isset( $control->valid_choices ) && !empty( $control->valid_choices ) ) {
+			if ( isset( $control->valid_choices ) && ! empty( $control->valid_choices ) ) {
 				$choices = $control->valid_choices;
 			} else {
 				$choices = $control->choices;
@@ -89,22 +89,22 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 				$validity = $control->add_error( $validity, 'vNotArray' );
 			} else {
 
-				// maybe check that the length of the value array is correct
+				// check that the length of the value array is correct
 				if ( $check_length && count( $choices ) !== count( $value ) ) {
 					$validity = $control->add_error( $validity, 'vNotExactLengthArray', count( $choices ) );
 				}
 
-				// maybe check the minimum number of choices selectable
+				// check the minimum number of choices selectable
 				if ( isset( $control->min ) && is_int( $control->min ) && count( $value ) < $control->min ) {
 					$validity = $control->add_error( $validity, 'vNotMinLengthArray', $control->min );
 				}
 
-				// maybe check the maxmimum number of choices selectable
+				// check the maxmimum number of choices selectable
 				if ( isset( $control->max ) && is_int( $control->max ) && count( $value ) > $control->max ) {
 					$validity = $control->add_error( $validity, 'vNotMaxLengthArray', $control->max );
 				}
 
-				// now check that the selected values are allowed choices
+				// check that the selected values are allowed choices
 				foreach ( $value as $value_key ) {
 					if ( ! in_array( $value_key, $choices ) ) {
 						$validity = $control->add_error( $validity, 'vNotAChoice', $value_key );
@@ -129,6 +129,24 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 		public static function one_or_more_choices( $validity, $value, $setting, $control ) {
 			if ( is_string( $value ) ) {
 				return self::single_choice( $validity, $value, $setting, $control );
+			}
+			return self::multiple_choices( $validity, $value, $setting, $control );
+		}
+
+		/**
+		 * Validate font family
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param WP_Error 						 $validity
+		 * @param mixed 							 $value    The value to validate.
+		 * @param WP_Customize_Setting $setting  Setting instance.
+		 * @param WP_Customize_Control $control  Control instance.
+		 * @return WP_Error
+		 */
+		public static function font_family( $validity, $value, $setting, $control ) {
+			if ( is_string( $value ) ) {
+				$value = explode( ',', $value );
 			}
 			return self::multiple_choices( $validity, $value, $setting, $control );
 		}
