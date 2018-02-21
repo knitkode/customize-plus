@@ -81,7 +81,6 @@ class Password extends Text {
    * @access protected
    *
    * @param  {boolean} isVisible
-   * @return {[type]}
    */
   _toggleVisibility (isVisible) {
     if (isVisible) {
