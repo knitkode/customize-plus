@@ -1,0 +1,13 @@
+/**
+ * Custom notification template (with markdown)
+ */
+.kkcp-notification {
+  &.notice p {
+  	margin: 0;
+    padding: 0;
+  }
+}
+
+#customize-controls .kkcp-control .customize-control-notifications-container {
+	margin-top: 9px;
+}

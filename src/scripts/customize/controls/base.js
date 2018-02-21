@@ -7,6 +7,7 @@ import vsprintf from 'locutus/php/strings/vsprintf';
 import { api, wpApi } from '../core/globals';
 import Utils from '../core/utils';
 import Validate from '../core/validate';
+import Notification from '../core/notification';
 
 /**
  * Control Base class
@@ -264,7 +265,7 @@ class Base extends wpApi.Control {
         //   console.log(`Notification add [${notification.code}] for default
         //    setting of this '${this.id}'`);
         // }
-        this.notifications.add(new wpApi.Notification(notification.code,
+        this.notifications.add(new Notification(notification.code,
           { message: notification.message })
         );
         this.notifications.render();
@@ -371,7 +372,7 @@ class Base extends wpApi.Control {
         // if the notification is not there already add it
         if (currentNotificationCodes.indexOf(code) === -1) {
 
-          this.setting.notifications.add(new wpApi.Notification(
+          this.setting.notifications.add(new Notification(
             code, { message: $validity[code] || api.l10n['vInvalid'] }
           ));
         }

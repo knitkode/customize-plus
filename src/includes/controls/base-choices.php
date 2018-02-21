@@ -85,10 +85,10 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 	public function get_l10n() {
 		return array(
 			'vNotArray' => esc_html__( 'It must be a list of values' ),
-			'vNotAChoice' => esc_html__( '`%s` is not an allowed choice' ),
-			'vNotExactLengthArray' => esc_html__( 'It must contain exactly `%s` values' ),
-			'vNotMinLengthArray' => esc_html__( 'It must contain minimum `%s` values' ),
-			'vNotMaxLengthArray' => esc_html__( 'It must contain maximum `%s` values' ),
+			'vNotAChoice' => esc_html__( '**%s** is not an allowed choice' ),
+			'vNotExactLengthArray' => esc_html__( 'It must contain exactly **%s** values' ),
+			'vNotMinLengthArray' => esc_html__( 'It must contain minimum **%s** values' ),
+			'vNotMaxLengthArray' => esc_html__( 'It must contain maximum **%s** values' ),
 		);
 	}
 
