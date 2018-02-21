@@ -25,12 +25,35 @@ abstract class KKcp_Customize_Control_Base_Input extends KKcp_Customize_Control_
 		?>
 		<label>
 			<?php $this->js_tpl_header(); ?><# var attrs = data.attrs || {}; #>
-			<span class="kkcpui-tooltip--top" title="{{ attrs.tooltip || '' }}">
-				<input type="{{ attrs.type || data.type.replace('kkcp_','') }}" value="<?php // filled through js ?>"
-					<# for (var key in attrs) { if (attrs.hasOwnProperty(key) && key !== 'title') { #>{{ key }}="{{ attrs[key] }}" <# } } #>
-				>
-			</span>
+			<# if (attrs.tooltip) { #><span class="kkcpui-tooltip--top" title="{{ attrs.tooltip || '' }}"><# } #>
+				<?php $this->js_tpl_inner(); ?>
+			<# if (attrs.tooltip) { #></span>><# } #>
 		</label>
+		<?php
+	}
+
+	/**
+	 * Js template for the actual input element area, override this e.g. in the
+	 * Password Control
+	 *
+	 * @since 1.0.0
+	 * @abstract
+	 */
+	protected function js_tpl_inner () {
+		$this->js_tpl_input();
+	}
+
+	/**
+	 * Js template for the actual input element
+	 *
+	 * @since 1.0.0
+	 * @abstract
+	 */
+	protected function js_tpl_input () {
+		?>
+		<input class="kkcp-input" type="{{ attrs.type || data.type.replace('kkcp_','') }}" value="<?php // filled through js ?>"
+			<# for (var key in attrs) { if (attrs.hasOwnProperty(key) && key !== 'title') { #>{{ key }}="{{ attrs[key] }}" <# } } #>
+		>
 		<?php
 	}
 }
