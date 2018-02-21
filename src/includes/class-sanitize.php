@@ -278,33 +278,32 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		 * @return number|null The sanitized value.
 		 */
 		public static function number( $value, $setting, $control ) {
+			$attrs = $control->input_attrs;
 			$number = KKcp_Helper::extract_number( $value, $control );
 
 			if ( is_null( $number ) ) {
 				return null;
 			}
 
-			$attrs = $control->input_attrs;
-
 			// if it's a float but it is not allowed to be it round it
 			if ( is_float( $number ) && ! isset( $attrs['float'] ) ) {
 				$number = round( $number );
 			}
-			if ( $attrs ) {
-				// if doesn't respect the step given round it to the closest
-				// then do the min and max checks
-				if ( isset( $attrs['step'] ) && KKcp_Helper::modulus( $number, $attrs['step'] ) != 0 ) {
-					$number = round( $number / $attrs['step'] ) * $attrs['step'];
-				}
-				// if it's lower than the minimum return the minimum
-				if ( isset( $attrs['min'] ) && is_numeric( $attrs['min'] ) && $number < $attrs['min'] ) {
-					return $attrs['min'];
-				}
-				// if it's higher than the maxmimum return the maximum
-				if ( isset( $attrs['max'] ) && is_numeric( $attrs['max'] ) && $number > $attrs['max'] ) {
-					return $attrs['max'];
-				}
+
+			// if doesn't respect the step given round it to the closest
+			// then do the min and max checks
+			if ( isset( $attrs['step'] ) && KKcp_Helper::modulus( $number, $attrs['step'] ) != 0 ) {
+				$number = round( $number / $attrs['step'] ) * $attrs['step'];
 			}
+			// if it's lower than the minimum return the minimum
+			if ( isset( $attrs['min'] ) && is_numeric( $attrs['min'] ) && $number < $attrs['min'] ) {
+				return $attrs['min'];
+			}
+			// if it's higher than the maxmimum return the maximum
+			if ( isset( $attrs['max'] ) && is_numeric( $attrs['max'] ) && $number > $attrs['max'] ) {
+				return $attrs['max'];
+			}
+
 			return $number;
 		}
 

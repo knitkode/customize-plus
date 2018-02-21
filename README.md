@@ -55,4 +55,4 @@ Unless otherwise specified, all the plugin files are licensed under GNU General 
 
 
 ---------------
-:registered: KnitKode 2017 | [knitkode.com](https://knitkode.com) | dev@knitkode.com
+:registered: KnitKode 2018 | [knitkode.com](https://knitkode.com) | dev@knitkode.com

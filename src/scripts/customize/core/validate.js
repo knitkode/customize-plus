@@ -210,7 +210,7 @@ export function tags( $validity={}, $value, $setting, $control ) {
  * @return {WP_Error}
  */
 export function text( $validity={}, $value, $setting, $control ) {
-  const $attrs = $control.params.attrs;
+  const $attrs = $control.params['attrs'] || {};
   const $type = $attrs.type || 'text';
 
   // type
@@ -282,7 +282,7 @@ export function text( $validity={}, $value, $setting, $control ) {
  * @return {WP_Error}
  */
 export function number( $validity={}, $value, $setting, $control ) {
-  const $attrs = $control.params.attrs;
+  const $attrs = $control.params.attrs || {};
 
   // coerce to number
   $value = Number($value);
@@ -358,11 +358,14 @@ export function sizeUnit( $validity, $unit, $allowed_units ) {
  * @return {WP_Error}
  */
 export function slider( $validity={}, $value, $setting, $control ) {
-  let $number = Helper.extractNumber( $value, $control.attrs['float'] );
-  let $unit = Helper.extractSizeUnit( $value, $control.params['units'] );
+  const {$params} = $control;
+  const $attrs = $params.attrs || {};
+
+  const $number = Helper.extractNumber( $value, !!$attrs['float'] );
+  const $unit = Helper.extractSizeUnit( $value, $params['units'] );
 
   $validity = number( $validity, $number, $setting, $control );
-  $validity = sizeUnit( $validity, $unit, $control.params['units'] );
+  $validity = sizeUnit( $validity, $unit, $params['units'] );
 
   return $validity;
 }

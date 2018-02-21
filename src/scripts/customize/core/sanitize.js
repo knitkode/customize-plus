@@ -206,7 +206,7 @@ export function tags( $value, $setting, $control ) {
  * @return {string} The sanitized value.
  */
 export function text( $value, $setting, $control ) {
-  const $attrs = $control.params.attrs;
+  const $attrs = $control.params['attrs'] || {};;
   const $input_type = $attrs.type || 'text';
 
   $value = string( $value );
@@ -263,32 +263,31 @@ export function text( $value, $setting, $control ) {
  * @return {number|null} The sanitized value.
  */
 export function number( $value, $setting, $control ) {
-  const $attrs = $control.params.attrs;
+  const $attrs = $control.params['attrs'] || {};
   let $number = Helper.extractNumber( $value, $attrs['float'] );
 
   if ( $number === null ) {
-    return null;;
+    return null;
   }
 
   // if it's a float but it is not allowed to be it round it
   if ( is_float( $number ) && !$attrs['float'] ) {
     $number = round( $number );
   }
-  if ( $attrs ) {
-    // if doesn't respect the step given round it to the closest
-    // then do the min and max checks
-    if ( _.isNumber( $attrs['step'] ) && Helper.modulus($number, $attrs['step']) !== 0 ) {
-      $number = round( $number / $attrs['step'] ) * $attrs['step'];
-    }
-    // if it's lower than the minimum return the minimum
-    if ( _.isNumber( $attrs['min'] ) && $number < $attrs['min'] ) {
-      return $attrs['min'];
-    }
-    // if it's higher than the maxmimum return the maximum
-    if ( _.isNumber( $attrs['max'] ) && $number > $attrs['max'] ) {
-      return $attrs['max'];
-    }
+  // if doesn't respect the step given round it to the closest
+  // then do the min and max checks
+  if ( _.isNumber( $attrs['step'] ) && Helper.modulus($number, $attrs['step']) !== 0 ) {
+    $number = round( $number / $attrs['step'] ) * $attrs['step'];
   }
+  // if it's lower than the minimum return the minimum
+  if ( _.isNumber( $attrs['min'] ) && $number < $attrs['min'] ) {
+    return $attrs['min'];
+  }
+  // if it's higher than the maxmimum return the maximum
+  if ( _.isNumber( $attrs['max'] ) && $number > $attrs['max'] ) {
+    return $attrs['max'];
+  }
+
   return $number;
 }
 
@@ -333,11 +332,14 @@ export function sizeUnit( $unit, $allowed_units ) {
  * @return {string|number|null} The sanitized value.
  */
 export function slider( $value, $setting, $control ) {
-  let $number = Helper.extractNumber( $value, $control.attrs['float'] );
-  let $unit = Helper.extractSizeUnit( $value, $control.params['units'] );
+  const {$params} = $control;
+  const $attrs = $params.attrs || {};
+
+  let $number = Helper.extractNumber( $value, !!$attrs['float'] );
+  let $unit = Helper.extractSizeUnit( $value, $params['units'] );
 
   $number = number( $number, $setting, $control );
-  $unit = sizeUnit( $unit, $control.params['units'] );
+  $unit = sizeUnit( $unit, $params['units'] );
 
   if ( $number === null ) {
     return null;

@@ -65,7 +65,10 @@
     .selectize-input,
     .selectize-dropdown {
       border-color: $state--danger-border;
-      // box-shadow: $state--danger-box-shadow;
+
+      &:focus {
+        box-shadow: $state--danger-box-shadow;
+      }
     }
   }
 }

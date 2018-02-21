@@ -25,7 +25,7 @@ abstract class KKcp_Customize_Control_Base_Input extends KKcp_Customize_Control_
 		?>
 		<label>
 			<?php $this->js_tpl_header(); ?><# var attrs = data.attrs || {}; #>
-			<span class="kkcpui-tooltip--top" title="{{ attrs.tooltip }}">
+			<span class="kkcpui-tooltip--top" title="{{ attrs.tooltip || '' }}">
 				<input type="{{ attrs.type || data.type.replace('kkcp_','') }}" value="<?php // filled through js ?>"
 					<# for (var key in attrs) { if (attrs.hasOwnProperty(key) && key !== 'title') { #>{{ key }}="{{ attrs[key] }}" <# } } #>
 				>
