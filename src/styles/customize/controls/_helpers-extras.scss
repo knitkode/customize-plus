@@ -106,25 +106,3 @@
     content: "\f177";
   }
 }
-
-/**
- * Undo action (with timer) after having hided a control
- *
- */
-.kkcp-hide-undo {
-  display: block;
-  padding: 6px 0;
-  text-align: center;
-  cursor: pointer;
-  &:before {
-    font-family: 'dashicons';
-    content: "\f171";
-    margin-right: 3px;
-  }
-}
-.kkcp-timer {
-  color: #888;
-  &:before {
-    content: "... ";
-  }
-}
