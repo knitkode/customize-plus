@@ -40,15 +40,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	public $min = null;
 
 	/**
-	 * Selectize options
-	 *
-	 * @since 1.0.0
-	 * @var array
-	 */
-	public $selectize = array();
-
-	/**
-	 * Selectize allowed options
+	 * Allowed input attributes
 	 *
 	 * Sanitize methods must be class methods of `KKcp_SanitizeJS` or global
 	 * functions
@@ -56,13 +48,11 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @var array
 	 */
-	public static $selectize_allowed_options = array(
-		'plugins' => array( 'sanitizer' => 'array', 'values' => array(
-			'restore_on_backspace',
-			'drag_drop',
-			'remove_button'
-		) ),
+	private static $input_attrs_allowed = array(
 		'persist' => array( 'sanitizer' => 'bool' ),
+		'removable' => array( 'sanitizer' => 'bool' ),
+		'draggable' => array( 'sanitizer' => 'bool' ),
+		'restore_on_backspace' => array( 'sanitizer' => 'bool' ),
 	);
 
 	/**
@@ -72,8 +62,8 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	public function get_l10n() {
 		return array(
 			'vTagsType' => esc_html__( 'Tags must be a string' ),
-			'vTagsMin' => esc_html__( 'Minimum %s tags required' ),
-			'vTagsMax' => esc_html__( 'Maximum %s tags allowed' ),
+			'vTagsMin' => esc_html__( 'Minimum `%s` tags required' ),
+			'vTagsMax' => esc_html__( 'Maximum `%s` tags allowed' ),
 		);
 	}
 
@@ -85,8 +75,8 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 		$this->json['max'] = KKcp_SanitizeJS::int_or_null( $this->max );
 		$this->json['min'] = KKcp_SanitizeJS::int_or_null( $this->min );
 
-		if ( ! empty( $this->selectize ) ) {
-			$this->json['selectize'] = KKcp_SanitizeJS::options( $this->selectize, self::$selectize_allowed_options );
+		if ( ! empty( $this->input_attrs ) ) {
+			$this->json['input_attrs'] = KKcp_SanitizeJS::options( $this->input_attrs, self::$input_attrs_allowed );
 		}
 	}
 

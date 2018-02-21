@@ -81,7 +81,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 		<label>
 			<?php $this->js_tpl_header(); ?>
 		</label>
-		<input class="kkcp-selectize" type="text" required>
+		<input class="kkcp-select" type="text" required>
 		<?php
 	}
 

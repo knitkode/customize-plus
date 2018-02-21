@@ -15,30 +15,6 @@
 abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Base_Choices {
 
 	/**
-	 * Use selectize by default.
-	 *
-	 * {@inheritDoc}
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	public $selectize = array();
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected $selectize_allowed_options = array(
-		'plugins' => array( 'sanitizer' => 'array', 'values' => array(
-			'drag_drop',
-			'remove_button'
-		) ),
-		'persist' => array( 'sanitizer' => 'bool' ),
-		'hideSelected' => array( 'sanitizer' => 'bool' ),
-		'sortField' => array( 'sanitizer' => 'string' ),
-	);
-
-	/**
 	 * Subclasses needs to override this with a custom array
 	 *
 	 * @since 1.0.0
@@ -239,6 +215,7 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
 	 */
 	protected function add_to_json() {
 		parent::add_to_json();
+
 		$this->json['setVar'] = KKcp_SanitizeJS::string( $this->set_js_var );
 		$this->json['supportedSets'] = KKcp_SanitizeJS::array( $this->supported_sets );
 	}

@@ -70,8 +70,8 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	public function get_l10n() {
 		return array(
 			'vSliderMissingUnit' => esc_html__( 'A CSS unit must be specified' ),
-			'vSliderInvalidUnit' => esc_html__( 'The CSS unit is invalid' ),
-			'vSliderNoUnit' => esc_html__( 'This value does not accept a CSS unit' ),
+			'vSliderInvalidUnit' => esc_html__( 'CSS unit `%` is invalid' ),
+			'vSliderNoUnit' => esc_html__( 'It does not accept a CSS unit' ),
 		);
 	}
 

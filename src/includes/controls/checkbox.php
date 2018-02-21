@@ -26,7 +26,7 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 	 */
 	public function get_l10n() {
 		return array(
-			'vCheckbox' => esc_html__( 'The checkbox should be either checked or unchecked.' ),
+			'vCheckbox' => esc_html__( 'It must be either checked or unchecked.' ),
 		);
 	}
 

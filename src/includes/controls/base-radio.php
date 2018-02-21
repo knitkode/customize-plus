@@ -15,14 +15,6 @@
 abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_Base_Choices {
 
 	/**
-	 * {@inheritDoc}. Selectize is not meant for radio controls
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	public $selectize = false;
-
-	/**
 	 * {@inhertDoc}. Populate the `valid_choices` property.
 	 *
 	 * @since 1.0.0
@@ -34,8 +26,8 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 	}
 
 	/**
-	 * Override the base choices, we don't need `min`, `max` and `selectize` for
-	 * radio based controls.
+	 * Override the base choices, we don't need `min`, `max` for radio based
+	 * controls, but we extends it anyway to reuse its js template.
 	 *
 	 * {@inheritDoc}
 	 *

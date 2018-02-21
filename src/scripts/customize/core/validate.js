@@ -329,7 +329,7 @@ export function sizeUnit( $validity, $unit, $allowed_units ) {
   }
   // if the unit specified is not in the allowed ones
   else if ( ! empty( $allowed_units ) && $unit && $allowed_units.indexOf( $unit ) === -1 ) {
-    $validity = $control._addError( $validity, 'vSliderInvalidUnit' );
+    $validity = $control._addError( $validity, 'vSliderInvalidUnit', $unit );
   }
   // if a unit is specified but none is allowed
   else if ( empty( $allowed_units ) && $unit ) {

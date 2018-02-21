@@ -69,8 +69,6 @@ class BaseSet extends Base {
   }
 
   /**
-   * Destroy `selectize` instance.
-   *
    * @since   1.0.0
    * @override
    */
@@ -85,7 +83,7 @@ class BaseSet extends Base {
    * @override
    */
   ready () {
-    this.__input = this._container.getElementsByClassName('kkcp-selectize')[0];
+    this.__input = this._container.getElementsByClassName('kkcp-select')[0];
     this._initUI();
     this._updateUI(this.setting())
   }
@@ -274,7 +272,7 @@ class BaseSet extends Base {
   }
 
   /**
-   * Get selectize options
+   * Get select options
    *
    * The select can either have or not have options divided by groups.
    *
@@ -283,8 +281,9 @@ class BaseSet extends Base {
    *
    * @return {Object}
    */
-  _getSelectizeOpts () {
-    const customOpts = this._getSelectizeCustomOpts();
+  _getSelectOpts () {
+    const customOpts = this._getSelectCustomOpts();
+
     let defaultOpts = {
       plugins: ['drag_drop','remove_button'],
       maxItems: this.params.max,
@@ -309,11 +308,11 @@ class BaseSet extends Base {
       defaultOpts['render']['optgroup_header'] = this._renderGroupHeader.bind(this);
     }
 
-    return _.extend(defaultOpts, customOpts, this.params.selectize || {})
+    return _.extend(defaultOpts, customOpts)
   }
 
   /**
-   * Get selectize custom options (subclasses can implement this)
+   * Get select custom options (subclasses can implement this)
    *
    * @since   1.0.0
    * @memberof! controls.BaseSet#
@@ -321,7 +320,7 @@ class BaseSet extends Base {
    *
    * @return {Object}
    */
-  _getSelectizeCustomOpts () {
+  _getSelectCustomOpts () {
     return {};
   }
 
@@ -332,17 +331,11 @@ class BaseSet extends Base {
    * @memberof! controls.BaseSet#
    */
   _initUI () {
-    // if there is an instance of selectize destroy it
     if (this.__input.selectize) {
       this.__input.selectize.destroy();
     }
 
-    // @@note this is not needed, in case if it was the setting value should be
-    // transformed to a string probably \\
-    // this.__input.value = this.setting();
-
-    // init selectize plugin
-    $(this.__input).selectize(this._getSelectizeOpts());
+    $(this.__input).selectize(this._getSelectOpts());
   }
 
   /**
@@ -357,9 +350,8 @@ class BaseSet extends Base {
     if (!this.__input) {
       return null;
     }
-    const selectize = this.__input.selectize;
-    if (selectize) {
-      return selectize.getValue();
+    if (this.__input.selectize) {
+      return this.__input.selectize.getValue();
     }
     return null; // @@note this should not happen \\
   }
@@ -367,9 +359,8 @@ class BaseSet extends Base {
   /**
    * Update UI
    *
-   * Check if there is an instance of selectize otherwise reinitialise it.
    * Pass `true` as second argument to perform a `silent` update, that does
-   * not trigger the `onChange` event of `selectize`.
+   * not trigger the `onChange` event.
    *
    * @since   1.0.0
    * @memberof! controls.BaseSet#
@@ -386,43 +377,40 @@ class BaseSet extends Base {
   }
 
   /**
-   * Selectize render item function
+   * Select render item function
    *
    * @since   1.0.0
    * @memberof! controls.BaseSet#
    * @abstract
    *
-   * @param  {Object} data     The selectize option object representation.
-   * @param  {function} escape Selectize escape function.
+   * @param  {Object} data     The selct option object representation.
    * @return {string}          The option template.
    */
-  _renderItem (data, escape) {}
+  _renderItem (data) {}
 
   /**
-   * Selectize render option function
+   * Select render option function
    *
    * @since   1.0.0
    * @memberof! controls.BaseSet#
    * @abstract
    *
-   * @param  {Object} data     The selectize option object representation.
-   * @param  {function} escape Selectize escape function.
+   * @param  {Object} data     The selct option object representation.
    * @return {string}          The option template.
    */
-  _renderOption (data, escape) {}
+  _renderOption (data) {}
 
   /**
-   * Selectize render option function
+   * Select render option function
    *
    * @since   1.0.0
    * @memberof! controls.BaseSet#
    * @abstract
    *
-   * @param  {Object} data     The selectize option object representation.
-   * @param  {function} escape Selectize escape function.
+   * @param  {Object} data     The select option object representation.
    * @return {string}          The option template.
    */
-  _renderGroupHeader (data, escape) {}
+  _renderGroupHeader (data) {}
 
 }
 

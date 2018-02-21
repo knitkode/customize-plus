@@ -21,26 +21,22 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 	public $type = 'kkcp_select';
 
 	/**
-	 * {@inheritDoc}. Selectize true by default for select controls
+	 * Allowed input attributes
+	 *
+	 * Sanitize methods must be class methods of `KKcp_SanitizeJS` or global
+	 * functions
 	 *
 	 * @since 1.0.0
-	 * @override
+	 * @var array
 	 */
-	public $selectize = true;
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected $selectize_allowed_options = array(
-		'plugins' => array( 'sanitizer' => 'array', 'values' => array(
-			'restore_on_backspace',
-			'drag_drop',
-			'remove_button'
-		) ),
+	private static $input_attrs_allowed = array(
+		'native' => array( 'sanitizer' => 'bool' ),
+		'hide_selected' => array( 'sanitizer' => 'bool' ),
+		'sort' => array( 'sanitizer' => 'bool' ),
 		'persist' => array( 'sanitizer' => 'bool' ),
-		'hideSelected' => array( 'sanitizer' => 'bool' ),
-		'sortField' => array( 'sanitizer' => 'string' ),
+		'removable' => array( 'sanitizer' => 'bool' ),
+		'draggable' => array( 'sanitizer' => 'bool' ),
+		'restore_on_backspace' => array( 'sanitizer' => 'bool' ),
 	);
 
 	/**
@@ -53,6 +49,18 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 		parent::__construct( $manager, $id, $args );
 
 		$this->valid_choices = $this->get_valid_choices( $this->choices );
+	}
+
+	/**
+	 * @since 1.0.0
+	 * @inheritDoc
+	 */
+	protected function add_to_json() {
+		parent::add_to_json();
+
+		if ( ! empty( $this->input_attrs ) ) {
+			$this->json['input_attrs'] = KKcp_SanitizeJS::options( $this->input_attrs, self::$input_attrs_allowed );
+		}
 	}
 
 	/**

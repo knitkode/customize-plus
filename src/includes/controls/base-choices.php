@@ -15,7 +15,7 @@
 abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Control_Base {
 
 	/**
-	 * Option to force a maximum selection boundary
+	 * Option to force a maximum choices selection boundary
 	 *
 	 * @since 1.0.0
 	 * @abstract
@@ -24,7 +24,7 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 	public $max = 1;
 
 	/**
-	 * Option to force a minimum selection boundary
+	 * Option to force a minimum choices selection boundary
 	 *
 	 * @since 1.0.0
 	 * @abstract
@@ -57,26 +57,6 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 	public $valid_choices = null;
 
 	/**
-	 * Selectize disabled (`false`) or enabled (just `true` or array of options)
-	 *
-	 * @since 1.0.0
-	 * @abstract
-	 * @var boolean|array
-	 */
-	public $selectize = false;
-
-	/**
-	 * Selectize allowed options
-	 *
-	 * Subclasses should override this with a custom default array.
-	 *
-	 * @since 1.0.0
-	 * @abstract
-	 * @var array
-	 */
-	protected $selectize_allowed_options = array();
-
-	/**
 	 * Get valid choices values from choices array. Subclasses can use this
 	 * in their constructor. Let' not override the constructor here too but
 	 * force subclasses to override it in case they need it.
@@ -105,10 +85,10 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 	public function get_l10n() {
 		return array(
 			'vNotArray' => esc_html__( 'It must be a list of values' ),
-			'vNotAChoice' => esc_html__( '%s is not an allowed choice' ),
-			'vNotExactLengthArray' => esc_html__( 'It must contain exactly %s values' ),
-			'vNotMinLengthArray' => esc_html__( 'It must contain minimum %s values' ),
-			'vNotMaxLengthArray' => esc_html__( 'It must contain maximum %s values' ),
+			'vNotAChoice' => esc_html__( '`%s` is not an allowed choice' ),
+			'vNotExactLengthArray' => esc_html__( 'It must contain exactly `%s` values' ),
+			'vNotMinLengthArray' => esc_html__( 'It must contain minimum `%s` values' ),
+			'vNotMaxLengthArray' => esc_html__( 'It must contain maximum `%s` values' ),
 		);
 	}
 
@@ -125,12 +105,6 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 		$this->json['max'] = KKcp_SanitizeJS::int_or_null( $this->max );
 		$this->json['min'] = KKcp_SanitizeJS::int_or_null( $this->min );
 		$this->json['choices'] = $this->choices;
-
-		if ( is_array( $this->selectize ) ) {
-			$this->json['selectize'] = KKcp_SanitizeJS::options( $this->selectize, $this->selectize_allowed_options );
-		} else {
-			$this->json['selectize'] = KKcp_SanitizeJS::bool( $this->selectize );
-		}
 	}
 
 	/**

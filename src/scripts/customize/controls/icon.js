@@ -23,26 +23,26 @@ class Icon extends BaseSet {
   /**
    * @override
    */
-  _renderItem (data, escape) {
-    return `<div class="kkcp-icon-selectItem kkcpui-tooltip--top" title="${escape(data.value)}">
-        <i class="${escape(this._getIconClassName(data))}"></i>
+  _renderItem (data) {
+    return `<div class="kkcp-icon-selectItem kkcpui-tooltip--top" title="${_.escape(data.value)}">
+        <i class="${_.escape(this._getIconClassName(data))}"></i>
       </div>`;
   }
 
   /**
    * @override
    */
-  _renderOption (data, escape) {
-    return `<div class="kkcp-icon-selectOption kkcpui-tooltip--top" title="${escape(data.value)}">
-        <i class="${escape(this._getIconClassName(data))}"></i>
+  _renderOption (data) {
+    return `<div class="kkcp-icon-selectOption kkcpui-tooltip--top" title="${_.escape(data.value)}">
+        <i class="${_.escape(this._getIconClassName(data))}"></i>
       </div>`;
   }
 
   /**
    * @override
    */
-  _renderGroupHeader (data, escape) {
-    return `<div class="kkcp-icon-selectHeader">${escape(data.label)}</div>`;
+  _renderGroupHeader (data) {
+    return `<div class="kkcp-icon-selectHeader">${_.escape(data.label)}</div>`;
   }
 
   /**

@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import $ from 'jquery';
 import { api, wpApi } from '../core/globals';
 import Helper from '../core/helper';
@@ -71,34 +72,33 @@ class FontFamily extends BaseSet {
    * @override
    */
   ready () {
-    this.__input = this._container.getElementsByClassName('kkcp-selectize')[0];
+    this.__input = this._container.getElementsByClassName('kkcp-select')[0];
     this._initUI(this.setting());
   }
 
   /**
-   * When the value is not set by the UI directly we need to destroy selectize
-   * and recreate it to sync the UI correctly.
-   *
    * @override
    */
   _initUI (value) {
-    // if there is an instance of selectize destroy it
+    // this is due to a bug, we should use:
+    // this.__input.selectize.setValue(value, true);
+    // @see https://github.com/brianreavis/selectize.js/issues/568
+    // instead here first we have to destroy thene to reinitialize, this
+    // happens only through a programmatic change such as a reset action
     if (this.__input.selectize) {
       this.__input.selectize.destroy();
     }
 
-    this.__input.value = this.setting();
+    this.__input.value = value;
 
-    // init selectize plugin
-    const opts = this._getSelectizeOpts();
-
-    $(this.__input).selectize(this._getSelectizeOpts());
+    // init select plugin
+    $(this.__input).selectize(this._getSelectOpts());
   }
 
   /**
    * @override
    */
-  _getSelectizeCustomOpts () {
+  _getSelectCustomOpts () {
     return {
       hideSelected: true,
       delimiter: ',',
@@ -108,24 +108,24 @@ class FontFamily extends BaseSet {
   /**
    * @override
    */
-  _renderItem (data, escape) {
-    const value = escape(data.value);
+  _renderItem (data) {
+    const value = _.escape(data.value);
     return `<div style="font-family:${value}">${value.replace(/'/g, '').replace(/"/g, '')}</div>`;
   }
 
   /**
    * @override
    */
-  _renderOption (data, escape) {
-    const value = escape(data.value);
+  _renderOption (data) {
+    const value = _.escape(data.value);
     return `<div style="font-family:${value}">${value.replace(/'/g, '').replace(/"/g, '')}</div>`;
   }
 
   /**
    * @override
    */
-  _renderGroupHeader (data, escape) {
-    return `<div class="kkcp-icon-selectHeader">${escape(data.label)}</div>`;
+  _renderGroupHeader (data) {
+    return `<div class="kkcp-icon-selectHeader">${_.escape(data.label)}</div>`;
   }
 
 }

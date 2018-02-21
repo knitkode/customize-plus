@@ -320,7 +320,7 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 			}
 			// if the unit specified is not in the allowed ones
 			else if ( ! empty( $allowed_units ) && $unit && ! in_array( $unit, $allowed_units ) ) {
-				$validity = $control->add_error( $validity, 'vSliderInvalidUnit' );
+				$validity = $control->add_error( $validity, 'vSliderInvalidUnit', $unit );
 			}
 			// if a unit is specified but none is allowed
 			else if ( empty( $allowed_units ) && $unit ) {

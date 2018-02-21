@@ -45,7 +45,7 @@ Anyone interested in using the WordPress Customize interface. Especially theme d
   7. **slider**
   8. **color** / **alpha** / **palette** / **transparent**
   9. **font family** / **font weight**
-  10. **select** / **dropdown** / **selectize** / **multiselect** / **sortable multiselect**
+  10. **select** / **dropdown** / **multiselect** / **sortable multiselect**
   11. **sortable**
   12. **tags / sortable tags**
   13. **icons**

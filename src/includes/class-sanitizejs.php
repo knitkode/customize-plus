@@ -64,8 +64,8 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 				$sanitizer_function = $sanitizer;
 			}
 			// otherwise check on this class methods
-			if ( method_exists( 'KKcp_Sanitize', $sanitizer ) ) {
-				$sanitizer_function = 'KKcp_Sanitize::' . $sanitizer;
+			if ( method_exists( 'KKcp_SanitizeJS', $sanitizer ) ) {
+				$sanitizer_function = 'KKcp_SanitizeJS::' . $sanitizer;
 			}
 
 			// if we don't have nested sanitization to do just call the sanitize method

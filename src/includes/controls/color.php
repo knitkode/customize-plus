@@ -146,16 +146,16 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 		$this->json['valueCSS'] = $this->value();
 
 		if ( $this->alpha ) {
-			$this->json['alpha'] = $this->alpha;
+			$this->json['alpha'] = true;
 		}
 		if ( $this->transparent ) {
-			$this->json['transparent'] = $this->transparent;
+			$this->json['transparent'] = true;
 		}
 		if ( $this->picker ) {
 			$this->json['picker'] = $this->picker;
 		}
 		if ( $this->palette ) {
-			$this->json['palette'] = $this->palette;
+			$this->json['palette'] = KKcp_SanitizeJS::array( $this->palette );
 		}
 
 		$this->json['mode'] = 'custom';

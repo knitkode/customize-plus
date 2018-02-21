@@ -21,14 +21,6 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 	public $type = 'kkcp_multicheck';
 
 	/**
-	 * {@inheritDoc}. Selectize is not meant for radio controls
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	public $selectize = false;
-
-	/**
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */

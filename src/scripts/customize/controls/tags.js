@@ -39,8 +39,6 @@ class Tags extends Base {
   }
 
   /**
-   * Destroy `selectize` instance if any.
-   *
    * @override
    */
   onDeflate () {
@@ -56,14 +54,13 @@ class Tags extends Base {
     const selectize = this.__input.selectize;
 
     if (selectize && selectize.getValue() !== value) {
-      this.__input.value = value;
       // this is due to a bug, we should use:
       // selectize.setValue(value, true);
-      // but @see https://github.com/brianreavis/selectize.js/issues/568
-      // so first we have to destroy thene to reinitialize, this happens
-      // only through a programmatic change such as a reset action
+      // @see https://github.com/brianreavis/selectize.js/issues/568
+      // instead here first we have to destroy thene to reinitialize, this
+      // happens only through a programmatic change such as a reset action
       selectize.destroy();
-      this._initSelectize();
+      this._initUI(value);
     }
   }
 
@@ -73,24 +70,23 @@ class Tags extends Base {
   ready () {
     this.__input = this._container.getElementsByTagName('input')[0];
 
-    // fill input before to initialize selectize so selectize grabs the value
-    // directly from the DOM
-    this.__input.value = this.setting();
-
-    this._initSelectize();
+    this._initUI(this.setting());
   }
 
   /**
-   * Init selectize on text input
+   * Init select plugin on text input
    *
    * @since   1.0.0
    * @memberof! controls.Tags#
    * @access protected
+   *
+   * @param {string} value
    */
-  _initSelectize () {
-    const selectizeOpts = this.params.selectize || {};
+  _initUI (value) {
+    const attrs = this.params['input_attrs'] || {};
 
-    $(this.__input).selectize(_.extend({
+    let pluginOptions = {
+      plugins: [],
       persist: false,
       create: function (input) {
         return {
@@ -101,7 +97,22 @@ class Tags extends Base {
       onChange: (value) => {
         this.setting.set(value);
       }
-    }, selectizeOpts));
+    };
+
+    if (attrs['persist']) {
+      pluginOptions.persist = true;
+    }
+    if (attrs['removable']) {
+      pluginOptions.plugins.push('remove_button')
+    }
+    if (attrs['draggable']) {
+      pluginOptions.plugins.push('drag_drop')
+    }
+    if (attrs['restore_on_backspace']) {
+      pluginOptions.plugins.push('restore_on_backspace')
+    }
+
+    $(this.__input).selectize(pluginOptions).setValue(value);
   }
 }
 

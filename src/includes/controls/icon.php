@@ -61,7 +61,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Set {
 		<label>
 			<?php $this->js_tpl_header(); ?>
 		</label>
-		<select class="kkcp-selectize" placeholder="<?php esc_html_e( 'Search icon by name...' ) ?>"<# if (data.max > 1) { #>  name="icon[]" multiple<# } else { #>name="icon"<# } #>><option value=""><?php esc_html_e( 'Search icon by name...' ) ?></option></select>
+		<select class="kkcp-select" placeholder="<?php esc_html_e( 'Search icon by name...' ) ?>"<# if (data.max > 1) { #>  name="icon[]" multiple<# } else { #>name="icon"<# } #>><option value=""><?php esc_html_e( 'Search icon by name...' ) ?></option></select>
 		<?php
 	}
 }
