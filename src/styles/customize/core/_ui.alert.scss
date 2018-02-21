@@ -1,0 +1,42 @@
+/**
+ * Alert UI
+ *
+ * Used for instance in `kkcp_content` control
+ */
+.kkcpui-alert {
+	// padding: 10px 10px 10px 12px;
+
+  border: 1px solid transparent;
+  padding: 10px 15px;
+  box-shadow: 0 8px 14px -12px rgba(0,0,0,.18);
+  border-radius: 3px;
+
+  &.light {
+    @include ui-alert(#fff);
+  }
+
+  &.danger {
+    @include ui-alert($state--danger-base);
+  }
+
+  &.warning {
+    @include ui-alert($state--warning-base);
+  }
+
+  &.success {
+    @include ui-alert($state--success-base);
+  }
+
+  &.info {
+    @include ui-alert($state--info-base);
+  }
+
+  p {
+    margin: 5px 0;
+  }
+
+  // @wptight-css reset style
+  span.description {
+  	font-style: normal;
+  }
+}

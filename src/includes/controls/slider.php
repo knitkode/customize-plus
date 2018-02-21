@@ -50,7 +50,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	/**
 	 * {@inheritDoc}. Override it here in order to implicitly allow float numbers
 	 * if input_attrs['step'] is a float number. Check also that the given units
-	 * are supported.
+	 * are supported and always transform is value in an array.
 	 *
 	 * @since 1.0.0
 	 * @override
@@ -61,7 +61,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 		}
 
 		if ( isset( $args['units'] ) && ! empty( $args['units'] ) ) {
-			$args['units'] = KKcp_SanitizeJS::item_in_array( false, $args['units'], self::$allowed_units );
+			$args['units'] = KKcp_SanitizeJS::item_in_array( true, $args['units'], self::$allowed_units );
 			if ( is_string( $args['units'] ) ) {
 				$args['units'] = array( $args['units'] );
 			}

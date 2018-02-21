@@ -194,7 +194,7 @@ class Slider extends Base {
     } else {
       output = this.__inputNumber.value;
     }
-    if (this.params.units) {
+    if (this.params['units']) {
       if (value && value._unit) {
         output += value._unit;
       } else {
@@ -226,7 +226,7 @@ class Slider extends Base {
     // update number slider
     this.__$inputSlider.slider('value', number);
     // update unit picker
-    if (params.units) {
+    if (params['units']) {
       this.__$inputUnits.removeClass('kkcp-current').filter(function () {
         return this.value === unit;
       }).addClass('kkcp-current');
