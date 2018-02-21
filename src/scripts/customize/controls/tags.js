@@ -112,7 +112,8 @@ class Tags extends Base {
       pluginOptions.plugins.push('restore_on_backspace')
     }
 
-    $(this.__input).selectize(pluginOptions).setValue(value);
+    $(this.__input).selectize(pluginOptions);
+    this.__input.selectize.setValue(value);
   }
 }
 
