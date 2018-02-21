@@ -275,7 +275,6 @@ export function text( $validity={}, $value, $setting, $control ) {
  */
 export function number( $validity={}, $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
-  const allowFloat = $control.params.allowFloat;
 
   // coerce to number
   $value = Number($value);
@@ -286,11 +285,11 @@ export function number( $validity={}, $value, $setting, $control ) {
     return $validity;
   }
   // unallowed float
-  if ( is_float( $value ) && !allowFloat ) {
+  if ( is_float( $value ) && !$attrs['float'] ) {
     $validity = $control._addError( $validity, 'vNoFloat' );
   }
   // must be an int but it is not
-  else if ( ! is_int( $value ) && !allowFloat ) {
+  else if ( ! is_int( $value ) && !$attrs['float'] ) {
     $validity = $control._addError( $validity, 'vNotAnInteger' );
   }
 
@@ -351,11 +350,11 @@ export function sizeUnit( $validity, $unit, $allowed_units ) {
  * @return {WP_Error}
  */
 export function slider( $validity={}, $value, $setting, $control ) {
-  let $number = Helper.extractNumber( $value, $control.params.allowFloat );
-  let $unit = Helper.extractSizeUnit( $value, $control.params.units );
+  let $number = Helper.extractNumber( $value, $control.attrs['float'] );
+  let $unit = Helper.extractSizeUnit( $value, $control.params['units'] );
 
   $validity = number( $validity, $number, $setting, $control );
-  $validity = sizeUnit( $validity, $unit, $control.params.units );
+  $validity = sizeUnit( $validity, $unit, $control.params['units'] );
 
   return $validity;
 }

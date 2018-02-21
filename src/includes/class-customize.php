@@ -89,6 +89,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'kkcp_number' => 'KKcp_Customize_Control_Number',
 				'kkcp_radio' => 'KKcp_Customize_Control_Radio',
 				'kkcp_radio_image' => 'KKcp_Customize_Control_Radio_Image',
+				'kkcp_password' => 'KKcp_Customize_Control_Password',
 				'kkcp_select' => 'KKcp_Customize_Control_Select',
 				'kkcp_slider' => 'KKcp_Customize_Control_Slider',
 				'kkcp_sortable' => 'KKcp_Customize_Control_Sortable',

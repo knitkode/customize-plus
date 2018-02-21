@@ -29,9 +29,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choice
 	}
 
 	/**
-	 * Constructor
-	 *
-	 * {@inheritDoc}. Set `max` dynamically to the number of choices.
+	 * {@inheritDoc}. Always dynamically set `max` equal to the number of choices.
 	 *
 	 * @since 1.0.0
 	 */
@@ -83,7 +81,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choice
 	 * @since 1.0.0
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return KKcp_Sanitize::multiple_choices( $value, $setting, $control );
+		return KKcp_Sanitize::multiple_choices( $value, $setting, $control, true );
 	}
 
 	/**

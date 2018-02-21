@@ -1,7 +1,6 @@
 <?php // @partial
 /**
  * Base Input Control custom class
- * This is here just to be extended
  *
  * @since  1.0.0
  *
@@ -16,24 +15,47 @@
 abstract class KKcp_Customize_Control_Base_Input extends KKcp_Customize_Control_Base {
 
 	/**
-	 * Refresh the parameters passed to the JavaScript via JSON.
+	 * Allowed input attributes
 	 *
+	 * Whitelist the input attrbutes that can be set on this type of control.
+	 * Subclasses can override this with a custom array whose sanitize methods
+	 * must be class methods of `KKcp_SanitizeJS` or global functions.
+	 *
+	 * For a list of valid HTML attributes
+	 * @see  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+	 *
+	 * @abstract
 	 * @since 1.0.0
+	 * @var array
+	 */
+	protected $input_attrs_allowed = array();
+
+	/**
+	 * @since 1.0.0
+	 * @override
 	 */
 	protected function add_to_json() {
-		$this->json['attrs'] = $this->input_attrs;
+		if ( ! empty( $this->input_attrs ) && ! empty( $this->input_attrs_allowed ) ) {
+			$this->json['attrs'] = KKcp_SanitizeJS::options( $this->input_attrs, $this->input_attrs_allowed );
+		}
 	}
 
 	/**
-	 * Render a JS template for the content of the text control.
+	 * {@inheritDoc}. Note that the `title` input_attr is printed in a wrapping
+	 * span instead of directly on the input field.
 	 *
 	 * @since 1.0.0
+	 * @override
 	 */
 	protected function js_tpl() {
 		?>
 		<label>
-			<?php $this->js_tpl_header(); ?><# var a = data.attrs; #>
-			<input type="{{ a.type || data.type.replace('kkcp_','') }}" value="<?php // filled through js ?>" <# for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #>>
+			<?php $this->js_tpl_header(); ?><# var attrs = data.attrs || {}; #>
+			<span class="kkcpui-tooltip--top" title="{{{ attrs.title }}}">
+				<input type="{{ attrs.type || data.type.replace('kkcp_','') }}" value="<?php // filled through js ?>"
+					<# for (var key in attrs) { if (attrs.hasOwnProperty(key) && key !== 'title') { #>{{ key }}="{{ attrs[key] }}" <# } } #>
+				>
+			</span>
 		</label>
 		<?php
 	}

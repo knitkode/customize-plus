@@ -43,5 +43,6 @@ require ( KKCP_PLUGIN_DIR . 'includes/controls/slider.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/sortable.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/tags.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/text.php' );
+require ( KKCP_PLUGIN_DIR . 'includes/controls/password.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/textarea.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/toggle.php' );

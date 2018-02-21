@@ -275,11 +275,11 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 				return $validity;
 			}
 			// unallowed float
-			if ( is_float( $value ) && ! $control->allowFloat ) {
+			if ( is_float( $value ) && ! isset( $control->input_attrs['float'] ) ) {
 				$validity = $control->add_error( $validity, 'vNoFloat' );
 			}
 			// must be an int but it is not
-			else if ( ! is_int( $value ) && ! $control->allowFloat ) {
+			else if ( ! is_int( $value ) && ! isset( $control->input_attrs['float'] ) ) {
 				$validity = $control->add_error( $validity, 'vNotAnInteger' );
 			}
 
@@ -342,7 +342,7 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 		 * @return WP_Error
 		 */
 		public static function slider( $validity, $value, $setting, $control ) {
-			$number = KKcp_Helper::extract_number( $value, $control->allowFloat );
+			$number = KKcp_Helper::extract_number( $value, isset( $control->input_attrs['float'] ) );
 			$unit = KKcp_Helper::extract_size_unit( $value, $control->units );
 
 			$validity = self::number( $validity, $number, $setting, $control );

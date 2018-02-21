@@ -21,22 +21,16 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	public $type = 'kkcp_number';
 
 	/**
-	 * Float numbers allowed
-	 *
 	 * @since 1.0.0
-	 * @var boolean
+	 * @ineritDoc
 	 */
-	public $allowFloat = false;
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function add_to_json() {
-		parent::add_to_json();
-
-		$this->json['allowFloat'] = KKcp_SanitizeJS::bool( $this->allowFloat );
-	}
+	protected $input_attrs_allowed = array(
+		'float' => array( 'sanitizer' => 'bool' ),
+		'min' => array( 'sanitizer' => 'number' ),
+		'max' => array( 'sanitizer' => 'number' ),
+		'step' => array( 'sanitizer' => 'number' ),
+		// 'pattern' => array( 'sanitizer' => 'string' ),
+	);
 
 	/**
 	 * @since  1.0.0

@@ -18,7 +18,6 @@ class Tooltips {
   constructor () {
 
     /**
-     * @member
      * @type {string}
      */
     this._BASE_CLASS = '.kkcpui-tooltip';
@@ -63,7 +62,7 @@ class Tooltips {
     for (let i = this._ALLOWED_POSITIONS.length - 1; i >= 0; i--) {
       let custom = this._ALLOWED_POSITIONS[i];
       let options = _.defaults({
-        items: this._BASE_CLASS + '--' + custom._name,
+        items: `${this._BASE_CLASS}--${custom._name}`,
         classes: {
           'ui-tooltip': custom._name,
         },
@@ -78,7 +77,7 @@ class Tooltips {
       options.position.collision = 'flipfit';
 
       // init tooltip (it uses event delegation)
-      // to have different tooltips positining we need a different container
+      // to have different tooltips positioning we need a different container
       // for each initialisation otherwise each overlap each other.
       custom._container.tooltip(options);
     }

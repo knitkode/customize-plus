@@ -256,15 +256,14 @@ export function text( $value, $setting, $control ) {
  */
 export function number( $value, $setting, $control ) {
   const $attrs = $control.params.attrs;
-  const allowFloat = $control.params.allowFloat;
-  let $number = Helper.extractNumber( $value, $control.params.allowFloat );
+  let $number = Helper.extractNumber( $value, $attrs['float'] );
 
   if ( $number === null ) {
     return null;;
   }
 
   // if it's a float but it is not allowed to be it round it
-  if ( is_float( $number ) && !allowFloat ) {
+  if ( is_float( $number ) && !$attrs['float'] ) {
     $number = round( $number );
   }
   if ( $attrs ) {
@@ -326,11 +325,11 @@ export function sizeUnit( $unit, $allowed_units ) {
  * @return {string|number|null} The sanitized value.
  */
 export function slider( $value, $setting, $control ) {
-  let $number = Helper.extractNumber( $value, $control.params.allowFloat );
-  let $unit = Helper.extractSizeUnit( $value, $control.params.units );
+  let $number = Helper.extractNumber( $value, $control.attrs['float'] );
+  let $unit = Helper.extractSizeUnit( $value, $control.params['units'] );
 
   $number = number( $number, $setting, $control );
-  $unit = sizeUnit( $unit, $control.params.units );
+  $unit = sizeUnit( $unit, $control.params['units'] );
 
   if ( $number === null ) {
     return null;

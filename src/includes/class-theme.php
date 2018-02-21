@@ -64,7 +64,7 @@ if ( ! class_exists( 'KKcp_Theme' ) && class_exists( 'KKcp_Singleton' ) ):
 		 * `add_theme_support( 'kkcp-customize' )`, or set by default to
 		 * `get_stylesheet_directory_uri`.
 		 * This url will be prendeded to the images `src` used in the Customizer
-		 * for stuff like 'guides', 'helpers' and 'radio_images' controls.
+		 * for stuff like 'info', 'popovers' and 'radio_images' controls.
 		 * The value always pass through the `trailingslashit` WordPress function
 		 * so it's not allowed to start images paths with a slash.
 		 *
@@ -79,7 +79,7 @@ if ( ! class_exists( 'KKcp_Theme' ) && class_exists( 'KKcp_Singleton' ) ):
 		 * This optional property is defined by the theme through
 		 * `add_theme_support( 'kkcp-customize' )`.
 		 * This url will be prendeded in the Customizer to the
-		 * `guides => array( 'docs' => '{url}' )` value where defined.
+		 * `info => array( 'docs' => '{url}' )` value where defined.
 		 * The value always pass through the `trailingslashit` WordPress function
 		 * so it's not allowed to start images paths with a slash.
 		 *

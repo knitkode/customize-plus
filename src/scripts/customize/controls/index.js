@@ -10,6 +10,7 @@ import './font-family';
 import './icon';
 import './multicheck';
 import './number';
+import './password';
 import './radio';
 import './radio-image';
 import './select';

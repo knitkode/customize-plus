@@ -278,7 +278,7 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 			$attrs = $control->input_attrs;
 
 			// if it's a float but it is not allowed to be it round it
-			if ( is_float( $number ) && ! $control->allowFloat ) {
+			if ( is_float( $number ) && ! isset( $control->input_attrs['float'] ) ) {
 				$number = round( $number );
 			}
 			if ( $attrs ) {
@@ -340,7 +340,7 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		 * @return string|number|null The sanitized value.
 		 */
 		public static function slider( $value, $setting, $control ) {
-			$number = KKcp_Helper::extract_number( $value, $control->allowFloat );
+			$number = KKcp_Helper::extract_number( $value, isset( $control->input_attrs['float'] ) );
 			$unit = KKcp_Helper::extract_size_unit( $value, $control->units );
 
 			$number = self::number( $number, $setting, $control );

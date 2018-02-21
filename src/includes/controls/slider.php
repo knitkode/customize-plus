@@ -21,14 +21,6 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	public $type = 'kkcp_slider';
 
 	/**
-	 * Float numbers allowed
-	 *
-	 * @since 1.0.0
-	 * @var boolean
-	 */
-	public $allowFloat = false;
-
-	/**
 	 * Units
 	 *
 	 * @since  1.0.0
@@ -57,9 +49,9 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	public function __construct( $manager, $id, $args = array() ) {
 		parent::__construct( $manager, $id, $args );
 
-		// allowFloat also if input_attrs['step'] is a float number
+		// allow float also implicitly  if input_attrs['step'] is a float number
 		if ( isset( $this->input_attrs['step'] ) && is_float( $this->input_attrs['step'] ) ) {
-			$this->allowFloat = true;
+			$this->input_attrs['float'] = true;
 		}
 	}
 
@@ -91,9 +83,6 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 		if ( is_array( $this->input_attrs ) && ! empty( $this->input_attrs ) ) {
 			$this->json['attrs'] = $this->input_attrs;
 		}
-
-		$this->json['allowFloat'] = KKcp_SanitizeJS::bool( $this->allowFloat );
-
 		if ( ! empty( $this->units ) ) {
 			$this->json['units'] = KKcp_SanitizeJS::in_array( $this->units, self::$allowed_units );
 		}

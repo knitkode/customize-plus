@@ -79,9 +79,12 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 
 			// if we have nested sanitization
 			} else {
-
+				// if we want one string among a predefined set
+				if ( $sanitizer === 'enum' ) {
+					$sanitized[ $opt_key ] = self::enum( $opt_value, $allowed[ $opt_key ]['values'] );
+				}
 				// if we want to have a normal JavaScript Array (that is a flatten php array)
-				if ( $sanitizer === 'array' ) {
+				else if ( $sanitizer === 'array' ) {
 					$sanitized[ $opt_key ] = array();
 
 					// either loop through the given options and check if they are allowed
@@ -271,6 +274,23 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 			}
 
 			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a string.' ), $input ) );
+		}
+
+		/**
+		 * Sanitization for js value: enum
+		 *
+		 * @since 1.0.0
+		 * @param  array $options
+		 * @param  array $allowed_options
+		 * @return ?string
+		 */
+		public static function enum ( $input, $allowed_values ) {
+			if ( is_string( $input ) && in_array( $input, $allowed_values ) ) {
+				return $input;
+			}
+			return $allowed_values[0];
+
+			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value must be one of: %s' ), implode( $allowed_values, ', ' ) ) );
 		}
 	}
 

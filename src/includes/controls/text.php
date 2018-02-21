@@ -21,6 +21,23 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
 	public $type = 'kkcp_text';
 
 	/**
+	 * @since 1.0.0
+	 * @inheritDoc
+	 */
+	protected $input_attrs_allowed = array(
+		'title' => array( 'sanitizer' => 'string' ),
+		'type' => array( 'sanitizer' => 'enum', 'values' => array( 'text', 'tel', 'url', 'email', ) ),
+		'autocomplete' => array( 'sanitizer' => 'string' ),
+		'disabled' => array( 'sanitizer' => 'bool' ),
+		'maxlength' => array( 'sanitizer' => 'number' ),
+		'minlength' => array( 'sanitizer' => 'number' ),
+		'pattern' => array( 'sanitizer' => 'string' ),
+		'placeholder' => array( 'sanitizer' => 'string' ),
+		'spellcheck' => array( 'sanitizer' => 'bool' ),
+	);
+
+
+	/**
 	 * HTML (allows html in the setting value)
 	 *
 	 * Note: When this property is truthy sanitization is done as with all the
