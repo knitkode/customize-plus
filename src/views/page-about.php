@@ -17,27 +17,8 @@
 			<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/2anLjZwQg3g?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 		</div>
 	</div> -->
-	<h2><?php esc_html_e( 'Plugin features' ); ?></h2>
+	<h3 class="kkcp-title"><?php esc_html_e( 'Features coming soon' ); ?></h3>
 	<ul class="kkcp-features">
-		<li><i class="dashicons dashicons-wordpress"></i>
-			<b><?php esc_html_e( 'Fully integrated in WordPress' ); ?></b>
-			<p class="description"><?php esc_html_e( 'The code, the admin UI and the API totally looks like WordPress, as it should be.' ); ?></p>
-		</li>
-		<li><i class="dashicons dashicons-admin-settings"></i>
-			<b><?php esc_html_e( 'Powerful Custom Controls' ); ?></b>
-			<p class="description"><?php esc_html_e( 'Customize Plus extend the WordPress API to create all the controls you need leveraging the JavaScript API. All the theme_mods or options managed by Customize Plus controls are automatically validated and sanitized. You do not even need to define the fallback value when retrieving them.' ); ?> <a href="https://knitkode.com/docs/customize-plus/usage"><?php esc_html_e( 'Learn more' ) ?></a></p>
-		</li>
-		<li><i class="dashicons dashicons-undo"></i>
-			<b><?php esc_html_e( 'Reset control values' ); ?></b>
-			<p class="description"><?php esc_html_e( 'Users will be able to reset the control values to the initial session or factory value' ); ?></p>
-		</li>
-		<li><i class="dashicons dashicons-media-code"></i>
-			<b><?php esc_html_e( 'Documented API' ); ?></b>
-			<p class="description"><?php esc_html_e( 'The documentation makes use of JSdocs and phpdocs.' ); ?> <a href="https://knitkode.com"><?php esc_html_e( 'Learn more' ) ?></a></p>
-		</li>
-	</ul>
-	<ul class="kkcp-features">
-		<h2><?php esc_html_e( 'Coming soon' ); ?></h2>
 		<li><i class="dashicons dashicons-admin-settings"></i>
 			<b><?php esc_html_e( 'Controls, controls and controls' ); ?></b>
 			<p class="description"><?php esc_html_e( 'We\'ll keep adding controls both to the free and premium version.' ); ?> <a href="https://knitkode.com/roadmap#customize-plus"><?php esc_html_e( 'Roadmap' ) ?></a></p>
