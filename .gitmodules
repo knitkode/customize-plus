@@ -1,3 +1,6 @@
 [submodule "config/common"]
 	path = config/common
 	url = https://github.com/knitkode/wp-dev-lib.git
+[submodule "config/dev-lib"]
+	path = config/dev-lib
+	url = git@github.com:knitkode/wp-dev-lib
