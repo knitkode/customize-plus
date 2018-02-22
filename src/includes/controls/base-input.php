@@ -27,7 +27,7 @@ abstract class KKcp_Customize_Control_Base_Input extends KKcp_Customize_Control_
 			<?php $this->js_tpl_header(); ?><# var attrs = data.attrs || {}; #>
 			<# if (attrs.tooltip) { #><span class="kkcpui-tooltip--top" title="{{ attrs.tooltip || '' }}"><# } #>
 				<?php $this->js_tpl_inner(); ?>
-			<# if (attrs.tooltip) { #></span>><# } #>
+			<# if (attrs.tooltip) { #></span><# } #>
 		</label>
 		<?php
 	}
