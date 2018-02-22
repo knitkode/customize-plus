@@ -1,6 +1,6 @@
 /*!
- * Customize Plus v1.0.21 (https://knitkode.com/products/customize-plus)
- * Enhance and extend the WordPress Customizer.
+ * Customize Plus v1.0.22 (https://knitkode.com/products/customize-plus)
+ * Enhance and extend the WordPress Customize in your themes.
  * Copyright (c) 2014-2018 KnitKode <dev@knitkode.com> (https://knitkode.com/)
  * @license SEE LICENSE IN license.txt (Last change on: 22-1-2018)
  *//* jshint unused: false */

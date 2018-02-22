@@ -3,15 +3,15 @@
 /**
  * Customize Plus
  *
- * Enhance and extend the WordPress Customizer.
+ * Enhance and extend the WordPress Customize in your themes.
  *
  * @package           Customize_Plus
  *
  * @wordpress-plugin
  * Plugin Name:       Customize Plus
  * Plugin URI:        https://knitkode.com/products/customize-plus
- * Description:       Enhance and extend the WordPress Customizer.
- * Version:           1.0.21
+ * Description:       Enhance and extend the WordPress Customize in your themes.
+ * Version:           1.0.22
  * Author:            KnitKode
  * Author URI:        https://knitkode.com
  * License:           GPLv3
@@ -21,7 +21,7 @@
  */
 
 define( 'KKCP_PLUGIN_FILE', __FILE__ );
-define( 'KKCP_PLUGIN_VERSION', '1.0.21' );
+define( 'KKCP_PLUGIN_VERSION', '1.0.22' );
 define( 'KKCP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'KKCP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 

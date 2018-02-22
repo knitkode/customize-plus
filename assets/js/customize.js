@@ -9772,8 +9772,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
 
 /*!
- * Customize Plus v1.0.21 (https://knitkode.com/products/customize-plus)
- * Enhance and extend the WordPress Customizer.
+ * Customize Plus v1.0.22 (https://knitkode.com/products/customize-plus)
+ * Enhance and extend the WordPress Customize in your themes.
  * Copyright (c) 2014-2018 KnitKode <dev@knitkode.com> (https://knitkode.com/)
  * @license SEE LICENSE IN license.txt (Last change on: 22-1-2018)
  */(function (window$1,document$1,$$1,_$1,wp$1,pluginApi,marked,hljs,Modernizr) {
