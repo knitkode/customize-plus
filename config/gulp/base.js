@@ -1,9 +1,7 @@
-/* global CONFIG, PLUGINS */
-/* jshint node: true */
-'use strict';
-
-var PATHS = global.PATHS;
-var pkg = require('../../package.json');
+const paths = require('../dev-lib/paths');
+const config = require('../dev-lib/config');
+const plugins = require('../dev-lib/gulp/plugins');
+const pkg = require(paths.join(paths.ROOT, 'package.json'));
 const gulp = require('gulp');
 const gulpIf = require('gulp-if');
 const cache = require('gulp-cache');
@@ -17,140 +15,110 @@ const replace = require('gulp-replace');
 const include = require('gulp-include');
 
 /**
- * Build
- *
- * @access public
+ * Base tasks (build and watch)
  */
-gulp.task('build-base', ['_base-root', '_base-styles', '_base-php', '_base-vendor']);
-
-/**
- * Watch
- *
- * @access public
- */
-gulp.task('watch-base', function() {
-  gulp.watch(PATHS.src.root + '*.*', ['_base-root']);
-  gulp.watch(PATHS.src.images + '*.*', ['_base-images']);
-  gulp.watch(PATHS.src.styles + '**/*.scss', ['_base-styles']);
-  gulp.watch([PATHS.src.includes + '**/*.php', PATHS.src.views + '*.php'], ['_base-php']);
-  gulp.watch(PATHS.src.vendor + '**/*.php', ['_base-vendor']);
-});
+module.exports = {
+  build: function baseBuild (callback) {
+    return gulp.parallel(
+      baseRoot,
+      gulp.series(
+        baseImages,
+        baseStyles,
+      ),
+      basePhp,
+      baseVendor,
+    )(callback);
+  },
+  watch: function baseWatch () {
+    gulp.watch(paths.join(paths.SRC, '*.*'), baseRoot);
+    gulp.watch(paths.join(paths.src.images, '*.*'), baseImages);
+    gulp.watch(paths.join(paths.src.styles, '**/*.scss'), baseStyles);
+    gulp.watch([
+      paths.join(paths.src.includes, '**/*.php'),
+      paths.join(paths.src.views, '*.php')
+    ], basePhp);
+    gulp.watch(paths.join(paths.src.vendor, '**/*.php'), baseVendor);
+  }
+}
 
 /**
  * Root (files in the root folder)
- *
- * @access private
  */
-gulp.task('_base-root', function() {
-  return gulp.src([PATHS.src.root + '*.php', PATHS.src.root + 'composer.json'])
-    .pipe(gulp.dest(PATHS.build.root));
-});
+function baseRoot () {
+  return gulp.src([
+      paths.join(paths.SRC, '*.php'),
+      paths.join(paths.SRC, 'composer.json'),
+    ])
+    .pipe(gulp.dest(paths.DIST));
+}
 
 /**
  * Images
- *
- * @access private
  */
-gulp.task('_base-images', function() {
+function baseImages () {
   return gulp.src([
-      PATHS.src.images + '*.*',
-      '!' + PATHS.src.images + '*.svg', // svg are inlined in css
-      '!' + PATHS.src.images + '*.dev*' // exclude dev images (kind of sketches)
+      paths.join(paths.src.images, '*.*'),
+      '!' + paths.join(paths.src.images, '*.svg'), // svg are inlined in css
+      '!' + paths.join(paths.src.images, '*.dev*'), // exclude dev images (kind of sketches)
     ])
-    .pipe(cache(imagemin(PLUGINS.imagemin)))
+    .pipe(cache(imagemin(plugins.imagemin)))
     .pipe(gulpIf(function (file) {
       // for the props of `file` see http://stackoverflow.com/a/33245138/1938970
       return !file.relative.match(/^_/); // exclude `private` images
-    }, gulp.dest(PATHS.build.images)));
-});
+    }, gulp.dest(paths.dist.images)));
+}
 
 /**
  * Styles
  *
  * Inline svg images in CSS file.
- *
- * @access private
  */
-gulp.task('_base-styles', ['_base-images'], function() {
-  var banner = CONFIG.isDist ? require('lodash.template')(CONFIG.credits)({ pkg: pkg }) : '';
-  PLUGINS.base64.baseDir = PATHS.src.root;
-  return gulp.src(PATHS.src.styles + '*.scss')
-    .pipe(gulpIf(CONFIG.isDist, replace(CONFIG.creditsPlaceholder, banner)))
-    .pipe(sass.sync(PLUGINS.sass).on('error', sass.logError))
+function baseStyles () {
+  const banner = config.isDist ? require('lodash.template')(config.credits)({ pkg: pkg }) : '';
+  plugins.base64.baseDir = paths.SRC;
+
+  return gulp.src(paths.join(paths.src.styles, '*.scss'))
+    .pipe(gulpIf(config.isDist, replace(config.creditsPlaceholder, banner)))
+    .pipe(sass.sync(plugins.sass).on('error', sass.logError))
     .pipe(postcss([
-      require('autoprefixer')(PLUGINS.autoprefixer),
-      require('css-mqpacker')(PLUGINS.cssMqpacker)
+      require('autoprefixer')(plugins.autoprefixer),
+      require('css-mqpacker')(plugins.cssMqpacker)
     ]))
-    .pipe(base64(PLUGINS.base64))
-    .pipe(gulpIf(CONFIG.isDist, replace(CONFIG.creditsPlaceholder, banner)))
-    .pipe(gulp.dest(PATHS.build.styles))
-    .pipe(gulpIf(CONFIG.isDist, cssnano(PLUGINS.cssnano)))
+    .pipe(base64(plugins.base64))
+    .pipe(gulpIf(config.isDist, replace(config.creditsPlaceholder, banner)))
+    .pipe(gulp.dest(paths.dist.styles))
+    .pipe(gulpIf(config.isDist, cssnano(plugins.cssnano)))
     .pipe(rename({ suffix: '.min' }))
-    .pipe(gulp.dest(PATHS.build.styles));
-});
+    .pipe(gulp.dest(paths.dist.styles));
+}
 
 /**
- * PHP | Classes
+ * Base PHP task
  *
- * Customize classes php group classes in one file
- *
- * @access private
+ * In the ditributable version (`--dist`) exclude `includes/`` subfolders.
+ * Group php classes in subfolders of `includes` into single files transforming
+ * php `require` in gulp-include `require` to inline php files. After that
+ * remove extra `<?php // @partial` that was needed during development.
  */
-gulp.task('_base-php', function() {
-  // on `--dist` exclude `includes/**/*` subfolders
-  var path = CONFIG.isDist ? PATHS.src.includes + '*.php' : PATHS.src.includes + '**/*.php';
+function basePhp () {
+  const path = config.isDist ? paths.join(paths.src.includes, '*.php') : paths.join(paths.src.includes, '**/*.php');
   return gulp.src(path)
-    // transform php `require` in gulp-include `require` to inline php files in one file
-    .pipe(gulpIf(CONFIG.isDist, replace("require ( KKCP_PLUGIN_DIR . 'includes/", '//=require ')))
+    .pipe(gulpIf(config.isDist, replace("require ( KKCP_PLUGIN_DIR . 'includes/", '//=require ')))
     .pipe(include())
-    .pipe(gulpIf(CONFIG.isDist, replace(/<\?php\s\/\/\s@partial/g, ''))) // remove extra `<?php // @partial`
-    .pipe(gulp.dest(PATHS.build.includes));
-});
+    .pipe(gulpIf(config.isDist, replace(/<\?php\s\/\/\s@partial/g, '')))
+    .pipe(gulp.dest(paths.dist.includes));
+}
 
 /**
- * PHP | Vendor
+ * Vendor PHP task
  *
  * Collect needed vendor files
- *
- * @access private
  */
-gulp.task('_base-vendor', function() {
+function baseVendor () {
   return gulp.src([
       'oyejorge/less.php/**/*.php',
       '!oyejorge/less.php/test/**/*.*', // exclude test folder
       'tgm/**/class-tgm-plugin-activation.php',
-    ], { cwd: PATHS.src.vendor, base: PATHS.src.vendor })
-    .pipe(gulp.dest(PATHS.build.vendor));
-});
-
-/**
- * Docs
- *
- * @access public
- */
-gulp.task('docs', ['docs-js']);
-
-/**
- * Docs JS
- *
- * @access public
- */
-gulp.task('docs-js', function(cb) {
-  var jsdoc = require('gulp-jsdoc3');
-  return gulp.src(['./README.md', './src/scripts/customize/**/*.js'])
-        .pipe(jsdoc({
-            opts: {
-              destination: './docs/js',
-              private: true,
-            },
-            templates: {
-              theme: 'simplex',
-              // footer: '',
-              // copyright: '',
-              // analytics: { ua: '', domain: '' },
-            },
-            source: {
-              excludePattern: '(^|\\/|\\\\)_'
-            }
-          }));
-});
+    ], { cwd: paths.src.vendor, base: paths.src.vendor })
+    .pipe(gulp.dest(paths.dist.vendor));
+}
