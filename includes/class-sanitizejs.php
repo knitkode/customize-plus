@@ -13,7 +13,7 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
-	 * @version    Release: 1.0.0
+	 * @version    Release: 1.0.2
 	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp_SanitizeJS {
@@ -186,6 +186,21 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 				return null;
 			}
 			wp_die( 'cp_api', sprintf( esc_html__( 'Customize Plus | API error: value %s must be a integer.', 'kkcp' ), $input ) );
+		}
+
+		/**
+		 * Sanitization for js value: int or null
+		 *
+		 * @since 1.0.0
+		 * @param  bool  $strict If true it returns `null` and no API error
+		 * @param  mixed $input
+		 * @return int|null
+		 */
+		public static function int_or_null( $strict, $input ) {
+			if ( is_null( $input ) ) {
+				return null;
+			}
+			return self::int( $strict, $input );
 		}
 
 		/**

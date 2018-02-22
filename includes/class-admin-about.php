@@ -12,7 +12,7 @@ if ( ! class_exists( 'KKcp_Admin_About' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
-	 * @version    Release: 1.0.0
+	 * @version    Release: 1.0.2
 	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp_Admin_About {

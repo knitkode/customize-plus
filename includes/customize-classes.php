@@ -11,7 +11,7 @@
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 
@@ -34,7 +34,7 @@ global $wp_customize;
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Setting_Base extends WP_Customize_Setting {
@@ -111,7 +111,7 @@ class KKcp_Customize_Setting_Base extends WP_Customize_Setting {
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Setting_Font_Family extends KKcp_Customize_Setting_Base {
@@ -165,7 +165,7 @@ class KKcp_Customize_Setting_Font_Family extends KKcp_Customize_Setting_Base {
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Base extends WP_Customize_Control {
@@ -657,7 +657,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Control_Base {
@@ -750,8 +750,8 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 	 */
 	protected function add_to_json() {
 		$this->json['id'] = KKcp_SanitizeJS::string( true, $this->id );
-		$this->json['max'] = KKcp_SanitizeJS::int( false, $this->max );
-		$this->json['min'] = KKcp_SanitizeJS::int( false, $this->min );
+		$this->json['max'] = KKcp_SanitizeJS::int_or_null( false, $this->max );
+		$this->json['min'] = KKcp_SanitizeJS::int_or_null( false, $this->min );
 		$this->json['choices'] = $this->choices;
 	}
 
@@ -880,7 +880,7 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 abstract class KKcp_Customize_Control_Base_Input extends KKcp_Customize_Control_Base {
@@ -939,7 +939,7 @@ abstract class KKcp_Customize_Control_Base_Input extends KKcp_Customize_Control_
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_Base_Choices {
@@ -996,7 +996,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Base_Choices {
@@ -1219,7 +1219,7 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Buttonset extends KKcp_Customize_Control_Base_Radio {
@@ -1280,7 +1280,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Buttonset' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
@@ -1362,7 +1362,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Checkbox' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
@@ -1555,7 +1555,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Color' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
@@ -1675,7 +1675,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Content' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set {
@@ -1783,7 +1783,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Font_Family' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Set {
@@ -1855,7 +1855,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Icon' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choices {
@@ -1995,7 +1995,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Multicheck' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
@@ -2066,7 +2066,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Number' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Radio extends KKcp_Customize_Control_Base_Radio {
@@ -2110,7 +2110,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Radio' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Radio_Image extends KKcp_Customize_Control_Base_Radio {
@@ -2155,7 +2155,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Radio_Image' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices {
@@ -2244,7 +2244,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Select' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Font_Weight extends KKcp_Customize_Control_Select {
@@ -2311,7 +2311,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Font_Weight' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
@@ -2469,7 +2469,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Slider' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choices {
@@ -2568,7 +2568,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Sortable' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
@@ -2626,8 +2626,8 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	 * @inheritDoc
 	 */
 	protected function add_to_json() {
-		$this->json['max'] = KKcp_SanitizeJS::int( false, $this->max );
-		$this->json['min'] = KKcp_SanitizeJS::int( false, $this->min );
+		$this->json['max'] = KKcp_SanitizeJS::int_or_null( false, $this->max );
+		$this->json['min'] = KKcp_SanitizeJS::int_or_null( false, $this->min );
 	}
 
 	/**
@@ -2675,7 +2675,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Tags' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
@@ -2803,7 +2803,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Text' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Password extends KKcp_Customize_Control_Text {
@@ -2877,7 +2877,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Password' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
@@ -3042,7 +3042,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Textarea' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.0
+ * @version    Release: 1.0.2
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Toggle extends KKcp_Customize_Control_Checkbox {

@@ -257,23 +257,23 @@ msgstr ""
 msgid "Customize Plus | API error: value %s must be a integer."
 msgstr ""
 
-#: includes/class-sanitizejs.php:208, includes/class-sanitizejs.php:215
+#: includes/class-sanitizejs.php:223, includes/class-sanitizejs.php:230
 msgid "Customize Plus | API error: value %1$s must be one of %2$s."
 msgstr ""
 
-#: includes/class-sanitizejs.php:241
+#: includes/class-sanitizejs.php:256
 msgid "Customize Plus | API error: value %s must be an array."
 msgstr ""
 
-#: includes/class-sanitizejs.php:259
+#: includes/class-sanitizejs.php:274
 msgid "Customize Plus | API error: value %s must be a boolean."
 msgstr ""
 
-#: includes/class-sanitizejs.php:277
+#: includes/class-sanitizejs.php:292
 msgid "Customize Plus | API error: value %s must be a string."
 msgstr ""
 
-#: includes/class-sanitizejs.php:296
+#: includes/class-sanitizejs.php:311
 msgid "Customize Plus | API error: value must be one of: %s"
 msgstr ""
 

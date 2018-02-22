@@ -9772,7 +9772,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
 
 /*!
- * Customize Plus v1.0.0 (https://knitkode.com/products/customize-plus)
+ * Customize Plus v1.0.2 (https://knitkode.com/products/customize-plus)
  * Enhance and extend the WordPress Customizer.
  * Copyright (c) 2014-2018 KnitKode <dev@knitkode.com> (https://knitkode.com/)
  * @license SEE LICENSE IN license.txt (Last change on: 22-1-2018)
@@ -12437,14 +12437,14 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   function slider( $validity, $value, $setting, $control ) {
     if ( $validity === void 0 ) $validity={};
 
-    var $params = $control.$params;
-    var $attrs = $params.attrs || {};
+    var params = $control.params;
+    var $attrs = params.attrs || {};
 
     var $number = Helper.extractNumber( $value, !!$attrs['float'] );
-    var $unit = Helper.extractSizeUnit( $value, $params['units'] );
+    var $unit = Helper.extractSizeUnit( $value, params['units'] );
 
     $validity = number( $validity, $number, $setting, $control );
-    $validity = sizeUnit( $validity, $unit, $params['units'] );
+    $validity = sizeUnit( $validity, $unit, params['units'] );
 
     return $validity;
   }
@@ -13870,14 +13870,14 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {string|number|null} The sanitized value.
    */
   function slider$1( $value, $setting, $control ) {
-    var $params = $control.$params;
-    var $attrs = $params.attrs || {};
+    var params = $control.params;
+    var $attrs = params.attrs || {};
 
     var $number = Helper.extractNumber( $value, !!$attrs['float'] );
-    var $unit = Helper.extractSizeUnit( $value, $params['units'] );
+    var $unit = Helper.extractSizeUnit( $value, params['units'] );
 
     $number = number$1( $number, $setting, $control );
-    $unit = sizeUnit$1( $unit, $params['units'] );
+    $unit = sizeUnit$1( $unit, params['units'] );
 
     if ( $number === null ) {
       return null;
@@ -14928,16 +14928,18 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * @override
      */
     FontFamily.prototype._renderItem = function _renderItem (data) {
+      var label = data.value.replace(/'/g, '').replace(/"/g, '');
       var value = _$1.escape(data.value);
-      return ("<div style=\"font-family:" + value + "\">" + (value.replace(/'/g, '').replace(/"/g, '')) + "</div>");
+      return ("<div style=\"font-family:" + value + "\">" + (_$1.escape(label)) + "</div>");
     };
 
     /**
      * @override
      */
     FontFamily.prototype._renderOption = function _renderOption (data) {
+      var label = data.value.replace(/'/g, '').replace(/"/g, '');
       var value = _$1.escape(data.value);
-      return ("<div style=\"font-family:" + value + "\">" + (value.replace(/'/g, '').replace(/"/g, '')) + "</div>");
+      return ("<div style=\"font-family:" + value + "\">" + (_$1.escape(label)) + "</div>");
     };
 
     /**
@@ -15384,7 +15386,9 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         .val(setting())
         .on('change keyup paste', function () {
           setting.set(this.value);
-          self.__text.value = this.value;
+          if (self.__text) {
+            self.__text.value = this.value;
+          }
         });
     };
 
@@ -16165,8 +16169,9 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         pluginOptions.plugins.push('restore_on_backspace');
       }
 
+      this.__input.value = value;
+
       $$1(this.__input).selectize(pluginOptions);
-      this.__input.selectize.setValue(value);
     };
 
     return Tags;
