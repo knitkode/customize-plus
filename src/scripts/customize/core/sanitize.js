@@ -332,14 +332,14 @@ export function sizeUnit( $unit, $allowed_units ) {
  * @return {string|number|null} The sanitized value.
  */
 export function slider( $value, $setting, $control ) {
-  const {$params} = $control;
-  const $attrs = $params.attrs || {};
+  const {params} = $control;
+  const $attrs = params.attrs || {};
 
   let $number = Helper.extractNumber( $value, !!$attrs['float'] );
-  let $unit = Helper.extractSizeUnit( $value, $params['units'] );
+  let $unit = Helper.extractSizeUnit( $value, params['units'] );
 
   $number = number( $number, $setting, $control );
-  $unit = sizeUnit( $unit, $params['units'] );
+  $unit = sizeUnit( $unit, params['units'] );
 
   if ( $number === null ) {
     return null;

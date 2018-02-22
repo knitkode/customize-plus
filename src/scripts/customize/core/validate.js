@@ -358,14 +358,14 @@ export function sizeUnit( $validity, $unit, $allowed_units ) {
  * @return {WP_Error}
  */
 export function slider( $validity={}, $value, $setting, $control ) {
-  const {$params} = $control;
-  const $attrs = $params.attrs || {};
+  const {params} = $control;
+  const $attrs = params.attrs || {};
 
   const $number = Helper.extractNumber( $value, !!$attrs['float'] );
-  const $unit = Helper.extractSizeUnit( $value, $params['units'] );
+  const $unit = Helper.extractSizeUnit( $value, params['units'] );
 
   $validity = number( $validity, $number, $setting, $control );
-  $validity = sizeUnit( $validity, $unit, $params['units'] );
+  $validity = sizeUnit( $validity, $unit, params['units'] );
 
   return $validity;
 }

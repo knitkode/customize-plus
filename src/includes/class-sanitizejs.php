@@ -189,6 +189,21 @@ if ( ! class_exists( 'KKcp_SanitizeJS' ) ):
 		}
 
 		/**
+		 * Sanitization for js value: int or null
+		 *
+		 * @since 1.0.0
+		 * @param  bool  $strict If true it returns `null` and no API error
+		 * @param  mixed $input
+		 * @return int|null
+		 */
+		public static function int_or_null( $strict, $input ) {
+			if ( is_null( $input ) ) {
+				return null;
+			}
+			return self::int( $strict, $input );
+		}
+
+		/**
 		 * Sanitization for js value: item in array
 		 *
 		 * @since 1.0.0

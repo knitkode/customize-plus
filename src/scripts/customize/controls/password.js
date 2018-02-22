@@ -69,7 +69,9 @@ class Password extends Text {
       .val(setting())
       .on('change keyup paste', function () {
         setting.set(this.value);
-        self.__text.value = this.value;
+        if (self.__text) {
+          self.__text.value = this.value;
+        }
       });
   }
 

@@ -109,16 +109,18 @@ class FontFamily extends BaseSet {
    * @override
    */
   _renderItem (data) {
+    const label = data.value.replace(/'/g, '').replace(/"/g, '');
     const value = _.escape(data.value);
-    return `<div style="font-family:${value}">${value.replace(/'/g, '').replace(/"/g, '')}</div>`;
+    return `<div style="font-family:${value}">${_.escape(label)}</div>`;
   }
 
   /**
    * @override
    */
   _renderOption (data) {
+    const label = data.value.replace(/'/g, '').replace(/"/g, '');
     const value = _.escape(data.value);
-    return `<div style="font-family:${value}">${value.replace(/'/g, '').replace(/"/g, '')}</div>`;
+    return `<div style="font-family:${value}">${_.escape(label)}</div>`;
   }
 
   /**

@@ -102,8 +102,8 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 	 */
 	protected function add_to_json() {
 		$this->json['id'] = KKcp_SanitizeJS::string( true, $this->id );
-		$this->json['max'] = KKcp_SanitizeJS::int( false, $this->max );
-		$this->json['min'] = KKcp_SanitizeJS::int( false, $this->min );
+		$this->json['max'] = KKcp_SanitizeJS::int_or_null( false, $this->max );
+		$this->json['min'] = KKcp_SanitizeJS::int_or_null( false, $this->min );
 		$this->json['choices'] = $this->choices;
 	}
 
