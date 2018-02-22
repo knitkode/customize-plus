@@ -302,198 +302,198 @@ msgstr ""
 msgid "%1$s every setting must have a %2$s value."
 msgstr ""
 
-#: includes/customize-classes.php:424
+#: includes/customize-classes.php:424, includes/controls/base.php:271
 msgid "Click to expand"
 msgstr ""
 
-#: includes/customize-classes.php:456
+#: includes/customize-classes.php:456, includes/controls/base.php:303
 msgid "Reset to last saved value"
 msgstr ""
 
-#: includes/customize-classes.php:457
+#: includes/customize-classes.php:457, includes/controls/base.php:304
 msgid "Reset to initial session value"
 msgstr ""
 
-#: includes/customize-classes.php:458
+#: includes/customize-classes.php:458, includes/controls/base.php:305
 msgid "Reset to factory value"
 msgstr ""
 
-#: includes/customize-classes.php:735
+#: includes/customize-classes.php:735, includes/controls/base-choices.php:87
 msgid "It must be a list of values"
 msgstr ""
 
-#: includes/customize-classes.php:736
+#: includes/customize-classes.php:736, includes/controls/base-choices.php:88
 msgid "**%s** is not an allowed choice"
 msgstr ""
 
-#: includes/customize-classes.php:737
+#: includes/customize-classes.php:737, includes/controls/base-choices.php:89
 msgid "It must contain exactly **%s** values"
 msgstr ""
 
-#: includes/customize-classes.php:738
+#: includes/customize-classes.php:738, includes/controls/base-choices.php:90
 msgid "It must contain minimum **%s** values"
 msgstr ""
 
-#: includes/customize-classes.php:739
+#: includes/customize-classes.php:739, includes/controls/base-choices.php:91
 msgid "It must contain maximum **%s** values"
 msgstr ""
 
-#: includes/customize-classes.php:1071
+#: includes/customize-classes.php:1071, includes/controls/base-set.php:84
 msgid "Customize Plus | API error: set %s must follow the `set` strucure with values in `values` array."
 msgstr ""
 
-#: includes/customize-classes.php:1308
+#: includes/customize-classes.php:1308, includes/controls/checkbox.php:37
 msgid "It must be either checked or unchecked"
 msgstr ""
 
-#: includes/customize-classes.php:1473
+#: includes/customize-classes.php:1473, includes/controls/color.php:127
 msgid "Cancel"
 msgstr ""
 
-#: includes/customize-classes.php:1474
+#: includes/customize-classes.php:1474, includes/controls/color.php:128
 msgid "Choose"
 msgstr ""
 
-#: includes/customize-classes.php:1475
+#: includes/customize-classes.php:1475, includes/controls/color.php:129
 msgid "Clear selection"
 msgstr ""
 
-#: includes/customize-classes.php:1476
+#: includes/customize-classes.php:1476, includes/controls/color.php:130
 msgid "No color selected"
 msgstr ""
 
-#: includes/customize-classes.php:1477
+#: includes/customize-classes.php:1477, includes/controls/color.php:131
 msgid "Show color picker"
 msgstr ""
 
-#: includes/customize-classes.php:1478
+#: includes/customize-classes.php:1478, includes/controls/color.php:132
 msgid "Hide color picker"
 msgstr ""
 
-#: includes/customize-classes.php:1479
+#: includes/customize-classes.php:1479, includes/controls/color.php:133
 msgid "Colors must be strings"
 msgstr ""
 
-#: includes/customize-classes.php:1480
+#: includes/customize-classes.php:1480, includes/controls/color.php:134
 msgid "Color not in the allowed palette"
 msgstr ""
 
-#: includes/customize-classes.php:1481
+#: includes/customize-classes.php:1481, includes/controls/color.php:135
 msgid "Transparent is not allowed"
 msgstr ""
 
-#: includes/customize-classes.php:1482
+#: includes/customize-classes.php:1482, includes/controls/color.php:136
 msgid "RGBA color is not allowed"
 msgstr ""
 
-#: includes/customize-classes.php:1483
+#: includes/customize-classes.php:1483, includes/controls/color.php:137
 msgid "Not a valid color"
 msgstr ""
 
-#: includes/customize-classes.php:1519
+#: includes/customize-classes.php:1519, includes/controls/color.php:173
 msgid "Select Color"
 msgstr ""
 
-#: includes/customize-classes.php:1838, includes/customize-classes.php:1838
+#: includes/customize-classes.php:1838, includes/customize-classes.php:1838, includes/controls/icon.php:64, includes/controls/icon.php:64
 msgid "Search icon by name..."
 msgstr ""
 
-#: includes/customize-classes.php:2028
+#: includes/customize-classes.php:2028, includes/controls/number.php:42
 msgid "It must be a number"
 msgstr ""
 
-#: includes/customize-classes.php:2029
+#: includes/customize-classes.php:2029, includes/controls/number.php:43
 msgid "It must be an integer, not a float"
 msgstr ""
 
-#: includes/customize-classes.php:2030
+#: includes/customize-classes.php:2030, includes/controls/number.php:44
 msgid "It must be an integer number"
 msgstr ""
 
-#: includes/customize-classes.php:2031
+#: includes/customize-classes.php:2031, includes/controls/number.php:45
 msgid "It must be a multiple of **%s**"
 msgstr ""
 
-#: includes/customize-classes.php:2032
+#: includes/customize-classes.php:2032, includes/controls/number.php:46
 msgid "It must be higher than **%s**"
 msgstr ""
 
-#: includes/customize-classes.php:2033
+#: includes/customize-classes.php:2033, includes/controls/number.php:47
 msgid "It must be lower than **%s**"
 msgstr ""
 
-#: includes/customize-classes.php:2381
+#: includes/customize-classes.php:2381, includes/controls/slider.php:79
 msgid "A CSS unit must be specified"
 msgstr ""
 
-#: includes/customize-classes.php:2382
+#: includes/customize-classes.php:2382, includes/controls/slider.php:80
 msgid "CSS unit `%` is invalid"
 msgstr ""
 
-#: includes/customize-classes.php:2383
+#: includes/customize-classes.php:2383, includes/controls/slider.php:81
 msgid "It does not accept a CSS unit"
 msgstr ""
 
-#: includes/customize-classes.php:2618
+#: includes/customize-classes.php:2618, includes/controls/tags.php:59
 msgid "Tags must be a string"
 msgstr ""
 
-#: includes/customize-classes.php:2619
+#: includes/customize-classes.php:2619, includes/controls/tags.php:60
 msgid "Minimum **%s** tags required"
 msgstr ""
 
-#: includes/customize-classes.php:2620
+#: includes/customize-classes.php:2620, includes/controls/tags.php:61
 msgid "Maximum **%s** tags allowed"
 msgstr ""
 
-#: includes/customize-classes.php:2744
+#: includes/customize-classes.php:2744, includes/controls/text.php:78
 msgid "It must be a string"
 msgstr ""
 
-#: includes/customize-classes.php:2745
+#: includes/customize-classes.php:2745, includes/controls/text.php:79
 msgid "Invalid URL"
 msgstr ""
 
-#: includes/customize-classes.php:2746
+#: includes/customize-classes.php:2746, includes/controls/text.php:80
 msgid "Invalid email"
 msgstr ""
 
-#: includes/customize-classes.php:2747
+#: includes/customize-classes.php:2747, includes/controls/text.php:81
 msgid "It must be shorter than **%s** chars"
 msgstr ""
 
-#: includes/customize-classes.php:2748
+#: includes/customize-classes.php:2748, includes/controls/text.php:82
 msgid "It must be longer than **%s** chars"
 msgstr ""
 
-#: includes/customize-classes.php:2749
+#: includes/customize-classes.php:2749, includes/controls/text.php:83
 msgid "It must follow this pattern **%s**"
 msgstr ""
 
-#: includes/customize-classes.php:2750
+#: includes/customize-classes.php:2750, includes/controls/text.php:84
 msgid "HTML is not allowed. It will be stripped out on save"
 msgstr ""
 
-#: includes/customize-classes.php:2751
+#: includes/customize-classes.php:2751, includes/controls/text.php:85
 msgid "This text contains some unallowed HTML. It will be stripped out on save"
 msgstr ""
 
-#: includes/customize-classes.php:2752
+#: includes/customize-classes.php:2752, includes/controls/text.php:86
 msgid "The following HTML tags are not allowed: **%s**. They will be stripped out on save"
 msgstr ""
 
-#: includes/customize-classes.php:2753
+#: includes/customize-classes.php:2753, includes/controls/text.php:87
 msgid "HTML code will be escaped on save"
 msgstr ""
 
-#: includes/customize-classes.php:2754
+#: includes/customize-classes.php:2754, includes/controls/text.php:88
 msgid "HTML code is dangerously allowed here"
 msgstr ""
 
-#: includes/customize-classes.php:2841
+#: includes/customize-classes.php:2841, includes/controls/password.php:51
 msgid "Hide password"
 msgstr ""
 
-#: includes/customize-classes.php:2842
+#: includes/customize-classes.php:2842, includes/controls/password.php:52
 msgid "Show password"
 msgstr ""
