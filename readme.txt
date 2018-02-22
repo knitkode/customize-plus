@@ -1,7 +1,7 @@
 === Customize Plus ===
 Tags: wordpress, customizer, options framework, theme
 Contributors: KnitKode, kuus
-Stable tag: 1.0.0
+Stable tag: 1.0.2
 Requires at least: 4.9.4
 Tested up to: 4.9.4
 Requires PHP: 5.2.4
@@ -105,7 +105,11 @@ Help is provided via the plugin support forum only. Please visit the [support pa
 
 == Changelog ==
 
-= 1.0.0: February 2017 =
+= 1.0.2: 22 February 2017 =
+
+* Basic fixes to controls behaviour.
+
+= 1.0.0: 21 February 2017 =
 
 * First official plugin release.
 

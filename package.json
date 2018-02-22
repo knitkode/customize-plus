@@ -1,6 +1,6 @@
 {
   "name": "@knitkode/customize-plus",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Enhance and extend the WordPress Customizer.",
   "config": {
     "slug": "customize-plus",
