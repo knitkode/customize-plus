@@ -5,8 +5,8 @@ Enhance and extend the WordPress Customize in your themes.
 
 **Contributors:** [knitkode](https://profiles.wordpress.org/knitkode), [kuus](https://profiles.wordpress.org/kuus)  
 **Tags:** [wordpress](https://wordpress.org/plugins/tags/wordpress), [customizer](https://wordpress.org/plugins/tags/customizer), [options framework](https://wordpress.org/plugins/tags/options-framework), [theme](https://wordpress.org/plugins/tags/theme)  
-**Requires at least:** 4.9.1  
-**Tested up to:** 4.9.1  
+**Requires at least:** 4.9.4  
+**Tested up to:** 4.9.4  
 **Stable tag:** 1.0.0  
 **License:** [GPLv3](http://www.gnu.org/licenses/gpl-3.0.html)  
 **Requires PHP:** 5.2.4  
