@@ -46,6 +46,7 @@ module.exports = {
  */
 function baseRoot () {
   return gulp.src([
+      paths.join(paths.ROOT, 'readme.txt'),
       paths.join(paths.SRC, '*.php'),
       paths.join(paths.SRC, 'composer.json'),
     ])
