@@ -9772,7 +9772,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
 
 /*!
- * Customize Plus v1.0.2 (https://knitkode.com/products/customize-plus)
+ * Customize Plus v1.0.21 (https://knitkode.com/products/customize-plus)
  * Enhance and extend the WordPress Customizer.
  * Copyright (c) 2014-2018 KnitKode <dev@knitkode.com> (https://knitkode.com/)
  * @license SEE LICENSE IN license.txt (Last change on: 22-1-2018)

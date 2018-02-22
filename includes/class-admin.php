@@ -12,7 +12,7 @@ if ( class_exists( 'KKcp_Singleton' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
-	 * @version    Release: 1.0.2
+	 * @version    Release: 1.0.21
 	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp_Admin extends KKcp_Singleton {

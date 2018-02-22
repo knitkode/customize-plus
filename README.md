@@ -7,7 +7,7 @@ Enhance and extend the WordPress Customize in your themes.
 **Tags:** [wordpress](https://wordpress.org/plugins/tags/wordpress), [customizer](https://wordpress.org/plugins/tags/customizer), [options framework](https://wordpress.org/plugins/tags/options-framework), [theme](https://wordpress.org/plugins/tags/theme)  
 **Requires at least:** 4.9.4  
 **Tested up to:** 4.9.4  
-**Stable tag:** 1.0.2  
+**Stable tag:** 1.0.21  
 **License:** [GPLv3](http://www.gnu.org/licenses/gpl-3.0.html)  
 **Requires PHP:** 5.2.4  
 **Donate link:** https://liberapay.com/knitkode/donate  
@@ -102,6 +102,9 @@ Help is provided via the plugin support forum only. Please visit the [support pa
 
 
 ## Changelog ##
+
+### 1.0.21: 22 February 2017 ###
+* Fix radio image control missing label->input link
 
 ### 1.0.2: 22 February 2017 ###
 * Basic fixes to controls behaviour.
