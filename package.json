@@ -41,8 +41,8 @@
     "src/images"
   ],
   "scripts": {
-    "prebuild": "rm -r build/",
-    "predeploy": "rm -r build/",
+    "prebuild": "rm -r build/ || true",
+    "predeploy": "rm -r build/ || true",
     "prewatch": "npm link @knitkode/vendor",
     "watch": "gulp watch --cwd config/",
     "build": "gulp build --dist --cwd config/",
