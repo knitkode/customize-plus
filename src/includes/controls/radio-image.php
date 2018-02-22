@@ -34,7 +34,7 @@ class KKcp_Customize_Control_Radio_Image extends KKcp_Customize_Control_Base_Rad
 	protected function js_tpl_choice_ui() {
 		?>
 			<input id="{{ id }}" class="kkcp-radio-image" type="radio" value="{{ val }}" name="_customize-kkcp_radio_image-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
-			<label class="{{ classes }}" {{ attributes }}>
+			<label for="{{ id }}" class="{{ classes }}" {{ attributes }}>
 				<# var imgUrl = choice.img_custom ? '<?php echo esc_url( KKcp_Theme::$images_base_url ); ?>' + choice.img_custom : '<?php echo esc_url( KKCP_PLUGIN_URL . 'assets/images/' ); ?>' + choice.img + '.png'; #>
 				<img class="kkcpui-tooltip--top" src="{{ imgUrl }}" title="{{ tooltip }}">
 			</label>
