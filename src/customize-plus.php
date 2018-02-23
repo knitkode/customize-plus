@@ -1,23 +1,33 @@
 <?php defined( 'ABSPATH' ) or die;
 
 /**
- * Customize Plus
+ * Plugin Name: pkgTitle
+ * Plugin URI: pkgHomepage
+ * Description: pkgDescription
+ * Version: pkgVersion
+ * Author: pkgAuthorName
+ * Author URI: pkgAuthorUrl
+ * License: GPLv3+
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ * Text Domain: pkgTextdomain
+ * Domain Path: /languages
  *
- * pkgDescription
+ * Copyright (c) pkgStartYear-pkgEndYear pkgAuthorName (pkgAuthorUrl)
  *
- * @package           Customize_Plus
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * @wordpress-plugin
- * Plugin Name:       Customize Plus
- * Plugin URI:        https://knitkode.com/products/customize-plus
- * Description:       pkgDescription
- * Version:           pkgVersion
- * Author:            KnitKode
- * Author URI:        https://knitkode.com
- * License:           GPLv3
- * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain:       pkgTextdomain
- * Domain Path:       /languages
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package Customize_Plus
  */
 
 define( 'KKCP_PLUGIN_FILE', __FILE__ );
