@@ -1,9 +1,10 @@
 # Customize Plus [![by KnitKode](https://img.shields.io/badge/by-KnitKode-lightgrey.svg?style=social)]()
 
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)](https://wordpress.org/plugins/customize-plus)
+[![GitHub release](https://img.shields.io/github/release/knitkode/customize-plus.svg)](https://github.com/knitkode/customize-plus/releases/latest)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/facc393563dd4ef49ff3b2dea2bd2f7c)](https://www.codacy.com/app/knitkode/customize-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=knitkode/customize-plus&amp;utm_campaign=Badge_Grade)
 
-> Enhance and extend the WordPress Customize.
+> Enhance and extend the WordPress Customize in your themes.
 
 **JavaScript API** is documented with [JSdoc here](https://knitkode.com/docs/customize-plus/js/)
 

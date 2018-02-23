@@ -13,8 +13,8 @@ Enhance and extend the WordPress Customize in your themes.
 
 
 == Description ==
-[![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)]()
-[![GitHub release](https://img.shields.io/github/release/knitkode/customize-plus.svg)]()
+[![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)](https://wordpress.org/plugins/customize-plus)
+[![GitHub release](https://img.shields.io/github/release/knitkode/customize-plus.svg)](https://github.com/knitkode/customize-plus/releases/latest)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/facc393563dd4ef49ff3b2dea2bd2f7c)](https://www.codacy.com/app/knitkode/customize-plus?utm_source=customize-plus&utm_medium=github&utm_content=badge_codacy&utm_campaign=readme)
 
 Customize Plus brings powerful custom controls fully integrated in the WordPress Customize. The code, the admin UI and the API totally looks like WordPress, as it should be. Customize Plus extends the WordPress API to create all the controls you need leveraging the JavaScript API. All the `theme_mods` or `options` managed by Customize Plus controls are automatically validated and sanitized. You do not even need to define the fallback value when retrieving them. End users will also benefit from this plugin, for instance they will be able to separately reset the control values of each control to the initial session or factory value. This and many other features are extended in [Customize Plus Premium](https://knitkode.com/products/customize-plus-premium/) enriching the Customize experience not only for developers but also for users. Developers will also find useful the plugin [Customize Plus Builder](https://knitkode.com/products/customize-plus-builder/) to further improve their development experience.
