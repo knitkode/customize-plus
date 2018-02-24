@@ -41,8 +41,7 @@ class BaseRadio extends BaseChoices {
    */
   componentDidMount () {
     this.__inputs = this._container.getElementsByTagName('input');
-    // sync checked state on radios and bind (argument `true`)
-    this._updateUI(true);
+    this._updateUI(this.setting(), true);
   }
 
   /**
@@ -51,15 +50,14 @@ class BaseRadio extends BaseChoices {
    * @since   1.0.0
    * @memberof! controls.BaseRadio#
    *
-   * @param  {boolean} bindAsWell Bind on change?
+   * @param {mixed}   $value
+   * @param {boolean} bind
    */
-  _updateUI (bindAsWell) {
-    const value = this.setting();
-
-    for (var i = 0, l = this.__inputs.length; i < l; i++) {
-      var input = this.__inputs[i];
-      input.checked = value === input.value;
-      if (bindAsWell) {
+  _updateUI ($value, bind) {
+    for (let i = 0, l = this.__inputs.length; i < l; i++) {
+      let input = this.__inputs[i];
+      input.checked = $value === input.value;
+      if (bind) {
         input.onchange = (event) => {
           this.setting.set(event.target.value);
         };

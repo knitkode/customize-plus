@@ -54,13 +54,18 @@ class BaseSet extends Base {
   /**
    * @override
    */
-  componentDidUpdate (value) {
-    if (_.isString(value)) {
-      value = [value];
+  shouldComponentUpdate ($value) {
+    if (_.isString($value)) {
+      $value = [$value];
     }
-    if (!_.isEqual(value, this._getValueFromUI())) {
-      this._updateUI(value);
-    }
+    return !_.isEqual(value, this._getValueFromUI());
+  }
+
+  /**
+   * @override
+   */
+  componentDidUpdate ($value) {
+    this._updateUI($value);
   }
 
   /**

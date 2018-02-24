@@ -52,8 +52,7 @@ class Checkbox extends Base {
    * @override
    */
   componentDidUpdate ($value) {
-    $value = numberToBoolean($value);
-    this.__input.checked = $value;
+    this.__input.checked = numberToBoolean($value);
   }
 
   /**

@@ -54,7 +54,7 @@ class Color extends Base {
   }
 
   /**
-   * @todo Implement this
+   * @override
    */
   shouldComponentUpdate ($value) {
     return this.__$picker.spectrum('get') !== $value;
