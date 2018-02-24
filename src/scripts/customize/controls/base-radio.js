@@ -32,8 +32,15 @@ class BaseRadio extends BaseChoices {
   /**
    * @override
    */
-  componentDidUpdate () {
-    this._updateUI();
+  shouldComponentUpdate ($value) {
+    return $value.toString() !== this._getValueFromUI();
+  }
+
+  /**
+   * @override
+   */
+  componentDidUpdate ($value) {
+    this._updateUI($value);
   }
 
   /**
@@ -63,6 +70,23 @@ class BaseRadio extends BaseChoices {
         };
       }
     }
+  }
+
+  /**
+   * Get value from UI
+   *
+   * @since   1.1.0
+   * @memberof! controls.BaseRadio#
+   *
+   * @return {?string}
+   */
+  _getValueFromUI () {
+    for (let i = 0, l = this.__inputs.length; i < l; i++) {
+      if (this.__inputs[i].checked) {
+        return this.__inputs[i].value;
+      }
+    }
+    return null;
   }
 }
 

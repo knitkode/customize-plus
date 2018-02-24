@@ -92,7 +92,7 @@ class Sortable extends BaseChoices {
    * @memberof! controls.Sortable#
    * @access protected
    *
-   * @return {[type]} [description]
+   * @return {Array}
    */
   _getValueFromUI () {
     return this.container.sortable('toArray', { attribute: 'data-value' });
@@ -138,12 +138,10 @@ class Sortable extends BaseChoices {
    */
   _tplChoicesLoop() {
     return `
-      <# if (_.isArray(data.choicesOrdered)) {
-        for (var i = 0; i < data.choicesOrdered.length; i++) {
-          var val = data.choicesOrdered[i]; #>
-          ${this._tplChoice()}
-        <# }
-      } #>
+      <# if (_.isArray(data.choicesOrdered)) { for (var i = 0; i < data.choicesOrdered.length; i++) {
+        var val = data.choicesOrdered[i]; #>
+        ${this._tplChoice()}
+      <# } } #>
     `;
   }
 
