@@ -12,6 +12,7 @@
       "distImages": "images",
       "distStyles": "css",
       "distScripts": "js",
+      "distAssets": "../.tmp/wp-assets",
       "wpReleases": "../roots/releases/",
       "wpAssets": "../ui/customize-plus",
       "docsJsDest": "../knitkode.com/src/jekyll/_docs/customize-plus/js"
