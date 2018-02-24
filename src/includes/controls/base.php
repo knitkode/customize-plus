@@ -232,90 +232,15 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 * @since 1.0.0
 	 * @override
 	 */
-	public function render_content() {}
+	protected function render_content() {}
 
 	/**
-	 * Compose and minify js template rendered in the `js_tpl` function.
+	 * Templates are entirely managed in JavaScript Control classes
 	 *
 	 * @since 1.0.0
 	 * @override
 	 */
-	public function content_template() {
-		$this->js_tpl_info();
-		$this->js_tpl_extras();
-		$this->js_tpl();
-		$this->js_tpl_notifications();
-	}
-
-	/**
-	 * Subclasses can have their own notifications container template
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_notifications() {
-		?>
-		<div class="customize-control-notifications-container"></div>
-		<?php
-	}
-
-	/**
-	 * Subclasses can have their own 'info' template overriding this method
-	 *
-	 * @premium A Customize Plus Premium feature.
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_info() {
-		if ( class_exists( 'KKcpp' ) ) {
-		?>
-			<# if (data.info) { #>
-				<i class="kkcp-info kkcpui-control-btn dashicons dashicons-editor-help" title="<?php esc_html_e( 'Click to expand' ); ?>"></i>
-			<# } #>
-		<?php
-		}
-	}
-
-	/**
-	 * Shared control header template.
-	 * Read the label and description as markdown if the js plugin is available.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_header() {
-		?>
-			<# if (data.label) { #>
-				<div class="customize-control-title"><# if (marked) { #>{{{ marked(data.label) }}}<# } else { #>{{{ data.label }}}<# } #></div>
-			<# } if (data.description) { #>
-				<div class="description customize-control-description"><# if (marked) { #>{{{ marked(data.description) }}}<# } else { #>{{{ data.description }}}<# } #></div>
-			<# } #>
-		<?php
-	}
-
-	/**
-	 * Subclasses can have their own 'extras' template overriding this method.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_extras() {
-		?>
-			<div class="kkcp-extras">
-				<i class="kkcp-extras-btn kkcpui-control-btn dashicons dashicons-admin-generic"></i>
-				<ul class="kkcp-extras-list">
-					<li class="kkcp-extras-reset_last"><?php esc_html_e( 'Reset to last saved value' ); ?></li>
-					<li class="kkcp-extras-reset_initial"><?php esc_html_e( 'Reset to initial session value' ); ?></li>
-					<li class="kkcp-extras-reset_factory"><?php esc_html_e( 'Reset to factory value' ); ?></li>
-					<?php do_action( 'kkcp_controls_base_js_tpl_extras_add_list_items' ); ?>
-				</ul>
-			</div>
-		<?php
-	}
-
-	/**
-	 * To override in subclasses with a js template
-	 *
-	 * @abstract
-	 * @since 1.0.0
-	 */
-	protected function js_tpl() {}
+	protected function content_template() {}
 
 	/**
 	 * Sanitization callback

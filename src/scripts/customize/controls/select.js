@@ -154,6 +154,31 @@ class Select extends BaseChoices {
       }
     }
   }
+
+  /**
+   * @override
+   */
+  _tplChoiceUi () {
+    return `
+      <option class="{{ classes }}" {{ attributes }} value="{{ val }}"<# if (choice.sublabel) { #> data-sublabel="{{{ choice.sublabel }}}"<# } #>>
+        {{ label }}
+      </option>
+    `
+  }
+
+  /**
+   * @override
+   */
+  _tplAboveChoices () {
+    return `<select name="_customize-kkcp_select-{{ data.id }}">`
+  }
+
+  /**
+   * @override
+   */
+  _tplBelowChoices () {
+    return `</select>`
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_select'] = api.controls.Select = Select;

@@ -228,6 +228,21 @@ class Color extends Base {
       this.setting.set(value);
     }
   }
+
+  /**
+   * @override
+   */
+  _tpl() {
+    return `
+      ${this._tplHeader()}
+      <span class="kkcpcolor-current kkcpcolor-current-bg"></span>
+      <span class="kkcpcolor-current kkcpcolor-current-overlay" style="background:{{data.valueCSS}}"></span>
+      <button class="kkcpui-toggle kkcpcolor-toggle">${this._l10n('selectColor')}</button>
+      <div class="kkcp-expander">
+        <input class="kkcpcolor-input" type="text">
+      </div>
+    `
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_color'] = api.controls.Color = Color;

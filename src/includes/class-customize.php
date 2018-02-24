@@ -241,6 +241,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'IMAGES_BASE_URL' => KKcp_Theme::$images_base_url,
 				'DOCS_BASE_URL' => KKcp_Theme::$docs_base_url,
 				'DYNAMIC_CONTROLS_RENDERING' => KKcp_Theme::$dynamic_controls_rendering,
+				'CP_URL' => esc_url( KKCP_PLUGIN_URL ),
 			);
 			$additional = (array) apply_filters( 'kkcp_customize_get_js_constants', array() );
 			return array_merge( $required, self::$controls_constants, $additional );
@@ -280,6 +281,9 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'tools' => esc_html__( 'Tools' ),
 				'vRequired' => esc_html__( 'A value is required' ),
 				'vInvalid' => esc_html__( 'Invalid value' ),
+				'resetLastSaved' => esc_html__( 'Reset to last saved value' ),
+				'resetInitial' => esc_html__( 'Reset to initial session value' ),
+				'resetFactory' => esc_html__( 'Reset to factory value' ),
 			);
 			$additional = (array) apply_filters( 'kkcp_customize_get_js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );

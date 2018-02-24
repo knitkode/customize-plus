@@ -167,6 +167,48 @@ class Multicheck extends BaseChoices {
       }
     }
   }
+
+  /**
+   * If the control is sortable we first show the ordered choices (the ones
+   * stored as value in the DB, gathered with `$this->value()`) and then the
+   * other choices, that's why the double loop with the `indexOf` condition.
+   *
+   * @override
+   */
+  _tplChoicesLoop() {
+    const tplChoice = this._tplChoice();
+
+    return `
+      <# if (data.sortable) {
+        if (_.isArray(data.choicesOrdered)) {
+          for (var i = 0; i < data.choicesOrdered.length; i++) {
+            var val = data.choicesOrdered[i]; #>
+            ${tplChoice}
+          <# }
+          for (var val in choices) {
+            if (data.choicesOrdered.indexOf(val) === -1) { #>
+              ${tplChoice}
+            <# }
+          }
+        }
+      } else {
+        for (var val in choices) { #>
+          ${tplChoice}
+        <# }
+      } #>
+    `
+  }
+
+  /**
+   * @override
+   */
+  _tplChoiceUi() {
+    return `
+      <label class="{{ classes }}" {{ attributes }}>
+        <input type="checkbox" name="_customize-kkcp_multicheck-{{ data.id }}" value="{{ val }}">{{{ label }}}
+      </label>
+    `
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_multicheck'] = api.controls.Multicheck = Multicheck;

@@ -116,6 +116,18 @@ class Tags extends Base {
 
     $(this.__input).selectize(pluginOptions);
   }
+
+  /**
+   * @override
+   */
+  _tpl() {
+    return `
+      <label>
+        ${this._tplHeader()}
+        <input type="text" value="">
+      </label>
+    `
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_tags'] = api.controls.Tags = Tags;

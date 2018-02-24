@@ -74,50 +74,6 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 	}
 
 	/**
-	 * If the control is sortable we first show the ordered choices (the ones stored
-	 * as value in the DB, gathered with `$this->value()`) and then the other choices,
-	 * that's why the double loop with the `indexOf` condition.
-	 *
-	 * {@inheritDoc}
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl_choices_loop() {
-		?>
-		<# if (data.sortable) {
-			if (_.isArray(data.choicesOrdered)) {
-				for (var i = 0; i < data.choicesOrdered.length; i++) {
-					var val = data.choicesOrdered[i]; #>
-					<?php $this->js_tpl_choice(); ?>
-				<# }
-				for (var val in choices) {
-					if (data.choicesOrdered.indexOf(val) === -1) { #>
-						<?php $this->js_tpl_choice(); ?>
-					<# }
-				}
-			}
-		} else {
-			for (var val in choices) { #>
-				<?php $this->js_tpl_choice(); ?>
-			<# }
-		} #>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl_choice_ui() {
-		?>
-			<label class="{{ classes }}" {{ attributes }}>
-				<input type="checkbox" name="_customize-kkcp_multicheck-{{ data.id }}" value="{{ val }}"<?php // `checked` status synced through js in `control.ready()` ?>>{{{ label }}}
-			</label>
-		<?php
-	}
-
-	/**
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
@@ -134,7 +90,5 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Multicheck' );

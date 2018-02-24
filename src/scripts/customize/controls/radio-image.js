@@ -1,4 +1,5 @@
 import { api, wpApi } from '../core/globals';
+import { _IMAGES_BASE_URL, _CP_URL_IMAGES } from '../core/utils';
 import BaseRadio from './base-radio';
 
 /**
@@ -17,6 +18,24 @@ import BaseRadio from './base-radio';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-class RadioImage extends BaseRadio {}
+class RadioImage extends BaseRadio {
+
+	/**
+	 * It shows the full image path (`img_custom`) or an image
+	 * bundled in the plugin when `img` has been passed, with the plugin url
+	 * as prepath, and always a `png` extension. Always show tooltip.
+	 *
+	 * @override
+	 */
+	_tplChoiceUi() {
+		return `
+			<input id="{{ id }}" class="kkcp-radio-image" type="radio" value="{{ val }}" name="_customize-kkcp_radio_image-{{ data.id }}">
+			<label for="{{ id }}" class="{{ classes }}" {{ attributes }}>
+				<# var imgUrl = choice.img_custom ? '${_IMAGES_BASE_URL}' + choice.img_custom : '${_CP_URL_IMAGES}' + choice.img + '.png'; #>
+				<img class="kkcpui-tooltip--top" src="{{ imgUrl }}" title="{{ tooltip }}">
+			</label>
+		`
+	}
+}
 
 export default wpApi.controlConstructor['kkcp_radio_image'] = api.controls.RadioImage = RadioImage;

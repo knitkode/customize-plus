@@ -76,19 +76,6 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
-	protected function js_tpl() {
-		?>
-		<label>
-			<?php $this->js_tpl_header(); ?>
-		</label>
-		<input class="kkcp-select" type="text" required>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::font_family( $value, $setting, $control );
 	}
@@ -102,7 +89,5 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Font_Family' );

@@ -19,23 +19,7 @@ class KKcp_Customize_Control_Radio extends KKcp_Customize_Control_Base_Radio {
 	 * @inheritDoc
 	 */
 	public $type = 'kkcp_radio';
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl_choice_ui() {
-		?>
-			<label class="{{ classes }}" {{{ attributes }}}>
-				<input type="radio" value="{{ val }}" name="_customize-kkcp_radio-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
-				{{ label }}
-				<# if (choice.sublabel) { #><small> ({{ choice.sublabel }})</small><# } #>
-			</label>
-		<?php
-	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Radio' );

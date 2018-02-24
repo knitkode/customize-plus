@@ -181,6 +181,23 @@ class Textarea extends Text {
 
     this._wpEditorIsActive = true;
   }
+
+  /**
+   * @override
+   */
+  _tpl() {
+    return `
+      <label>
+        ${this._tplHeader()}<# var attrs = data.attrs; #>
+        <textarea class="kkcpui-textarea<# if (data.wp_editor && data.wp_editor.editorClass) { #> {{ data.wp_editor.editorClass }}<# } #>"
+          <# for (var key in attrs) { if (attrs.hasOwnProperty(key)) { #>{{ key }}="{{ attrs[key] }}" <# } } #>
+            rows="<# if (data.wp_editor && data.wp_editor.textareaRows) { #>{{ data.wp_editor.textareaRows }}<# } else if (attrs && attrs.rows) { #>{{ attrs.rows }}<# } else { #>4<# } #>"
+            <# if (data.wp_editor && data.wp_editor.editorHeight) { #> style="height:{{ data.wp_editor.editorHeight }}px"
+          <# } #>>
+        </textarea>
+      </label>
+    `
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_textarea'] = api.controls.Textarea = Textarea;

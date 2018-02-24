@@ -76,6 +76,19 @@ class Checkbox extends Base {
       this.setting.set(value);
     };
   }
+
+  /**
+   * @override
+   */
+  _tpl () {
+    return `
+      ${this._tplHeader()}
+      <label>
+        <input type="checkbox" name="_customize-kkcp_checkbox-{{ data.id }}" value="" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #>>
+        <# if (data.attrs && data.attrs.label) { #>{{{ data.attrs.label }}}<# } #>
+      </label>
+    `
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_checkbox'] = api.controls.Checkbox = Checkbox;

@@ -254,6 +254,36 @@ class Slider extends Base {
       this.setting.set(this._getValueFromUI(value));
     }
   }
+
+  /**
+   * Separate the slider template to make it reusable by child classes
+   *
+   * @override
+   */
+  _tplSlider () {
+    return `
+      <# if (data.units) { #>
+        <div class="kkcp-inputs-wrap">
+          <input type="number" class="kkcp-slider-number" value="" tabindex="-1"
+            <# for (var key in data.attrs) { if (data.attrs.hasOwnProperty(key)) { #>{{ key }}="{{ data.attrs[key] }}" <# } } #>>
+          <div class="kkcp-unit-wrap"><# for (var i = 0, l = data.units.length; i < l; i++) { #><input type="text" class="kkcp-unit" readonly="true" tabindex="-1" value="{{ data.units[i] }}"><# } #></div>
+        </div>
+      <# } else { #>
+        <input type="number" class="kkcp-slider-number" value="" tabindex="-1"
+          <# for (var key in data.attrs) { if (data.attrs.hasOwnProperty(key)) { #>{{ key }}="{{ data.attrs[key] }}" <# } } #>>
+        <# } #>
+      <div class="kkcp-slider-wrap">
+        <div class="kkcp-slider"></div>
+      </div>
+    `
+  }
+
+  /**
+   * @override
+   */
+  _tpl () {
+    return `${this._tplHeader()}${this._tplSlider()}`
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_slider'] = api.controls.Slider = Slider;

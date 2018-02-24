@@ -42,20 +42,6 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
-	protected function js_tpl() {
-		?>
-			<?php $this->js_tpl_header(); ?>
-			<label>
-				<input type="checkbox" name="_customize-kkcp_checkbox-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> <# if (data.value) { #>checked<# } #>>
-				<# if (data.attrs && data.attrs.label) { #>{{{ data.attrs.label }}}<# } #>
-			</label>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::checkbox( $value, $setting, $control );
 	}
@@ -69,7 +55,5 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Checkbox' );

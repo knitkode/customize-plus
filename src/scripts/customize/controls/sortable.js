@@ -123,6 +123,27 @@ class Sortable extends BaseChoices {
 
     this.container.sortable('refresh');
   }
+
+  /**
+   * @override
+   */
+  _tplChoicesLoop() {
+    return `
+      <# if (_.isArray(data.choicesOrdered)) {
+        for (var i = 0; i < data.choicesOrdered.length; i++) {
+          var val = data.choicesOrdered[i]; #>
+          ${this._tplChoice()}
+        <# }
+      } #>
+    `;
+  }
+
+  /**
+   * @override
+   */
+  _tplChoiceUi() {
+    return `<div class="kkcp-sortable" title="{{ val }}" data-value="{{ val }}" class="{{ classes }}" {{ attributes }}>{{ label }}</div>`;
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_sortable'] = api.controls.Sortable = Sortable;

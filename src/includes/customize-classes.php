@@ -24,7 +24,6 @@ require ( KKCP_PLUGIN_DIR . 'includes/settings/base.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/settings/font-family.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/base.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/base-choices.php' );
-require ( KKCP_PLUGIN_DIR . 'includes/controls/base-input.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/base-radio.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/base-set.php' );
 require ( KKCP_PLUGIN_DIR . 'includes/controls/buttonset.php' );

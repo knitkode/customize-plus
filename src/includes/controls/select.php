@@ -45,45 +45,7 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 
 		$this->valid_choices = $this->get_valid_choices( $this->choices );
 	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl_choice_ui() {
-		?>
-			<option class="{{ classes }}" {{ attributes }} value="{{ val }}"<?php // `selected` status synced through js in `control.ready()` ?><# if (choice.sublabel) { #> data-sublabel="{{{ choice.sublabel }}}"<# } #>>
-				{{ label }}
-			</option>
-		<?php
-	}
-
-	/**
-	 * {@inheritDoc}. Render needed html structure for CSS toggle / switch
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl_above_choices () {
-		?>
-			<select name="_customize-kkcp_select-{{ data.id }}">
-		<?php
-	}
-
-	/**
-	 * {@inheritDoc}. Render needed html structure for CSS toggle / switch
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl_below_choices () {
-		?>
-			</select>
-		<?php
-	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Select' );

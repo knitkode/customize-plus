@@ -55,31 +55,6 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choice
 	 * @override
 	 * @since 1.0.0
 	 */
-	protected function js_tpl_choices_loop() {
-		?>
-		<# if (_.isArray(data.choicesOrdered)) {
-				for (var i = 0; i < data.choicesOrdered.length; i++) {
-					var val = data.choicesOrdered[i]; #>
-					<?php $this->js_tpl_choice(); ?>
-				<# }
-			} #>
-		<?php
-	}
-
-	/**
-	 * @override
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_choice_ui() {
-		?>
-			<div class="kkcp-sortable" title="{{ val }}" data-value="{{ val }}" class="{{ classes }}" {{ attributes }}>{{ label }}</div>
-		<?php
-	}
-
-	/**
-	 * @override
-	 * @since 1.0.0
-	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::multiple_choices( $value, $setting, $control, true );
 	}

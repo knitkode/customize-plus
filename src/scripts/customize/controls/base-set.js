@@ -7,6 +7,11 @@ import Base from './base';
 /**
  * Control Base Set class
  *
+ * Unlike its PHP respective class KKcp_Customize_Control_Base_Set this does not
+ * extends the BaseChoices class because we don't actually share anything with
+ * it. In fact the data `min`, `max`, `choices` come from PHP anyway and the
+ * population of the valid choices uses a different approach here.
+ *
  * @since  1.0.0
  *
  * @memberof controls
@@ -414,4 +419,4 @@ class BaseSet extends Base {
 
 }
 
-export default api.controls.BaseSet = BaseSet;
+export default /*api.controls.BaseSet =*/ BaseSet;

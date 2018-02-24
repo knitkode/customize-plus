@@ -28,6 +28,19 @@ class Content extends Base {
   // syncUI: $.noop,
   // softenize: $.noop,
   // _extras: $.noop,
+
+  /**
+   * @override
+   */
+  template () {
+    return `
+      <# if (data.alert) { #><div class="kkcpui-alert {{ data.alert }}"><# } #>
+        <# if (data.label) { #><span class="customize-control-title"><# if (marked) { #>{{{ marked(data.label) }}}<# } else { #>{{{ data.label }}}<# } #></span><# } #>
+        <# if (data.description) { #><span<# if (!data.alert) { #> class="description customize-control-description"<# } #>><# if (marked) { #>{{{ marked(data.description) }}}<# } else { #>{{{ data.description }}}<# } #></span><# } #>
+        <# if (marked && data.markdown) { #><div class="description kkcp-markdown">{{{ marked(data.markdown) }}}</div><# } #>
+      <# if (data.alert) { #></div><# } #>
+    `
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_content'] = api.controls.Content = Content;

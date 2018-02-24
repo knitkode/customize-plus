@@ -139,27 +139,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 			wp_enqueue_editor();
 		}
 	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl() {
-		?>
-		<label>
-			<?php $this->js_tpl_header(); ?><# var attrs = data.attrs; #>
-			<textarea class="kkcpui-textarea<# if (data.wp_editor && data.wp_editor.editorClass) { #> {{ data.wp_editor.editorClass }}<# } #>"
-				<# for (var key in attrs) { if (attrs.hasOwnProperty(key)) { #>{{ key }}="{{ attrs[key] }}" <# } } #>
-					rows="<# if (data.wp_editor && data.wp_editor.textareaRows) { #>{{ data.wp_editor.textareaRows }}<# } else if (attrs && attrs.rows) { #>{{ attrs.rows }}<# } else { #>4<# } #>"
-					<# if (data.wp_editor && data.wp_editor.editorHeight) { #> style="height:{{ data.wp_editor.editorHeight }}px"
-				<# } #>>
-			</textarea>
-		</label>
-		<?php
-	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Textarea' );

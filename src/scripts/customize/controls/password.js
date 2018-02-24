@@ -93,6 +93,28 @@ class Password extends Text {
       this.__input.focus();
     }
   }
+
+  /**
+   * @override
+   */
+  _tplInner () {
+    const tplInput = this._tplInput();
+
+    return `
+      <span class="kkcp-password">
+        <# if (data.attrs && data.attrs.visibility) { #>
+          ${tplInput}
+          <input class="kkcp-password__preview" type="text" tabindex="-1" <# for (var key in attrs) { if (attrs.hasOwnProperty(key) && key !== 'title') { #>{{ key }}="{{ attrs[key] }}" <# } } #>>
+          <button class="kkcp-password__toggle">
+            <span class="kkcp-password__hide" aria-label="${this._l10n('passwordHide')}"><i class="dashicons dashicons-hidden"></i></span>
+            <span class="kkcp-password__show" aria-label="${this._l10n('passwordShow')}"><i class="dashicons dashicons-visibility"></i></span>
+          </button>
+        <# } else { #>
+          ${tplInput}
+        <# } #>
+      </span>
+    `
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_password'] = api.controls.Password = Password;

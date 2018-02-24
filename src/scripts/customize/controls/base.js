@@ -105,11 +105,12 @@ class Base extends wpApi.Control {
     // used by methods which we don't override)
     control._container = container;
 
-    if ( control.params.templateId ) {
-      control.templateSelector = control.params.templateId;
-    } else {
-      control.templateSelector = 'customize-control-' + control.params.type + '-content';
-    }
+    // @note this is disabled, template are defined in Javascript control classes
+    // if ( control.params.templateId ) {
+    //   control.templateSelector = control.params.templateId;
+    // } else {
+    //   control.templateSelector = 'customize-control-' + control.params.type + '-content';
+    // }
 
     control.deferred = _.extend( control.deferred || {}, {
       embedded: new $.Deferred()
@@ -474,10 +475,132 @@ class Base extends wpApi.Control {
    * @access protected
    * @abstract
    */
-  onInit() {}
+  onInit () {}
 
   /**
-   * Render the control from its JS template, if it exists.
+   * Template
+   *
+   * Returns the control's complete template, either a simple string or a more
+   * complex and composed method. This method is publicly accessible and should
+   * be overrided by controls that extend but are outside Customize Plus.
+   *
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access public
+   * @abstract
+   *
+   * @return {string}
+   */
+  template () {
+    let tpl = '';
+    tpl += this._tplExtras();
+    tpl += this._tpl();
+    tpl += this._tplNotifications();
+
+    return tpl;
+  }
+
+  /**
+   * Template
+   *
+   *
+   * Subclasses within Customize Plus must have their own '_tpl' template
+   * overriding this method. This cannot be ovverided through public API, that
+   * is why the method is underscore prefixed and mangled during minification.
+   *
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access package
+   * @abstract
+   */
+  _tpl () {
+    return ``;
+  }
+
+  /**
+   * Control's specific header template
+   *
+   * Subclasses should call this method themselves in the appropriate template
+   * position, according to their specific needs. By default (if not overriden)
+   * this template partial prints the label and description as markdown if the
+   * markdown js plugin is available. This cannot be called or ovverided through
+   * public API, that is why the method is underscore prefixed and mangled
+   * during minification.
+   *
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access package
+   * @abstract
+   *
+   * @return {string}
+   */
+  _tplHeader () {
+    return`
+      <# if (data.label) { #>
+        <div class="customize-control-title">
+          <# if (marked) { #>{{{ marked(data.label) }}}<# } else { #>{{{ data.label }}}<# } #>
+        </div>
+      <# } if (data.description) { #>
+        <div class="description customize-control-description">
+          <# if (marked) { #>{{{ marked(data.description) }}}
+          <# } else { #>{{{ data.description }}}<# } #>
+        </div>
+      <# } #>
+    `;
+  }
+
+  /**
+   * Control's specific notification template
+   *
+   * Subclasses within Customize Plus can have their own 'notification' template
+   * overriding this method. This cannot be ovverided through public API, that
+   * is why the method is underscore prefixed and mangled during minification.
+   *
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access package
+   * @abstract
+   *
+   * @return {string}
+   */
+  _tplNotifications () {
+    return '<div class="customize-control-notifications-container"></div>';
+  }
+
+  /**
+   * Control's extras menu template
+   *
+   * Subclasses within Customize Plus can have their own 'extras' template
+   * overriding this method. This cannot be ovverided through public API, that
+   * is why the method is underscore prefixed and mangled during minification.
+   *
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access package
+   * @abstract
+   *
+   * @return {string}
+   */
+  _tplExtras () {
+    return `
+      <div class="kkcp-extras">
+        <i class="kkcp-extras-btn kkcpui-control-btn dashicons dashicons-admin-generic"></i>
+        <ul class="kkcp-extras-list">
+          <li class="kkcp-extras-reset_last">${api.l10n['resetLastSaved']}</li>
+          <li class="kkcp-extras-reset_initial">${api.l10n['resetInitial']}</li>
+          <li class="kkcp-extras-reset_factory">${api.l10n['resetFactory']}</li>
+        </ul>
+      </div>
+    `;
+  }
+
+  /**
+   * Render the control from its JS template, uses custom template utility.
    *
    * @since 1.0.0
    *
@@ -489,26 +612,24 @@ class Base extends wpApi.Control {
     const {_container, templateSelector} = this;
 
     // replaces the container element's content with the control.
-    if (document.getElementById(`tmpl-${templateSelector}`)) {
-      const template = wp.template(templateSelector);
-      if (template && _container) {
+    const template = Utils.template(this.template());
+    if (template && _container) {
 
-        /* jshint funcscope: true */
-        if (DEBUG.performances) var t = performance.now();
+      /* jshint funcscope: true */
+      if (DEBUG.performances) var t = performance.now();
 
-        // render and store it in the params
-        this.params.content = _container.innerHTML = template(this.params).trim();
+      // render and store it in the params (maybe trim it? `.trim();`)
+      this.params.content = _container.innerHTML = template(this.params);
 
-        // var frag = document.createDocumentFragment();
-        // var tplNode = document.createElement('div');
-        // tplNode.innerHTML = template( this.params ).trim();
-        // frag.appendChild(tplNode);
-        // this.params.content = frag;
-        // _container.appendChild(frag);
+      // var frag = document.createDocumentFragment();
+      // var tplNode = document.createElement('div');
+      // tplNode.innerHTML = template( this.params ).trim();
+      // frag.appendChild(tplNode);
+      // this.params.content = frag;
+      // _container.appendChild(frag);
 
-        if (DEBUG.performances) console.log('%c renderContent of ' + this.params.type + '(' +
-          this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
-      }
+      if (DEBUG.performances) console.log('%c renderContent of ' + this.params.type + '(' +
+        this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
     }
 
     this._rerenderNotifications();
@@ -628,7 +749,8 @@ class Base extends wpApi.Control {
    * Re-render notifications after content has been re-rendered.
    *
    * This is taken as it is from the core base control class
-   * (`wp.customize.Control`)in the end of the `renderContent` method
+   * (`wp.customize.Control`)in the end of the `renderContent` method.
+   * We extract it in a method to reuse on component DOM recreation.
    *
    * @since 1.0.0
    *

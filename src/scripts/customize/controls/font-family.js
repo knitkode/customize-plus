@@ -130,6 +130,17 @@ class FontFamily extends BaseSet {
     return `<div class="kkcp-icon-selectHeader">${_.escape(data.label)}</div>`;
   }
 
+  /**
+   * @override
+   */
+  _tpl() {
+    return `
+      <label>
+        ${this._tplHeader()}
+      </label>
+      <input class="kkcp-select" type="text">
+    `;
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_font_family'] = api.controls.FontFamily = FontFamily;

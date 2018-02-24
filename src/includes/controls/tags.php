@@ -74,19 +74,6 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
-	 */
-	protected function js_tpl() {
-		?>
-		<label>
-			<?php $this->js_tpl_header(); ?>
-			<input type="text" value="<?php // filled through js ?>">
-		</label>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::tags( $value, $setting, $control );
@@ -101,7 +88,5 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Tags' );

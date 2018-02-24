@@ -58,6 +58,18 @@ class Icon extends BaseSet {
   _getIconClassName (data) {
     return `${data.set} ${data.set}-${data.value}`;
   }
+
+  /**
+   * @override
+   */
+  _tpl() {
+    return `
+      <label>${this._tplHeader()}</label>
+      <select class="kkcp-select" placeholder="${this._l10n['iconSearchPlaceholder']}"<# if (data.max > 1) { #>  name="icon[]" multiple<# } else { #>name="icon"<# } #>>
+        <option value="">${this._l10n['iconSearchPlaceholder']}</option>
+      </select>
+    `
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_icon'] = api.controls.Icon = Icon;

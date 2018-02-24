@@ -12,7 +12,7 @@
  * @version    Release: pkgVersion
  * @link       https://knitkode.com/products/customize-plus
  */
-class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
+class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
@@ -65,7 +65,5 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Number' );

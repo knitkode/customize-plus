@@ -101,41 +101,6 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * Separate the slider template to make it reusable by child classes
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl_slider() {
-		?>
-		<# if (data.units) { #>
-		<div class="kkcp-inputs-wrap">
-			<input type="number" class="kkcp-slider-number" value="<?php // filled through js ?>" tabindex="-1"
-				<# for (var key in data.attrs) { if (data.attrs.hasOwnProperty(key)) { #>{{ key }}="{{ data.attrs[key] }}" <# } } #>>
-			<div class="kkcp-unit-wrap"><# for (var i = 0, l = data.units.length; i < l; i++) { #><input type="text" class="kkcp-unit" readonly="true" tabindex="-1" value="{{ data.units[i] }}"><# } #></div>
-		</div>
-		<# } else { #>
-			<input type="number" class="kkcp-slider-number" value="<?php // filled through js ?>" tabindex="-1"
-				<# for (var key in data.attrs) { if (data.attrs.hasOwnProperty(key)) { #>{{ key }}="{{ data.attrs[key] }}" <# } } #>>
-			<# } #>
-		<div class="kkcp-slider-wrap">
-			<div class="kkcp-slider"></div>
-		</div>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl() {
-		$this->js_tpl_header();
-		$this->js_tpl_slider();
-	}
-
-	/**
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
@@ -152,7 +117,5 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Slider' );

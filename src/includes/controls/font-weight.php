@@ -61,7 +61,5 @@ class KKcp_Customize_Control_Font_Weight extends KKcp_Customize_Control_Select {
 	);
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Font_Weight' );

@@ -89,32 +89,7 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 			$this->json['alert'] = $this->alert;
 		}
 	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	public function content_template() {
-		$this->js_tpl_info();
-		$this->js_tpl();
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl() {
-		?>
-		<# if (data.alert) { #><div class="kkcpui-alert {{ data.alert }}"><# } #>
-			<# if (data.label) { #><span class="customize-control-title"><# if (marked) { #>{{{ marked(data.label) }}}<# } else { #>{{{ data.label }}}<# } #></span><# } #>
-			<# if (data.description) { #><span<# if (!data.alert) { #> class="description customize-control-description"<# } #>><# if (marked) { #>{{{ marked(data.description) }}}<# } else { #>{{{ data.description }}}<# } #></span><# } #>
-			<# if (marked && data.markdown) { #><div class="description kkcp-markdown">{{{ marked(data.markdown) }}}</div><# } #>
-		<# if (data.alert) { #></div><# } #>
-		<?php
-	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Content' );

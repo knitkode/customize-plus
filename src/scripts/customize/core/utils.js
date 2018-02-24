@@ -12,8 +12,25 @@ import { api, wpApi, body } from './globals';
 import Regexes from './regexes';
 
 /**
+ * Customize Plus base url
+ *
+ * @since  1.1.0
+ * @type {string}
+ */
+export const _CP_URL = api.constants['CP_URL'];
+
+/**
+ * Customize Plus images url
+ *
+ * @since  1.1.0
+ * @type {string}
+ */
+export const _CP_URL_IMAGES = `${_CP_URL}assets/images/`;
+
+/**
  * Images base url
  *
+ * @since  1.0.0
  * @type {string}
  */
 export const _IMAGES_BASE_URL = api.constants['IMAGES_BASE_URL'];
@@ -21,6 +38,7 @@ export const _IMAGES_BASE_URL = api.constants['IMAGES_BASE_URL'];
 /**
  * Docs base url
  *
+ * @since  1.0.0
  * @type {string}
  */
 export const _DOCS_BASE_URL = api.constants['DOCS_BASE_URL'];
@@ -29,6 +47,7 @@ export const _DOCS_BASE_URL = api.constants['DOCS_BASE_URL'];
  * Is it an absolute URL?
  *
  * @see {@link http://stackoverflow.com/a/19709846/1938970}
+ * @since  1.0.0
  *
  * @param  {string}  url The URL to test
  * @return {boolean}     Whether is absolute or relative
@@ -42,6 +61,8 @@ export function _isAbsoluteUrl (url) {
  *
  * Strips possible multiple slashes caused by the string concatenation or dev errors
  *
+ * @since  1.0.0
+ *
  * @param  {string} url
  * @return {string}
  */
@@ -54,6 +75,8 @@ export function _cleanUrlFromMultipleSlashes (url) {
  *
  * If an absolute URL is passed we just strip multiple slashes,
  * if a relative URL is passed we also prepend the right base url.
+ *
+ * @since  1.0.0
  *
  * @param  {string} url
  * @param  {string} type
@@ -80,7 +103,9 @@ export function _getCleanUrl (url, type) {
 /**
  * Each control execute callback with control as argument
  *
- * @param {function} callback
+ * @since  1.0.0
+ *
+ * @param {function(WP_Customize_Control)} callback
  */
 export function _eachControl (callback) {
   const wpApiControl = wpApi.control;
@@ -92,6 +117,8 @@ export function _eachControl (callback) {
 
 /**
  * Is the control's setting using the `theme_mods` API?
+ *
+ * @since  1.0.0
  *
  * @param  {string}  controlId The control id
  * @return {boolean}
@@ -105,6 +132,8 @@ export function _isThemeModsApi (controlId) {
  * Deduced by checking that the control id is structured as:
  * `themeprefix[setting-id]`
  *
+ * @since  1.0.0
+ *
  * @param  {string}  controlId The control id
  * @return {boolean}
  */
@@ -115,7 +144,8 @@ export function _isOptionsApi (controlId) {
 /**
  * Get stylesheet by Node id
  *
- * @abstract
+ * @since  1.0.0
+ *
  * @param  {string} nodeId
  * @return {?HTMLElement}
  */
@@ -135,7 +165,8 @@ export function _getStylesheetById (nodeId) {
 /**
  * Get rules from stylesheet for the given selector
  *
- * @abstract
+ * @since  1.0.0
+ *
  * @param  {HTMLElement} stylesheet
  * @param  {string} selector
  * @return {string}
@@ -160,6 +191,8 @@ export function _getRulesFromStylesheet (stylesheet, selector) {
  * Basically it just clean the `rules` string removing the selector and
  * the brackets.
  *
+ * @since  1.0.0
+ *
  * @param  {string} rules
  * @param  {string} selector
  * @return {string}
@@ -174,6 +207,8 @@ export function _getCssRulesContent (rules, selector) {
 /**
  * Get image url
  *
+ * @since  1.0.0
+ *
  * @param  {string} url The image URL, relative or absolute
  * @return {string}     The absolute URL of the image
  */
@@ -184,6 +219,8 @@ export function getImageUrl (url) {
 /**
  * Get docs url
  *
+ * @since  1.0.0
+ *
  * @param  {string} url The docs URL, relative or absolute
  * @return {string}     The absolute URL of the docs
  */
@@ -193,6 +230,8 @@ export function getDocsUrl (url) {
 
 /**
  * Bind a link element or directly link to a specific control to focus
+ *
+ * @since  1.0.0
  *
  * @param  {HTMLElement} linkEl The link DOM element `<a>`
  * @param  {string} controlId   The control id to link to
@@ -215,6 +254,8 @@ export function linkControl (linkEl, controlId) {
 /**
  * Wrap WordPress control focus with some custom stuff
  *
+ * @since  1.0.0
+ *
  * @param {WP_Customize_Control} control
  */
 export function focus (control) {
@@ -236,11 +277,54 @@ export function focus (control) {
 }
 
 /**
+ * Template
+ *
+ * Similar to WordPress one but using a JavaScript string directly instead of
+ * a DOM id to pass the template content.
+ *
+ * @since  1.1.0
+ *
+ * @param  {string} tpl  A template string
+ * @return {function}    A function that lazily-compiles the template requested.
+ */
+export const template = _.memoize(function (tpl) {
+  let compiled;
+
+  return function ( data ) {
+    compiled = compiled || _.template(tpl,  templateOptions);
+    return compiled( data );
+  };
+})
+
+/**
+ * Template options
+ *
+ * Similar to WordPress one but using `{%` instead of `<#` for logic, more like
+ * Jinja or Twig.
+ *
+ * @since  1.1.0
+ * @see  WordPress Core `wp-includes/js/wp-utils.js`.
+ *
+ * @return {Object}
+ */
+export const templateOptions = {
+  // evaluate:    /{%([\s\S]+?)%}/g,
+  evaluate:    /<#([\s\S]+?)#>/g,
+  interpolate: /\{\{\{([\s\S]+?)\}\}\}/g,
+  escape:      /\{\{([^\}]+?)\}\}(?!\})/g,
+  variable:    'data'
+}
+
+/**
  * @alias core.Utils
  * @description  Exposed module <a href="module-Utils.html">Utils</a>
  * @access package
+ *
+ * @since  1.0.0
  */
 export default api.core.Utils = {
+  _CP_URL,
+  _CP_URL_IMAGES,
   _IMAGES_BASE_URL,
   _DOCS_BASE_URL,
   _isAbsoluteUrl,
@@ -256,4 +340,5 @@ export default api.core.Utils = {
   getDocsUrl,
   linkControl,
   focus,
+  template,
 }

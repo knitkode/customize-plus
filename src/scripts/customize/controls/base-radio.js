@@ -80,4 +80,4 @@ class BaseRadio extends BaseChoices {
   }
 }
 
-export default api.controls.BaseRadio = BaseRadio;
+export default /*api.controls.BaseRadio =*/ BaseRadio;

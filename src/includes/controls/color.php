@@ -127,6 +127,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 			'cancelText' => esc_html__( 'Cancel' ),
 			'chooseText' => esc_html__( 'Choose' ),
 			'clearText' => esc_html__( 'Clear selection' ),
+			'selectColor' => esc_html__( 'Select color' ),
 			'noColorSelectedText' => esc_html__( 'No color selected' ),
 			'togglePaletteMoreText' => esc_html__( 'Show color picker' ),
 			'togglePaletteLessText' => esc_html__( 'Hide color picker' ),
@@ -165,22 +166,6 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
-	protected function js_tpl() {
-		?>
-		<?php $this->js_tpl_header(); ?>
-		<span class="kkcpcolor-current kkcpcolor-current-bg"></span>
-		<span class="kkcpcolor-current kkcpcolor-current-overlay" style="background:{{data.valueCSS}}"></span>
-		<button class="kkcpui-toggle kkcpcolor-toggle"><?php esc_html_e( 'Select Color' ) ?></button>
-		<div class="kkcp-expander">
-			<input class="kkcpcolor-input" type="text">
-		</div>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::color( $value, $setting, $control );
 	}
@@ -194,7 +179,5 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Color' );
