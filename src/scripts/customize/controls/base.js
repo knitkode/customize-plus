@@ -640,15 +640,8 @@ class Base extends wpApi.Control {
       /* jshint funcscope: true */
       if (DEBUG.performances) var t = performance.now();
 
-      // render and store it in the params (maybe trim it? `.trim();`)
+      // render and store it in the params
       this.params.content = _container.innerHTML = template(this.params);
-
-      // var frag = document.createDocumentFragment();
-      // var tplNode = document.createElement('div');
-      // tplNode.innerHTML = template( this.params ).trim();
-      // frag.appendChild(tplNode);
-      // this.params.content = frag;
-      // _container.appendChild(frag);
 
       if (DEBUG.performances) console.log('%c renderContent of ' + this.params.type + '(' +
         this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
