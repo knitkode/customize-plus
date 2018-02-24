@@ -662,7 +662,7 @@ class Base extends wpApi.Control {
    * @return {boolean}
    */
   shouldComponentUpdate () {
-    return false;
+    return true;
   }
 
   /**
@@ -671,13 +671,12 @@ class Base extends wpApi.Control {
    * @see  https://reactjs.org/docs/react-component.html#componentdidupdate
    * @since 1.1.0
    *
+   * @alias controls.Base.ready
    * @memberof! controls.Base#
    * @access protected
    * @abstract
-   * @param {mixed}
    */
-  componentDidUpdate (value) {
-  }
+  componentDidUpdate () {}
 
   /**
    * Component did mount (React like)
