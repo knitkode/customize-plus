@@ -18,8 +18,9 @@ import { api, wpApi } from '../core/globals';
  * @augments wp.customize.Class
  */
 const Base = wpApi.Setting.extend({
+
   /**
-   * {@inheritDoc}. Add the initial and lastSave values for reset value actions.
+   * {@inheritdoc}. Add the initial and lastSave values for reset value actions.
    * The `factory` value is added in the PHP Setting class constructor.
    *
    * @memberof! settings.Base#
@@ -41,8 +42,9 @@ const Base = wpApi.Setting.extend({
     this.vInitial = this();
     this.vLastSaved = this.vInitial;
   },
+
   /**
-   * {@inheritDoc}. Sanitize value before sending it to the preview via
+   * {@inheritcoc}. Sanitize value before sending it to the preview via
    * `postMessage`.
    *
    * @memberof! settings.Base#
@@ -65,6 +67,7 @@ const Base = wpApi.Setting.extend({
       setting.previewer.refresh();
     }
   },
+
   /**
    * Sanitize setting
    *
@@ -80,6 +83,7 @@ const Base = wpApi.Setting.extend({
   sanitize: function (value) {
     return value;
   },
+
   /**
    * Force `set`.
    *
@@ -94,12 +98,12 @@ const Base = wpApi.Setting.extend({
    * setting could stay the same. Despite this make sense, the input field
    * gets out of sync, it becomes empty, while the setting value remains the
    * latest valid value).
-   * The callback that should be called on reset (the `syncUI` method)
+   * The callback that should be called on reset (the `componentDidUpdate` method)
    * in this scenario doesn't get called because in the WordPress
    * `customize-base.js#187` there is a check that return the function if the
    * setting has been set with the same value as the last one, preventing so
    * to fire the callbacks binded to the setting and, with these, also our
-   * `syncUIfromAPI` that would update the UI, that is our input field with
+   * `componentDidUpdatefromAPI` that would update the UI, that is our input field with
    * the resetted value. To overcome this problem we can force the setting to
    * set anyway by temporarily set the private property `_value` to a dummy
    * value and then re-setting the setting to the desired value, in this way

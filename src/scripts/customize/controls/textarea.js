@@ -31,19 +31,17 @@ class Textarea extends Text {
   /**
    * @override
    */
-  onInit () {
-    if (this.params.wp_editor) {
+  componentInit () {
+    if (this.params['wp_editor']) {
       this._wpEditorID = this._getWpEditorId();
     }
   }
 
   /**
-   * Destroy tinyMCE instance
-   *
    * @override
    */
-  onDeflate () {
-    if (this.params.wp_editor) {
+  componentWillUnmount () {
+    if (this.params['wp_editor']) {
       // it might be that this method is called too soon, even before tinyMCE
       // has been loaded, so try it and don't break.
       try {
@@ -58,33 +56,39 @@ class Textarea extends Text {
   /**
    * @override
    */
-  syncUI (value) {
-    var lastValue;
-    var wpEditorInstance;
-    if (this.params.wp_editor) {
+  shouldComponentUpdate ($value) {
+    let $uiValue;
+
+    if (this.params['wp_editor']) {
       wpEditorInstance = window.tinyMCE.get(this._wpEditorID);
-      lastValue = wpEditorInstance.getContent();
-      // lastValue = window.wp.editor.getContent(this._wpEditorID);;
+      $uiValue = wpEditorInstance.getContent();
+      // $uiValue = window.wp.editor.getContent(this._wpEditorID);;
     } else {
-      lastValue = this.__textarea.value;
+      $uiValue = this.__textarea.value;
     }
-    if (value && lastValue !== value) {
-      if (this.params.wp_editor) {
-        wpEditorInstance.setContent(value);
-      } else {
-        this.__textarea.value = value;
-      }
+    return $value && $uiValue !== $value;
+  }
+
+  /**
+   * @override
+   */
+  componentDidUpdate ($value) {
+    if (this.params['wp_editor']) {
+      const wpEditorInstance = window.tinyMCE.get(this._wpEditorID);
+      wpEditorInstance.setContent($value);
+    } else {
+      this.__textarea.value = $value;
     }
   }
 
   /**
    * @override
    */
-  ready () {
+  componentDidMount () {
     this.__textarea = this._container.getElementsByTagName('textarea')[0];
 
     // params.wp_editor can be either a boolean or an object with options
-    if (this.params.wp_editor && !this._wpEditorIsActive) {
+    if (this.params['wp_editor'] && !this._wpEditorIsActive) {
       this._initWpEditor();
     } else {
       this._syncAndListen();
@@ -145,7 +149,7 @@ class Textarea extends Text {
     const setting = this.setting;
 
     // get wp_editor custom options defined by the developer through the php API
-    const optionsCustom = _.isObject(this.params.wp_editor) ? this.params.wp_editor : {};
+    const optionsCustom = _.isObject(this.params['wp_editor']) ? this.params['wp_editor'] : {};
 
     // set default options
     const optionsDefaults = $.extend(true, {}, window.wp.editor.getDefaultSettings(), {
@@ -191,9 +195,9 @@ class Textarea extends Text {
         ${this._tplHeader()}<# var attrs = data.attrs; #>
         <textarea class="kkcpui-textarea<# if (data.wp_editor && data.wp_editor.editorClass) { #> {{ data.wp_editor.editorClass }}<# } #>"
           <# for (var key in attrs) { if (attrs.hasOwnProperty(key)) { #>{{ key }}="{{ attrs[key] }}" <# } } #>
-            rows="<# if (data.wp_editor && data.wp_editor.textareaRows) { #>{{ data.wp_editor.textareaRows }}<# } else if (attrs && attrs.rows) { #>{{ attrs.rows }}<# } else { #>4<# } #>"
-            <# if (data.wp_editor && data.wp_editor.editorHeight) { #> style="height:{{ data.wp_editor.editorHeight }}px"
-          <# } #>>
+          rows="<# if (data.wp_editor && data.wp_editor.textareaRows) { #>{{ data.wp_editor.textareaRows }}<# } else if (attrs && attrs.rows) { #>{{ attrs.rows }}<# } else { #>4<# } #>"
+          <# if (data.wp_editor && data.wp_editor.editorHeight) { #> style="height:{{ data.wp_editor.editorHeight }}px"
+        <# } #>>
         </textarea>
       </label>
     `

@@ -26,45 +26,43 @@ import Base from './base';
  */
 class Slider extends Base {
 
-  /**
-   * @override
-   */
-  validate (value) {
-    return Validate.slider({}, value, this.setting, this);
-  }
+  constructor (id, args) {
+    super(id, args);
 
-  /**
-   * @override
-   */
-  sanitize (value) {
-    return Sanitize.slider(value, this.setting, this);
+    this.validate = Validate.slider;
+    this.sanitize = Sanitize.slider;
   }
 
   /**
    * Let's consider '44' to be equal to 44.
    * @override
    */
-  softenize (value) {
-    return value.toString();
+  softenize ($value) {
+    return $value.toString();
   }
 
   /**
    * @override
    */
-  syncUI (value) {
-    if (value !== this._getValueFromUI()) {
-      this._setPartialValue(value, 'API');
-    }
+  shouldComponentUpdate ($value) {
+    return !_.isEqual(this.softenize($value), this._getValueFromUI());
   }
 
   /**
-   * This function is divided in subfunction to make it easy to reuse part of
-   * this control in other controls that extend this, such as `size_dynamic`.
+   * @override
+   */
+  componentDidUpdate ($value) {
+    this._setPartialValue($value, 'API');
+  }
+
+  /**
+   * This function is divided in subfunctions to make it easy to reuse part of
+   * this control in other controls that extends this, such as `size_dynamic`.
    *
    * @override
    */
-  ready () {
-    this._setDOMelements();
+  componentDidMount () {
+    this._setDOMrefs();
     this._initSliderAndBindInputs();
     this._updateUIcustomControl(this.setting());
   }
@@ -76,7 +74,7 @@ class Slider extends Base {
    * @memberof! controls.Slider#
    * @access protected
    */
-  _setDOMelements () {
+  _setDOMrefs () {
     const container = this._container;
     /** @type {HTMLElement} */
     this.__inputNumber = container.getElementsByClassName('kkcp-slider-number')[0];

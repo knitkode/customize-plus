@@ -19,16 +19,21 @@ class BaseInput extends Base {
   /**
    * @override
    */
-  syncUI (value) {
-    if (value && this.__input.value !== value) {
-      this.__input.value = value;
-    }
+  shouldComponentUpdate ($value) {
+    return this.__input.value !== $value;
   }
 
   /**
    * @override
    */
-  ready () {
+  componentDidUpdate ($value) {
+    this.__input.value = $value;
+  }
+
+  /**
+   * @override
+   */
+  componentDidMount () {
     const self = this;
     self.__input = self._container.getElementsByTagName('input')[0];
 

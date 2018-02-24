@@ -25,17 +25,18 @@ class Password extends Text {
   /**
    * @override
    */
-  syncUI (value) {
-    if (value && this.__input.value !== value) {
-      this.__input.value = value;
-      this.__text.value = value;
+  componentDidUpdate ($value) {
+    this.__input.value = $value;
+
+    if (this.__text) {
+      this.__text.value = $value;
     }
   }
 
   /**
    * @override
    */
-  ready (value) {
+  componentDidMount () {
     const self = this;
     const {setting} = this;
     const {attrs} = this.params || {};

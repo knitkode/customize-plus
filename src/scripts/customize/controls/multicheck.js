@@ -4,6 +4,7 @@ import { logError } from '../core/logger';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 import BaseChoices from './base-choices';
+import Sortable from './sortable';
 
 /**
  * Control Multicheck
@@ -25,37 +26,35 @@ import BaseChoices from './base-choices';
  */
 class Multicheck extends BaseChoices {
 
-  /**
-   * @override
-   */
-  validate (value) {
-    return Validate.multipleChoices({}, value, this.setting, this);
+  constructor (id, args) {
+    super(id, args);
+
+    this.validate = Validate.multipleChoices;
+    this.sanitize = Sanitize.multipleChoices;
   }
 
   /**
    * @override
    */
-  sanitize (value) {
-    return Sanitize.multipleChoices(value, this.setting, this);
+  shouldComponentUpdate ($value) {
+    return !_.isEqual($value, this._getValueFromUI());
   }
 
   /**
    * @override
    */
-  syncUI (value) {
-    if (!_.isEqual(value, this._getValueFromUI())) {
-      this._syncCheckboxes();
+  componentDidUpdate ($value) {
+    this._updateUIcheckboxes($value);
 
-      if (this.params.sortable) {
-        this._reorder();
-      }
+    if (this.params.sortable) {
+      this._updateUIreorder();
     }
   }
 
   /**
    * @override
    */
-  ready () {
+  componentDidMount () {
     this.__inputs = this._container.getElementsByTagName('input');
 
     // special stuff for sortable multicheck controls
@@ -71,8 +70,8 @@ class Multicheck extends BaseChoices {
       this._buildItemsMap();
     }
 
-    // sync checked state on checkboxes on ready and bind (argument `true`)
-    this._syncCheckboxes(true);
+    // sync checked state on checkboxes and bind (argument `true`)
+    this._updateUIcheckboxes(this.setting(), true);
   }
 
   /**
@@ -91,31 +90,6 @@ class Multicheck extends BaseChoices {
         _sortable: items[i],
         _input: items[i].getElementsByTagName('input')[0]
       };
-    }
-  }
-
-  /**
-   * @override
-   */
-  _reorder () {
-    // sort first the checked ones
-    api.controls['Sortable'].prototype._reorder.apply(this);
-
-    // then sort the unchecked ones
-    const value = this.setting();
-
-    for (let itemValueAsKey in this.params.choices) {
-      let item = this.__itemsMap[itemValueAsKey];
-
-      if (item) {
-        if (value.indexOf(itemValueAsKey) === -1) {
-          let itemSortableDOM = item._sortable;
-          itemSortableDOM.parentNode.removeChild(itemSortableDOM);
-          this._container.appendChild(itemSortableDOM);
-        }
-      } else {
-        logError('controls.Multicheck->_reorder', `item '${itemValueAsKey}' has no '_sortable' DOM in 'this.__itemsMap'`);
-      }
     }
   }
 
@@ -141,25 +115,48 @@ class Multicheck extends BaseChoices {
   }
 
   /**
-   * Sync checkboxes and maybe bind change event
-   * We need to be fast here, use vanilla js.
+   * @override
+   */
+  _updateUIreorder () {
+    // sort first the checked ones
+    Sortable.prototype._updateUI.apply(this);
+
+    // then sort the unchecked ones
+    const value = this.setting();
+
+    for (let itemValueAsKey in this.params.choices) {
+      let item = this.__itemsMap[itemValueAsKey];
+
+      if (item) {
+        if (value.indexOf(itemValueAsKey) === -1) {
+          let itemSortableDOM = item._sortable;
+          itemSortableDOM.parentNode.removeChild(itemSortableDOM);
+          this._container.appendChild(itemSortableDOM);
+        }
+      } else {
+        logError('controls.Multicheck->_reorder', `item '${itemValueAsKey}' has no '_sortable' DOM in 'this.__itemsMap'`);
+      }
+    }
+  }
+
+  /**
+   * Update UI checkboxes and maybe bind change event
    *
    * @since   1.0.0
    * @memberof! controls.Multicheck#
    * @access protected
    *
+   * @param  {mixed}   $value
    * @param  {boolean} bindAsWell Bind on change?
    */
-  _syncCheckboxes (bindAsWell) {
-    const value = this.setting();
-
-    if (!_.isArray(value)) {
-      return logError('controls.Multicheck->_syncCheckboxes', `setting.value must be an array`);
+  _updateUIcheckboxes ($value, bindAsWell) {
+    if (!_.isArray($value)) {
+      return logError('controls.Multicheck->_updateUIcheckboxes', `setting.value must be an array`);
     }
 
     for (let i = 0, l = this.__inputs.length; i < l; i++) {
       let input = this.__inputs[i];
-      input.checked = value.indexOf(input.value) !== -1;
+      input.checked = $value.indexOf(input.value) !== -1;
       if (bindAsWell) {
         input.onchange = () => {
           this.setting.set(this._getValueFromUI());

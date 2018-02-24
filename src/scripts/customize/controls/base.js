@@ -35,6 +35,24 @@ class Base extends wpApi.Control {
   /**
    * {@inheritDoc}
    *
+   * Extends the constructor with a tweaked version of the WordPress Control
+   * initialize method, a custom hook `componentInit` and a private and shared
+   * initialization for Customize Plus controls.
+   *
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @override
+   */
+  constructor (id, options) {
+    this.initialize(id, options);
+    this.componentInit();
+    this._customInitialize();
+  }
+
+  /**
+   * {@inheritDoc}
+   *
    * Tweak the initialize method.
    *
    * @since 1.0.0
@@ -71,8 +89,8 @@ class Base extends wpApi.Control {
       } );
     }
 
-    // @note `control.params.content` is managed differently in `inflate` and
-    // `deflate` methods
+    // @note `control.params.content` is managed differently in `_mount` and
+    // `_unmount` methods
     // if ( ! control.params.content ) {
     //   control.params.content = $( '<li></li>', {
     //     id: 'customize-control-' + id.replace( /]/g, '' ).replace( /\[/g, '-' ),
@@ -192,36 +210,49 @@ class Base extends wpApi.Control {
     } else {
       wpApi.apply( wpApi, deferredSettingIds.concat( gatherSettings ) );
     }
-
-    // @note call custom private initialization (not overridable by subclasses)
-    this._initialize();
   }
 
   /**
-   * Private Initialize
+   * Component init
+   *
+   * This is the methods that subclasses could override with their custom init
+   * logic (no DOM is available at this point)
+   *
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access package
+   * @abstract
+   * @return {void}
+   */
+  componentInit () {
+  }
+
+  /**
+   * Custom initialization
    *
    * Collect here the custom initialization additions of Customize Plus controls
    *
    * @since 1.0.0
    *
    * @memberof! controls.Base#
-   * @access package
+   * @access private
    * @return {void}
    */
-  _initialize () {
-    // an @abstract method to override (this needs to be called here, before than
-    // the `ready` method)
-    this.onInit();
+  _customInitialize () {
+    // alias for ready method React like
+    this.ready = this.componentDidMount;
 
     // After the control is embedded on the page, invoke the "ready" method.
     this.deferred.embedded.done(() => {
       // @note this way of managing controls is disabled
       // this.linkElements();
-      if (!api.constants['DYNAMIC_CONTROLS_RENDERING']) {
-        this.inflate();
-      }
       this.setupNotifications();
-      // this.ready(); // @note ready is called within inflate
+
+      // this.ready(); // @note ready is called within `_mount` called here below
+      if (!api.constants['DYNAMIC_CONTROLS_RENDERING']) {
+        this._mount();
+      }
     });
 
     if (api.constants['DYNAMIC_CONTROLS_RENDERING']) {
@@ -229,15 +260,15 @@ class Base extends wpApi.Control {
       // light,to make this work no data must be stored in the DOM
       wpApi.section(this.section()).expanded.bind((expanded) => {
         // @@doubt \\
-        // either deflate and re-inflate dom each time...
+        // either unmount and mount dom each time...
         if (expanded) {
-          _.defer(this.inflate.bind(this));
+          _.defer(this._mount.bind(this));
         } else {
-          this.deflate();
+          this._unmount();
         }
         // ...or just do it the first time a control is expanded
         // if (expanded && !this.rendered) {
-        //   _.defer(this.inflate.bind(this));
+        //   _.defer(this._mount.bind(this));
         // }
       });
     }
@@ -251,9 +282,11 @@ class Base extends wpApi.Control {
         this.setting.validate = this._validate.bind(this);
       }
 
-      // add sanitization of the value `postMessag`ed to the preview
+      // add sanitization of the value `postMessage`d to the preview
       if (!this.params['noLiveSanitization'] && !this.params['loose']) {
-        this.setting.sanitize = this.sanitize.bind(this);
+        this.setting.sanitize = (value) => {
+          return this.sanitize(value, this.setting, this);
+        };
       }
 
       // bind setting change to this method to reflect a programmatic
@@ -263,8 +296,8 @@ class Base extends wpApi.Control {
         // \\
         const sectionId = this.section();
         if ( ! sectionId || ( wpApi.section.has( sectionId ) && wpApi.section( sectionId ).expanded() ) ) {
-          if (this.rendered) {
-            this.syncUI.call(this, value);
+          if (this.rendered && this.shouldComponentUpdate(value)) {
+            this.componentDidUpdate(value);
           }
         }
       });
@@ -339,7 +372,7 @@ class Base extends wpApi.Control {
     if (!_.keys($validity).length) {
 
       // otherwise apply the specific control/setting validation
-      $validity = this.validate(value);
+      $validity = this.validate($validity, value, this.setting, this);
     }
 
     this._manageValidityNotifications($validity);
@@ -464,18 +497,7 @@ class Base extends wpApi.Control {
    * @abstract
    * @param {string} value The new setting value.
    */
-  syncUI (value) {}
-
-  /**
-   * Triggered when the control has been initialized
-   *
-   * @since 1.0.0
-   *
-   * @memberof! controls.Base#
-   * @access protected
-   * @abstract
-   */
-  onInit () {}
+  componentDidUpdate (value) {}
 
   /**
    * Template
@@ -636,28 +658,71 @@ class Base extends wpApi.Control {
   }
 
   /**
-   * Triggered just before the control get deflated from DOM
+   * Should component update (React like)
    *
-   * @since 1.0.0
+   * @see https://reactjs.org/docs/react-component.html#shouldcomponentupdate
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access protected
+   * @abstract
+   * @return {boolean}
+   */
+  shouldComponentUpdate () {
+    return false;
+  }
+
+  /**
+   * Component did update (React like)
+   *
+   * @see  https://reactjs.org/docs/react-component.html#componentdidupdate
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access protected
+   * @abstract
+   * @param {mixed}
+   */
+  componentDidUpdate (value) {
+  }
+
+  /**
+   * Component did mount (React like)
+   *
+   * @see  https://reactjs.org/docs/react-component.html#componentdidunmount
+   * @since 1.1.0
    *
    * @memberof! controls.Base#
    * @access protected
    * @abstract
    */
-  onDeflate () {}
+  componentDidMount () {}
 
   /**
-   * Removes the DOM of the control.
+   * Component will unmount (React like)
    *
-   * In case the DOM store is empty (the first time this method get called) it
-   * fills it.
-   *
-   * @since 1.0.0
+   * @see  https://reactjs.org/docs/react-component.html#componentwillunmount
+   * @since 1.1.0
    *
    * @memberof! controls.Base#
-   * @access public
+   * @access protected
+   * @abstract
    */
-  deflate () {
+  componentWillUnmount () {}
+
+  /**
+   * Unmount (React like)
+   *
+   * Removes the DOM of the control. In case the DOM store is empty (the first
+   * time this method get called) it fills it. This could removed once React is
+   * implemented
+   *
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access package
+   */
+  _unmount () {
     /* jshint funcscope: true */
     // if (DEBUG) var t = performance.now();
 
@@ -668,7 +733,9 @@ class Base extends wpApi.Control {
     }
 
     // call the abstract method
-    this.onDeflate();
+    if (this.rendered) {
+      this.componentWillUnmount();
+    }
 
     // and empty the DOM from the container deferred
     // the slide out animation of the section doesn't freeze
@@ -689,7 +756,7 @@ class Base extends wpApi.Control {
         // there are many DOM elements to remove, investigate here \\
         container.innerHTML = '';
 
-        if (DEBUG.performances) console.log('%c deflate of ' + this.params.type + '(' + this.id +
+        if (DEBUG.performances) console.log('%c unmount of ' + this.params.type + '(' + this.id +
           ') took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
 
         // flag control that it's not rendered
@@ -699,25 +766,24 @@ class Base extends wpApi.Control {
   }
 
   /**
-   * Inflate
+   * Mount (React like)
    *
-   * Render or 'inflate' the template of the control. The first time render it
-   * from the js template, afterward retrieve the DOM string from the `template`
-   * param store. After the template has been rendered call the `ready` method,
-   * overridden in each control with their own specific logic. Also put a flag
-   * `rendered` on the control instance to indicate whether the control is
-   * rendered or not.
+   * The first time renders from the js template, afterward retrieve the DOM
+   * string from the `template` param store. After the template has been
+   * rendered call the `componentDidMount` method, overridden in each control
+   * with their own specific DOM initialization. Also put a flag `rendered` on
+   * the control instance to indicate whether the control is rendered or not.
    *
-   * @since 1.0.0
+   * @since 1.1.0
    *
    * @memberof! controls.Base#
-   * @access public
+   * @access package
    *
    * @param  {boolean} resolveEmbeddedDeferred Sometimes (i.e. for the
    *                                           `control.focus()` method) we need
    *                                           to resolve the deffered embed.
    */
-  inflate (resolveEmbeddedDeferred) {
+  _mount (resolveEmbeddedDeferred) {
     /* jshint funcscope: true */
     if (DEBUG.performances) var t = performance.now();
     if (!this.params.content) {
@@ -735,7 +801,7 @@ class Base extends wpApi.Control {
       }
     }
     this.rendered = true;
-    this.ready();
+    this.componentDidMount();
     if (resolveEmbeddedDeferred) {
       this.deferred.embedded.resolve();
     }

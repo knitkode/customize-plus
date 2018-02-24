@@ -126,6 +126,21 @@ export function oneOrMoreChoices( $validity={}, $value, $setting, $control ) {
 }
 
 /**
+ * Validate sortable
+ *
+ * @since 1.1.0
+ *
+ * @param {WP_Error}             $validity
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
+ * @return {WP_Error}
+ */
+export function sortable( $validity={}, $value, $setting, $control ) {
+  return multipleChoices( $validity, $value, $setting, $control, true );
+}
+
+/**
  * Validate font family
  *
  * @since 1.0.0
@@ -423,6 +438,7 @@ export default api.core.Validate = {
   singleChoice,
   multipleChoices,
   oneOrMoreChoices,
+  sortable,
   fontFamily,
   checkbox,
   tags,

@@ -16,18 +16,6 @@ import Base from './base';
  * @augments wp.customize.Class
  */
 class Content extends Base {
-  /**
-   * Some methods are not needed here
-   *
-   * @override
-   */
-  // _validate: $.noop,
-  // _manageValidityNotifications: $.noop,
-  // validate: $.noop,
-  // sanitize: $.noop,
-  // syncUI: $.noop,
-  // softenize: $.noop,
-  // _extras: $.noop,
 
   /**
    * @override

@@ -134,6 +134,21 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 		}
 
 		/**
+		 * Validate sortable
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param WP_Error 						 $validity
+		 * @param mixed 							 $value    The value to validate.
+		 * @param WP_Customize_Setting $setting  Setting instance.
+		 * @param WP_Customize_Control $control  Control instance.
+		 * @return WP_Error
+		 */
+		public static function sortable( $validity, $value, $setting, $control ) {
+			return self::multiple_choices( $validity, $value, $setting, $control, true );
+		}
+
+		/**
 		 * Validate font family
 		 *
 		 * @since 1.0.0

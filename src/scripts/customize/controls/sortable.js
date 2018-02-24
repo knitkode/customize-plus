@@ -26,47 +26,39 @@ import BaseChoices from './base-choices';
  */
 class Sortable extends BaseChoices {
 
-  /**
-   * @override
-   */
-  validate (value) {
-    return Validate.multipleChoices({}, value, this.setting, this, true);
+  constructor (id, args) {
+    super(id, args);
+
+    this.validate = Validate.sortable;
+    this.sanitize = Sanitize.sortable;
   }
 
   /**
    * @override
    */
-  sanitize (value) {
-    return Sanitize.multipleChoices(value, this.setting, this, true);
+  shouldComponentUpdate ($value) {
+    return !_.isEqual($value, this._getValueFromUI());
   }
 
   /**
    * @override
    */
-  syncUI (value) {
-    if (!_.isEqual(value, this.params.lastValue)) {
-      this._reorder();
-      this.params.lastValue = value;
-    }
+  componentDidUpdate ($value) {
+    this._updateUI($value);
   }
 
   /**
    * @override
    */
-  ready () {
-    const setting = this.setting;
-    const container = this.container;
-
+  componentDidMount () {
     this._buildItemsMap();
 
-    this.params.lastValue = this.setting();
-
-    container.sortable({
+    this.container.sortable({
       items: '.kkcp-sortable',
       cursor: 'move',
-      update: function () {
-        const newValue = container.sortable('toArray', { attribute: 'data-value' });
-        setting.set(newValue);
+      update: () => {
+        const value = this._getValueFromUI();
+        this.setting.set(value);
       }
     });
   }
@@ -94,6 +86,21 @@ class Sortable extends BaseChoices {
   }
 
   /**
+   * Get value from UI
+   *
+   * @since   1.1.0
+   * @memberof! controls.Sortable#
+   * @access protected
+   *
+   * @return {[type]} [description]
+   */
+  _getValueFromUI () {
+    return this.container.sortable('toArray', { attribute: 'data-value' });
+  }
+
+  /**
+   * Update UI
+   *
    * Manually reorder the sortable list, needed when a programmatic change
    * is triggered. Unfortunately jQuery UI sortable does not have a method
    * to keep in sync the order of an array and its corresponding DOM.
@@ -101,23 +108,25 @@ class Sortable extends BaseChoices {
    * @since   1.0.0
    * @memberof! controls.Sortable#
    * @access protected
+   *
+   * @param {mixed} $value
    */
-  _reorder () {
+  _updateUI ($value) {
     const value = this.setting();
 
-    if (!_.isArray(value)) {
-      return logError('controls.Sortable->_reorder', `setting.value must be an array`);
+    if (!_.isArray($value)) {
+      return logError('controls.Sortable->_updateUI', `setting.value must be an array`);
     }
 
-    for (let i = 0, l = value.length; i < l; i++) {
-      let itemValueAsKey = value[i];
+    for (let i = 0, l = $value.length; i < l; i++) {
+      let itemValueAsKey = $value[i];
       let item = this.__itemsMap[itemValueAsKey];
       if (item) {
         let itemSortableDOM = item._sortable;
         itemSortableDOM.parentNode.removeChild(itemSortableDOM);
         this._container.appendChild(itemSortableDOM);
       } else {
-        logError('controls.Sortable->_reorder', `item '${itemValueAsKey}' has no '_sortable' DOM in 'this.__itemsMap'`);
+        logError('controls.Sortable->_updateUI', `item '${itemValueAsKey}' has no '_sortable' DOM in 'this.__itemsMap'`);
       }
     }
 

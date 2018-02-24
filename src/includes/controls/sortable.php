@@ -56,7 +56,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choice
 	 * @since 1.0.0
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return KKcp_Sanitize::multiple_choices( $value, $setting, $control, true );
+		return KKcp_Sanitize::sortable( $value, $setting, $control );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choice
 	 * @since 1.0.0
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		return KKcp_Validate::multiple_choices( $validity, $value, $setting, $control, true );
+		return KKcp_Validate::sortable( $validity, $value, $setting, $control );
 	}
 }
 

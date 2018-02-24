@@ -25,25 +25,18 @@ import BaseChoices from './base-choices';
  */
 class Select extends BaseChoices {
 
-  /**
-   * @override
-   */
-  validate (value) {
-    return Validate.oneOrMoreChoices({}, value, this.setting, this);
+  constructor (id, args) {
+    super(id, args);
+
+    this.validate = Validate.oneOrMoreChoices;
+    this.sanitize = Sanitize.oneOrMoreChoices;
   }
 
   /**
    * @override
    */
-  sanitize (value) {
-    return Sanitize.oneOrMoreChoices(value, this.setting, this);
-  }
-
-  /**
-   * @override
-   */
-  onDeflate () {
-    if (this.__select && this.__select.selectize) {
+  componentWillUnmount () {
+    if (this.__select.selectize) {
       this.__select.selectize.destroy();
     }
   }
@@ -51,20 +44,25 @@ class Select extends BaseChoices {
   /**
    * We do a comparison with two equals `==` because sometimes we want to
    * compare `500` to `'500'` (like in the font-weight dropdown) and return
-   * true from that. // @@todo the before comment... \\
+   * true from that
    *
    * @override
    */
-  syncUI (value) {
-    if (!_.isEqual(value, this._getValueFromUI())) {
-      this._updateUI(value);
-    }
+  shouldComponentUpdate ($value) {
+    return this._getValueFromUI() != $value;
   }
 
   /**
    * @override
    */
-  ready () {
+  componentDidUpdate (value) {
+    this._updateUI(value);
+  }
+
+  /**
+   * @override
+   */
+  componentDidMount () {
     const attrs = this.params['attrs'] || {};
     const setting = this.setting;
 

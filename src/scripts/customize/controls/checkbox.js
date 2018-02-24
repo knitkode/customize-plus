@@ -23,56 +23,50 @@ import Base from './base';
  */
 class Checkbox extends Base {
 
+  constructor (id, args) {
+    super(id, args);
+
+    this.validate = Validate.checkbox;
+    this.sanitize = Sanitize.checkbox;
+  }
+
   /**
-   * Normalize setting for soft comparison
+   * We need this to fix situations like: `'1' === 1` returning false.
    *
-   * We need this to fix situations like: `'1' === 1` returning false,
-   * due to the fact that we can't use a real soft comparison (`==`).
-   *
    * @override
    */
-  softenize (value) {
-    return (value === 0 || value === 1) ? value.toString() : value;
+  softenize ($value) {
+    return ($value === 0 || $value === 1) ? $value.toString() : $value;
   }
 
   /**
    * @override
    */
-  validate (value) {
-    return Validate.checkbox({}, value, this.setting, this);
+  shouldComponentUpdate ($value) {
+    const $uiValue = numberToBoolean(this.__input.checked);
+
+    return $uiValue !== this.softenize($value);
   }
 
   /**
    * @override
    */
-  sanitize (value) {
-    return Sanitize.checkbox(value, this.setting, this);
+  componentDidUpdate ($value) {
+    $value = numberToBoolean($value);
+    this.__input.checked = $value;
   }
 
   /**
    * @override
    */
-  syncUI (value) {
-    const valueClean = numberToBoolean(value);
-    const inputStatus = numberToBoolean(this.__input.checked);
-    if (inputStatus !== valueClean) {
-      this.__input.checked = valueClean;
-    }
-  }
-
-  /**
-   * @override
-   */
-  ready () {
+  componentDidMount () {
     this.__input = this._container.getElementsByTagName('input')[0];
 
-    // sync input value on ready
     this.__input.checked = numberToBoolean(this.setting());
 
-    // bind input on ready
     this.__input.onchange = (event) => {
       event.preventDefault();
-      var value = event.target.checked ? 1 : 0;
+      const value = event.target.checked ? 1 : 0;
       this.setting.set(value);
     };
   }

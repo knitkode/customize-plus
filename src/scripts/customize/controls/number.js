@@ -23,18 +23,11 @@ import BaseInput from './base-input';
  */
 class Number extends BaseInput {
 
-  /**
-   * @override
-   */
-  validate (value) {
-    return Validate.number({}, value, this.setting, this);
-  }
+  constructor (id, args) {
+    super(id, args);
 
-  /**
-   * @override
-   */
-  sanitize (value) {
-    return Sanitize.number(value, this.setting, this);
+    this.validate = Validate.number;
+    this.sanitize = Sanitize.number;
   }
 
   /**
@@ -43,10 +36,8 @@ class Number extends BaseInput {
    *
    * @override
    */
-  syncUI (value) {
-    if (value && this.__input.value !== value.toString()) {
-      this.__input.value = value;
-    }
+  shouldComponentUpdate ($value) {
+    return this.__input.value !== $value.toString();
   }
 }
 

@@ -22,50 +22,38 @@ import BaseChoices from './base-choices';
  */
 class BaseRadio extends BaseChoices {
 
-  /**
-   * @since   1.0.0
-   * @override
-   */
-  validate (value) {
-    return Validate.singleChoice({}, value, this.setting, this);
+  constructor (id, args) {
+    super(id, args);
+
+    this.validate = Validate.singleChoice;
+    this.sanitize = Sanitize.singleChoice;
   }
 
   /**
-   * @since   1.0.0
    * @override
    */
-  sanitize (value) {
-    return Sanitize.singleChoice(value, this.setting, this);
+  componentDidUpdate () {
+    this._updateUI();
   }
 
   /**
-   * @since   1.0.0
    * @override
    */
-  syncUI () {
-    this._syncRadios();
-  }
-
-  /**
-   * @since   1.0.0
-   * @override
-   */
-  ready () {
+  componentDidMount () {
     this.__inputs = this._container.getElementsByTagName('input');
-    // sync checked state on radios on ready and bind (argument `true`)
-    this._syncRadios(true);
+    // sync checked state on radios and bind (argument `true`)
+    this._updateUI(true);
   }
 
   /**
    * Sync radios and maybe bind change event
-   * We need to be fast here, use vanilla js.
    *
    * @since   1.0.0
    * @memberof! controls.BaseRadio#
    *
    * @param  {boolean} bindAsWell Bind on change?
    */
-  _syncRadios (bindAsWell) {
+  _updateUI (bindAsWell) {
     const value = this.setting();
 
     for (var i = 0, l = this.__inputs.length; i < l; i++) {

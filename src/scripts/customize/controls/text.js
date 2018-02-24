@@ -23,18 +23,11 @@ import BaseInput from './base-input';
  */
 class Text extends BaseInput {
 
-  /**
-   * @override
-   */
-  validate (value) {
-    return Validate.text({}, value, this.setting, this);
-  }
+  constructor (id, args) {
+    super(id, args);
 
-  /**
-   * @override
-   */
-  sanitize (value) {
-    return Sanitize.text(value, this.setting, this);
+    this.validate = Validate.text;
+    this.sanitize = Sanitize.text;
   }
 }
 

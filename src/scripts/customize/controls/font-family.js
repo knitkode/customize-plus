@@ -27,18 +27,11 @@ import BaseSet from './base-set';
  */
 class FontFamily extends BaseSet {
 
-  /**
-   * @override
-   */
-  validate (value) {
-    return Validate.fontFamily({}, value, this.setting, this);
-  }
+  constructor (id, args) {
+    super(id, args);
 
-  /**
-   * @override
-   */
-  sanitize (value) {
-    return Sanitize.fontFamily(value, this.setting, this);
+    this.validate = Validate.fontFamily;
+    this.sanitize = Sanitize.fontFamily;
   }
 
   /**
@@ -46,8 +39,8 @@ class FontFamily extends BaseSet {
    *
    * @override
    */
-  onInit () {
-    super.onInit();
+  componentInit () {
+    super.componentInit();
 
     this._options = _.map(this._options, option => {
       option.value = Helper.normalizeFontFamily(option.value);
@@ -59,19 +52,31 @@ class FontFamily extends BaseSet {
   /**
    * @override
    */
-  syncUI (value) {
-    if (_.isArray(value)) {
-      value = value.join(',');
+  softenize ($value) {
+    if (_.isArray($value)) {
+      $value = $value.join(',');
     }
-    if (!_.isEqual(value, this.__input.selectize.getValue())) {
-      this._initUI(value);
-    }
+    return $value;
   }
 
   /**
    * @override
    */
-  ready () {
+  shouldComponentUpdate ($value) {
+    return !_.isEqual(this.softenize($value), this.__input.selectize.getValue());
+  }
+
+  /**
+   * @override
+   */
+  componentDidUpdate ($value) {
+    this._initUI(this.softenize($value));
+  }
+
+  /**
+   * @override
+   */
+  componentDidMount () {
     this.__input = this._container.getElementsByClassName('kkcp-select')[0];
     this._initUI(this.setting());
   }

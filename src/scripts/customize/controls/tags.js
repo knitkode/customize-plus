@@ -24,50 +24,44 @@ import Base from './base';
  */
 class Tags extends Base {
 
-  /**
-   * @override
-   */
-  validate (value) {
-    return Validate.tags({}, value, this.setting, this);
+  constructor (id, args) {
+    super(id, args);
+
+    this.validate = Validate.tags;
+    this.sanitize = Sanitize.tags;
   }
 
   /**
    * @override
    */
-  sanitize (value) {
-    return Sanitize.tags(value, this.setting, this);
+  componentWillUnmount () {
+    this.__input.selectize.destroy();
   }
 
   /**
    * @override
    */
-  onDeflate () {
-    if (this.__input && this.__input.selectize) {
-      this.__input.selectize.destroy();
-    }
+  shouldComponentUpdate ($value) {
+    return this.__input.selectize.getValue() !== $value;
   }
 
   /**
    * @override
    */
-  syncUI (value) {
-    const selectize = this.__input.selectize;
-
-    if (selectize && selectize.getValue() !== value) {
-      // this is due to a bug, we should use:
-      // selectize.setValue(value, true);
-      // @see https://github.com/brianreavis/selectize.js/issues/568
-      // instead here first we have to destroy thene to reinitialize, this
-      // happens only through a programmatic change such as a reset action
-      selectize.destroy();
-      this._initUI(value);
-    }
+  componentDidUpdate ($value) {
+    // this is due to a bug, we should use:
+    // selectize.setValue(value, true);
+    // @see https://github.com/brianreavis/selectize.js/issues/568
+    // instead here first we have to destroy thene to reinitialize, this
+    // happens only through a programmatic change such as a reset action
+    this.__input.selectize.destroy();
+    this._initUI($value);
   }
 
   /**
    * @override
    */
-  ready () {
+  componentDidMount () {
     this.__input = this._container.getElementsByTagName('input')[0];
 
     this._initUI(this.setting());

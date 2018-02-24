@@ -144,8 +144,6 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @inheritDoc
 	 */
 	protected function add_to_json() {
-		$this->json['valueCSS'] = $this->value();
-
 		if ( $this->alpha ) {
 			$this->json['alpha'] = true;
 		}

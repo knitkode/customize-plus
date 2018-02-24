@@ -144,6 +144,20 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		}
 
 		/**
+		 * Sanitize sortable
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param array         $value   The value to sanitize.
+		 * @param WP_Customize_Setting $setting Setting instance.
+		 * @param WP_Customize_Control $control Control instance.
+		 * @return array|null The sanitized value.
+		 */
+		public static function sortable( $value, $setting, $control ) {
+			return self::multiple_choices( $value, $setting, $control, true );
+		}
+
+		/**
 		 * Sanitize font family
 		 *
 		 * @since 1.0.0

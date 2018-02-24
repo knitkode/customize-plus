@@ -262,7 +262,7 @@ export function focus (control) {
   try {
     // try this so it become possible to use this function even
     // with WordPress native controls which don't have this method
-    control.inflate(true);
+    control._mount(true);
 
     // always disable search, it could be that we click on this
     // link from a search result try/catch because search is not

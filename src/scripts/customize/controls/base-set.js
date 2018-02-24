@@ -26,20 +26,12 @@ import Base from './base';
  */
 class BaseSet extends Base {
 
-  /**
-   * @since   1.0.0
-   * @override
-   */
-  validate (value) {
-    return Validate.oneOrMoreChoices({}, value, this.setting, this);
-  }
+  constructor (id, args) {
+    super(id, args);
 
-  /**
-   * @since   1.0.0
-   * @override
-   */
-  sanitize (value) {
-    return Sanitize.oneOrMoreChoices(value, this.setting, this);
+    this.validate = Validate.oneOrMoreChoices;
+    this.sanitize = Sanitize.oneOrMoreChoices;
+
   }
 
   /**
@@ -48,10 +40,9 @@ class BaseSet extends Base {
    * to extract data for the `<select>Select</select>` field too, and also
    * because in php arrays are just arrays.
    *
-   * @since   1.0.0
    * @override
    */
-  onInit () {
+  componentInit () {
     const filteredSets = this._getFilteredSets(this.params.choices);
     const data = this._getSelectDataFromSets(filteredSets);
     this._options = data._options;
@@ -61,10 +52,9 @@ class BaseSet extends Base {
   }
 
   /**
-   * @since   1.0.0
    * @override
    */
-  syncUI (value) {
+  componentDidUpdate (value) {
     if (_.isString(value)) {
       value = [value];
     }
@@ -74,20 +64,18 @@ class BaseSet extends Base {
   }
 
   /**
-   * @since   1.0.0
    * @override
    */
-  onDeflate () {
+  componentWillUnmount () {
     if (this.__input  && this.__input.selectize) {
       this.__input.selectize.destroy();
     }
   }
 
   /**
-   * @since   1.0.0
    * @override
    */
-  ready () {
+  componentDidMount () {
     this.__input = this._container.getElementsByClassName('kkcp-select')[0];
     this._initUI();
     this._updateUI(this.setting())

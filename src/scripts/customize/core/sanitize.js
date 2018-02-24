@@ -125,9 +125,22 @@ export function oneOrMoreChoices ( $value, $setting, $control ) {
     return singleChoice( $value, $setting, $control );
   }
   if ( _.isArray( $value ) ) {
-    return multipleChoices( $value, $setting, $control );;
+    return multipleChoices( $value, $setting, $control );
   }
   return null;
+}
+
+/**
+ * Sanitize sortable
+ *
+ * @since 1.1.0
+ * @param {mixed}                $value   The value to sanitize.
+ * @param {WP_Customize_Setting} $setting Setting instance.
+ * @param {WP_Customize_Control} $control Control instance.
+ * @return {array|null} The sanitized value.
+ */
+export function sortable ( $value, $setting, $control ) {
+  return multipleChoices( $value, $setting, $control, true );
 }
 
 /**
@@ -398,6 +411,7 @@ export default {
   singleChoice,
   multipleChoices,
   oneOrMoreChoices,
+  sortable,
   fontFamily,
   checkbox,
   tags,

@@ -19,9 +19,7 @@ class BaseChoices extends Base {
   /**
    * @override
    */
-  onInit () {
-    super.onInit();
-
+  componentInit () {
     this._validChoices = this._getValidChoices(this.params.choices)
   }
 

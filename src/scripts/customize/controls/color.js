@@ -26,6 +26,13 @@ import Base from './base';
  */
 class Color extends Base {
 
+  constructor (id, args) {
+    super(id, args);
+
+    this.validate = Validate.color;
+    this.sanitize = Sanitize.color;
+  }
+
   /**
    * Use tinycolor (included in spectrum.js) to always convert colors to the
    * same format, so to have the same output result when the input is `red` or
@@ -36,50 +43,35 @@ class Color extends Base {
    * @override
    * @requires tinycolor.toRgbString
    */
-  softenize (value) {
-    try {
-      const anyColor = tinycolor(value);
-      if (!anyColor['_format']) { // whitelisted from uglify \\
-        return value;
-      } else {
-        return anyColor.toRgbString();
-      }
-    } catch(e) {
-      if (DEBUG) {
-        console.warn('Control->Color->softenize: tinycolor conversion failed', e);
-      }
-      return value;
+  softenize ($value) {
+    const anyColor = tinycolor($value);
+
+    if (!anyColor['_format']) { // whitelisted from uglify \\
+      return $value;
+    } else {
+      return anyColor.toRgbString();
     }
   }
 
   /**
-   * @override
+   * @todo Implement this
    */
-  validate (value) {
-    return Validate.color({}, value, this.setting, this);
+  shouldComponentUpdate ($value) {
+    return this.__$picker.spectrum('get') !== $value;
   }
 
   /**
    * @override
    */
-  sanitize (value) {
-    return Sanitize.color(value, this.setting, this);
+  componentDidUpdate (value) {
+    this._updateUI(value, 'API');
   }
 
   /**
    * @override
    */
-  syncUI (value) {
-    this._apply(value, 'API');
-  }
-
-  /**
-   * Destroy `spectrum` instances if any.
-   *
-   * @override
-   */
-  onDeflate () {
-    if (this.__$picker && this.rendered) {
+  componentWillUnmount () {
+    if (this.__$picker) {
       this.__$picker.spectrum('destroy');
     }
   }
@@ -87,17 +79,12 @@ class Color extends Base {
   /**
    * @override
    */
-  ready () {
-    /** @type {HTMLElement} */
+  componentDidMount () {
     const container = this._container;
-    /** @type {HTMLElement} */
     const btnCustom = container.getElementsByClassName('kkcpui-toggle')[0];
 
-    /** @type {HTMLElement} */
     this.__preview = container.getElementsByClassName('kkcpcolor-current-overlay')[0];
-    /** @type {JQuery} */
     this.__$picker = $(container.getElementsByClassName('kkcpcolor-input')[0]);
-    /** @type {JQuery} */
     this.__$expander = $(container.getElementsByClassName('kkcp-expander')[0]).hide();
 
     this._updateUIpreview(this.setting());
@@ -167,9 +154,11 @@ class Color extends Base {
       },
       move: (tinycolor) => {
         const color = tinycolor ? tinycolor.toString() : 'transparent';
-        this._apply(color);
+        this.setting.set(color);
       },
       change: (tinycolor) => {
+        const color = tinycolor ? tinycolor.toString() : 'transparent';
+        this.setting.set(color);
         if (!tinycolor) {
           $container.find('.sp-input').val('transparent');
         }
@@ -184,8 +173,8 @@ class Color extends Base {
    * @memberof! controls.Color#
    * @access protected
    */
-  _updateUIpreview (newValue) {
-    this.__preview.style.background = newValue;
+  _updateUIpreview ($value) {
+    this.__preview.style.background = $value;
   }
 
   /**
@@ -195,8 +184,8 @@ class Color extends Base {
    * @memberof! controls.Color#
    * @access protected
    */
-  _updateUIcustomControl (newValue) {
-    this.__$picker.spectrum('set', newValue);
+  _updateUIpicker ($value) {
+    this.__$picker.spectrum('set', $value);
   }
 
   /**
@@ -212,20 +201,11 @@ class Color extends Base {
    *                        picker, dynamic fields, expr field) or from the
    *                        API (on programmatic value change).
    */
-  _apply (value, from) {
-    this.params.valueCSS = value;
+  _updateUI (value, from) {
+    this._updateUIpreview(value);
 
-    if (this.rendered) {
-      this._updateUIpreview(value);
-
-      if (from === 'API') {
-        this._updateUIcustomControl(value);
-      }
-    }
-
-    if (from !== 'API') {
-      // set new value
-      this.setting.set(value);
+    if (from === 'API') {
+      this._updateUIpicker(value);
     }
   }
 
@@ -236,7 +216,7 @@ class Color extends Base {
     return `
       ${this._tplHeader()}
       <span class="kkcpcolor-current kkcpcolor-current-bg"></span>
-      <span class="kkcpcolor-current kkcpcolor-current-overlay" style="background:{{data.valueCSS}}"></span>
+      <span class="kkcpcolor-current kkcpcolor-current-overlay"></span>
       <button class="kkcpui-toggle kkcpcolor-toggle">${this._l10n('selectColor')}</button>
       <div class="kkcp-expander">
         <input class="kkcpcolor-input" type="text">
