@@ -2,7 +2,7 @@
 	<div class="kkcpui-midpoint-wrap">
 		<div class="kkcpui-midpoint">
 			<img id="kkcp-loader-img" src="<?php echo esc_url( plugins_url( 'assets/images/logo-white.png', KKCP_PLUGIN_FILE ) ); ?>">
-			<?php if ( isset ( $_GET['kkcp_import'] ) ): // input var okay ?>
+			<?php if ( isset( $_GET['kkcp_import'] ) ): // input var okay ?>
 				<h1 id="kkcp-loader-title" class="kkcp-text"><?php esc_html_e( 'Import done' ); ?></h1>
 				<h3 id="kkcp-loader-text" class="kkcp-text"><?php esc_html_e( 'All options have been succesfully imported and saved' ); ?></h3>
 			<?php else : ?>

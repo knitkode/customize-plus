@@ -27,7 +27,7 @@ import Helper from '../core/helper';
  * @param {WP_Customize_Control} $control  Control instance.
  * @return {WP_Error}
  */
-export function required( $validity={}, $value, $setting, $control ) {
+export function required( $validity, $value, $setting, $control ) {
   if ( !$control.params.optional ) {
     if ( Helper.isEmpty( $value ) ) {
       $validity = $control._addError( $validity, 'vRequired' );
@@ -47,7 +47,7 @@ export function required( $validity={}, $value, $setting, $control ) {
  * @param {WP_Customize_Control} $control  Control instance.
  * @return {WP_Error}
  */
-export function singleChoice( $validity={}, $value, $setting, $control ) {
+export function singleChoice( $validity, $value, $setting, $control ) {
   const {_validChoices} = $control;
   const $choices = _validChoices && _validChoices.length ? _validChoices : $control.params.choices;
 
@@ -73,7 +73,7 @@ export function singleChoice( $validity={}, $value, $setting, $control ) {
  *                                             present in the validated value
  * @return {WP_Error}
  */
-export function multipleChoices( $validity={}, $value, $setting, $control, $check_length = false ) {
+export function multipleChoices( $validity, $value, $setting, $control, $check_length = false ) {
   const {_validChoices, params} = $control;
   const $choices = _validChoices && _validChoices.length ? _validChoices : params.choices;
 
@@ -118,7 +118,7 @@ export function multipleChoices( $validity={}, $value, $setting, $control, $chec
  * @param {WP_Customize_Control} $control  Control instance.
  * @return {WP_Error}
  */
-export function oneOrMoreChoices( $validity={}, $value, $setting, $control ) {
+export function oneOrMoreChoices( $validity, $value, $setting, $control ) {
   if ( _.isString( $value ) ) {
     return singleChoice( $validity, $value, $setting, $control );
   }
@@ -136,7 +136,7 @@ export function oneOrMoreChoices( $validity={}, $value, $setting, $control ) {
  * @param {WP_Customize_Control} $control  Control instance.
  * @return {WP_Error}
  */
-export function sortable( $validity={}, $value, $setting, $control ) {
+export function sortable( $validity, $value, $setting, $control ) {
   return multipleChoices( $validity, $value, $setting, $control, true );
 }
 
@@ -173,7 +173,7 @@ export function fontFamily( $validity, $value, $setting, $control ) {
  * @param {WP_Customize_Control} $control  Control instance.
  * @return {WP_Error}
  */
-export function checkbox( $validity={}, $value, $setting, $control ) {
+export function checkbox( $validity, $value, $setting, $control ) {
   if ( $value != 1 && $value != 0 ) {
     $validity = $control._addError( $validity, 'vCheckbox' );
   }
@@ -191,7 +191,7 @@ export function checkbox( $validity={}, $value, $setting, $control ) {
  * @param {WP_Customize_Control} $control  Control instance.
  * @return {WP_Error}
  */
-export function tags( $validity={}, $value, $setting, $control ) {
+export function tags( $validity, $value, $setting, $control ) {
   const {params} = $control;
 
   if ( !_.isString( $value ) ) {
@@ -224,7 +224,7 @@ export function tags( $validity={}, $value, $setting, $control ) {
  * @param {WP_Customize_Control} $control  Control instance.
  * @return {WP_Error}
  */
-export function text( $validity={}, $value, $setting, $control ) {
+export function text( $validity, $value, $setting, $control ) {
   const $attrs = $control.params['attrs'] || {};
   const $type = $attrs.type || 'text';
 
@@ -256,13 +256,13 @@ export function text( $validity={}, $value, $setting, $control ) {
 
   // html must be escaped
   if ( $control.params.html === 'escape' ) {
-    // if ( Helper.hasHTML( $value ) ) {
-    //   $validity = $control._addWarning( $validity, 'vTextEscaped' ); // @@todo \\
-    // }
+    if ( Helper.hasHTML( $value ) ) {
+      $validity = $control._addWarning( $validity, 'vTextEscaped' ); // @@todo \\
+    }
   }
   // html is dangerously completely allowed
   else if ( $control.params.html === 'dangerous' ) {
-    // $validity = $control._addWarning( $validity, 'vTextDangerousHtml' ); // @@todo \\
+    $validity = $control._addWarning( $validity, 'vTextDangerousHtml' ); // @@todo \\
   }
   // html is not allowed at all
   else if ( ! $control.params.html ) {
@@ -296,7 +296,7 @@ export function text( $validity={}, $value, $setting, $control ) {
  * @param {WP_Customize_Control} $control  Control instance.
  * @return {WP_Error}
  */
-export function number( $validity={}, $value, $setting, $control ) {
+export function number( $validity, $value, $setting, $control ) {
   const $attrs = $control.params.attrs || {};
 
   // coerce to number
@@ -375,7 +375,7 @@ export function sizeUnit( $validity, $unit, $setting, $control ) {
  * @param {WP_Customize_Control} $control  Control instance.
  * @return {WP_Error}
  */
-export function slider( $validity={}, $value, $setting, $control ) {
+export function slider( $validity, $value, $setting, $control ) {
   const $number = Helper.extractNumber( $value );
   const $unit = Helper.extractSizeUnit( $value );
 
@@ -397,7 +397,7 @@ export function slider( $validity={}, $value, $setting, $control ) {
  * @param {WP_Customize_Control} $control  Control instance.
  * @return {WP_Error}
  */
-export function color( $validity={}, $value, $setting, $control ) {
+export function color( $validity, $value, $setting, $control ) {
   const params = $control.params;
 
   if (!_.isString($value)) {

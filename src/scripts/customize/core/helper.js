@@ -8,7 +8,6 @@
 import is_int from 'locutus/php/var/is_int';
 import is_float from 'locutus/php/var/is_float';
 import is_numeric from 'locutus/php/var/is_numeric';
-import Regexes from './regexes';
 /* global tinycolor */
 
 /**

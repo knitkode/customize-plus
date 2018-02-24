@@ -39,8 +39,16 @@
  */
 
 /**
+ * A $validity notification representation
+ * @typedef {Object.<string, string>} ValidityNotification
+ * @property {string} code
+ * @property {string} type
+ * @property {string} msg
+ */
+
+/**
  * Shim type for WordPress `WP_Error`
- * @typedef {Object.<string, string>} WP_Error
+ * @typedef {Array.<ValidityNotification>} WP_Error
  */
 
 /**

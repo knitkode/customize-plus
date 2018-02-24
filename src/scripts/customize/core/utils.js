@@ -3,13 +3,11 @@
  * equivalent in `class-helper.php`
  *
  * @module Utils
- * @requires Regexes
  */
 import document from 'document';
 import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi, body } from './globals';
-import Regexes from './regexes';
 
 /**
  * Customize Plus base url

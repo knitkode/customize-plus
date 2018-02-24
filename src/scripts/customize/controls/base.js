@@ -363,7 +363,7 @@ class Base extends wpApi.Control {
    * @return {string} The value validated or the last setting value.
    */
   _validate (value) {
-    let $validity = {};
+    let $validity = [];
 
     // immediately check a required value validity
     $validity = Validate.required($validity, value, this.setting, this);
@@ -378,7 +378,7 @@ class Base extends wpApi.Control {
     this._manageValidityNotifications($validity);
 
     // if there are no errors return the given new value
-    if (!_.keys($validity).length) {
+    if (!$validity.length) {
       return value;
     }
 
@@ -394,41 +394,80 @@ class Base extends wpApi.Control {
    * @memberof! controls.Base#
    * @access package
    * @abstract
-   * @param  {object<object<string,string>>} $validity
+   * @param  {WP_Error} $validity
    */
   _manageValidityNotifications ($validity) {
     const notifications = this.setting.notifications.get();
-    let currentNotificationCodes = [];
+    const newCodes = _.pluck($validity, 'code');
+    let currentCodes = [];
 
     // flag used somewhere else (see below)
-    this._currentValueHasError = !!_.keys($validity).length;
+    this._currentValueHasError = !!$validity.length;
 
     for (let i = 0; i < notifications.length; i++) {
       let code = notifications[i]['code'];
-      currentNotificationCodes.push(code);
+      currentCodes.push(code);
       // if an existing notification is now valid remove it
-      if (!$validity[code]) {
+      if (newCodes.indexOf(code) === -1) {
         this.setting.notifications.remove(code);
       }
     }
 
-    for (let code in $validity) {
-      if ($validity.hasOwnProperty(code)) {
-        // if the notification is not there already add it
-        if (currentNotificationCodes.indexOf(code) === -1) {
+    for (let j = 0; j < $validity.length; j++) {
+      let {code, type, msg} = $validity[j];
 
-          this.setting.notifications.add(new Notification(
-            code, { message: $validity[code] || api.l10n['vInvalid'] }
-          ));
-        }
+      // if the notification is not there already add it
+      if (currentCodes.indexOf(code) === -1) {
+        this.setting.notifications.add(
+          new Notification(code, {
+            type: type,
+            message: msg || api.l10n['vInvalid'],
+          }
+        ));
       }
     }
   }
 
   /**
+   * Add validity notitification
+   *
+   * @see  PHP KKcp_Customize_Control_Base->add_error()
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access package
+   * @param {string}            $type
+   * @param {WP_Error}          $validity
+   * @param {string}            $msg_id
+   * @param {mixed|array|null}  $msg_arguments
+   * @return {WP_Error}
+   */
+  _addValidityNotification ( $type, $validity, $msg_id, $msg_arguments ) {
+    let $msg = this._l10n( $msg_id );
+
+    // if there is an array of message arguments
+    if ( _.isArray( $msg_arguments ) ) {
+      $msg = vsprintf( $msg, $msg_arguments );
+    }
+    // if there is just one message argument
+    else if ( $msg_arguments ) {
+      $msg = sprintf( $msg, $msg_arguments );
+    }
+    // if it is a simple string message leave it as it is
+
+    $validity.push({
+      code: $msg_id,
+      type: $type,
+      msg: $msg
+    });
+
+    return $validity;
+  }
+
+  /**
    * Add error
    *
-   * Shortcut to manage the $validity object during validation
+   * Shortcut to manage $validity during validation
    *
    * @see  PHP KKcp_Customize_Control_Base->add_error()
    * @since 1.0.0
@@ -437,24 +476,47 @@ class Base extends wpApi.Control {
    * @access package
    * @param {WP_Error}          $validity
    * @param {string}            $msg_id
-   * @param {mixed|array|null}   $msg_arguments
+   * @param {mixed|array|null}  $msg_arguments
    * @return {WP_Error}
    */
   _addError ( $validity, $msg_id, $msg_arguments ) {
-    const $msg = this._l10n( $msg_id );
+    return this._addValidityNotification( 'error', $validity, $msg_id, $msg_arguments );
+  }
 
-    // if there is an array of message arguments
-    if ( _.isArray( $msg_arguments ) ) {
-      $validity[$msg_id] = vsprintf( $msg, $msg_arguments );
-    }
-    // if there is just one message argument
-    else if ( $msg_arguments ) {
-      $validity[$msg_id] = sprintf( $msg, $msg_arguments );
-    // if it is a simple string message
-    } else {
-      $validity[$msg_id] = $msg;
-    }
-    return $validity;
+  /**
+   * Add warning
+   *
+   * Shortcut to manage $validity during validation
+   *
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access package
+   * @param {WP_Error}          $validity
+   * @param {string}            $msg_id
+   * @param {mixed|array|null}  $msg_arguments
+   * @return {WP_Error}
+   */
+  _addWarning ( $validity, $msg_id, $msg_arguments ) {
+    return this._addValidityNotification( 'warning', $validity, $msg_id, $msg_arguments );
+  }
+
+  /**
+   * Add info
+   *
+   * Shortcut to manage $validity during validation
+   *
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @access package
+   * @param {WP_Error}          $validity
+   * @param {string}            $msg_id
+   * @param {mixed|array|null}  $msg_arguments
+   * @return {WP_Error}
+   */
+  _addInfo ( $validity, $msg_id, $msg_arguments ) {
+    return this._addValidityNotification( 'info', $validity, $msg_id, $msg_arguments );
   }
 
   /**
@@ -465,11 +527,14 @@ class Base extends wpApi.Control {
    * @memberof! controls.Base#
    * @access public
    * @abstract
-   * @param  {string} value
-   * @return {string} The value validated
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
    */
-  validate (value) {
-    return value;
+  validate ( $validity=[], $value, $setting, $control ) {
+    return $validity;
   }
 
   /**
@@ -480,24 +545,15 @@ class Base extends wpApi.Control {
    * @memberof! controls.Base#
    * @access public
    * @abstract
-   * @param  {string} value
-   * @return {string} The value sanitized
+   *
+   * @param {string}               $value   The value to sanitize.
+   * @param {WP_Customize_Setting} $setting Setting instance.
+   * @param {WP_Customize_Control} $control Control instance.
+   * @return {string|null} The sanitized value.
    */
-  sanitize (value) {
-    return value;
+  sanitize ( $value, $setting, $control ) {
+    return $value;
   }
-
-  /**
-   * Sync UI with value coming from API, a programmatic change like a reset.
-   *
-   * @since 1.0.0
-   *
-   * @memberof! controls.Base#
-   * @access protected
-   * @abstract
-   * @param {string} value The new setting value.
-   */
-  componentDidUpdate (value) {}
 
   /**
    * Template
@@ -651,6 +707,22 @@ class Base extends wpApi.Control {
   }
 
   /**
+   * Destroy
+   *
+   * Unmounts the component and remove also the `<li>` container.
+   *
+   * @since 1.1.0
+   *
+   * @memberof! controls.Base#
+   * @alias controls.Base._unmount
+   * @access public
+   */
+  destroy () {
+    this._unmount(true);
+    this._container.parentNode.removeChild(this._container);
+  }
+
+  /**
    * Should component update (React like)
    *
    * @see https://reactjs.org/docs/react-component.html#shouldcomponentupdate
@@ -659,24 +731,28 @@ class Base extends wpApi.Control {
    * @memberof! controls.Base#
    * @access protected
    * @abstract
+   * @param {mixed} $value The new setting value
    * @return {boolean}
    */
-  shouldComponentUpdate () {
+  shouldComponentUpdate ($value) {
     return true;
   }
 
   /**
    * Component did update (React like)
    *
-   * @see  https://reactjs.org/docs/react-component.html#componentdidupdate
-   * @since 1.1.0
+   * This is usually called by a programmatic change like a reset of the control
+   * default setting value.
    *
-   * @alias controls.Base.ready
+   * @see https://reactjs.org/docs/react-component.html#componentdidupdate
+   * @since 1.0.0
+   *
    * @memberof! controls.Base#
    * @access protected
    * @abstract
+   * @param {mixed} $value The new setting value
    */
-  componentDidUpdate () {}
+  componentDidUpdate ($value) {}
 
   /**
    * Component did mount (React like)
@@ -703,7 +779,7 @@ class Base extends wpApi.Control {
   componentWillUnmount () {}
 
   /**
-   * Unmount (React like)
+   * Unmount (React current substitute)
    *
    * Removes the DOM of the control. In case the DOM store is empty (the first
    * time this method get called) it fills it. This could removed once React is
@@ -713,8 +789,10 @@ class Base extends wpApi.Control {
    *
    * @memberof! controls.Base#
    * @access package
+   *
+   * @param {boolean} force
    */
-  _unmount () {
+  _unmount (force) {
     /* jshint funcscope: true */
     // if (DEBUG) var t = performance.now();
 
@@ -733,7 +811,7 @@ class Base extends wpApi.Control {
     // the slide out animation of the section doesn't freeze
     _.defer(() => {
       // due to the timeout we need to be sure that the section is not expanded
-      if (!wpApi.section(this.section.get()).expanded.get()) {
+      if (force || !wpApi.section(this.section.get()).expanded.get()) {
 
         /* jshint funcscope: true */
         if (DEBUG.performances) var t = performance.now();
@@ -758,7 +836,7 @@ class Base extends wpApi.Control {
   }
 
   /**
-   * Mount (React like)
+   * Mount (React current substitute)
    *
    * The first time renders from the js template, afterward retrieve the DOM
    * string from the `template` param store. After the template has been
@@ -781,14 +859,14 @@ class Base extends wpApi.Control {
     if (!this.params.content) {
       this.renderContent();
 
-      if (DEBUG.performances) console.log('%c inflate DOM of ' + this.params.type +
+      if (DEBUG.performances) console.log('%c mount DOM of ' + this.params.type +
         ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
     } else {
       if (!this.rendered) {
         this._container.innerHTML = this.params.content;
         this._rerenderNotifications();
 
-        if (DEBUG.performances) console.log('%c inflate DOM of ' + this.params.type +
+        if (DEBUG.performances) console.log('%c mount DOM of ' + this.params.type +
           ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7');
       }
     }
@@ -799,7 +877,7 @@ class Base extends wpApi.Control {
     }
     this._extras();
 
-    // if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
+    // if (DEBUG.performances) console.log('%c mount of ' + this.params.type +
     //   ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
   }
 

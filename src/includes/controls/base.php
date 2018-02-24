@@ -394,7 +394,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 *
 	 * Shortcut to manage the $validity object during validation
 	 *
-	 * @see  JS kkcp.controls.Base.addError
+	 * @see  JS kkcp.controls.Base._addError
 	 * @since  1.0.0
 	 * @param WP_Error					$validity
 	 * @param string						$msg_id
@@ -411,8 +411,9 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		// if there is just one message argument
 		else if ( ! empty( $msg_arguments ) ) {
 			$validity->add( $msg_id, sprintf( $msg, $msg_arguments ) );
-		// if it is a simple string message
-		} else {
+		}
+		// if it is a simple string message leave it as it is
+		else {
 			$validity->add( $msg_id, $msg );
 		}
 		return $validity;

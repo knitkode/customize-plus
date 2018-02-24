@@ -156,7 +156,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			'underscore',
 			'jquery',
 			'jquery-ui-tooltip',
-			'jquery-ui-slider'
+			// 'jquery-ui-slider'
 		);
 
 		/**
@@ -167,7 +167,6 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		public function __construct() {
 			add_action( 'customize_register', array( __CLASS__, 'register_custom_classes' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_css_admin' ) );
-			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_notifications_tpls' ) );
 			add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'enqueue_js_admin' ) );
 			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_view_loader' ) );
 			add_action( 'customize_controls_enqueue_scripts', array( __CLASS__, 'add_controls_js_vars' ) );
@@ -255,6 +254,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 *               hook.
 		 */
 		public static function get_js_settings() {
+			// @premium hook
 			if ( class_exists( 'KKcpp' ) ) {
 				$required = KKcpp::get_options();
 			} else {
@@ -349,26 +349,6 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		public static function get_view_loader() { // @@wptight-layout \\
 			?>
 			//=include '../views/customize-loader.php'
-			<?php
-		}
-
-		/**
-		 * Get custom notification templates
-		 *
-		 * For now it's the same as the WordPress default one plus markdown support
-		 *
-		 * @since  1.0.0
-		 */
-		public static function get_notifications_tpls() {
-			?>
-			<script type="text/html" id="tmpl-customize-notification-kkcp">
-				<li class="notice notice-{{ data.type || 'info' }} {{ data.alt ? 'notice-alt' : '' }} {{ data.dismissible ? 'is-dismissible' : '' }} {{ data.containerClasses || '' }} kkcp-notification" data-code="{{ data.code }}" data-type="{{ data.type }}">
-					<# if (marked) { #>{{{ marked(data.message || data.code) }}}<# } else { #><div class="notification-message">{{{ data.message || data.code }}}</div><# } #>
-					<# if ( data.dismissible ) { #>
-						<button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php esc_html( 'Dismiss' ) ?></span></button>
-					<# } #>
-				</li>
-			</script>
 			<?php
 		}
 
