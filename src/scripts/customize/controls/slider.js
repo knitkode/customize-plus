@@ -64,7 +64,7 @@ class Slider extends Base {
   componentDidMount () {
     this._setDOMrefs();
     this._initSliderAndBindInputs();
-    this._updateUIcustomControl(this.setting());
+    this._updateUI(this.setting());
   }
 
   /**
@@ -76,11 +76,8 @@ class Slider extends Base {
    */
   _setDOMrefs () {
     const container = this._container;
-    /** @type {HTMLElement} */
     this.__inputNumber = container.getElementsByClassName('kkcp-slider-number')[0];
-    /** @type {JQuery} */
     this.__$inputUnits = $(container.getElementsByClassName('kkcp-unit'));
-    /** @type {JQuery} */
     this.__$inputSlider = $(container.getElementsByClassName('kkcp-slider')[0]);
   }
 
@@ -214,7 +211,7 @@ class Slider extends Base {
    * @param {?string} value Optional, the value from where to extract number and unit,
    *                        uses `this.setting()` if a `null` value is passed.
    */
-  _updateUIcustomControl (value) {
+  _updateUI (value) {
     const params = this.params;
     const number = this._extractFirstNumber(value);
     const unit = this._extractFirstUnit(value);
@@ -247,7 +244,7 @@ class Slider extends Base {
    */
   _setPartialValue (value, from) {
     if (from === 'API') {
-      this._updateUIcustomControl(value);
+      this._updateUI(value);
     } else {
       this.setting.set(this._getValueFromUI(value));
     }

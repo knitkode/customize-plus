@@ -70,7 +70,7 @@ class FontFamily extends BaseSet {
    * @override
    */
   componentDidUpdate ($value) {
-    this._initUI(this.softenize($value));
+    this._updateUI($value);
   }
 
   /**
@@ -78,13 +78,13 @@ class FontFamily extends BaseSet {
    */
   componentDidMount () {
     this.__input = this._container.getElementsByClassName('kkcp-select')[0];
-    this._initUI(this.setting());
+    this._updateUI(this.setting());
   }
 
   /**
    * @override
    */
-  _initUI (value) {
+  _updateUI (value) {
     // this is due to a bug, we should use:
     // this.__input.selectize.setValue(value, true);
     // @see https://github.com/brianreavis/selectize.js/issues/568

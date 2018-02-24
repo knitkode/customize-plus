@@ -47,7 +47,7 @@ class Multicheck extends BaseChoices {
     this._updateUIcheckboxes($value);
 
     if (this.params.sortable) {
-      this._updateUIreorder();
+      this._updateUIreorder($value);
     }
   }
 
@@ -117,18 +117,16 @@ class Multicheck extends BaseChoices {
   /**
    * @override
    */
-  _updateUIreorder () {
+  _updateUIreorder ($value) {
     // sort first the checked ones
     Sortable.prototype._updateUI.apply(this);
 
     // then sort the unchecked ones
-    const value = this.setting();
-
     for (let itemValueAsKey in this.params.choices) {
       let item = this.__itemsMap[itemValueAsKey];
 
       if (item) {
-        if (value.indexOf(itemValueAsKey) === -1) {
+        if ($value.indexOf(itemValueAsKey) === -1) {
           let itemSortableDOM = item._sortable;
           itemSortableDOM.parentNode.removeChild(itemSortableDOM);
           this._container.appendChild(itemSortableDOM);
@@ -147,9 +145,9 @@ class Multicheck extends BaseChoices {
    * @access protected
    *
    * @param  {mixed}   $value
-   * @param  {boolean} bindAsWell Bind on change?
+   * @param  {boolean} bind
    */
-  _updateUIcheckboxes ($value, bindAsWell) {
+  _updateUIcheckboxes ($value, bind) {
     if (!_.isArray($value)) {
       return logError('controls.Multicheck->_updateUIcheckboxes', `setting.value must be an array`);
     }
@@ -157,7 +155,7 @@ class Multicheck extends BaseChoices {
     for (let i = 0, l = this.__inputs.length; i < l; i++) {
       let input = this.__inputs[i];
       input.checked = $value.indexOf(input.value) !== -1;
-      if (bindAsWell) {
+      if (bind) {
         input.onchange = () => {
           this.setting.set(this._getValueFromUI());
         };

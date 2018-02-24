@@ -57,28 +57,14 @@ class Textarea extends Text {
    * @override
    */
   shouldComponentUpdate ($value) {
-    let $uiValue;
-
-    if (this.params['wp_editor']) {
-      wpEditorInstance = window.tinyMCE.get(this._wpEditorID);
-      $uiValue = wpEditorInstance.getContent();
-      // $uiValue = window.wp.editor.getContent(this._wpEditorID);;
-    } else {
-      $uiValue = this.__textarea.value;
-    }
-    return $value && $uiValue !== $value;
+    return $value !== this._getValueFromUI();
   }
 
   /**
    * @override
    */
   componentDidUpdate ($value) {
-    if (this.params['wp_editor']) {
-      const wpEditorInstance = window.tinyMCE.get(this._wpEditorID);
-      wpEditorInstance.setContent($value);
-    } else {
-      this.__textarea.value = $value;
-    }
+    this._updateUI($value);
   }
 
   /**
@@ -91,7 +77,48 @@ class Textarea extends Text {
     if (this.params['wp_editor'] && !this._wpEditorIsActive) {
       this._initWpEditor();
     } else {
-      this._syncAndListen();
+      const self = this;
+
+      this._updateUI(self.setting());
+
+      $(self.__textarea).on('change keyup paste', function () {
+        self.setting.set(this.value);
+      });
+    }
+  }
+
+  /**
+   * Get value from UI
+   *
+   * @since   1.1.0
+   * @memberof! controls.Textarea#
+   * @access protected
+   */
+  _getValueFromUI () {
+    if (this.params['wp_editor']) {
+      wpEditorInstance = window.tinyMCE.get(this._wpEditorID);
+      return wpEditorInstance.getContent();
+      // returnwindow.wp.editor.getContent(this._wpEditorID);;
+    } else {
+      return this.__textarea.value;
+    }
+  }
+
+  /**
+   * Update UI
+   *
+   * @since   1.1.0
+   * @memberof! controls.Textarea#
+   * @access protected
+   *
+   * @param {$value}
+   */
+  _updateUI ($value) {
+    if (this.params['wp_editor']) {
+      const wpEditorInstance = window.tinyMCE.get(this._wpEditorID);
+      wpEditorInstance.setContent($value);
+    } else {
+      this.__textarea.value = $value;
     }
   }
 
@@ -107,22 +134,6 @@ class Textarea extends Text {
    */
   _getWpEditorId () {
     return `${this.id.replace(/-/g, '_')}__textarea`;
-  }
-
-  /**
-   * Sync textarea and listen for changes
-   *
-   * @since   1.0.0
-   * @memberof! controls.Textarea#
-   * @access protected
-   */
-  _syncAndListen () {
-    const self = this;
-    $(self.__textarea)
-      .val(self.setting())
-      .on('change keyup paste', function () {
-        self.setting.set(this.value);
-      });
   }
 
   /**

@@ -34,49 +34,7 @@ class Tags extends Base {
   /**
    * @override
    */
-  componentWillUnmount () {
-    this.__input.selectize.destroy();
-  }
-
-  /**
-   * @override
-   */
-  shouldComponentUpdate ($value) {
-    return this.__input.selectize.getValue() !== $value;
-  }
-
-  /**
-   * @override
-   */
-  componentDidUpdate ($value) {
-    // this is due to a bug, we should use:
-    // selectize.setValue(value, true);
-    // @see https://github.com/brianreavis/selectize.js/issues/568
-    // instead here first we have to destroy thene to reinitialize, this
-    // happens only through a programmatic change such as a reset action
-    this.__input.selectize.destroy();
-    this._initUI($value);
-  }
-
-  /**
-   * @override
-   */
-  componentDidMount () {
-    this.__input = this._container.getElementsByTagName('input')[0];
-
-    this._initUI(this.setting());
-  }
-
-  /**
-   * Init select plugin on text input
-   *
-   * @since   1.0.0
-   * @memberof! controls.Tags#
-   * @access protected
-   *
-   * @param {string} value
-   */
-  _initUI (value) {
+  componentInit () {
     const attrs = this.params['attrs'] || {};
 
     let pluginOptions = {
@@ -106,9 +64,58 @@ class Tags extends Base {
       pluginOptions.plugins.push('restore_on_backspace')
     }
 
-    this.__input.value = value;
+    this._pluginOptions = pluginOptions;
+  }
 
-    $(this.__input).selectize(pluginOptions);
+  /**
+   * @override
+   */
+  componentWillUnmount () {
+    this.__input.selectize.destroy();
+  }
+
+  /**
+   * @override
+   */
+  shouldComponentUpdate ($value) {
+    return this.__input.selectize.getValue() !== $value;
+  }
+
+  /**
+   * @override
+   */
+  componentDidUpdate ($value) {
+    this._updateUI($value);
+  }
+
+  /**
+   * @override
+   */
+  componentDidMount () {
+    this.__input = this._container.getElementsByTagName('input')[0];
+
+    this._updateUI(this.setting());
+  }
+
+  /**
+   * Update UI
+   *
+   * @since   1.0.0
+   * @memberof! controls.Tags#
+   * @access protected
+   *
+   * @param {string} $value
+   */
+  _updateUI ($value) {
+    // here we should not destroy and recreate, but this is a plugin bug:
+    // @see https://github.com/brianreavis/selectize.js/issues/568
+    if (this.__input.selectize) {
+      this.__input.selectize.destroy();
+    }
+    this.__input.value = $value;
+    $(this.__input).selectize(this._pluginOptions);
+
+    // this.__input.selectize.setValue($value, true);
   }
 
   /**
