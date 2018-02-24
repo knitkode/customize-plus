@@ -7,15 +7,15 @@ Enhance and extend the WordPress Customize in your themes.
 **Tags:** [wordpress](https://wordpress.org/plugins/tags/wordpress), [customizer](https://wordpress.org/plugins/tags/customizer), [options framework](https://wordpress.org/plugins/tags/options-framework), [theme](https://wordpress.org/plugins/tags/theme)  
 **Requires at least:** 4.9.4  
 **Tested up to:** 4.9.4  
-**Stable tag:** 1.0.22  
-**License:** [GPLv3](http://www.gnu.org/licenses/gpl-3.0.html)  
+**Stable tag:** 1.1.1  
+**License:** [GPLv3+](http://www.gnu.org/licenses/gpl-3.0.html)  
 **Requires PHP:** 5.2.4  
 **Donate link:** https://liberapay.com/knitkode/donate  
 
 ## Description ##
 
-[![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)]()
-[![GitHub release](https://img.shields.io/github/release/knitkode/customize-plus.svg)]()
+[![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)](https://wordpress.org/plugins/customize-plus)
+[![GitHub release](https://img.shields.io/github/release/knitkode/customize-plus.svg)](https://github.com/knitkode/customize-plus/releases/latest)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/facc393563dd4ef49ff3b2dea2bd2f7c)](https://www.codacy.com/app/knitkode/customize-plus?utm_source=customize-plus&utm_medium=github&utm_content=badge_codacy&utm_campaign=readme)
 
 Customize Plus brings powerful custom controls fully integrated in the WordPress Customize. The code, the admin UI and the API totally looks like WordPress, as it should be. Customize Plus extends the WordPress API to create all the controls you need leveraging the JavaScript API. All the `theme_mods` or `options` managed by Customize Plus controls are automatically validated and sanitized. You do not even need to define the fallback value when retrieving them. End users will also benefit from this plugin, for instance they will be able to separately reset the control values of each control to the initial session or factory value. This and many other features are extended in [Customize Plus Premium](https://knitkode.com/products/customize-plus-premium/) enriching the Customize experience not only for developers but also for users. Developers will also find useful the plugin [Customize Plus Builder](https://knitkode.com/products/customize-plus-builder/) to further improve their development experience.
@@ -83,7 +83,7 @@ Log into WordPress admin and activate the ‘Loco Translate’ plugin through th
 Go to Loco Translate > Home in the left-hand menu to start translating
 
 ### Theme integration ###
-Checkout the [documentation here](https://knitkode.com/docs/customize-plus/getting-started/integration?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme). A tool to facilitate this task is [Customize Plus Builder](https://knitkode.com/products/customize-plus-builder?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme), you can [try it here](https://knitkode.com/customize-plus-builder).
+Checkout the [documentation here](https://knitkode.com/docs/customize-plus/getting-started/integration?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme). A tool to facilitate this task is [Customize Plus Builder](https://knitkode.com/products/customize-plus-builder?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme), you can [try it here](https://knitkode.com/customize-plus-builder?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme).
 
 ### Translations ###
 * English - default
@@ -98,10 +98,19 @@ Checkout the [documentation here](https://knitkode.com/docs/customize-plus/getti
 Documentation can be found at [knitkode.com/docs/customize-plus](https://knitkode.com/docs/customize-plus?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=faq&utm_campaign=readme)
 
 ### How do I get help? ###
-Help is provided via the plugin support forum only. Please visit the [support page](https://knitkode.com/support) to see other options.
+Help is provided via the plugin support forum only. Please visit the [support page](https://knitkode.com/support?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=faq&utm_campaign=readme) to see other options.
+
+### Can I see a quick demo? ###
+Yes, try out the always up to date [official demo theme](https://github.com/knitkode/customize-plus-demo).
 
 
 ## Changelog ##
+
+### 1.1.1: 24/02/2017 ###
+* Bugfixing
+* Moved control templates to JavaScript control's classes
+* Control's classes use now a React ready methods naming and lifecycle style
+* Support warnings in $validity notifications
 
 ### 1.0.21: 22/02/2017 ###
 * Fix 'dancing char' on Base Input Control

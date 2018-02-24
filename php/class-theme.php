@@ -13,7 +13,7 @@ if ( ! class_exists( 'KKcp_Theme' ) && class_exists( 'KKcp_Singleton' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
-	 * @version    Release: 1.0.22
+	 * @version    Release: 1.1.1
 	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp_Theme extends KKcp_Singleton {

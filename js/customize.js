@@ -9772,11 +9772,11 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
 
 /*!
- * Customize Plus v1.0.22 (https://knitkode.com/products/customize-plus)
+ * Customize Plus v1.1.1 (https://knitkode.com/products/customize-plus)
  * Enhance and extend the WordPress Customize in your themes.
  * Copyright (c) 2014-2018 KnitKode <dev@knitkode.com> (https://knitkode.com/)
- * @license SEE LICENSE IN license.txt (Last change on: 22-1-2018)
- */(function (window$1,document$1,$$1,_$1,wp$1,pluginApi,marked,hljs,Modernizr) {
+ * @license SEE LICENSE IN license.txt (Last change on: 24-1-2018)
+ */(function (window$1,document$1,$$1,_$1,wp,pluginApi,marked,hljs,Modernizr) {
   'use strict';
 
   var DEBUG = !!window.kkcp.DEBUG;
@@ -9822,8 +9822,16 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    */
 
   /**
+   * A $validity notification representation
+   * @typedef {Object.<string, string>} ValidityNotification
+   * @property {string} code
+   * @property {string} type
+   * @property {string} msg
+   */
+
+  /**
    * Shim type for WordPress `WP_Error`
-   * @typedef {Object.<string, string>} WP_Error
+   * @typedef {Array.<ValidityNotification>} WP_Error
    */
 
   /**
@@ -9933,7 +9941,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @access package
    * @type {Object}
    */
-  var wpApi = wp$1.customize;
+  var wpApi = wp.customize;
 
   /**
    * Reuse the same jQuery wrapped `window` object
@@ -10003,7 +10011,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   _readyDOM(function () { $readyDOM.resolve(); });
 
   // be sure to have what we need
-  if (!wp$1) {
+  if (!wp) {
     throw new Error('Missing crucial object `wp`');
     $readyWP.reject();
     $readyDOM.reject();
@@ -10090,98 +10098,31 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   })();
 
   /**
-   * @fileOverview A wrapper to contain all regexes used.
-   * It might be that we need a regex that matches a list of words, in that case
-   * we might want to define the words in an array (coming from php perhaps?).
-   * So for array to regex conversion do:
-   * ```
-   * new RegExp(MY_VAR.join('|'), 'g')`
-   * ```
-   * See {@link http://stackoverflow.com/q/28280920/1938970 stackoverflow}.
-   *
-   * @module Regexes
-   */
-  /**
-   * Whitespaces global match
-   *
-   * To clean user input (most often when writing custom expressions)
-   * so that it would later on be more easily parsable by our validation
-   * regexes. Use this as follow: `string.replace(Regexes._whitespaces, '')`.
-   *
-   * {@link http://stackoverflow.com/a/5963202/1938970}
-   *
-   * @const
-   * @type {RegExp}
-   */
-  var _whitespaces = /\s+/g;
-
-  /**
-   * Extract unit, it returns the first matched, so the units are sorted by
-   * popularity (approximately).
-   *
-   * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
-   * @const
-   * @type {RegExp}
-   */
-  var _extractUnit = /(px|%|em|rem|vh|vw|vmin|vmax|cm|mm|in|pt|pc|ch|ex)/;
-
-  /**
-   * Extract number from string (both integers or float)
-   *
-   * @see http://stackoverflow.com/a/17885985/1938970
-   * @const
-   * @type {RegExp}
-   */
-  var _extractNumber = /(\+|-)?((\d+(\.\d+)?)|(\.\d+))/;
-
-  /**
-   * Detects if the shape of the string is that of a setting saved or to be
-   * saved through the options API, e.g. `mytheme[a_setting_id]``
-   *
-   * @type {RegExp}
-   */
-  var _optionsApi = new RegExp(api$1.constants['OPTIONS_PREFIX'] + '\\[.*\\]');
-
-  /**
-   * Helps to understand if a url is absolute or relative
-   *
-   * @const
-   * @type {RegExp}
-   */
-  var _absoluteUrl = /^(?:[a-z]+:)?\/\//i;
-
-  /**
-   * Multiple slashes
-   *
-   * @const
-   * @type {RegExp}
-   */
-  var _multipleSlashes = /[a-z-A-Z-0-9_]{1}(\/\/+)/g;
-
-  /**
-   * @alias core.Regexes
-   * @description  Exposed module <a href="module-Regexes.html">Regexes</a>
-   * @access package
-   */
-  var Regexes = api$1.core.Regexes = {
-    _whitespaces: _whitespaces,
-    _extractUnit: _extractUnit,
-    _extractNumber: _extractNumber,
-    _optionsApi: _optionsApi,
-    _absoluteUrl: _absoluteUrl,
-    _multipleSlashes: _multipleSlashes,
-  }
-
-  /**
    * @fileOverview An helper class containing helper methods. This has its PHP
    * equivalent in `class-helper.php`
    *
    * @module Utils
-   * @requires Regexes
    */
+  /**
+   * Customize Plus base url
+   *
+   * @since  1.1.0
+   * @type {string}
+   */
+  var _CP_URL = api$1.constants['CP_URL'];
+
+  /**
+   * Customize Plus images url
+   *
+   * @since  1.1.0
+   * @type {string}
+   */
+  var _CP_URL_IMAGES = _CP_URL + "images/";
+
   /**
    * Images base url
    *
+   * @since  1.0.0
    * @type {string}
    */
   var _IMAGES_BASE_URL = api$1.constants['IMAGES_BASE_URL'];
@@ -10189,6 +10130,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   /**
    * Docs base url
    *
+   * @since  1.0.0
    * @type {string}
    */
   var _DOCS_BASE_URL = api$1.constants['DOCS_BASE_URL'];
@@ -10197,12 +10139,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * Is it an absolute URL?
    *
    * @see {@link http://stackoverflow.com/a/19709846/1938970}
+   * @since  1.0.0
    *
    * @param  {string}  url The URL to test
    * @return {boolean}     Whether is absolute or relative
    */
   function _isAbsoluteUrl (url) {
-    return Regexes._absoluteUrl.test(url);
+    return /^(?:[a-z]+:)?\/\//i._absoluteUrl.test(url);
   }
 
   /**
@@ -10210,11 +10153,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    *
    * Strips possible multiple slashes caused by the string concatenation or dev errors
    *
+   * @since  1.0.0
+   *
    * @param  {string} url
    * @return {string}
    */
   function _cleanUrlFromMultipleSlashes (url) {
-    return url.replace(Regexes._multipleSlashes, '/');
+    return url.replace(/[a-z-A-Z-0-9_]{1}(\/\/+)/g, '/');
   }
 
   /**
@@ -10222,6 +10167,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    *
    * If an absolute URL is passed we just strip multiple slashes,
    * if a relative URL is passed we also prepend the right base url.
+   *
+   * @since  1.0.0
    *
    * @param  {string} url
    * @param  {string} type
@@ -10248,7 +10195,9 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   /**
    * Each control execute callback with control as argument
    *
-   * @param {function} callback
+   * @since  1.0.0
+   *
+   * @param {function(WP_Customize_Control)} callback
    */
   function _eachControl (callback) {
     var wpApiControl = wpApi.control;
@@ -10259,13 +10208,25 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   }
 
   /**
+   * Options API regex
+   *
+   * @since  1.1.0
+   *
+   * @param  {string}  controlId The control id
+   * @return {boolean}
+   */
+  var _optionsApiRegex = new RegExp(api$1.constants['OPTIONS_PREFIX'] + '\\[.*\\]');
+
+  /**
    * Is the control's setting using the `theme_mods` API?
+   *
+   * @since  1.0.0
    *
    * @param  {string}  controlId The control id
    * @return {boolean}
    */
   function _isThemeModsApi (controlId) {
-    return !Regexes._optionsApi.test(controlId);
+    return !_optionsApiRegex.test(controlId);
   }
 
   /**
@@ -10273,17 +10234,20 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * Deduced by checking that the control id is structured as:
    * `themeprefix[setting-id]`
    *
+   * @since  1.0.0
+   *
    * @param  {string}  controlId The control id
    * @return {boolean}
    */
   function _isOptionsApi (controlId) {
-    return Regexes._optionsApi.test(controlId);
+    return _optionsApiRegex.test(controlId);
   }
 
   /**
    * Get stylesheet by Node id
    *
-   * @abstract
+   * @since  1.0.0
+   *
    * @param  {string} nodeId
    * @return {?HTMLElement}
    */
@@ -10303,7 +10267,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   /**
    * Get rules from stylesheet for the given selector
    *
-   * @abstract
+   * @since  1.0.0
+   *
    * @param  {HTMLElement} stylesheet
    * @param  {string} selector
    * @return {string}
@@ -10328,6 +10293,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * Basically it just clean the `rules` string removing the selector and
    * the brackets.
    *
+   * @since  1.0.0
+   *
    * @param  {string} rules
    * @param  {string} selector
    * @return {string}
@@ -10342,6 +10309,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   /**
    * Get image url
    *
+   * @since  1.0.0
+   *
    * @param  {string} url The image URL, relative or absolute
    * @return {string}     The absolute URL of the image
    */
@@ -10352,6 +10321,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   /**
    * Get docs url
    *
+   * @since  1.0.0
+   *
    * @param  {string} url The docs URL, relative or absolute
    * @return {string}     The absolute URL of the docs
    */
@@ -10361,6 +10332,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
   /**
    * Bind a link element or directly link to a specific control to focus
+   *
+   * @since  1.0.0
    *
    * @param  {HTMLElement} linkEl The link DOM element `<a>`
    * @param  {string} controlId   The control id to link to
@@ -10383,13 +10356,15 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   /**
    * Wrap WordPress control focus with some custom stuff
    *
+   * @since  1.0.0
+   *
    * @param {WP_Customize_Control} control
    */
   function focus (control) {
     try {
       // try this so it become possible to use this function even
       // with WordPress native controls which don't have this method
-      control.inflate(true);
+      control._mount(true);
 
       // always disable search, it could be that we click on this
       // link from a search result try/catch because search is not
@@ -10404,11 +10379,54 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   }
 
   /**
+   * Template
+   *
+   * Similar to WordPress one but using a JavaScript string directly instead of
+   * a DOM id to pass the template content.
+   *
+   * @since  1.1.0
+   *
+   * @param  {string} tpl  A template string
+   * @return {function}    A function that lazily-compiles the template requested.
+   */
+  var template = _$1.memoize(function (tpl) {
+    var compiled;
+
+    return function ( data ) {
+      compiled = compiled || _$1.template(tpl,  templateOptions);
+      return compiled( data );
+    };
+  });
+
+  /**
+   * Template options
+   *
+   * Similar to WordPress one but using `{%` instead of `<#` for logic, more like
+   * Jinja or Twig.
+   *
+   * @since  1.1.0
+   * @see  WordPress Core `wp-includes/js/wp-utils.js`.
+   *
+   * @return {Object}
+   */
+  var templateOptions = {
+    // evaluate:    /{%([\s\S]+?)%}/g,
+    evaluate:    /<#([\s\S]+?)#>/g,
+    interpolate: /\{\{\{([\s\S]+?)\}\}\}/g,
+    escape:      /\{\{([^\}]+?)\}\}(?!\})/g,
+    variable:    'data'
+  };
+
+  /**
    * @alias core.Utils
    * @description  Exposed module <a href="module-Utils.html">Utils</a>
    * @access package
+   *
+   * @since  1.0.0
    */
   var Utils = api$1.core.Utils = {
+    _CP_URL: _CP_URL,
+    _CP_URL_IMAGES: _CP_URL_IMAGES,
     _IMAGES_BASE_URL: _IMAGES_BASE_URL,
     _DOCS_BASE_URL: _DOCS_BASE_URL,
     _isAbsoluteUrl: _isAbsoluteUrl,
@@ -10424,6 +10442,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     getDocsUrl: getDocsUrl,
     linkControl: linkControl,
     focus: focus,
+    template: template,
   }
 
   /**
@@ -11696,19 +11715,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
   var isEmail = unwrapExports(isEmail_1);
 
-  var strpos = function strpos(haystack, needle, offset) {
-    //  discuss at: http://locutus.io/php/strpos/
-    // original by: Kevin van Zonneveld (http://kvz.io)
-    // improved by: Onno Marsman (https://twitter.com/onnomarsman)
-    // improved by: Brett Zamir (http://brett-zamir.me)
-    // bugfixed by: Daniel Esteban
-    //   example 1: strpos('Kevin van Zonneveld', 'e', 5)
-    //   returns 1: 14
-
-    var i = (haystack + '').indexOf(needle, offset || 0);
-    return i === -1 ? false : i;
-  };
-
   /**
    * @fileOverview An helper class containing helper methods. This has its PHP
    * equivalent in `class-helper.php`
@@ -11919,49 +11925,43 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   }
 
   /**
-   * Extract number from value, returns 0 otherwise
+   * Extract number (either integers or float)
+   *
+   * @see http://stackoverflow.com/a/17885985/1938970
    *
    * @since  1.0.0
    * @param  {string}         $value         The value from to extract from
-   * @param  {bool|null}      $allowed_float Whether float numbers are allowed
-   * @return {int|float|null} The extracted number or null if the value does not
-   *                          contain any digit.
+   * @return {number|null} The extracted number or null if the value does not
+   *                       contain any digit.
    */
-  function extractNumber( $value, $allowed_float ) {
-    var $number_extracted;
+  function extractNumber( $value ) {
+    var matches = /(\+|-)?((\d+(\.\d+)?)|(\.\d+))/.exec( $value );
 
-    if ( is_int( $value ) || ( is_float( $value ) && $allowed_float ) ) {
-      return $value;
+    if (matches && is_numeric( matches[0] ) ) {
+      return Number( matches[0] );
     }
-    if ( $allowed_float ) {
-      $number_extracted = parseFloat( $value ); // filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-    } else {
-      $number_extracted = parseInt( $value, 10 ); // filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
-    }
-    if ( $number_extracted || 0 === $number_extracted ) {
-      return $number_extracted;
-    }
+
     return null;
   }
 
   /**
-   * Extract unit (like `px`, `em`, `%`, etc.) from an array of allowed units
+   * Extract size unit
+   *
+   * It returns the first matched, so the units are kind of sorted by popularity.
+   * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
    *
    * @since  1.0.0
    * @param  {string}     $value          The value from to extract from
    * @param  {null|array} $allowed_units  An array of allowed units
-   * @return {string}                     The first valid unit found.
+   * @return {string|null}                The first valid unit found.
    */
   function extractSizeUnit( $value, $allowed_units ) {
-    if ( _.isArray( $allowed_units ) ) {
-      for (var i = 0; i < $allowed_units.length; i++) {
-        if ( strpos( $value, $allowed_units[i] ) ) {
-          return $allowed_units[i];
-        }
-      }
-      return $allowed_units[0] || '';
+    var matches = /(px|%|em|rem|vh|vw|vmin|vmax|cm|mm|in|pt|pc|ch|ex)/.exec( $value );
+
+    if (matches && matches[0] ) {
+      return matches[0];
     }
-    return '';
+    return null;
   }
 
   /**
@@ -12097,8 +12097,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {WP_Error}
    */
   function required( $validity, $value, $setting, $control ) {
-    if ( $validity === void 0 ) $validity={};
-
     if ( !$control.params.optional ) {
       if ( Helper.isEmpty( $value ) ) {
         $validity = $control._addError( $validity, 'vRequired' );
@@ -12119,8 +12117,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {WP_Error}
    */
   function singleChoice( $validity, $value, $setting, $control ) {
-    if ( $validity === void 0 ) $validity={};
-
     var _validChoices = $control._validChoices;
     var $choices = _validChoices && _validChoices.length ? _validChoices : $control.params.choices;
 
@@ -12147,7 +12143,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {WP_Error}
    */
   function multipleChoices( $validity, $value, $setting, $control, $check_length ) {
-    if ( $validity === void 0 ) $validity={};
     if ( $check_length === void 0 ) $check_length = false;
 
     var _validChoices = $control._validChoices;
@@ -12196,12 +12191,25 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {WP_Error}
    */
   function oneOrMoreChoices( $validity, $value, $setting, $control ) {
-    if ( $validity === void 0 ) $validity={};
-
     if ( _$1.isString( $value ) ) {
       return singleChoice( $validity, $value, $setting, $control );
     }
     return multipleChoices( $validity, $value, $setting, $control );
+  }
+
+  /**
+   * Validate sortable
+   *
+   * @since 1.1.0
+   *
+   * @param {WP_Error}             $validity
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
+   * @return {WP_Error}
+   */
+  function sortable( $validity, $value, $setting, $control ) {
+    return multipleChoices( $validity, $value, $setting, $control, true );
   }
 
   /**
@@ -12238,8 +12246,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {WP_Error}
    */
   function checkbox( $validity, $value, $setting, $control ) {
-    if ( $validity === void 0 ) $validity={};
-
     if ( $value != 1 && $value != 0 ) {
       $validity = $control._addError( $validity, 'vCheckbox' );
     }
@@ -12258,8 +12264,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {WP_Error}
    */
   function tags( $validity, $value, $setting, $control ) {
-    if ( $validity === void 0 ) $validity={};
-
     var params = $control.params;
 
     if ( !_$1.isString( $value ) ) {
@@ -12293,8 +12297,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {WP_Error}
    */
   function text( $validity, $value, $setting, $control ) {
-    if ( $validity === void 0 ) $validity={};
-
     var $attrs = $control.params['attrs'] || {};
     var $type = $attrs.type || 'text';
 
@@ -12326,13 +12328,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
     // html must be escaped
     if ( $control.params.html === 'escape' ) {
-      // if ( Helper.hasHTML( $value ) ) {
-      //   $validity = $control._addWarning( $validity, 'vTextEscaped' );
-      // }
+      if ( Helper.hasHTML( $value ) ) {
+        $validity = $control._addWarning( $validity, 'vTextEscaped' );
+      }
     }
     // html is dangerously completely allowed
     else if ( $control.params.html === 'dangerous' ) {
-      // $validity = $control._addWarning( $validity, 'vTextDangerousHtml' );
+      $validity = $control._addWarning( $validity, 'vTextDangerousHtml' );
     }
     // html is not allowed at all
     else if ( ! $control.params.html ) {
@@ -12357,8 +12359,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {WP_Error}
    */
   function number( $validity, $value, $setting, $control ) {
-    if ( $validity === void 0 ) $validity={};
-
     var $attrs = $control.params.attrs || {};
 
     // coerce to number
@@ -12402,21 +12402,24 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @since 1.0.0
    *
    * @param {WP_Error}                $validity
-   * @param {mixed}    $unit          The unit to validate.
-   * @param {mixed}    $allowed_units The allowed units
+   * @param {mixed}                $value    The value to validate.
+   * @param {WP_Customize_Setting} $setting  Setting instance.
+   * @param {WP_Customize_Control} $control  Control instance.
    * @return {WP_Error}
    */
-  function sizeUnit( $validity, $unit, $allowed_units ) {
+  function sizeUnit( $validity, $unit, $setting, $control ) {
+    var params = $control.params;
+
     // if it needs a unit and it is missing
-    if ( ! empty( $allowed_units ) && ! $unit ) {
+    if ( ! empty( params['units'] ) && ! $unit ) {
       $validity = $control._addError( $validity, 'vSliderMissingUnit' );
     }
     // if the unit specified is not in the allowed ones
-    else if ( ! empty( $allowed_units ) && $unit && $allowed_units.indexOf( $unit ) === -1 ) {
-      $validity = $control._addError( $validity, 'vSliderInvalidUnit', $unit );
+    else if ( ! empty( params['units'] ) && $unit && params['units'].indexOf( $unit ) === -1 ) {
+      $validity = $control._addError( $validity, 'vSliderUnitNotAllowed', $unit );
     }
     // if a unit is specified but none is allowed
-    else if ( empty( $allowed_units ) && $unit ) {
+    else if ( empty( params['units'] ) && $unit ) {
       $validity = $control._addError( $validity, 'vSliderNoUnit' );
     }
 
@@ -12435,16 +12438,11 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {WP_Error}
    */
   function slider( $validity, $value, $setting, $control ) {
-    if ( $validity === void 0 ) $validity={};
-
-    var params = $control.params;
-    var $attrs = params.attrs || {};
-
-    var $number = Helper.extractNumber( $value, !!$attrs['float'] );
-    var $unit = Helper.extractSizeUnit( $value, params['units'] );
+    var $number = Helper.extractNumber( $value );
+    var $unit = Helper.extractSizeUnit( $value );
 
     $validity = number( $validity, $number, $setting, $control );
-    $validity = sizeUnit( $validity, $unit, params['units'] );
+    $validity = sizeUnit( $validity, $unit, $setting, $control );
 
     return $validity;
   }
@@ -12462,8 +12460,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {WP_Error}
    */
   function color( $validity, $value, $setting, $control ) {
-    if ( $validity === void 0 ) $validity={};
-
     var params = $control.params;
 
     if (!_$1.isString($value)) {
@@ -12504,6 +12500,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     singleChoice: singleChoice,
     multipleChoices: multipleChoices,
     oneOrMoreChoices: oneOrMoreChoices,
+    sortable: sortable,
     fontFamily: fontFamily,
     checkbox: checkbox,
     tags: tags,
@@ -12523,17 +12520,61 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @class Notification
    * @extends wp.customize.Notification
    * @augments wp.customize.Class
+   *
+   * @requires Utils
    */
   var Notification = (function (superclass) {
-  	function Notification (code, params) {
-  		params.templateId = 'customize-notification-kkcp';
-
-  		superclass.prototype.initialize.call(this, code, params);
+  	function Notification () {
+  		superclass.apply(this, arguments);
   	}
 
   	if ( superclass ) Notification.__proto__ = superclass;
   	Notification.prototype = Object.create( superclass && superclass.prototype );
   	Notification.prototype.constructor = Notification;
+
+  	Notification.prototype.render = function render () {
+  		var notification = this, container, data;
+  		if ( ! notification.template ) {
+  			// @note tweak is done here, template string instead of an id
+  			notification.template = Utils.template( this._tpl() );
+  		}
+  		data = _.extend( {}, notification, {
+  			alt: notification.parent && notification.parent.alt
+  		} );
+  		container = $( notification.template( data ) );
+
+  		if ( notification.dismissible ) {
+  			container.find( '.notice-dismiss' ).on( 'click keydown', function( event ) {
+  				if ( 'keydown' === event.type && 13 !== event.which ) {
+  					return;
+  				}
+
+  				if ( notification.parent ) {
+  					notification.parent.remove( notification.code );
+  				} else {
+  					container.remove();
+  				}
+  			});
+  		}
+
+  		return container;
+  	};
+
+  	/**
+  	 * Template
+  	 *
+  	 * For now it's the same as the WordPress default one plus markdown support
+  	 *
+  	 * @since 1.1.0
+  	 *
+     * @memberof! controls.Base#
+     * @access package
+     *
+  	 * @return {string}
+  	 */
+  	Notification.prototype._tpl = function _tpl () {
+  		return 	"\n\t\t\t<li class=\"notice notice-{{ data.type || 'info' }} {{ data.alt ? 'notice-alt' : '' }} {{ data.dismissible ? 'is-dismissible' : '' }} {{ data.containerClasses || '' }} kkcp-notification\" data-code=\"{{ data.code }}\" data-type=\"{{ data.type }}\">\n\t\t\t\t<# if (marked) { #>{{{ marked(data.message || data.code) }}}<# } else { #><div class=\"notification-message\">{{{ data.message || data.code }}}</div><# } #>\n\t\t\t\t<# if ( data.dismissible ) { #>\n\t\t\t\t\t<button type=\"button\" class=\"notice-dismiss\"><span class=\"screen-reader-text\"><?php esc_html( 'Dismiss' ) ?></span></button>\n\t\t\t\t<# } #>\n\t\t\t</li>\n\t\t"
+  	};
 
   	return Notification;
   }(wpApi.Notification));
@@ -12562,14 +12603,26 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Validate
    */
   var Base = (function (superclass) {
-    function Base () {
-      superclass.apply(this, arguments);
+    function Base (id, options) {
+      this.initialize(id, options);
+      this.componentInit();
+      this._customInitialize();
     }
 
     if ( superclass ) Base.__proto__ = superclass;
     Base.prototype = Object.create( superclass && superclass.prototype );
     Base.prototype.constructor = Base;
 
+    /**
+     * {@inheritDoc}
+     *
+     * Tweak the initialize method.
+     *
+     * @since 1.0.0
+     *
+     * @memberof! controls.Base#
+     * @override
+     */
     Base.prototype.initialize = function initialize (id, options) {
       var control = this, deferredSettingIds = [], settings, gatherSettings;
 
@@ -12599,8 +12652,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         } );
       }
 
-      // @note `control.params.content` is managed differently in `inflate` and
-      // `deflate` methods
+      // @note `control.params.content` is managed differently in `_mount` and
+      // `_unmount` methods
       // if ( ! control.params.content ) {
       //   control.params.content = $( '<li></li>', {
       //     id: 'customize-control-' + id.replace( /]/g, '' ).replace( /\[/g, '-' ),
@@ -12633,11 +12686,12 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       // used by methods which we don't override)
       control._container = container;
 
-      if ( control.params.templateId ) {
-        control.templateSelector = control.params.templateId;
-      } else {
-        control.templateSelector = 'customize-control-' + control.params.type + '-content';
-      }
+      // @note this is disabled, template are defined in Javascript control classes
+      // if ( control.params.templateId ) {
+      //   control.templateSelector = control.params.templateId;
+      // } else {
+      //   control.templateSelector = 'customize-control-' + control.params.type + '-content';
+      // }
 
       control.deferred = _$1.extend( control.deferred || {}, {
         embedded: new $$1.Deferred()
@@ -12719,38 +12773,51 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       } else {
         wpApi.apply( wpApi, deferredSettingIds.concat( gatherSettings ) );
       }
-
-      // @note call custom private initialization (not overridable by subclasses)
-      this._initialize();
     };
 
     /**
-     * Private Initialize
+     * Component init
+     *
+     * This is the methods that subclasses could override with their custom init
+     * logic (no DOM is available at this point)
+     *
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @abstract
+     * @return {void}
+     */
+    Base.prototype.componentInit = function componentInit () {
+    };
+
+    /**
+     * Custom initialization
      *
      * Collect here the custom initialization additions of Customize Plus controls
      *
      * @since 1.0.0
      *
      * @memberof! controls.Base#
-     * @access package
+     * @access private
      * @return {void}
      */
-    Base.prototype._initialize = function _initialize () {
+    Base.prototype._customInitialize = function _customInitialize () {
       var this$1 = this;
 
-      // an @abstract method to override (this needs to be called here, before than
-      // the `ready` method)
-      this.onInit();
+      // alias for ready method React like
+      this.ready = this.componentDidMount;
 
       // After the control is embedded on the page, invoke the "ready" method.
       this.deferred.embedded.done(function () {
         // @note this way of managing controls is disabled
         // this.linkElements();
-        if (!api$1.constants['DYNAMIC_CONTROLS_RENDERING']) {
-          this$1.inflate();
-        }
         this$1.setupNotifications();
-        // this.ready(); // @note ready is called within inflate
+
+        // this.ready(); // @note ready is called within `_mount` called here below
+        if (!api$1.constants['DYNAMIC_CONTROLS_RENDERING']) {
+          this$1._mount();
+        }
       });
 
       if (api$1.constants['DYNAMIC_CONTROLS_RENDERING']) {
@@ -12758,15 +12825,15 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         // light,to make this work no data must be stored in the DOM
         wpApi.section(this.section()).expanded.bind(function (expanded) {
          
-          // either deflate and re-inflate dom each time...
+          // either unmount and mount dom each time...
           if (expanded) {
-            _$1.defer(this$1.inflate.bind(this$1));
+            _$1.defer(this$1._mount.bind(this$1));
           } else {
-            this$1.deflate();
+            this$1._unmount();
           }
           // ...or just do it the first time a control is expanded
           // if (expanded && !this.rendered) {
-          //   _.defer(this.inflate.bind(this));
+          //   _.defer(this._mount.bind(this));
           // }
         });
       }
@@ -12780,9 +12847,11 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
           this.setting.validate = this._validate.bind(this);
         }
 
-        // add sanitization of the value `postMessag`ed to the preview
+        // add sanitization of the value `postMessage`d to the preview
         if (!this.params['noLiveSanitization'] && !this.params['loose']) {
-          this.setting.sanitize = this.sanitize.bind(this);
+          this.setting.sanitize = function (value) {
+            return this$1.sanitize(value, this$1.setting, this$1);
+          };
         }
 
         // bind setting change to this method to reflect a programmatic
@@ -12791,8 +12860,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
          
           var sectionId = this$1.section();
           if ( ! sectionId || ( wpApi.section.has( sectionId ) && wpApi.section( sectionId ).expanded() ) ) {
-            if (this$1.rendered) {
-              this$1.syncUI.call(this$1, value);
+            if (this$1.rendered && this$1.shouldComponentUpdate(value)) {
+              this$1.componentDidUpdate(value);
             }
           }
         });
@@ -12858,7 +12927,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * @return {string} The value validated or the last setting value.
      */
     Base.prototype._validate = function _validate (value) {
-      var $validity = {};
+      var $validity = [];
 
       // immediately check a required value validity
       $validity = Validate.required($validity, value, this.setting, this);
@@ -12867,13 +12936,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       if (!_$1.keys($validity).length) {
 
         // otherwise apply the specific control/setting validation
-        $validity = this.validate(value);
+        $validity = this.validate($validity, value, this.setting, this);
       }
 
       this._manageValidityNotifications($validity);
 
       // if there are no errors return the given new value
-      if (!_$1.keys($validity).length) {
+      if (!$validity.length) {
         return value;
       }
 
@@ -12889,43 +12958,85 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * @memberof! controls.Base#
      * @access package
      * @abstract
-     * @param  {object<object<string,string>>} $validity
+     * @param  {WP_Error} $validity
      */
     Base.prototype._manageValidityNotifications = function _manageValidityNotifications ($validity) {
       var this$1 = this;
 
       var notifications = this.setting.notifications.get();
-      var currentNotificationCodes = [];
+      var newCodes = _$1.pluck($validity, 'code');
+      var currentCodes = [];
 
       // flag used somewhere else (see below)
-      this._currentValueHasError = !!_$1.keys($validity).length;
+      this._currentValueHasError = !!$validity.length;
 
       for (var i = 0; i < notifications.length; i++) {
         var code = notifications[i]['code'];
-        currentNotificationCodes.push(code);
+        currentCodes.push(code);
         // if an existing notification is now valid remove it
-        if (!$validity[code]) {
+        if (newCodes.indexOf(code) === -1) {
           this$1.setting.notifications.remove(code);
         }
       }
 
-      for (var code$1 in $validity) {
-        if ($validity.hasOwnProperty(code$1)) {
-          // if the notification is not there already add it
-          if (currentNotificationCodes.indexOf(code$1) === -1) {
+      for (var j = 0; j < $validity.length; j++) {
+        var ref = $validity[j];
+        var code$1 = ref.code;
+        var type = ref.type;
+        var msg = ref.msg;
 
-            this$1.setting.notifications.add(new Notification$1(
-              code$1, { message: $validity[code$1] || api$1.l10n['vInvalid'] }
-            ));
-          }
+        // if the notification is not there already add it
+        if (currentCodes.indexOf(code$1) === -1) {
+          this$1.setting.notifications.add(
+            new Notification$1(code$1, {
+              type: type,
+              message: msg || api$1.l10n['vInvalid'],
+            }
+          ));
         }
       }
     };
 
     /**
+     * Add validity notitification
+     *
+     * @see  PHP KKcp_Customize_Control_Base->add_error()
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @param {string}            $type
+     * @param {WP_Error}          $validity
+     * @param {string}            $msg_id
+     * @param {mixed|array|null}  $msg_arguments
+     * @return {WP_Error}
+     */
+    Base.prototype._addValidityNotification = function _addValidityNotification ( $type, $validity, $msg_id, $msg_arguments ) {
+      var $msg = this._l10n( $msg_id );
+
+      // if there is an array of message arguments
+      if ( _$1.isArray( $msg_arguments ) ) {
+        $msg = vsprintf( $msg, $msg_arguments );
+      }
+      // if there is just one message argument
+      else if ( $msg_arguments ) {
+        $msg = sprintf( $msg, $msg_arguments );
+      }
+      // if it is a simple string message leave it as it is
+
+      $validity.push({
+        code: $msg_id,
+        type: $type,
+        msg: $msg
+      });
+
+      return $validity;
+    };
+
+    /**
      * Add error
      *
-     * Shortcut to manage the $validity object during validation
+     * Shortcut to manage $validity during validation
      *
      * @see  PHP KKcp_Customize_Control_Base->add_error()
      * @since 1.0.0
@@ -12934,24 +13045,47 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * @access package
      * @param {WP_Error}          $validity
      * @param {string}            $msg_id
-     * @param {mixed|array|null}   $msg_arguments
+     * @param {mixed|array|null}  $msg_arguments
      * @return {WP_Error}
      */
     Base.prototype._addError = function _addError ( $validity, $msg_id, $msg_arguments ) {
-      var $msg = this._l10n( $msg_id );
+      return this._addValidityNotification( 'error', $validity, $msg_id, $msg_arguments );
+    };
 
-      // if there is an array of message arguments
-      if ( _$1.isArray( $msg_arguments ) ) {
-        $validity[$msg_id] = vsprintf( $msg, $msg_arguments );
-      }
-      // if there is just one message argument
-      else if ( $msg_arguments ) {
-        $validity[$msg_id] = sprintf( $msg, $msg_arguments );
-      // if it is a simple string message
-      } else {
-        $validity[$msg_id] = $msg;
-      }
-      return $validity;
+    /**
+     * Add warning
+     *
+     * Shortcut to manage $validity during validation
+     *
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @param {WP_Error}          $validity
+     * @param {string}            $msg_id
+     * @param {mixed|array|null}  $msg_arguments
+     * @return {WP_Error}
+     */
+    Base.prototype._addWarning = function _addWarning ( $validity, $msg_id, $msg_arguments ) {
+      return this._addValidityNotification( 'warning', $validity, $msg_id, $msg_arguments );
+    };
+
+    /**
+     * Add info
+     *
+     * Shortcut to manage $validity during validation
+     *
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @param {WP_Error}          $validity
+     * @param {string}            $msg_id
+     * @param {mixed|array|null}  $msg_arguments
+     * @return {WP_Error}
+     */
+    Base.prototype._addInfo = function _addInfo ( $validity, $msg_id, $msg_arguments ) {
+      return this._addValidityNotification( 'info', $validity, $msg_id, $msg_arguments );
     };
 
     /**
@@ -12962,11 +13096,16 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * @memberof! controls.Base#
      * @access public
      * @abstract
-     * @param  {string} value
-     * @return {string} The value validated
+     * @param {WP_Error}             $validity
+     * @param {mixed}                $value    The value to validate.
+     * @param {WP_Customize_Setting} $setting  Setting instance.
+     * @param {WP_Customize_Control} $control  Control instance.
+     * @return {WP_Error}
      */
-    Base.prototype.validate = function validate (value) {
-      return value;
+    Base.prototype.validate = function validate ( $validity, $value, $setting, $control ) {
+      if ( $validity === void 0 ) $validity=[];
+
+      return $validity;
     };
 
     /**
@@ -12977,38 +13116,120 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * @memberof! controls.Base#
      * @access public
      * @abstract
-     * @param  {string} value
-     * @return {string} The value sanitized
+     *
+     * @param {string}               $value   The value to sanitize.
+     * @param {WP_Customize_Setting} $setting Setting instance.
+     * @param {WP_Customize_Control} $control Control instance.
+     * @return {string|null} The sanitized value.
      */
-    Base.prototype.sanitize = function sanitize (value) {
-      return value;
+    Base.prototype.sanitize = function sanitize ( $value, $setting, $control ) {
+      return $value;
     };
 
     /**
-     * Sync UI with value coming from API, a programmatic change like a reset.
+     * Template
      *
-     * @since 1.0.0
+     * Returns the control's complete template, either a simple string or a more
+     * complex and composed method. This method is publicly accessible and should
+     * be overrided by controls that extend but are outside Customize Plus.
      *
-     * @memberof! controls.Base#
-     * @access protected
-     * @abstract
-     * @param {string} value The new setting value.
-     */
-    Base.prototype.syncUI = function syncUI (value) {};
-
-    /**
-     * Triggered when the control has been initialized
-     *
-     * @since 1.0.0
+     * @since 1.1.0
      *
      * @memberof! controls.Base#
-     * @access protected
+     * @access public
      * @abstract
+     *
+     * @return {string}
      */
-    Base.prototype.onInit = function onInit () {};
+    Base.prototype.template = function template$$1 () {
+      var tpl = '';
+      tpl += this._tplExtras();
+      tpl += this._tpl();
+      tpl += this._tplNotifications();
+
+      return tpl;
+    };
 
     /**
-     * Render the control from its JS template, if it exists.
+     * Template
+     *
+     *
+     * Subclasses within Customize Plus must have their own '_tpl' template
+     * overriding this method. This cannot be ovverided through public API, that
+     * is why the method is underscore prefixed and mangled during minification.
+     *
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @abstract
+     */
+    Base.prototype._tpl = function _tpl () {
+      return "";
+    };
+
+    /**
+     * Control's specific header template
+     *
+     * Subclasses should call this method themselves in the appropriate template
+     * position, according to their specific needs. By default (if not overriden)
+     * this template partial prints the label and description as markdown if the
+     * markdown js plugin is available. This cannot be called or ovverided through
+     * public API, that is why the method is underscore prefixed and mangled
+     * during minification.
+     *
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @abstract
+     *
+     * @return {string}
+     */
+    Base.prototype._tplHeader = function _tplHeader () {
+      return"\n      <# if (data.label) { #>\n        <div class=\"customize-control-title\">\n          <# if (marked) { #>{{{ marked(data.label) }}}<# } else { #>{{{ data.label }}}<# } #>\n        </div>\n      <# } if (data.description) { #>\n        <div class=\"description customize-control-description\">\n          <# if (marked) { #>{{{ marked(data.description) }}}\n          <# } else { #>{{{ data.description }}}<# } #>\n        </div>\n      <# } #>\n    ";
+    };
+
+    /**
+     * Control's specific notification template
+     *
+     * Subclasses within Customize Plus can have their own 'notification' template
+     * overriding this method. This cannot be ovverided through public API, that
+     * is why the method is underscore prefixed and mangled during minification.
+     *
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @abstract
+     *
+     * @return {string}
+     */
+    Base.prototype._tplNotifications = function _tplNotifications () {
+      return '<div class="customize-control-notifications-container"></div>';
+    };
+
+    /**
+     * Control's extras menu template
+     *
+     * Subclasses within Customize Plus can have their own 'extras' template
+     * overriding this method. This cannot be ovverided through public API, that
+     * is why the method is underscore prefixed and mangled during minification.
+     *
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     * @abstract
+     *
+     * @return {string}
+     */
+    Base.prototype._tplExtras = function _tplExtras () {
+      return ("\n      <div class=\"kkcp-extras\">\n        <i class=\"kkcp-extras-btn kkcpui-control-btn dashicons dashicons-admin-generic\"></i>\n        <ul class=\"kkcp-extras-list\">\n          <li class=\"kkcp-extras-reset_last\">" + (api$1.l10n['resetLastSaved']) + "</li>\n          <li class=\"kkcp-extras-reset_initial\">" + (api$1.l10n['resetInitial']) + "</li>\n          <li class=\"kkcp-extras-reset_factory\">" + (api$1.l10n['resetFactory']) + "</li>\n        </ul>\n      </div>\n    ");
+    };
+
+    /**
+     * Render the control from its JS template, uses custom template utility.
      *
      * @since 1.0.0
      *
@@ -13022,54 +13243,109 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       var templateSelector = ref.templateSelector;
 
       // replaces the container element's content with the control.
-      if (document$1.getElementById(("tmpl-" + templateSelector))) {
-        var template = wp.template(templateSelector);
-        if (template && _container) {
+      var template$$1 = Utils.template(this.template());
+      if (template$$1 && _container) {
 
-          /* jshint funcscope: true */
-          if (DEBUG.performances) { var t = performance.now(); }
+        /* jshint funcscope: true */
+        if (DEBUG.performances) { var t = performance.now(); }
 
-          // render and store it in the params
-          this.params.content = _container.innerHTML = template(this.params).trim();
+        // render and store it in the params
+        this.params.content = _container.innerHTML = template$$1(this.params);
 
-          // var frag = document.createDocumentFragment();
-          // var tplNode = document.createElement('div');
-          // tplNode.innerHTML = template( this.params ).trim();
-          // frag.appendChild(tplNode);
-          // this.params.content = frag;
-          // _container.appendChild(frag);
-
-          if (DEBUG.performances) { console.log('%c renderContent of ' + this.params.type + '(' +
-            this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7'); }
-        }
+        if (DEBUG.performances) { console.log('%c renderContent of ' + this.params.type + '(' +
+          this.id + ') took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7'); }
       }
 
       this._rerenderNotifications();
     };
 
     /**
-     * Triggered just before the control get deflated from DOM
+     * Destroy
      *
+     * Unmounts the component and remove also the `<li>` container.
+     *
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @alias controls.Base._unmount
+     * @access public
+     */
+    Base.prototype.destroy = function destroy () {
+      this._unmount(true);
+      this._container.parentNode.removeChild(this._container);
+    };
+
+    /**
+     * Should component update (React like)
+     *
+     * @see https://reactjs.org/docs/react-component.html#shouldcomponentupdate
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @access protected
+     * @abstract
+     * @param {mixed} $value The new setting value
+     * @return {boolean}
+     */
+    Base.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return true;
+    };
+
+    /**
+     * Component did update (React like)
+     *
+     * This is usually called by a programmatic change like a reset of the control
+     * default setting value.
+     *
+     * @see https://reactjs.org/docs/react-component.html#componentdidupdate
      * @since 1.0.0
      *
      * @memberof! controls.Base#
      * @access protected
      * @abstract
+     * @param {mixed} $value The new setting value
      */
-    Base.prototype.onDeflate = function onDeflate () {};
+    Base.prototype.componentDidUpdate = function componentDidUpdate ($value) {};
 
     /**
-     * Removes the DOM of the control.
+     * Component did mount (React like)
      *
-     * In case the DOM store is empty (the first time this method get called) it
-     * fills it.
-     *
-     * @since 1.0.0
+     * @see  https://reactjs.org/docs/react-component.html#componentdidunmount
+     * @since 1.1.0
      *
      * @memberof! controls.Base#
-     * @access public
+     * @access protected
+     * @abstract
      */
-    Base.prototype.deflate = function deflate () {
+    Base.prototype.componentDidMount = function componentDidMount () {};
+
+    /**
+     * Component will unmount (React like)
+     *
+     * @see  https://reactjs.org/docs/react-component.html#componentwillunmount
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @access protected
+     * @abstract
+     */
+    Base.prototype.componentWillUnmount = function componentWillUnmount () {};
+
+    /**
+     * Unmount (React current substitute)
+     *
+     * Removes the DOM of the control. In case the DOM store is empty (the first
+     * time this method get called) it fills it. This could removed once React is
+     * implemented
+     *
+     * @since 1.1.0
+     *
+     * @memberof! controls.Base#
+     * @access package
+     *
+     * @param {boolean} force
+     */
+    Base.prototype._unmount = function _unmount (force) {
       var this$1 = this;
 
       /* jshint funcscope: true */
@@ -13082,13 +13358,15 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       }
 
       // call the abstract method
-      this.onDeflate();
+      if (this.rendered) {
+        this.componentWillUnmount();
+      }
 
       // and empty the DOM from the container deferred
       // the slide out animation of the section doesn't freeze
       _$1.defer(function () {
         // due to the timeout we need to be sure that the section is not expanded
-        if (!wpApi.section(this$1.section.get()).expanded.get()) {
+        if (force || !wpApi.section(this$1.section.get()).expanded.get()) {
 
           /* jshint funcscope: true */
           if (DEBUG.performances) { var t = performance.now(); }
@@ -13102,7 +13380,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
          
           container.innerHTML = '';
 
-          if (DEBUG.performances) { console.log('%c deflate of ' + this$1.params.type + '(' + this$1.id +
+          if (DEBUG.performances) { console.log('%c unmount of ' + this$1.params.type + '(' + this$1.id +
             ') took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1'); }
 
           // flag control that it's not rendered
@@ -13112,49 +13390,48 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     };
 
     /**
-     * Inflate
+     * Mount (React current substitute)
      *
-     * Render or 'inflate' the template of the control. The first time render it
-     * from the js template, afterward retrieve the DOM string from the `template`
-     * param store. After the template has been rendered call the `ready` method,
-     * overridden in each control with their own specific logic. Also put a flag
-     * `rendered` on the control instance to indicate whether the control is
-     * rendered or not.
+     * The first time renders from the js template, afterward retrieve the DOM
+     * string from the `template` param store. After the template has been
+     * rendered call the `componentDidMount` method, overridden in each control
+     * with their own specific DOM initialization. Also put a flag `rendered` on
+     * the control instance to indicate whether the control is rendered or not.
      *
-     * @since 1.0.0
+     * @since 1.1.0
      *
      * @memberof! controls.Base#
-     * @access public
+     * @access package
      *
      * @param  {boolean} resolveEmbeddedDeferred Sometimes (i.e. for the
      *                                           `control.focus()` method) we need
      *                                           to resolve the deffered embed.
      */
-    Base.prototype.inflate = function inflate (resolveEmbeddedDeferred) {
+    Base.prototype._mount = function _mount (resolveEmbeddedDeferred) {
       /* jshint funcscope: true */
       if (DEBUG.performances) { var t = performance.now(); }
       if (!this.params.content) {
         this.renderContent();
 
-        if (DEBUG.performances) { console.log('%c inflate DOM of ' + this.params.type +
+        if (DEBUG.performances) { console.log('%c mount DOM of ' + this.params.type +
           ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7'); }
       } else {
         if (!this.rendered) {
           this._container.innerHTML = this.params.content;
           this._rerenderNotifications();
 
-          if (DEBUG.performances) { console.log('%c inflate DOM of ' + this.params.type +
+          if (DEBUG.performances) { console.log('%c mount DOM of ' + this.params.type +
             ' took ' + (performance.now() - t) + ' ms.', 'background: #EF9CD7'); }
         }
       }
       this.rendered = true;
-      this.ready();
+      this.componentDidMount();
       if (resolveEmbeddedDeferred) {
         this.deferred.embedded.resolve();
       }
       this._extras();
 
-      // if (DEBUG.performances) console.log('%c inflate of ' + this.params.type +
+      // if (DEBUG.performances) console.log('%c mount of ' + this.params.type +
       //   ' took ' + (performance.now() - t) + ' ms.', 'background: #D2FFF1');
     };
 
@@ -13162,7 +13439,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * Re-render notifications after content has been re-rendered.
      *
      * This is taken as it is from the core base control class
-     * (`wp.customize.Control`)in the end of the `renderContent` method
+     * (`wp.customize.Control`)in the end of the `renderContent` method.
+     * We extract it in a method to reuse on component DOM recreation.
      *
      * @since 1.0.0
      *
@@ -13378,7 +13656,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
   var Base$1 = api$1.controls.Base = Base;
 
-  // import './regexes';
   // import './utils';
   // import './_banner';
 
@@ -13403,14 +13680,12 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     BaseChoices.prototype = Object.create( Base && Base.prototype );
     BaseChoices.prototype.constructor = BaseChoices;
 
-    BaseChoices.prototype.onInit = function onInit () {
-      Base.prototype.onInit.call(this);
-
+    BaseChoices.prototype.componentInit = function componentInit () {
       this._validChoices = this._getValidChoices(this.params.choices);
     };
 
     /**
-     * Get valid choicesvalues from given choices
+     * Get valid choices values from given choices
      *
      * @since   1.0.0
      * @memberof! controls.BaseChoices#
@@ -13434,10 +13709,89 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       return [];
     };
 
+    /**
+     * {@inheritdoc}. Choice supports both a string if you only want to pass a
+     * label or an array with `label`, `sublabel`, `tooltip`, `popover_title`,
+     * `popover_txt`, etc.
+     *
+     * @since 1.1.0
+     * @override
+     */
+    BaseChoices.prototype._tpl = function _tpl () {
+      return ("\n      <# var choices = data.choices, idx = 0;\n        if (!_.isEmpty(choices)) { #>\n          " + (this._tplHeader()) + "\n          " + (this._tplAboveChoices()) + "\n          " + (this._tplChoicesLoop()) + "\n          " + (this._tplBelowChoices()) + "\n      <# } #>\n    ")
+    };
+
+    /**
+     * Ouput the choices template in a loop. Override this in subclasses
+     * to change behavior, for instance in sortable controls.
+     *
+     * @since   1.1.0
+     * @memberof! controls.BaseChoices#
+     *
+     * @access package
+     * @return {string}
+     */
+    BaseChoices.prototype._tplChoicesLoop = function _tplChoicesLoop () {
+      return ("<# for (var val in choices) { #>" + (this._tplChoice()) + "<#} #>")
+    };
+
+    /**
+     * Ouput the js to configure each choice template data and its UI
+     *
+     * @since   1.1.0
+     * @memberof! controls.BaseChoices#
+     *
+     * @access package
+     * @return {string}
+     */
+    BaseChoices.prototype._tplChoice = function _tplChoice () {
+      return ("\n      <# if (choices.hasOwnProperty(val)) {\n        var label;\n        var choice = choices[val];\n        var classes = '';\n        var attributes = '';\n        var tooltip = '';\n        var id = data.id + idx++;\n        if (!_.isUndefined(choice.label)) {\n          label = choice.label;\n          if (choice.popover) {\n            classes += 'kkcpui-popover ';\n            if (choice.popover.title) attributes += ' data-title=\"' + choice.popover.title + '\"';\n            if (choice.popover.img) attributes += ' data-img=\"' + choice.popover.img + '\"';\n            if (choice.popover.text) attributes += ' data-text=\"' + choice.popover.text + '\"';\n            if (choice.popover.video) attributes += ' data-video=\"' + choice.popover.video + '\"';\n          }\n          if (choice.tooltip) {\n            classes += 'kkcpui-tooltip--top ';\n            attributes += ' title=\"' + choice.tooltip + '\"';\n            tooltip = choice.tooltip;\n          }\n        } else {\n          label = choice;\n        }\n        if (!tooltip) {\n          tooltip = label;\n        }\n      #>\n        " + (this._tplChoiceUi()) + "\n      <# } #>\n    ")
+    };
+
+    /**
+     * Custom choice template UI
+     *
+     * @since   1.1.0
+     * @memberof! controls.BaseChoices#
+     *
+     * @abstract
+     * @access package
+     * @return {string}
+     */
+    BaseChoices.prototype._tplChoiceUi = function _tplChoiceUi () {
+      return ""
+    };
+
+    /**
+     * Add a part of template just before the choices loop
+     *
+     * @since   1.1.0
+     * @memberof! controls.BaseChoices#
+     *
+     * @abstract
+     * @access package
+     * @return {string}
+     */
+    BaseChoices.prototype._tplAboveChoices = function _tplAboveChoices () {
+      return ""
+    };
+
+    /**
+     * Add a part of template just after the choices loop
+     *
+     * @since   1.1.0
+     * @memberof! controls.BaseChoices#
+     *
+     * @abstract
+     * @access package
+     * @return {string}
+     */
+    BaseChoices.prototype._tplBelowChoices = function _tplBelowChoices () {
+      return ""
+    };
+
     return BaseChoices;
   }(Base$1));
-
-  var BaseChoices$1 = api$1.controls.BaseChoices = BaseChoices;
 
   /**
    * Control Base Input class
@@ -13460,16 +13814,21 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     BaseInput.prototype = Object.create( Base && Base.prototype );
     BaseInput.prototype.constructor = BaseInput;
 
-    BaseInput.prototype.syncUI = function syncUI (value) {
-      if (value && this.__input.value !== value) {
-        this.__input.value = value;
-      }
+    BaseInput.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return this.__input.value !== $value;
     };
 
     /**
      * @override
      */
-    BaseInput.prototype.ready = function ready () {
+    BaseInput.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this.__input.value = $value;
+    };
+
+    /**
+     * @override
+     */
+    BaseInput.prototype.componentDidMount = function componentDidMount () {
       var self = this;
       self.__input = self._container.getElementsByTagName('input')[0];
 
@@ -13481,10 +13840,40 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         });
     };
 
+    /**
+     * {@inheritDoc}. Note that the `tooltip` input_attr is printed in a wrapping
+     * span instead of directly on the input field.
+     *
+     * @since 1.1.0
+     * @override
+     */
+    BaseInput.prototype._tpl = function _tpl () {
+      return ("\n      <label>\n        " + (this._tplHeader()) + "<# var attrs = data.attrs || {}; #>\n        <# if (attrs.tooltip) { #><span class=\"kkcpui-tooltip--top\" title=\"{{ attrs.tooltip || '' }}\"><# } #>\n        " + (this._tplInner()) + "\n        <# if (attrs.tooltip) { #></span><# } #>\n      </label>\n    ")
+    };
+
+    /**
+     * Js template for the actual input element area, override this e.g. in the
+     * Password Control
+     *
+     * @since 1.1.0
+     * @abstract
+     */
+    BaseInput.prototype._tplInner = function _tplInner () {
+      return this._tplInput();
+    };
+
+    /**
+     * Js template for the actual input element
+     *
+     * @since 1.1.0
+     * @abstract
+     */
+    BaseInput.prototype._tplInput = function _tplInput () {
+      return "\n      <input class=\"kkcp-input\" type=\"{{ attrs.type || data.type.replace('kkcp_','') }}\" value=\"\"\n        <# for (var key in attrs) { if (attrs.hasOwnProperty(key) && key !== 'title') { #>{{ key }}=\"{{ attrs[key] }}\" <# } } #>\n      >\n    "
+    };
+
     return BaseInput;
   }(Base$1));
-
-  var BaseInput$1 = api$1.controls.BaseInput = BaseInput;
 
   var round = function round(value, precision, mode) {
     //  discuss at: http://locutus.io/php/round/
@@ -13674,6 +14063,19 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   }
 
   /**
+   * Sanitize sortable
+   *
+   * @since 1.1.0
+   * @param {mixed}                $value   The value to sanitize.
+   * @param {WP_Customize_Setting} $setting Setting instance.
+   * @param {WP_Customize_Control} $control Control instance.
+   * @return {array|null} The sanitized value.
+   */
+  function sortable$1 ( $value, $setting, $control ) {
+    return multipleChoices$1( $value, $setting, $control, true );
+  }
+
+  /**
    * Sanitize font family
    *
    * @since 1.0.0
@@ -13802,31 +14204,31 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    */
   function number$1( $value, $setting, $control ) {
     var $attrs = $control.params['attrs'] || {};
-    var $number = Helper.extractNumber( $value, $attrs['float'] );
+    $value = Helper.extractNumber( $value, $attrs['float'] );
 
-    if ( $number === null ) {
+    if ( ! is_numeric( $value ) ) {
       return null;
     }
 
     // if it's a float but it is not allowed to be it round it
-    if ( is_float( $number ) && !$attrs['float'] ) {
-      $number = round( $number );
+    if ( is_float( $value ) && !$attrs['float'] ) {
+      $value = round( $value );
     }
     // if doesn't respect the step given round it to the closest
     // then do the min and max checks
-    if ( _$1.isNumber( $attrs['step'] ) && Helper.modulus($number, $attrs['step']) !== 0 ) {
-      $number = round( $number / $attrs['step'] ) * $attrs['step'];
+    if ( _$1.isNumber( $attrs['step'] ) && Helper.modulus($value, $attrs['step']) !== 0 ) {
+      $value = round( $value / $attrs['step'] ) * $attrs['step'];
     }
     // if it's lower than the minimum return the minimum
-    if ( _$1.isNumber( $attrs['min'] ) && $number < $attrs['min'] ) {
+    if ( _$1.isNumber( $attrs['min'] ) && $value < $attrs['min'] ) {
       return $attrs['min'];
     }
     // if it's higher than the maxmimum return the maximum
-    if ( _$1.isNumber( $attrs['max'] ) && $number > $attrs['max'] ) {
+    if ( _$1.isNumber( $attrs['max'] ) && $value > $attrs['max'] ) {
       return $attrs['max'];
     }
 
-    return $number;
+    return $value;
   }
 
   /**
@@ -13870,14 +14272,11 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @return {string|number|null} The sanitized value.
    */
   function slider$1( $value, $setting, $control ) {
-    var params = $control.params;
-    var $attrs = params.attrs || {};
-
-    var $number = Helper.extractNumber( $value, !!$attrs['float'] );
-    var $unit = Helper.extractSizeUnit( $value, params['units'] );
+    var $number = Helper.extractNumber( $value );
+    var $unit = Helper.extractSizeUnit( $value );
 
     $number = number$1( $number, $setting, $control );
-    $unit = sizeUnit$1( $unit, params['units'] );
+    $unit = sizeUnit$1( $unit, $control.params['units'] );
 
     if ( $number === null ) {
       return null;
@@ -13935,6 +14334,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     singleChoice: singleChoice$1,
     multipleChoices: multipleChoices$1,
     oneOrMoreChoices: oneOrMoreChoices$1,
+    sortable: sortable$1,
     fontFamily: fontFamily$1,
     checkbox: checkbox$1,
     tags: tags$1,
@@ -13961,63 +14361,56 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Validate
    * @requires Sanitize
    */
-  var BaseRadio = (function (BaseChoices) {
-    function BaseRadio () {
-      BaseChoices.apply(this, arguments);
+  var BaseRadio = (function (BaseChoices$$1) {
+    function BaseRadio (id, args) {
+      BaseChoices$$1.call(this, id, args);
+
+      this.validate = Validate.singleChoice;
+      this.sanitize = Sanitize.singleChoice;
     }
 
-    if ( BaseChoices ) BaseRadio.__proto__ = BaseChoices;
-    BaseRadio.prototype = Object.create( BaseChoices && BaseChoices.prototype );
+    if ( BaseChoices$$1 ) BaseRadio.__proto__ = BaseChoices$$1;
+    BaseRadio.prototype = Object.create( BaseChoices$$1 && BaseChoices$$1.prototype );
     BaseRadio.prototype.constructor = BaseRadio;
 
-    BaseRadio.prototype.validate = function validate (value) {
-      return Validate.singleChoice({}, value, this.setting, this);
+    /**
+     * @override
+     */
+    BaseRadio.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return $value.toString() !== this._getValueFromUI();
     };
 
     /**
-     * @since   1.0.0
      * @override
      */
-    BaseRadio.prototype.sanitize = function sanitize (value) {
-      return Sanitize.singleChoice(value, this.setting, this);
+    BaseRadio.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this._updateUI($value);
     };
 
     /**
-     * @since   1.0.0
      * @override
      */
-    BaseRadio.prototype.syncUI = function syncUI () {
-      this._syncRadios();
-    };
-
-    /**
-     * @since   1.0.0
-     * @override
-     */
-    BaseRadio.prototype.ready = function ready () {
+    BaseRadio.prototype.componentDidMount = function componentDidMount () {
       this.__inputs = this._container.getElementsByTagName('input');
-      // sync checked state on radios on ready and bind (argument `true`)
-      this._syncRadios(true);
+      this._updateUI(this.setting(), true);
     };
 
     /**
      * Sync radios and maybe bind change event
-     * We need to be fast here, use vanilla js.
      *
      * @since   1.0.0
      * @memberof! controls.BaseRadio#
      *
-     * @param  {boolean} bindAsWell Bind on change?
+     * @param {mixed}   $value
+     * @param {boolean} bind
      */
-    BaseRadio.prototype._syncRadios = function _syncRadios (bindAsWell) {
+    BaseRadio.prototype._updateUI = function _updateUI ($value, bind) {
       var this$1 = this;
-
-      var value = this.setting();
 
       for (var i = 0, l = this.__inputs.length; i < l; i++) {
         var input = this$1.__inputs[i];
-        input.checked = value === input.value;
-        if (bindAsWell) {
+        input.checked = $value === input.value;
+        if (bind) {
           input.onchange = function (event) {
             this$1.setting.set(event.target.value);
           };
@@ -14025,13 +14418,35 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       }
     };
 
-    return BaseRadio;
-  }(BaseChoices$1));
+    /**
+     * Get value from UI
+     *
+     * @since   1.1.0
+     * @memberof! controls.BaseRadio#
+     *
+     * @return {?string}
+     */
+    BaseRadio.prototype._getValueFromUI = function _getValueFromUI () {
+      var this$1 = this;
 
-  var BaseRadio$1 = api$1.controls.BaseRadio = BaseRadio;
+      for (var i = 0, l = this.__inputs.length; i < l; i++) {
+        if (this$1.__inputs[i].checked) {
+          return this$1.__inputs[i].value;
+        }
+      }
+      return null;
+    };
+
+    return BaseRadio;
+  }(BaseChoices));
 
   /**
    * Control Base Set class
+   *
+   * Unlike its PHP respective class KKcp_Customize_Control_Base_Set this does not
+   * extends the BaseChoices class because we don't actually share anything with
+   * it. In fact the data `min`, `max`, `choices` come from PHP anyway and the
+   * population of the valid choices uses a different approach here.
    *
    * @since  1.0.0
    *
@@ -14046,25 +14461,17 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Sanitize
    */
   var BaseSet = (function (Base) {
-    function BaseSet () {
-      Base.apply(this, arguments);
+    function BaseSet (id, args) {
+      Base.call(this, id, args);
+
+      this.validate = Validate.oneOrMoreChoices;
+      this.sanitize = Sanitize.oneOrMoreChoices;
+
     }
 
     if ( Base ) BaseSet.__proto__ = Base;
     BaseSet.prototype = Object.create( Base && Base.prototype );
     BaseSet.prototype.constructor = BaseSet;
-
-    BaseSet.prototype.validate = function validate (value) {
-      return Validate.oneOrMoreChoices({}, value, this.setting, this);
-    };
-
-    /**
-     * @since   1.0.0
-     * @override
-     */
-    BaseSet.prototype.sanitize = function sanitize (value) {
-      return Sanitize.oneOrMoreChoices(value, this.setting, this);
-    };
 
     /**
      * @see KKcp_Customize_Control_Base_Set->populate_valid_choices where we do
@@ -14072,10 +14479,9 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * to extract data for the `<select>Select</select>` field too, and also
      * because in php arrays are just arrays.
      *
-     * @since   1.0.0
      * @override
      */
-    BaseSet.prototype.onInit = function onInit () {
+    BaseSet.prototype.componentInit = function componentInit () {
       var filteredSets = this._getFilteredSets(this.params.choices);
       var data = this._getSelectDataFromSets(filteredSets);
       this._options = data._options;
@@ -14085,33 +14491,35 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     };
 
     /**
-     * @since   1.0.0
      * @override
      */
-    BaseSet.prototype.syncUI = function syncUI (value) {
-      if (_$1.isString(value)) {
-        value = [value];
+    BaseSet.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      if (_$1.isString($value)) {
+        $value = [$value];
       }
-      if (!_$1.isEqual(value, this._getValueFromUI())) {
-        this._updateUI(value);
-      }
+      return !_$1.isEqual(value, this._getValueFromUI());
     };
 
     /**
-     * @since   1.0.0
      * @override
      */
-    BaseSet.prototype.onDeflate = function onDeflate () {
+    BaseSet.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this._updateUI($value);
+    };
+
+    /**
+     * @override
+     */
+    BaseSet.prototype.componentWillUnmount = function componentWillUnmount () {
       if (this.__input  && this.__input.selectize) {
         this.__input.selectize.destroy();
       }
     };
 
     /**
-     * @since   1.0.0
      * @override
      */
-    BaseSet.prototype.ready = function ready () {
+    BaseSet.prototype.componentDidMount = function componentDidMount () {
       this.__input = this._container.getElementsByClassName('kkcp-select')[0];
       this._initUI();
       this._updateUI(this.setting());
@@ -14451,8 +14859,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     return BaseSet;
   }(Base$1));
 
-  var BaseSet$1 = api$1.controls.BaseSet = BaseSet;
-
   /**
    * Control Buttonset
    *
@@ -14469,17 +14875,37 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @augments wp.customize.Control
    * @augments wp.customize.Class
    */
-  var Buttonset = (function (BaseRadio) {
+  var Buttonset = (function (BaseRadio$$1) {
   	function Buttonset () {
-  		BaseRadio.apply(this, arguments);
-  	}if ( BaseRadio ) Buttonset.__proto__ = BaseRadio;
-  	Buttonset.prototype = Object.create( BaseRadio && BaseRadio.prototype );
+  		BaseRadio$$1.apply(this, arguments);
+  	}
+
+  	if ( BaseRadio$$1 ) Buttonset.__proto__ = BaseRadio$$1;
+  	Buttonset.prototype = Object.create( BaseRadio$$1 && BaseRadio$$1.prototype );
   	Buttonset.prototype.constructor = Buttonset;
 
-  	
+  	Buttonset.prototype._tplChoiceUi = function _tplChoiceUi () {
+  		return "\n\t\t\t<input id=\"{{ id }}\" type=\"radio\" value=\"{{ val }}\" name=\"_customize-kkcp_buttonset-{{ data.id }}\">\n\t\t\t<label class=\"{{ classes }} kkcpui-tooltip--top\" {{ attributes }} title=\"{{ tooltip }}\" for=\"{{ id }}\" onclick=\"\">{{ label }}</label>\n\t\t"
+  	};
+
+  	/**
+  	 * @since 1.1.0
+  	 * @override
+  	 */
+  	Buttonset.prototype._tplAboveChoices = function _tplAboveChoices () {
+  		return "\n\t\t\t<div class=\"switch-toggle kkcpui-switch switch-{{ _.size(choices) }}\">\n\t\t"
+  	};
+
+  	/**
+  	 * @since 1.1.0
+  	 * @override
+  	 */
+  	Buttonset.prototype._tplBelowChoices = function _tplBelowChoices () {
+  		return "\n\t\t\t<a></a>\n\t\t\t</div>\n\t\t"
+  	};
 
   	return Buttonset;
-  }(BaseRadio$1));
+  }(BaseRadio));
 
   wpApi.controlConstructor['kkcp_buttonset'] = api$1.controls.Buttonset = Buttonset;
 
@@ -14501,60 +14927,64 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Sanitize
    */
   var Checkbox = (function (Base) {
-    function Checkbox () {
-      Base.apply(this, arguments);
+    function Checkbox (id, args) {
+      Base.call(this, id, args);
+
+      this.validate = Validate.checkbox;
+      this.sanitize = Sanitize.checkbox;
     }
 
     if ( Base ) Checkbox.__proto__ = Base;
     Checkbox.prototype = Object.create( Base && Base.prototype );
     Checkbox.prototype.constructor = Checkbox;
 
-    Checkbox.prototype.softenize = function softenize (value) {
-      return (value === 0 || value === 1) ? value.toString() : value;
+    /**
+     * We need this to fix situations like: `'1' === 1` returning false.
+     *
+     * @override
+     */
+    Checkbox.prototype.softenize = function softenize ($value) {
+      return ($value === 0 || $value === 1) ? $value.toString() : $value;
     };
 
     /**
      * @override
      */
-    Checkbox.prototype.validate = function validate (value) {
-      return Validate.checkbox({}, value, this.setting, this);
+    Checkbox.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      var $uiValue = numberToBoolean(this.__input.checked);
+
+      return this.softenize($uiValue) !== this.softenize($value);
     };
 
     /**
      * @override
      */
-    Checkbox.prototype.sanitize = function sanitize (value) {
-      return Sanitize.checkbox(value, this.setting, this);
+    Checkbox.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this.__input.checked = numberToBoolean($value);
     };
 
     /**
      * @override
      */
-    Checkbox.prototype.syncUI = function syncUI (value) {
-      var valueClean = numberToBoolean(value);
-      var inputStatus = numberToBoolean(this.__input.checked);
-      if (inputStatus !== valueClean) {
-        this.__input.checked = valueClean;
-      }
-    };
-
-    /**
-     * @override
-     */
-    Checkbox.prototype.ready = function ready () {
+    Checkbox.prototype.componentDidMount = function componentDidMount () {
       var this$1 = this;
 
       this.__input = this._container.getElementsByTagName('input')[0];
 
-      // sync input value on ready
       this.__input.checked = numberToBoolean(this.setting());
 
-      // bind input on ready
       this.__input.onchange = function (event) {
         event.preventDefault();
         var value = event.target.checked ? 1 : 0;
         this$1.setting.set(value);
       };
+    };
+
+    /**
+     * @override
+     */
+    Checkbox.prototype._tpl = function _tpl () {
+      return ("\n      " + (this._tplHeader()) + "\n      <label>\n        <input type=\"checkbox\" name=\"_customize-kkcp_checkbox-{{ data.id }}\" value=\"\" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}=\"{{ a[key] }}\" <# } } #>>\n        <# if (data.attrs && data.attrs.label) { #>{{{ data.attrs.label }}}<# } #>\n      </label>\n    ")
     };
 
     return Checkbox;
@@ -14583,58 +15013,56 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Sanitize
    */
   var Color = (function (Base) {
-    function Color () {
-      Base.apply(this, arguments);
+    function Color (id, args) {
+      Base.call(this, id, args);
+
+      this.validate = Validate.color;
+      this.sanitize = Sanitize.color;
     }
 
     if ( Base ) Color.__proto__ = Base;
     Color.prototype = Object.create( Base && Base.prototype );
     Color.prototype.constructor = Color;
 
-    Color.prototype.softenize = function softenize (value) {
-      try {
-        var anyColor = tinycolor(value);
-        if (!anyColor['_format']) { // whitelisted from uglify \\
-          return value;
-        } else {
-          return anyColor.toRgbString();
-        }
-      } catch(e) {
-        if (DEBUG) {
-          console.warn('Control->Color->softenize: tinycolor conversion failed', e);
-        }
-        return value;
+    /**
+     * Use tinycolor (included in spectrum.js) to always convert colors to the
+     * same format, so to have the same output result when the input is `red` or
+     * `#f00` or `#ff0000` or `rgba(255, 0, 0, 1)`. If it is not an actual color
+     * but an expression or a variable tinycolor won't recognize a `_format`
+     * (such as hex, name, rgba, etc..), we rely on this do decide what to return
+     *
+     * @override
+     * @requires tinycolor.toRgbString
+     */
+    Color.prototype.softenize = function softenize ($value) {
+      var anyColor = tinycolor($value);
+
+      if (!anyColor['_format']) { // whitelisted from uglify \\
+        return $value;
+      } else {
+        return anyColor.toRgbString();
       }
     };
 
     /**
      * @override
      */
-    Color.prototype.validate = function validate (value) {
-      return Validate.color({}, value, this.setting, this);
+    Color.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return this.softenize(this._getValueFromUi()) !== this.softenize($value);
     };
 
     /**
      * @override
      */
-    Color.prototype.sanitize = function sanitize (value) {
-      return Sanitize.color(value, this.setting, this);
+    Color.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this._updateUI($value);
     };
 
     /**
      * @override
      */
-    Color.prototype.syncUI = function syncUI (value) {
-      this._apply(value, 'API');
-    };
-
-    /**
-     * Destroy `spectrum` instances if any.
-     *
-     * @override
-     */
-    Color.prototype.onDeflate = function onDeflate () {
-      if (this.__$picker && this.rendered) {
+    Color.prototype.componentWillUnmount = function componentWillUnmount () {
+      if (this.__$picker) {
         this.__$picker.spectrum('destroy');
       }
     };
@@ -14642,22 +15070,17 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     /**
      * @override
      */
-    Color.prototype.ready = function ready () {
+    Color.prototype.componentDidMount = function componentDidMount () {
       var this$1 = this;
 
-      /** @type {HTMLElement} */
       var container = this._container;
-      /** @type {HTMLElement} */
       var btnCustom = container.getElementsByClassName('kkcpui-toggle')[0];
 
-      /** @type {HTMLElement} */
       this.__preview = container.getElementsByClassName('kkcpcolor-current-overlay')[0];
-      /** @type {JQuery} */
       this.__$picker = $$1(container.getElementsByClassName('kkcpcolor-input')[0]);
-      /** @type {JQuery} */
       this.__$expander = $$1(container.getElementsByClassName('kkcp-expander')[0]).hide();
 
-      this._updateUIpreview(this.setting());
+      this._updateUI(this.setting());
 
       var isOpen = false;
       var pickerIsInitialized = false;
@@ -14726,9 +15149,11 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         },
         move: function (tinycolor) {
           var color$$1 = tinycolor ? tinycolor.toString() : 'transparent';
-          this$1._apply(color$$1);
+          this$1.setting.set(color$$1);
         },
         change: function (tinycolor) {
+          var color$$1 = tinycolor ? tinycolor.toString() : 'transparent';
+          this$1.setting.set(color$$1);
           if (!tinycolor) {
             $container.find('.sp-input').val('transparent');
           }
@@ -14737,55 +15162,40 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     };
 
     /**
-     * Update UI preview (the color box on the left hand side)
+     * Get value from UI
      *
-     * @since   1.0.0
+     * @since   1.1.0
      * @memberof! controls.Color#
+     *
      * @access protected
+     * @return {string}
      */
-    Color.prototype._updateUIpreview = function _updateUIpreview (newValue) {
-      this.__preview.style.background = newValue;
+    Color.prototype._getValueFromUi = function _getValueFromUi () {
+      return this.__preview.style.background;
     };
 
     /**
-     * Update UI control (the spectrum color picker)
+     * Update UI
      *
-     * @since   1.0.0
+     * @since   1.1.0
      * @memberof! controls.Color#
+     *
      * @access protected
+     * @param  {string} $value
      */
-    Color.prototype._updateUIcustomControl = function _updateUIcustomControl (newValue) {
-      this.__$picker.spectrum('set', newValue);
+    Color.prototype._updateUI = function _updateUI ($value) {
+      this.__preview.style.background = $value;
+
+      if (this.__$picker && this.__$picker.spectrum) {
+        this.__$picker.spectrum('set', $value);
+      }
     };
 
     /**
-     * Apply, wrap the `setting.set()` function
-     * doing some additional stuff.
-     *
-     * @since   1.0.0
-     * @memberof! controls.Color#
-     *
-     * @access protected
-     * @param  {string} value
-     * @param  {string} from  Where the value come from (could be from the UI:
-     *                        picker, dynamic fields, expr field) or from the
-     *                        API (on programmatic value change).
+     * @override
      */
-    Color.prototype._apply = function _apply (value, from) {
-      this.params.valueCSS = value;
-
-      if (this.rendered) {
-        this._updateUIpreview(value);
-
-        if (from === 'API') {
-          this._updateUIcustomControl(value);
-        }
-      }
-
-      if (from !== 'API') {
-        // set new value
-        this.setting.set(value);
-      }
+    Color.prototype._tpl = function _tpl () {
+      return ("\n      " + (this._tplHeader()) + "\n      <span class=\"kkcpcolor-current kkcpcolor-current-bg\"></span>\n      <span class=\"kkcpcolor-current kkcpcolor-current-overlay\"></span>\n      <button class=\"kkcpui-toggle kkcpcolor-toggle\">" + (this._l10n('selectColor')) + "</button>\n      <div class=\"kkcp-expander\">\n        <input class=\"kkcpcolor-input\" type=\"text\">\n      </div>\n    ")
     };
 
     return Color;
@@ -14810,11 +15220,15 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   var Content = (function (Base) {
     function Content () {
       Base.apply(this, arguments);
-    }if ( Base ) Content.__proto__ = Base;
+    }
+
+    if ( Base ) Content.__proto__ = Base;
     Content.prototype = Object.create( Base && Base.prototype );
     Content.prototype.constructor = Content;
 
-    
+    Content.prototype.template = function template () {
+      return "\n      <# if (data.alert) { #><div class=\"kkcpui-alert {{ data.alert }}\"><# } #>\n        <# if (data.label) { #><span class=\"customize-control-title\"><# if (marked) { #>{{{ marked(data.label) }}}<# } else { #>{{{ data.label }}}<# } #></span><# } #>\n        <# if (data.description) { #><span<# if (!data.alert) { #> class=\"description customize-control-description\"<# } #>><# if (marked) { #>{{{ marked(data.description) }}}<# } else { #>{{{ data.description }}}<# } #></span><# } #>\n        <# if (marked && data.markdown) { #><div class=\"description kkcp-markdown\">{{{ marked(data.markdown) }}}</div><# } #>\n      <# if (data.alert) { #></div><# } #>\n    "
+    };
 
     return Content;
   }(Base$1));
@@ -14840,33 +15254,25 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Sanitize
    * @requires Helper
    */
-  var FontFamily = (function (BaseSet) {
-    function FontFamily () {
-      BaseSet.apply(this, arguments);
+  var FontFamily = (function (BaseSet$$1) {
+    function FontFamily (id, args) {
+      BaseSet$$1.call(this, id, args);
+
+      this.validate = Validate.fontFamily;
+      this.sanitize = Sanitize.fontFamily;
     }
 
-    if ( BaseSet ) FontFamily.__proto__ = BaseSet;
-    FontFamily.prototype = Object.create( BaseSet && BaseSet.prototype );
+    if ( BaseSet$$1 ) FontFamily.__proto__ = BaseSet$$1;
+    FontFamily.prototype = Object.create( BaseSet$$1 && BaseSet$$1.prototype );
     FontFamily.prototype.constructor = FontFamily;
-
-    FontFamily.prototype.validate = function validate (value) {
-      return Validate.fontFamily({}, value, this.setting, this);
-    };
-
-    /**
-     * @override
-     */
-    FontFamily.prototype.sanitize = function sanitize (value) {
-      return Sanitize.fontFamily(value, this.setting, this);
-    };
 
     /**
      * Always quote all font families
      *
      * @override
      */
-    FontFamily.prototype.onInit = function onInit () {
-      BaseSet.prototype.onInit.call(this);
+    FontFamily.prototype.componentInit = function componentInit () {
+      BaseSet$$1.prototype.componentInit.call(this);
 
       this._options = _$1.map(this._options, function (option) {
         option.value = Helper.normalizeFontFamily(option.value);
@@ -14878,27 +15284,39 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     /**
      * @override
      */
-    FontFamily.prototype.syncUI = function syncUI (value) {
-      if (_$1.isArray(value)) {
-        value = value.join(',');
+    FontFamily.prototype.softenize = function softenize ($value) {
+      if (_$1.isArray($value)) {
+        $value = $value.join(',');
       }
-      if (!_$1.isEqual(value, this.__input.selectize.getValue())) {
-        this._initUI(value);
-      }
+      return $value;
     };
 
     /**
      * @override
      */
-    FontFamily.prototype.ready = function ready () {
+    FontFamily.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return !_$1.isEqual(this.softenize($value), this.__input.selectize.getValue());
+    };
+
+    /**
+     * @override
+     */
+    FontFamily.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this._updateUI($value);
+    };
+
+    /**
+     * @override
+     */
+    FontFamily.prototype.componentDidMount = function componentDidMount () {
       this.__input = this._container.getElementsByClassName('kkcp-select')[0];
-      this._initUI(this.setting());
+      this._updateUI(this.setting());
     };
 
     /**
      * @override
      */
-    FontFamily.prototype._initUI = function _initUI (value) {
+    FontFamily.prototype._updateUI = function _updateUI (value) {
       // this is due to a bug, we should use:
       // this.__input.selectize.setValue(value, true);
       // @see https://github.com/brianreavis/selectize.js/issues/568
@@ -14949,8 +15367,15 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       return ("<div class=\"kkcp-icon-selectHeader\">" + (_$1.escape(data.label)) + "</div>");
     };
 
+    /**
+     * @override
+     */
+    FontFamily.prototype._tpl = function _tpl () {
+      return ("\n      <label>\n        " + (this._tplHeader()) + "\n      </label>\n      <input class=\"kkcp-select\" type=\"text\">\n    ");
+    };
+
     return FontFamily;
-  }(BaseSet$1));
+  }(BaseSet));
 
   wpApi.controlConstructor['kkcp_font_family'] = api$1.controls.FontFamily = FontFamily;
 
@@ -14969,13 +15394,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @augments wp.customize.Control
    * @augments wp.customize.Class
    */
-  var Icon = (function (BaseSet) {
+  var Icon = (function (BaseSet$$1) {
     function Icon () {
-      BaseSet.apply(this, arguments);
+      BaseSet$$1.apply(this, arguments);
     }
 
-    if ( BaseSet ) Icon.__proto__ = BaseSet;
-    Icon.prototype = Object.create( BaseSet && BaseSet.prototype );
+    if ( BaseSet$$1 ) Icon.__proto__ = BaseSet$$1;
+    Icon.prototype = Object.create( BaseSet$$1 && BaseSet$$1.prototype );
     Icon.prototype.constructor = Icon;
 
     Icon.prototype._renderItem = function _renderItem (data) {
@@ -15010,8 +15435,15 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       return ((data.set) + " " + (data.set) + "-" + (data.value));
     };
 
+    /**
+     * @override
+     */
+    Icon.prototype._tpl = function _tpl () {
+      return ("\n      <label>" + (this._tplHeader()) + "</label>\n      <select class=\"kkcp-select\" placeholder=\"" + (this._l10n['iconSearchPlaceholder']) + "\"<# if (data.max > 1) { #>  name=\"icon[]\" multiple<# } else { #>name=\"icon\"<# } #>>\n        <option value=\"\">" + (this._l10n['iconSearchPlaceholder']) + "</option>\n      </select>\n    ")
+    };
+
     return Icon;
-  }(BaseSet$1));
+  }(BaseSet));
 
   wpApi.controlConstructor['kkcp_icon'] = api$1.controls.Icon = Icon;
 
@@ -15033,6 +15465,161 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   }
 
   /**
+   * Control Sortable
+   *
+   * Accessible globally on `wp.customize.controlConstructor.kkcp_sortable`
+   *
+   * @since  1.0.0
+   *
+   * @memberof controls
+   * @class Sortable
+   *
+   * @extends controls.BaseChoices
+   * @augments controls.Base
+   * @augments wp.customize.Control
+   * @augments wp.customize.Class
+   *
+   * @requires Validate
+   * @requires Sanitize
+   */
+  var Sortable = (function (BaseChoices$$1) {
+    function Sortable (id, args) {
+      BaseChoices$$1.call(this, id, args);
+
+      this.validate = Validate.sortable;
+      this.sanitize = Sanitize.sortable;
+    }
+
+    if ( BaseChoices$$1 ) Sortable.__proto__ = BaseChoices$$1;
+    Sortable.prototype = Object.create( BaseChoices$$1 && BaseChoices$$1.prototype );
+    Sortable.prototype.constructor = Sortable;
+
+    /**
+     * @override
+     */
+    Sortable.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return !_$1.isEqual($value, this._getValueFromUI());
+    };
+
+    /**
+     * @override
+     */
+    Sortable.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this._updateUI($value);
+    };
+
+    /**
+     * @override
+     */
+    Sortable.prototype.componentDidMount = function componentDidMount () {
+      var this$1 = this;
+
+      this._buildItemsMap();
+
+      this.container.sortable({
+        items: '.kkcp-sortable',
+        cursor: 'move',
+        update: function () {
+          var value = this$1._getValueFromUI();
+          this$1.setting.set(value);
+        }
+      });
+    };
+
+    /**
+     * Build items map
+     *
+     * It creates a sortable items map, a key (grabbed from the `data-value`
+     * attribute) with the corresponding DOM element
+     *
+     * @since   1.0.0
+     * @memberof! controls.Sortable#
+     * @access protected
+     */
+    Sortable.prototype._buildItemsMap = function _buildItemsMap () {
+      var this$1 = this;
+
+      var items = this._container.getElementsByClassName('kkcp-sortable');
+      this.__itemsMap = {};
+
+      for (var i = 0, l = items.length; i < l; i++) {
+        var itemKey = items[i].getAttribute('data-value');
+        this$1.__itemsMap[itemKey] = {
+          _sortable: items[i]
+        };
+      }
+    };
+
+    /**
+     * Get value from UI
+     *
+     * @since   1.1.0
+     * @memberof! controls.Sortable#
+     * @access protected
+     *
+     * @return {Array}
+     */
+    Sortable.prototype._getValueFromUI = function _getValueFromUI () {
+      return this.container.sortable('toArray', { attribute: 'data-value' });
+    };
+
+    /**
+     * Update UI
+     *
+     * Manually reorder the sortable list, needed when a programmatic change
+     * is triggered. Unfortunately jQuery UI sortable does not have a method
+     * to keep in sync the order of an array and its corresponding DOM.
+     *
+     * @since   1.0.0
+     * @memberof! controls.Sortable#
+     * @access protected
+     *
+     * @param {mixed} $value
+     */
+    Sortable.prototype._updateUI = function _updateUI ($value) {
+      var this$1 = this;
+
+      var value = this.setting();
+
+      if (!_$1.isArray($value)) {
+        return logError('controls.Sortable->_updateUI', "setting.value must be an array");
+      }
+
+      for (var i = 0, l = $value.length; i < l; i++) {
+        var itemValueAsKey = $value[i];
+        var item = this$1.__itemsMap[itemValueAsKey];
+        if (item) {
+          var itemSortableDOM = item._sortable;
+          itemSortableDOM.parentNode.removeChild(itemSortableDOM);
+          this$1._container.appendChild(itemSortableDOM);
+        } else {
+          logError('controls.Sortable->_updateUI', ("item '" + itemValueAsKey + "' has no '_sortable' DOM in 'this.__itemsMap'"));
+        }
+      }
+
+      this.container.sortable('refresh');
+    };
+
+    /**
+     * @override
+     */
+    Sortable.prototype._tplChoicesLoop = function _tplChoicesLoop () {
+      return ("\n      <# if (_.isArray(data.choicesOrdered)) { for (var i = 0; i < data.choicesOrdered.length; i++) {\n        var val = data.choicesOrdered[i]; #>\n        " + (this._tplChoice()) + "\n      <# } } #>\n    ");
+    };
+
+    /**
+     * @override
+     */
+    Sortable.prototype._tplChoiceUi = function _tplChoiceUi () {
+      return "<div class=\"kkcp-sortable\" title=\"{{ val }}\" data-value=\"{{ val }}\" class=\"{{ classes }}\" {{ attributes }}>{{ label }}</div>";
+    };
+
+    return Sortable;
+  }(BaseChoices));
+
+  var Sortable$1 = wpApi.controlConstructor['kkcp_sortable'] = api$1.controls.Sortable = Sortable;
+
+  /**
    * Control Multicheck
    *
    * Accessible globally on `wp.customize.controlConstructor.kkcp_multicheck`
@@ -15050,43 +15637,40 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Validate
    * @requires Sanitize
    */
-  var Multicheck = (function (BaseChoices) {
-    function Multicheck () {
-      BaseChoices.apply(this, arguments);
+  var Multicheck = (function (BaseChoices$$1) {
+    function Multicheck (id, args) {
+      BaseChoices$$1.call(this, id, args);
+
+      this.validate = Validate.multipleChoices;
+      this.sanitize = Sanitize.multipleChoices;
     }
 
-    if ( BaseChoices ) Multicheck.__proto__ = BaseChoices;
-    Multicheck.prototype = Object.create( BaseChoices && BaseChoices.prototype );
+    if ( BaseChoices$$1 ) Multicheck.__proto__ = BaseChoices$$1;
+    Multicheck.prototype = Object.create( BaseChoices$$1 && BaseChoices$$1.prototype );
     Multicheck.prototype.constructor = Multicheck;
 
-    Multicheck.prototype.validate = function validate (value) {
-      return Validate.multipleChoices({}, value, this.setting, this);
+    /**
+     * @override
+     */
+    Multicheck.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return !_$1.isEqual($value, this._getValueFromUI());
     };
 
     /**
      * @override
      */
-    Multicheck.prototype.sanitize = function sanitize (value) {
-      return Sanitize.multipleChoices(value, this.setting, this);
-    };
+    Multicheck.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this._updateUIcheckboxes($value);
 
-    /**
-     * @override
-     */
-    Multicheck.prototype.syncUI = function syncUI (value) {
-      if (!_$1.isEqual(value, this._getValueFromUI())) {
-        this._syncCheckboxes();
-
-        if (this.params.sortable) {
-          this._reorder();
-        }
+      if (this.params.sortable) {
+        this._updateUIreorder($value);
       }
     };
 
     /**
      * @override
      */
-    Multicheck.prototype.ready = function ready () {
+    Multicheck.prototype.componentDidMount = function componentDidMount () {
       var this$1 = this;
 
       this.__inputs = this._container.getElementsByTagName('input');
@@ -15104,8 +15688,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         this._buildItemsMap();
       }
 
-      // sync checked state on checkboxes on ready and bind (argument `true`)
-      this._syncCheckboxes(true);
+      // sync checked state on checkboxes and bind (argument `true`)
+      this._updateUIcheckboxes(this.setting(), true);
     };
 
     /**
@@ -15126,33 +15710,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
           _sortable: items[i],
           _input: items[i].getElementsByTagName('input')[0]
         };
-      }
-    };
-
-    /**
-     * @override
-     */
-    Multicheck.prototype._reorder = function _reorder () {
-      var this$1 = this;
-
-      // sort first the checked ones
-      api$1.controls['Sortable'].prototype._reorder.apply(this);
-
-      // then sort the unchecked ones
-      var value = this.setting();
-
-      for (var itemValueAsKey in this$1.params.choices) {
-        var item = this$1.__itemsMap[itemValueAsKey];
-
-        if (item) {
-          if (value.indexOf(itemValueAsKey) === -1) {
-            var itemSortableDOM = item._sortable;
-            itemSortableDOM.parentNode.removeChild(itemSortableDOM);
-            this$1._container.appendChild(itemSortableDOM);
-          }
-        } else {
-          logError('controls.Multicheck->_reorder', ("item '" + itemValueAsKey + "' has no '_sortable' DOM in 'this.__itemsMap'"));
-        }
       }
     };
 
@@ -15180,28 +15737,51 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     };
 
     /**
-     * Sync checkboxes and maybe bind change event
-     * We need to be fast here, use vanilla js.
+     * @override
+     */
+    Multicheck.prototype._updateUIreorder = function _updateUIreorder ($value) {
+      var this$1 = this;
+
+      // sort first the checked ones
+      Sortable$1.prototype._updateUI.apply(this);
+
+      // then sort the unchecked ones
+      for (var itemValueAsKey in this$1.params.choices) {
+        var item = this$1.__itemsMap[itemValueAsKey];
+
+        if (item) {
+          if ($value.indexOf(itemValueAsKey) === -1) {
+            var itemSortableDOM = item._sortable;
+            itemSortableDOM.parentNode.removeChild(itemSortableDOM);
+            this$1._container.appendChild(itemSortableDOM);
+          }
+        } else {
+          logError('controls.Multicheck->_reorder', ("item '" + itemValueAsKey + "' has no '_sortable' DOM in 'this.__itemsMap'"));
+        }
+      }
+    };
+
+    /**
+     * Update UI checkboxes and maybe bind change event
      *
      * @since   1.0.0
      * @memberof! controls.Multicheck#
      * @access protected
      *
-     * @param  {boolean} bindAsWell Bind on change?
+     * @param  {mixed}   $value
+     * @param  {boolean} bind
      */
-    Multicheck.prototype._syncCheckboxes = function _syncCheckboxes (bindAsWell) {
+    Multicheck.prototype._updateUIcheckboxes = function _updateUIcheckboxes ($value, bind) {
       var this$1 = this;
 
-      var value = this.setting();
-
-      if (!_$1.isArray(value)) {
-        return logError('controls.Multicheck->_syncCheckboxes', "setting.value must be an array");
+      if (!_$1.isArray($value)) {
+        return logError('controls.Multicheck->_updateUIcheckboxes', "setting.value must be an array");
       }
 
       for (var i = 0, l = this.__inputs.length; i < l; i++) {
         var input = this$1.__inputs[i];
-        input.checked = value.indexOf(input.value) !== -1;
-        if (bindAsWell) {
+        input.checked = $value.indexOf(input.value) !== -1;
+        if (bind) {
           input.onchange = function () {
             this$1.setting.set(this$1._getValueFromUI());
           };
@@ -15209,8 +15789,28 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       }
     };
 
+    /**
+     * If the control is sortable we first show the ordered choices (the ones
+     * stored as value in the DB, gathered with `$this->value()`) and then the
+     * other choices, that's why the double loop with the `indexOf` condition.
+     *
+     * @override
+     */
+    Multicheck.prototype._tplChoicesLoop = function _tplChoicesLoop () {
+      var tplChoice = this._tplChoice();
+
+      return ("\n      <# if (data.sortable) {\n        if (_.isArray(data.choicesOrdered)) {\n          for (var i = 0; i < data.choicesOrdered.length; i++) {\n            var val = data.choicesOrdered[i]; #>\n            " + tplChoice + "\n          <# }\n          for (var val in choices) {\n            if (data.choicesOrdered.indexOf(val) === -1) { #>\n              " + tplChoice + "\n            <# }\n          }\n        }\n      } else {\n        for (var val in choices) { #>\n          " + tplChoice + "\n        <# }\n      } #>\n    ")
+    };
+
+    /**
+     * @override
+     */
+    Multicheck.prototype._tplChoiceUi = function _tplChoiceUi () {
+      return "\n      <label class=\"{{ classes }}\" {{ attributes }}>\n        <input type=\"checkbox\" name=\"_customize-kkcp_multicheck-{{ data.id }}\" value=\"{{ val }}\">{{{ label }}}\n      </label>\n    "
+    };
+
     return Multicheck;
-  }(BaseChoices$1));
+  }(BaseChoices));
 
   wpApi.controlConstructor['kkcp_multicheck'] = api$1.controls.Multicheck = Multicheck;
 
@@ -15232,25 +15832,17 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Validate
    * @requires Sanitize
    */
-  var Number$1 = (function (BaseInput) {
-    function Number () {
-      BaseInput.apply(this, arguments);
+  var Number$1 = (function (BaseInput$$1) {
+    function Number (id, args) {
+      BaseInput$$1.call(this, id, args);
+
+      this.validate = Validate.number;
+      this.sanitize = Sanitize.number;
     }
 
-    if ( BaseInput ) Number.__proto__ = BaseInput;
-    Number.prototype = Object.create( BaseInput && BaseInput.prototype );
+    if ( BaseInput$$1 ) Number.__proto__ = BaseInput$$1;
+    Number.prototype = Object.create( BaseInput$$1 && BaseInput$$1.prototype );
     Number.prototype.constructor = Number;
-
-    Number.prototype.validate = function validate (value) {
-      return Validate.number({}, value, this.setting, this);
-    };
-
-    /**
-     * @override
-     */
-    Number.prototype.sanitize = function sanitize (value) {
-      return Sanitize.number(value, this.setting, this);
-    };
 
     /**
      * We just neet to convert the value to string for the check, for the rest
@@ -15258,14 +15850,12 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      *
      * @override
      */
-    Number.prototype.syncUI = function syncUI (value) {
-      if (value && this.__input.value !== value.toString()) {
-        this.__input.value = value;
-      }
+    Number.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return this.__input.value !== $value.toString();
     };
 
     return Number;
-  }(BaseInput$1));
+  }(BaseInput));
 
   wpApi.controlConstructor['kkcp_number'] = api$1.controls.Number = Number$1;
 
@@ -15287,28 +15877,20 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Validate
    * @requires Sanitize
    */
-  var Text = (function (BaseInput) {
-    function Text () {
-      BaseInput.apply(this, arguments);
+  var Text = (function (BaseInput$$1) {
+    function Text (id, args) {
+      BaseInput$$1.call(this, id, args);
+
+      this.validate = Validate.text;
+      this.sanitize = Sanitize.text;
     }
 
-    if ( BaseInput ) Text.__proto__ = BaseInput;
-    Text.prototype = Object.create( BaseInput && BaseInput.prototype );
+    if ( BaseInput$$1 ) Text.__proto__ = BaseInput$$1;
+    Text.prototype = Object.create( BaseInput$$1 && BaseInput$$1.prototype );
     Text.prototype.constructor = Text;
 
-    Text.prototype.validate = function validate (value) {
-      return Validate.text({}, value, this.setting, this);
-    };
-
-    /**
-     * @override
-     */
-    Text.prototype.sanitize = function sanitize (value) {
-      return Sanitize.text(value, this.setting, this);
-    };
-
     return Text;
-  }(BaseInput$1));
+  }(BaseInput));
 
   var Text$1 = wpApi.controlConstructor['kkcp_text'] = api$1.controls.Text = Text;
 
@@ -15340,17 +15922,18 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     Password.prototype = Object.create( Text && Text.prototype );
     Password.prototype.constructor = Password;
 
-    Password.prototype.syncUI = function syncUI (value) {
-      if (value && this.__input.value !== value) {
-        this.__input.value = value;
-        this.__text.value = value;
+    Password.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this.__input.value = $value;
+
+      if (this.__text) {
+        this.__text.value = $value;
       }
     };
 
     /**
      * @override
      */
-    Password.prototype.ready = function ready (value) {
+    Password.prototype.componentDidMount = function componentDidMount () {
       var self = this;
       var ref = this;
       var setting = ref.setting;
@@ -15411,6 +15994,15 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       }
     };
 
+    /**
+     * @override
+     */
+    Password.prototype._tplInner = function _tplInner () {
+      var tplInput = this._tplInput();
+
+      return ("\n      <span class=\"kkcp-password\">\n        <# if (data.attrs && data.attrs.visibility) { #>\n          " + tplInput + "\n          <input class=\"kkcp-password__preview\" type=\"text\" tabindex=\"-1\" <# for (var key in attrs) { if (attrs.hasOwnProperty(key) && key !== 'title') { #>{{ key }}=\"{{ attrs[key] }}\" <# } } #>>\n          <button class=\"kkcp-password__toggle\">\n            <span class=\"kkcp-password__hide\" aria-label=\"" + (this._l10n('passwordHide')) + "\"><i class=\"dashicons dashicons-hidden\"></i></span>\n            <span class=\"kkcp-password__show\" aria-label=\"" + (this._l10n('passwordShow')) + "\"><i class=\"dashicons dashicons-visibility\"></i></span>\n          </button>\n        <# } else { #>\n          " + tplInput + "\n        <# } #>\n      </span>\n    ")
+    };
+
     return Password;
   }(Text$1));
 
@@ -15432,17 +16024,21 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @augments wp.customize.Control
    * @augments wp.customize.Class
    */
-  var Radio = (function (BaseRadio) {
+  var Radio = (function (BaseRadio$$1) {
   	function Radio () {
-  		BaseRadio.apply(this, arguments);
-  	}if ( BaseRadio ) Radio.__proto__ = BaseRadio;
-  	Radio.prototype = Object.create( BaseRadio && BaseRadio.prototype );
+  		BaseRadio$$1.apply(this, arguments);
+  	}
+
+  	if ( BaseRadio$$1 ) Radio.__proto__ = BaseRadio$$1;
+  	Radio.prototype = Object.create( BaseRadio$$1 && BaseRadio$$1.prototype );
   	Radio.prototype.constructor = Radio;
 
-  	
+  	Radio.prototype._tplChoiceUi = function _tplChoiceUi () {
+  		return "\n\t\t\t<label class=\"{{ classes }}\" {{{ attributes }}}>\n\t\t\t\t<input type=\"radio\" value=\"{{ val }}\" name=\"_customize-kkcp_radio-{{ data.id }}\">\n\t\t\t\t{{ label }}\n\t\t\t\t<# if (choice.sublabel) { #><small> ({{ choice.sublabel }})</small><# } #>\n\t\t\t</label>\n\t\t"
+  	};
 
   	return Radio;
-  }(BaseRadio$1));
+  }(BaseRadio));
 
   wpApi.controlConstructor['kkcp_radio'] = api$1.controls.Radio = Radio;
 
@@ -15462,17 +16058,21 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @augments wp.customize.Control
    * @augments wp.customize.Class
    */
-  var RadioImage = (function (BaseRadio) {
+  var RadioImage = (function (BaseRadio$$1) {
   	function RadioImage () {
-  		BaseRadio.apply(this, arguments);
-  	}if ( BaseRadio ) RadioImage.__proto__ = BaseRadio;
-  	RadioImage.prototype = Object.create( BaseRadio && BaseRadio.prototype );
+  		BaseRadio$$1.apply(this, arguments);
+  	}
+
+  	if ( BaseRadio$$1 ) RadioImage.__proto__ = BaseRadio$$1;
+  	RadioImage.prototype = Object.create( BaseRadio$$1 && BaseRadio$$1.prototype );
   	RadioImage.prototype.constructor = RadioImage;
 
-  	
+  	RadioImage.prototype._tplChoiceUi = function _tplChoiceUi () {
+  		return ("\n\t\t\t<input id=\"{{ id }}\" class=\"kkcp-radio-image\" type=\"radio\" value=\"{{ val }}\" name=\"_customize-kkcp_radio_image-{{ data.id }}\">\n\t\t\t<label for=\"{{ id }}\" class=\"{{ classes }}\" {{ attributes }}>\n\t\t\t\t<# var imgUrl = choice.img_custom ? '" + _IMAGES_BASE_URL + "' + choice.img_custom : '" + _CP_URL_IMAGES + "' + choice.img + '.png'; #>\n\t\t\t\t<img class=\"kkcpui-tooltip--top\" src=\"{{ imgUrl }}\" title=\"{{ tooltip }}\">\n\t\t\t</label>\n\t\t")
+  	};
 
   	return RadioImage;
-  }(BaseRadio$1));
+  }(BaseRadio));
 
   wpApi.controlConstructor['kkcp_radio_image'] = api$1.controls.RadioImage = RadioImage;
 
@@ -15494,31 +16094,23 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Validate
    * @requires Sanitize
    */
-  var Select = (function (BaseChoices) {
-    function Select () {
-      BaseChoices.apply(this, arguments);
+  var Select = (function (BaseChoices$$1) {
+    function Select (id, args) {
+      BaseChoices$$1.call(this, id, args);
+
+      this.validate = Validate.oneOrMoreChoices;
+      this.sanitize = Sanitize.oneOrMoreChoices;
     }
 
-    if ( BaseChoices ) Select.__proto__ = BaseChoices;
-    Select.prototype = Object.create( BaseChoices && BaseChoices.prototype );
+    if ( BaseChoices$$1 ) Select.__proto__ = BaseChoices$$1;
+    Select.prototype = Object.create( BaseChoices$$1 && BaseChoices$$1.prototype );
     Select.prototype.constructor = Select;
 
-    Select.prototype.validate = function validate (value) {
-      return Validate.oneOrMoreChoices({}, value, this.setting, this);
-    };
-
     /**
      * @override
      */
-    Select.prototype.sanitize = function sanitize (value) {
-      return Sanitize.oneOrMoreChoices(value, this.setting, this);
-    };
-
-    /**
-     * @override
-     */
-    Select.prototype.onDeflate = function onDeflate () {
-      if (this.__select && this.__select.selectize) {
+    Select.prototype.componentWillUnmount = function componentWillUnmount () {
+      if (this.__select.selectize) {
         this.__select.selectize.destroy();
       }
     };
@@ -15526,20 +16118,25 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     /**
      * We do a comparison with two equals `==` because sometimes we want to
      * compare `500` to `'500'` (like in the font-weight dropdown) and return
-     * true from that.
+     * true from that
      *
      * @override
      */
-    Select.prototype.syncUI = function syncUI (value) {
-      if (!_$1.isEqual(value, this._getValueFromUI())) {
-        this._updateUI(value);
-      }
+    Select.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return this._getValueFromUI() != $value;
     };
 
     /**
      * @override
      */
-    Select.prototype.ready = function ready () {
+    Select.prototype.componentDidUpdate = function componentDidUpdate (value) {
+      this._updateUI(value);
+    };
+
+    /**
+     * @override
+     */
+    Select.prototype.componentDidMount = function componentDidMount () {
       var attrs = this.params['attrs'] || {};
       var setting = this.setting;
 
@@ -15632,8 +16229,29 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       }
     };
 
+    /**
+     * @override
+     */
+    Select.prototype._tplChoiceUi = function _tplChoiceUi () {
+      return "\n      <option class=\"{{ classes }}\" {{ attributes }} value=\"{{ val }}\"<# if (choice.sublabel) { #> data-sublabel=\"{{{ choice.sublabel }}}\"<# } #>>\n        {{ label }}\n      </option>\n    "
+    };
+
+    /**
+     * @override
+     */
+    Select.prototype._tplAboveChoices = function _tplAboveChoices () {
+      return "<select name=\"_customize-kkcp_select-{{ data.id }}\">"
+    };
+
+    /**
+     * @override
+     */
+    Select.prototype._tplBelowChoices = function _tplBelowChoices () {
+      return "</select>"
+    };
+
     return Select;
-  }(BaseChoices$1));
+  }(BaseChoices));
 
   var Select$1 = wpApi.controlConstructor['kkcp_select'] = api$1.controls.Select = Select;
 
@@ -15681,57 +16299,54 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @augments wp.customize.Control
    * @augments wp.customize.Class
    *
-   * @requires Regexes
    * @requires Validate
    * @requires Sanitize
+   * @requires Helper
    */
   var Slider = (function (Base) {
-    function Slider () {
-      Base.apply(this, arguments);
+    function Slider (id, args) {
+      Base.call(this, id, args);
+
+      this.validate = Validate.slider;
+      this.sanitize = Sanitize.slider;
     }
 
     if ( Base ) Slider.__proto__ = Base;
     Slider.prototype = Object.create( Base && Base.prototype );
     Slider.prototype.constructor = Slider;
 
-    Slider.prototype.validate = function validate (value) {
-      return Validate.slider({}, value, this.setting, this);
-    };
-
-    /**
-     * @override
-     */
-    Slider.prototype.sanitize = function sanitize (value) {
-      return Sanitize.slider(value, this.setting, this);
-    };
-
     /**
      * Let's consider '44' to be equal to 44.
      * @override
      */
-    Slider.prototype.softenize = function softenize (value) {
-      return value.toString();
+    Slider.prototype.softenize = function softenize ($value) {
+      return $value.toString();
     };
 
     /**
      * @override
      */
-    Slider.prototype.syncUI = function syncUI (value) {
-      if (value !== this._getValueFromUI()) {
-        this._setPartialValue(value, 'API');
-      }
+    Slider.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return !_$1.isEqual(this.softenize($value), this._getValueFromUI());
     };
 
     /**
-     * This function is divided in subfunction to make it easy to reuse part of
-     * this control in other controls that extend this, such as `size_dynamic`.
+     * @override
+     */
+    Slider.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this._setPartialValue($value, 'API');
+    };
+
+    /**
+     * This function is divided in subfunctions to make it easy to reuse part of
+     * this control in other controls that extends this, such as `size_dynamic`.
      *
      * @override
      */
-    Slider.prototype.ready = function ready () {
-      this._setDOMelements();
+    Slider.prototype.componentDidMount = function componentDidMount () {
+      this._setDOMrefs();
       this._initSliderAndBindInputs();
-      this._updateUIcustomControl(this.setting());
+      this._updateUI(this.setting());
     };
 
     /**
@@ -15741,13 +16356,10 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * @memberof! controls.Slider#
      * @access protected
      */
-    Slider.prototype._setDOMelements = function _setDOMelements () {
+    Slider.prototype._setDOMrefs = function _setDOMrefs () {
       var container = this._container;
-      /** @type {HTMLElement} */
       this.__inputNumber = container.getElementsByClassName('kkcp-slider-number')[0];
-      /** @type {JQuery} */
       this.__$inputUnits = $$1(container.getElementsByClassName('kkcp-unit'));
-      /** @type {JQuery} */
       this.__$inputSlider = $$1(container.getElementsByClassName('kkcp-slider')[0]);
     };
 
@@ -15787,7 +16399,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       // Init Slider
       var sliderOptions = params['attrs'] || {};
       $inputSlider.slider(_$1.extend(sliderOptions, {
-        value: self._extractFirstNumber(),
+        value: Helper.extractNumber(this.setting()),
         slide: function(event, ui) {
           inputNumber.value = ui.value;
           self._setPartialValue({ _number: ui.value });
@@ -15800,44 +16412,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
           }
         }
       }));
-    };
-
-    /**
-     * Extract first found unit from value
-     *
-     * @since   1.0.0
-     * @memberof! controls.Slider#
-     * @access protected
-     *
-     * @param  {?string} value
-     * @return {?string}
-     */
-    Slider.prototype._extractFirstUnit = function _extractFirstUnit (value) {
-      var valueOrigin = value || this.setting();
-      var matchesUnit = Regexes._extractUnit.exec(valueOrigin);
-      if (matchesUnit && matchesUnit[0]) {
-        return matchesUnit[0];
-      }
-      return null;
-    };
-
-    /**
-     * Extract first number found in value
-     *
-     * @since   1.0.0
-     * @memberof! controls.Slider#
-     * @access protected
-     *
-     * @param  {?string|number} value
-     * @return {?string}
-     */
-    Slider.prototype._extractFirstNumber = function _extractFirstNumber (value) {
-      var valueOrigin = value || this.setting();
-      var matchesNumber = Regexes._extractNumber.exec(valueOrigin);
-      if (matchesNumber && matchesNumber[0]) {
-        return matchesNumber[0];
-      }
-      return null;
     };
 
     /**
@@ -15881,10 +16455,10 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * @param {?string} value Optional, the value from where to extract number and unit,
      *                        uses `this.setting()` if a `null` value is passed.
      */
-    Slider.prototype._updateUIcustomControl = function _updateUIcustomControl (value) {
+    Slider.prototype._updateUI = function _updateUI (value) {
       var params = this.params;
-      var number$$1 = this._extractFirstNumber(value);
-      var unit = this._extractFirstUnit(value);
+      var number$$1 = Helper.extractNumber(value);
+      var unit = Helper.extractSizeUnit(value);
 
       // update number input
       this.__inputNumber.value = number$$1;
@@ -15914,147 +16488,32 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      */
     Slider.prototype._setPartialValue = function _setPartialValue (value, from) {
       if (from === 'API') {
-        this._updateUIcustomControl(value);
+        this._updateUI(value);
       } else {
         this.setting.set(this._getValueFromUI(value));
       }
+    };
+
+    /**
+     * Separate the slider template to make it reusable by child classes
+     *
+     * @override
+     */
+    Slider.prototype._tplSlider = function _tplSlider () {
+      return "\n      <# if (data.units) { #>\n        <div class=\"kkcp-inputs-wrap\">\n          <input type=\"number\" class=\"kkcp-slider-number\" value=\"\" tabindex=\"-1\"\n            <# for (var key in data.attrs) { if (data.attrs.hasOwnProperty(key)) { #>{{ key }}=\"{{ data.attrs[key] }}\" <# } } #>>\n          <div class=\"kkcp-unit-wrap\"><# for (var i = 0, l = data.units.length; i < l; i++) { #><input type=\"text\" class=\"kkcp-unit\" readonly=\"true\" tabindex=\"-1\" value=\"{{ data.units[i] }}\"><# } #></div>\n        </div>\n      <# } else { #>\n        <input type=\"number\" class=\"kkcp-slider-number\" value=\"\" tabindex=\"-1\"\n          <# for (var key in data.attrs) { if (data.attrs.hasOwnProperty(key)) { #>{{ key }}=\"{{ data.attrs[key] }}\" <# } } #>>\n        <# } #>\n      <div class=\"kkcp-slider-wrap\">\n        <div class=\"kkcp-slider\"></div>\n      </div>\n    "
+    };
+
+    /**
+     * @override
+     */
+    Slider.prototype._tpl = function _tpl () {
+      return ("" + (this._tplHeader()) + (this._tplSlider()))
     };
 
     return Slider;
   }(Base$1));
 
   wpApi.controlConstructor['kkcp_slider'] = api$1.controls.Slider = Slider;
-
-  /**
-   * Control Sortable
-   *
-   * Accessible globally on `wp.customize.controlConstructor.kkcp_sortable`
-   *
-   * @since  1.0.0
-   *
-   * @memberof controls
-   * @class Sortable
-   *
-   * @extends controls.BaseChoices
-   * @augments controls.Base
-   * @augments wp.customize.Control
-   * @augments wp.customize.Class
-   *
-   * @requires Validate
-   * @requires Sanitize
-   */
-  var Sortable = (function (BaseChoices) {
-    function Sortable () {
-      BaseChoices.apply(this, arguments);
-    }
-
-    if ( BaseChoices ) Sortable.__proto__ = BaseChoices;
-    Sortable.prototype = Object.create( BaseChoices && BaseChoices.prototype );
-    Sortable.prototype.constructor = Sortable;
-
-    Sortable.prototype.validate = function validate (value) {
-      return Validate.multipleChoices({}, value, this.setting, this, true);
-    };
-
-    /**
-     * @override
-     */
-    Sortable.prototype.sanitize = function sanitize (value) {
-      return Sanitize.multipleChoices(value, this.setting, this, true);
-    };
-
-    /**
-     * @override
-     */
-    Sortable.prototype.syncUI = function syncUI (value) {
-      if (!_$1.isEqual(value, this.params.lastValue)) {
-        this._reorder();
-        this.params.lastValue = value;
-      }
-    };
-
-    /**
-     * @override
-     */
-    Sortable.prototype.ready = function ready () {
-      var setting = this.setting;
-      var container = this.container;
-
-      this._buildItemsMap();
-
-      this.params.lastValue = this.setting();
-
-      container.sortable({
-        items: '.kkcp-sortable',
-        cursor: 'move',
-        update: function () {
-          var newValue = container.sortable('toArray', { attribute: 'data-value' });
-          setting.set(newValue);
-        }
-      });
-    };
-
-    /**
-     * Build items map
-     *
-     * It creates a sortable items map, a key (grabbed from the `data-value`
-     * attribute) with the corresponding DOM element
-     *
-     * @since   1.0.0
-     * @memberof! controls.Sortable#
-     * @access protected
-     */
-    Sortable.prototype._buildItemsMap = function _buildItemsMap () {
-      var this$1 = this;
-
-      var items = this._container.getElementsByClassName('kkcp-sortable');
-      this.__itemsMap = {};
-
-      for (var i = 0, l = items.length; i < l; i++) {
-        var itemKey = items[i].getAttribute('data-value');
-        this$1.__itemsMap[itemKey] = {
-          _sortable: items[i]
-        };
-      }
-    };
-
-    /**
-     * Manually reorder the sortable list, needed when a programmatic change
-     * is triggered. Unfortunately jQuery UI sortable does not have a method
-     * to keep in sync the order of an array and its corresponding DOM.
-     *
-     * @since   1.0.0
-     * @memberof! controls.Sortable#
-     * @access protected
-     */
-    Sortable.prototype._reorder = function _reorder () {
-      var this$1 = this;
-
-      var value = this.setting();
-
-      if (!_$1.isArray(value)) {
-        return logError('controls.Sortable->_reorder', "setting.value must be an array");
-      }
-
-      for (var i = 0, l = value.length; i < l; i++) {
-        var itemValueAsKey = value[i];
-        var item = this$1.__itemsMap[itemValueAsKey];
-        if (item) {
-          var itemSortableDOM = item._sortable;
-          itemSortableDOM.parentNode.removeChild(itemSortableDOM);
-          this$1._container.appendChild(itemSortableDOM);
-        } else {
-          logError('controls.Sortable->_reorder', ("item '" + itemValueAsKey + "' has no '_sortable' DOM in 'this.__itemsMap'"));
-        }
-      }
-
-      this.container.sortable('refresh');
-    };
-
-    return Sortable;
-  }(BaseChoices$1));
-
-  wpApi.controlConstructor['kkcp_sortable'] = api$1.controls.Sortable = Sortable;
 
   /**
    * Control Tags class
@@ -16074,70 +16533,21 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Sanitize
    */
   var Tags = (function (Base) {
-    function Tags () {
-      Base.apply(this, arguments);
+    function Tags (id, args) {
+      Base.call(this, id, args);
+
+      this.validate = Validate.tags;
+      this.sanitize = Sanitize.tags;
     }
 
     if ( Base ) Tags.__proto__ = Base;
     Tags.prototype = Object.create( Base && Base.prototype );
     Tags.prototype.constructor = Tags;
 
-    Tags.prototype.validate = function validate (value) {
-      return Validate.tags({}, value, this.setting, this);
-    };
-
     /**
      * @override
      */
-    Tags.prototype.sanitize = function sanitize (value) {
-      return Sanitize.tags(value, this.setting, this);
-    };
-
-    /**
-     * @override
-     */
-    Tags.prototype.onDeflate = function onDeflate () {
-      if (this.__input && this.__input.selectize) {
-        this.__input.selectize.destroy();
-      }
-    };
-
-    /**
-     * @override
-     */
-    Tags.prototype.syncUI = function syncUI (value) {
-      var selectize = this.__input.selectize;
-
-      if (selectize && selectize.getValue() !== value) {
-        // this is due to a bug, we should use:
-        // selectize.setValue(value, true);
-        // @see https://github.com/brianreavis/selectize.js/issues/568
-        // instead here first we have to destroy thene to reinitialize, this
-        // happens only through a programmatic change such as a reset action
-        selectize.destroy();
-        this._initUI(value);
-      }
-    };
-
-    /**
-     * @override
-     */
-    Tags.prototype.ready = function ready () {
-      this.__input = this._container.getElementsByTagName('input')[0];
-
-      this._initUI(this.setting());
-    };
-
-    /**
-     * Init select plugin on text input
-     *
-     * @since   1.0.0
-     * @memberof! controls.Tags#
-     * @access protected
-     *
-     * @param {string} value
-     */
-    Tags.prototype._initUI = function _initUI (value) {
+    Tags.prototype.componentInit = function componentInit () {
       var this$1 = this;
 
       var attrs = this.params['attrs'] || {};
@@ -16169,9 +16579,65 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         pluginOptions.plugins.push('restore_on_backspace');
       }
 
-      this.__input.value = value;
+      this._pluginOptions = pluginOptions;
+    };
 
-      $$1(this.__input).selectize(pluginOptions);
+    /**
+     * @override
+     */
+    Tags.prototype.componentWillUnmount = function componentWillUnmount () {
+      this.__input.selectize.destroy();
+    };
+
+    /**
+     * @override
+     */
+    Tags.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return this.__input.selectize.getValue() !== $value;
+    };
+
+    /**
+     * @override
+     */
+    Tags.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this._updateUI($value);
+    };
+
+    /**
+     * @override
+     */
+    Tags.prototype.componentDidMount = function componentDidMount () {
+      this.__input = this._container.getElementsByTagName('input')[0];
+
+      this._updateUI(this.setting());
+    };
+
+    /**
+     * Update UI
+     *
+     * @since   1.0.0
+     * @memberof! controls.Tags#
+     * @access protected
+     *
+     * @param {string} $value
+     */
+    Tags.prototype._updateUI = function _updateUI ($value) {
+      // here we should not destroy and recreate, but this is a plugin bug:
+      // @see https://github.com/brianreavis/selectize.js/issues/568
+      if (this.__input.selectize) {
+        this.__input.selectize.destroy();
+      }
+      this.__input.value = $value;
+      $$1(this.__input).selectize(this._pluginOptions);
+
+      // this.__input.selectize.setValue($value, true);
+    };
+
+    /**
+     * @override
+     */
+    Tags.prototype._tpl = function _tpl () {
+      return ("\n      <label>\n        " + (this._tplHeader()) + "\n        <input type=\"text\" value=\"\">\n      </label>\n    ")
     };
 
     return Tags;
@@ -16208,19 +16674,17 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     Textarea.prototype = Object.create( Text && Text.prototype );
     Textarea.prototype.constructor = Textarea;
 
-    Textarea.prototype.onInit = function onInit () {
-      if (this.params.wp_editor) {
+    Textarea.prototype.componentInit = function componentInit () {
+      if (this.params['wp_editor']) {
         this._wpEditorID = this._getWpEditorId();
       }
     };
 
     /**
-     * Destroy tinyMCE instance
-     *
      * @override
      */
-    Textarea.prototype.onDeflate = function onDeflate () {
-      if (this.params.wp_editor) {
+    Textarea.prototype.componentWillUnmount = function componentWillUnmount () {
+      if (this.params['wp_editor']) {
         // it might be that this method is called too soon, even before tinyMCE
         // has been loaded, so try it and don't break.
         try {
@@ -16235,36 +16699,69 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     /**
      * @override
      */
-    Textarea.prototype.syncUI = function syncUI (value) {
-      var lastValue;
-      var wpEditorInstance;
-      if (this.params.wp_editor) {
-        wpEditorInstance = window$1.tinyMCE.get(this._wpEditorID);
-        lastValue = wpEditorInstance.getContent();
-        // lastValue = window.wp.editor.getContent(this._wpEditorID);;
-      } else {
-        lastValue = this.__textarea.value;
-      }
-      if (value && lastValue !== value) {
-        if (this.params.wp_editor) {
-          wpEditorInstance.setContent(value);
-        } else {
-          this.__textarea.value = value;
-        }
-      }
+    Textarea.prototype.shouldComponentUpdate = function shouldComponentUpdate ($value) {
+      return $value !== this._getValueFromUI();
     };
 
     /**
      * @override
      */
-    Textarea.prototype.ready = function ready () {
+    Textarea.prototype.componentDidUpdate = function componentDidUpdate ($value) {
+      this._updateUI($value);
+    };
+
+    /**
+     * @override
+     */
+    Textarea.prototype.componentDidMount = function componentDidMount () {
       this.__textarea = this._container.getElementsByTagName('textarea')[0];
 
       // params.wp_editor can be either a boolean or an object with options
-      if (this.params.wp_editor && !this._wpEditorIsActive) {
+      if (this.params['wp_editor'] && !this._wpEditorIsActive) {
         this._initWpEditor();
       } else {
-        this._syncAndListen();
+        var self = this;
+
+        this._updateUI(self.setting());
+
+        $$1(self.__textarea).on('change keyup paste', function () {
+          self.setting.set(this.value);
+        });
+      }
+    };
+
+    /**
+     * Get value from UI
+     *
+     * @since   1.1.0
+     * @memberof! controls.Textarea#
+     * @access protected
+     */
+    Textarea.prototype._getValueFromUI = function _getValueFromUI () {
+      if (this.params['wp_editor']) {
+        wpEditorInstance = window$1.tinyMCE.get(this._wpEditorID);
+        return wpEditorInstance.getContent();
+        // returnwindow.wp.editor.getContent(this._wpEditorID);;
+      } else {
+        return this.__textarea.value;
+      }
+    };
+
+    /**
+     * Update UI
+     *
+     * @since   1.1.0
+     * @memberof! controls.Textarea#
+     * @access protected
+     *
+     * @param {$value}
+     */
+    Textarea.prototype._updateUI = function _updateUI ($value) {
+      if (this.params['wp_editor']) {
+        var wpEditorInstance = window$1.tinyMCE.get(this._wpEditorID);
+        wpEditorInstance.setContent($value);
+      } else {
+        this.__textarea.value = $value;
       }
     };
 
@@ -16280,22 +16777,6 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      */
     Textarea.prototype._getWpEditorId = function _getWpEditorId () {
       return ((this.id.replace(/-/g, '_')) + "__textarea");
-    };
-
-    /**
-     * Sync textarea and listen for changes
-     *
-     * @since   1.0.0
-     * @memberof! controls.Textarea#
-     * @access protected
-     */
-    Textarea.prototype._syncAndListen = function _syncAndListen () {
-      var self = this;
-      $$1(self.__textarea)
-        .val(self.setting())
-        .on('change keyup paste', function () {
-          self.setting.set(this.value);
-        });
     };
 
     /**
@@ -16322,7 +16803,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       var setting = this.setting;
 
       // get wp_editor custom options defined by the developer through the php API
-      var optionsCustom = _$1.isObject(this.params.wp_editor) ? this.params.wp_editor : {};
+      var optionsCustom = _$1.isObject(this.params['wp_editor']) ? this.params['wp_editor'] : {};
 
       // set default options
       var optionsDefaults = $$1.extend(true, {}, window$1.wp.editor.getDefaultSettings(), {
@@ -16359,6 +16840,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       this._wpEditorIsActive = true;
     };
 
+    /**
+     * @override
+     */
+    Textarea.prototype._tpl = function _tpl () {
+      return ("\n      <label>\n        " + (this._tplHeader()) + "<# var attrs = data.attrs; #>\n        <textarea class=\"kkcpui-textarea<# if (data.wp_editor && data.wp_editor.editorClass) { #> {{ data.wp_editor.editorClass }}<# } #>\"\n          <# for (var key in attrs) { if (attrs.hasOwnProperty(key)) { #>{{ key }}=\"{{ attrs[key] }}\" <# } } #>\n          rows=\"<# if (data.wp_editor && data.wp_editor.textareaRows) { #>{{ data.wp_editor.textareaRows }}<# } else if (attrs && attrs.rows) { #>{{ attrs.rows }}<# } else { #>4<# } #>\"\n          <# if (data.wp_editor && data.wp_editor.editorHeight) { #> style=\"height:{{ data.wp_editor.editorHeight }}px\"\n        <# } #>>\n        </textarea>\n      </label>\n    ")
+    };
+
     return Textarea;
   }(Text$1));
 
@@ -16382,11 +16870,15 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   var Toggle = (function (Checkbox) {
   	function Toggle () {
   		Checkbox.apply(this, arguments);
-  	}if ( Checkbox ) Toggle.__proto__ = Checkbox;
+  	}
+
+  	if ( Checkbox ) Toggle.__proto__ = Checkbox;
   	Toggle.prototype = Object.create( Checkbox && Checkbox.prototype );
   	Toggle.prototype.constructor = Toggle;
 
-  	
+  	Toggle.prototype._tpl = function _tpl () {
+  		return ("\n\t\t\t" + (this._tplHeader()) + "\n\t\t\t<# var labelFalse = data.attrs ? data.attrs.label_false : ''; labelTrue = data.attrs ? data.attrs.label_true : ''; #>\n\t\t\t<label class=\"switch-light kkcpui-switch<# if (labelFalse && labelTrue) { var l0l = labelFalse.length, l1l = labelTrue.length; #><# if ((l0l && l1l) && (Math.abs(l0l - l1l) > 1) || l0l > 6 || l1l > 6) { #> kkcpui-switch__labelsauto<# } else { #> kkcpui-switch__labels<# } } #>\" onclick=\"\">\n\t\t\t\t<input type=\"checkbox\" name=\"_customize-kkcp_toggle-{{ data.id }}\" value=\"\" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}=\"{{ a[key] }}\" <# } } #><# if (data.value) { #> checked<# } #>>\n\t\t\t\t<span<# if (!labelFalse && !labelTrue) { #> aria-hidden=\"true\"<# } #>>\n\t\t\t\t\t<span><# if (labelFalse) { #>{{ labelFalse }}<# } #></span>\n\t\t\t\t\t<span><# if (labelTrue) { #>{{ labelTrue }}<# } #></span>\n\t\t\t\t\t<a></a>\n\t\t\t\t</span>\n\t\t\t</label>\n\t\t");
+  	};
 
   	return Toggle;
   }(Checkbox$1));
@@ -16409,8 +16901,9 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @augments wp.customize.Class
    */
   var Base$2 = wpApi.Setting.extend({
+
     /**
-     * {@inheritDoc}. Add the initial and lastSave values for reset value actions.
+     * {@inheritdoc}. Add the initial and lastSave values for reset value actions.
      * The `factory` value is added in the PHP Setting class constructor.
      *
      * @memberof! settings.Base#
@@ -16432,8 +16925,9 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
       this.vInitial = this();
       this.vLastSaved = this.vInitial;
     },
+
     /**
-     * {@inheritDoc}. Sanitize value before sending it to the preview via
+     * {@inheritcoc}. Sanitize value before sending it to the preview via
      * `postMessage`.
      *
      * @memberof! settings.Base#
@@ -16456,6 +16950,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
         setting.previewer.refresh();
       }
     },
+
     /**
      * Sanitize setting
      *
@@ -16471,6 +16966,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
     sanitize: function (value) {
       return value;
     },
+
     /**
      * Force `set`.
      *
@@ -16485,12 +16981,12 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      * setting could stay the same. Despite this make sense, the input field
      * gets out of sync, it becomes empty, while the setting value remains the
      * latest valid value).
-     * The callback that should be called on reset (the `syncUI` method)
+     * The callback that should be called on reset (the `componentDidUpdate` method)
      * in this scenario doesn't get called because in the WordPress
      * `customize-base.js#187` there is a check that return the function if the
      * setting has been set with the same value as the last one, preventing so
      * to fire the callbacks binded to the setting and, with these, also our
-     * `syncUIfromAPI` that would update the UI, that is our input field with
+     * `componentDidUpdatefromAPI` that would update the UI, that is our input field with
      * the resetted value. To overcome this problem we can force the setting to
      * set anyway by temporarily set the private property `_value` to a dummy
      * value and then re-setting the setting to the desired value, in this way

@@ -12,7 +12,7 @@ if ( ! class_exists( 'KKcp_Helper' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
-	 * @version    Release: 1.0.22
+	 * @version    Release: 1.1.1
 	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp_Helper {
@@ -177,7 +177,7 @@ if ( ! class_exists( 'KKcp_Helper' ) ):
 		 * @return string
 		 */
 		public static function rgba_to_rgb( $input ) {
-			sscanf( $input, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
+			sscanf( $input, 'rgba(%d,%d,%d,%f)', $red, $green, $blue );
 			return "rgba($red,$green,$blue)";
 		}
 
@@ -223,7 +223,9 @@ if ( ! class_exists( 'KKcp_Helper' ) ):
 		}
 
 		/**
-		 * Extract number from value, returns 0 otherwise
+		 * Extract number (either integers or float)
+		 *
+		 * @see http://stackoverflow.com/a/17885985/1938970
 		 *
 		 * @since  1.0.0
 		 * @param  string         $value         The value from to extract from
@@ -231,39 +233,34 @@ if ( ! class_exists( 'KKcp_Helper' ) ):
 		 * @return int|float|null The extracted number or null if the value does not
 		 *                        contain any digit.
 		 */
-		public static function extract_number( $value, $allowed_float ) {
-			if ( is_int( $value ) || ( is_float( $value ) && $allowed_float ) ) {
-				return $value;
+		public static function extract_number( $value ) {
+			preg_match( '/(\+|-)?((\d+(\.\d+)?)|(\.\d+))/', $value, $matches );
+
+			if ( $matches && isset( $matches[0] ) && is_numeric( $matches[0] ) ) {
+				return $matches[0] + 0;
 			}
-			if ( $allowed_float ) {
-				$number_extracted = filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-			} else {
-				$number_extracted = filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
-			}
-			if ( $number_extracted || 0 === $number_extracted ) {
-				return $number_extracted;
-			}
+
 			return null;
 		}
 
 		/**
-		 * Extract unit (like `px`, `em`, `%`, etc.) from an array of allowed units
+		 * Extract size unit
+		 *
+		 * It returns the first matched, so the units are kind of sorted by popularity.
+		 * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
 		 *
 		 * @since  1.0.0
 		 * @param  string     $value          The value from to extract from
 		 * @param  null|array $allowed_units  An array of allowed units
-		 * @return string                     The first valid unit found.
+		 * @return string|null                The first valid unit found.
 		 */
-		public static function extract_size_unit( $value, $allowed_units ) {
-			if ( is_array( $allowed_units ) ) {
-				foreach ( $allowed_units as $unit ) {
-					if ( strpos( $value, $unit ) ) {
-						return $unit;
-					}
-				}
-				return isset( $allowed_units[0] ) ? $allowed_units[0] : '';
-			}
-			return '';
+		public static function extract_size_unit( $value ) {
+			preg_match( '/(px|%|em|rem|vh|vw|vmin|vmax|cm|mm|in|pt|pc|ch|ex)/', $value, $matches );
+
+		  if ( $matches && isset( $matches[0] ) ) {
+		    return $matches[0];
+		  }
+		  return null;
 		}
 
 		/**

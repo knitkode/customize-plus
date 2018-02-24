@@ -11,7 +11,7 @@
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 
@@ -34,7 +34,7 @@ global $wp_customize;
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Setting_Base extends WP_Customize_Setting {
@@ -111,7 +111,7 @@ class KKcp_Customize_Setting_Base extends WP_Customize_Setting {
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Setting_Font_Family extends KKcp_Customize_Setting_Base {
@@ -165,7 +165,7 @@ class KKcp_Customize_Setting_Font_Family extends KKcp_Customize_Setting_Base {
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Base extends WP_Customize_Control {
@@ -202,7 +202,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $loose = false;
 
 	/**
-	 * Enable live validation of control's default setting value
+	 * Enable live validation of control default setting's value
 	 *
 	 * For readibility this property is 'positively' put. But in the JSON `params`
 	 * it is reversed in its negative form, so that the `control.params` object
@@ -217,7 +217,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $live_validation = true;
 
 	/**
-	 * Enable live sanitization of control's default setting value
+	 * Enable live sanitization of control default setting's value
 	 *
 	 * For readibility this property is 'positively' put. But in the JSON `params`
 	 * it is reversed in its negative form, so that the `control.params` object
@@ -371,8 +371,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	protected function add_to_json() {}
 
 	/**
-	 * Never render any content for controls from PHP. We rely completely on js,
-	 * and declare the control `<li>` container in the js control base class.
+	 * Never render any content for controls from PHP
 	 *
 	 * @since 1.0.0
 	 * @override
@@ -380,95 +379,20 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	protected function render() {}
 
 	/**
-	 * Never render any inner content for controls from PHP.
+	 * Never render any inner content for controls from PHP
 	 *
 	 * @since 1.0.0
 	 * @override
 	 */
-	public function render_content() {}
+	protected function render_content() {}
 
 	/**
-	 * Compose and minify js template rendered in the `js_tpl` function.
+	 * Templates are entirely managed in JavaScript Control classes
 	 *
 	 * @since 1.0.0
 	 * @override
 	 */
-	public function content_template() {
-		$this->js_tpl_info();
-		$this->js_tpl_extras();
-		$this->js_tpl();
-		$this->js_tpl_notifications();
-	}
-
-	/**
-	 * Subclasses can have their own notifications container template
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_notifications() {
-		?>
-		<div class="customize-control-notifications-container"></div>
-		<?php
-	}
-
-	/**
-	 * Subclasses can have their own 'info' template overriding this method
-	 *
-	 * @premium A Customize Plus Premium feature.
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_info() {
-		if ( class_exists( 'KKcpp' ) ) {
-		?>
-			<# if (data.info) { #>
-				<i class="kkcp-info kkcpui-control-btn dashicons dashicons-editor-help" title="<?php esc_html_e( 'Click to expand', 'kkcp' ); ?>"></i>
-			<# } #>
-		<?php
-		}
-	}
-
-	/**
-	 * Shared control header template.
-	 * Read the label and description as markdown if the js plugin is available.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_header() {
-		?>
-			<# if (data.label) { #>
-				<div class="customize-control-title"><# if (marked) { #>{{{ marked(data.label) }}}<# } else { #>{{{ data.label }}}<# } #></div>
-			<# } if (data.description) { #>
-				<div class="description customize-control-description"><# if (marked) { #>{{{ marked(data.description) }}}<# } else { #>{{{ data.description }}}<# } #></div>
-			<# } #>
-		<?php
-	}
-
-	/**
-	 * Subclasses can have their own 'extras' template overriding this method.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_extras() {
-		?>
-			<div class="kkcp-extras">
-				<i class="kkcp-extras-btn kkcpui-control-btn dashicons dashicons-admin-generic"></i>
-				<ul class="kkcp-extras-list">
-					<li class="kkcp-extras-reset_last"><?php esc_html_e( 'Reset to last saved value', 'kkcp' ); ?></li>
-					<li class="kkcp-extras-reset_initial"><?php esc_html_e( 'Reset to initial session value', 'kkcp' ); ?></li>
-					<li class="kkcp-extras-reset_factory"><?php esc_html_e( 'Reset to factory value', 'kkcp' ); ?></li>
-					<?php do_action( 'kkcp_controls_base_js_tpl_extras_add_list_items' ); ?>
-				</ul>
-			</div>
-		<?php
-	}
-
-	/**
-	 * To override in subclasses with a js template
-	 *
-	 * @abstract
-	 * @since 1.0.0
-	 */
-	protected function js_tpl() {}
+	protected function content_template() {}
 
 	/**
 	 * Sanitization callback
@@ -622,7 +546,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	 *
 	 * Shortcut to manage the $validity object during validation
 	 *
-	 * @see  JS kkcp.controls.Base.addError
+	 * @see  JS kkcp.controls.Base._addError
 	 * @since  1.0.0
 	 * @param WP_Error					$validity
 	 * @param string						$msg_id
@@ -639,8 +563,9 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 		// if there is just one message argument
 		else if ( ! empty( $msg_arguments ) ) {
 			$validity->add( $msg_id, sprintf( $msg, $msg_arguments ) );
-		// if it is a simple string message
-		} else {
+		}
+		// if it is a simple string message leave it as it is
+		else {
 			$validity->add( $msg_id, $msg );
 		}
 		return $validity;
@@ -657,7 +582,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Control_Base {
@@ -756,104 +681,6 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 	}
 
 	/**
-	 * Js template
-	 *
-	 * Choice supports both a string if you only want to pass a label or an array
-	 * with `label`, `sublabel`, `tooltip`, `popover_title`, `popover_txt`, etc.
-	 *
-	 * {@inheritDoc}
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl() {
-		?>
-		<# var choices = data.choices, idx = 0;
-			if (!_.isEmpty(choices)) { #>
-				<?php $this->js_tpl_header(); ?>
-				<?php $this->js_tpl_above_choices(); ?>
-				<?php $this->js_tpl_choices_loop(); ?>
-				<?php $this->js_tpl_below_choices(); ?>
-		<# } #>
-		<?php
-	}
-
-	/**
-	 * Ouput the choices template in a loop. Override this in subclasses
-	 * to change behavior, for instance in sortable controls.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_choices_loop () {
-		?>
-		<# for (var val in choices) { #>
-			<?php $this->js_tpl_choice(); ?>
-		<#} #>
-		<?php
-	}
-
-	/**
-	 * Ouput the js to configure each choice template data and its UI
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_choice () {
-		?>
-		<# if (choices.hasOwnProperty(val)) {
-			var label;
-			var choice = choices[val];
-			var classes = '';
-			var attributes = '';
-			var tooltip = '';
-			var id = data.id + idx++;
-			if (!_.isUndefined(choice.label)) {
-				label = choice.label;
-				if (choice.popover) {
-					classes += 'kkcpui-popover ';
-					if (choice.popover.title) attributes += ' data-title="' + choice.popover.title + '"';
-					if (choice.popover.img) attributes += ' data-img="' + choice.popover.img + '"';
-					if (choice.popover.text) attributes += ' data-text="' + choice.popover.text + '"';
-					if (choice.popover.video) attributes += ' data-video="' + choice.popover.video + '"';
-				}
-				if (choice.tooltip) {
-					classes += 'kkcpui-tooltip--top ';
-					attributes += ' title="' + choice.tooltip + '"';
-					tooltip = choice.tooltip;
-				}
-			} else {
-				label = choice;
-			}
-			if (!tooltip) {
-				tooltip = label;
-			}
-		#>
-			<?php $this->js_tpl_choice_ui(); ?>
-		<# } #>
-		<?php
-	}
-
-	/**
-	 * Hook to print a custom choice template
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_choice_ui () {}
-
-	/**
-	 * Hook to add a part of template just before the choices loop
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_above_choices () {}
-
-	/**
-	 * Hook to add a part of template just after the choices loop.
-	 *
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_below_choices () {}
-
-	/**
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
@@ -871,65 +698,6 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 }
 
 /**
- * Base Input Control custom class
- *
- * @since  1.0.0
- *
- * @package    Customize_Plus
- * @subpackage Customize\Controls
- * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
- * @copyright  2018 KnitKode
- * @license    GPLv3
- * @version    Release: 1.0.22
- * @link       https://knitkode.com/products/customize-plus
- */
-abstract class KKcp_Customize_Control_Base_Input extends KKcp_Customize_Control_Base {
-
-	/**
-	 * {@inheritDoc}. Note that the `tooltip` input_attr is printed in a wrapping
-	 * span instead of directly on the input field.
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl() {
-		?>
-		<label>
-			<?php $this->js_tpl_header(); ?><# var attrs = data.attrs || {}; #>
-			<# if (attrs.tooltip) { #><span class="kkcpui-tooltip--top" title="{{ attrs.tooltip || '' }}"><# } #>
-				<?php $this->js_tpl_inner(); ?>
-			<# if (attrs.tooltip) { #></span><# } #>
-		</label>
-		<?php
-	}
-
-	/**
-	 * Js template for the actual input element area, override this e.g. in the
-	 * Password Control
-	 *
-	 * @since 1.0.0
-	 * @abstract
-	 */
-	protected function js_tpl_inner () {
-		$this->js_tpl_input();
-	}
-
-	/**
-	 * Js template for the actual input element
-	 *
-	 * @since 1.0.0
-	 * @abstract
-	 */
-	protected function js_tpl_input () {
-		?>
-		<input class="kkcp-input" type="{{ attrs.type || data.type.replace('kkcp_','') }}" value="<?php // filled through js ?>"
-			<# for (var key in attrs) { if (attrs.hasOwnProperty(key) && key !== 'title') { #>{{ key }}="{{ attrs[key] }}" <# } } #>
-		>
-		<?php
-	}
-}
-
-/**
  * Base Radio Control custom class
  *
  * @since  1.0.0
@@ -939,7 +707,7 @@ abstract class KKcp_Customize_Control_Base_Input extends KKcp_Customize_Control_
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_Base_Choices {
@@ -996,7 +764,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Base_Choices {
@@ -1062,7 +830,7 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
 	public static function get_flatten_set_values ( $set ) {
 		$values = array();
 
-		foreach ( $set as $set_group_key => $set_group_values ) {
+		foreach ( $set as $set_group_values ) {
 			if ( isset( $set_group_values['values'] ) && is_array( $set_group_values['values'] ) ) {
 				foreach ( $set_group_values['values'] as $value ) {
 					array_push( $values, $value );
@@ -1159,11 +927,11 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
 	protected function get_valid_choices ( $filtered_sets ) {
 		$valid_choices = array();
 
-		foreach ( $filtered_sets as $set_name => $set_values ) {
+		foreach ( $filtered_sets as $set_values ) {
 
 			// set can be a multidimensional array divided by groups
 			if ( KKcp_Helper::is_assoc( $set_values ) ) {
-				foreach ( $set_values as $group_key => $group_values ) {
+				foreach ( $set_values as $group_values ) {
 					if ( isset( $group_values['values'] ) && is_array( $group_values['values'] ) ) {
 						$valid_choices = array_merge( $valid_choices, $group_values['values'] );
 					}
@@ -1219,7 +987,7 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Buttonset extends KKcp_Customize_Control_Base_Radio {
@@ -1229,45 +997,9 @@ class KKcp_Customize_Control_Buttonset extends KKcp_Customize_Control_Base_Radio
 	 * @inheritDoc
 	 */
 	public $type = 'kkcp_buttonset';
-
-	/**
-	 * {@inheritDoc}. Always show tooltips.
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl_choice_ui () {
-		?>
-			<input id="{{ id }}" type="radio" value="{{ val }}" name="_customize-kkcp_buttonset-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
-			<label class="{{ classes }} kkcpui-tooltip--top" {{ attributes }} title="{{ tooltip }}" for="{{ id }}" onclick="">{{ label }}</label>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl_above_choices () {
-		?>
-			<div class="switch-toggle kkcpui-switch switch-{{ _.size(choices) }}">
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl_below_choices () {
-		?>
-			<a></a>
-			</div>
-		<?php
-	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Buttonset' );
 
 /**
@@ -1280,7 +1012,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Buttonset' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
@@ -1313,20 +1045,6 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
-	protected function js_tpl() {
-		?>
-			<?php $this->js_tpl_header(); ?>
-			<label>
-				<input type="checkbox" name="_customize-kkcp_checkbox-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #> <# if (data.value) { #>checked<# } #>>
-				<# if (data.attrs && data.attrs.label) { #>{{{ data.attrs.label }}}<# } #>
-			</label>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::checkbox( $value, $setting, $control );
 	}
@@ -1340,9 +1058,7 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Checkbox' );
 
 /**
@@ -1362,7 +1078,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Checkbox' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
@@ -1473,6 +1189,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 			'cancelText' => esc_html__( 'Cancel', 'kkcp' ),
 			'chooseText' => esc_html__( 'Choose', 'kkcp' ),
 			'clearText' => esc_html__( 'Clear selection', 'kkcp' ),
+			'selectColor' => esc_html__( 'Select color', 'kkcp' ),
 			'noColorSelectedText' => esc_html__( 'No color selected', 'kkcp' ),
 			'togglePaletteMoreText' => esc_html__( 'Show color picker', 'kkcp' ),
 			'togglePaletteLessText' => esc_html__( 'Hide color picker', 'kkcp' ),
@@ -1489,8 +1206,6 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @inheritDoc
 	 */
 	protected function add_to_json() {
-		$this->json['valueCSS'] = $this->value();
-
 		if ( $this->alpha ) {
 			$this->json['alpha'] = true;
 		}
@@ -1511,22 +1226,6 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
-	protected function js_tpl() {
-		?>
-		<?php $this->js_tpl_header(); ?>
-		<span class="kkcpcolor-current kkcpcolor-current-bg"></span>
-		<span class="kkcpcolor-current kkcpcolor-current-overlay" style="background:{{data.valueCSS}}"></span>
-		<button class="kkcpui-toggle kkcpcolor-toggle"><?php esc_html_e( 'Select Color', 'kkcp' ) ?></button>
-		<div class="kkcp-expander">
-			<input class="kkcpcolor-input" type="text">
-		</div>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::color( $value, $setting, $control );
 	}
@@ -1540,9 +1239,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Color' );
 
 /**
@@ -1555,7 +1252,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Color' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
@@ -1635,34 +1332,9 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 			$this->json['alert'] = $this->alert;
 		}
 	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	public function content_template() {
-		$this->js_tpl_info();
-		$this->js_tpl();
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl() {
-		?>
-		<# if (data.alert) { #><div class="kkcpui-alert {{ data.alert }}"><# } #>
-			<# if (data.label) { #><span class="customize-control-title"><# if (marked) { #>{{{ marked(data.label) }}}<# } else { #>{{{ data.label }}}<# } #></span><# } #>
-			<# if (data.description) { #><span<# if (!data.alert) { #> class="description customize-control-description"<# } #>><# if (marked) { #>{{{ marked(data.description) }}}<# } else { #>{{{ data.description }}}<# } #></span><# } #>
-			<# if (marked && data.markdown) { #><div class="description kkcp-markdown">{{{ marked(data.markdown) }}}</div><# } #>
-		<# if (data.alert) { #></div><# } #>
-		<?php
-	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Content' );
 
 /**
@@ -1675,7 +1347,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Content' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set {
@@ -1742,19 +1414,6 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
-	protected function js_tpl() {
-		?>
-		<label>
-			<?php $this->js_tpl_header(); ?>
-		</label>
-		<input class="kkcp-select" type="text" required>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::font_family( $value, $setting, $control );
 	}
@@ -1768,9 +1427,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Font_Family' );
 
 /**
@@ -1783,7 +1440,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Font_Family' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Set {
@@ -1827,22 +1484,17 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Set {
 	}
 
 	/**
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @inheritDoc
 	 */
-	protected function js_tpl() {
-		?>
-		<label>
-			<?php $this->js_tpl_header(); ?>
-		</label>
-		<select class="kkcp-select" placeholder="<?php esc_html_e( 'Search icon by name...', 'kkcp' ) ?>"<# if (data.max > 1) { #>  name="icon[]" multiple<# } else { #>name="icon"<# } #>><option value=""><?php esc_html_e( 'Search icon by name...', 'kkcp' ) ?></option></select>
-		<?php
+	public function get_l10n() {
+		return array(
+			'iconSearchPlaceholder' => esc_html__( 'Search icon by name...', 'kkcp' ),
+		);
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Icon' );
 
 /**
@@ -1855,7 +1507,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Icon' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choices {
@@ -1920,50 +1572,6 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 	}
 
 	/**
-	 * If the control is sortable we first show the ordered choices (the ones stored
-	 * as value in the DB, gathered with `$this->value()`) and then the other choices,
-	 * that's why the double loop with the `indexOf` condition.
-	 *
-	 * {@inheritDoc}
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl_choices_loop() {
-		?>
-		<# if (data.sortable) {
-			if (_.isArray(data.choicesOrdered)) {
-				for (var i = 0; i < data.choicesOrdered.length; i++) {
-					var val = data.choicesOrdered[i]; #>
-					<?php $this->js_tpl_choice(); ?>
-				<# }
-				for (var val in choices) {
-					if (data.choicesOrdered.indexOf(val) === -1) { #>
-						<?php $this->js_tpl_choice(); ?>
-					<# }
-				}
-			}
-		} else {
-			for (var val in choices) { #>
-				<?php $this->js_tpl_choice(); ?>
-			<# }
-		} #>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl_choice_ui() {
-		?>
-			<label class="{{ classes }}" {{ attributes }}>
-				<input type="checkbox" name="_customize-kkcp_multicheck-{{ data.id }}" value="{{ val }}"<?php // `checked` status synced through js in `control.ready()` ?>>{{{ label }}}
-			</label>
-		<?php
-	}
-
-	/**
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
@@ -1980,9 +1588,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Multicheck' );
 
 /**
@@ -1995,10 +1601,10 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Multicheck' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
-class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
+class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
@@ -2051,9 +1657,7 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base_Input {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Number' );
 
 /**
@@ -2066,7 +1670,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Number' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Radio extends KKcp_Customize_Control_Base_Radio {
@@ -2076,25 +1680,9 @@ class KKcp_Customize_Control_Radio extends KKcp_Customize_Control_Base_Radio {
 	 * @inheritDoc
 	 */
 	public $type = 'kkcp_radio';
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl_choice_ui() {
-		?>
-			<label class="{{ classes }}" {{{ attributes }}}>
-				<input type="radio" value="{{ val }}" name="_customize-kkcp_radio-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
-				{{ label }}
-				<# if (choice.sublabel) { #><small> ({{ choice.sublabel }})</small><# } #>
-			</label>
-		<?php
-	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Radio' );
 
 /**
@@ -2110,7 +1698,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Radio' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Radio_Image extends KKcp_Customize_Control_Base_Radio {
@@ -2120,29 +1708,9 @@ class KKcp_Customize_Control_Radio_Image extends KKcp_Customize_Control_Base_Rad
 	 * @inheritDoc
 	 */
 	public $type = 'kkcp_radio_image';
-
-	/**
-	 * {@inheritDoc}. It shows the full image path (`img_custom`) or an image
-	 * bundled in the plugin when `img` has been passed, with the plugin url
-	 * as prepath, and always a `png` extension. Always show tooltip.
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl_choice_ui() {
-		?>
-			<input id="{{ id }}" class="kkcp-radio-image" type="radio" value="{{ val }}" name="_customize-kkcp_radio_image-{{ data.id }}"<?php // `checked` status synced through js in `control.ready()` ?>>
-			<label for="{{ id }}" class="{{ classes }}" {{ attributes }}>
-				<# var imgUrl = choice.img_custom ? '<?php echo esc_url( KKcp_Theme::$images_base_url ); ?>' + choice.img_custom : '<?php echo esc_url( KKCP_PLUGIN_URL . 'assets/images/' ); ?>' + choice.img + '.png'; #>
-				<img class="kkcpui-tooltip--top" src="{{ imgUrl }}" title="{{ tooltip }}">
-			</label>
-		<?php
-	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Radio_Image' );
 
 /**
@@ -2155,7 +1723,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Radio_Image' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices {
@@ -2191,47 +1759,9 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 
 		$this->valid_choices = $this->get_valid_choices( $this->choices );
 	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl_choice_ui() {
-		?>
-			<option class="{{ classes }}" {{ attributes }} value="{{ val }}"<?php // `selected` status synced through js in `control.ready()` ?><# if (choice.sublabel) { #> data-sublabel="{{{ choice.sublabel }}}"<# } #>>
-				{{ label }}
-			</option>
-		<?php
-	}
-
-	/**
-	 * {@inheritDoc}. Render needed html structure for CSS toggle / switch
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl_above_choices () {
-		?>
-			<select name="_customize-kkcp_select-{{ data.id }}">
-		<?php
-	}
-
-	/**
-	 * {@inheritDoc}. Render needed html structure for CSS toggle / switch
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl_below_choices () {
-		?>
-			</select>
-		<?php
-	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Select' );
 
 /**
@@ -2244,7 +1774,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Select' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Font_Weight extends KKcp_Customize_Control_Select {
@@ -2296,9 +1826,7 @@ class KKcp_Customize_Control_Font_Weight extends KKcp_Customize_Control_Select {
 	);
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Font_Weight' );
 
 /**
@@ -2311,7 +1839,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Font_Weight' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
@@ -2358,8 +1886,8 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	 * @override
 	 */
 	public function __construct( $manager, $id, $args = array() ) {
-		if ( isset( $args['step'] ) && is_float( $args['step'] ) ) {
-			$args['float'] = true;
+		if ( isset( $args['input_attrs'] ) && isset( $args['input_attrs']['step'] ) && is_float( $args['input_attrs']['step'] ) ) {
+			$args['input_attrs']['float'] = true;
 		}
 
 		if ( isset( $args['units'] ) && ! empty( $args['units'] ) ) {
@@ -2379,7 +1907,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	public function get_l10n() {
 		return array(
 			'vSliderMissingUnit' => esc_html__( 'A CSS unit must be specified', 'kkcp' ),
-			'vSliderInvalidUnit' => esc_html__( 'CSS unit `%` is invalid', 'kkcp' ),
+			'vSliderUnitNotAllowed' => esc_html__( 'CSS unit **%s** is not allowed here', 'kkcp' ),
 			'vSliderNoUnit' => esc_html__( 'It does not accept a CSS unit', 'kkcp' ),
 		);
 	}
@@ -2403,41 +1931,6 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
-	 * Separate the slider template to make it reusable by child classes
-	 *
-	 * @since 1.0.0
-	 * @override
-	 */
-	protected function js_tpl_slider() {
-		?>
-		<# if (data.units) { #>
-		<div class="kkcp-inputs-wrap">
-			<input type="number" class="kkcp-slider-number" value="<?php // filled through js ?>" tabindex="-1"
-				<# for (var key in data.attrs) { if (data.attrs.hasOwnProperty(key)) { #>{{ key }}="{{ data.attrs[key] }}" <# } } #>>
-			<div class="kkcp-unit-wrap"><# for (var i = 0, l = data.units.length; i < l; i++) { #><input type="text" class="kkcp-unit" readonly="true" tabindex="-1" value="{{ data.units[i] }}"><# } #></div>
-		</div>
-		<# } else { #>
-			<input type="number" class="kkcp-slider-number" value="<?php // filled through js ?>" tabindex="-1"
-				<# for (var key in data.attrs) { if (data.attrs.hasOwnProperty(key)) { #>{{ key }}="{{ data.attrs[key] }}" <# } } #>>
-			<# } #>
-		<div class="kkcp-slider-wrap">
-			<div class="kkcp-slider"></div>
-		</div>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl() {
-		$this->js_tpl_header();
-		$this->js_tpl_slider();
-	}
-
-	/**
 	 * @since 1.0.0
 	 * @inheritDoc
 	 */
@@ -2454,9 +1947,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Slider' );
 
 /**
@@ -2469,7 +1960,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Slider' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choices {
@@ -2515,33 +2006,8 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choice
 	 * @override
 	 * @since 1.0.0
 	 */
-	protected function js_tpl_choices_loop() {
-		?>
-		<# if (_.isArray(data.choicesOrdered)) {
-				for (var i = 0; i < data.choicesOrdered.length; i++) {
-					var val = data.choicesOrdered[i]; #>
-					<?php $this->js_tpl_choice(); ?>
-				<# }
-			} #>
-		<?php
-	}
-
-	/**
-	 * @override
-	 * @since 1.0.0
-	 */
-	protected function js_tpl_choice_ui() {
-		?>
-			<div class="kkcp-sortable" title="{{ val }}" data-value="{{ val }}" class="{{ classes }}" {{ attributes }}>{{ label }}</div>
-		<?php
-	}
-
-	/**
-	 * @override
-	 * @since 1.0.0
-	 */
 	protected static function sanitize( $value, $setting, $control ) {
-		return KKcp_Sanitize::multiple_choices( $value, $setting, $control, true );
+		return KKcp_Sanitize::sortable( $value, $setting, $control );
 	}
 
 	/**
@@ -2549,7 +2015,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choice
 	 * @since 1.0.0
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
-		return KKcp_Validate::multiple_choices( $validity, $value, $setting, $control, true );
+		return KKcp_Validate::sortable( $validity, $value, $setting, $control );
 	}
 }
 
@@ -2568,7 +2034,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Sortable' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
@@ -2633,19 +2099,6 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	/**
 	 * @since 1.0.0
 	 * @inheritDoc
-	 */
-	protected function js_tpl() {
-		?>
-		<label>
-			<?php $this->js_tpl_header(); ?>
-			<input type="text" value="<?php // filled through js ?>">
-		</label>
-		<?php
-	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::tags( $value, $setting, $control );
@@ -2660,9 +2113,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Tags' );
 
 /**
@@ -2675,10 +2126,10 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Tags' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
-class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
+class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
@@ -2784,9 +2235,7 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base_Input {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Text' );
 
 /**
@@ -2803,7 +2252,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Text' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Password extends KKcp_Customize_Control_Text {
@@ -2828,24 +2277,14 @@ class KKcp_Customize_Control_Password extends KKcp_Customize_Control_Text {
 	);
 
 	/**
-	 * @since 1.0.0
-	 * @inheritDoc
+	 * @since  1.0.0
+	 * @inerhitDoc
 	 */
-	protected function js_tpl_inner () {
-		?>
-		<span class="kkcp-password">
-			<# if (data.attrs && data.attrs.visibility) { #>
-				<?php $this->js_tpl_input() ?>
-				<input class="kkcp-password__preview" type="text" tabindex="-1" <# for (var key in attrs) { if (attrs.hasOwnProperty(key) && key !== 'title') { #>{{ key }}="{{ attrs[key] }}" <# } } #>>
-				<button class="kkcp-password__toggle">
-					<span class="kkcp-password__hide" aria-label="<?php esc_attr_e( 'Hide password', 'kkcp' ); ?>"><i class="dashicons dashicons-hidden"></i></span>
-					<span class="kkcp-password__show" aria-label="<?php esc_attr_e( 'Show password', 'kkcp' ); ?>"><i class="dashicons dashicons-visibility"></i></span>
-				</button>
-			<# } else { #>
-				<?php $this->js_tpl_input() ?>
-			<# } #>
-		</span>
-		<?php
+	public function get_l10n() {
+		return array(
+			'passwordShow' => esc_html__( 'Show password', 'kkcp' ),
+			'passwordHide' => esc_html__( 'Hide password', 'kkcp' ),
+		);
 	}
 
 	/**
@@ -2862,9 +2301,7 @@ class KKcp_Customize_Control_Password extends KKcp_Customize_Control_Text {
 	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Password' );
 
 /**
@@ -2877,7 +2314,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Password' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
@@ -3007,29 +2444,9 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 			wp_enqueue_editor();
 		}
 	}
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl() {
-		?>
-		<label>
-			<?php $this->js_tpl_header(); ?><# var attrs = data.attrs; #>
-			<textarea class="kkcpui-textarea<# if (data.wp_editor && data.wp_editor.editorClass) { #> {{ data.wp_editor.editorClass }}<# } #>"
-				<# for (var key in attrs) { if (attrs.hasOwnProperty(key)) { #>{{ key }}="{{ attrs[key] }}" <# } } #>
-					rows="<# if (data.wp_editor && data.wp_editor.textareaRows) { #>{{ data.wp_editor.textareaRows }}<# } else if (attrs && attrs.rows) { #>{{ attrs.rows }}<# } else { #>4<# } #>"
-					<# if (data.wp_editor && data.wp_editor.editorHeight) { #> style="height:{{ data.wp_editor.editorHeight }}px"
-				<# } #>>
-			</textarea>
-		</label>
-		<?php
-	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Textarea' );
 
 /**
@@ -3042,7 +2459,7 @@ $wp_customize->register_control_type( 'KKcp_Customize_Control_Textarea' );
  * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
  * @copyright  2018 KnitKode
  * @license    GPLv3
- * @version    Release: 1.0.22
+ * @version    Release: 1.1.1
  * @link       https://knitkode.com/products/customize-plus
  */
 class KKcp_Customize_Control_Toggle extends KKcp_Customize_Control_Checkbox {
@@ -3061,28 +2478,7 @@ class KKcp_Customize_Control_Toggle extends KKcp_Customize_Control_Checkbox {
 		'label_false' => array( 'sanitizer' => 'string' ),
 		'label_true' => array( 'sanitizer' => 'string' ),
 	);
-
-	/**
-	 * @since 1.0.0
-	 * @inheritDoc
-	 */
-	protected function js_tpl() {
-		?>
-		<?php $this->js_tpl_header(); ?>
-		<# var labelFalse = data.attrs ? data.attrs.label_false : ''; labelTrue = data.attrs ? data.attrs.label_true : ''; #>
-		<label class="switch-light kkcpui-switch<# if (labelFalse && labelTrue) { var l0l = labelFalse.length, l1l = labelTrue.length; #><# if ((l0l && l1l) && (Math.abs(l0l - l1l) > 1) || l0l > 6 || l1l > 6) { #> kkcpui-switch__labelsauto<# } else { #> kkcpui-switch__labels<# } } #>" onclick="">
-			<input type="checkbox" name="_customize-kkcp_toggle-{{ data.id }}" value="<?php // filled through js ?>" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}="{{ a[key] }}" <# } } #><# if (data.value) { #> checked<# } #>>
-			<span<# if (!labelFalse && !labelTrue) { #> aria-hidden="true"<# } #>>
-				<span><# if (labelFalse) { #>{{ labelFalse }}<# } #></span>
-				<span><# if (labelTrue) { #>{{ labelTrue }}<# } #></span>
-				<a></a>
-			</span>
-		</label>
-		<?php
-	}
 }
 
-/**
- * Register on WordPress Customize global object
- */
+// Register on WordPress Customize global object
 $wp_customize->register_control_type( 'KKcp_Customize_Control_Toggle' );

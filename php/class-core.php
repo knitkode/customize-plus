@@ -12,7 +12,7 @@ if ( ! class_exists( 'KKcp' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
-	 * @version    Release: 1.0.22
+	 * @version    Release: 1.1.1
 	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp {
@@ -99,7 +99,7 @@ if ( ! class_exists( 'KKcp' ) ):
 			}
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-			return plugins_url( "assets/$type/$filename$min.$ext", $base_url );
+			return plugins_url( "$type/$filename$min.$ext", $base_url );
 		}
 	}
 

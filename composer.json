@@ -1,6 +1,6 @@
 {
   "name": "knitkode/customize-plus",
-  "version": "1.0.22",
+  "version": "1.1.1",
   "description": "Enhance and extend the WordPress Customize in your themes.",
   "type": "wordpress-plugin",
   "keywords": [
@@ -8,7 +8,7 @@
     "tool"
   ],
   "homepage": "https://knitkode.com/products/customize-plus",
-  "license": "GPL-3.0-or-later",
+  "license": "SEE LICENSE IN license.txt",
   "authors": [{
     "name": "KnitKode",
     "homepage": "https://knitkode.com/"

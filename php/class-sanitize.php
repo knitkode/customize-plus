@@ -15,7 +15,7 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
-	 * @version    Release: 1.0.22
+	 * @version    Release: 1.1.1
 	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp_Sanitize {
@@ -141,6 +141,20 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 				return self::multiple_choices( $value, $setting, $control );
 			}
 			return null;
+		}
+
+		/**
+		 * Sanitize sortable
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param array         $value   The value to sanitize.
+		 * @param WP_Customize_Setting $setting Setting instance.
+		 * @param WP_Customize_Control $control Control instance.
+		 * @return array|null The sanitized value.
+		 */
+		public static function sortable( $value, $setting, $control ) {
+			return self::multiple_choices( $value, $setting, $control, true );
 		}
 
 		/**
@@ -279,32 +293,32 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		 */
 		public static function number( $value, $setting, $control ) {
 			$attrs = $control->input_attrs;
-			$number = KKcp_Helper::extract_number( $value, $control );
+			$value = $value + 0;
 
-			if ( is_null( $number ) ) {
+			if ( ! is_numeric( $value ) ) {
 				return null;
 			}
 
 			// if it's a float but it is not allowed to be it round it
-			if ( is_float( $number ) && ! isset( $attrs['float'] ) ) {
-				$number = round( $number );
+			if ( is_float( $value ) && ! isset( $attrs['float'] ) ) {
+				$value = round( $value );
 			}
 
 			// if doesn't respect the step given round it to the closest
 			// then do the min and max checks
-			if ( isset( $attrs['step'] ) && KKcp_Helper::modulus( $number, $attrs['step'] ) != 0 ) {
-				$number = round( $number / $attrs['step'] ) * $attrs['step'];
+			if ( isset( $attrs['step'] ) && KKcp_Helper::modulus( $value, $attrs['step'] ) != 0 ) {
+				$value = round( $value / $attrs['step'] ) * $attrs['step'];
 			}
 			// if it's lower than the minimum return the minimum
-			if ( isset( $attrs['min'] ) && is_numeric( $attrs['min'] ) && $number < $attrs['min'] ) {
+			if ( isset( $attrs['min'] ) && is_numeric( $attrs['min'] ) && $value < $attrs['min'] ) {
 				return $attrs['min'];
 			}
 			// if it's higher than the maxmimum return the maximum
-			if ( isset( $attrs['max'] ) && is_numeric( $attrs['max'] ) && $number > $attrs['max'] ) {
+			if ( isset( $attrs['max'] ) && is_numeric( $attrs['max'] ) && $value > $attrs['max'] ) {
 				return $attrs['max'];
 			}
 
-			return $number;
+			return $value;
 		}
 
 		/**
@@ -348,8 +362,8 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		 * @return string|number|null The sanitized value.
 		 */
 		public static function slider( $value, $setting, $control ) {
-			$number = KKcp_Helper::extract_number( $value, isset( $control->input_attrs['float'] ) );
-			$unit = KKcp_Helper::extract_size_unit( $value, $control->units );
+			$number = KKcp_Helper::extract_number( $value );
+			$unit = KKcp_Helper::extract_size_unit( $value );
 
 			$number = self::number( $number, $setting, $control );
 			$unit = self::size_unit( $unit, $control->units );
@@ -397,73 +411,6 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 				return null;
 			}
 			return $value;
-		}
-
-		/**
-		 * Sanitize CSS
-		 *
-		 * @link(http://git.io/vZ05N, source)
-		 * @since 1.0.0
-		 *
-		 * @param string $input CSS to sanitize.
-		 * @return string Sanitized CSS.
-		 */
-		private static function css( $input ) {
-			return wp_strip_all_tags( $input );
-		}
-
-		/**
-		 * Sanitize image
-		 *
-		 * @link(http://git.io/vZ05p, source)
-		 * @since 1.0.0
-		 *
-		 * @param string               $image   Image filename.
-		 * @param WP_Customize_Setting $setting Setting instance.
-		 * @return string The image filename if the extension is allowed; otherwise, the setting default.
-		 */
-		private static function image( $image, $setting ) {
-			// Array of valid image file types.
-			// The array includes image mime types that are included in wp_get_mime_types()
-			$mimes = array(
-					'jpg|jpeg|jpe' => 'image/jpeg',
-					'gif'          => 'image/gif',
-					'png'          => 'image/png',
-					'bmp'          => 'image/bmp',
-					'tif|tiff'     => 'image/tiff',
-					'ico'          => 'image/x-icon'
-			);
-			// Return an array with file extension and mime_type.
-			$file = wp_check_filetype( $image, $mimes );
-			// If $image has a valid mime_type, return it; otherwise, return the default.
-			return ( $file['ext'] ? $image : $setting->default );
-		}
-
-		/**
-		 * HTML sanitization callback example.
-		 *
-		 * @link(http://git.io/vZ0dv, source)
-		 * @since 1.0.0
-		 *
-		 * @param string $html HTML to sanitize.
-		 * @return string Sanitized HTML.
-		 */
-		private static function html( $html ) {
-			return wp_filter_post_kses( $html );
-		}
-
-		/**
-		 * No-HTML sanitization callback example.
-		 *
-		 * @link(http://git.io/vZ0dL, source)
-		 * @since 1.0.0
-		 *
-		 * @since  1.0.0
-		 * @param string $nohtml The no-HTML content to sanitize.
-		 * @return string Sanitized no-HTML content.
-		 */
-		private static function nohtml( $nohtml ) {
-			return wp_filter_nohtml_kses( $nohtml );
 		}
 	}
 

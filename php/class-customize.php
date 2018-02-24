@@ -15,7 +15,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
-	 * @version    Release: 1.0.22
+	 * @version    Release: 1.1.1
 	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp_Customize {
@@ -155,7 +155,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			'underscore',
 			'jquery',
 			'jquery-ui-tooltip',
-			'jquery-ui-slider'
+			// 'jquery-ui-slider'
 		);
 
 		/**
@@ -166,7 +166,6 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		public function __construct() {
 			add_action( 'customize_register', array( __CLASS__, 'register_custom_classes' ) );
 			add_action( 'customize_controls_print_styles', array( __CLASS__, 'enqueue_css_admin' ) );
-			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_notifications_tpls' ) );
 			add_action( 'customize_controls_print_footer_scripts' , array( __CLASS__, 'enqueue_js_admin' ) );
 			add_action( 'customize_controls_print_footer_scripts', array( __CLASS__, 'get_view_loader' ) );
 			add_action( 'customize_controls_enqueue_scripts', array( __CLASS__, 'add_controls_js_vars' ) );
@@ -240,6 +239,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'IMAGES_BASE_URL' => KKcp_Theme::$images_base_url,
 				'DOCS_BASE_URL' => KKcp_Theme::$docs_base_url,
 				'DYNAMIC_CONTROLS_RENDERING' => KKcp_Theme::$dynamic_controls_rendering,
+				'CP_URL' => esc_url( KKCP_PLUGIN_URL ),
 			);
 			$additional = (array) apply_filters( 'kkcp_customize_get_js_constants', array() );
 			return array_merge( $required, self::$controls_constants, $additional );
@@ -253,6 +253,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 *               hook.
 		 */
 		public static function get_js_settings() {
+			// @premium hook
 			if ( class_exists( 'KKcpp' ) ) {
 				$required = KKcpp::get_options();
 			} else {
@@ -279,6 +280,9 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 				'tools' => esc_html__( 'Tools', 'kkcp' ),
 				'vRequired' => esc_html__( 'A value is required', 'kkcp' ),
 				'vInvalid' => esc_html__( 'Invalid value', 'kkcp' ),
+				'resetLastSaved' => esc_html__( 'Reset to last saved value', 'kkcp' ),
+				'resetInitial' => esc_html__( 'Reset to initial session value', 'kkcp' ),
+				'resetFactory' => esc_html__( 'Reset to factory value', 'kkcp' ),
 			);
 			$additional = (array) apply_filters( 'kkcp_customize_get_js_l10n', array() );
 			return array_merge( $required, self::$controls_l10n, $additional );
@@ -346,8 +350,8 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 			<div id="kkcp-loader-preview" class="wp-full-overlay-main kkcp-overlay--preview">
 				<div class="kkcpui-midpoint-wrap">
 					<div class="kkcpui-midpoint">
-						<img id="kkcp-loader-img" src="<?php echo esc_url( plugins_url( 'assets/images/logo-white.png', KKCP_PLUGIN_FILE ) ); ?>">
-						<?php if ( isset ( $_GET['kkcp_import'] ) ): // input var okay ?>
+						<img id="kkcp-loader-img" src="<?php echo esc_url( plugins_url( 'images/logo-white.png', KKCP_PLUGIN_FILE ) ); ?>">
+						<?php if ( isset( $_GET['kkcp_import'] ) ): // input var okay ?>
 							<h1 id="kkcp-loader-title" class="kkcp-text"><?php esc_html_e( 'Import done', 'kkcp' ); ?></h1>
 							<h3 id="kkcp-loader-text" class="kkcp-text"><?php esc_html_e( 'All options have been succesfully imported and saved', 'kkcp' ); ?></h3>
 						<?php else : ?>
@@ -375,26 +379,6 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		}
 
 		/**
-		 * Get custom notification templates
-		 *
-		 * For now it's the same as the WordPress default one plus markdown support
-		 *
-		 * @since  1.0.0
-		 */
-		public static function get_notifications_tpls() {
-			?>
-			<script type="text/html" id="tmpl-customize-notification-kkcp">
-				<li class="notice notice-{{ data.type || 'info' }} {{ data.alt ? 'notice-alt' : '' }} {{ data.dismissible ? 'is-dismissible' : '' }} {{ data.containerClasses || '' }} kkcp-notification" data-code="{{ data.code }}" data-type="{{ data.type }}">
-					<# if (marked) { #>{{{ marked(data.message || data.code) }}}<# } else { #><div class="notification-message">{{{ data.message || data.code }}}</div><# } #>
-					<# if ( data.dismissible ) { #>
-						<button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php esc_html( 'Dismiss' ) ?></span></button>
-					<# } #>
-				</li>
-			</script>
-			<?php
-		}
-
-		/**
 		 * Register custom classes
 		 *
 		 * Custom settings, controls, sections, and panels, load classes and
@@ -404,7 +388,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @since  1.0.0
 		 */
 		public static function register_custom_classes() {
-			require_once( KKCP_PLUGIN_DIR . 'includes/customize-classes.php' );
+			require_once( KKCP_PLUGIN_DIR . 'php/customize-classes.php' );
 
 			do_action( 'kkcp_customize_register_custom_classes', __CLASS__ );
 

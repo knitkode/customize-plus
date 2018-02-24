@@ -13,7 +13,7 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 	 * @author     KnitKode <dev@knitkode.com> (https://knitkode.com)
 	 * @copyright  2018 KnitKode
 	 * @license    GPLv3
-	 * @version    Release: 1.0.22
+	 * @version    Release: 1.1.1
 	 * @link       https://knitkode.com/products/customize-plus
 	 */
 	class KKcp_Validate {
@@ -131,6 +131,21 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 				return self::single_choice( $validity, $value, $setting, $control );
 			}
 			return self::multiple_choices( $validity, $value, $setting, $control );
+		}
+
+		/**
+		 * Validate sortable
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param WP_Error 						 $validity
+		 * @param mixed 							 $value    The value to validate.
+		 * @param WP_Customize_Setting $setting  Setting instance.
+		 * @param WP_Customize_Control $control  Control instance.
+		 * @return WP_Error
+		 */
+		public static function sortable( $validity, $value, $setting, $control ) {
+			return self::multiple_choices( $validity, $value, $setting, $control, true );
 		}
 
 		/**
@@ -273,7 +288,7 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 		 * @return WP_Error
 		 */
 		public static function number( $validity, $value, $setting, $control ) {
-			$value = ($value == (int) $value) ? (int) $value : (float) $value;
+			$value = $value + 0;
 
 			// no number
 			if ( ! is_numeric( $value ) ) {
@@ -289,8 +304,6 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 			else if ( ! is_int( $value ) && ! isset( $control->input_attrs['float'] ) ) {
 				$validity = $control->add_error( $validity, 'vNotAnInteger' );
 			}
-
-			$attrs = $control->input_attrs;
 
 			if ( $attrs ) {
 				// if doesn't respect the step given
@@ -320,17 +333,17 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 		 * @param mixed    $allowed_units The allowed units
 		 * @return WP_Error
 		 */
-		public static function size_unit( $validity, $unit, $allowed_units ) {
+		public static function size_unit( $validity, $unit, $setting, $control ) {
 			// if it needs a unit and it is missing
-			if ( ! empty( $allowed_units ) && ! $unit ) {
+			if ( ! empty( $control->units ) && ! $unit ) {
 				$validity = $control->add_error( $validity, 'vSliderMissingUnit' );
 			}
 			// if the unit specified is not in the allowed ones
-			else if ( ! empty( $allowed_units ) && $unit && ! in_array( $unit, $allowed_units ) ) {
-				$validity = $control->add_error( $validity, 'vSliderInvalidUnit', $unit );
+			else if ( ! empty( $control->units ) && $unit && ! in_array( $unit, $control->units ) ) {
+				$validity = $control->add_error( $validity, 'vSliderUnitNotAllowed', $unit );
 			}
 			// if a unit is specified but none is allowed
-			else if ( empty( $allowed_units ) && $unit ) {
+			else if ( empty( $control->units ) && $unit ) {
 				$validity = $control->add_error( $validity, 'vSliderNoUnit' );
 			}
 
@@ -349,11 +362,11 @@ if ( ! class_exists( 'KKcp_Validate' ) ):
 		 * @return WP_Error
 		 */
 		public static function slider( $validity, $value, $setting, $control ) {
-			$number = KKcp_Helper::extract_number( $value, isset( $control->input_attrs['float'] ) );
-			$unit = KKcp_Helper::extract_size_unit( $value, $control->units );
+			$number = KKcp_Helper::extract_number( $value );
+			$unit = KKcp_Helper::extract_size_unit( $value );
 
 			$validity = self::number( $validity, $number, $setting, $control );
-			$validity = self::size_unit( $validity, $unit, $control->units );
+			$validity = self::size_unit( $validity, $unit, $setting, $control );
 
 			return $validity;
 		}

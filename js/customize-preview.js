@@ -1,17 +1,26 @@
 /*!
- * Customize Plus v1.0.22 (https://knitkode.com/products/customize-plus)
+ * Customize Plus v1.1.1 (https://knitkode.com/products/customize-plus)
  * Enhance and extend the WordPress Customize in your themes.
  * Copyright (c) 2014-2018 KnitKode <dev@knitkode.com> (https://knitkode.com/)
- * @license SEE LICENSE IN license.txt (Last change on: 22-1-2018)
- */ /* jshint unused: false */
-!function(e,t,n,i,r){"use strict";
-// be sure to have what we need, bail otherwise
-if(i&&r){i.customize;
-/**
+ * @license SEE LICENSE IN license.txt (Last change on: 24-1-2018)
+ *//* jshint unused: false */
+
+(function (window, document, $, wp, api) {
+  'use strict';
+
+  // be sure to have what we need, bail otherwise
+  if (!wp || !api) {
+    return;
+  }
+  var wpApi = wp.customize;
+
+  /**
    * Customize Plus API constants
    * @type {Object}
-   */var c=r.constants;
-/**
+   */
+  var constants = api.constants;
+
+  /**
    * To CSS
    * Helper to append a piece of CSS for a specific option changed
    * @param  {string} id       Setting ID / Variable name
@@ -19,8 +28,25 @@ if(i&&r){i.customize;
    * @param  {string} value    CSS value
    * @param  {string} selector Selector to apply propert value css pair
    */
-r.toCSS=function(e,n,i,r){if(i&&r){var c="kkcp-style-"+e,d=r+"{"+n+":"+i+"};",o=t.getElementById(c);if(o)o.innerHTML=d;else{var u=t.createElement("style");u.id=c,u.innerHTML=d,u.appendChild(t.createTextNode("")),t.head.appendChild(u)}}},
-/**
+  api.toCSS = function (id, property, value, selector) {
+    if (!value || !selector) {
+      return;
+    }
+    var idFinal = 'kkcp-style-' + id;
+    var css = selector + '{' + property + ':' + value + '};';
+    var oldCSS = document.getElementById(idFinal);
+    if (oldCSS) {
+      oldCSS.innerHTML = css;
+    } else {
+      var style = document.createElement('style');
+      style.id = idFinal;
+      style.innerHTML = css;
+      style.appendChild(document.createTextNode(''));
+      document.head.appendChild(style);
+    }
+  };
+
+  /**
    * Get option id
    * Since its simplicity and possible overuse in many loops this function is
    * not actually used, but 'inlined' in other functions, it's here just for
@@ -32,8 +58,11 @@ r.toCSS=function(e,n,i,r){if(i&&r){var c="kkcp-style-"+e,d=r+"{"+n+":"+i+"};",o=
    * @param  {string} optName The simple setting id (without theme prefix)
    * @return {string} The real setting id (with theme prefix)
    */
-r.getOptionId=function(e){return c.OPTIONS_PREFIX+"["+e+"]"},
-/**
+  api.getOptionId = function (optName) {
+    return constants.OPTIONS_PREFIX + '[' + optName + ']';
+  };
+
+  /**
    * Get option id attribute
    *
    * Same as `get_option_id` but return a valid HTML attribute name (square
@@ -45,4 +74,8 @@ r.getOptionId=function(e){return c.OPTIONS_PREFIX+"["+e+"]"},
    * @param  {string} optName The simple setting id (without theme prefix)
    * @return {string} The real setting id (with theme prefix) HTML ready
    */
-r.getOptionIdAttr=function(e){return c.OPTIONS_PREFIX+"__"+e}}}(window,document,jQuery,wp,kkcp);
+  api.getOptionIdAttr = function (optName) {
+    return constants.OPTIONS_PREFIX + '__' + optName;
+  };
+
+})(window, document, jQuery, wp, kkcp);
