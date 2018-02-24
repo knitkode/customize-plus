@@ -5,7 +5,7 @@ Stable tag: 1.0.22
 Requires at least: 4.9.4
 Tested up to: 4.9.4
 Requires PHP: 5.2.4
-License: GPLv3
+License: GPLv3+
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Donate link: https://liberapay.com/knitkode/donate
 

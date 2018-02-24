@@ -12,7 +12,7 @@
  * Text Domain: pkgTextdomain
  * Domain Path: /languages
  *
- * Copyright (c) pkgStartYear-pkgEndYear pkgAuthorName (pkgAuthorUrl)
+ * Copyright (C) pkgStartYear-pkgEndYear pkgAuthorName (pkgAuthorUrl)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
