@@ -57,14 +57,14 @@ class Color extends Base {
    * @override
    */
   shouldComponentUpdate ($value) {
-    return this.__$picker.spectrum('get') !== $value;
+    return this.softenize(this._getValueFromUi()) !== this.softenize($value);
   }
 
   /**
    * @override
    */
-  componentDidUpdate (value) {
-    this._updateUI(value, 'API');
+  componentDidUpdate ($value) {
+    this._updateUI($value);
   }
 
   /**
@@ -87,7 +87,7 @@ class Color extends Base {
     this.__$picker = $(container.getElementsByClassName('kkcpcolor-input')[0]);
     this.__$expander = $(container.getElementsByClassName('kkcp-expander')[0]).hide();
 
-    this._updateUIpreview(this.setting());
+    this._updateUI(this.setting());
 
     let isOpen = false;
     let pickerIsInitialized = false;
@@ -167,45 +167,32 @@ class Color extends Base {
   }
 
   /**
-   * Update UI preview (the color box on the left hand side)
+   * Get value from UI
    *
-   * @since   1.0.0
+   * @since   1.1.0
    * @memberof! controls.Color#
+   *
    * @access protected
+   * @return {string}
    */
-  _updateUIpreview ($value) {
+  _getValueFromUi () {
+    return this.__preview.style.background;
+  }
+
+  /**
+   * Update UI
+   *
+   * @since   1.1.0
+   * @memberof! controls.Color#
+   *
+   * @access protected
+   * @param  {string} $value
+   */
+  _updateUI ($value) {
     this.__preview.style.background = $value;
-  }
 
-  /**
-   * Update UI control (the spectrum color picker)
-   *
-   * @since   1.0.0
-   * @memberof! controls.Color#
-   * @access protected
-   */
-  _updateUIpicker ($value) {
-    this.__$picker.spectrum('set', $value);
-  }
-
-  /**
-   * Apply, wrap the `setting.set()` function
-   * doing some additional stuff.
-   *
-   * @since   1.0.0
-   * @memberof! controls.Color#
-   *
-   * @access protected
-   * @param  {string} value
-   * @param  {string} from  Where the value come from (could be from the UI:
-   *                        picker, dynamic fields, expr field) or from the
-   *                        API (on programmatic value change).
-   */
-  _updateUI (value, from) {
-    this._updateUIpreview(value);
-
-    if (from === 'API') {
-      this._updateUIpicker(value);
+    if (this.__$picker && this.__$picker.spectrum) {
+      this.__$picker.spectrum('set', $value);
     }
   }
 

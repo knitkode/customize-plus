@@ -45,7 +45,7 @@ class Checkbox extends Base {
   shouldComponentUpdate ($value) {
     const $uiValue = numberToBoolean(this.__input.checked);
 
-    return $uiValue !== this.softenize($value);
+    return this.softenize($uiValue) !== this.softenize($value);
   }
 
   /**
