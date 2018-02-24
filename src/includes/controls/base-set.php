@@ -75,7 +75,7 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
 	public static function get_flatten_set_values ( $set ) {
 		$values = array();
 
-		foreach ( $set as $set_group_key => $set_group_values ) {
+		foreach ( $set as $set_group_values ) {
 			if ( isset( $set_group_values['values'] ) && is_array( $set_group_values['values'] ) ) {
 				foreach ( $set_group_values['values'] as $value ) {
 					array_push( $values, $value );
@@ -172,11 +172,11 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
 	protected function get_valid_choices ( $filtered_sets ) {
 		$valid_choices = array();
 
-		foreach ( $filtered_sets as $set_name => $set_values ) {
+		foreach ( $filtered_sets as $set_values ) {
 
 			// set can be a multidimensional array divided by groups
 			if ( KKcp_Helper::is_assoc( $set_values ) ) {
-				foreach ( $set_values as $group_key => $group_values ) {
+				foreach ( $set_values as $group_values ) {
 					if ( isset( $group_values['values'] ) && is_array( $group_values['values'] ) ) {
 						$valid_choices = array_merge( $valid_choices, $group_values['values'] );
 					}

@@ -177,7 +177,7 @@ if ( ! class_exists( 'KKcp_Helper' ) ):
 		 * @return string
 		 */
 		public static function rgba_to_rgb( $input ) {
-			sscanf( $input, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
+			sscanf( $input, 'rgba(%d,%d,%d,%f)', $red, $green, $blue );
 			return "rgba($red,$green,$blue)";
 		}
 
