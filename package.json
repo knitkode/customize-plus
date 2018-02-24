@@ -9,9 +9,9 @@
     "startYear": 2014,
     "paths": {
       "app": "src",
-      "distImages": "assets/images",
-      "distStyles": "assets/css",
-      "distScripts": "assets/js",
+      "distImages": "images",
+      "distStyles": "css",
+      "distScripts": "js",
       "wpReleases": "../roots/releases/",
       "wpAssets": "../ui/customize-plus",
       "docsJsDest": "../knitkode.com/src/jekyll/_docs/customize-plus/js"

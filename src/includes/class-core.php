@@ -99,7 +99,7 @@ if ( ! class_exists( 'KKcp' ) ):
 			}
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-			return plugins_url( "assets/$type/$filename$min.$ext", $base_url );
+			return plugins_url( "$type/$filename$min.$ext", $base_url );
 		}
 	}
 

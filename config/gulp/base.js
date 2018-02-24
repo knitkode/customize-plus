@@ -34,7 +34,7 @@ module.exports = {
     gulp.watch(paths.join(paths.src.images, '*.*'), baseImages);
     gulp.watch(paths.join(paths.src.styles, '**/*.scss'), baseStyles);
     gulp.watch([
-      paths.join(paths.src.includes, '**/*.php'),
+      paths.join(paths.src.php, '**/*.php'),
       paths.join(paths.src.views, '*.php')
     ], basePhp);
     gulp.watch(paths.join(paths.src.vendor, '**/*.php'), baseVendor);
@@ -96,18 +96,18 @@ function baseStyles () {
 /**
  * Base PHP task
  *
- * In the ditributable version (`--dist`) exclude `includes/`` subfolders.
- * Group php classes in subfolders of `includes` into single files transforming
+ * In the ditributable version (`--dist`) exclude `php/`` subfolders.
+ * Group php classes in subfolders of `php` into single files transforming
  * php `require` in gulp-include `require` to inline php files. After that
  * remove extra `<?php // @partial` that was needed during development.
  */
 function basePhp () {
-  const path = config.isDist ? paths.join(paths.src.includes, '*.php') : paths.join(paths.src.includes, '**/*.php');
+  const path = config.isDist ? paths.join(paths.src.php, '*.php') : paths.join(paths.src.php, '**/*.php');
   return gulp.src(path)
-    .pipe(gulpIf(config.isDist, replace("require ( KKCP_PLUGIN_DIR . 'includes/", '//=require ')))
+    .pipe(gulpIf(config.isDist, replace("require ( KKCP_PLUGIN_DIR . 'php/", '//=require ')))
     .pipe(include())
     .pipe(gulpIf(config.isDist, replace(/<\?php\s\/\/\s@partial/g, '')))
-    .pipe(gulp.dest(paths.dist.includes));
+    .pipe(gulp.dest(paths.dist.php));
 }
 
 /**
