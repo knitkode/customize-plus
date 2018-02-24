@@ -1,6 +1,6 @@
 {
   "name": "@knitkode/customize-plus",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Enhance and extend the WordPress Customize in your themes.",
   "config": {
     "slug": "customize-plus",
@@ -47,11 +47,13 @@
     "watch": "gulp watch --cwd config/",
     "build": "gulp build --dist --cwd config/",
     "deploy": "gulp deploy --dist --cwd config/",
+    "publish": "(cd config && grunt publish)",
     "update": "git submodule update --remote config/dev-lib && git add config/dev-lib && git commit -m \"maintenance(dev-lib) update\"",
     "init": "git submodule add git@github.com:knitkode/wp-dev-lib config/dev-lib && npm link && npm link @knitkode/vendor",
     "w": "npm run watch",
     "b": "npm run build",
     "d": "npm run deploy",
+    "p": "npm run publish",
     "u": "npm run update",
     "i": "npm run init"
   },
@@ -72,6 +74,8 @@
     "deep-extend": "0.5.x",
     "del": "3.0.x",
     "gh-pages": "1.1.x",
+    "grunt": "^1.0.2",
+    "grunt-wp-deploy": "^1.2.1",
     "gulp": "github:gulpjs/gulp#6d71a658c61edb3090221579d8f97dbe086ba2ed",
     "gulp-base64": "0.1.x",
     "gulp-cache": "1.0.x",

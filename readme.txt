@@ -1,7 +1,7 @@
 === Customize Plus ===
 Tags: wordpress, customizer, options framework, theme
 Contributors: KnitKode, kuus
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Requires at least: 4.9.4
 Tested up to: 4.9.4
 Requires PHP: 5.2.4
@@ -108,7 +108,7 @@ Yes, try out the always up to date [official demo theme](https://github.com/knit
 
 == Changelog ==
 
-= 1.1.0: 24/02/2017 =
+= 1.1.1: 24/02/2017 =
 
 * Bugfixing
 * Moved control templates to JavaScript control's classes
