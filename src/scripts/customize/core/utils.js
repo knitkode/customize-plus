@@ -53,7 +53,7 @@ export const _DOCS_BASE_URL = api.constants['DOCS_BASE_URL'];
  * @return {boolean}     Whether is absolute or relative
  */
 export function _isAbsoluteUrl (url) {
-  return Regexes._absoluteUrl.test(url);
+  return /^(?:[a-z]+:)?\/\//i._absoluteUrl.test(url);
 }
 
 /**
@@ -67,7 +67,7 @@ export function _isAbsoluteUrl (url) {
  * @return {string}
  */
 export function _cleanUrlFromMultipleSlashes (url) {
-  return url.replace(Regexes._multipleSlashes, '/');
+  return url.replace(/[a-z-A-Z-0-9_]{1}(\/\/+)/g, '/');
 }
 
 /**
@@ -116,6 +116,16 @@ export function _eachControl (callback) {
 }
 
 /**
+ * Options API regex
+ *
+ * @since  1.1.0
+ *
+ * @param  {string}  controlId The control id
+ * @return {boolean}
+ */
+const _optionsApiRegex = new RegExp(api.constants['OPTIONS_PREFIX'] + '\\[.*\\]');
+
+/**
  * Is the control's setting using the `theme_mods` API?
  *
  * @since  1.0.0
@@ -124,7 +134,7 @@ export function _eachControl (callback) {
  * @return {boolean}
  */
 export function _isThemeModsApi (controlId) {
-  return !Regexes._optionsApi.test(controlId);
+  return !_optionsApiRegex.test(controlId);
 }
 
 /**
@@ -138,7 +148,7 @@ export function _isThemeModsApi (controlId) {
  * @return {boolean}
  */
 export function _isOptionsApi (controlId) {
-  return Regexes._optionsApi.test(controlId);
+  return _optionsApiRegex.test(controlId);
 }
 
 /**

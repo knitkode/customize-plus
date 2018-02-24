@@ -56,8 +56,8 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	 * @override
 	 */
 	public function __construct( $manager, $id, $args = array() ) {
-		if ( isset( $args['step'] ) && is_float( $args['step'] ) ) {
-			$args['float'] = true;
+		if ( isset( $args['input_attrs'] ) && isset( $args['input_attrs']['step'] ) && is_float( $args['input_attrs']['step'] ) ) {
+			$args['input_attrs']['float'] = true;
 		}
 
 		if ( isset( $args['units'] ) && ! empty( $args['units'] ) ) {
@@ -77,7 +77,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	public function get_l10n() {
 		return array(
 			'vSliderMissingUnit' => esc_html__( 'A CSS unit must be specified' ),
-			'vSliderInvalidUnit' => esc_html__( 'CSS unit `%` is invalid' ),
+			'vSliderUnitNotAllowed' => esc_html__( 'CSS unit **%s** is not allowed here' ),
 			'vSliderNoUnit' => esc_html__( 'It does not accept a CSS unit' ),
 		);
 	}

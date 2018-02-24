@@ -13,6 +13,7 @@
 import _ from 'underscore';
 import is_int from 'locutus/php/var/is_int';
 import is_float from 'locutus/php/var/is_float';
+import is_numeric from 'locutus/php/var/is_numeric';
 import empty from 'locutus/php/var/empty';
 import round from 'locutus/php/math/round';
 import Helper from './helper';
@@ -277,31 +278,31 @@ export function text( $value, $setting, $control ) {
  */
 export function number( $value, $setting, $control ) {
   const $attrs = $control.params['attrs'] || {};
-  let $number = Helper.extractNumber( $value, $attrs['float'] );
+  $value = Helper.extractNumber( $value, $attrs['float'] );
 
-  if ( $number === null ) {
+  if ( ! is_numeric( $value ) ) {
     return null;
   }
 
   // if it's a float but it is not allowed to be it round it
-  if ( is_float( $number ) && !$attrs['float'] ) {
-    $number = round( $number );
+  if ( is_float( $value ) && !$attrs['float'] ) {
+    $value = round( $value );
   }
   // if doesn't respect the step given round it to the closest
   // then do the min and max checks
-  if ( _.isNumber( $attrs['step'] ) && Helper.modulus($number, $attrs['step']) !== 0 ) {
-    $number = round( $number / $attrs['step'] ) * $attrs['step'];
+  if ( _.isNumber( $attrs['step'] ) && Helper.modulus($value, $attrs['step']) !== 0 ) {
+    $value = round( $value / $attrs['step'] ) * $attrs['step'];
   }
   // if it's lower than the minimum return the minimum
-  if ( _.isNumber( $attrs['min'] ) && $number < $attrs['min'] ) {
+  if ( _.isNumber( $attrs['min'] ) && $value < $attrs['min'] ) {
     return $attrs['min'];
   }
   // if it's higher than the maxmimum return the maximum
-  if ( _.isNumber( $attrs['max'] ) && $number > $attrs['max'] ) {
+  if ( _.isNumber( $attrs['max'] ) && $value > $attrs['max'] ) {
     return $attrs['max'];
   }
 
-  return $number;
+  return $value;
 }
 
 /**
@@ -345,14 +346,11 @@ export function sizeUnit( $unit, $allowed_units ) {
  * @return {string|number|null} The sanitized value.
  */
 export function slider( $value, $setting, $control ) {
-  const {params} = $control;
-  const $attrs = params.attrs || {};
-
-  let $number = Helper.extractNumber( $value, !!$attrs['float'] );
-  let $unit = Helper.extractSizeUnit( $value, params['units'] );
+  let $number = Helper.extractNumber( $value );
+  let $unit = Helper.extractSizeUnit( $value );
 
   $number = number( $number, $setting, $control );
-  $unit = sizeUnit( $unit, params['units'] );
+  $unit = sizeUnit( $unit, $control.params['units'] );
 
   if ( $number === null ) {
     return null;

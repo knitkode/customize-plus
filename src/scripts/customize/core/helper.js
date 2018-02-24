@@ -5,9 +5,10 @@
  * @module Helper
  * @requires tinycolor
  */
-import strpos from 'locutus/php/strings/strpos';
 import is_int from 'locutus/php/var/is_int';
-import is_float from 'locutus/php/var/is_float'
+import is_float from 'locutus/php/var/is_float';
+import is_numeric from 'locutus/php/var/is_numeric';
+import Regexes from './regexes';
 /* global tinycolor */
 
 /**
@@ -209,49 +210,43 @@ export function normalizeFontFamilies( $value ) {
 }
 
 /**
- * Extract number from value, returns 0 otherwise
+ * Extract number (either integers or float)
+ *
+ * @see http://stackoverflow.com/a/17885985/1938970
  *
  * @since  1.0.0
  * @param  {string}         $value         The value from to extract from
- * @param  {bool|null}      $allowed_float Whether float numbers are allowed
- * @return {int|float|null} The extracted number or null if the value does not
- *                          contain any digit.
+ * @return {number|null} The extracted number or null if the value does not
+ *                       contain any digit.
  */
-export function extractNumber( $value, $allowed_float ) {
-  let $number_extracted;
+export function extractNumber( $value ) {
+  const matches = /(\+|-)?((\d+(\.\d+)?)|(\.\d+))/.exec( $value );
 
-  if ( is_int( $value ) || ( is_float( $value ) && $allowed_float ) ) {
-    return $value;
+  if (matches && is_numeric( matches[0] ) ) {
+    return Number( matches[0] );
   }
-  if ( $allowed_float ) {
-    $number_extracted = parseFloat( $value ); // filter_var( $value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
-  } else {
-    $number_extracted = parseInt( $value, 10 ); // filter_var( $value, FILTER_SANITIZE_NUMBER_INT );
-  }
-  if ( $number_extracted || 0 === $number_extracted ) {
-    return $number_extracted;
-  }
+
   return null;
 }
 
 /**
- * Extract unit (like `px`, `em`, `%`, etc.) from an array of allowed units
+ * Extract size unit
+ *
+ * It returns the first matched, so the units are kind of sorted by popularity.
+ * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
  *
  * @since  1.0.0
  * @param  {string}     $value          The value from to extract from
  * @param  {null|array} $allowed_units  An array of allowed units
- * @return {string}                     The first valid unit found.
+ * @return {string|null}                The first valid unit found.
  */
 export function extractSizeUnit( $value, $allowed_units ) {
-  if ( _.isArray( $allowed_units ) ) {
-    for (let i = 0; i < $allowed_units.length; i++) {
-      if ( strpos( $value, $allowed_units[i] ) ) {
-        return $allowed_units[i];
-      }
-    }
-    return $allowed_units[0] || '';
+  const matches = /(px|%|em|rem|vh|vw|vmin|vmax|cm|mm|in|pt|pc|ch|ex)/.exec( $value );
+
+  if (matches && matches[0] ) {
+    return matches[0];
   }
-  return '';
+  return null;
 }
 
 /**

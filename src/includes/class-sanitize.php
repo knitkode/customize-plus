@@ -293,32 +293,32 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		 */
 		public static function number( $value, $setting, $control ) {
 			$attrs = $control->input_attrs;
-			$number = KKcp_Helper::extract_number( $value, $control );
+			$value = $value + 0;
 
-			if ( is_null( $number ) ) {
+			if ( ! is_numeric( $value ) ) {
 				return null;
 			}
 
 			// if it's a float but it is not allowed to be it round it
-			if ( is_float( $number ) && ! isset( $attrs['float'] ) ) {
-				$number = round( $number );
+			if ( is_float( $value ) && ! isset( $attrs['float'] ) ) {
+				$value = round( $value );
 			}
 
 			// if doesn't respect the step given round it to the closest
 			// then do the min and max checks
-			if ( isset( $attrs['step'] ) && KKcp_Helper::modulus( $number, $attrs['step'] ) != 0 ) {
-				$number = round( $number / $attrs['step'] ) * $attrs['step'];
+			if ( isset( $attrs['step'] ) && KKcp_Helper::modulus( $value, $attrs['step'] ) != 0 ) {
+				$value = round( $value / $attrs['step'] ) * $attrs['step'];
 			}
 			// if it's lower than the minimum return the minimum
-			if ( isset( $attrs['min'] ) && is_numeric( $attrs['min'] ) && $number < $attrs['min'] ) {
+			if ( isset( $attrs['min'] ) && is_numeric( $attrs['min'] ) && $value < $attrs['min'] ) {
 				return $attrs['min'];
 			}
 			// if it's higher than the maxmimum return the maximum
-			if ( isset( $attrs['max'] ) && is_numeric( $attrs['max'] ) && $number > $attrs['max'] ) {
+			if ( isset( $attrs['max'] ) && is_numeric( $attrs['max'] ) && $value > $attrs['max'] ) {
 				return $attrs['max'];
 			}
 
-			return $number;
+			return $value;
 		}
 
 		/**
@@ -362,8 +362,8 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 		 * @return string|number|null The sanitized value.
 		 */
 		public static function slider( $value, $setting, $control ) {
-			$number = KKcp_Helper::extract_number( $value, isset( $control->input_attrs['float'] ) );
-			$unit = KKcp_Helper::extract_size_unit( $value, $control->units );
+			$number = KKcp_Helper::extract_number( $value );
+			$unit = KKcp_Helper::extract_size_unit( $value );
 
 			$number = self::number( $number, $setting, $control );
 			$unit = self::size_unit( $unit, $control->units );

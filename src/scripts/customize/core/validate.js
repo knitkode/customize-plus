@@ -340,21 +340,24 @@ export function number( $validity={}, $value, $setting, $control ) {
  * @since 1.0.0
  *
  * @param {WP_Error}                $validity
- * @param {mixed}    $unit          The unit to validate.
- * @param {mixed}    $allowed_units The allowed units
+ * @param {mixed}                $value    The value to validate.
+ * @param {WP_Customize_Setting} $setting  Setting instance.
+ * @param {WP_Customize_Control} $control  Control instance.
  * @return {WP_Error}
  */
-export function sizeUnit( $validity, $unit, $allowed_units ) {
+export function sizeUnit( $validity, $unit, $setting, $control ) {
+  const {params} = $control;
+
   // if it needs a unit and it is missing
-  if ( ! empty( $allowed_units ) && ! $unit ) {
+  if ( ! empty( params['units'] ) && ! $unit ) {
     $validity = $control._addError( $validity, 'vSliderMissingUnit' );
   }
   // if the unit specified is not in the allowed ones
-  else if ( ! empty( $allowed_units ) && $unit && $allowed_units.indexOf( $unit ) === -1 ) {
-    $validity = $control._addError( $validity, 'vSliderInvalidUnit', $unit );
+  else if ( ! empty( params['units'] ) && $unit && params['units'].indexOf( $unit ) === -1 ) {
+    $validity = $control._addError( $validity, 'vSliderUnitNotAllowed', $unit );
   }
   // if a unit is specified but none is allowed
-  else if ( empty( $allowed_units ) && $unit ) {
+  else if ( empty( params['units'] ) && $unit ) {
     $validity = $control._addError( $validity, 'vSliderNoUnit' );
   }
 
@@ -373,14 +376,11 @@ export function sizeUnit( $validity, $unit, $allowed_units ) {
  * @return {WP_Error}
  */
 export function slider( $validity={}, $value, $setting, $control ) {
-  const {params} = $control;
-  const $attrs = params.attrs || {};
-
-  const $number = Helper.extractNumber( $value, !!$attrs['float'] );
-  const $unit = Helper.extractSizeUnit( $value, params['units'] );
+  const $number = Helper.extractNumber( $value );
+  const $unit = Helper.extractSizeUnit( $value );
 
   $validity = number( $validity, $number, $setting, $control );
-  $validity = sizeUnit( $validity, $unit, params['units'] );
+  $validity = sizeUnit( $validity, $unit, $setting, $control );
 
   return $validity;
 }

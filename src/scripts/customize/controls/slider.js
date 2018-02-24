@@ -1,9 +1,9 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import { api, wpApi } from '../core/globals';
-import Regexes from '../core/regexes';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
+import Helper from '../core/helper';
 import Base from './base';
 
 /**
@@ -20,9 +20,9 @@ import Base from './base';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
- * @requires Regexes
  * @requires Validate
  * @requires Sanitize
+ * @requires Helper
  */
 class Slider extends Base {
 
@@ -117,7 +117,7 @@ class Slider extends Base {
     // Init Slider
     let sliderOptions = params['attrs'] || {};
     $inputSlider.slider(_.extend(sliderOptions, {
-      value: self._extractFirstNumber(),
+      value: Helper.extractNumber(this.setting()),
       slide: function(event, ui) {
         inputNumber.value = ui.value;
         self._setPartialValue({ _number: ui.value });
@@ -130,44 +130,6 @@ class Slider extends Base {
         }
       }
     }));
-  }
-
-  /**
-   * Extract first found unit from value
-   *
-   * @since   1.0.0
-   * @memberof! controls.Slider#
-   * @access protected
-   *
-   * @param  {?string} value
-   * @return {?string}
-   */
-  _extractFirstUnit (value) {
-    const valueOrigin = value || this.setting();
-    const matchesUnit = Regexes._extractUnit.exec(valueOrigin);
-    if (matchesUnit && matchesUnit[0]) {
-      return matchesUnit[0];
-    }
-    return null;
-  }
-
-  /**
-   * Extract first number found in value
-   *
-   * @since   1.0.0
-   * @memberof! controls.Slider#
-   * @access protected
-   *
-   * @param  {?string|number} value
-   * @return {?string}
-   */
-  _extractFirstNumber (value) {
-    const valueOrigin = value || this.setting();
-    const matchesNumber = Regexes._extractNumber.exec(valueOrigin);
-    if (matchesNumber && matchesNumber[0]) {
-      return matchesNumber[0];
-    }
-    return null;
   }
 
   /**
@@ -213,8 +175,8 @@ class Slider extends Base {
    */
   _updateUI (value) {
     const params = this.params;
-    const number = this._extractFirstNumber(value);
-    const unit = this._extractFirstUnit(value);
+    const number = Helper.extractNumber(value);
+    const unit = Helper.extractSizeUnit(value);
 
     // update number input
     this.__inputNumber.value = number;

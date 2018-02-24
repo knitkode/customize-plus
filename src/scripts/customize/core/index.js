@@ -3,7 +3,6 @@ import './globals';
 import './_setup-jquery';
 import './_setup-markdown';
 import './wptight';
-// import './regexes';
 // import './utils';
 // import './_banner'; // @@disabledfornow \\
 import './skeleton';
