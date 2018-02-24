@@ -49,7 +49,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $loose = false;
 
 	/**
-	 * Enable live validation of control's default setting value
+	 * Enable live validation of control default setting's value
 	 *
 	 * For readibility this property is 'positively' put. But in the JSON `params`
 	 * it is reversed in its negative form, so that the `control.params` object
@@ -64,7 +64,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	public $live_validation = true;
 
 	/**
-	 * Enable live sanitization of control's default setting value
+	 * Enable live sanitization of control default setting's value
 	 *
 	 * For readibility this property is 'positively' put. But in the JSON `params`
 	 * it is reversed in its negative form, so that the `control.params` object
@@ -218,8 +218,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	protected function add_to_json() {}
 
 	/**
-	 * Never render any content for controls from PHP. We rely completely on js,
-	 * and declare the control `<li>` container in the js control base class.
+	 * Never render any content for controls from PHP
 	 *
 	 * @since 1.0.0
 	 * @override
@@ -227,7 +226,7 @@ class KKcp_Customize_Control_Base extends WP_Customize_Control {
 	protected function render() {}
 
 	/**
-	 * Never render any inner content for controls from PHP.
+	 * Never render any inner content for controls from PHP
 	 *
 	 * @since 1.0.0
 	 * @override

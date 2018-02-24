@@ -1,7 +1,7 @@
 === Customize Plus ===
 Tags: wordpress, customizer, options framework, theme
 Contributors: KnitKode, kuus
-Stable tag: 1.0.22
+Stable tag: 1.1.0
 Requires at least: 4.9.4
 Tested up to: 4.9.4
 Requires PHP: 5.2.4
@@ -83,7 +83,7 @@ Log into WordPress admin and activate the ‘Loco Translate’ plugin through th
 Go to Loco Translate > Home in the left-hand menu to start translating
 
 = Theme integration =
-Checkout the [documentation here](https://knitkode.com/docs/customize-plus/getting-started/integration?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme). A tool to facilitate this task is [Customize Plus Builder](https://knitkode.com/products/customize-plus-builder?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme), you can [try it here](https://knitkode.com/customize-plus-builder).
+Checkout the [documentation here](https://knitkode.com/docs/customize-plus/getting-started/integration?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme). A tool to facilitate this task is [Customize Plus Builder](https://knitkode.com/products/customize-plus-builder?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme), you can [try it here](https://knitkode.com/customize-plus-builder?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=theme_integration&utm_campaign=readme).
 
 = Translations =
 * English - default
@@ -100,10 +100,20 @@ Documentation can be found at [knitkode.com/docs/customize-plus](https://knitkod
 
 = How do I get help? =
 
-Help is provided via the plugin support forum only. Please visit the [support page](https://knitkode.com/support) to see other options.
+Help is provided via the plugin support forum only. Please visit the [support page](https://knitkode.com/support?utm_source=customize-plus&utm_medium=wordpress_org&utm_content=faq&utm_campaign=readme) to see other options.
+
+= Can I see a quick demo? =
+Yes, try out the always up to date [official demo theme](https://github.com/knitkode/customize-plus-demo).
 
 
 == Changelog ==
+
+= 1.1.0: 24/02/2017 =
+
+* Bugfixing
+* Moved control templates to JavaScript control's classes
+* Control's classes use now a React ready methods naming and lifecycle style
+* Support warnings in $validity notifications
 
 = 1.0.21: 22/02/2017 =
 
