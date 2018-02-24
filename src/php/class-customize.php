@@ -362,7 +362,7 @@ if ( ! class_exists( 'KKcp_Customize' ) ):
 		 * @since  1.0.0
 		 */
 		public static function register_custom_classes() {
-			require_once( KKCP_PLUGIN_DIR . 'includes/customize-classes.php' );
+			require_once( KKCP_PLUGIN_DIR . 'php/customize-classes.php' );
 
 			do_action( 'kkcp_customize_register_custom_classes', __CLASS__ );
 

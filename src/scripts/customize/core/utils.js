@@ -23,7 +23,7 @@ export const _CP_URL = api.constants['CP_URL'];
  * @since  1.1.0
  * @type {string}
  */
-export const _CP_URL_IMAGES = `${_CP_URL}assets/images/`;
+export const _CP_URL_IMAGES = `${_CP_URL}images/`;
 
 /**
  * Images base url

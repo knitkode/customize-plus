@@ -35,19 +35,19 @@ define( 'KKCP_PLUGIN_VERSION', 'pkgVersion' );
 define( 'KKCP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'KKCP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-require_once( KKCP_PLUGIN_DIR . 'includes/class-requirements.php' );
-require_once( KKCP_PLUGIN_DIR . 'includes/class-data.php' );
-require_once( KKCP_PLUGIN_DIR . 'includes/class-helper.php' );
-require_once( KKCP_PLUGIN_DIR . 'includes/class-singleton.php' );
-require_once( KKCP_PLUGIN_DIR . 'includes/class-core.php' );
-require_once( KKCP_PLUGIN_DIR . 'includes/class-sanitizejs.php' );
-require_once( KKCP_PLUGIN_DIR . 'includes/class-customize.php' );
-require_once( KKCP_PLUGIN_DIR . 'includes/class-theme.php' );
+require_once( KKCP_PLUGIN_DIR . 'php/class-requirements.php' );
+require_once( KKCP_PLUGIN_DIR . 'php/class-data.php' );
+require_once( KKCP_PLUGIN_DIR . 'php/class-helper.php' );
+require_once( KKCP_PLUGIN_DIR . 'php/class-singleton.php' );
+require_once( KKCP_PLUGIN_DIR . 'php/class-core.php' );
+require_once( KKCP_PLUGIN_DIR . 'php/class-sanitizejs.php' );
+require_once( KKCP_PLUGIN_DIR . 'php/class-customize.php' );
+require_once( KKCP_PLUGIN_DIR . 'php/class-theme.php' );
 if ( is_admin() ) {
-	require_once( KKCP_PLUGIN_DIR . 'includes/class-validate.php' );
-	require_once( KKCP_PLUGIN_DIR . 'includes/class-sanitize.php' );
-	require_once( KKCP_PLUGIN_DIR . 'includes/class-admin.php' );
-	require_once( KKCP_PLUGIN_DIR . 'includes/class-admin-about.php' );
+	require_once( KKCP_PLUGIN_DIR . 'php/class-validate.php' );
+	require_once( KKCP_PLUGIN_DIR . 'php/class-sanitize.php' );
+	require_once( KKCP_PLUGIN_DIR . 'php/class-admin.php' );
+	require_once( KKCP_PLUGIN_DIR . 'php/class-admin-about.php' );
 }
 
 do_action( 'kkcp_after_requires' );
