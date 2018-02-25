@@ -7,6 +7,9 @@
     "title": "Customize Plus",
     "textdomain": "kkcp",
     "startYear": 2014,
+    "svn": {
+      "user": "knitkode"
+    },
     "paths": {
       "app": "src",
       "distImages": "images",
@@ -15,7 +18,7 @@
       "distAssets": "../.tmp/wp-assets",
       "wpReleases": "../roots/releases/",
       "wpAssets": "../ui/customize-plus",
-      "docsJsDest": "../knitkode.com/src/jekyll/_docs/customize-plus/js"
+      "docsJsDest": "../knitkode.com/build/docs/customize-plus/js"
     }
   },
   "homepage": "https://knitkode.com/products/customize-plus",
@@ -48,7 +51,7 @@
     "watch": "gulp watch --cwd config/",
     "build": "gulp build --dist --cwd config/",
     "deploy": "gulp deploy --dist --cwd config/",
-    "publish": "(cd config && grunt publish)",
+    "publish": "gulp publish --dist --cwd config/",
     "update": "git submodule update --remote config/dev-lib && git add config/dev-lib && git commit -m \"maintenance(dev-lib) update\"",
     "init": "git submodule add git@github.com:knitkode/wp-dev-lib config/dev-lib && npm link && npm link @knitkode/vendor",
     "w": "npm run watch",
