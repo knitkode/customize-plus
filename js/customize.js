@@ -9775,7 +9775,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
  * Customize Plus v1.1.1 (https://knitkode.com/products/customize-plus)
  * Enhance and extend the WordPress Customize in your themes.
  * Copyright (c) 2014-2018 KnitKode <dev@knitkode.com> (https://knitkode.com/)
- * @license SEE LICENSE IN license.txt (Last change on: 24-1-2018)
+ * @license SEE LICENSE IN license.txt (Last change on: 27-1-2018)
  */(function (window$1,document$1,$$1,_$1,wp,pluginApi,marked,hljs,Modernizr) {
   'use strict';
 
@@ -12524,59 +12524,59 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @requires Utils
    */
   var Notification = (function (superclass) {
-  	function Notification () {
-  		superclass.apply(this, arguments);
-  	}
+    function Notification () {
+      superclass.apply(this, arguments);
+    }
 
-  	if ( superclass ) Notification.__proto__ = superclass;
-  	Notification.prototype = Object.create( superclass && superclass.prototype );
-  	Notification.prototype.constructor = Notification;
+    if ( superclass ) Notification.__proto__ = superclass;
+    Notification.prototype = Object.create( superclass && superclass.prototype );
+    Notification.prototype.constructor = Notification;
 
-  	Notification.prototype.render = function render () {
-  		var notification = this, container, data;
-  		if ( ! notification.template ) {
-  			// @note tweak is done here, template string instead of an id
-  			notification.template = Utils.template( this._tpl() );
-  		}
-  		data = _.extend( {}, notification, {
-  			alt: notification.parent && notification.parent.alt
-  		} );
-  		container = $( notification.template( data ) );
+    Notification.prototype.render = function render () {
+      var notification = this, container, data;
+      if ( ! notification.template ) {
+        // @note tweak is done here, template string instead of an id
+        notification.template = Utils.template( this._tpl() );
+      }
+      data = _.extend( {}, notification, {
+        alt: notification.parent && notification.parent.alt
+      } );
+      container = $( notification.template( data ) );
 
-  		if ( notification.dismissible ) {
-  			container.find( '.notice-dismiss' ).on( 'click keydown', function( event ) {
-  				if ( 'keydown' === event.type && 13 !== event.which ) {
-  					return;
-  				}
+      if ( notification.dismissible ) {
+        container.find( '.notice-dismiss' ).on( 'click keydown', function( event ) {
+          if ( 'keydown' === event.type && 13 !== event.which ) {
+            return;
+          }
 
-  				if ( notification.parent ) {
-  					notification.parent.remove( notification.code );
-  				} else {
-  					container.remove();
-  				}
-  			});
-  		}
+          if ( notification.parent ) {
+            notification.parent.remove( notification.code );
+          } else {
+            container.remove();
+          }
+        });
+      }
 
-  		return container;
-  	};
+      return container;
+    };
 
-  	/**
-  	 * Template
-  	 *
-  	 * For now it's the same as the WordPress default one plus markdown support
-  	 *
-  	 * @since 1.1.0
-  	 *
+    /**
+     * Template
+     *
+     * For now it's the same as the WordPress default one plus markdown support
+     *
+     * @since 1.1.0
+     *
      * @memberof! controls.Base#
      * @access package
      *
-  	 * @return {string}
-  	 */
-  	Notification.prototype._tpl = function _tpl () {
-  		return 	"\n\t\t\t<li class=\"notice notice-{{ data.type || 'info' }} {{ data.alt ? 'notice-alt' : '' }} {{ data.dismissible ? 'is-dismissible' : '' }} {{ data.containerClasses || '' }} kkcp-notification\" data-code=\"{{ data.code }}\" data-type=\"{{ data.type }}\">\n\t\t\t\t<# if (marked) { #>{{{ marked(data.message || data.code) }}}<# } else { #><div class=\"notification-message\">{{{ data.message || data.code }}}</div><# } #>\n\t\t\t\t<# if ( data.dismissible ) { #>\n\t\t\t\t\t<button type=\"button\" class=\"notice-dismiss\"><span class=\"screen-reader-text\"><?php esc_html( 'Dismiss' ) ?></span></button>\n\t\t\t\t<# } #>\n\t\t\t</li>\n\t\t"
-  	};
+     * @return {string}
+     */
+    Notification.prototype._tpl = function _tpl () {
+      return  "\n      <li class=\"notice notice-{{ data.type || 'info' }} {{ data.alt ? 'notice-alt' : '' }} {{ data.dismissible ? 'is-dismissible' : '' }} {{ data.containerClasses || '' }} kkcp-notification\" data-code=\"{{ data.code }}\" data-type=\"{{ data.type }}\">\n        <# if (marked) { #>{{{ marked(data.message || data.code) }}}<# } else { #><div class=\"notification-message\">{{{ data.message || data.code }}}</div><# } #>\n        <# if ( data.dismissible ) { #>\n          <button type=\"button\" class=\"notice-dismiss\"><span class=\"screen-reader-text\"><?php esc_html( 'Dismiss' ) ?></span></button>\n        <# } #>\n      </li>\n    "
+    };
 
-  	return Notification;
+    return Notification;
   }(wpApi.Notification));
 
   var Notification$1 = api$1.core.Notification = Notification;
