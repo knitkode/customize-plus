@@ -96,7 +96,7 @@ class Textarea extends Text {
    */
   _getValueFromUI () {
     if (this.params['wp_editor']) {
-      wpEditorInstance = window.tinyMCE.get(this._wpEditorID);
+      const wpEditorInstance = window.tinyMCE.get(this._wpEditorID);
       return wpEditorInstance.getContent();
       // returnwindow.wp.editor.getContent(this._wpEditorID);;
     } else {
