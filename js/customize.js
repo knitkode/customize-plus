@@ -16739,7 +16739,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
      */
     Textarea.prototype._getValueFromUI = function _getValueFromUI () {
       if (this.params['wp_editor']) {
-        wpEditorInstance = window$1.tinyMCE.get(this._wpEditorID);
+        var wpEditorInstance = window$1.tinyMCE.get(this._wpEditorID);
         return wpEditorInstance.getContent();
         // returnwindow.wp.editor.getContent(this._wpEditorID);;
       } else {
