@@ -19,18 +19,18 @@ import BaseRadio from './base-radio';
  */
 class Radio extends BaseRadio {
 
-	/**
-	 * @override
-	 */
-	_tplChoiceUi() {
-		return `
-			<label class="{{ classes }}" {{{ attributes }}}>
-				<input type="radio" value="{{ val }}" name="_customize-kkcp_radio-{{ data.id }}">
-				{{ label }}
-				<# if (choice.sublabel) { #><small> ({{ choice.sublabel }})</small><# } #>
-			</label>
-		`
-	}
+  /**
+   * @override
+   */
+  _tplChoiceUi() {
+    return `
+      <label class="{{ classes }}" {{{ attributes }}}>
+        <input type="radio" value="{{ val }}" name="_customize-kkcp_radio-{{ data.id }}">
+        {{ label }}
+        <# if (choice.sublabel) { #><small> ({{ choice.sublabel }})</small><# } #>
+      </label>
+    `
+  }
 }
 
 export default wpApi.controlConstructor['kkcp_radio'] = api.controls.Radio = Radio;
