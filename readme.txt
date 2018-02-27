@@ -125,22 +125,22 @@ Yes, try out the always up to date [official demo theme](https://github.com/knit
 
 = 1.0.2: 22/02/2017 =
 
-* Basic fixes to controls behaviour.
+* Basic fixes to controls behaviour
 
 = 1.0.0: 21/02/2017 =
 
-* First official plugin release.
+* First official plugin release
 
 
 = 0.0.9: December 2017 =
 
-* First plugin release.
+* First plugin release
 
 
 == Upgrade Notice ==
 
 = 1.0.0 =
-Just released into the wild.
+Just released into the wild
 
 
 == Credits ==
