@@ -14876,35 +14876,35 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @augments wp.customize.Class
    */
   var Buttonset = (function (BaseRadio$$1) {
-  	function Buttonset () {
-  		BaseRadio$$1.apply(this, arguments);
-  	}
+    function Buttonset () {
+      BaseRadio$$1.apply(this, arguments);
+    }
 
-  	if ( BaseRadio$$1 ) Buttonset.__proto__ = BaseRadio$$1;
-  	Buttonset.prototype = Object.create( BaseRadio$$1 && BaseRadio$$1.prototype );
-  	Buttonset.prototype.constructor = Buttonset;
+    if ( BaseRadio$$1 ) Buttonset.__proto__ = BaseRadio$$1;
+    Buttonset.prototype = Object.create( BaseRadio$$1 && BaseRadio$$1.prototype );
+    Buttonset.prototype.constructor = Buttonset;
 
-  	Buttonset.prototype._tplChoiceUi = function _tplChoiceUi () {
-  		return "\n\t\t\t<input id=\"{{ id }}\" type=\"radio\" value=\"{{ val }}\" name=\"_customize-kkcp_buttonset-{{ data.id }}\">\n\t\t\t<label class=\"{{ classes }} kkcpui-tooltip--top\" {{ attributes }} title=\"{{ tooltip }}\" for=\"{{ id }}\" onclick=\"\">{{ label }}</label>\n\t\t"
-  	};
+    Buttonset.prototype._tplChoiceUi = function _tplChoiceUi () {
+      return "\n      <input id=\"{{ id }}\" type=\"radio\" value=\"{{ val }}\" name=\"_customize-kkcp_buttonset-{{ data.id }}\">\n      <label class=\"{{ classes }} kkcpui-tooltip--top\" {{ attributes }} title=\"{{ tooltip }}\" for=\"{{ id }}\" onclick=\"\">{{ label }}</label>\n    "
+    };
 
-  	/**
-  	 * @since 1.1.0
-  	 * @override
-  	 */
-  	Buttonset.prototype._tplAboveChoices = function _tplAboveChoices () {
-  		return "\n\t\t\t<div class=\"switch-toggle kkcpui-switch switch-{{ _.size(choices) }}\">\n\t\t"
-  	};
+    /**
+     * @since 1.1.0
+     * @override
+     */
+    Buttonset.prototype._tplAboveChoices = function _tplAboveChoices () {
+      return "\n      <div class=\"switch-toggle kkcpui-switch switch-{{ _.size(choices) }}\">\n    "
+    };
 
-  	/**
-  	 * @since 1.1.0
-  	 * @override
-  	 */
-  	Buttonset.prototype._tplBelowChoices = function _tplBelowChoices () {
-  		return "\n\t\t\t<a></a>\n\t\t\t</div>\n\t\t"
-  	};
+    /**
+     * @since 1.1.0
+     * @override
+     */
+    Buttonset.prototype._tplBelowChoices = function _tplBelowChoices () {
+      return "\n      <a></a>\n      </div>\n    "
+    };
 
-  	return Buttonset;
+    return Buttonset;
   }(BaseRadio));
 
   wpApi.controlConstructor['kkcp_buttonset'] = api$1.controls.Buttonset = Buttonset;
@@ -16025,19 +16025,19 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @augments wp.customize.Class
    */
   var Radio = (function (BaseRadio$$1) {
-  	function Radio () {
-  		BaseRadio$$1.apply(this, arguments);
-  	}
+    function Radio () {
+      BaseRadio$$1.apply(this, arguments);
+    }
 
-  	if ( BaseRadio$$1 ) Radio.__proto__ = BaseRadio$$1;
-  	Radio.prototype = Object.create( BaseRadio$$1 && BaseRadio$$1.prototype );
-  	Radio.prototype.constructor = Radio;
+    if ( BaseRadio$$1 ) Radio.__proto__ = BaseRadio$$1;
+    Radio.prototype = Object.create( BaseRadio$$1 && BaseRadio$$1.prototype );
+    Radio.prototype.constructor = Radio;
 
-  	Radio.prototype._tplChoiceUi = function _tplChoiceUi () {
-  		return "\n\t\t\t<label class=\"{{ classes }}\" {{{ attributes }}}>\n\t\t\t\t<input type=\"radio\" value=\"{{ val }}\" name=\"_customize-kkcp_radio-{{ data.id }}\">\n\t\t\t\t{{ label }}\n\t\t\t\t<# if (choice.sublabel) { #><small> ({{ choice.sublabel }})</small><# } #>\n\t\t\t</label>\n\t\t"
-  	};
+    Radio.prototype._tplChoiceUi = function _tplChoiceUi () {
+      return "\n      <label class=\"{{ classes }}\" {{{ attributes }}}>\n        <input type=\"radio\" value=\"{{ val }}\" name=\"_customize-kkcp_radio-{{ data.id }}\">\n        {{ label }}\n        <# if (choice.sublabel) { #><small> ({{ choice.sublabel }})</small><# } #>\n      </label>\n    "
+    };
 
-  	return Radio;
+    return Radio;
   }(BaseRadio));
 
   wpApi.controlConstructor['kkcp_radio'] = api$1.controls.Radio = Radio;
@@ -16059,19 +16059,19 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @augments wp.customize.Class
    */
   var RadioImage = (function (BaseRadio$$1) {
-  	function RadioImage () {
-  		BaseRadio$$1.apply(this, arguments);
-  	}
+    function RadioImage () {
+      BaseRadio$$1.apply(this, arguments);
+    }
 
-  	if ( BaseRadio$$1 ) RadioImage.__proto__ = BaseRadio$$1;
-  	RadioImage.prototype = Object.create( BaseRadio$$1 && BaseRadio$$1.prototype );
-  	RadioImage.prototype.constructor = RadioImage;
+    if ( BaseRadio$$1 ) RadioImage.__proto__ = BaseRadio$$1;
+    RadioImage.prototype = Object.create( BaseRadio$$1 && BaseRadio$$1.prototype );
+    RadioImage.prototype.constructor = RadioImage;
 
-  	RadioImage.prototype._tplChoiceUi = function _tplChoiceUi () {
-  		return ("\n\t\t\t<input id=\"{{ id }}\" class=\"kkcp-radio-image\" type=\"radio\" value=\"{{ val }}\" name=\"_customize-kkcp_radio_image-{{ data.id }}\">\n\t\t\t<label for=\"{{ id }}\" class=\"{{ classes }}\" {{ attributes }}>\n\t\t\t\t<# var imgUrl = choice.img_custom ? '" + _IMAGES_BASE_URL + "' + choice.img_custom : '" + _CP_URL_IMAGES + "' + choice.img + '.png'; #>\n\t\t\t\t<img class=\"kkcpui-tooltip--top\" src=\"{{ imgUrl }}\" title=\"{{ tooltip }}\">\n\t\t\t</label>\n\t\t")
-  	};
+    RadioImage.prototype._tplChoiceUi = function _tplChoiceUi () {
+      return ("\n      <input id=\"{{ id }}\" class=\"kkcp-radio-image\" type=\"radio\" value=\"{{ val }}\" name=\"_customize-kkcp_radio_image-{{ data.id }}\">\n      <label for=\"{{ id }}\" class=\"{{ classes }}\" {{ attributes }}>\n        <# var imgUrl = choice.img_custom ? '" + _IMAGES_BASE_URL + "' + choice.img_custom : '" + _CP_URL_IMAGES + "' + choice.img + '.png'; #>\n        <img class=\"kkcpui-tooltip--top\" src=\"{{ imgUrl }}\" title=\"{{ tooltip }}\">\n      </label>\n    ")
+    };
 
-  	return RadioImage;
+    return RadioImage;
   }(BaseRadio));
 
   wpApi.controlConstructor['kkcp_radio_image'] = api$1.controls.RadioImage = RadioImage;
@@ -16868,19 +16868,19 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
    * @augments wp.customize.Class
    */
   var Toggle = (function (Checkbox) {
-  	function Toggle () {
-  		Checkbox.apply(this, arguments);
-  	}
+    function Toggle () {
+      Checkbox.apply(this, arguments);
+    }
 
-  	if ( Checkbox ) Toggle.__proto__ = Checkbox;
-  	Toggle.prototype = Object.create( Checkbox && Checkbox.prototype );
-  	Toggle.prototype.constructor = Toggle;
+    if ( Checkbox ) Toggle.__proto__ = Checkbox;
+    Toggle.prototype = Object.create( Checkbox && Checkbox.prototype );
+    Toggle.prototype.constructor = Toggle;
 
-  	Toggle.prototype._tpl = function _tpl () {
-  		return ("\n\t\t\t" + (this._tplHeader()) + "\n\t\t\t<# var labelFalse = data.attrs ? data.attrs.label_false : ''; labelTrue = data.attrs ? data.attrs.label_true : ''; #>\n\t\t\t<label class=\"switch-light kkcpui-switch<# if (labelFalse && labelTrue) { var l0l = labelFalse.length, l1l = labelTrue.length; #><# if ((l0l && l1l) && (Math.abs(l0l - l1l) > 1) || l0l > 6 || l1l > 6) { #> kkcpui-switch__labelsauto<# } else { #> kkcpui-switch__labels<# } } #>\" onclick=\"\">\n\t\t\t\t<input type=\"checkbox\" name=\"_customize-kkcp_toggle-{{ data.id }}\" value=\"\" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}=\"{{ a[key] }}\" <# } } #><# if (data.value) { #> checked<# } #>>\n\t\t\t\t<span<# if (!labelFalse && !labelTrue) { #> aria-hidden=\"true\"<# } #>>\n\t\t\t\t\t<span><# if (labelFalse) { #>{{ labelFalse }}<# } #></span>\n\t\t\t\t\t<span><# if (labelTrue) { #>{{ labelTrue }}<# } #></span>\n\t\t\t\t\t<a></a>\n\t\t\t\t</span>\n\t\t\t</label>\n\t\t");
-  	};
+    Toggle.prototype._tpl = function _tpl () {
+      return ("\n      " + (this._tplHeader()) + "\n      <# var labelFalse = data.attrs ? data.attrs.label_false : ''; labelTrue = data.attrs ? data.attrs.label_true : ''; #>\n      <label class=\"switch-light kkcpui-switch<# if (labelFalse && labelTrue) { var l0l = labelFalse.length, l1l = labelTrue.length; #><# if ((l0l && l1l) && (Math.abs(l0l - l1l) > 1) || l0l > 6 || l1l > 6) { #> kkcpui-switch__labelsauto<# } else { #> kkcpui-switch__labels<# } } #>\" onclick=\"\">\n        <input type=\"checkbox\" name=\"_customize-kkcp_toggle-{{ data.id }}\" value=\"\" <# var a = data.attrs; for (var key in a) { if (a.hasOwnProperty(key)) { #>{{ key }}=\"{{ a[key] }}\" <# } } #><# if (data.value) { #> checked<# } #>>\n        <span<# if (!labelFalse && !labelTrue) { #> aria-hidden=\"true\"<# } #>>\n          <span><# if (labelFalse) { #>{{ labelFalse }}<# } #></span>\n          <span><# if (labelTrue) { #>{{ labelTrue }}<# } #></span>\n          <a></a>\n        </span>\n      </label>\n    ");
+    };
 
-  	return Toggle;
+    return Toggle;
   }(Checkbox$1));
 
   wpApi.controlConstructor['kkcp_toggle'] = api$1.controls.Toggle = Toggle;
