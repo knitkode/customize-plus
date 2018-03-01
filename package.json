@@ -19,6 +19,9 @@
       "wpReleases": "../roots/releases/",
       "wpAssets": "../ui/customize-plus",
       "docsJsDest": "../knitkode.com/build/docs/customize-plus/js"
+    },
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "homepage": "https://knitkode.com/products/customize-plus",
@@ -74,7 +77,9 @@
   },
   "devDependencies": {
     "autoprefixer": "7.2.x",
+    "commitizen": "^2.9.6",
     "css-mqpacker": "6.0.x",
+    "cz-conventional-changelog": "^2.1.0",
     "deep-extend": "0.5.x",
     "del": "3.0.x",
     "gh-pages": "1.1.x",
