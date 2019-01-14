@@ -236,10 +236,9 @@ export function extractNumber( $value ) {
  *
  * @since  1.0.0
  * @param  {string}     $value          The value from to extract from
- * @param  {null|array} $allowed_units  An array of allowed units
  * @return {string|null}                The first valid unit found.
  */
-export function extractSizeUnit( $value, $allowed_units ) {
+export function extractSizeUnit( $value ) {
   const matches = /(px|%|em|rem|vh|vw|vmin|vmax|cm|mm|in|pt|pc|ch|ex)/.exec( $value );
 
   if (matches && matches[0] ) {

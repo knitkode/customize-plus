@@ -77,11 +77,11 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 *
 	 * - When `false` no palette selection is shown
 	 * - When is an `array`, it needs to be an array of arrays where each array
-	 *   is a row of color choices in the UI. If the `picker` property is set to
-	 *   `false` only the colors defined in the palette are allowed to be picked
-	 *   and will pass validation. If `picker` is set to `true` the palette will
-	 *   not constrain the user choice turning the palette into a sort of design
-	 *   suggestion.
+	 *   is a row of color choices in the UI. Maximum 8 colors per row are
+	 *   allowed. NB: If the `picker` property is set to `false` only the colors
+	 *   defined in the palette are allowed to be picked and will pass validation.
+	 *   If `picker` is set to `true` the palette will not constrain the user
+	 *   choice turning the palette into a sort of design suggestion.
 	 *
 	 * In regards to spectrum this is an abstraction of the following options:
 	 * {@link(https://bgrins.github.io/spectrum/#options-selectionPalette, docs)},
