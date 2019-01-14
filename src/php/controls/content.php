@@ -49,7 +49,7 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 	 *
 	 * @see  self::$allowed_alerts
 	 * @since 1.0.0
-	 * @var string
+	 * @var bool|string
 	 */
 	public $alert = false;
 
