@@ -27,12 +27,11 @@ import Text from './text';
  * @requires tinyMCE
  */
 class Textarea extends Text {
-
   /**
    * @override
    */
-  componentInit () {
-    if (this.params['wp_editor']) {
+  componentInit() {
+    if (this.params["wp_editor"]) {
       this._wpEditorID = this._getWpEditorId();
     }
   }
@@ -40,8 +39,8 @@ class Textarea extends Text {
   /**
    * @override
    */
-  componentWillUnmount () {
-    if (this.params['wp_editor']) {
+  componentWillUnmount() {
+    if (this.params["wp_editor"]) {
       // it might be that this method is called too soon, even before tinyMCE
       // has been loaded, so try it and don't break.
       try {
@@ -49,39 +48,39 @@ class Textarea extends Text {
           // window.tinyMCE.remove('#' + this._wpEditorID);
           window.wp.editor.remove(this._wpEditorID);
         }
-      } catch(e) {}
+      } catch (e) {}
     }
   }
 
   /**
    * @override
    */
-  shouldComponentUpdate ($value) {
+  shouldComponentUpdate($value) {
     return $value !== this._getValueFromUI();
   }
 
   /**
    * @override
    */
-  componentDidUpdate ($value) {
+  componentDidUpdate($value) {
     this._updateUI($value);
   }
 
   /**
    * @override
    */
-  componentDidMount () {
-    this.__textarea = this._container.getElementsByTagName('textarea')[0];
+  componentDidMount() {
+    this.__textarea = this._container.getElementsByTagName("textarea")[0];
 
     // params.wp_editor can be either a boolean or an object with options
-    if (this.params['wp_editor'] && !this._wpEditorIsActive) {
+    if (this.params["wp_editor"] && !this._wpEditorIsActive) {
       this._initWpEditor();
     } else {
       const self = this;
 
       this._updateUI(self.setting());
 
-      $(self.__textarea).on('change keyup paste', function () {
+      $(self.__textarea).on("change keyup paste", function() {
         self.setting.set(this.value);
       });
     }
@@ -94,8 +93,8 @@ class Textarea extends Text {
    * @memberof! controls.Textarea#
    * @access protected
    */
-  _getValueFromUI () {
-    if (this.params['wp_editor']) {
+  _getValueFromUI() {
+    if (this.params["wp_editor"]) {
       const wpEditorInstance = window.tinyMCE.get(this._wpEditorID);
       return wpEditorInstance.getContent();
       // returnwindow.wp.editor.getContent(this._wpEditorID);;
@@ -111,10 +110,10 @@ class Textarea extends Text {
    * @memberof! controls.Textarea#
    * @access protected
    *
-   * @param {$value}
+   * @param {string} $value
    */
-  _updateUI ($value) {
-    if (this.params['wp_editor']) {
+  _updateUI($value) {
+    if (this.params["wp_editor"]) {
       const wpEditorInstance = window.tinyMCE.get(this._wpEditorID);
       wpEditorInstance.setContent($value);
     } else {
@@ -132,8 +131,8 @@ class Textarea extends Text {
    * @memberof! controls.Textarea#
    * @access protected
    */
-  _getWpEditorId () {
-    return `${this.id.replace(/-/g, '_')}__textarea`;
+  _getWpEditorId() {
+    return `${this.id.replace(/-/g, "_")}__textarea`;
   }
 
   /**
@@ -153,20 +152,27 @@ class Textarea extends Text {
    * @memberof! controls.Textarea#
    * @access protected
    */
-  _initWpEditor () {
+  _initWpEditor() {
     // dynamically set id on textarea, then use it as a target for wp_editor
     this.__textarea.id = this._wpEditorID;
 
     const setting = this.setting;
 
     // get wp_editor custom options defined by the developer through the php API
-    const optionsCustom = _.isObject(this.params['wp_editor']) ? this.params['wp_editor'] : {};
+    const optionsCustom = _.isObject(this.params["wp_editor"])
+      ? this.params["wp_editor"]
+      : {};
 
     // set default options
-    const optionsDefaults = $.extend(true, {}, window.wp.editor.getDefaultSettings(), {
-      teeny: true,
-      mediaButtons: false,
-    });
+    const optionsDefaults = $.extend(
+      true,
+      {},
+      window.wp.editor.getDefaultSettings(),
+      {
+        teeny: true,
+        mediaButtons: false
+      }
+    );
 
     // merge the options adding the required options (the needed element id and
     // setup callback with our bindings to the WordPRess customize API)
@@ -176,8 +182,8 @@ class Textarea extends Text {
       // elements: this.__textarea.id,
       tinymce: {
         target: this.__textarea,
-        setup: function (editor) {
-          editor.on('init', function () {
+        setup: function(editor) {
+          editor.on("init", function() {
             // at a certain point it seemed that somehow we needed a timeout here,
             // without it it doesn't work. Now it works, but leave the comment here
             // for possible future problems.
@@ -185,7 +191,7 @@ class Textarea extends Text {
             editor.setContent(setting());
             // }, 1000);
           });
-          editor.on('change keyup', function () {
+          editor.on("change keyup", function() {
             setting.set(editor.getContent());
           });
         }
@@ -211,7 +217,7 @@ class Textarea extends Text {
         <# } #>>
         </textarea>
       </label>
-    `
+    `;
   }
 }
 

@@ -44,6 +44,8 @@ module.exports = {
   docs: function customizeDocs (callback) {
     return gulp.parallel(
       docsJs,
+      // esdoc,
+      // documentationJs
     )(callback);
   },
 }
@@ -206,4 +208,26 @@ function docsJs (cb) {
           excludePattern: '(^|\\/|\\\\)_'
         }
       }));
+}
+
+function esdoc(callback) {
+  const esdoc = require('gulp-esdoc');
+ 
+  return gulp.src([
+      // paths.join(paths.ROOT, 'README.md'),
+      paths.join(paths.src.scripts, 'customize'),
+    ])
+    .pipe(esdoc({
+      destination: paths.join(paths.ROOT, pkg.config.paths.esdocDest),
+      'includes': ['\\.js$'],
+    }));
+}
+
+function documentationJs(callback) {
+  const documentation = require('gulp-documentation');
+
+  return gulp
+    .src(paths.join(paths.src.scripts, "customize/**/*.js"))
+    .pipe(documentation("html", {}, {}))
+    .pipe(gulp.dest(paths.join(paths.ROOT, pkg.config.paths.documentationJsDest)));
 }

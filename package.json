@@ -18,7 +18,9 @@
       "distAssets": "../.tmp/wp-assets",
       "wpReleases": "../roots/releases/",
       "wpAssets": "../ui/customize-plus",
-      "docsJsDest": "../knitkode.com/build/docs/customize-plus/js"
+      "docsJsDest": "../knitkode.com/build/docs/customize-plus/js",
+      "esdocDest": "../knitkode.com/build/docs/customize-plus/esdoc",
+      "documentationJsDest": "../knitkode.com/build/docs/customize-plus/documentation-js"
     },
     "commitizen": {
       "path": "cz-conventional-changelog"
@@ -50,13 +52,13 @@
   "scripts": {
     "prebuild": "rm -r build/ || true",
     "predeploy": "rm -r build/ || true",
-    "prewatch": "npm link @knitkode/vendor",
+    "prewatch": "yarn link @knitkode/vendor",
     "watch": "gulp watch --cwd config/",
     "build": "gulp build --dist --cwd config/",
     "deploy": "gulp deploy --dist --cwd config/",
     "publish": "gulp publish --dist --cwd config/",
     "update": "git submodule update --remote config/dev-lib && git add config/dev-lib && git commit -m \"maintenance(dev-lib) update\"",
-    "init": "git submodule add git@github.com:knitkode/wp-dev-lib config/dev-lib && npm link && npm link @knitkode/vendor",
+    "init": "git submodule add git@github.com:knitkode/wp-dev-lib config/dev-lib && yarn link && yarn link @knitkode/vendor",
     "w": "npm run watch",
     "b": "npm run build",
     "d": "npm run deploy",
@@ -82,6 +84,9 @@
     "cz-conventional-changelog": "2.1.x",
     "deep-extend": "0.6.x",
     "del": "3.0.x",
+    "documentation": "^9.1.1",
+    "esdoc": "^1.1.0",
+    "esdoc-standard-plugin": "^1.0.0",
     "gh-pages": "2.0.x",
     "grunt": "^1.0.3",
     "grunt-wp-deploy": "1.3.x",
@@ -93,6 +98,8 @@
     "gulp-cssnano": "2.1.x",
     "gulp-data": "1.3.x",
     "gulp-debug": "4.0.x",
+    "gulp-documentation": "^3.2.1",
+    "gulp-esdoc": "^0.4.1",
     "gulp-filelog": "0.4.x",
     "gulp-flatten": "0.4.x",
     "gulp-header": "2.0.x",

@@ -30,12 +30,12 @@
 
 /**
  * Shim type for PHP `null`
- * @typedef {?} null
+ * @typedef {?(undefined)} null
  */
 
 /**
  * Shim type for PHP `mixed`
- * @typedef {(number|string|Array.<mixed>|Object.<string|number, mixed>)} mixed
+ * @typedef {(number|string|Array<mixed>|Object<string|number, mixed>)} mixed
  */
 
 /**
@@ -48,7 +48,7 @@
 
 /**
  * Shim type for WordPress `WP_Error`
- * @typedef {Array.<ValidityNotification>} WP_Error
+ * @typedef {Array<ValidityNotification>} WP_Error
  */
 
 /**

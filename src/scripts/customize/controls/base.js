@@ -912,9 +912,11 @@ class Base extends wpApi.Control {
    * @access public
    * @abstract
    * @static
-   * @param  {?} value Could be the original, the current, or the initial
-   *                   session value
-   * @return {?}       The 'normalized' value passed as an argument.
+   * @param  {?(number|string|boolean)} value Could be the original, the
+                                              current, or the initial
+   *                                            session value
+   * @return {?(number|string|boolean)}       The 'normalized' value passed 
+                                              as an argument.
    */
   softenize (value) {
     return value;
