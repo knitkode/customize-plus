@@ -4,9 +4,6 @@
 # Build (on its own branch)
 build
 
-# Docs (on its own branch)
-docs
-
 # Vendor
 vendor
 
