@@ -2,6 +2,6 @@
 title: Getting started
 ---
 
-# Placeholder content
+# Placeholder
 
 in English
