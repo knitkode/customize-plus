@@ -1,0 +1,5 @@
+---
+title: Sanitization
+---
+
+`some` content

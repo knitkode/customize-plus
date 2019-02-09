@@ -1,0 +1,5 @@
+---
+title: Panels
+---
+
+`some` content

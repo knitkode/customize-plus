@@ -1,0 +1,5 @@
+---
+title: Controls
+---
+
+`some` content
