@@ -1,15 +1,11 @@
 ---
 title: Introduction
 description: Official documentation
-toc: true
-no_pagination: true
 ---
 
 > This document is a draft currently under improvement
 
-### Introduction
-
-#### Foreword
+## Foreword
 
 Since the slight confusion that can arise using the normally interchangeable names of `setting` and `option` in relation to the WordPress APIs, here is a preliminary clarification on how we intend and use these terms.
 We use `settings` to describe at the same time both theme_mods and options, so both the ones you get from the `get_theme_mod` and the ones got from the `get_option` WordPress functions. The words `theme_mod` or `mods` are used only for the former, and `options` only for the latter.
@@ -20,7 +16,7 @@ Customize Plus provide only 4 global functions: `kk_get_option`, `kk_get_theme_m
 All the settings defined as `options`, will be available in an array under a single namespace defined through the `add_theme_support` API under the key `theme_prefix`.
 This behavior follows the WordPress best practices.
 
-#### Theme support
+## Theme support
 
 Customize Plus take advantage of the [Theme Support API](https://developer.wordpress.org/reference/functions/add_theme_support/) to put you in control over its behavior.
 All the configuration of Customize Plus must be defined under a single array passed under the theme_support key named `kkcp-customize`. Here's a snippet to get you started, or you can look at the [Demo Theme](https://github.com/knitkode/customize-plus-demo):
@@ -54,7 +50,7 @@ Customize Plus Premium only:
   c. `optional`: do not forces the activation of the component on theme activation and always allow users to disable it.
   d. `blocked`: always deactivate the component, users will not be able to enable it
 
-#### Custom controls
+## Custom controls
 
 Each custom control's default setting can be resetted in three ways:
 
