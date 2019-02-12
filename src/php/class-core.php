@@ -40,7 +40,8 @@ if ( ! class_exists( 'KKcp' ) ):
 
 		/**
 		 * Init
-		 * {@link(http://geertdedeckere.be/article/loading-wordpress-language-files-the-right-way, link)}
+		 * 
+		 * @link http://geertdedeckere.be/article/loading-wordpress-language-files-the-right-way
 		 *
 		 * @since  1.0.0
 		 */

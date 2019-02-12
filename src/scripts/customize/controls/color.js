@@ -14,7 +14,6 @@ import Base from './base';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Color
  *
  * @extends controls.Base
  * @augments wp.customize.Control
@@ -122,7 +121,6 @@ class Color extends Base {
    * {@link https://bgrins.github.io/spectrum/ spectrum API}
    *
    * @since   1.0.0
-   * @memberof! controls.Color#
    * @access protected
    *
    * @param  {?object} options Options that override the defaults (optional)
@@ -170,7 +168,6 @@ class Color extends Base {
    * Get value from UI
    *
    * @since   1.1.0
-   * @memberof! controls.Color#
    *
    * @access protected
    * @return {string}
@@ -183,7 +180,6 @@ class Color extends Base {
    * Update UI
    *
    * @since   1.1.0
-   * @memberof! controls.Color#
    *
    * @access protected
    * @param  {string} $value

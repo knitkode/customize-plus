@@ -29,7 +29,7 @@ class KKcp_Customize_Control_Sortable extends KKcp_Customize_Control_Base_Choice
 	}
 
 	/**
-	 * {@inheritDoc}. Always dynamically set `max` equal to the number of choices.
+	 * {@inheritdoc}. Always dynamically set `max` equal to the number of choices.
 	 *
 	 * @since 1.0.0
 	 */

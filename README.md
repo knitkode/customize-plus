@@ -3,6 +3,7 @@
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)](https://wordpress.org/plugins/customize-plus)
 [![GitHub release](https://img.shields.io/github/release/knitkode/customize-plus.svg)](https://github.com/knitkode/customize-plus/releases/latest)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/facc393563dd4ef49ff3b2dea2bd2f7c)](https://www.codacy.com/app/knitkode/customize-plus?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=knitkode/customize-plus&amp;utm_campaign=Badge_Grade)
+[![Inline docs](http://inch-ci.org/github/knitkode/customize-plus.svg?branch=develop&style=shields)](http://inch-ci.org/github/knitkode/customize-plus)
 
 > Enhance and extend the WordPress Customize in your themes.
 

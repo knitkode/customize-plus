@@ -11,7 +11,6 @@ import BaseSet from './base-set';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Icon
  *
  * @extends controls.BaseSet
  * @augments controls.Base
@@ -49,7 +48,6 @@ class Icon extends BaseSet {
    * Get option icon class name
    *
    * @since   1.0.0
-   * @memberof! controls.Icon#
    * @access protected
    *
    * @param  {Object} data The single option data

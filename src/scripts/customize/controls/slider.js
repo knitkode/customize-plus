@@ -14,7 +14,6 @@ import Base from './base';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Slider
  *
  * @extends controls.Base
  * @augments wp.customize.Control
@@ -71,7 +70,6 @@ class Slider extends Base {
    * Set DOM element as control properties
    *
    * @since   1.0.0
-   * @memberof! controls.Slider#
    * @access protected
    */
   _setDOMrefs () {
@@ -85,7 +83,6 @@ class Slider extends Base {
    * Init slider and bind input UI.
    *
    * @since   1.0.0
-   * @memberof! controls.Slider#
    * @access protected
    */
   _initSliderAndBindInputs () {
@@ -136,7 +133,6 @@ class Slider extends Base {
    * Get current `setting` value from DOM or from given arg
    *
    * @since   1.0.0
-   * @memberof! controls.Slider#
    * @access protected
    *
    * @param  {Object<string,string>} value An optional value formed as
@@ -167,7 +163,6 @@ class Slider extends Base {
    * Reflect a programmatic setting change on the UI.
    *
    * @since   1.0.0
-   * @memberof! controls.Slider#
    * @access protected
    *
    * @param {?string} value Optional, the value from where to extract number and unit,
@@ -196,7 +191,6 @@ class Slider extends Base {
    * Wraps `setting.set()` with some additional stuff.
    *
    * @since   1.0.0
-   * @memberof! controls.Slider#
    * @access protected
    *
    * @param  {string} value

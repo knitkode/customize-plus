@@ -16,7 +16,7 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_number';
 
@@ -50,7 +50,7 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::number( $value, $setting, $control );
@@ -58,7 +58,7 @@ class KKcp_Customize_Control_Number extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::number( $validity, $value, $setting, $control );

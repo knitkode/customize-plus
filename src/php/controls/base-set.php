@@ -33,7 +33,7 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
 	protected $set_js_var = 'mySet';
 
 	/**
-	 * {@inheritDoc}. Override it here in order to manually populate the
+	 * {@inheritdoc}. Override it here in order to manually populate the
 	 * `valid_choices` property from the 'globally' defined sets filtered with
 	 * the given `choices` param.
 	 *
@@ -167,7 +167,7 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected function get_valid_choices ( $filtered_sets ) {
 		$valid_choices = array();
@@ -192,7 +192,7 @@ abstract class KKcp_Customize_Control_Base_Set extends KKcp_Customize_Control_Ba
 	}
 
 	/**
-	 * {@inheritDoc}. Set set arrays as constants to use in JavaScript
+	 * {@inheritdoc}. Set set arrays as constants to use in JavaScript
 	 *
 	 * @since  1.0.0
 	 * @override

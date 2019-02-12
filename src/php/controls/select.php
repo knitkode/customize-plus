@@ -16,13 +16,13 @@ class KKcp_Customize_Control_Select extends KKcp_Customize_Control_Base_Choices 
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_select';
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected $allowed_input_attrs = array(
 		'native' => array( 'sanitizer' => 'bool' ),

@@ -9,7 +9,6 @@ import Text from './text';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Password
  *
  * @extends controls.Text
  * @augments controls.BaseInput
@@ -80,7 +79,6 @@ class Password extends Text {
    * Toggle password visiblity
    *
    * @since   1.0.0
-   * @memberof! controls.Password#
    * @access protected
    *
    * @param  {boolean} isVisible

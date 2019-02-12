@@ -8,7 +8,6 @@ import Base from './base';
  * @since  1.0.0
  *
  * @memberof controls
- * @class BaseChoices
  *
  * @extends controls.Base
  * @augments wp.customize.Control
@@ -27,7 +26,6 @@ class BaseChoices extends Base {
    * Get valid choices values from given choices
    *
    * @since   1.0.0
-   * @memberof! controls.BaseChoices#
    *
    * @param  {Array<string>|Object<string, Object>} choices
    * @return {Array<string>}
@@ -73,7 +71,6 @@ class BaseChoices extends Base {
    * to change behavior, for instance in sortable controls.
    *
    * @since   1.1.0
-   * @memberof! controls.BaseChoices#
    *
    * @access package
    * @return {string}
@@ -86,7 +83,6 @@ class BaseChoices extends Base {
    * Ouput the js to configure each choice template data and its UI
    *
    * @since   1.1.0
-   * @memberof! controls.BaseChoices#
    *
    * @access package
    * @return {string}
@@ -130,7 +126,6 @@ class BaseChoices extends Base {
    * Custom choice template UI
    *
    * @since   1.1.0
-   * @memberof! controls.BaseChoices#
    *
    * @abstract
    * @access package
@@ -144,7 +139,6 @@ class BaseChoices extends Base {
    * Add a part of template just before the choices loop
    *
    * @since   1.1.0
-   * @memberof! controls.BaseChoices#
    *
    * @abstract
    * @access package
@@ -158,7 +152,6 @@ class BaseChoices extends Base {
    * Add a part of template just after the choices loop
    *
    * @since   1.1.0
-   * @memberof! controls.BaseChoices#
    *
    * @abstract
    * @access package

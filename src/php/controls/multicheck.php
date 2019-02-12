@@ -16,13 +16,13 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_multicheck';
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $max = null;
 
@@ -35,7 +35,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 	public $sortable = false;
 
 	/**
-	 * {@inheritDoc}. Set `max` dynamically to the number of choices if the
+	 * {@inheritdoc}. Set `max` dynamically to the number of choices if the
 	 * developer has not already set it explicitly and populate valida choices.
 	 *
 	 * @since 1.0.0
@@ -54,7 +54,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public function enqueue() {
 		if ( $this->sortable ) {
@@ -64,7 +64,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected function add_to_json() {
 		parent::add_to_json();
@@ -75,7 +75,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::multiple_choices( $value, $setting, $control );
@@ -83,7 +83,7 @@ class KKcp_Customize_Control_Multicheck extends KKcp_Customize_Control_Base_Choi
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::multiple_choices( $validity, $value, $setting, $control );

@@ -10,7 +10,6 @@ import { api, wpApi, $document, $readyDOM } from './globals';
  * @since 1.0.0
  * @access private
  *
- * @class Tabs
  * @requires components.Screenpreview
  */
 class Tabs {
@@ -143,7 +142,7 @@ class Tabs {
 
 /**
  * @name tabs
- * @description  Instance of {@link Tabs}
+ * @description  Instance of {@linkcode Tabs}
  *
  * @instance
  * @memberof core

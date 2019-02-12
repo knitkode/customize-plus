@@ -2,7 +2,7 @@
 /**
  * Customize Plus Control base class
  *
- * {@inheritDoc}
+ * {@inheritdoc}
  *
  * @since 1.0.0
  * @override

@@ -13,7 +13,6 @@ import BaseChoices from './base-choices';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Select
  *
  * @extends controls.BaseChoices
  * @augments controls.Base
@@ -112,7 +111,6 @@ class Select extends BaseChoices {
    * Get value from UI
    *
    * @since   1.0.0
-   * @memberof! controls.Select#
    * @access protected
    *
    * @return {?Array<string>}
@@ -134,7 +132,6 @@ class Select extends BaseChoices {
    * not trigger the `onChange` event
    *
    * @since   1.0.0
-   * @memberof! controls.Select#
    * @access protected
    *
    * @param {string|Array<string>} value

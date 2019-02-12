@@ -16,13 +16,12 @@ import Notification from '../core/notification';
  * Render controls content on demand when their section is expanded then remove
  * the DOM when the section is collapsed (inflation/deflation).
  * Since we override some 'not-meant-to-be-overriden' methods keep an eye on
- * @link(http://git.io/vZ6Yq, WordPress source code).
+ * [WordPress source code]{@link http://git.io/vZ6Yq}.
  *
  * @see PHP class KKcp_Customize_Control_Base
  * @since  1.0.0
  *
  * @memberof controls
- * @class Base
  *
  * @extends wp.customize.Control
  * @augments wp.customize.Class
@@ -33,7 +32,7 @@ import Notification from '../core/notification';
 class Base extends wpApi.Control {
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    *
    * Extends the constructor with a tweaked version of the WordPress Control
    * initialize method, a custom hook `componentInit` and a private and shared
@@ -41,7 +40,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @override
    */
   constructor (id, options) {
@@ -51,13 +49,12 @@ class Base extends wpApi.Control {
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritdoc}
    *
    * Tweak the initialize method.
    *
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @override
    */
   initialize (id, options) {
@@ -220,8 +217,7 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
-   * @access package
+   * @access protected
    * @abstract
    * @return {void}
    */
@@ -235,7 +231,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access private
    * @return {void}
    */
@@ -338,7 +333,6 @@ class Base extends wpApi.Control {
    * @see  PHP KKcp_Customize_Control_Base->l10n()
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access package
    * @param {string} $key
    * @return {string}
@@ -357,7 +351,6 @@ class Base extends wpApi.Control {
    * @see  PHP KKcp_Customize_Control_Base::validate_callback
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access package
    * @param  {string} value
    * @return {string} The value validated or the last setting value.
@@ -391,7 +384,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access package
    * @abstract
    * @param  {WP_Error} $validity
@@ -434,7 +426,6 @@ class Base extends wpApi.Control {
    * @see  PHP KKcp_Customize_Control_Base->add_error()
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access package
    * @param {string}            $type
    * @param {WP_Error}          $validity
@@ -472,7 +463,6 @@ class Base extends wpApi.Control {
    * @see  PHP KKcp_Customize_Control_Base->add_error()
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access package
    * @param {WP_Error}          $validity
    * @param {string}            $msg_id
@@ -490,7 +480,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access package
    * @param {WP_Error}          $validity
    * @param {string}            $msg_id
@@ -508,7 +497,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access package
    * @param {WP_Error}          $validity
    * @param {string}            $msg_id
@@ -524,7 +512,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access public
    * @abstract
    * @param {WP_Error}             $validity
@@ -542,7 +529,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access public
    * @abstract
    *
@@ -564,7 +550,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access public
    * @abstract
    *
@@ -589,7 +574,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access package
    * @abstract
    */
@@ -609,7 +593,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access package
    * @abstract
    *
@@ -639,7 +622,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access package
    * @abstract
    *
@@ -658,7 +640,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access package
    * @abstract
    *
@@ -682,7 +663,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access protected
    * @override
    */
@@ -713,8 +693,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
-   * @alias controls.Base._unmount
    * @access public
    */
   destroy () {
@@ -728,7 +706,6 @@ class Base extends wpApi.Control {
    * @see https://reactjs.org/docs/react-component.html#shouldcomponentupdate
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access protected
    * @abstract
    * @param {mixed} $value The new setting value
@@ -747,7 +724,6 @@ class Base extends wpApi.Control {
    * @see https://reactjs.org/docs/react-component.html#componentdidupdate
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access protected
    * @abstract
    * @param {mixed} $value The new setting value
@@ -760,7 +736,6 @@ class Base extends wpApi.Control {
    * @see  https://reactjs.org/docs/react-component.html#componentdidunmount
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access protected
    * @abstract
    */
@@ -772,7 +747,6 @@ class Base extends wpApi.Control {
    * @see  https://reactjs.org/docs/react-component.html#componentwillunmount
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access protected
    * @abstract
    */
@@ -787,7 +761,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access package
    *
    * @param {boolean} force
@@ -846,7 +819,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access package
    *
    * @param  {boolean} resolveEmbeddedDeferred Sometimes (i.e. for the
@@ -890,7 +862,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access package
    */
   _rerenderNotifications () {
@@ -908,7 +879,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access public
    * @abstract
    * @static
@@ -927,7 +897,6 @@ class Base extends wpApi.Control {
    *
    * @since 1.0.0
    *
-   * @memberof! controls.Base#
    * @access package
    */
   _extras () {

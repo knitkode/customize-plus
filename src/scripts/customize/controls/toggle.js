@@ -9,7 +9,6 @@ import Checkbox from './checkbox';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Toggle
  *
  * @extends controls.Checkbox
  * @augments controls.Base

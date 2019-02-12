@@ -114,7 +114,7 @@ export function isRgba( $value ) {
  * @since  1.0.0
  *
  * @param  {string} $value           The value value to check
- * @param  {Array} $allowed_formats  The allowed color formats
+ * @param  {Array} $allowedFormats  The allowed color formats
  * @return {bool}
  */
 export function isColor ( $value, $allowedFormats ) {
@@ -141,7 +141,7 @@ export function isColor ( $value, $allowedFormats ) {
 /**
  * Convert a hexa decimal color code to its RGB equivalent
  *
- * @link(http://php.net/manual/en/function.hexdec.php#99478, original source)
+ * @see {@link http://php.net/manual/en/function.hexdec.php#99478}
  * @since  1.0.0
  * @param  {string} $value          Hexadecimal color value
  * @param  {bool}   $returnAsString If set true, returns the value separated by
@@ -250,7 +250,8 @@ export function extractSizeUnit( $value ) {
 /**
  * Modulus
  *
- * @source https://stackoverflow.com/a/31711034
+ * @see {@link https://stackoverflow.com/a/31711034}
+
  * @param  {number} val
  * @param  {number} step
  * @return {number}
@@ -267,11 +268,10 @@ export function modulus(val, step){
 /**
  * Is Multiple of
  *
- * Take a look at the {@link http://stackoverflow.com/q/12429362/1938970
- * stackoverflow question} about this topic. This solution is an ok
- * compromise. We use `Math.abs` to convert negative number to positive
- * otherwise the minor comparison would always return true for negative
- * numbers.
+ * Take a look at {@link http://stackoverflow.com/q/12429362/1938970}
+ * about this topic. This solution is an ok compromise. We use `Math.abs` to
+ * convert negative number to positive otherwise the minor comparison would
+ * always return true for negative numbers.
  *
  * This could be a valid alternative to the above `modulus` function.
  * Note that unlike `modulus` the return value here is a boolean.
@@ -302,7 +302,7 @@ export function numberToBoolean (value) {
 
 /**
  * Strip HTML from value
- * {@link http://stackoverflow.com/q/5002111/1938970}
+ * @see {@link http://stackoverflow.com/q/5002111/1938970}
  *
  * @static
  * @param  {string} value

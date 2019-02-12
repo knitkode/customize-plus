@@ -37,7 +37,7 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 	/**
 	 * Subclasses needs to override this with a custom default array.
 	 *
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 *
 	 * @since 1.0.0
 	 * @override
@@ -80,7 +80,7 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public function get_l10n() {
 		return array(
@@ -95,7 +95,7 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 	/**
 	 * JavaScript parameters nedeed by choice based controls.
 	 *
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 *
 	 * @since 1.0.0
 	 * @override
@@ -109,7 +109,7 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::one_or_more_choices( $value, $setting, $control );
@@ -117,7 +117,7 @@ abstract class KKcp_Customize_Control_Base_Choices extends KKcp_Customize_Contro
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::one_or_more_choices( $validity, $value, $setting, $control );

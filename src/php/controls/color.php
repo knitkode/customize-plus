@@ -23,7 +23,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_color';
 
@@ -64,8 +64,8 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 *   discouraged
 	 *
 	 * In regards to spectrum this is an abstraction of the following options:
-	 * {@link(https://bgrins.github.io/spectrum/#options-selectionPalette, docs)},
-	 * {@link(https://bgrins.github.io/spectrum/#options-showPaletteOnly, docs)}
+	 * {@link https://bgrins.github.io/spectrum/#options-selectionPalette docs},
+	 * {@link https://bgrins.github.io/spectrum/#options-showPaletteOnly docs}
 	 *
 	 * @since 1.0.0
 	 * @var bool|string
@@ -84,8 +84,8 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 	 *   choice turning the palette into a sort of design suggestion.
 	 *
 	 * In regards to spectrum this is an abstraction of the following options:
-	 * {@link(https://bgrins.github.io/spectrum/#options-selectionPalette, docs)},
-	 * {@link(https://bgrins.github.io/spectrum/#options-showPaletteOnly, docs)}
+	 * {@link https://bgrins.github.io/spectrum/#options-selectionPalette docs},
+	 * {@link https://bgrins.github.io/spectrum/#options-showPaletteOnly docs}
 	 *
 	 * @since 1.0.0
 	 * @var bool|array
@@ -109,7 +109,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public function get_constants() {
 		return array(
@@ -120,7 +120,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public function get_l10n() {
 		return array(
@@ -141,7 +141,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected function add_to_json() {
 		if ( $this->alpha ) {
@@ -162,7 +162,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::color( $value, $setting, $control );
@@ -170,7 +170,7 @@ class KKcp_Customize_Control_Color extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::color( $validity, $value, $setting, $control );

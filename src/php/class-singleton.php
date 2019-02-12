@@ -40,7 +40,7 @@ if ( ! class_exists( 'KKcp_Singleton' ) ):
 		 * Get called class
 		 *
 		 * PHP 5.2 version support
-		 * {@link(http://stackoverflow.com/q/7902586/1938970, source)}
+		 * @link http://stackoverflow.com/q/7902586/1938970
 		 *
 		 * @since 1.0.0
 		 */

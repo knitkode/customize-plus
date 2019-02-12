@@ -16,25 +16,25 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_font_family';
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $max = 10;
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $choices = array( 'standard' );
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected $supported_sets = array(
 		'standard',
@@ -42,13 +42,13 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected $set_js_var = 'fontFamiliesSets';
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected function get_set ( $name ) {
 		if ( $name === 'standard' ) {
@@ -60,7 +60,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected function get_valid_choices ( $filtered_sets ) {
 		$valid_choices = parent::get_valid_choices( $filtered_sets );
@@ -74,7 +74,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::font_family( $value, $setting, $control );
@@ -82,7 +82,7 @@ class KKcp_Customize_Control_Font_Family extends KKcp_Customize_Control_Base_Set
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::font_family( $validity, $value, $setting, $control );

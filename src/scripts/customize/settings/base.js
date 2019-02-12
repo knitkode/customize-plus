@@ -23,7 +23,7 @@ const Base = wpApi.Setting.extend({
    * {@inheritdoc}. Add the initial and lastSave values for reset value actions.
    * The `factory` value is added in the PHP Setting class constructor.
    *
-   * @memberof! settings.Base#
+   * @memberof settings.Base.prototype
    *
    * @since 1.0.0
    * @override
@@ -47,7 +47,7 @@ const Base = wpApi.Setting.extend({
    * {@inheritcoc}. Sanitize value before sending it to the preview via
    * `postMessage`.
    *
-   * @memberof! settings.Base#
+   * @memberof settings.Base.prototype
    *
    * @since 1.0.0
    * @override
@@ -73,10 +73,10 @@ const Base = wpApi.Setting.extend({
    *
    * This is here to allow controls to define a sanitization method before then
    * the setting value is sent to the preview via `postMessage`
-   *
-   * @memberof! settings.Base#
-   *
+   * 
+   * @memberof settings.Base
    * @abstract
+   *
    * @param  {mixed} value
    * @return {mixed}
    */
@@ -108,8 +108,8 @@ const Base = wpApi.Setting.extend({
    * set anyway by temporarily set the private property `_value` to a dummy
    * value and then re-setting the setting to the desired value, in this way
    * the callbacks are fired and the UI get back in sync.
-   *
-   * @memberof! settings.Base#
+   * 
+   * @memberof settings.Base.prototype
    *
    * @param  {WP_Customize_Setting} setting
    * @param  {string} value

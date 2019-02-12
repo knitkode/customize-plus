@@ -10,7 +10,6 @@ import BaseChoices from './base-choices';
  * @since  1.0.0
  *
  * @memberof controls
- * @class controls.BaseRadio
  *
  * @extends controls.BaseChoices
  * @augments controls.Base
@@ -55,7 +54,6 @@ class BaseRadio extends BaseChoices {
    * Sync radios and maybe bind change event
    *
    * @since   1.0.0
-   * @memberof! controls.BaseRadio#
    *
    * @param {mixed}   $value
    * @param {boolean} bind
@@ -76,7 +74,6 @@ class BaseRadio extends BaseChoices {
    * Get value from UI
    *
    * @since   1.1.0
-   * @memberof! controls.BaseRadio#
    *
    * @return {?string}
    */

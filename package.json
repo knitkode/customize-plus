@@ -18,9 +18,9 @@
       "distAssets": "../.tmp/wp-assets",
       "wpReleases": "../roots/releases/",
       "wpAssets": "../ui/customize-plus",
-      "docsJsDest": "../knitkode.com/build/docs/customize-plus/js",
-      "esdocDest": "../knitkode.com/build/docs/customize-plus/esdoc",
-      "documentationJsDest": "../knitkode.com/build/docs/customize-plus/documentation-js"
+      "docsJsDest": "../knitkode.com/build/docs/customize-plus/advanced/javascript-api/jsdoc",
+      "esdocDest": "../knitkode.com/build/docs/customize-plus/advanced/javascript-api/esdoc",
+      "documentationJsDest": "../knitkode.com/build/docs/customize-plus/advanced/javascript-api/documentation-js"
     },
     "commitizen": {
       "path": "cz-conventional-changelog"
@@ -121,6 +121,7 @@
     "gulp-watch": "5.0.x",
     "gulp-wp-pot": "2.3.x",
     "gulp-zip": "4.2.x",
+    "jsdoc-template": "^1.2.0",
     "lodash.template": "4.4.x",
     "minimist": "1.2.x",
     "node-wp-i18n": "1.2.x",

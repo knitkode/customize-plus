@@ -7,7 +7,7 @@ import Utils from '../core/utils';
  * @since 1.0.0
  *
  * @memberof core
- * @class Notification
+ *
  * @extends wp.customize.Notification
  * @augments wp.customize.Class
  *
@@ -56,7 +56,6 @@ class Notification extends wpApi.Notification {
    *
    * @since 1.1.0
    *
-   * @memberof! controls.Base#
    * @access package
    *
    * @return {string}

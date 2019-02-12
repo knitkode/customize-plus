@@ -8,7 +8,6 @@ import Base from './base';
  * @since  1.0.0
  *
  * @memberof controls
- * @class controls.BaseInput
  *
  * @extends controls.Base
  * @augments wp.customize.Control
@@ -46,7 +45,7 @@ class BaseInput extends Base {
   }
 
   /**
-   * {@inheritDoc}. Note that the `tooltip` input_attr is printed in a wrapping
+   * {@inheritdoc}. Note that the `tooltip` input_attr is printed in a wrapping
    * span instead of directly on the input field.
    *
    * @since 1.1.0

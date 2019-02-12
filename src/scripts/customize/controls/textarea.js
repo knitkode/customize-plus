@@ -14,7 +14,6 @@ import Text from './text';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Textarea
  *
  * @extends controls.Text
  * @augments controls.BaseInput
@@ -90,7 +89,6 @@ class Textarea extends Text {
    * Get value from UI
    *
    * @since   1.1.0
-   * @memberof! controls.Textarea#
    * @access protected
    */
   _getValueFromUI() {
@@ -107,7 +105,6 @@ class Textarea extends Text {
    * Update UI
    *
    * @since   1.1.0
-   * @memberof! controls.Textarea#
    * @access protected
    *
    * @param {string} $value
@@ -128,7 +125,6 @@ class Textarea extends Text {
    * @see https://codex.wordpress.org/Function_Reference/wp_editor -> $editor_id
    *
    * @since   1.0.0
-   * @memberof! controls.Textarea#
    * @access protected
    */
   _getWpEditorId() {
@@ -149,7 +145,6 @@ class Textarea extends Text {
    * included in the response, which creates layout problems.
    *
    * @since   1.0.0
-   * @memberof! controls.Textarea#
    * @access protected
    */
   _initWpEditor() {

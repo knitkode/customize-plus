@@ -10,7 +10,6 @@ import { api, $document, body, $readyDOM } from './globals';
  * @since 1.0.0
  * @access private
  *
- * @class Tooltips
  * @requires jQueryUI.Tooltip
  */
 class Tooltips {
@@ -86,7 +85,7 @@ class Tooltips {
 
 /**
  * @name tooltips
- * @description  Instance of {@link Tooltips}
+ * @description  Instance of {@linkcode Tooltips}
  *
  * @instance
  * @memberof core

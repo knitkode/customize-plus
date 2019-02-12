@@ -2,7 +2,7 @@
 /**
  * Customize Plus Setting base class
  *
- * {@inheritDoc}
+ * {@inheritdoc}
  *
  * @since 1.0.0
  * @override
@@ -27,7 +27,7 @@ class KKcp_Customize_Setting_Base extends WP_Customize_Setting {
 	protected $js_type = 'kkcp_base';
 
 	/**
-	 * {@inheritDoc}. Change default to `postMessage` for Customize Plus settings.
+	 * {@inheritdoc}. Change default to `postMessage` for Customize Plus settings.
 	 *
 	 * @since 1.0.0
 	 */
@@ -49,7 +49,7 @@ class KKcp_Customize_Setting_Base extends WP_Customize_Setting {
 	}
 
 	/**
-	 * {@inheritDoc}. Change type in order to use our custom JavaScript
+	 * {@inheritdoc}. Change type in order to use our custom JavaScript
 	 * constructor without changing the `type` property, which should remain
 	 * either `theme_mod` or `option` as defined in the customize tree, default to
 	 * `theme_mod`. Settings are initialized in `customize-controls.js#7836`.

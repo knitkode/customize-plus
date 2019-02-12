@@ -16,19 +16,19 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Set {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_icon';
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $choices = array( 'dashicons' );
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected $supported_sets = array(
 		'dashicons'
@@ -36,13 +36,13 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Set {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected $set_js_var = 'iconSets';
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected function get_set ( $name ) {
 		if ( $name === 'dashicons' ) {
@@ -54,7 +54,7 @@ class KKcp_Customize_Control_Icon extends KKcp_Customize_Control_Base_Set {
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public function get_l10n() {
 		return array(

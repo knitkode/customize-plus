@@ -16,13 +16,13 @@ class KKcp_Customize_Control_Toggle extends KKcp_Customize_Control_Checkbox {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_toggle';
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected $allowed_input_attrs = array(
 		'label_false' => array( 'sanitizer' => 'string' ),

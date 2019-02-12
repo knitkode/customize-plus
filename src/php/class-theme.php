@@ -430,7 +430,7 @@ if ( ! class_exists( 'KKcp_Theme' ) && class_exists( 'KKcp_Singleton' ) ):
 		 *
 		 * Get all theme mods with default values as fallback. Initially the
 		 * `theme_mods` are empty, so check for it.
-		 * {@link(http://bit.ly/2BxiSkp, core.trac.wordpress)}
+		 * {@link http://bit.ly/2BxiSkp core.trac.wordpress}
 		 * Anyway the function would be reverted:
 		 * `wp_parse_args( get_theme_mods(), self::$settings_defaults )`
 		 *

@@ -12,7 +12,6 @@ import Base from './base';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Checkbox
  *
  * @extends controls.Base
  * @augments wp.customize.Control

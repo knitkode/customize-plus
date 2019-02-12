@@ -11,7 +11,6 @@ import BaseInput from './base-input';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Number
  *
  * @extends controls.BaseInput
  * @augments controls.Base

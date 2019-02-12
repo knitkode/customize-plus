@@ -14,7 +14,6 @@ import BaseChoices from './base-choices';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Sortable
  *
  * @extends controls.BaseChoices
  * @augments controls.Base
@@ -70,7 +69,6 @@ class Sortable extends BaseChoices {
    * attribute) with the corresponding DOM element
    *
    * @since   1.0.0
-   * @memberof! controls.Sortable#
    * @access protected
    */
   _buildItemsMap () {
@@ -89,7 +87,6 @@ class Sortable extends BaseChoices {
    * Get value from UI
    *
    * @since   1.1.0
-   * @memberof! controls.Sortable#
    * @access protected
    *
    * @return {Array}
@@ -106,7 +103,6 @@ class Sortable extends BaseChoices {
    * to keep in sync the order of an array and its corresponding DOM.
    *
    * @since   1.0.0
-   * @memberof! controls.Sortable#
    * @access protected
    *
    * @param {mixed} $value

@@ -137,7 +137,7 @@ if ( ! class_exists( 'KKcp_Helper' ) ):
 		/**
 		 * Convert a hexa decimal color code to its RGB equivalent
 		 *
-		 * @link(http://php.net/manual/en/function.hexdec.php#99478, original source)
+		 * @link http://php.net/manual/en/function.hexdec.php#99478 source
 		 * @since  1.0.0
 		 * @param  string  $value            Hexadecimal color value
 		 * @param  bool    $return_as_string If set true, returns the value separated
@@ -282,8 +282,7 @@ if ( ! class_exists( 'KKcp_Helper' ) ):
 		/**
 		 * Is an associative array or not
 		 *
-		 * @link(https://stackoverflow.com/a/145348, source1)
-		 * @link(https://stackoverflow.com/a/145348, source2)
+		 * @link https://stackoverflow.com/a/145348, source
 		 * @since  1.0.0
 		 *
 		 * @param  array   $array The array to test
@@ -294,7 +293,7 @@ if ( ! class_exists( 'KKcp_Helper' ) ):
 				return false;
 			}
 
-			// source1:
+			// source:
 			foreach ( $array as $a ) {
 				if ( is_array( $a ) ) return true;
 			}
@@ -312,7 +311,7 @@ if ( ! class_exists( 'KKcp_Helper' ) ):
 		/**
 		 * In array recursive
 		 *
-		 * @link(http://stackoverflow.com/a/4128377/1938970, source)
+		 * @link http://stackoverflow.com/a/4128377/1938970 source
 		 * @since  1.0.0
 		 * @param  string|number $needle
 		 * @param  array         $haystack
@@ -334,9 +333,8 @@ if ( ! class_exists( 'KKcp_Helper' ) ):
 		 * Flattens a nested array
 		 *
 		 * @since  1.0.0
-		 * @author {@link(http://ramartin.net/, Ron Martinez)}
-		 * {@link(http://davidwalsh.name/flatten-nested-arrays-php#comment-64616,
-		 * source)}
+		 * @author {@link http://ramartin.net/ Ron Martinez}
+		 * @link http://davidwalsh.name/flatten-nested-arrays-php#comment-64616
 		 *
 		 * Based on:
 		 * {@link http://davidwalsh.name/flatten-nested-arrays-php#comment-56256}

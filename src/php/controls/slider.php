@@ -16,7 +16,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_slider';
 
@@ -48,7 +48,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 	protected static $allowed_units = KKcp_Data::CSS_UNITS;
 
 	/**
-	 * {@inheritDoc}. Override it here in order to implicitly allow float numbers
+	 * {@inheritdoc}. Override it here in order to implicitly allow float numbers
 	 * if input_attrs['step'] is a float number. Check also that the given units
 	 * are supported and always transform is value in an array.
 	 *
@@ -72,7 +72,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public function get_l10n() {
 		return array(
@@ -84,7 +84,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public function enqueue() {
 		wp_enqueue_script( 'jquery-ui-slider' );
@@ -92,7 +92,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected function add_to_json() {
 		if ( ! empty( $this->units ) ) {
@@ -102,7 +102,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::slider( $value, $setting, $control );
@@ -110,7 +110,7 @@ class KKcp_Customize_Control_Slider extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::slider( $validity, $value, $setting, $control );

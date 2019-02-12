@@ -2,7 +2,7 @@
 /**
  * Customize Plus Setting Font Family class
  *
- * {@inheritDoc}
+ * {@inheritdoc}
  *
  * @since 1.0.0
  * @override
@@ -22,12 +22,12 @@ class KKcp_Customize_Setting_Font_Family extends KKcp_Customize_Setting_Base {
 	 * constructor for this setting.
 	 *
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	// protected $js_type = 'kkcp_font_family';
 
 	/**
-	 * {@inheritDoc}. Always normalize the font value
+	 * {@inheritdoc}. Always normalize the font value
 	 *
 	 * @since 1.0.0
 	 * @override
@@ -39,7 +39,7 @@ class KKcp_Customize_Setting_Font_Family extends KKcp_Customize_Setting_Base {
 	}
 
 	/**
-	 * {@inheritDoc}. Always normalize the font value
+	 * {@inheritdoc}. Always normalize the font value
 	 *
 	 * @since 1.0.0
 	 * @override

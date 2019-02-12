@@ -16,7 +16,7 @@ class KKcp_Customize_Control_Radio extends KKcp_Customize_Control_Base_Radio {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_radio';
 }

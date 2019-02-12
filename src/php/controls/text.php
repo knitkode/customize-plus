@@ -16,13 +16,13 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_text';
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected $allowed_input_attrs = array(
 		'tooltip' => array( 'sanitizer' => 'string' ),
@@ -71,7 +71,7 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public function get_l10n() {
 		return array(
@@ -103,7 +103,7 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::text( $value, $setting, $control );
@@ -111,7 +111,7 @@ class KKcp_Customize_Control_Text extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::text( $validity, $value, $setting, $control );

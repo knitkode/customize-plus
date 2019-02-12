@@ -29,7 +29,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 	 * Override the base choices, we don't need `min`, `max` for radio based
 	 * controls, but we extends it anyway to reuse its js template.
 	 *
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 *
 	 * @since 1.0.0
 	 * @override
@@ -41,7 +41,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::single_choice( $value, $setting, $control );
@@ -49,7 +49,7 @@ abstract class KKcp_Customize_Control_Base_Radio extends KKcp_Customize_Control_
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::single_choice( $validity, $value, $setting, $control );

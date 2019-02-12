@@ -16,7 +16,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_tags';
 
@@ -41,7 +41,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected $allowed_input_attrs = array(
 		'persist' => array( 'sanitizer' => 'bool' ),
@@ -52,7 +52,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public function get_l10n() {
 		return array(
@@ -64,7 +64,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected function add_to_json() {
 		$this->json['max'] = KKcp_SanitizeJS::int_or_null( false, $this->max );
@@ -73,7 +73,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
  	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::tags( $value, $setting, $control );
@@ -81,7 +81,7 @@ class KKcp_Customize_Control_Tags extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
  	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::tags( $validity, $value, $setting, $control );

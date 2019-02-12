@@ -10,7 +10,6 @@ import BaseRadio from './base-radio';
  * @since  1.0.0
  *
  * @memberof controls
- * @class RadioImage
  *
  * @extends controls.BaseRadio
  * @augments controls.BaseChoices

@@ -16,19 +16,19 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_content';
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $advanced = false;
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $searchable = false;
 
@@ -64,7 +64,7 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 	);
 
 	/**
-	 * {@inheritDoc}. Override it here in order to check the given alert value.
+	 * {@inheritdoc}. Override it here in order to check the given alert value.
 	 *
 	 * @since 1.0.0
 	 * @override
@@ -79,7 +79,7 @@ class KKcp_Customize_Control_Content extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected function add_to_json() {
 		if ( $this->markdown ) {

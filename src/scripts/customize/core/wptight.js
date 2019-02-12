@@ -11,7 +11,6 @@ import Utils from './utils';
  * @since 1.0.0
  * @access private
  *
- * @class WpTight
  * @requires Utils
  */
 class WpTight {
@@ -138,7 +137,7 @@ class WpTight {
 
 /**
  * @name wpTight
- * @description  Instance of {@link WpTight}
+ * @description  Instance of {@linkcode WpTight}
  *
  * @instance
  * @memberof core

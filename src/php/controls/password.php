@@ -20,13 +20,13 @@ class KKcp_Customize_Control_Password extends KKcp_Customize_Control_Text {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_password';
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected $allowed_input_attrs = array(
 		'autocomplete' => array( 'sanitizer' => 'string' ),
@@ -52,7 +52,7 @@ class KKcp_Customize_Control_Password extends KKcp_Customize_Control_Text {
 	 * Simple sanitization that hashes the password.
 	 *
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		if ( is_string( $value ) ) {

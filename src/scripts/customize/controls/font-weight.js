@@ -9,7 +9,6 @@ import Select from './select';
  * @since  1.0.0
  *
  * @memberof controls
- * @class FontWeight
  *
  * @extends controls.Select
  * @augments controls.BaseChoices

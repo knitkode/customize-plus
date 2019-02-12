@@ -7,8 +7,8 @@ if ( ! class_exists( 'KKcp_Sanitize' ) ):
 	 *
 	 * Collects all sanitize methods used by Customize Plus controls. Each function
 	 * has also a respective JavaScript version in `sanitize.js`.
-	 * A good resource about customize sanitization is @link(http://git.io/vZ0dL,
-	 * this series of examples)
+	 * A good resource about customize sanitization is {@link http://git.io/vZ0dL
+	 * this series of examples}
 	 *
 	 * @package    Customize_Plus
 	 * @subpackage Customize

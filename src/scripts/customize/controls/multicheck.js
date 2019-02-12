@@ -14,7 +14,6 @@ import Sortable from './sortable';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Multicheck
  *
  * @extends controls.BaseChoices
  * @augments controls.Base
@@ -78,7 +77,6 @@ class Multicheck extends BaseChoices {
    * Build items map
    *
    * @since   1.0.0
-   * @memberof! controls.Multicheck#
    * @access protected
    */
   _buildItemsMap () {
@@ -97,7 +95,6 @@ class Multicheck extends BaseChoices {
    * Get sorted value, reading checkboxes status from the DOM
    *
    * @since   1.0.0
-   * @memberof! controls.Multicheck#
    * @access protected
    *
    * @return {Array}
@@ -141,7 +138,6 @@ class Multicheck extends BaseChoices {
    * Update UI checkboxes and maybe bind change event
    *
    * @since   1.0.0
-   * @memberof! controls.Multicheck#
    * @access protected
    *
    * @param  {mixed}   $value

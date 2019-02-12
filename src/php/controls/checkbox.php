@@ -16,13 +16,13 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_checkbox';
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected $allowed_input_attrs = array(
 		'label' => array( 'sanitizer' => 'string' ),
@@ -30,7 +30,7 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since  1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public function get_l10n() {
 		return array(
@@ -40,7 +40,7 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function sanitize( $value, $setting, $control ) {
 		return KKcp_Sanitize::checkbox( $value, $setting, $control );
@@ -48,7 +48,7 @@ class KKcp_Customize_Control_Checkbox extends KKcp_Customize_Control_Base {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected static function validate( $validity, $value, $setting, $control ) {
 		return KKcp_Validate::checkbox( $validity, $value, $setting, $control );

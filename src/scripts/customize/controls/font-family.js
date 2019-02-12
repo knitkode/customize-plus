@@ -14,7 +14,6 @@ import BaseSet from './base-set';
  * @since  1.0.0
  *
  * @memberof controls
- * @class FontFamily
  *
  * @extends controls.BaseSet
  * @augments controls.Base

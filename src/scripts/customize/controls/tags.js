@@ -13,7 +13,6 @@ import Base from './base';
  * @since  1.0.0
  *
  * @memberof controls
- * @class Tags
  *
  * @extends controls.Base
  * @augments wp.customize.Control
@@ -101,7 +100,6 @@ class Tags extends Base {
    * Update UI
    *
    * @since   1.0.0
-   * @memberof! controls.Tags#
    * @access protected
    *
    * @param {string} $value

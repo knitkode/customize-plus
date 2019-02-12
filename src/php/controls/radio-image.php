@@ -19,7 +19,7 @@ class KKcp_Customize_Control_Radio_Image extends KKcp_Customize_Control_Base_Rad
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_radio_image';
 }

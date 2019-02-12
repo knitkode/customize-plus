@@ -11,7 +11,6 @@ import { api, wpApi, body, $readyDOM } from './globals';
  * @since 1.0.0
  * @access private
  *
- * @class Skeleton
  * @requires Modernizr
  */
 class Skeleton {
@@ -106,7 +105,7 @@ class Skeleton {
 
 /**
  * @name skeleton
- * @description  Instance of {@link Skeleton}
+ * @description  Instance of {@linkcode Skeleton}
  *
  * @instance
  * @memberof core

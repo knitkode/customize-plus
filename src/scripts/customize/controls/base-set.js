@@ -15,7 +15,6 @@ import Base from './base';
  * @since  1.0.0
  *
  * @memberof controls
- * @class BaseSet
  *
  * @extends controls.Base
  * @augments wp.customize.Control
@@ -92,7 +91,6 @@ class BaseSet extends Base {
    * It uses the `setVar` added in `base-set.php` control class
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    *
    * @param  {string} name
    * @return {Object}
@@ -105,7 +103,6 @@ class BaseSet extends Base {
    * Get flatten set values (bypass the subdivision in groups)
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    * @static
    *
    * @param  {Object} set
@@ -119,7 +116,6 @@ class BaseSet extends Base {
    * Get filtered sets
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    *
    * @param  {mixed}  choices
    * @return {Object}
@@ -139,7 +135,6 @@ class BaseSet extends Base {
    * Get filtered set
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    *
    * @param  {string} name
    * @param  {?string|Array|Object} filter
@@ -212,7 +207,6 @@ class BaseSet extends Base {
    * select-like controls on the `params.choices` to provide validation.
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    *
    * @param  {Object<Object>} sets
    * @return {Object<string,Array<string>,string,Array<string>,string,Array<string>>}
@@ -275,7 +269,6 @@ class BaseSet extends Base {
    * The select can either have or not have options divided by groups.
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    *
    * @return {Object}
    */
@@ -313,7 +306,6 @@ class BaseSet extends Base {
    * Get select custom options (subclasses can implement this)
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    * @abstract
    *
    * @return {Object}
@@ -326,7 +318,6 @@ class BaseSet extends Base {
    * Init UI
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    */
   _initUI () {
     if (this.__input.selectize) {
@@ -340,7 +331,6 @@ class BaseSet extends Base {
    * Get value from UI
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    *
    * @return {?string|Array}
    */
@@ -361,7 +351,6 @@ class BaseSet extends Base {
    * not trigger the `onChange` event.
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    *
    * @param  {string|Array} value
    */
@@ -378,7 +367,6 @@ class BaseSet extends Base {
    * Select render item function
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    * @abstract
    *
    * @param  {Object} data     The selct option object representation.
@@ -390,7 +378,6 @@ class BaseSet extends Base {
    * Select render option function
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    * @abstract
    *
    * @param  {Object} data     The selct option object representation.
@@ -402,7 +389,6 @@ class BaseSet extends Base {
    * Select render option function
    *
    * @since   1.0.0
-   * @memberof! controls.BaseSet#
    * @abstract
    *
    * @param  {Object} data     The select option object representation.

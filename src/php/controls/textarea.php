@@ -16,13 +16,13 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	public $type = 'kkcp_textarea';
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected $allowed_input_attrs = array(
 		'tooltip' => array( 'sanitizer' => 'string' ),
@@ -103,7 +103,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 	);
 
 	/**
-	 * {@inheritDoc}. Override it here in order to force the unset of `wp_editor`
+	 * {@inheritdoc}. Override it here in order to force the unset of `wp_editor`
 	 * in case the user has no the right capability. Then, if the wp_editor is in
 	 * use force a possible `$html => false` property to context `'post'` (this
 	 * can stil be tweaked on a per control base).
@@ -125,7 +125,7 @@ class KKcp_Customize_Control_Textarea extends KKcp_Customize_Control_Text {
 
 	/**
 	 * @since 1.0.0
-	 * @inheritDoc
+	 * @inheritdoc
 	 */
 	protected function add_to_json() {
 		parent::add_to_json();
