@@ -30,4 +30,5 @@ class Content extends Base {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_content'] = api.controls.Content = Content;
+wpApi.controlConstructor['kkcp_content'] = api.controls.Content = Content;
+export default Content;

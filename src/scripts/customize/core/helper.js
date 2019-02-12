@@ -3,6 +3,7 @@
  * equivalent in `class-helper.php`
  *
  * @module Helper
+ * @memberof core
  * @requires tinycolor
  */
 import is_int from 'locutus/php/var/is_int';
@@ -14,6 +15,9 @@ import is_numeric from 'locutus/php/var/is_numeric';
  * Is setting value (`control.setting()`) empty?
  *
  * Used to check if required control's settings have instead an empty value
+ *
+ * @since 1.0.0
+ * @memberof core.Helper
  *
  * @see php class method `KKcp_Validate::is_empty()`
  * @param  {string}  value
@@ -43,7 +47,8 @@ export function isEmpty (value) {
  *
  * It needs a value cleaned of all whitespaces (sanitized)
  *
- * @since  1.0.0
+ * @since 1.0.0
+ * @memberof core.Helper
  *
  * @param  {string} $value  The value value to check
  * @return bool
@@ -58,7 +63,8 @@ export function isKeywordColor( $value ) {
  *
  * It needs a value cleaned of all whitespaces (sanitized)
  *
- * @since  1.0.0
+ * @since 1.0.0
+ * @memberof core.Helper
  *
  * @param  {string} $value  The value value to check
  * @return {bool}
@@ -74,7 +80,8 @@ export function isHex( $value ) {
  * Inspired by formvalidation.js by Nguyen Huu Phuoc, aka @nghuuphuoc
  * and contributors {@link https://github.com/formvalidation/}.
  *
- * @since  1.0.0
+ * @since 1.0.0
+ * @memberof core.Helper
  *
  * @param  {string} $value  The value value to check
  * @return {bool}
@@ -92,7 +99,8 @@ export function isRgb( $value ) {
  * Inspired by formvalidation.js by Nguyen Huu Phuoc, aka @nghuuphuoc
  * and contributors {@link https://github.com/formvalidation/}.
  *
- * @since  1.0.0
+ * @since 1.0.0
+ * @memberof core.Helper
  *
  * @param  {string} $value  The value value to check
  * @return {bool}
@@ -111,7 +119,8 @@ export function isRgba( $value ) {
  *
  * It needs a value cleaned of all whitespaces (sanitized)
  *
- * @since  1.0.0
+ * @since 1.0.0
+ * @memberof core.Helper
  *
  * @param  {string} $value           The value value to check
  * @param  {Array} $allowedFormats  The allowed color formats
@@ -142,7 +151,9 @@ export function isColor ( $value, $allowedFormats ) {
  * Convert a hexa decimal color code to its RGB equivalent
  *
  * @see {@link http://php.net/manual/en/function.hexdec.php#99478}
- * @since  1.0.0
+ * @since 1.0.0
+ * @memberof core.Helper
+ *
  * @param  {string} $value          Hexadecimal color value
  * @param  {bool}   $returnAsString If set true, returns the value separated by
  *                                  the separator character. Otherwise returns an
@@ -159,8 +170,9 @@ export function hexToRgb( $value, $returnAsString = true ) {
  *
  * It needs a value cleaned of all whitespaces (sanitized).
  *
- * @method
- * @since  1.0.0
+ * @since 1.0.0
+ * @memberof core.Helper
+ *
  * @param  {string} $input
  * @return ?string
  */
@@ -171,7 +183,8 @@ export const rgbaToRgb = hexToRgb;
  *
  * Be sure that a font family is wrapped in quote, good for consistency
  *
- * @since  1.0.0
+ * @since 1.0.0
+ * @memberof core.Helper
  *
  * @param  {string} $value
  * @return {string}
@@ -187,7 +200,8 @@ export function normalizeFontFamily( $value ) {
  * Be sure that one or multiple font families are all trimmed and wrapped in
  * quotes, good for consistency
  *
- * @since  1.0.0
+ * @since 1.0.0
+ * @memberof core.Helper
  *
  * @param {string|array} $value
  * @return {string|null}
@@ -213,7 +227,9 @@ export function normalizeFontFamilies( $value ) {
  *
  * @see http://stackoverflow.com/a/17885985/1938970
  *
- * @since  1.0.0
+ * @since 1.0.0
+ * @memberof core.Helper
+ *
  * @param  {string}         $value         The value from to extract from
  * @return {number|null} The extracted number or null if the value does not
  *                       contain any digit.
@@ -234,7 +250,9 @@ export function extractNumber( $value ) {
  * It returns the first matched, so the units are kind of sorted by popularity.
  * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
  *
- * @since  1.0.0
+ * @since 1.0.0
+ * @memberof core.Helper
+ *
  * @param  {string}     $value          The value from to extract from
  * @return {string|null}                The first valid unit found.
  */
@@ -251,7 +269,9 @@ export function extractSizeUnit( $value ) {
  * Modulus
  *
  * @see {@link https://stackoverflow.com/a/31711034}
-
+ * @since 1.0.0
+ * @memberof core.Helper
+ *
  * @param  {number} val
  * @param  {number} step
  * @return {number}
@@ -277,6 +297,9 @@ export function modulus(val, step){
  * Note that unlike `modulus` the return value here is a boolean.
  *
  * @ignore
+ * @since 1.0.0
+ * @memberof core.Helper
+ *
  * @param  {string}  val
  * @param  {string}  step
  * @return {bool}
@@ -292,6 +315,9 @@ export function isMultipleOf (val, step) {
  * To Boolean
  * '0' or '1' to boolean
  *
+ * @since 1.0.0
+ * @memberof core.Helper
+ *
  * @static
  * @param  {string|number} value
  * @return {bool}
@@ -304,7 +330,10 @@ export function numberToBoolean (value) {
  * Strip HTML from value
  * @see {@link http://stackoverflow.com/q/5002111/1938970}
  *
+ * @since 1.0.0
+ * @memberof core.Helper
  * @static
+ *
  * @param  {string} value
  * @return {string}
  */
@@ -318,6 +347,9 @@ export function stripHTML (value) {
  * This is just to warn the user, actual sanitization is done backend side.
  *
  * @see https://stackoverflow.com/a/15458987
+ * @since 1.0.0
+ * @memberof core.Helper
+ *
  * @param  {string}  value
  * @return {bool}
  */
@@ -330,18 +362,21 @@ export function hasHTML (value) {
  *
  * It tries to use the DOMParser object (see Browser compatibility table
  * [here](mzl.la/2kh7HEl)), otherwise it just.
- * Solution inspired by this {@link http://bit.ly/2k6uFLI, stackerflow answer)
+ * Solution inspired by this {@link http://bit.ly/2k6uFLI stackerflow answer)
  *
  * Not currently in use.
  *
+ * @since 1.0.0
+ * @memberof core.Helper
+ *
  * @ignore
- * @param  {string}  str
+ * @param  {string}  input
  * @return {bool}
  */
-export function isHTML (str) {
+export function isHTML (input) {
   if (window.DOMParser) {
     try {
-      var doc = new window.DOMParser().parseFromString(str, 'text/html');
+      var doc = new window.DOMParser().parseFromString(input, 'text/html');
       return Array.from(doc.body.childNodes).some(node => node.nodeType === 1);
     } catch (e) {}
   } else {

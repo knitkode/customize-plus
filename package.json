@@ -129,6 +129,7 @@
     "rollup": "1.1.x",
     "rollup-plugin-buble": "0.19.x",
     "rollup-plugin-commonjs": "9.2.x",
+    "rollup-plugin-flow": "^1.1.1",
     "rollup-plugin-node-resolve": "4.0.x",
     "streamqueue": "1.1.x"
   }

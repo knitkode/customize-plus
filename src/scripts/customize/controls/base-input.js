@@ -88,4 +88,5 @@ class BaseInput extends Base {
   }
 }
 
-export default /*api.controls.BaseInput =*/ BaseInput;
+// api.controls.BaseInput = BaseInput;
+export default BaseInput;

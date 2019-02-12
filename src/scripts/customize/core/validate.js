@@ -3,6 +3,7 @@
  * Each function has also a respective PHP version in `class-validate.php`.
  *
  * @module Validate
+ * @memberof core
  * @requires Helper
  */
 import _ from 'underscore';
@@ -20,6 +21,7 @@ import Helper from '../core/helper';
  * Validate a required setting value
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {mixed}                $value    The value to validate.
@@ -40,6 +42,7 @@ export function required( $validity, $value, $setting, $control ) {
  * Validate a single choice
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {mixed}                $value    The value to validate.
@@ -62,6 +65,7 @@ export function singleChoice( $validity, $value, $setting, $control ) {
  * Validate an array of choices
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {array}                $value        The value to validate.
@@ -111,6 +115,7 @@ export function multipleChoices( $validity, $value, $setting, $control, $check_l
  * Validate one or more choices
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {mixed}                $value    The value to validate.
@@ -129,6 +134,7 @@ export function oneOrMoreChoices( $validity, $value, $setting, $control ) {
  * Validate sortable
  *
  * @since 1.1.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {mixed}                $value    The value to validate.
@@ -144,6 +150,7 @@ export function sortable( $validity, $value, $setting, $control ) {
  * Validate font family
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {mixed}                $value    The value to validate.
@@ -166,6 +173,7 @@ export function fontFamily( $validity, $value, $setting, $control ) {
  * Validate checkbox
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {mixed}                $value    The value to validate.
@@ -184,6 +192,7 @@ export function checkbox( $validity, $value, $setting, $control ) {
  * Validate tags
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {mixed}                $value    The value to validate.
@@ -217,6 +226,7 @@ export function tags( $validity, $value, $setting, $control ) {
  * Validate text
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {mixed}                $value    The value to validate.
@@ -289,6 +299,7 @@ export function text( $validity, $value, $setting, $control ) {
  * Validate number
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {mixed}                $value    The value to validate.
@@ -338,6 +349,7 @@ export function number( $validity, $value, $setting, $control ) {
  * Validate css unit
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {mixed}                $unit     The value to validate.
@@ -368,6 +380,7 @@ export function sizeUnit( $validity, $unit, $setting, $control ) {
  * Validate slider
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @param {WP_Error}             $validity
  * @param {mixed}                $value    The value to validate.
@@ -389,6 +402,7 @@ export function slider( $validity, $value, $setting, $control ) {
  * Validate color
  *
  * @since 1.0.0
+ * @memberof core.Validate
  *
  * @requires tinycolor
  * @param {WP_Error}             $validity
@@ -433,7 +447,7 @@ export function color( $validity, $value, $setting, $control ) {
  * @description  Exposed module <a href="module-Validate.html">Validate</a>
  * @access package
  */
-export default api.core.Validate = {
+ const Validate = {
   required,
   singleChoice,
   multipleChoices,
@@ -448,3 +462,6 @@ export default api.core.Validate = {
   slider,
   color,
 };
+
+api.core.Validate = Validate;
+export default Validate;

@@ -83,4 +83,5 @@ class Checkbox extends Base {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_checkbox'] = api.controls.Checkbox = Checkbox;
+wpApi.controlConstructor['kkcp_checkbox'] = api.controls.Checkbox = Checkbox;
+export default Checkbox;

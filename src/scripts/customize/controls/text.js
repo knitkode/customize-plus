@@ -30,4 +30,5 @@ class Text extends BaseInput {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_text'] = api.controls.Text = Text;
+wpApi.controlConstructor['kkcp_text'] = api.controls.Text = Text;
+export default Text;

@@ -398,4 +398,5 @@ class BaseSet extends Base {
 
 }
 
-export default /*api.controls.BaseSet =*/ BaseSet;
+// api.controls.BaseSet = BaseSet;
+export default BaseSet;

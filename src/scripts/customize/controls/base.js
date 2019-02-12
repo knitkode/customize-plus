@@ -1037,11 +1037,8 @@ class Base extends wpApi.Control {
   }
 }
 
-/**
- * Fix autofocus
- *
- * This is needed if autofocus is set to one of our 'post-rendered' controls
- */
+// Fix autofocus
+// This is needed if autofocus is set to one of our 'post-rendered' controls
 wpApi.bind('ready', function () {
   try {
     const controlToFocusID = window._wpCustomizeSettings.autofocus.control;
@@ -1053,11 +1050,9 @@ wpApi.bind('ready', function () {
   }
 });
 
-/**
- * Save last saved value on each control instance on `saved` hook. With this in
- * the extras menu users will be able to reset the setting value to the last
- * saved value.
- */
+// Save last saved value on each control instance on `saved` hook. With this in
+// the extras menu users will be able to reset the setting value to the last
+// saved value.
 wpApi.bind('save', function () {
   Utils._eachControl(function (control) {
     if (control && control.setting && control.setting['_dirty']) { // whitelisted from uglify \\
@@ -1067,4 +1062,5 @@ wpApi.bind('save', function () {
   });
 });
 
-export default api.controls.Base = Base;
+api.controls.Base = Base;
+export default Base;

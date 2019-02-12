@@ -40,4 +40,5 @@ class Number extends BaseInput {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_number'] = api.controls.Number = Number;
+wpApi.controlConstructor['kkcp_number'] = api.controls.Number = Number;
+export default Number;

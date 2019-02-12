@@ -32,4 +32,5 @@ class Radio extends BaseRadio {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_radio'] = api.controls.Radio = Radio;
+wpApi.controlConstructor['kkcp_radio'] = api.controls.Radio = Radio;
+export default Radio;

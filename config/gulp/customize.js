@@ -232,7 +232,7 @@ function documentationJs(callback) {
       paths.join("!" + paths.src.scripts, "customize/**/_*.js")
     ])
     .pipe(documentation("html", {}, {}))
-    .pipe(documentation("md"))
-    .pipe(documentation("json"))
+    // .pipe(documentation("md"))
+    // .pipe(documentation("json"))
     .pipe(gulp.dest(paths.join(paths.ROOT, pkg.config.paths.documentationJsDest)));
 }

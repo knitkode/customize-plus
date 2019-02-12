@@ -70,4 +70,5 @@ class Icon extends BaseSet {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_icon'] = api.controls.Icon = Icon;
+wpApi.controlConstructor['kkcp_icon'] = api.controls.Icon = Icon;
+export default Icon;

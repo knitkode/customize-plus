@@ -147,4 +147,5 @@ class FontFamily extends BaseSet {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_font_family'] = api.controls.FontFamily = FontFamily;
+wpApi.controlConstructor['kkcp_font_family'] = api.controls.FontFamily = FontFamily;
+export default FontFamily;

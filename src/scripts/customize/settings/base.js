@@ -120,4 +120,5 @@ const Base = wpApi.Setting.extend({
   }
 });
 
-export default wpApi.settingConstructor['kkcp_base'] = api.settings.Base = Base;
+wpApi.settingConstructor['kkcp_base'] = api.settings.Base = Base
+export default Base;

@@ -162,4 +162,5 @@ class BaseChoices extends Base {
   }
 }
 
-export default /*api.controls.BaseChoices =*/ BaseChoices;
+// api.controls.BaseChoices = BaseChoices
+export default BaseChoices;

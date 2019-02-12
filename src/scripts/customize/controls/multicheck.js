@@ -202,4 +202,5 @@ class Multicheck extends BaseChoices {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_multicheck'] = api.controls.Multicheck = Multicheck;
+wpApi.controlConstructor['kkcp_multicheck'] = api.controls.Multicheck = Multicheck;
+export default Multicheck;
