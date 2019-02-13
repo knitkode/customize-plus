@@ -1,4 +1,4 @@
-# Customize Plus [![by KnitKode](https://img.shields.io/badge/by-KnitKode-lightgrey.svg?style=social)]()
+# Customize Plus [![by KnitKode](https://img.shields.io/badge/by-KnitKode-lightgrey.svg?style=social)](https://knitkode.com/docs/customize-plus)
 
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/customize-plus.svg)](https://wordpress.org/plugins/customize-plus)
 [![GitHub release](https://img.shields.io/github/release/knitkode/customize-plus.svg)](https://github.com/knitkode/customize-plus/releases/latest)
@@ -55,8 +55,7 @@ Unless otherwise specified, all the plugin files are licensed under GNU General 
 - [spectrum](https://github.com/bgrins/spectrum/) by [Brian Grinstead](http://briangrinstead.com) is licensed under the [MIT License](https://github.com/bgrins/spectrum/blob/master/LICENSE)
 - [validator.js](https://github.com/chriso/validator.js) by [Chris O'Hara](https://github.com/chriso) is licensed under the [MIT License](https://github.com/chriso/validator.js/blob/master/LICENSE)
 
-* All plugins included in Customize Plus adopt a GPL-compatible license as required by the WordPress.org [plugins guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/#the-guidelines)
-
+**All plugins included in Customize Plus adopt a GPL-compatible license as required by the WordPress.org [plugins guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/#the-guidelines)**
 
 ---------------
 :registered: KnitKode 2018 | [knitkode.com](https://knitkode.com) | dev@knitkode.com

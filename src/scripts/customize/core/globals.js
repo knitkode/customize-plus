@@ -100,6 +100,7 @@ export const api = pluginApi;
  *
  * @since  1.0.0
  * @access package
+ * @private
  * @type {Object}
  */
 export const wpApi = wp.customize;

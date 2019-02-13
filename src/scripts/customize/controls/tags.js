@@ -129,4 +129,5 @@ class Tags extends Base {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_tags'] = api.controls.Tags = Tags;
+wpApi.controlConstructor['kkcp_tags'] = api.controls.Tags = Tags;
+export default Tags;

@@ -37,4 +37,5 @@ class RadioImage extends BaseRadio {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_radio_image'] = api.controls.RadioImage = RadioImage;
+wpApi.controlConstructor['kkcp_radio_image'] = api.controls.RadioImage = RadioImage;
+export default RadioImage;

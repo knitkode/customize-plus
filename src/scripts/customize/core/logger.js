@@ -2,10 +2,14 @@
  * @fileOverview A simple logger utility.
  *
  * @module Logger
+ * @memberof core
  */
 
 /**
  * Log error
+ *
+ * @since 1.0.0
+ * @memberof core.Logger
  *
  * @param  {string} context
  * @param  {string} msg
@@ -16,7 +20,6 @@ export function logError (context, msg) {
 }
 
 /**
- * @alias core.Logger
  * @description  Exposed module <a href="module-Logger.html">Logger</a>
  * @access package
  */

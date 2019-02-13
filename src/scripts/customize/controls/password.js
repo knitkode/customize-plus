@@ -116,4 +116,5 @@ class Password extends Text {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_password'] = api.controls.Password = Password;
+wpApi.controlConstructor['kkcp_password'] = api.controls.Password = Password;
+export default Password;

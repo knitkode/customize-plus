@@ -216,4 +216,5 @@ class Textarea extends Text {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_textarea'] = api.controls.Textarea = Textarea;
+wpApi.controlConstructor['kkcp_textarea'] = api.controls.Textarea = Textarea;
+export default Textarea;

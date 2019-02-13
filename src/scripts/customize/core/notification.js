@@ -72,4 +72,5 @@ class Notification extends wpApi.Notification {
   }
 }
 
-export default api.core.Notification = Notification;
+api.core.Notification = Notification;
+export default Notification;

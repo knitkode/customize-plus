@@ -237,4 +237,5 @@ class Slider extends Base {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_slider'] = api.controls.Slider = Slider;
+wpApi.controlConstructor['kkcp_slider'] = api.controls.Slider = Slider;
+export default Slider;

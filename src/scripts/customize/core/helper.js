@@ -5,6 +5,7 @@
  * @flow
  *
  * @module Helper
+ * @memberof core
  * @requires tinycolor
  */
 import $ from "jquery";
@@ -21,6 +22,9 @@ declare var tinycolor: Object;
  * Is setting value (`control.setting()`) empty?
  *
  * Used to check if required control's settings have instead an empty value
+ *
+ * @since 1.0.0
+ * @memberof core.Helper
  *
  * @see php class method `KKcp_Validate::is_empty()`
  */
@@ -51,6 +55,7 @@ export function isEmpty(value: mixed): boolean {
  * It needs a value cleaned of all whitespaces (sanitized)
  *
  * @since  1.0.0
+ * @memberof core.Helper
  */
 export function isKeywordColor($value: string): boolean {
   const keywords = api.constants["colorsKeywords"] || [];
@@ -63,6 +68,7 @@ export function isKeywordColor($value: string): boolean {
  * It needs a value cleaned of all whitespaces (sanitized)
  *
  * @since  1.0.0
+ * @memberof core.Helper
  */
 export function isHex($value: string): boolean {
   return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test($value);
@@ -76,6 +82,7 @@ export function isHex($value: string): boolean {
  * and contributors {@link https://github.com/formvalidation/}.
  *
  * @since  1.0.0
+ * @memberof core.Helper
  */
 export function isRgb($value: string): boolean {
   const regexInteger = /^rgb\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){2}(\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*)\)$/;
@@ -91,6 +98,7 @@ export function isRgb($value: string): boolean {
  * and contributors {@link https://github.com/formvalidation/}.
  *
  * @since  1.0.0
+ * @memberof core.Helper
  */
 export function isRgba($value: string): boolean {
   const regexInteger = /^rgba\((\s*(\b([01]?\d{1,2}|2[0-4]\d|25[0-5])\b)\s*,){3}(\s*(0?(\.\d+)?|1(\.0+)?)\s*)\)$/;
@@ -107,6 +115,7 @@ export function isRgba($value: string): boolean {
  * It needs a value cleaned of all whitespaces (sanitized)
  *
  * @since  1.0.0
+ * @memberof core.Helper
  */
 export function isColor(
   $value: string,
@@ -134,6 +143,7 @@ export function isColor(
  *
  * @see {@link http://php.net/manual/en/function.hexdec.php#99478}
  * @since  1.0.0
+ * @memberof core.Helper
  *
  * @param  {string} $value           Hexadecimal color value
  * @param  {boolean} $returnAsString If set true, returns the value separated by
@@ -157,7 +167,7 @@ export function hexToRgb(
  * It needs a value cleaned of all whitespaces (sanitized).
  *
  * @since  1.0.0
- *
+ * @memberof core.Helper
  * @method
  */
 export const rgbaToRgb = hexToRgb;
@@ -168,6 +178,7 @@ export const rgbaToRgb = hexToRgb;
  * Be sure that a font family is wrapped in quote, good for consistency
  *
  * @since  1.0.0
+ * @memberof core.Helper
  */
 export function normalizeFontFamily($value: string): string {
   $value = $value.replace(/'/g, "").replace(/"/g, "");
@@ -181,6 +192,7 @@ export function normalizeFontFamily($value: string): string {
  * quotes, good for consistency
  *
  * @since  1.0.0
+ * @memberof core.Helper
  */
 export function normalizeFontFamilies(
   $value: string | Array<string>
@@ -206,6 +218,7 @@ export function normalizeFontFamilies(
  * @see http://stackoverflow.com/a/17885985/1938970
  *
  * @since  1.0.0
+ * @memberof core.Helper
  * @return {number|null} The extracted number or null if the value does not
  *                       contain any digit.
  */
@@ -226,6 +239,7 @@ export function extractNumber($value: any): number | null {
  * @see http://www.w3schools.com/cssref/css_units.asp List of the css units
  *
  * @since  1.0.0
+ * @memberof core.Helper
  * @return {string|null} The first valid unit found.
  */
 export function extractSizeUnit($value: any): string | null {
@@ -242,8 +256,9 @@ export function extractSizeUnit($value: any): string | null {
 /**
  * Modulus
  *
- * @since  1.0.0
  * @see {@link https://stackoverflow.com/a/31711034}
+ * @since  1.0.0
+ * @memberof core.Helper
  */
 export function modulus(val: number, step: number): number {
   let valDecCount = (val.toString().split(".")[1] || "").length;
@@ -282,7 +297,7 @@ export function isMultipleOf(_val: string, _step: string): boolean {
  * '0' or '1' to boolean
  *
  * @since  1.0.0
- * @static
+ * @memberof core.Helper
  */
 export function numberToBoolean(value: string | number): boolean {
   return typeof value === "boolean" ? value : !!parseInt(value, 10);
@@ -290,10 +305,11 @@ export function numberToBoolean(value: string | number): boolean {
 
 /**
  * Strip HTML from value
+ *
  * @see {@link http://stackoverflow.com/q/5002111/1938970}
  *
  * @since  1.0.0
- * @static
+ * @memberof core.Helper
  */
 export function stripHTML(value: string): string {
   return $(document.createElement("div"))
@@ -305,9 +321,10 @@ export function stripHTML(value: string): string {
  * Does string value contains HTML?
  *
  * This is just to warn the user, actual sanitization is done backend side.
+ * @see https://stackoverflow.com/a/15458987
  *
  * @since  1.0.0
- * @see https://stackoverflow.com/a/15458987
+ * @memberof core.Helper
  */
 export function hasHTML(value: string): boolean {
   return /<[a-z][\s\S]*>/i.test(value);

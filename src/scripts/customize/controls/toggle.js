@@ -36,4 +36,5 @@ class Toggle extends Checkbox {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_toggle'] = api.controls.Toggle = Toggle;
+wpApi.controlConstructor['kkcp_toggle'] = api.controls.Toggle = Toggle;
+export default Toggle;

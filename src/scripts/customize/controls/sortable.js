@@ -149,4 +149,5 @@ class Sortable extends BaseChoices {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_sortable'] = api.controls.Sortable = Sortable;
+wpApi.controlConstructor['kkcp_sortable'] = api.controls.Sortable = Sortable;
+export default Sortable;

@@ -176,4 +176,5 @@ class Select extends BaseChoices {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_select'] = api.controls.Select = Select;
+wpApi.controlConstructor['kkcp_select'] = api.controls.Select = Select;
+export default Select;

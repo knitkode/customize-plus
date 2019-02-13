@@ -18,4 +18,5 @@ import Select from './select';
  */
 class FontWeight extends Select {}
 
-export default wpApi.controlConstructor['kkcp_font_weight'] = api.controls.FontWeight = FontWeight;
+wpApi.controlConstructor['kkcp_font_weight'] = api.controls.FontWeight = FontWeight;
+export default FontWeight;

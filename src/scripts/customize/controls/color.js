@@ -208,4 +208,5 @@ class Color extends Base {
   }
 }
 
-export default wpApi.controlConstructor['kkcp_color'] = api.controls.Color = Color;
+wpApi.controlConstructor['kkcp_color'] = api.controls.Color = Color;
+export default Color;
