@@ -44,8 +44,9 @@ module.exports = {
   docs: function customizeDocs (callback) {
     return gulp.parallel(
       // docsJs,
-      esdoc,
-      documentationJs
+      // esdoc,
+      documentationJs,
+      documentationJsMarkdown
     )(callback);
   },
 }
@@ -224,20 +225,76 @@ function esdoc(callback) {
     }));
 }
 
-function documentationJs(callback) {
-  const documentation = require('gulp-documentation');
+const documentationJsFiles = [
+  paths.join(paths.src.scripts, 'customize/**/*.js'),
+  paths.join('!' + paths.src.scripts, 'customize/**/_*.js'),
+  paths.join('!' + paths.src.scripts, 'customize/**/globals.js')
+]
 
-  return gulp
-    .src([
-      paths.join(paths.src.scripts, "customize/**/*.js"),
-      paths.join("!" + paths.src.scripts, "customize/**/_*.js"),
-      paths.join("!" + paths.src.scripts, "customize/**/globals.js")
-    ])
-    .pipe(documentation("html", {
-      github: true,
-      // theme: 
-    }, {}))
-    // .pipe(documentation("md"))
-    // .pipe(documentation("json"))
-    .pipe(gulp.dest(paths.join(paths.ROOT, pkg.config.paths.documentationJsDest)));
+const documentationJsOptions = {
+  github: true,
+  // access: ['public'],
 }
+
+function documentationJs() {
+  return gulp.src(documentationJsFiles)
+    .pipe(gulpDocumentation('html', documentationJsOptions, {
+      // theme: '../node_modules/clean-documentation-theme'
+    }))
+    .pipe(gulp.dest(paths.join(paths.ROOT, pkg.config.paths.documentationDest)));
+}
+
+function documentationJsMarkdown() {
+  return gulp.src(documentationJsFiles)
+    .pipe(gulpDocumentation('md', documentationJsOptions))
+    // .pipe(gulpDocumentation('json', documentationJsOptions))
+    .pipe(gulp.dest(paths.join(paths.ROOT, pkg.config.paths.documentationMarkdownDest)));
+}
+
+const gulpDocumentation = function(format, options, formatterOptions) {
+  const through2 = require('through2');
+  const File = require('vinyl');
+  const documentation = require('documentation');
+  options = options || {};
+  formatterOptions = formatterOptions || {};
+  var files = [];
+  format = format || 'md';
+  var formatter = documentation.formats[format];
+  if (!formatter) {
+    throw new Error(
+      'invalid format given: valid options are ' +
+        Object.keys(documentation.formats).join(', ')
+    );
+  }
+  return through2.obj(
+    function document(file, enc, cb) {
+      files.push(file);
+      cb();
+    },
+    function(cb) {
+      documentation
+        .build(
+          files.map(function(file) {
+            return file.path;
+          }),
+          options
+        )
+        .then(comments => {
+          return formatter(comments, formatterOptions);
+        })
+        .then(output => {
+          if (format === 'json' || format === 'md') {
+            this.push(
+              new File({
+                path: options.filename || 'API.' + format,
+                contents: new Buffer(output)
+              })
+            );
+          } else if (format === 'html') {
+            output.forEach(file => this.push(file));
+          }
+          cb();
+        });
+    }
+  );
+};
