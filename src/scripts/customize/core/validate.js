@@ -2,35 +2,38 @@
  * @fileOverview Collects all validate methods used by Customize Plus controls.
  * Each function has also a respective PHP version in `class-validate.php`.
  *
+ * @flow
+ *
  * @module Validate
  * @requires Helper
  */
-import _ from 'underscore';
-import is_int from 'locutus/php/var/is_int';
-import is_float from 'locutus/php/var/is_float';
-import is_numeric from 'locutus/php/var/is_numeric';
-import empty from 'locutus/php/var/empty';
-import isURL from 'validator/lib/isURL';
-import isEmail from 'validator/lib/isEmail';
-import { api } from './globals';
-import Helper from '../core/helper';
+import _ from "underscore";
+import is_int from "locutus/php/var/is_int";
+import is_float from "locutus/php/var/is_float";
+import is_numeric from "locutus/php/var/is_numeric";
+import empty from "locutus/php/var/empty";
+import isURL from "validator/lib/isURL";
+import isEmail from "validator/lib/isEmail";
+import { api } from "./globals";
+import Helper from "../core/helper";
 /* global tinycolor */
+
+declare var tinycolor: Object;
 
 /**
  * Validate a required setting value
  *
  * @since 1.0.0
- *
- * @param {WP_Error}             $validity
- * @param {mixed}                $value    The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function required( $validity, $value, $setting, $control ) {
-  if ( !$control.params.optional ) {
-    if ( Helper.isEmpty( $value ) ) {
-      $validity = $control._addError( $validity, 'vRequired' );
+export function required(
+  $validity: WP_Error,
+  $value: any,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
+  if (!$control.params.optional) {
+    if (Helper.isEmpty($value)) {
+      $validity = $control._addError($validity, "vRequired");
     }
   }
   return $validity;
@@ -40,19 +43,21 @@ export function required( $validity, $value, $setting, $control ) {
  * Validate a single choice
  *
  * @since 1.0.0
- *
- * @param {WP_Error}             $validity
- * @param {mixed}                $value    The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function singleChoice( $validity, $value, $setting, $control ) {
-  const {_validChoices} = $control;
-  const $choices = _validChoices && _validChoices.length ? _validChoices : $control.params.choices;
+export function singleChoice(
+  $validity: WP_Error,
+  $value: any,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
+  const { _validChoices } = $control;
+  const $choices =
+    _validChoices && _validChoices.length
+      ? _validChoices
+      : $control.params.choices;
 
-  if ( _.isArray( $choices ) && $choices.indexOf( $value ) === -1 ) {
-    $validity = $control._addError( $validity, 'vNotAChoice', $value );
+  if (_.isArray($choices) && $choices.indexOf($value) === -1) {
+    $validity = $control._addError($validity, "vNotAChoice", $value);
   }
 
   return $validity;
@@ -63,43 +68,56 @@ export function singleChoice( $validity, $value, $setting, $control ) {
  *
  * @since 1.0.0
  *
- * @param {WP_Error}             $validity
- * @param {array}                $value        The value to validate.
- * @param {WP_Customize_Setting} $setting      Setting instance.
- * @param {WP_Customize_Control} $control      Control instance.
- * @param {bool}                 $check_length Should match choices length? e.g.
- *                                             for sortable control where the
- *                                             all the defined choices should be
- *                                             present in the validated value
- * @return {WP_Error}
+ * @param {bool} $check_length Should match choices length? e.g. for sortable
+                               control where the all the defined choices should
+                               be present in the validated value
  */
-export function multipleChoices( $validity, $value, $setting, $control, $check_length = false ) {
-  const {_validChoices, params} = $control;
-  const $choices = _validChoices && _validChoices.length ? _validChoices : params.choices;
+export function multipleChoices(
+  $validity: WP_Error,
+  $value: any,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control,
+  $check_length: boolean = false
+): WP_Error {
+  const { _validChoices, params } = $control;
+  const $choices =
+    _validChoices && _validChoices.length ? _validChoices : params.choices;
 
-  if ( !_.isArray( $value ) ) {
-    $validity = $control._addError( $validity, 'vNotArray' );
+  // if (!_.isArray($value)) {
+  if (!Array.isArray($value)) {
+    $validity = $control._addError($validity, "vNotArray");
   } else {
-
     // check that the length of the value array is correct
-    if ( $check_length && $choices.length !== $value.length ) {
-      $validity = $control._addError( $validity, 'vNotExactLengthArray', $choices.length );
+    if ($check_length && $choices.length !== $value.length) {
+      $validity = $control._addError(
+        $validity,
+        "vNotExactLengthArray",
+        $choices.length
+      );
     }
 
     // check the minimum number of choices selectable
-    if ( is_int( params.min ) && $value.length < params.min ) {
-      $validity = $control._addError( $validity, 'vNotMinLengthArray', params.min );
+    if (is_int(params.min) && $value.length < params.min) {
+      $validity = $control._addError(
+        $validity,
+        "vNotMinLengthArray",
+        params.min
+      );
     }
 
     // check the maximum number of choices selectable
-    if ( is_int( params.max ) && $value.length > params.max ) {
-      $validity = $control._addError( $validity, 'vNotMaxLengthArray', params.max );
+    if (is_int(params.max) && $value.length > params.max) {
+      $validity = $control._addError(
+        $validity,
+        "vNotMaxLengthArray",
+        params.max
+      );
     }
 
     // now check that the selected values are allowed choices
     for (let i = 0; i < $value.length; i++) {
-      if ( $choices.indexOf( $value[i] ) === -1 ) {
-        $validity = $control._addError( $validity, 'vNotAChoice', $value[i] );
+      if ($choices.indexOf($value[i]) === -1) {
+        $validity = $control._addError($validity, "vNotAChoice", $value[i]);
       }
     }
   }
@@ -111,71 +129,69 @@ export function multipleChoices( $validity, $value, $setting, $control, $check_l
  * Validate one or more choices
  *
  * @since 1.0.0
- *
- * @param {WP_Error}             $validity
- * @param {mixed}                $value    The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function oneOrMoreChoices( $validity, $value, $setting, $control ) {
-  if ( _.isString( $value ) ) {
-    return singleChoice( $validity, $value, $setting, $control );
+export function oneOrMoreChoices(
+  $validity: WP_Error,
+  $value: any,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
+  if (_.isString($value)) {
+    return singleChoice($validity, $value, $setting, $control);
   }
-  return multipleChoices( $validity, $value, $setting, $control );
+  return multipleChoices($validity, $value, $setting, $control);
 }
 
 /**
  * Validate sortable
  *
  * @since 1.1.0
- *
- * @param {WP_Error}             $validity
- * @param {mixed}                $value    The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function sortable( $validity, $value, $setting, $control ) {
-  return multipleChoices( $validity, $value, $setting, $control, true );
+export function sortable(
+  $validity: WP_Error,
+  $value: any,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
+  return multipleChoices($validity, $value, $setting, $control, true);
 }
 
 /**
  * Validate font family
  *
  * @since 1.0.0
- *
- * @param {WP_Error}             $validity
- * @param {mixed}                $value    The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function fontFamily( $validity, $value, $setting, $control ) {
-  if ( _.isString( $value ) ) {
-    $value = $value.split( ',' );
+export function fontFamily(
+  $validity: WP_Error,
+  $value: string | Array<string>,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
+  // if (_.isString($value)) {
+  if (typeof $value === "string") {
+    $value = $value.split(",");
   }
   // this is enough to do in JavaScript only, there is sanitization anyway
-  if ( _.isArray( $value ) ) {
-    $value = _.map( $value, v => Helper.normalizeFontFamily( v ) );
+  // if (_.isArray($value)) {
+  if (Array.isArray($value)) {
+    $value = $value.map(input => Helper.normalizeFontFamily(input));
   }
-  return multipleChoices( $validity, $value, $setting, $control );
+  return multipleChoices($validity, $value, $setting, $control);
 }
 
 /**
  * Validate checkbox
  *
  * @since 1.0.0
- *
- * @param {WP_Error}             $validity
- * @param {mixed}                $value    The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function checkbox( $validity, $value, $setting, $control ) {
-  if ( $value != 1 && $value != 0 ) {
-    $validity = $control._addError( $validity, 'vCheckbox' );
+export function checkbox(
+  $validity: WP_Error,
+  $value: any,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
+  if ($value != 1 && $value != 0) {
+    $validity = $control._addError($validity, "vCheckbox");
   }
   return $validity;
 }
@@ -184,30 +200,29 @@ export function checkbox( $validity, $value, $setting, $control ) {
  * Validate tags
  *
  * @since 1.0.0
- *
- * @param {WP_Error}             $validity
- * @param {mixed}                $value    The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function tags( $validity, $value, $setting, $control ) {
-  const {params} = $control;
+export function tags(
+  $validity: WP_Error,
+  $value: string | Array<string>,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
+  const { params } = $control;
 
-  if ( !_.isString( $value ) ) {
-    $validity = $control._addError( $validity, 'vTagsType' );
+  if (typeof $value !== "string") {
+    $validity = $control._addError($validity, "vTagsType");
   }
-  if (!_.isArray($value)) {
-    $value = $value.split(',');
+  if (!Array.isArray($value)) {
+    $value = $value.split(",");
   }
 
   // maybe check the minimum number of choices selectable
-  if ( is_int( params.min ) && $value.length < params.min ) {
-    $validity = $control._addError( $validity, 'vTagsMin', params.min );
+  if (is_int(params.min) && $value.length < params.min) {
+    $validity = $control._addError($validity, "vTagsMin", params.min);
   }
   // maybe check the maxmimum number of choices selectable
-  if ( is_int( params.max ) && $value.length > params.max ) {
-    $validity = $control._addError( $validity, 'vTagsMax', params.max );
+  if (is_int(params.max) && $value.length > params.max) {
+    $validity = $control._addError($validity, "vTagsMax", params.max);
   }
 
   return $validity;
@@ -217,57 +232,75 @@ export function tags( $validity, $value, $setting, $control ) {
  * Validate text
  *
  * @since 1.0.0
- *
- * @param {WP_Error}             $validity
- * @param {mixed}                $value    The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function text( $validity, $value, $setting, $control ) {
-  const $attrs = $control.params['attrs'] || {};
-  const $type = $attrs.type || 'text';
+export function text(
+  $validity: WP_Error,
+  $value: any,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
+  const $attrs = $control.params["attrs"] || {};
+  const $type = $attrs.type || "text";
 
   // type
-  if ( ! _.isString( $value ) ) {
-    $validity = $control._addError( $validity, 'vTextType' );
+  if (typeof $value !== "string") {
+    $validity = $control._addError($validity, "vTextType");
+    return $validity;
   }
   // url
   // make the `isURL` function behaving like php's `filter_var( $value, FILTER_VALIDATE_URL )`
-  if ( $type === 'url' && !isURL( $value, { require_tld: false, allow_trailing_dot: true } ) ) {
-    $validity = $control._addError( $validity, 'vInvalidUrl' );
+  if (
+    $type === "url" &&
+    !isURL($value, { require_tld: false, allow_trailing_dot: true })
+  ) {
+    $validity = $control._addError($validity, "vInvalidUrl");
   }
   // email
-  else if ( $type === 'email' && !isEmail( $value ) ) {
-    $validity = $control._addError( $validity, 'vInvalidEmail' );
+  else if ($type === "email" && !isEmail($value)) {
+    $validity = $control._addError($validity, "vInvalidEmail");
   }
   // max length
-  if ( is_int( $attrs['maxlength'] ) && $value.length > $attrs['maxlength'] ) {
-    $validity = $control._addError( $validity, 'vTextTooLong', $attrs['maxlength'] );
+  if (is_int($attrs["maxlength"]) && $value.length > $attrs["maxlength"]) {
+    $validity = $control._addError(
+      $validity,
+      "vTextTooLong",
+      $attrs["maxlength"]
+    );
   }
   // min length
-  if ( is_int( $attrs['minlength'] ) && $value.length < $attrs['minlength'] ) {
-    $validity = $control._addError( $validity, 'vTextTooShort', $attrs['minlength'] );
+  if (is_int($attrs["minlength"]) && $value.length < $attrs["minlength"]) {
+    $validity = $control._addError(
+      $validity,
+      "vTextTooShort",
+      $attrs["minlength"]
+    );
   }
   // pattern
-  if ( _.isString( $attrs['pattern'] ) && ! $value.match( new RegExp( $attrs['pattern'] ) ) ) {
-    $validity = $control._addError( $validity, 'vTextPatternMismatch', $attrs['pattern'] );
+  if (
+    _.isString($attrs["pattern"]) &&
+    !$value.match(new RegExp($attrs["pattern"]))
+  ) {
+    $validity = $control._addError(
+      $validity,
+      "vTextPatternMismatch",
+      $attrs["pattern"]
+    );
   }
 
   // html must be escaped
-  if ( $control.params.html === 'escape' ) {
-    if ( Helper.hasHTML( $value ) ) {
-      $validity = $control._addWarning( $validity, 'vTextEscaped' ); // @@todo \\
+  if ($control.params.html === "escape") {
+    if (Helper.hasHTML($value)) {
+      $validity = $control._addWarning($validity, "vTextEscaped"); // @@todo \\
     }
   }
   // html is dangerously completely allowed
-  else if ( $control.params.html === 'dangerous' ) {
-    $validity = $control._addWarning( $validity, 'vTextDangerousHtml' ); // @@todo \\
+  else if ($control.params.html === "dangerous") {
+    $validity = $control._addWarning($validity, "vTextDangerousHtml"); // @@todo \\
   }
   // html is not allowed at all
-  else if ( ! $control.params.html ) {
-    if ( Helper.hasHTML( $value ) ) {
-      $validity = $control._addError( $validity, 'vTextHtml' );
+  else if (!$control.params.html) {
+    if (Helper.hasHTML($value)) {
+      $validity = $control._addError($validity, "vTextHtml");
     }
   }
   // @@todo find some smart way to javascriptify the following html validation
@@ -289,45 +322,47 @@ export function text( $validity, $value, $setting, $control ) {
  * Validate number
  *
  * @since 1.0.0
- *
- * @param {WP_Error}             $validity
- * @param {mixed}                $value    The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function number( $validity, $value, $setting, $control ) {
+export function number(
+  $validity: WP_Error,
+  $value: any,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
   const $attrs = $control.params.attrs || {};
 
   // coerce to number
   $value = Number($value);
 
   // no number
-  if ( ! is_numeric( $value ) ) {
-    $validity = $control._addError( $validity, 'vNotAnumber' );
+  if (!is_numeric($value)) {
+    $validity = $control._addError($validity, "vNotAnumber");
     return $validity;
   }
   // unallowed float
-  if ( is_float( $value ) && !$attrs['float'] ) {
-    $validity = $control._addError( $validity, 'vNoFloat' );
+  if (is_float($value) && !$attrs["float"]) {
+    $validity = $control._addError($validity, "vNoFloat");
   }
   // must be an int but it is not
-  else if ( ! is_int( $value ) && !$attrs['float'] ) {
-    $validity = $control._addError( $validity, 'vNotAnInteger' );
+  else if (!is_int($value) && !$attrs["float"]) {
+    $validity = $control._addError($validity, "vNotAnInteger");
   }
 
-  if ( $attrs ) {
+  if ($attrs) {
     // if doesn't respect the step given
-    if ( is_numeric( $attrs['step'] ) && Helper.modulus($value, $attrs['step']) !== 0 ) {
-      $validity = $control._addError( $validity, 'vNumberStep', $attrs['step'] );
+    if (
+      is_numeric($attrs["step"]) &&
+      Helper.modulus($value, $attrs["step"]) !== 0
+    ) {
+      $validity = $control._addError($validity, "vNumberStep", $attrs["step"]);
     }
     // if it's lower than the minimum
-    if ( is_numeric( $attrs['min'] ) && $value < $attrs['min'] ) {
-      $validity = $control._addError( $validity, 'vNumberLow', $attrs['min'] );
+    if (is_numeric($attrs["min"]) && $value < $attrs["min"]) {
+      $validity = $control._addError($validity, "vNumberLow", $attrs["min"]);
     }
     // if it's higher than the maxmimum
-    if ( is_numeric( $attrs['max'] ) && $value > $attrs['max'] ) {
-      $validity = $control._addError( $validity, 'vNumberHigh', $attrs['max'] );
+    if (is_numeric($attrs["max"]) && $value > $attrs["max"]) {
+      $validity = $control._addError($validity, "vNumberHigh", $attrs["max"]);
     }
   }
 
@@ -338,27 +373,30 @@ export function number( $validity, $value, $setting, $control ) {
  * Validate css unit
  *
  * @since 1.0.0
- *
- * @param {WP_Error}             $validity
- * @param {mixed}                $unit     The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function sizeUnit( $validity, $unit, $setting, $control ) {
-  const {params} = $control;
+export function sizeUnit(
+  $validity: WP_Error,
+  $unit: any,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
+  const { params } = $control;
 
   // if it needs a unit and it is missing
-  if ( ! empty( params['units'] ) && ! $unit ) {
-    $validity = $control._addError( $validity, 'vSliderMissingUnit' );
+  if (!empty(params["units"]) && !$unit) {
+    $validity = $control._addError($validity, "vSliderMissingUnit");
   }
   // if the unit specified is not in the allowed ones
-  else if ( ! empty( params['units'] ) && $unit && params['units'].indexOf( $unit ) === -1 ) {
-    $validity = $control._addError( $validity, 'vSliderUnitNotAllowed', $unit );
+  else if (
+    !empty(params["units"]) &&
+    $unit &&
+    params["units"].indexOf($unit) === -1
+  ) {
+    $validity = $control._addError($validity, "vSliderUnitNotAllowed", $unit);
   }
   // if a unit is specified but none is allowed
-  else if ( empty( params['units'] ) && $unit ) {
-    $validity = $control._addError( $validity, 'vSliderNoUnit' );
+  else if (empty(params["units"]) && $unit) {
+    $validity = $control._addError($validity, "vSliderNoUnit");
   }
 
   return $validity;
@@ -368,19 +406,18 @@ export function sizeUnit( $validity, $unit, $setting, $control ) {
  * Validate slider
  *
  * @since 1.0.0
- *
- * @param {WP_Error}             $validity
- * @param {mixed}                $value    The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function slider( $validity, $value, $setting, $control ) {
-  const $number = Helper.extractNumber( $value );
-  const $unit = Helper.extractSizeUnit( $value );
+export function slider(
+  $validity: WP_Error,
+  $value: any,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
+  const $number = Helper.extractNumber($value);
+  const $unit = Helper.extractSizeUnit($value);
 
-  $validity = number( $validity, $number, $setting, $control );
-  $validity = sizeUnit( $validity, $unit, $setting, $control );
+  $validity = number($validity, $number, $setting, $control);
+  $validity = sizeUnit($validity, $unit, $setting, $control);
 
   return $validity;
 }
@@ -389,40 +426,36 @@ export function slider( $validity, $value, $setting, $control ) {
  * Validate color
  *
  * @since 1.0.0
- *
- * @requires tinycolor
- * @param {WP_Error}             $validity
- * @param {mixed}                $value    The value to validate.
- * @param {WP_Customize_Setting} $setting  Setting instance.
- * @param {WP_Customize_Control} $control  Control instance.
- * @return {WP_Error}
  */
-export function color( $validity, $value, $setting, $control ) {
+export function color(
+  $validity: WP_Error,
+  $value: any,
+  $setting: WP_Customize_Setting,
+  $control: WP_Customize_Control
+): WP_Error {
   const params = $control.params;
 
-  if (!_.isString($value)) {
-    return $control._addError( $validity, 'vColorWrongType' );
+  if (typeof $value !== "string") {
+  // if (!_.isString($value)) {
+    return $control._addError($validity, "vColorWrongType");
   }
-  $value = $value.replace(/\s/g, '');
+  $value = $value.replace(/\s/g, "");
 
-  if ( ! params.transparent && tinycolor($value).toName() === 'transparent' ) {
-    $validity = $control._addError( $validity, 'vNoTransparent' );
-  }
-  else if ( ! params.alpha && Helper.isRgba($value)) {
-    $validity = $control._addError( $validity, 'vNoRGBA' );
-  }
-  else if ( ! params.picker && _.isArray(params.palette) ) {
+  if (!params.transparent && tinycolor($value).toName() === "transparent") {
+    $validity = $control._addError($validity, "vNoTransparent");
+  } else if (!params.alpha && Helper.isRgba($value)) {
+    $validity = $control._addError($validity, "vNoRGBA");
+  } else if (!params.picker && _.isArray(params.palette)) {
     const valueNormalized = $control.softenize($value);
-    let paletteNormalized = _.flatten(params.palette, true);
-    paletteNormalized = _.map(paletteNormalized, (color) => {
+    let paletteNormalized = _.flatten(params.palette);
+    paletteNormalized = _.map(paletteNormalized, color => {
       return $control.softenize(color);
     });
-    if ( paletteNormalized.indexOf(valueNormalized) === -1 ) {
-      $validity = $control._addError( $validity, 'vNotInPalette' );
+    if (paletteNormalized.indexOf(valueNormalized) === -1) {
+      $validity = $control._addError($validity, "vNotInPalette");
     }
-  }
-  else if ( ! Helper.isColor( $value, api.constants['colorFormatsSupported'] ) ) {
-    $validity = $control._addError( $validity, 'vColorInvalid' );
+  } else if (!Helper.isColor($value, api.constants["colorFormatsSupported"])) {
+    $validity = $control._addError($validity, "vColorInvalid");
   }
 
   return $validity;
@@ -433,7 +466,7 @@ export function color( $validity, $value, $setting, $control ) {
  * @description  Exposed module <a href="module-Validate.html">Validate</a>
  * @access package
  */
-export default api.core.Validate = {
+export default (api.core.Validate = {
   required,
   singleChoice,
   multipleChoices,
@@ -446,5 +479,5 @@ export default api.core.Validate = {
   number,
   sizeUnit,
   slider,
-  color,
-};
+  color
+});

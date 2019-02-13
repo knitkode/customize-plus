@@ -9,22 +9,25 @@
 
 **JavaScript API** is documented with [JSdoc here](https://knitkode.com/docs/customize-plus/js/)
 
-Bugs
----------------
+## Notes
+
+- `"peerDependencies"` listed in `package.json` are the `"jquery"` and `"underscore"` versions loaded by WordPress core in the Customizer. They are not bundled in this plugin but are listed there for `flow-typed`. Also `"modernizer"` is listed there since a customized version of it is bundled in this plugin through `gulp-modernizr` and therefore is not installed as a node module directly. To keep track of a possible upgrade of the jquery version used by WordPress check this [track ticket](https://core.trac.wordpress.org/ticket/37110)
+- In many places the underscore methods for typechecking (e.g. `_.isString(x)`, `_.isArray(x)`, etc.) have been replaced with native JS checks (e.g. `typeof x === "string"`, `Array.isArray(x)`) in order to let [Flow](https://flow) understand [type refinements](https://flow.org/en/docs/lang/refinements/) (see this [answer](https://stackoverflow.com/a/39460191/9122820))
+
+## Bugs
+
 If you find an issue, please let us know [here](https://github.com/knitkode/customize-plus/issues?state=open), thanks!
 
+## Support
 
-Support
----------------
 This is a developer's portal and should **not** be used for support but only for development. Please visit the [support page](https://knitkode.com/support) to see other options.
 
 You can also try to see if someone is in our [chat room](https://gitter.im/knitkode/customize-plus):
 
 [![Gitter Chat](http://img.shields.io/badge/GITTER-JOIN%20CHAT-1DCE73.svg)](https://gitter.im/knitkode/customize-plus)
 
+## Contribute
 
-Contribute
----------------
 Anyone is welcome to contribute, there are various ways you can do it:
 
 1. Raise an [issue](https://github.com/knitkode/customize-plus/issues) on GitHub
@@ -32,14 +35,12 @@ Anyone is welcome to contribute, there are various ways you can do it:
 3. Translate this project into [different languages](https://translate.wordpress.org/projects/wp-plugins/customize-plus)
 4. Provide feedback and suggestions on [enhancements](https://github.com/knitkode/customize-plus/issues?direction=desc&labels=Enhancement&page=1&sort=created&state=open)
 
+## Donate
 
-Donate
----------------
 [![Liberapay](https://img.shields.io/liberapay/KnitKode/receives.svg)](https://liberapay.com/KnitKode/donate)
 
+## License
 
-License
----------------
  [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/knitkode/customize-plus/blob/master/license.txt) [![KnitKode](https://img.shields.io/badge/%C2%A9KnitKode-2017-blue.svg)](https://knitkode.com)
 
 Unless otherwise specified, all the plugin files are licensed under GNU General Public License version 3, see file license.txt. The exceptions to this license are as follows*:

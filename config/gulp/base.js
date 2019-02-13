@@ -8,11 +8,11 @@ const cache = require('gulp-cache');
 const imagemin = require('gulp-imagemin');
 const sass = require('gulp-sass');
 const postcss = require('gulp-postcss');
-const cssnano = require('gulp-cssnano');
 const base64 = require('gulp-base64');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const include = require('gulp-include');
+const cssnano = require('cssnano');
 
 /**
  * Base tasks (build and watch)
@@ -83,12 +83,15 @@ function baseStyles () {
     .pipe(sass.sync(plugins.sass).on('error', sass.logError))
     .pipe(postcss([
       require('autoprefixer')(plugins.autoprefixer),
-      require('css-mqpacker')(plugins.cssMqpacker)
+      require('css-mqpacker')(plugins.cssMqpacker),
     ]))
     .pipe(base64(plugins.base64))
     .pipe(gulpIf(config.isDist, replace(config.creditsPlaceholder, banner)))
     .pipe(gulp.dest(paths.dist.styles))
-    .pipe(gulpIf(config.isDist, cssnano(plugins.cssnano)))
+    .pipe(gulpIf(config.isDist, postcss([
+      cssnano()
+    ])))
+    // .pipe(gulpIf(config.isDist, cssnano(plugins.cssnano)))
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(paths.dist.styles));
 }

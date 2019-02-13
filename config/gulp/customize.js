@@ -10,7 +10,7 @@ const gulpIf = require('gulp-if');
 const stripDebug = require('gulp-strip-debug');
 const modernizr = require('gulp-modernizr');
 const rename = require('gulp-rename');
-const uglify = require('gulp-uglify');
+const terser = require('gulp-terser');
 const replace = require('gulp-replace');
 const header = require('gulp-header');
 const concat = require('gulp-concat');
@@ -44,10 +44,22 @@ module.exports = {
   docs: function customizeDocs (callback) {
     return gulp.parallel(
       docsJs,
-      esdoc,
-      documentationJs
+      // esdoc,
+      // documentationJs
     )(callback);
   },
+}
+
+const globals = {
+  window: 'window',
+  document: 'document',
+  jquery: 'jQuery',
+  underscore: '_',
+  wp: 'wp',
+  kkcp: 'kkcp',
+  modernizr: 'Modernizr',
+  marked: 'marked',
+  hljs: 'hljs',
 }
 
 /**
@@ -56,18 +68,9 @@ module.exports = {
  * Use the customize/index.js` as entry point and resolve from there.
  */
 function scriptsAdminRollup () {
-  return require('rollup').rollup(extend({
-    external: [
-      'window',
-      'document',
-      'jquery',
-      'underscore',
-      'wp',
-      'kkcp',
-      'modernizr',
-      'marked',
-      'hljs',
-    ],
+  return require('rollup').rollup({
+    input: paths.join(paths.src.scripts, 'customize/index.js'),
+    external: Object.keys(globals),
     plugins: [
       require('rollup-plugin-node-resolve')({
         jsnext: true,
@@ -77,31 +80,28 @@ function scriptsAdminRollup () {
       require('rollup-plugin-commonjs')({
         include: paths.join(paths.ROOT, 'node_modules/**')
       }),
+      require('rollup-plugin-flow')({ pretty: true }),
+
+      // Using buble instead of babel allows the private classmethods to be
+      // mangled since the latter uses the "key: _methodName" transformation
+      // that the minfier cannot mangle
+      // In case we want to switch to babel we would need to:
+      // `yarn add rollup-plugin-babel @babel/preset-env --dev && yarn remove 
+      // rollup-plugin-buble`
       require('rollup-plugin-buble')(),
-      // eslint({
-      //   exclude: [
-      //     'src/styles/**',
-      //   ]
-      // })
-    ]}, {
-      input: paths.join(paths.src.scripts, 'customize/index.js')
-    }))
+      // require('rollup-plugin-babel')({
+      //   exclude: 'node_modules/**',
+      //   babelrc: false,
+      //   presets: ['@babel/preset-env'],
+      //   comments: false,
+      // }),
+    ]})
     .then((bundle) => {
       return bundle.write(extend({
         format: 'iife',
         indent: '  ',
         intro: 'var DEBUG = true;',
-        globals: {
-          window: 'window',
-          document: 'document',
-          jquery: 'jQuery',
-          underscore: '_',
-          wp: 'wp',
-          kkcp: 'kkcp',
-          modernizr: 'Modernizr',
-          marked: 'marked',
-          hljs: 'hljs',
-        },
+        globals,
         interop: false,
       }, {
         file: '.tmp/customize.js'
@@ -136,20 +136,18 @@ function scriptsAdmin () {
     .pipe(gulp.dest(paths.dist.scripts))
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulpIf(config.isDist, replace('var DEBUG = !!window.kkcp.DEBUG;', '')))
-    .pipe(gulpIf(config.isDist, uglify(extend({}, plugins.uglify, plugins.uglifyCustomScripts, {
-      nameCache: JSON.parse(fs.readFileSync(
-        paths.join(paths.ROOT, '../customize-plus-premium/config/uglify--customize-name_cache.json'),
-      'utf8')),
+
+    .pipe(gulpIf(config.isDist, terser(extend({}, plugins.uglify, plugins.uglifyCustomScripts, {
       output: {
-        comments: function (node, comment) {
-        // {@link http://dfkaye.github.io/2014/03/24/preserve-multiline-strings-with-uglify/}
         // just keep the comment with License
         // this regex should work but it doesn't: /[\s\S]*\/\*\![\s\S]*(license)/gi
-        if (/license/gi.test(comment.value)) {
-          return true;
-        }
-      }
-    }}))))
+        comments: (node, comment) => /license/gi.test(comment.value)
+      },
+      nameCache: JSON.parse(fs.readFileSync(
+        paths.join(paths.ROOT, '../customize-plus-premium/config/minifier--customize-name_cache.json'),
+      'utf8')),
+      })
+    )))
     .pipe(gulp.dest(paths.dist.scripts));
 }
 
@@ -162,7 +160,7 @@ function scriptsPreview () {
     .pipe(gulpIf(config.isDist, header(config.credits, { pkg: pkg })))
     .pipe(gulp.dest(paths.dist.scripts))
     .pipe(gulpIf(config.isDist, replace('var DEBUG = true;', ''))) // or var DEBUG = !!api.DEBUG;
-    .pipe(gulpIf(config.isDist, uglify(plugins.uglify)))
+    .pipe(gulpIf(config.isDist, terser(plugins.uglify)))
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(paths.dist.scripts));
 }

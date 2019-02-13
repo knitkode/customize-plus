@@ -1,0 +1,14 @@
+[include]
+./src/scripts/customize/**/*.js
+
+[ignore]
+.*/__tests__/.*
+.*\.ignore\.js
+.*/_*.js # ignore private files
+.*/node_modules/jquery/**/*
+
+[options]
+munge_underscores=true
+# fool Flow because jquery it's a peerDependency
+# @see https://github.com/facebook/flow/issues/5787
+module.name_mapper='^jquery' -> 'lodash' 
