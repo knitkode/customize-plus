@@ -27,7 +27,7 @@ declare var tinycolor: Object;
  */
 export function required(
   $validity: WP_Error,
-  $value: any,
+  $value: mixed,
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control
 ): WP_Error {
@@ -46,7 +46,7 @@ export function required(
  */
 export function singleChoice(
   $validity: WP_Error,
-  $value: any,
+  $value: mixed,
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control
 ): WP_Error {
@@ -74,7 +74,7 @@ export function singleChoice(
  */
 export function multipleChoices(
   $validity: WP_Error,
-  $value: any,
+  $value: mixed,
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control,
   $check_length: boolean = false
@@ -132,7 +132,7 @@ export function multipleChoices(
  */
 export function oneOrMoreChoices(
   $validity: WP_Error,
-  $value: any,
+  $value: mixed,
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control
 ): WP_Error {
@@ -149,7 +149,7 @@ export function oneOrMoreChoices(
  */
 export function sortable(
   $validity: WP_Error,
-  $value: any,
+  $value: mixed,
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control
 ): WP_Error {
@@ -186,7 +186,7 @@ export function fontFamily(
  */
 export function checkbox(
   $validity: WP_Error,
-  $value: any,
+  $value: mixed,
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control
 ): WP_Error {
@@ -235,7 +235,7 @@ export function tags(
  */
 export function text(
   $validity: WP_Error,
-  $value: any,
+  $value: mixed,
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control
 ): WP_Error {
@@ -325,7 +325,7 @@ export function text(
  */
 export function number(
   $validity: WP_Error,
-  $value: any,
+  $value: mixed,
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control
 ): WP_Error {
@@ -376,7 +376,7 @@ export function number(
  */
 export function sizeUnit(
   $validity: WP_Error,
-  $unit: any,
+  $unit: mixed,
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control
 ): WP_Error {
@@ -409,7 +409,7 @@ export function sizeUnit(
  */
 export function slider(
   $validity: WP_Error,
-  $value: any,
+  $value: mixed,
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control
 ): WP_Error {
@@ -429,14 +429,14 @@ export function slider(
  */
 export function color(
   $validity: WP_Error,
-  $value: any,
+  $value: mixed,
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control
 ): WP_Error {
   const params = $control.params;
 
   if (typeof $value !== "string") {
-  // if (!_.isString($value)) {
+    // if (!_.isString($value)) {
     return $control._addError($validity, "vColorWrongType");
   }
   $value = $value.replace(/\s/g, "");
