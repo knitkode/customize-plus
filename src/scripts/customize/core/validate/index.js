@@ -15,8 +15,8 @@ import is_numeric from "locutus/php/var/is_numeric";
 import empty from "locutus/php/var/empty";
 import isURL from "validator/lib/isURL";
 import isEmail from "validator/lib/isEmail";
-import { api } from "./globals";
-import Helper from "../core/helper";
+import { api } from "../globals";
+import Helper from "../helper";
 /* global tinycolor */
 
 declare var tinycolor: Object;

@@ -17,8 +17,8 @@ import is_float from 'locutus/php/var/is_float';
 import is_numeric from 'locutus/php/var/is_numeric';
 import empty from 'locutus/php/var/empty';
 import round from 'locutus/php/math/round';
-import Helper from './helper';
-import Validate from './validate';
+import Helper from '../helper';
+import Validate from '../validate';
 
 /**
  * Sanitize string

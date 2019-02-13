@@ -218,6 +218,9 @@ function esdoc(callback) {
     .pipe(esdoc({
       destination: paths.join(paths.ROOT, pkg.config.paths.esdocDest),
       'includes': ['\\.js$'],
+      'plugins': [{
+        'name': 'esdoc-flow-plugin'
+      }]
     }));
 }
 
