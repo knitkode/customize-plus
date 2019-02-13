@@ -45,7 +45,7 @@ module.exports = {
     return gulp.parallel(
       // docsJs,
       esdoc,
-      // documentationJs
+      documentationJs
     )(callback);
   },
 }
@@ -230,9 +230,13 @@ function documentationJs(callback) {
   return gulp
     .src([
       paths.join(paths.src.scripts, "customize/**/*.js"),
-      paths.join("!" + paths.src.scripts, "customize/**/_*.js")
+      paths.join("!" + paths.src.scripts, "customize/**/_*.js"),
+      paths.join("!" + paths.src.scripts, "customize/**/globals.js")
     ])
-    .pipe(documentation("html", {}, {}))
+    .pipe(documentation("html", {
+      github: true,
+      // theme: 
+    }, {}))
     // .pipe(documentation("md"))
     // .pipe(documentation("json"))
     .pipe(gulp.dest(paths.join(paths.ROOT, pkg.config.paths.documentationJsDest)));

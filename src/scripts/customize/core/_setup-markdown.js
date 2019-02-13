@@ -4,7 +4,7 @@ import { body } from './globals';
 
 /**
  * Markdown init (with marked.js)
- *
+ * @ignore
  */
 (function () {
 
@@ -16,12 +16,16 @@ import { body } from './globals';
   /**
    * Custom marked renderer
    * {@link http://git.io/vZ05H source}
+   * 
+   * @ignore
    * @type {marked}
    */
   var markedRenderer = new marked.Renderer();
 
   /**
    * Add `target="_blank" to external links
+   *
+   * @ignore
    * @param  {string} href
    * @param  {string} title
    * @param  {string} text
@@ -43,6 +47,7 @@ import { body } from './globals';
 
   /**
    * Set marked options
+   * @ignore
    */
   marked.setOptions({
     // anchorTargetBlank: true,

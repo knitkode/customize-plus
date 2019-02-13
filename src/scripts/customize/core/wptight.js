@@ -20,7 +20,7 @@ class WpTight {
     /**
      * WordPress UI elements
      *
-     * @type {Object.<string, jQuery|HTMLElement>}
+     * @type {Object.<string, JQuery|HTMLElement>}
      */
     this.el = {};
 
@@ -91,27 +91,16 @@ class WpTight {
   _$onReady () {
     let el = this.el;
 
-    /** @type {JQuery} */
     el.container = $('.wp-full-overlay');
-    /** @type {JQuery} */
     el.controls = $('#customize-controls');
-    /** @type {JQuery} */
     el.themeControls = $('#customize-theme-controls');
-    /** @type {JQuery} */
     el.preview = $('#customize-preview');
-    /** @type {JQuery} */
     el.header = $('#customize-header-actions');
-    /** @type {JQuery} */
     el.footer = $('#customize-footer-actions');
-    /** @type {JQuery} */
     el.devices = el.footer.find('.devices');
-    /** @type {JQuery} */
     el.close = el.header.find('.customize-controls-close');
-    /** @type {JQuery} */
     el.sidebar = $('.wp-full-overlay-sidebar-content');
-    /** @type {JQuery} */
     el.info = $('#customize-info');
-    /** @type {JQuery} */
     el.customizeControls = $('#customize-theme-controls').find('ul').first();
   }
 

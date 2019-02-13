@@ -1,7 +1,7 @@
 /**
  * @fileOverview A simple logger utility.
  *
- * @module Logger
+ * @module logger
  * @memberof core
  */
 
@@ -9,7 +9,7 @@
  * Log error
  *
  * @since 1.0.0
- * @memberof core.Logger
+ * @memberof core.logger
  *
  * @param  {string} context
  * @param  {string} msg
@@ -19,10 +19,6 @@ export function logError (context, msg) {
   console.error(context, msg);
 }
 
-/**
- * @description  Exposed module <a href="module-Logger.html">Logger</a>
- * @access package
- */
 export default {
   error: logError,
 }

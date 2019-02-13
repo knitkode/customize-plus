@@ -7,7 +7,7 @@
  * @access package
  *
  * @memberof core
- * @module Sanitize
+ * @module sanitize
  * @requires Helper
  * @requires Validate
  */
@@ -24,7 +24,7 @@ import Validate from '../validate';
  * Sanitize string
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {mixed}                $input   The value to sanitize.
  * @return {string} The sanitized value.
@@ -40,7 +40,7 @@ export function string ($input) {
  * Sanitize single choice
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {string}               $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
@@ -64,7 +64,7 @@ export function singleChoice ( $value, $setting, $control ) {
  * Sanitize multiple choices
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {array}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
@@ -123,7 +123,7 @@ export function multipleChoices( $value, $setting, $control, $check_length = fal
  * Sanitize one or more choices
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {mixed}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
@@ -144,7 +144,7 @@ export function oneOrMoreChoices ( $value, $setting, $control ) {
  * Sanitize sortable
  *
  * @since 1.1.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {mixed}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
@@ -159,7 +159,7 @@ export function sortable ( $value, $setting, $control ) {
  * Sanitize font family
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {string|array}         $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
@@ -185,7 +185,7 @@ export function fontFamily( $value, $setting, $control ) {
  * Sanitize checkbox
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {mixed}                $value    The value to validate.
  * @param {WP_Customize_Setting} $setting  Setting instance.
@@ -200,7 +200,7 @@ export function checkbox( $value, $setting, $control ) {
  * Sanitize tags
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {mixed}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
@@ -230,7 +230,7 @@ export function tags( $value, $setting, $control ) {
  * Sanitize text
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {mixed}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
@@ -289,7 +289,7 @@ export function text( $value, $setting, $control ) {
  * Sanitize number
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {mixed}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
@@ -329,7 +329,7 @@ export function number( $value, $setting, $control ) {
  * Sanitize CSS size unit
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {string}   $unit          The unit to sanitize
  * @param {mixed}    $allowed_units The allowed units
@@ -362,7 +362,7 @@ export function sizeUnit( $unit, $allowed_units ) {
  * Sanitize slider
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {mixed}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
@@ -396,7 +396,7 @@ export function slider( $value, $setting, $control ) {
  * default.
  *
  * @since 1.0.0
- * @memberof core.Sanitize
+ * @memberof core.sanitize
  *
  * @param {mixed}                $value   The value to sanitize.
  * @param {WP_Customize_Setting} $setting Setting instance.
@@ -425,11 +425,6 @@ export function color( $value, $setting, $control ) {
   return $value;
 }
 
-/**
- * @alias core.Sanitize
- * @description  Exposed module <a href="module-Sanitize.html">Sanitize</a>
- * @access package
- */
 export default {
   singleChoice,
   multipleChoices,

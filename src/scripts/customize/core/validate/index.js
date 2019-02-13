@@ -4,7 +4,7 @@
  *
  * @flow
  *
- * @module Validate
+ * @module validate
  * @memberof core
  * @requires Helper
  */
@@ -25,7 +25,7 @@ declare var tinycolor: Object;
  * Validate a required setting value
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  */
 export function required(
   $validity: WP_Error,
@@ -45,7 +45,7 @@ export function required(
  * Validate a single choice
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  */
 export function singleChoice(
   $validity: WP_Error,
@@ -70,7 +70,7 @@ export function singleChoice(
  * Validate an array of choices
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  *
  * @param {bool} $check_length Should match choices length? e.g. for sortable
                                control where the all the defined choices should
@@ -133,7 +133,7 @@ export function multipleChoices(
  * Validate one or more choices
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  */
 export function oneOrMoreChoices(
   $validity: WP_Error,
@@ -151,7 +151,7 @@ export function oneOrMoreChoices(
  * Validate sortable
  *
  * @since 1.1.0
- * @memberof core.Validate
+ * @memberof core.validate
  */
 export function sortable(
   $validity: WP_Error,
@@ -166,7 +166,7 @@ export function sortable(
  * Validate font family
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  */
 export function fontFamily(
   $validity: WP_Error,
@@ -190,7 +190,7 @@ export function fontFamily(
  * Validate checkbox
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  */
 export function checkbox(
   $validity: WP_Error,
@@ -208,7 +208,7 @@ export function checkbox(
  * Validate tags
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  */
 export function tags(
   $validity: WP_Error,
@@ -241,7 +241,7 @@ export function tags(
  * Validate text
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  */
 export function text(
   $validity: WP_Error,
@@ -332,7 +332,7 @@ export function text(
  * Validate number
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  */
 export function number(
   $validity: WP_Error,
@@ -384,7 +384,7 @@ export function number(
  * Validate css unit
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  */
 export function sizeUnit(
   $validity: WP_Error,
@@ -418,7 +418,7 @@ export function sizeUnit(
  * Validate slider
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  */
 export function slider(
   $validity: WP_Error,
@@ -439,7 +439,7 @@ export function slider(
  * Validate color
  *
  * @since 1.0.0
- * @memberof core.Validate
+ * @memberof core.validate
  * @requires tinycolor
  */
 export function color(
@@ -476,11 +476,6 @@ export function color(
   return $validity;
 }
 
-/**
- * @alias core.Validate
- * @description  Exposed module <a href="module-Validate.html">Validate</a>
- * @access package
- */
 const Validate = {
   required,
   singleChoice,
@@ -497,5 +492,5 @@ const Validate = {
   color,
 };
 
-api.core.Validate = Validate;
+api.core.validate = Validate;
 export default Validate;

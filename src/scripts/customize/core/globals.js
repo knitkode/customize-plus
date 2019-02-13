@@ -88,6 +88,8 @@ pluginApi.constants = pluginApi.constants || {};
  * during development.
  *
  * @since  1.0.0
+ * @access package
+ * @private
  * @type {Object}
  */
 export const api = pluginApi;
@@ -110,6 +112,7 @@ export const wpApi = wp.customize;
  *
  * @since  1.0.0
  * @access package
+ * @private
  * @type {jQuery}
  */
 export const $window = $(window);
@@ -119,6 +122,7 @@ export const $window = $(window);
  *
  * @since  1.0.0
  * @access package
+ * @private
  * @type {jQuery}
  */
 export const $document = $(document);
@@ -128,6 +132,7 @@ export const $document = $(document);
  *
  * @since  1.0.0
  * @access package
+ * @private
  * @type {HTMLElement}
  */
 export const body = document.getElementsByTagName('body')[0];
@@ -137,6 +142,7 @@ export const body = document.getElementsByTagName('body')[0];
  *
  * @since  1.0.0
  * @access package
+ * @private
  * @type {jQuery.Deferred}
  */
 export const $readyWP = $.Deferred();
@@ -146,6 +152,7 @@ export const $readyWP = $.Deferred();
  *
  * @since  1.0.0
  * @access package
+ * @private
  * @type {jQuery.Deferred}
  */
 export const $readyDOM = $.Deferred();
@@ -156,6 +163,7 @@ export const $readyDOM = $.Deferred();
  *
  * @since  1.0.0
  * @access package
+ * @private
  * @type {jQuery.Deferred}
  */
 export const $ready = $.when($readyDOM, $readyWP);
