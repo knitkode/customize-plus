@@ -1,4 +1,3 @@
-import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 import BaseInput from './base-input';
@@ -21,6 +20,10 @@ import BaseInput from './base-input';
  * @requires Sanitize
  */
 class Number extends BaseInput {
+    
+  static type = `number`;
+
+  static onWpConstructor = true;
 
   constructor (id, args) {
     super(id, args);
@@ -40,5 +43,4 @@ class Number extends BaseInput {
   }
 }
 
-wpApi.controlConstructor['kkcp_number'] = api.controls.Number = Number;
 export default Number;

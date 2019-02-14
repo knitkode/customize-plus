@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { api, $readyDOM } from './globals';
+import { $readyDOM } from './globals';
 import Utils from './utils';
 
 /**
@@ -131,4 +131,6 @@ class WpTight {
  * @instance
  * @memberof core
  */
-export default api.core.wpTight = new WpTight();
+const wpTight = new WpTight();
+
+export default wpTight

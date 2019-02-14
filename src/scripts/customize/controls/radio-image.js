@@ -1,4 +1,3 @@
-import { api, wpApi } from '../core/globals';
 import { _IMAGES_BASE_URL, _CP_URL_IMAGES } from '../core/utils';
 import BaseRadio from './base-radio';
 
@@ -18,6 +17,10 @@ import BaseRadio from './base-radio';
  * @augments wp.customize.Class
  */
 class RadioImage extends BaseRadio {
+    
+  static type = `radio_image`;
+
+  static onWpConstructor = true;
 
   /**
    * It shows the full image path (`img_custom`) or an image
@@ -37,5 +40,4 @@ class RadioImage extends BaseRadio {
   }
 }
 
-wpApi.controlConstructor['kkcp_radio_image'] = api.controls.RadioImage = RadioImage;
 export default RadioImage;

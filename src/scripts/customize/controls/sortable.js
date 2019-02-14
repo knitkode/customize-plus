@@ -1,6 +1,5 @@
 import _ from 'underscore';
 import sprintf from 'locutus/php/strings/sprintf';
-import { api, wpApi } from '../core/globals';
 import { logError } from '../core/logger';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
@@ -24,6 +23,10 @@ import BaseChoices from './base-choices';
  * @requires Sanitize
  */
 class Sortable extends BaseChoices {
+    
+  static type = `sortable`;
+
+  static onWpConstructor = true;
 
   constructor (id, args) {
     super(id, args);
@@ -149,5 +152,4 @@ class Sortable extends BaseChoices {
   }
 }
 
-wpApi.controlConstructor['kkcp_sortable'] = api.controls.Sortable = Sortable;
 export default Sortable;

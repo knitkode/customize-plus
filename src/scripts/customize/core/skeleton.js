@@ -1,7 +1,7 @@
 import document from 'document';
 import $ from 'jquery';
 import Modernizr from 'modernizr';
-import { api, wpApi, body, $readyDOM } from './globals';
+import { wpApi, body, $readyDOM } from './globals';
 
 /**
  * Skeleton
@@ -110,4 +110,6 @@ class Skeleton {
  * @instance
  * @memberof core
  */
-export default api.core.skeleton = new Skeleton();
+const skeleton = new Skeleton();
+
+export default skeleton

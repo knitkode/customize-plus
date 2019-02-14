@@ -24,6 +24,8 @@ import Base from './base';
  * @requires Sanitize
  */
 class BaseSet extends Base {
+  
+  static type = `base_set`;
 
   constructor (id, args) {
     super(id, args);
@@ -398,5 +400,4 @@ class BaseSet extends Base {
 
 }
 
-// api.controls.BaseSet = BaseSet;
 export default BaseSet;

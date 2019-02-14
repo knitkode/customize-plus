@@ -1,4 +1,3 @@
-import { api, wpApi } from '../core/globals';
 import Select from './select';
 
 /**
@@ -16,7 +15,9 @@ import Select from './select';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  */
-class FontWeight extends Select {}
+class FontWeight extends Select {
+      
+  static type = `font_weight`;
+}
 
-wpApi.controlConstructor['kkcp_font_weight'] = api.controls.FontWeight = FontWeight;
 export default FontWeight;

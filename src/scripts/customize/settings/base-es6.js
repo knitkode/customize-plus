@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import { api, wpApi } from '../core/globals';
+import { wpApi } from '../core/globals';
 
 /**
  * Setting Base class
@@ -17,20 +17,65 @@ import { api, wpApi } from '../core/globals';
  * @augments wp.customize.Value
  * @augments wp.customize.Class
  */
-const Base = wpApi.Setting.extend({
 
-  type: `base`,
+// This class and the Object assignments below are needed to make Babel play
+// nicely with the class implementation of `wp.customize` API
+class WpSetting {}
+// First we assign the `wp.customize.Value` as static methods on WpSetting,
+// otherwise it would not be possible to extend controls from outside of this
+// codebase.
+Object.assign(WpSetting, wpApi.Class, wpApi.Value, wpApi.Setting)
+// Then we assign the prototypes of both the `wp.customize.Value` and of
+// `wp.customize.Control` on the prototype of our dummy WpSetting class
+Object.assign(WpSetting.prototype,
+  wpApi.Class.prototype,
+  wpApi.Value.prototype,
+  wpApi.Setting.prototype
+)
+// With `buble` transpilation instead of Babel we could skip all this and just
+// extends `wp.customize.Setting` directly as such:
+
+class Base extends WpSetting {
+  
+  constructor(id, value, options) {
+    super(id, value, options)
+    wpApi.Setting.prototype.initialize.call(this, id, value, options);
+  }
+
+  /**
+   * The type of component without any prefix, just the nice name in snake_case
+   *
+   * @since 1.2.0
+   *
+   * @static
+   * @memberof settings.Base
+   */
+  static type = `base`;
+
+  /**
+   * Flag to signal that a component will be exported on the WordPress customize
+   * constructor. All end users components should set this to `true`, leaving
+   * base components with `false` as they are hidden and not "final" controls / 
+   * settings / panels etc.
+   *
+   * @since 1.2.0
+   *
+   * @static
+   * @memberof settings.Base
+   */
+  static onWpConstructor = true;
 
   /**
    * {@inheritdoc}. Add the initial and lastSave values for reset value actions.
    * The `factory` value is added in the PHP Setting class constructor.
    *
-   * @memberof settings.Base.prototype
+   * @memberof settings.Base
    *
    * @since 1.0.0
    * @override
    */
-  initialize: function( id, value, options ) {
+  initialize( id, value, options ) {
+    // super(id, value, options)
     wpApi.Setting.prototype.initialize.call(this, id, value, options);
 
     // we need to grab this manually because the json data of a setting class is
@@ -43,18 +88,18 @@ const Base = wpApi.Setting.extend({
     }
     this.vInitial = this();
     this.vLastSaved = this.vInitial;
-  },
+  }
 
   /**
    * {@inheritcoc}. Sanitize value before sending it to the preview via
    * `postMessage`.
    *
-   * @memberof settings.Base.prototype
+   * @memberof settings.Base
    *
    * @since 1.0.0
    * @override
    */
-  preview: function() {
+  preview () {
     var setting = this, transport;
     transport = setting.transport;
 
@@ -68,7 +113,7 @@ const Base = wpApi.Setting.extend({
     } else if ( 'refresh' === transport ) {
       setting.previewer.refresh();
     }
-  },
+  }
 
   /**
    * Sanitize setting
@@ -82,9 +127,9 @@ const Base = wpApi.Setting.extend({
    * @param  {mixed} value
    * @return {mixed}
    */
-  sanitize: function (value) {
+  sanitize (value) {
     return value;
-  },
+  }
 
   /**
    * Force `set`.
@@ -111,7 +156,7 @@ const Base = wpApi.Setting.extend({
    * value and then re-setting the setting to the desired value, in this way
    * the callbacks are fired and the UI get back in sync.
    * 
-   * @memberof settings.Base.prototype
+   * @memberof settings.Base
    *
    * @param  {WP_Customize_Setting} setting
    * @param  {string} value
@@ -120,7 +165,6 @@ const Base = wpApi.Setting.extend({
     this['_value'] = dummyValue || 'dummy'; // whitelisted from uglify \\
     this.set(value);
   }
-});
+}
 
-// wpApi.settingConstructor['kkcp_base'] = api.settings.Base = Base
 export default Base;

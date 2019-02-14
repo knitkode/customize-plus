@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import { api } from '../core/globals';
 import Base from './base';
 
 /**
@@ -14,6 +13,8 @@ import Base from './base';
  * @augments wp.customize.Class
  */
 class BaseInput extends Base {
+  
+  static type = `base_input`;
 
   /**
    * @override
@@ -88,5 +89,4 @@ class BaseInput extends Base {
   }
 }
 
-// api.controls.BaseInput = BaseInput;
 export default BaseInput;

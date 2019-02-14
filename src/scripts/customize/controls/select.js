@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 import BaseChoices from './base-choices';
@@ -23,6 +22,10 @@ import BaseChoices from './base-choices';
  * @requires Sanitize
  */
 class Select extends BaseChoices {
+    
+  static type = `select`;
+
+  static onWpConstructor = true;
 
   constructor (id, args) {
     super(id, args);
@@ -176,5 +179,4 @@ class Select extends BaseChoices {
   }
 }
 
-wpApi.controlConstructor['kkcp_select'] = api.controls.Select = Select;
 export default Select;

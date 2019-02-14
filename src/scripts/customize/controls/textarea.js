@@ -1,7 +1,6 @@
 import window from 'window';
 import $ from 'jquery';
 import _ from 'underscore';
-import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 import Text from './text';
@@ -26,6 +25,9 @@ import Text from './text';
  * @requires tinyMCE
  */
 class Textarea extends Text {
+      
+  static type = `textarea`;
+
   /**
    * @override
    */
@@ -216,5 +218,4 @@ class Textarea extends Text {
   }
 }
 
-wpApi.controlConstructor['kkcp_textarea'] = api.controls.Textarea = Textarea;
 export default Textarea;

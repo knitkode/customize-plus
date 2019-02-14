@@ -1,4 +1,3 @@
-import { api, wpApi } from '../core/globals';
 import { numberToBoolean } from '../core/helper';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
@@ -21,6 +20,10 @@ import Base from './base';
  * @requires Sanitize
  */
 class Checkbox extends Base {
+    
+  static type = `checkbox`;
+
+  static onWpConstructor = true;
 
   constructor (id, args) {
     super(id, args);
@@ -83,5 +86,4 @@ class Checkbox extends Base {
   }
 }
 
-wpApi.controlConstructor['kkcp_checkbox'] = api.controls.Checkbox = Checkbox;
 export default Checkbox;

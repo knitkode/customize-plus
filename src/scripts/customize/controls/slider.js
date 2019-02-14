@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 import Helper from '../core/helper';
@@ -24,6 +23,10 @@ import Base from './base';
  * @requires Helper
  */
 class Slider extends Base {
+    
+  static type = `slider`;
+
+  static onWpConstructor = true;
 
   constructor (id, args) {
     super(id, args);
@@ -237,5 +240,4 @@ class Slider extends Base {
   }
 }
 
-wpApi.controlConstructor['kkcp_slider'] = api.controls.Slider = Slider;
 export default Slider;

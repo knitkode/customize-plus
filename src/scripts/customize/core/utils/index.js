@@ -368,6 +368,5 @@ const Utils = {
   focus,
   template,
 }
-api.core.utils = Utils
 
 export default Utils

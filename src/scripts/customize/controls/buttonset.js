@@ -1,5 +1,6 @@
-import { api, wpApi } from '../core/globals';
 import BaseRadio from './base-radio';
+
+export const type = 'buttonset';
 
 /**
  * Control Buttonset
@@ -17,6 +18,10 @@ import BaseRadio from './base-radio';
  * @augments wp.customize.Class
  */
 class Buttonset extends BaseRadio {
+    
+  static type = `buttonset`;
+
+  static onWpConstructor = true;
 
   /**
    * Always show tooltips.
@@ -53,4 +58,4 @@ class Buttonset extends BaseRadio {
   }
 }
 
-wpApi.controlConstructor['kkcp_buttonset'] = api.controls.Buttonset = Buttonset;
+export default Buttonset;

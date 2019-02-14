@@ -13,7 +13,7 @@ import _ from "underscore";
 import is_int from "locutus/php/var/is_int";
 import is_float from "locutus/php/var/is_float";
 import is_numeric from "locutus/php/var/is_numeric";
-import { api } from "../globals";
+import { api } from '../globals';
 /* global tinycolor */
 
 declare var tinycolor: Object;
@@ -168,7 +168,7 @@ export function hexToRgb(
  *
  * @since  1.0.0
  * @memberof core.helper
- * @method
+ * @borrows rgbaToRgb as hexToRgb
  */
 export const rgbaToRgb = hexToRgb;
 

@@ -29,7 +29,45 @@ import Notification from '../core/notification';
  * @requires Utils
  * @requires Validate
  */
-class Base extends wpApi.Control {
+
+// This class and the Object assignments below are needed to make Babel play
+// nicely with the class implementation of `wp.customize` API
+class WpControl {}
+// First we assign the `wp.customize.Class` as static methods on WpControl,
+// otherwise it would not be possible to extend controls from outside of this
+// codebase.
+Object.assign(WpControl, wpApi.Class)
+// Then we assign the prototypes of both the `wp.customize.Class` and of
+// `wp.customize.Control` on the prototype of our dummy WpControl class
+Object.assign(WpControl.prototype, wpApi.Class.prototype, wpApi.Control.prototype)
+// With `buble` transpilation instead of Babel we could skip all this and just
+// extends `wp.customize.Control` directly as such:
+// `class Base extends wpApi.Control {`
+
+class Base extends WpControl {
+
+  /**
+   * The type of component without any prefix, just the nice name in snake_case
+   *
+   * @since 1.2.0
+   *
+   * @static
+   * @memberof controls.Base
+   */
+  static type = `base`;
+
+  /**
+   * Flag to signal that a component will be exported on the WordPress customize
+   * constructor. All end users components should set this to `true`, leaving
+   * base components with `false` as they are hidden and not "final" controls / 
+   * settings / panels etc.
+   *
+   * @since 1.2.0
+   *
+   * @static
+   * @memberof controls.Base
+   */
+  static onWpConstructor = false;
 
   /**
    * {@inheritdoc}
@@ -43,6 +81,10 @@ class Base extends wpApi.Control {
    * @override
    */
   constructor (id, options) {
+    // with `buble` transpilation we didn't have to call `super` here.
+    // We do with Babel instead
+    super(id, options);
+
     this.initialize(id, options);
     this.componentInit();
     this._customInitialize();
@@ -1062,5 +1104,4 @@ wpApi.bind('save', function () {
   });
 });
 
-api.controls.Base = Base;
 export default Base;

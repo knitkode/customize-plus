@@ -1,4 +1,3 @@
-import { api, wpApi } from '../core/globals';
 import BaseRadio from './base-radio';
 
 /**
@@ -17,6 +16,10 @@ import BaseRadio from './base-radio';
  * @augments wp.customize.Class
  */
 class Radio extends BaseRadio {
+    
+  static type = `radio`;
+
+  static onWpConstructor = true;
 
   /**
    * @override
@@ -32,5 +35,4 @@ class Radio extends BaseRadio {
   }
 }
 
-wpApi.controlConstructor['kkcp_radio'] = api.controls.Radio = Radio;
 export default Radio;

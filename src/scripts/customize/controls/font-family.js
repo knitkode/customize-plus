@@ -1,6 +1,5 @@
 import _ from 'underscore';
 import $ from 'jquery';
-import { api, wpApi } from '../core/globals';
 import Helper from '../core/helper';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
@@ -25,6 +24,10 @@ import BaseSet from './base-set';
  * @requires Helper
  */
 class FontFamily extends BaseSet {
+    
+  static type = `font_family`;
+
+  static onWpConstructor = true;
 
   constructor (id, args) {
     super(id, args);
@@ -147,5 +150,4 @@ class FontFamily extends BaseSet {
   }
 }
 
-wpApi.controlConstructor['kkcp_font_family'] = api.controls.FontFamily = FontFamily;
 export default FontFamily;

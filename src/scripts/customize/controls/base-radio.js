@@ -1,5 +1,4 @@
 import _ from 'underscore';
-import { api } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 import BaseChoices from './base-choices';
@@ -20,6 +19,8 @@ import BaseChoices from './base-choices';
  * @requires Sanitize
  */
 class BaseRadio extends BaseChoices {
+  
+  static type = `base_radio`;
 
   constructor (id, args) {
     super(id, args);
@@ -87,5 +88,4 @@ class BaseRadio extends BaseChoices {
   }
 }
 
-api.controls.BaseRadio = BaseRadio;
 export default BaseRadio;

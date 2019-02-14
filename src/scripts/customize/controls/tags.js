@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import { api, wpApi } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 import Base from './base';
@@ -22,6 +21,10 @@ import Base from './base';
  * @requires Sanitize
  */
 class Tags extends Base {
+    
+  static type = `tags`;
+
+  static onWpConstructor = true;
 
   constructor (id, args) {
     super(id, args);
@@ -129,5 +132,4 @@ class Tags extends Base {
   }
 }
 
-wpApi.controlConstructor['kkcp_tags'] = api.controls.Tags = Tags;
 export default Tags;

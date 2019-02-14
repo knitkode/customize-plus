@@ -44,7 +44,7 @@ module.exports = {
   docs: function customizeDocs (callback) {
     return gulp.parallel(
       // docsJs,
-      // esdoc,
+      esdoc,
       documentationJs,
       documentationJsMarkdown
     )(callback);
@@ -86,16 +86,30 @@ function scriptsAdminRollup () {
       // Using buble instead of babel allows the private classmethods to be
       // mangled since the latter uses the "key: _methodName" transformation
       // that the minfier cannot mangle
-      // In case we want to switch to babel we would need to:
-      // `yarn add rollup-plugin-babel @babel/preset-env --dev && yarn remove 
-      // rollup-plugin-buble`
-      require('rollup-plugin-buble')(),
-      // require('rollup-plugin-babel')({
-      //   exclude: 'node_modules/**',
-      //   babelrc: false,
-      //   presets: ['@babel/preset-env'],
-      //   comments: false,
-      // }),
+      // In case we want to between buble/babel we need to:
+      // `yarn add rollup-plugin-babel @babel/preset-env @babel/plugin-proposal-class-properties --dev`
+      // and/or:
+      // `yarn remove rollup-plugin-buble`
+      // require('rollup-plugin-buble')(),
+
+      require('rollup-plugin-babel')({
+        exclude: 'node_modules/**',
+        // babelrc: true,
+        babelrc: false,
+        presets: [
+          [
+            "@babel/preset-env",
+            { "useBuiltIns": "entry" }
+          ]
+        ],
+        plugins: [
+          [
+            "@babel/plugin-proposal-class-properties",
+            { "loose": true }
+          ]
+        ],
+        comments: false,
+      }),
     ]})
     .then((bundle) => {
       return bundle.write(extend({

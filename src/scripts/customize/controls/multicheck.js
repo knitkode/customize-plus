@@ -1,5 +1,4 @@
 import _ from 'underscore';
-import { api, wpApi } from '../core/globals';
 import { logError } from '../core/logger';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
@@ -24,6 +23,10 @@ import Sortable from './sortable';
  * @requires Sanitize
  */
 class Multicheck extends BaseChoices {
+    
+  static type = `multicheck`;
+
+  static onWpConstructor = true;
 
   constructor (id, args) {
     super(id, args);
@@ -202,5 +205,4 @@ class Multicheck extends BaseChoices {
   }
 }
 
-wpApi.controlConstructor['kkcp_multicheck'] = api.controls.Multicheck = Multicheck;
 export default Multicheck;

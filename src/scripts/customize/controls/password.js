@@ -1,4 +1,3 @@
-import { api, wpApi } from '../core/globals';
 import Text from './text';
 
 /**
@@ -20,6 +19,8 @@ import Text from './text';
  * @requires Sanitize
  */
 class Password extends Text {
+    
+  static type = `password`;
 
   /**
    * @override
@@ -116,5 +117,4 @@ class Password extends Text {
   }
 }
 
-wpApi.controlConstructor['kkcp_password'] = api.controls.Password = Password;
 export default Password;

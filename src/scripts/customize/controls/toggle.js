@@ -1,4 +1,3 @@
-import { api, wpApi } from '../core/globals';
 import Checkbox from './checkbox';
 
 /**
@@ -16,6 +15,8 @@ import Checkbox from './checkbox';
  * @augments wp.customize.Class
  */
 class Toggle extends Checkbox {
+    
+  static type = `toggle`;
 
   /**
    * @override
@@ -36,5 +37,4 @@ class Toggle extends Checkbox {
   }
 }
 
-wpApi.controlConstructor['kkcp_toggle'] = api.controls.Toggle = Toggle;
 export default Toggle;

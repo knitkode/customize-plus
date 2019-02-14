@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import { api, wpApi } from '../core/globals';
+import { api } from '../core/globals';
 import Validate from '../core/validate';
 import Sanitize from '../core/sanitize';
 import Base from './base';
@@ -24,6 +24,10 @@ import Base from './base';
  * @requires Sanitize
  */
 class Color extends Base {
+    
+  static type = `color`;
+
+  static onWpConstructor = true;
 
   constructor (id, args) {
     super(id, args);
@@ -208,5 +212,4 @@ class Color extends Base {
   }
 }
 
-wpApi.controlConstructor['kkcp_color'] = api.controls.Color = Color;
 export default Color;

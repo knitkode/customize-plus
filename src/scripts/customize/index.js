@@ -1,3 +1,4 @@
+import './api';
 import './core';
-import './controls';
+// import './controls';
 import './settings';

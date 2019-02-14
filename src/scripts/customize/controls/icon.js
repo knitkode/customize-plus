@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import { api, wpApi } from '../core/globals';
 import BaseSet from './base-set';
 
 /**
@@ -18,6 +17,10 @@ import BaseSet from './base-set';
  * @augments wp.customize.Class
  */
 class Icon extends BaseSet {
+    
+  static type = `icon`;
+
+  static onWpConstructor = true;
 
   /**
    * @override
@@ -70,5 +73,4 @@ class Icon extends BaseSet {
   }
 }
 
-wpApi.controlConstructor['kkcp_icon'] = api.controls.Icon = Icon;
 export default Icon;

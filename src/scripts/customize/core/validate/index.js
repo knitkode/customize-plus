@@ -492,5 +492,4 @@ const Validate = {
   color,
 };
 
-api.core.validate = Validate;
 export default Validate;

@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import { api, $document, body, $readyDOM } from './globals';
+import { $document, body, $readyDOM } from './globals';
 
 /**
  * Tooltips
@@ -90,4 +90,6 @@ class Tooltips {
  * @instance
  * @memberof core
  */
-export default api.core.tooltips = new Tooltips();
+const tooltips = new Tooltips();
+
+export default tooltips

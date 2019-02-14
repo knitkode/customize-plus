@@ -3,96 +3,8 @@ import document from 'document';
 import $ from 'jquery';
 import _ from 'underscore';
 import wp from 'wp';
-import pluginApi from 'kkcp';
-
-/**
- * Accessible on `window.kkcp.core`
- *
- * @since  1.0.0
- * @namespace core
- * @type {Object}
- */
-pluginApi.core = pluginApi.core || {};
-
-/**
- * Accessible on `window.kkcp.components`
- *
- * @since  1.0.0
- * @namespace components
- * @type {Object}
- */
-pluginApi.components = pluginApi.components || {};
-
-/**
- * Accessible on `window.kkcp.settings`
- *
- * @since  1.0.0
- * @namespace settings
- * @type {Object}
- */
-pluginApi.settings = pluginApi.settings || {};
-
-/**
- * Accessible on `window.kkcp.controls`
- *
- * @since  1.0.0
- * @namespace controls
- * @type {Object}
- */
-pluginApi.controls = pluginApi.controls || {};
-
-/**
- * Accessible on `window.kkcp.sections`
- *
- * @since  1.0.0
- * @namespace sections
- * @type {Object}
- */
-pluginApi.sections = pluginApi.sections || {};
-
-/**
- * Accessible on `window.kkcp.panels`
- *
- * @since  1.0.0
- * @namespace panels
- * @type {Object}
- */
-pluginApi.panels = pluginApi.panels || {};
-
-/**
- * Accessible on `window.kkcp.l10n`, populated by PHP via JSON
- *
- * @see PHP KKcp_Customize->get_l10n()
- * @since  1.0.0
- * @namespace l10n
- * @readonly
- * @type {Object}
- */
-pluginApi.l10n = pluginApi.l10n || {};
-
-/**
- * Accessible on `window.kkcp.constants`, populated by PHP via JSON
- *
- * @see PHP KKcp_Customize->get_constants()
- * @since  1.0.0
- * @namespace constants
- * @readonly
- * @type {Object}
- */
-pluginApi.constants = pluginApi.constants || {};
-
-/**
- * Customize Plus public API
- *
- * Accessible on `window.kkcp` during production and on `window.api`
- * during development.
- *
- * @since  1.0.0
- * @access package
- * @private
- * @type {Object}
- */
-export const api = pluginApi;
+// import pluginApi from '../api'
+import pluginApi from 'kkcp'
 
 /**
  * WordPress Customize public API
@@ -106,6 +18,19 @@ export const api = pluginApi;
  * @type {Object}
  */
 export const wpApi = wp.customize;
+
+/**
+ * Customize Plus public API
+ *
+ * Accessible on `window.kkcp` during production and on `window.api`
+ * during development.
+ *
+ * @since  1.0.0
+ * @access package
+ * @private
+ * @type {Object}
+ */
+export const api = pluginApi;
 
 /**
  * Reuse the same jQuery wrapped `window` object
@@ -204,6 +129,6 @@ if (DEBUG) {
   };
 
   // just useful aliases for debugging
-  window.api = api;
   window.wpApi = wpApi;
+  window.api = api
 }

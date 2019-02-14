@@ -1,6 +1,6 @@
 import document from 'document';
 import $ from 'jquery';
-import { api, wpApi, $document, $readyDOM } from './globals';
+import { api, $document, $readyDOM } from './globals';
 
 /**
  * Tabs
@@ -147,4 +147,6 @@ class Tabs {
  * @instance
  * @memberof core
  */
-export default api.core.tabs = new Tabs();
+const tabs = new Tabs();
+
+export default tabs

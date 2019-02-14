@@ -1,1 +1,1 @@
-import './base';
+export { default as Base } from './base';

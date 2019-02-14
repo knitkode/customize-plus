@@ -1,4 +1,3 @@
-import { api, wpApi } from '../core/globals';
 import Base from './base';
 
 /**
@@ -15,6 +14,10 @@ import Base from './base';
  * @augments wp.customize.Class
  */
 class Content extends Base {
+    
+  static type = `content`;
+
+  static onWpConstructor = true;
 
   /**
    * @override
@@ -30,5 +33,4 @@ class Content extends Base {
   }
 }
 
-wpApi.controlConstructor['kkcp_content'] = api.controls.Content = Content;
 export default Content;

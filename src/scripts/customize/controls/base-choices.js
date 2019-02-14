@@ -1,5 +1,4 @@
 import _ from 'underscore';
-import { api } from '../core/globals';
 import Base from './base';
 
 /**
@@ -14,6 +13,8 @@ import Base from './base';
  * @augments wp.customize.Class
  */
 class BaseChoices extends Base {
+    
+  static type = `base_choices`;
 
   /**
    * @override
@@ -162,5 +163,4 @@ class BaseChoices extends Base {
   }
 }
 
-// api.controls.BaseChoices = BaseChoices
 export default BaseChoices;

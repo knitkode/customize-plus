@@ -1,5 +1,5 @@
-import { api, wpApi } from '../core/globals';
-import Utils from '../core/utils';
+import { wpApi } from './globals';
+import Utils from './utils';
 
 /**
  * Notification
@@ -72,5 +72,4 @@ class Notification extends wpApi.Notification {
   }
 }
 
-api.core.Notification = Notification;
 export default Notification;
