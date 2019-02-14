@@ -108,4 +108,5 @@ const addComponentsOnWordPressAPI = (components, constructorName) => {
 }
 
 addComponentsOnWordPressAPI(controls, 'controlConstructor')
+debugger;
 addComponentsOnWordPressAPI(settings, 'settingConstructor')

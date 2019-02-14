@@ -19,7 +19,28 @@ import { api, wpApi } from '../core/globals';
  */
 const Base = wpApi.Setting.extend({
 
+  /**
+   * The type of component without any prefix, just the nice name in snake_case
+   *
+   * @since 1.2.0
+   *
+   * @static
+   * @memberof settings.Base
+   */
   type: `base`,
+
+  /**
+   * Flag to signal that a component will be exported on the WordPress customize
+   * constructor. All end users components should set this to `true`, leaving
+   * base components with `false` as they are hidden and not "final" controls / 
+   * settings / panels etc.
+   *
+   * @since 1.2.0
+   *
+   * @static
+   * @memberof settings.Base
+   */
+  onWpConstructor: true,
 
   /**
    * {@inheritdoc}. Add the initial and lastSave values for reset value actions.
