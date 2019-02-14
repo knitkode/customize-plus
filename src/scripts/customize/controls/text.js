@@ -1,5 +1,5 @@
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { text as validate } from '../core/validate';
+import { text as sanitize } from '../core/sanitize';
 import BaseInput from './base-input';
 
 /**
@@ -25,12 +25,9 @@ class Text extends BaseInput {
 
   static onWpConstructor = true;
 
-  constructor (id, args) {
-    super(id, args);
+  static validate = validate;
 
-    this.validate = Validate.text;
-    this.sanitize = Sanitize.text;
-  }
+  static sanitize = sanitize;
 }
 
 export default Text;

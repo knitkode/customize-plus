@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import { api } from '../core/globals';
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { oneOrMoreChoices as validate } from '../core/validate';
+import { oneOrMoreChoices as sanitize } from '../core/sanitize';
 import Base from './base';
 
 /**
@@ -26,14 +26,10 @@ import Base from './base';
 class BaseSet extends Base {
   
   static type = `base_set`;
-
-  constructor (id, args) {
-    super(id, args);
-
-    this.validate = Validate.oneOrMoreChoices;
-    this.sanitize = Sanitize.oneOrMoreChoices;
-
-  }
+  
+  static validate = validate;
+  
+  static sanitize = sanitize;
 
   /**
    * @see KKcp_Customize_Control_Base_Set->populate_valid_choices where we do

@@ -1,8 +1,8 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import { api } from '../core/globals';
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { color as validate } from '../core/validate';
+import { color as sanitize } from '../core/sanitize';
 import Base from './base';
 /* global tinycolor */
 
@@ -28,13 +28,10 @@ class Color extends Base {
   static type = `color`;
 
   static onWpConstructor = true;
-
-  constructor (id, args) {
-    super(id, args);
-
-    this.validate = Validate.color;
-    this.sanitize = Sanitize.color;
-  }
+  
+  static validate = validate;
+  
+  static sanitize = sanitize;
 
   /**
    * Use tinycolor (included in spectrum.js) to always convert colors to the

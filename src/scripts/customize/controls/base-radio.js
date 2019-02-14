@@ -1,6 +1,6 @@
 import _ from 'underscore';
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { singleChoice as validate } from '../core/validate';
+import { singleChoice as sanitize } from '../core/sanitize';
 import BaseChoices from './base-choices';
 
 /**
@@ -22,12 +22,9 @@ class BaseRadio extends BaseChoices {
   
   static type = `base_radio`;
 
-  constructor (id, args) {
-    super(id, args);
+  static validate = validate;
 
-    this.validate = Validate.singleChoice;
-    this.sanitize = Sanitize.singleChoice;
-  }
+  static sanitize = sanitize;
 
   /**
    * @override

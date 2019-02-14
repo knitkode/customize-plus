@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { oneOrMoreChoices as validate } from '../core/validate';
+import { oneOrMoreChoices as sanitize } from '../core/sanitize';
 import BaseChoices from './base-choices';
 
 /**
@@ -27,12 +27,9 @@ class Select extends BaseChoices {
 
   static onWpConstructor = true;
 
-  constructor (id, args) {
-    super(id, args);
+  static validate = validate;
 
-    this.validate = Validate.oneOrMoreChoices;
-    this.sanitize = Sanitize.oneOrMoreChoices;
-  }
+  static sanitize = sanitize;
 
   /**
    * @override

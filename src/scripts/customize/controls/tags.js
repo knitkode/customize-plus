@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { tags as validate } from '../core/validate';
+import { tags as sanitize } from '../core/sanitize';
 import Base from './base';
 
 /**
@@ -26,12 +26,9 @@ class Tags extends Base {
 
   static onWpConstructor = true;
 
-  constructor (id, args) {
-    super(id, args);
+  static validate = validate;
 
-    this.validate = Validate.tags;
-    this.sanitize = Sanitize.tags;
-  }
+  static sanitize = sanitize;
 
   /**
    * @override

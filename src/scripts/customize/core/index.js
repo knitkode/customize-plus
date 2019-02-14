@@ -1,4 +1,4 @@
-import './types';
+// import './types';
 import './globals';
 import './_setup-jquery';
 import './_setup-markdown';

@@ -1,5 +1,5 @@
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { number as validate } from '../core/validate';
+import { number as sanitize } from '../core/sanitize';
 import BaseInput from './base-input';
 
 /**
@@ -25,12 +25,9 @@ class Number extends BaseInput {
 
   static onWpConstructor = true;
 
-  constructor (id, args) {
-    super(id, args);
-
-    this.validate = Validate.number;
-    this.sanitize = Sanitize.number;
-  }
+  static validate = validate;
+  
+  static sanitize = sanitize;
 
   /**
    * We just neet to convert the value to string for the check, for the rest

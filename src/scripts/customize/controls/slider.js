@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import _ from 'underscore';
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { slider as validate } from '../core/validate';
+import { slider as sanitize } from '../core/sanitize';
 import Helper from '../core/helper';
 import Base from './base';
 
@@ -28,12 +28,9 @@ class Slider extends Base {
 
   static onWpConstructor = true;
 
-  constructor (id, args) {
-    super(id, args);
+  static validate = validate;
 
-    this.validate = Validate.slider;
-    this.sanitize = Sanitize.slider;
-  }
+  static sanitize = sanitize;
 
   /**
    * Let's consider '44' to be equal to 44.

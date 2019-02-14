@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import { logError } from '../core/logger';
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { multipleChoices as validate } from '../core/validate';
+import { multipleChoices as sanitize } from '../core/sanitize';
 import BaseChoices from './base-choices';
 import Sortable from './sortable';
 
@@ -27,13 +27,10 @@ class Multicheck extends BaseChoices {
   static type = `multicheck`;
 
   static onWpConstructor = true;
-
-  constructor (id, args) {
-    super(id, args);
-
-    this.validate = Validate.multipleChoices;
-    this.sanitize = Sanitize.multipleChoices;
-  }
+  
+  static validate = validate;
+  
+  static sanitize = sanitize;
 
   /**
    * @override

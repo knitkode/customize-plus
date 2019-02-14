@@ -1,6 +1,6 @@
 import { numberToBoolean } from '../core/helper';
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { checkbox as validate } from '../core/validate';
+import { checkbox as sanitize } from '../core/sanitize';
 import Base from './base';
 
 /**
@@ -24,13 +24,10 @@ class Checkbox extends Base {
   static type = `checkbox`;
 
   static onWpConstructor = true;
-
-  constructor (id, args) {
-    super(id, args);
-
-    this.validate = Validate.checkbox;
-    this.sanitize = Sanitize.checkbox;
-  }
+  
+  static validate = validate;
+  
+  static sanitize = sanitize;
 
   /**
    * We need this to fix situations like: `'1' === 1` returning false.

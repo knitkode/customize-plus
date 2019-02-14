@@ -1,8 +1,6 @@
 import window from 'window';
 import $ from 'jquery';
 import _ from 'underscore';
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
 import Text from './text';
 
 /**
@@ -20,8 +18,6 @@ import Text from './text';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
- * @requires Validate
- * @requires Sanitize
  * @requires tinyMCE
  */
 class Textarea extends Text {

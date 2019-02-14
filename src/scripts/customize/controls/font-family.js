@@ -1,8 +1,8 @@
 import _ from 'underscore';
 import $ from 'jquery';
 import Helper from '../core/helper';
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { fontFamily as validate } from '../core/validate';
+import { fontFamily as sanitize } from '../core/sanitize';
 import BaseSet from './base-set';
 
 /**
@@ -29,13 +29,10 @@ class FontFamily extends BaseSet {
 
   static onWpConstructor = true;
 
-  constructor (id, args) {
-    super(id, args);
+  static validate = validate;
 
-    this.validate = Validate.fontFamily;
-    this.sanitize = Sanitize.fontFamily;
-  }
-
+  static sanitize = sanitize;
+  
   /**
    * Always quote all font families
    *

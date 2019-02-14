@@ -1,8 +1,8 @@
 import _ from 'underscore';
 import sprintf from 'locutus/php/strings/sprintf';
 import { logError } from '../core/logger';
-import Validate from '../core/validate';
-import Sanitize from '../core/sanitize';
+import { sortable as validate } from '../core/validate';
+import { sortable as sanitize } from '../core/sanitize';
 import BaseChoices from './base-choices';
 
 /**
@@ -28,12 +28,9 @@ class Sortable extends BaseChoices {
 
   static onWpConstructor = true;
 
-  constructor (id, args) {
-    super(id, args);
+  static validate = validate;
 
-    this.validate = Validate.sortable;
-    this.sanitize = Sanitize.sortable;
-  }
+  static sanitize = sanitize;
 
   /**
    * @override

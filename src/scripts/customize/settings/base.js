@@ -137,11 +137,11 @@ const Base = wpApi.Setting.extend({
    * @param  {WP_Customize_Setting} setting
    * @param  {string} value
    */
-  forceSet (value, dummyValue) {
+  forceSet: function (value, dummyValue) {
     this['_value'] = dummyValue || 'dummy'; // whitelisted from uglify \\
     this.set(value);
   }
 });
 
-// wpApi.settingConstructor['kkcp_base'] = api.settings.Base = Base
+wpApi.settingConstructor['kkcp_base'] = api.settings.Base = Base
 export default Base;
