@@ -19,14 +19,14 @@ import Sortable from './sortable';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
- * @requires Validate
- * @requires Sanitize
+ * @requires validate
+ * @requires sanitize
  */
 class Multicheck extends BaseChoices {
     
   static type = `multicheck`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
   
   validate = validate;
   

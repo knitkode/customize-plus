@@ -40,7 +40,7 @@ const Base = wpApi.Setting.extend({
    * @static
    * @memberof settings.Base
    */
-  onWpConstructor: true,
+  _onWpConstructor: true,
 
   /**
    * {@inheritdoc}. Add the initial and lastSave values for reset value actions.

@@ -99,14 +99,22 @@ function scriptsAdminRollup () {
         presets: [
           [
             "@babel/preset-env",
-            { "useBuiltIns": "entry" }
+            {
+              "useBuiltIns": "entry",
+              "loose": true,
+              "modules": false,
+            }
           ]
         ],
         plugins: [
           [
             "@babel/plugin-proposal-class-properties",
             { "loose": true }
-          ]
+          ],
+          // [
+          //   "@babel/plugin-proposal-private-methods",
+          //   { "loose": true }
+          // ]
         ],
         comments: false,
       }),
@@ -232,16 +240,26 @@ function esdoc(callback) {
     ])
     .pipe(esdoc({
       destination: paths.join(paths.ROOT, pkg.config.paths.esdocDest),
-      'includes': ['\\.js$'],
-      'plugins': [{
-        'name': 'esdoc-flow-plugin'
-      }]
+      package: paths.join(paths.ROOT, 'pakcage.json'),
+      includes: ['\\.js$'],
+      excludes: ['\\.tmp.js$'], // exclude .hidden.js files
+      plugins: [{
+        name: 'esdoc-flow-plugin'
+      }],
+      experimentalProposal: {
+        classProperties: true,
+        objectRestSpread: true,
+        functionBind: true,
+      },
+      index: paths.join(paths.ROOT, 'README.md'),
+      title: pkg.config.title
     }));
 }
 
 const documentationJsFiles = [
   paths.join(paths.src.scripts, 'customize/**/*.js'),
   paths.join('!' + paths.src.scripts, 'customize/**/_*.js'),
+  paths.join('!' + paths.src.scripts, 'customize/**/*.tmp.js'),
   paths.join('!' + paths.src.scripts, 'customize/**/globals.js')
 ]
 

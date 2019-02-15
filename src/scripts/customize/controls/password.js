@@ -15,8 +15,8 @@ import Text from './text';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
- * @requires Validate
- * @requires Sanitize
+ * @requires validate
+ * @requires sanitize
  */
 class Password extends Text {
     

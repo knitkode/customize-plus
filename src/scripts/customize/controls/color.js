@@ -20,14 +20,14 @@ import Base from './base';
  * @augments wp.customize.Class
  * @requires tinycolor
  *
- * @requires Validate
- * @requires Sanitize
+ * @requires validate
+ * @requires sanitize
  */
 class Color extends Base {
     
   static type = `color`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
   
   validate = validate;
   

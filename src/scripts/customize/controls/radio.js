@@ -19,7 +19,7 @@ class Radio extends BaseRadio {
     
   static type = `radio`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
 
   /**
    * @override

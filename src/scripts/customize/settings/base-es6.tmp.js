@@ -63,7 +63,7 @@ class Base extends WpSetting {
    * @static
    * @memberof settings.Base
    */
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
 
   /**
    * {@inheritdoc}. Add the initial and lastSave values for reset value actions.

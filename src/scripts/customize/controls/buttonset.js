@@ -1,7 +1,5 @@
 import BaseRadio from './base-radio';
 
-export const type = 'buttonset';
-
 /**
  * Control Buttonset
  *
@@ -21,7 +19,7 @@ class Buttonset extends BaseRadio {
     
   static type = `buttonset`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
 
   /**
    * Always show tooltips.

@@ -17,7 +17,7 @@ class Content extends Base {
     
   static type = `content`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
 
   /**
    * @override

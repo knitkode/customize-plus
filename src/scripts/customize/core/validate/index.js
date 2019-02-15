@@ -6,7 +6,7 @@
  *
  * @module validate
  * @memberof core
- * @requires Helper
+ * @requires helper
  */
 import _ from "underscore";
 import is_int from "locutus/php/var/is_int";
@@ -16,7 +16,7 @@ import empty from "locutus/php/var/empty";
 import isURL from "validator/lib/isURL";
 import isEmail from "validator/lib/isEmail";
 import { api } from "../globals";
-import Helper from "../helper";
+import helper from "../helper";
 /* global tinycolor */
 
 declare var tinycolor: Object;
@@ -34,7 +34,7 @@ export function required(
   $control: WP_Customize_Control
 ): WP_Error {
   if (!$control.params.optional) {
-    if (Helper.isEmpty($value)) {
+    if (helper.isEmpty($value)) {
       $validity = $control._addError($validity, "vRequired");
     }
   }
@@ -181,7 +181,7 @@ export function fontFamily(
   // this is enough to do in JavaScript only, there is sanitization anyway
   // if (_.isArray($value)) {
   if (Array.isArray($value)) {
-    $value = $value.map(input => Helper.normalizeFontFamily(input));
+    $value = $value.map(input => helper.normalizeFontFamily(input));
   }
   return multipleChoices($validity, $value, $setting, $control);
 }
@@ -299,7 +299,7 @@ export function text(
 
   // html must be escaped
   if ($control.params.html === "escape") {
-    if (Helper.hasHTML($value)) {
+    if (helper.hasHTML($value)) {
       $validity = $control._addWarning($validity, "vTextEscaped"); // @@todo \\
     }
   }
@@ -309,7 +309,7 @@ export function text(
   }
   // html is not allowed at all
   else if (!$control.params.html) {
-    if (Helper.hasHTML($value)) {
+    if (helper.hasHTML($value)) {
       $validity = $control._addError($validity, "vTextHtml");
     }
   }
@@ -363,7 +363,7 @@ export function number(
     // if doesn't respect the step given
     if (
       is_numeric($attrs["step"]) &&
-      Helper.modulus($value, $attrs["step"]) !== 0
+      helper.modulus($value, $attrs["step"]) !== 0
     ) {
       $validity = $control._addError($validity, "vNumberStep", $attrs["step"]);
     }
@@ -426,8 +426,8 @@ export function slider(
   $setting: WP_Customize_Setting,
   $control: WP_Customize_Control
 ): WP_Error {
-  const $number = Helper.extractNumber($value);
-  const $unit = Helper.extractSizeUnit($value);
+  const $number = helper.extractNumber($value);
+  const $unit = helper.extractSizeUnit($value);
 
   $validity = number($validity, $number, $setting, $control);
   $validity = sizeUnit($validity, $unit, $setting, $control);
@@ -458,7 +458,7 @@ export function color(
 
   if (!params.transparent && tinycolor($value).toName() === "transparent") {
     $validity = $control._addError($validity, "vNoTransparent");
-  } else if (!params.alpha && Helper.isRgba($value)) {
+  } else if (!params.alpha && helper.isRgba($value)) {
     $validity = $control._addError($validity, "vNoRGBA");
   } else if (!params.picker && _.isArray(params.palette)) {
     const valueNormalized = $control.softenize($value);
@@ -469,14 +469,14 @@ export function color(
     if (paletteNormalized.indexOf(valueNormalized) === -1) {
       $validity = $control._addError($validity, "vNotInPalette");
     }
-  } else if (!Helper.isColor($value, api.constants["colorFormatsSupported"])) {
+  } else if (!helper.isColor($value, api.constants["colorFormatsSupported"])) {
     $validity = $control._addError($validity, "vColorInvalid");
   }
 
   return $validity;
 }
 
-const Validate = {
+export default {
   required,
   singleChoice,
   multipleChoices,
@@ -491,5 +491,3 @@ const Validate = {
   slider,
   color,
 };
-
-export default Validate;

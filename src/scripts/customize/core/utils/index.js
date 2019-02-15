@@ -348,7 +348,7 @@ export const templateOptions = {
   variable:    'data'
 }
 
-const Utils = {
+export default {
   _CP_URL,
   _CP_URL_IMAGES,
   _IMAGES_BASE_URL,
@@ -368,5 +368,3 @@ const Utils = {
   focus,
   template,
 }
-
-export default Utils

@@ -20,7 +20,7 @@ class Icon extends BaseSet {
     
   static type = `icon`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
 
   /**
    * @override

@@ -16,14 +16,14 @@ import BaseInput from './base-input';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
- * @requires Validate
- * @requires Sanitize
+ * @requires validate
+ * @requires sanitize
  */
 class Text extends BaseInput {
     
   static type = `text`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
 
   validate = validate;
 

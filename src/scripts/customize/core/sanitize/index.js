@@ -8,8 +8,8 @@
  *
  * @memberof core
  * @module sanitize
- * @requires Helper
- * @requires Validate
+ * @requires helper
+ * @requires validate
  */
 import _ from 'underscore';
 import is_int from 'locutus/php/var/is_int';
@@ -17,8 +17,8 @@ import is_float from 'locutus/php/var/is_float';
 import is_numeric from 'locutus/php/var/is_numeric';
 import empty from 'locutus/php/var/empty';
 import round from 'locutus/php/math/round';
-import Helper from '../helper';
-import Validate from '../validate';
+import helper from '../helper';
+import validate from '../validate';
 
 /**
  * Sanitize string
@@ -54,7 +54,7 @@ export function singleChoice ( $value, $setting, $control ) {
   // if it is an allowed choice return it escaped
   if ( _.isArray( choices ) && choices.indexOf( $value ) !== -1 ) {
     // return _.escape( $value );
-    return Helper.stripHTML( $value );
+    return helper.stripHTML( $value );
   }
 
   return null;
@@ -88,7 +88,7 @@ export function multipleChoices( $value, $setting, $control, $check_length = fal
   for (let i = 0; i < $value.length; i++) {
     if ( $choices.indexOf( $value[i] ) !== -1 ) {
       // $valueClean.push( _.escape( $value[i] ) );
-      $valueClean.push( Helper.stripHTML( $value[i] ) );
+      $valueClean.push( helper.stripHTML( $value[i] ) );
     }
   }
   $value = $valueClean;
@@ -167,7 +167,7 @@ export function sortable ( $value, $setting, $control ) {
  * @return {string|null} The sanitized value.
  */
 export function fontFamily( $value, $setting, $control ) {
-  $value = Helper.normalizeFontFamilies( $value );
+  $value = helper.normalizeFontFamilies( $value );
 
   if ( _.isString( $value ) ) {
     $value = $value.split( ',' );
@@ -223,7 +223,7 @@ export function tags( $value, $setting, $control ) {
   }
 
   // return _.escape( $value.join(',') );
-  return Helper.stripHTML( $value.join(',') );
+  return helper.stripHTML( $value.join(',') );
 }
 
 /**
@@ -273,7 +273,7 @@ export function text( $value, $setting, $control ) {
   }
   // html is not allowed at all
   else if ( ! $control.params.html ) {
-    $value = Helper.stripHTML($value);
+    $value = helper.stripHTML($value);
   }
   // @@todo find some smart way to javascriptify the following html sanitization
   // html is a valid argument for wp_kses_allowed_html
@@ -298,7 +298,7 @@ export function text( $value, $setting, $control ) {
  */
 export function number( $value, $setting, $control ) {
   const $attrs = $control.params['attrs'] || {};
-  $value = Helper.extractNumber( $value, $attrs['float'] );
+  $value = helper.extractNumber( $value, $attrs['float'] );
 
   if ( ! is_numeric( $value ) ) {
     return null;
@@ -310,7 +310,7 @@ export function number( $value, $setting, $control ) {
   }
   // if doesn't respect the step given round it to the closest
   // then do the min and max checks
-  if ( _.isNumber( $attrs['step'] ) && Helper.modulus($value, $attrs['step']) !== 0 ) {
+  if ( _.isNumber( $attrs['step'] ) && helper.modulus($value, $attrs['step']) !== 0 ) {
     $value = round( $value / $attrs['step'] ) * $attrs['step'];
   }
   // if it's lower than the minimum return the minimum
@@ -370,8 +370,8 @@ export function sizeUnit( $unit, $allowed_units ) {
  * @return {string|number|null} The sanitized value.
  */
 export function slider( $value, $setting, $control ) {
-  let $number = Helper.extractNumber( $value );
-  let $unit = Helper.extractSizeUnit( $value );
+  let $number = helper.extractNumber( $value );
+  let $unit = helper.extractSizeUnit( $value );
 
   $number = number( $number, $setting, $control );
   $unit = sizeUnit( $unit, $control.params['units'] );
@@ -411,13 +411,13 @@ export function color( $value, $setting, $control ) {
 
   // @@doubt here there might be a race condition when the developer defines
   // a palette that have rgba colors without setting `alpha` to `true`. \\
-  if ( Helper.isRgba( $value ) && ! $control.params.alpha ) {
-    return Helper.rgbaToRgb( $value );
+  if ( helper.isRgba( $value ) && ! $control.params.alpha ) {
+    return helper.rgbaToRgb( $value );
   }
   if ( $value.match( /^([A-Fa-f0-9]{3}){1,2}$/ ) ) {
     return `#${$value}`;
   }
-  const $validity = Validate.color( {}, $value, $setting, $control );
+  const $validity = validate.color( {}, $value, $setting, $control );
 
   if ( _.keys( $validity ).length ) {
     return null;

@@ -146,6 +146,9 @@
     "rollup-plugin-node-resolve": "4.0.x",
     "streamqueue": "1.1.x"
   },
+  "resolutions": {
+    "@babel/core": "7.x.x"
+  },
   "browserslist": [
     "extends @wordpress/browserslist-config"
   ]

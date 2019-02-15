@@ -19,14 +19,14 @@ import BaseChoices from './base-choices';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
- * @requires Validate
- * @requires Sanitize
+ * @requires validate
+ * @requires sanitize
  */
 class Sortable extends BaseChoices {
     
   static type = `sortable`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
 
   validate = validate;
 

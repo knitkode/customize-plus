@@ -20,7 +20,7 @@ class RadioImage extends BaseRadio {
     
   static type = `radio_image`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
 
   /**
    * It shows the full image path (`img_custom`) or an image

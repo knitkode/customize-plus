@@ -20,8 +20,8 @@ import Base from './base';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
- * @requires Validate
- * @requires Sanitize
+ * @requires validate
+ * @requires sanitize
  */
 class BaseSet extends Base {
   

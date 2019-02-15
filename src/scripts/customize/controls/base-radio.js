@@ -15,8 +15,8 @@ import BaseChoices from './base-choices';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
- * @requires Validate
- * @requires Sanitize
+ * @requires validate
+ * @requires sanitize
  */
 class BaseRadio extends BaseChoices {
   

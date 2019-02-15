@@ -16,14 +16,14 @@ import Base from './base';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
- * @requires Validate
- * @requires Sanitize
+ * @requires validate
+ * @requires sanitize
  */
 class Checkbox extends Base {
     
   static type = `checkbox`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
   
   validate = validate;
   

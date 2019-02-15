@@ -6,8 +6,27 @@ import sprintf from 'locutus/php/strings/sprintf';
 import vsprintf from 'locutus/php/strings/vsprintf';
 import { api, wpApi } from '../core/globals';
 import Utils from '../core/utils';
-import Validate from '../core/validate';
+import { required as validateRequiredValue } from '../core/validate';
 import Notification from '../core/notification';
+
+/**
+ * This class and the Object assignments below are needed to make Babel play
+ *
+ * First we assign the `wp.customize.Class` as static methods on WpControl,
+ * otherwise it would not be possible to extend controls from outside of this
+ * codebase.
+ * Then we assign the prototypes of both the `wp.customize.Class` and of
+ * `wp.customize.Control` on the prototype of our dummy WpControl class
+ * With `buble` transpilation instead of Babel we could skip all this and just
+ * extends `wp.customize.Control` directly as such:
+ * `class Base extends wpApi.Control {`
+ *
+ * @private
+ * @ignore
+ */
+class WpControl {}
+Object.assign(WpControl, wpApi.Class)
+Object.assign(WpControl.prototype, wpApi.Class.prototype, wpApi.Control.prototype)
 
 /**
  * Control Base class
@@ -27,23 +46,8 @@ import Notification from '../core/notification';
  * @augments wp.customize.Class
  *
  * @requires Utils
- * @requires Validate
+ * @requires validate
  */
-
-// This class and the Object assignments below are needed to make Babel play
-// nicely with the class implementation of `wp.customize` API
-class WpControl {}
-// First we assign the `wp.customize.Class` as static methods on WpControl,
-// otherwise it would not be possible to extend controls from outside of this
-// codebase.
-Object.assign(WpControl, wpApi.Class)
-// Then we assign the prototypes of both the `wp.customize.Class` and of
-// `wp.customize.Control` on the prototype of our dummy WpControl class
-Object.assign(WpControl.prototype, wpApi.Class.prototype, wpApi.Control.prototype)
-// With `buble` transpilation instead of Babel we could skip all this and just
-// extends `wp.customize.Control` directly as such:
-// `class Base extends wpApi.Control {`
-
 class Base extends WpControl {
 
   /**
@@ -63,11 +67,13 @@ class Base extends WpControl {
    * settings / panels etc.
    *
    * @since 1.2.0
+   * @access package
+   * @private
    *
    * @static
    * @memberof controls.Base
    */
-  static onWpConstructor = false;
+  static _onWpConstructor = false;
 
   /**
    * {@inheritdoc}
@@ -401,7 +407,7 @@ class Base extends WpControl {
     let $validity = [];
 
     // immediately check a required value validity
-    $validity = Validate.required($validity, value, this.setting, this);
+    $validity = validateRequiredValue($validity, value, this.setting, this);
 
     // if a required value is not supplied only perform one validation routine
     if (!_.keys($validity).length) {

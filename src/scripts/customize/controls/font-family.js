@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import $ from 'jquery';
-import Helper from '../core/helper';
+import helper from '../core/helper';
 import { fontFamily as validate } from '../core/validate';
 import { fontFamily as sanitize } from '../core/sanitize';
 import BaseSet from './base-set';
@@ -19,15 +19,15 @@ import BaseSet from './base-set';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
- * @requires Validate
- * @requires Sanitize
- * @requires Helper
+ * @requires validate
+ * @requires sanitize
+ * @requires helper
  */
 class FontFamily extends BaseSet {
     
   static type = `font_family`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
 
   validate = validate;
 
@@ -42,10 +42,10 @@ class FontFamily extends BaseSet {
     super.componentInit();
 
     this._options = _.map(this._options, option => {
-      option.value = Helper.normalizeFontFamily(option.value);
+      option.value = helper.normalizeFontFamily(option.value);
       return option;
     });
-    this._validChoices = _.map(this._validChoices, value => Helper.normalizeFontFamily(value));
+    this._validChoices = _.map(this._validChoices, value => helper.normalizeFontFamily(value));
   }
 
   /**

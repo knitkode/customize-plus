@@ -2,7 +2,7 @@ import $ from 'jquery';
 import _ from 'underscore';
 import { slider as validate } from '../core/validate';
 import { slider as sanitize } from '../core/sanitize';
-import Helper from '../core/helper';
+import helper from '../core/helper';
 import Base from './base';
 
 /**
@@ -18,15 +18,15 @@ import Base from './base';
  * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
- * @requires Validate
- * @requires Sanitize
- * @requires Helper
+ * @requires validate
+ * @requires sanitize
+ * @requires helper
  */
 class Slider extends Base {
     
   static type = `slider`;
 
-  static onWpConstructor = true;
+  static _onWpConstructor = true;
 
   validate = validate;
 
@@ -114,7 +114,7 @@ class Slider extends Base {
     // Init Slider
     let sliderOptions = params['attrs'] || {};
     $inputSlider.slider(_.extend(sliderOptions, {
-      value: Helper.extractNumber(this.setting()),
+      value: helper.extractNumber(this.setting()),
       slide: function(event, ui) {
         inputNumber.value = ui.value;
         self._setPartialValue({ _number: ui.value });
@@ -170,8 +170,8 @@ class Slider extends Base {
    */
   _updateUI (value) {
     const params = this.params;
-    const number = Helper.extractNumber(value);
-    const unit = Helper.extractSizeUnit(value);
+    const number = helper.extractNumber(value);
+    const unit = helper.extractSizeUnit(value);
 
     // update number input
     this.__inputNumber.value = number;

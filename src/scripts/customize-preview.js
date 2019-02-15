@@ -17,7 +17,9 @@
 
   /**
    * To CSS
+   *
    * Helper to append a piece of CSS for a specific option changed
+   *
    * @param  {string} id       Setting ID / Variable name
    * @param  {string} property CSS property name
    * @param  {string} value    CSS value
@@ -27,7 +29,7 @@
     if (!value || !selector) {
       return;
     }
-    var idFinal = 'kkcp-style-' + id;
+    var idFinal = 'kkcp-style-' + id; // TODO: use constant `NAMESPACE`
     var css = selector + '{' + property + ':' + value + '};';
     var oldCSS = document.getElementById(idFinal);
     if (oldCSS) {
