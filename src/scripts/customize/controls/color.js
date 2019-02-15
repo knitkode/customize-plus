@@ -29,9 +29,9 @@ class Color extends Base {
 
   static onWpConstructor = true;
   
-  static validate = validate;
+  validate = validate;
   
-  static sanitize = sanitize;
+  sanitize = sanitize;
 
   /**
    * Use tinycolor (included in spectrum.js) to always convert colors to the

@@ -25,9 +25,9 @@ class Number extends BaseInput {
 
   static onWpConstructor = true;
 
-  static validate = validate;
+  validate = validate;
   
-  static sanitize = sanitize;
+  sanitize = sanitize;
 
   /**
    * We just neet to convert the value to string for the check, for the rest

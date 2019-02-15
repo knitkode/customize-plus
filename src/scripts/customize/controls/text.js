@@ -25,9 +25,9 @@ class Text extends BaseInput {
 
   static onWpConstructor = true;
 
-  static validate = validate;
+  validate = validate;
 
-  static sanitize = sanitize;
+  sanitize = sanitize;
 }
 
 export default Text;

@@ -22,9 +22,9 @@ class BaseRadio extends BaseChoices {
   
   static type = `base_radio`;
 
-  static validate = validate;
+  validate = validate;
 
-  static sanitize = sanitize;
+  sanitize = sanitize;
 
   /**
    * @override

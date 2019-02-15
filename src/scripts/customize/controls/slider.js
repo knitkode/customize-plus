@@ -28,9 +28,9 @@ class Slider extends Base {
 
   static onWpConstructor = true;
 
-  static validate = validate;
+  validate = validate;
 
-  static sanitize = sanitize;
+  sanitize = sanitize;
 
   /**
    * Let's consider '44' to be equal to 44.

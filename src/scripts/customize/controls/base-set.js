@@ -27,9 +27,9 @@ class BaseSet extends Base {
   
   static type = `base_set`;
   
-  static validate = validate;
+  validate = validate;
   
-  static sanitize = sanitize;
+  sanitize = sanitize;
 
   /**
    * @see KKcp_Customize_Control_Base_Set->populate_valid_choices where we do

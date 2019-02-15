@@ -26,9 +26,9 @@ class Tags extends Base {
 
   static onWpConstructor = true;
 
-  static validate = validate;
+  validate = validate;
 
-  static sanitize = sanitize;
+  sanitize = sanitize;
 
   /**
    * @override

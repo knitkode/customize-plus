@@ -562,7 +562,7 @@ class Base extends WpControl {
    * @param {WP_Customize_Control} $control  Control instance.
    * @return {WP_Error}
    */
-  static validate ( $validity=[], $value, $setting, $control ) {
+  validate = ( $validity=[], $value, $setting, $control ) => {
     return $validity;
   }
 
@@ -579,7 +579,7 @@ class Base extends WpControl {
    * @param {WP_Customize_Control} $control Control instance.
    * @return {string|null} The sanitized value.
    */
-  static sanitize ( $value, $setting, $control ) {
+  sanitize = ( $value, $setting, $control ) => {
     return $value;
   }
 

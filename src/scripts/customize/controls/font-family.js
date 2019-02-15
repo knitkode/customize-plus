@@ -29,9 +29,9 @@ class FontFamily extends BaseSet {
 
   static onWpConstructor = true;
 
-  static validate = validate;
+  validate = validate;
 
-  static sanitize = sanitize;
+  sanitize = sanitize;
   
   /**
    * Always quote all font families

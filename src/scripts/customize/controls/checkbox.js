@@ -25,9 +25,9 @@ class Checkbox extends Base {
 
   static onWpConstructor = true;
   
-  static validate = validate;
+  validate = validate;
   
-  static sanitize = sanitize;
+  sanitize = sanitize;
 
   /**
    * We need this to fix situations like: `'1' === 1` returning false.

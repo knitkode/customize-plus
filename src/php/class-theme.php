@@ -241,7 +241,7 @@ if ( ! class_exists( 'KKcp_Theme' ) && class_exists( 'KKcp_Singleton' ) ):
 		/**
 		 * Initialize theme
 		 *
-		 * Set some static validated properties and bootstrap the Compiler
+		 * Set some validated properties and bootstrap the Compiler
 		 * component if it exists and it's enabled.
 		 *
 		 * @since  1.0.0
