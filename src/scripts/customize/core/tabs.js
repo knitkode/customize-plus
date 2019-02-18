@@ -141,11 +141,9 @@ class Tabs {
 }
 
 /**
- * @name tabs
- * @description  Instance of {@linkcode Tabs}
- *
- * @instance
+ * @member {Object} tabs
  * @memberof core
+ * @description  Instance of {@linkcode Tabs}
  */
 const tabs = new Tabs();
 

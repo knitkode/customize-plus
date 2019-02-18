@@ -12,21 +12,29 @@ import Base from './base';
  *
  * @memberof controls
  *
- * @extends controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
- *
  * @requires validate
  * @requires sanitize
  */
 class Checkbox extends Base {
     
+  /**
+   * @override
+   */
   static type = `checkbox`;
 
+  /**
+   * @override
+   */
   static _onWpConstructor = true;
   
+  /**
+   * @override
+   */
   validate = validate;
   
+  /**
+   * @override
+   */
   sanitize = sanitize;
 
   /**

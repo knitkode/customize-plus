@@ -4,10 +4,9 @@
  * `class-sanitize.php`.
  *
  * @since 1.0.0
- * @access package
  *
- * @memberof core
  * @module sanitize
+ * @memberof core
  * @requires helper
  * @requires validate
  */
@@ -18,7 +17,7 @@ import is_numeric from 'locutus/php/var/is_numeric';
 import empty from 'locutus/php/var/empty';
 import round from 'locutus/php/math/round';
 import helper from '../helper';
-import validate from '../validate';
+import { color as validateColor } from '../validate';
 
 /**
  * Sanitize string
@@ -417,7 +416,7 @@ export function color( $value, $setting, $control ) {
   if ( $value.match( /^([A-Fa-f0-9]{3}){1,2}$/ ) ) {
     return `#${$value}`;
   }
-  const $validity = validate.color( {}, $value, $setting, $control );
+  const $validity = validateColor( {}, $value, $setting, $control );
 
   if ( _.keys( $validity ).length ) {
     return null;

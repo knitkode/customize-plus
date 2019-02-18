@@ -8,15 +8,17 @@ import Base from './base';
  * @since  1.0.0
  *
  * @memberof controls
- *
- * @extends controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
  */
 class Content extends Base {
     
+  /**
+   * @override
+   */
   static type = `content`;
 
+  /**
+   * @override
+   */
   static _onWpConstructor = true;
 
   /**

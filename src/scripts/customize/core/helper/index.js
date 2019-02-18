@@ -169,6 +169,7 @@ export function hexToRgb(
  * @since  1.0.0
  * @memberof core.helper
  * @borrows rgbaToRgb as hexToRgb
+ * @function
  */
 export const rgbaToRgb = hexToRgb;
 

@@ -42,7 +42,7 @@ Object.assign(WpControl.prototype, wpApi.Class.prototype, wpApi.Control.prototyp
  *
  * @memberof controls
  *
- * @extends wp.customize.Control
+ * @augments wp.customize.Control
  * @augments wp.customize.Class
  *
  * @requires Utils
@@ -562,13 +562,14 @@ class Base extends WpControl {
    *
    * @access public
    * @abstract
+   *
    * @param {WP_Error}             $validity
    * @param {mixed}                $value    The value to validate.
    * @param {WP_Customize_Setting} $setting  Setting instance.
    * @param {WP_Customize_Control} $control  Control instance.
    * @return {WP_Error}
    */
-  validate = ( $validity=[], $value, $setting, $control ) => {
+  validate ( $validity=[], $value, $setting, $control ) {
     return $validity;
   }
 
@@ -585,7 +586,7 @@ class Base extends WpControl {
    * @param {WP_Customize_Control} $control Control instance.
    * @return {string|null} The sanitized value.
    */
-  sanitize = ( $value, $setting, $control ) => {
+  sanitize ( $value, $setting, $control ) {
     return $value;
   }
 
@@ -929,14 +930,13 @@ class Base extends WpControl {
    *
    * @access public
    * @abstract
-   * @static
    * @param  {?(number|string|boolean)} value Could be the original, the
                                               current, or the initial
    *                                            session value
    * @return {?(number|string|boolean)}       The 'normalized' value passed 
                                               as an argument.
    */
-  static softenize (value) {
+  softenize (value) {
     return value;
   }
 

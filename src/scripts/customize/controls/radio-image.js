@@ -9,17 +9,17 @@ import BaseRadio from './base-radio';
  * @since  1.0.0
  *
  * @memberof controls
- *
- * @extends controls.BaseRadio
- * @augments controls.BaseChoices
- * @augments controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
  */
 class RadioImage extends BaseRadio {
     
+  /**
+   * @override
+   */
   static type = `radio_image`;
 
+  /**
+   * @override
+   */
   static _onWpConstructor = true;
 
   /**

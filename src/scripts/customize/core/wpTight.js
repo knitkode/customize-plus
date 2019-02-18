@@ -11,7 +11,7 @@ import Utils from './utils';
  * @since 1.0.0
  * @access private
  *
- * @requires Utils
+ * @requires utils
  */
 class WpTight {
 
@@ -125,11 +125,9 @@ class WpTight {
 }
 
 /**
- * @name wpTight
- * @description  Instance of {@linkcode WpTight}
- *
- * @instance
+ * @member {Object} wpTight
  * @memberof core
+ * @description  Instance of {@linkcode WpTight}
  */
 const wpTight = new WpTight();
 

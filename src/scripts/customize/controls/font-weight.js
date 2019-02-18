@@ -8,15 +8,12 @@ import Select from './select';
  * @since  1.0.0
  *
  * @memberof controls
- *
- * @extends controls.Select
- * @augments controls.BaseChoices
- * @augments controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
  */
 class FontWeight extends Select {
-      
+   
+  /**
+   * @override
+   */   
   static type = `font_weight`;
 }
 

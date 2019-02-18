@@ -13,7 +13,7 @@ import { api, wpApi } from '../core/globals';
  * @memberof settings
  * @class Base
  *
- * @extends wp.customize.Setting
+ * @augments wp.customize.Setting
  * @augments wp.customize.Value
  * @augments wp.customize.Class
  */

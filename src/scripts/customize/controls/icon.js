@@ -10,16 +10,17 @@ import BaseSet from './base-set';
  * @since  1.0.0
  *
  * @memberof controls
- *
- * @extends controls.BaseSet
- * @augments controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
  */
 class Icon extends BaseSet {
     
+  /**
+   * @override
+   */
   static type = `icon`;
 
+  /**
+   * @override
+   */
   static _onWpConstructor = true;
 
   /**

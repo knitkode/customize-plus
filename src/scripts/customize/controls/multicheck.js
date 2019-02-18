@@ -14,22 +14,29 @@ import Sortable from './sortable';
  *
  * @memberof controls
  *
- * @extends controls.BaseChoices
- * @augments controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
- *
  * @requires validate
  * @requires sanitize
  */
 class Multicheck extends BaseChoices {
-    
+   
+  /**
+   * @override
+   */ 
   static type = `multicheck`;
 
+  /**
+   * @override
+   */
   static _onWpConstructor = true;
   
+  /**
+   * @override
+   */
   validate = validate;
   
+  /**
+   * @override
+   */
   sanitize = sanitize;
 
   /**

@@ -8,10 +8,10 @@ import Utils from './utils';
  *
  * @memberof core
  *
- * @extends wp.customize.Notification
+ * @augments wp.customize.Notification
  * @augments wp.customize.Class
  *
- * @requires Utils
+ * @requires utils
  */
 class Notification extends wpApi.Notification {
 

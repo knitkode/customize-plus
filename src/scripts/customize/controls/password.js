@@ -9,17 +9,14 @@ import Text from './text';
  *
  * @memberof controls
  *
- * @extends controls.Text
- * @augments controls.BaseInput
- * @augments controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
- *
  * @requires validate
  * @requires sanitize
  */
 class Password extends Text {
     
+  /**
+   * @override
+   */
   static type = `password`;
 
   /**

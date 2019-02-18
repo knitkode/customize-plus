@@ -244,7 +244,9 @@ function esdoc(callback) {
       includes: ['\\.js$'],
       excludes: ['\\.tmp.js$'], // exclude .hidden.js files
       plugins: [{
-        name: 'esdoc-flow-plugin'
+        // name: 'esdoc-flow-plugin'
+        name: 'esdoc-flow-type-plugin',
+        option: { enable: false }
       }],
       experimentalProposal: {
         classProperties: true,

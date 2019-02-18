@@ -12,16 +12,13 @@ import Text from './text';
  *
  * @memberof controls
  *
- * @extends controls.Text
- * @augments controls.BaseInput
- * @augments controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
- *
  * @requires tinyMCE
  */
 class Textarea extends Text {
       
+  /**
+   * @override
+   */
   static type = `textarea`;
 
   /**

@@ -84,11 +84,9 @@ class Tooltips {
 }
 
 /**
- * @name tooltips
- * @description  Instance of {@linkcode Tooltips}
- *
- * @instance
+ * @member {Object} tooltips
  * @memberof core
+ * @description  Instance of {@linkcode Tooltips}
  */
 const tooltips = new Tooltips();
 

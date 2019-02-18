@@ -14,23 +14,30 @@ import BaseSet from './base-set';
  *
  * @memberof controls
  *
- * @extends controls.BaseSet
- * @augments controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
- *
  * @requires validate
  * @requires sanitize
  * @requires helper
  */
 class FontFamily extends BaseSet {
     
+  /**
+   * @override
+   */
   static type = `font_family`;
 
+  /**
+   * @override
+   */
   static _onWpConstructor = true;
 
+  /**
+   * @override
+   */
   validate = validate;
 
+  /**
+   * @override
+   */
   sanitize = sanitize;
   
   /**

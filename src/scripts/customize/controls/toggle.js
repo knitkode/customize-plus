@@ -8,14 +8,12 @@ import Checkbox from './checkbox';
  * @since  1.0.0
  *
  * @memberof controls
- *
- * @extends controls.Checkbox
- * @augments controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
  */
 class Toggle extends Checkbox {
     
+  /**
+   * @override
+   */
   static type = `toggle`;
 
   /**

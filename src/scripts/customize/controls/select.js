@@ -13,22 +13,29 @@ import BaseChoices from './base-choices';
  *
  * @memberof controls
  *
- * @extends controls.BaseChoices
- * @augments controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
- *
  * @requires validate
  * @requires sanitize
  */
 class Select extends BaseChoices {
     
+  /**
+   * @override
+   */
   static type = `select`;
 
+  /**
+   * @override
+   */
   static _onWpConstructor = true;
 
+  /**
+   * @override
+   */
   validate = validate;
 
+  /**
+   * @override
+   */
   sanitize = sanitize;
 
   /**

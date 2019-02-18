@@ -104,11 +104,9 @@ class Skeleton {
 }
 
 /**
- * @name skeleton
- * @description  Instance of {@linkcode Skeleton}
- *
- * @instance
+ * @member {Object} skeleton
  * @memberof core
+ * @description  Instance of {@linkcode Skeleton}
  */
 const skeleton = new Skeleton();
 

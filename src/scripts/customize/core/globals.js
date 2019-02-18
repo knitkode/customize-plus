@@ -14,7 +14,7 @@ import pluginApi from 'kkcp'
  *
  * @since  1.0.0
  * @access package
- * @private
+ * @ignore
  * @type {Object}
  */
 export const wpApi = wp.customize;
@@ -27,7 +27,7 @@ export const wpApi = wp.customize;
  *
  * @since  1.0.0
  * @access package
- * @private
+ * @ignore
  * @type {Object}
  */
 export const api = pluginApi;
@@ -37,7 +37,7 @@ export const api = pluginApi;
  *
  * @since  1.0.0
  * @access package
- * @private
+ * @ignore
  * @type {jQuery}
  */
 export const $window = $(window);
@@ -47,7 +47,7 @@ export const $window = $(window);
  *
  * @since  1.0.0
  * @access package
- * @private
+ * @ignore
  * @type {jQuery}
  */
 export const $document = $(document);
@@ -57,7 +57,7 @@ export const $document = $(document);
  *
  * @since  1.0.0
  * @access package
- * @private
+ * @ignore
  * @type {HTMLElement}
  */
 export const body = document.getElementsByTagName('body')[0];
@@ -67,7 +67,7 @@ export const body = document.getElementsByTagName('body')[0];
  *
  * @since  1.0.0
  * @access package
- * @private
+ * @ignore
  * @type {jQuery.Deferred}
  */
 export const $readyWP = $.Deferred();
@@ -77,7 +77,7 @@ export const $readyWP = $.Deferred();
  *
  * @since  1.0.0
  * @access package
- * @private
+ * @ignore
  * @type {jQuery.Deferred}
  */
 export const $readyDOM = $.Deferred();
@@ -88,7 +88,7 @@ export const $readyDOM = $.Deferred();
  *
  * @since  1.0.0
  * @access package
- * @private
+ * @ignore
  * @type {jQuery.Deferred}
  */
 export const $ready = $.when($readyDOM, $readyWP);

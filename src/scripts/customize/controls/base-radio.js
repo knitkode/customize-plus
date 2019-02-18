@@ -10,20 +10,24 @@ import BaseChoices from './base-choices';
  *
  * @memberof controls
  *
- * @extends controls.BaseChoices
- * @augments controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
- *
  * @requires validate
  * @requires sanitize
  */
 class BaseRadio extends BaseChoices {
   
+  /**
+   * @override
+   */
   static type = `base_radio`;
 
+  /**
+   * @override
+   */
   validate = validate;
 
+  /**
+   * @override
+   */
   sanitize = sanitize;
 
   /**

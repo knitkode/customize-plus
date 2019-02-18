@@ -11,22 +11,29 @@ import BaseInput from './base-input';
  *
  * @memberof controls
  *
- * @extends controls.BaseInput
- * @augments controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
- *
  * @requires validate
  * @requires sanitize
  */
 class Text extends BaseInput {
     
+  /**
+   * @override
+   */
   static type = `text`;
 
+  /**
+   * @override
+   */
   static _onWpConstructor = true;
 
+  /**
+   * @override
+   */
   validate = validate;
 
+  /**
+   * @override
+   */
   sanitize = sanitize;
 }
 

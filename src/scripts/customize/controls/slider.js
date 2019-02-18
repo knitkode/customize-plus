@@ -14,22 +14,30 @@ import Base from './base';
  *
  * @memberof controls
  *
- * @extends controls.Base
- * @augments wp.customize.Control
- * @augments wp.customize.Class
- *
  * @requires validate
  * @requires sanitize
  * @requires helper
  */
 class Slider extends Base {
     
+  /**
+   * @override
+   */
   static type = `slider`;
 
+  /**
+   * @override
+   */
   static _onWpConstructor = true;
 
+  /**
+   * @override
+   */
   validate = validate;
 
+  /**
+   * @override
+   */
   sanitize = sanitize;
 
   /**
