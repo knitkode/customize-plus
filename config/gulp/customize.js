@@ -7,7 +7,6 @@ const StreamQueue = require('streamqueue');
 const extend = require('deep-extend');
 const gulp = require('gulp');
 const gulpIf = require('gulp-if');
-const stripDebug = require('gulp-strip-debug');
 const modernizr = require('gulp-modernizr');
 const rename = require('gulp-rename');
 const terser = require('gulp-terser');
@@ -43,7 +42,10 @@ module.exports = {
   },
   docs: function customizeDocs (callback) {
     return gulp.parallel(
-      // docsJs,
+      gulp.series(
+        jsdocsPrepare,
+        jsdocs
+      ),
       esdoc,
       documentationJs,
       documentationJsMarkdown
@@ -127,7 +129,7 @@ function scriptsAdminRollup () {
         globals,
         interop: false,
       }, {
-        file: '.tmp/customize.js'
+        file: '.tmp/customize-bndl.js'
       }));
     });
 }
@@ -150,7 +152,7 @@ function scriptsAdmin () {
     `${paths.src.npm}/selectize/dist/js/standalone/selectize.js`,
     `${paths.src.npm}/spectrum-colorpicker/spectrum.js`,
   ]));
-  stream.queue(gulp.src('.tmp/customize.js')
+  stream.queue(gulp.src('.tmp/customize-bndl.js')
     .pipe(gulpIf(config.isDist, replace('var DEBUG = true;', 'var DEBUG = !!window.kkcp.DEBUG;')))
     .pipe(gulpIf(config.isDist, header(config.credits, { pkg: pkg })))
   );
@@ -207,16 +209,24 @@ function scriptsModernizer () {
 /**
  * Docs JS
  */
-function docsJs (cb) {
-  const jsdoc = require('gulp-jsdoc3');
+function jsdocsPrepare () {
+  const flowRemoveTypes = require('gulp-flow-remove-types');
 
   return gulp.src([
       paths.join(paths.ROOT, 'README.md'),
       paths.join(paths.src.scripts, 'customize/**/*.js'),
     ])
-    .pipe(jsdoc({
+    .pipe(flowRemoveTypes())
+    .pipe(gulp.dest(`${paths.TMP}/customize-jsdoc/`));
+}
+
+function jsdocs () {
+  const gulpJsdoc = require('gulp-jsdoc3');
+
+  return gulp.src(`${paths.TMP}/customize-jsdoc/**/*.*`)
+    .pipe(gulpJsdoc({
         opts: {
-          destination: paths.join(paths.ROOT, pkg.config.paths.docsJsDest),
+          destination: paths.join(paths.ROOT, pkg.config.paths.jsdocsDest),
           private: true,
         },
         templates: {
@@ -233,18 +243,16 @@ function docsJs (cb) {
 
 function esdoc(callback) {
   const esdoc = require('gulp-esdoc');
- 
+
   return gulp.src([
-      // paths.join(paths.ROOT, 'README.md'),
       paths.join(paths.src.scripts, 'customize'),
     ])
     .pipe(esdoc({
       destination: paths.join(paths.ROOT, pkg.config.paths.esdocDest),
-      package: paths.join(paths.ROOT, 'pakcage.json'),
+      package: paths.join(paths.ROOT, 'package.json'),
       includes: ['\\.js$'],
       excludes: ['\\.tmp.js$'], // exclude .hidden.js files
       plugins: [{
-        // name: 'esdoc-flow-plugin'
         name: 'esdoc-flow-type-plugin',
         option: { enable: false }
       }],

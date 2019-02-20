@@ -31,7 +31,8 @@ api.core = api.core || core
 /**
  * @member {Object} components
  * @?memberof api
- * @private
+ * @access package
+ * @ignore
  * @description  Components collection (besides settings/controls/sections/panels)
  */
 // api.components = api.components || {}

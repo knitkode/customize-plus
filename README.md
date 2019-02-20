@@ -7,9 +7,7 @@
 
 > Enhance and extend the WordPress Customize in your themes.
 
-**JavaScript API** is documented with [JSdoc here](https://knitkode.com/docs/customize-plus/js/)
-
-## Notes
+## Developer notes
 
 - `"peerDependencies"` listed in `package.json` are the `"jquery"` and `"underscore"` versions loaded by WordPress core in the Customizer. They are not bundled in this plugin but are listed there for `flow-typed`. Also `"modernizer"` is listed there since a customized version of it is bundled in this plugin through `gulp-modernizr` and therefore is not installed as a node module directly. To keep track of a possible upgrade of the jquery version used by WordPress check this [track ticket](https://core.trac.wordpress.org/ticket/37110)
 - In many places the underscore methods for typechecking (e.g. `_.isString(x)`, `_.isArray(x)`, etc.) have been replaced with native JS checks (e.g. `typeof x === "string"`, `Array.isArray(x)`) in order to let [Flow](https://flow) understand [type refinements](https://flow.org/en/docs/lang/refinements/) (see this [answer](https://stackoverflow.com/a/39460191/9122820))

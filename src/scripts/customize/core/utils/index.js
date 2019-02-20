@@ -1,5 +1,5 @@
 /**
- * @fileOverview An helper class containing helper methods. This has its PHP
+ * @file An helper class containing helper methods. This has its PHP
  * equivalent in `class-helper.php`
  *
  * @module utils

@@ -1,5 +1,5 @@
 /**
- * @fileOverview Collects all validate methods used by Customize Plus controls.
+ * @file Collects all validate methods used by Customize Plus controls.
  * Each function has also a respective PHP version in `class-validate.php`.
  *
  * @flow

@@ -1,5 +1,5 @@
 /**
- * @fileOverview A simple logger utility.
+ * @file A simple logger utility.
  *
  * @module logger
  * @memberof core

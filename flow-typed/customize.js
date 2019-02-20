@@ -1,5 +1,5 @@
 /**
- * @fileOverview Lists of custom types used in Customize Plus JavaScript
+ * @file Lists of custom types used in Customize Plus JavaScript
  * 
  * @flow
  */

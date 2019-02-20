@@ -1,7 +1,6 @@
 /**
- * @fileOverview Collects all sanitization methods used by Customize Plus
- * controls. Each function has also a respective PHP version in
- * `class-sanitize.php`.
+ * @file Collects all sanitization methods used by Customize Plus controls.
+ * Each function has also a respective PHP version in `class-sanitize.php`.
  *
  * @since 1.0.0
  *
