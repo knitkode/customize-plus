@@ -57,6 +57,7 @@ class Notification extends wpApi.Notification {
    * @since 1.1.0
    *
    * @access package
+   * @ignore
    *
    * @return {string}
    */

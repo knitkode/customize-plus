@@ -5,8 +5,8 @@ import Utils from './utils';
 /**
  * WordPress Tight
  *
- * We can put some logic in private functions to grab the
- * right things in case WordPress change stuff across versions
+ * We can put some logic in private functions to grab the right things in case
+ * WordPress changes stuff across versions
  *
  * @since 1.0.0
  * @access private
@@ -48,7 +48,6 @@ class WpTight {
      * The id of the WordPress core css with the color schema
      *
      * @private
-     * @internal
      * @type {string}
      */
     this._colorSchemaCssId = 'colors-css';
@@ -57,7 +56,6 @@ class WpTight {
      * The WordPress color schema useful selectors
      *
      * @private
-     * @internal
      * @type {Object}
      */
     this._colorSchemaSelectors = {
@@ -74,7 +72,6 @@ class WpTight {
      * WordPress Admin colors
      *
      * @private
-     * @internal
      * @type {Object}
      */
     this._colorSchema = this._getWpAdminColors();

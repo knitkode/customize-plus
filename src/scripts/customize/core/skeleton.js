@@ -35,6 +35,8 @@ class Skeleton {
   /**
    * Trigger loading UI state (changes based on added css class)
    *
+   * @memberof core.skeleton
+   * @access public
    */
   loading () {
     body.classList.add('kkcp-loading');
@@ -43,6 +45,8 @@ class Skeleton {
   /**
    * Remove loading UI state
    *
+   * @memberof core.skeleton
+   * @access public
    */
   loaded () {
     body.classList.remove('kkcp-loading');
@@ -51,6 +55,8 @@ class Skeleton {
   /**
    * Show 'full page' loader
    *
+   * @memberof core.skeleton
+   * @access public
    */
   show (what) {
     $readyDOM.done(() => {
@@ -67,7 +73,10 @@ class Skeleton {
    * Hide loaders overlays, use jQuery animation if the browser supports
    * WebWorkers (this is related to the Premium Compiler component)
    *
+   * @memberof core.skeleton
+   * @access public
    * @requires Modernizr
+   *
    * @param {string} what What to hide: 'preview' or 'sidebar' (pass nothing
    *                      to hide both)
    */
@@ -95,7 +104,9 @@ class Skeleton {
    * Hide loader and unbind itself
    * (we could also take advantage of the underscore `once` utility)
    *
+   * @memberof core.skeleton
    * @access package
+   * @ignore
    */
   _hideLoaderPreview () {
     this.hide('preview');

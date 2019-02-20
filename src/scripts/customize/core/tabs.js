@@ -14,25 +14,40 @@ import { api, $document, $readyDOM } from './globals';
  */
 class Tabs {
 
+  /**
+    * Class name for a selected tab
+    *
+    * @memberof core.tabs
+    * @access package
+    * @ignore
+    *
+    * @type {string}
+    */
+  _CLASS_TAB_SELECTED = 'selected';
+
+  /**
+    * Tab selector (for jQuery)
+    *
+    * @memberof core.tabs
+    * @access package
+    * @ignore
+    *
+    * @type {string}
+    */
+  _SELECTOR_TAB = '.kkcp-tab';
+
+  /**
+    * Tab content selector (for jQuery)
+    *
+    * @memberof core.tabs
+    * @access package
+    * @ignore
+    *
+    * @type {string}
+    */
+  _SELECTOR_TAB_CONTENT = '.kkcp-tab-content';
+
   constructor () {
-    /**
-     * Class name for a selected tab
-     * @type {string}
-     */
-    this._CLASS_TAB_SELECTED = 'selected';
-
-    /**
-     * Tab selector (for jQuery)
-     * @type {string}
-     */
-    this._SELECTOR_TAB = '.kkcp-tab';
-
-    /**
-     * Tab content selector (for jQuery)
-     * @type {string}
-     */
-    this._SELECTOR_TAB_CONTENT = '.kkcp-tab-content';
-
     // bootstraps on DOM ready
     $readyDOM.then(this._$onReady.bind(this));
   }
@@ -42,6 +57,10 @@ class Tabs {
    *
    * Uses event delegation so we are able to bind our 'temporary'
    * DOM removed and reappended by the controls
+   *
+   * @memberof core.tabs
+   * @access package
+   * @ignore
    */
   _$onReady () {
     const self = this;
@@ -90,6 +109,11 @@ class Tabs {
 
   /**
    * Update Screen Picker Tabs
+   *
+   * @memberof core.tabs
+   * @access package
+   * @ignore
+   *
    * @param  {int|string} size   The size to which update the tabs
    * @param  {JQuery} $container An element to use as context to look for
    *                             screen pickers UI DOM
@@ -117,6 +141,9 @@ class Tabs {
   /**
    * Update statuses of all tabs on page up to given screen size.
    *
+   * @memberof core.tabs
+   * @access public
+   *
    * @param  {string} size Screenpreview size (`xs`, `sm`, `md`, `lg`)
    */
   changeSize (size) {
@@ -124,8 +151,10 @@ class Tabs {
   }
 
   /**
-   * Sync the tabs within the given container
-   * with current Screenpreview size
+   * Sync the tabs within the given container with current Screenpreview size
+   *
+   * @memberof core.tabs
+   * @access public
    *
    * @param {JQuery} $container A container with tabbed areas (probably a
    *                            control container)

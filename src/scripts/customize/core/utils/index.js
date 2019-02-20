@@ -15,6 +15,8 @@ import { api, wpApi, body } from '../globals';
  *
  * @since  1.1.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @type {string}
  */
@@ -25,6 +27,8 @@ export const _CP_URL = api.constants['CP_URL'];
  *
  * @since  1.1.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @type {string}
  */
@@ -35,6 +39,8 @@ export const _CP_URL_IMAGES = `${_CP_URL}images/`;
  *
  * @since  1.0.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @type {string}
  */
@@ -45,6 +51,8 @@ export const _IMAGES_BASE_URL = api.constants['IMAGES_BASE_URL'];
  *
  * @since  1.0.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @type {string}
  */
@@ -56,6 +64,8 @@ export const _DOCS_BASE_URL = api.constants['DOCS_BASE_URL'];
  * @see {@link http://stackoverflow.com/a/19709846/1938970}
  * @since  1.0.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @param  {string}  url The URL to test
  * @return {boolean}     Whether is absolute or relative
@@ -71,6 +81,8 @@ export function _isAbsoluteUrl (url) {
  *
  * @since  1.0.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @param  {string} url
  * @return {string}
@@ -87,6 +99,8 @@ export function _cleanUrlFromMultipleSlashes (url) {
  *
  * @since  1.0.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @param  {string} url
  * @param  {string} type
@@ -115,6 +129,8 @@ export function _getCleanUrl (url, type) {
  *
  * @since  1.0.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @param {function(WP_Customize_Control)} callback
  */
@@ -131,6 +147,8 @@ export function _eachControl (callback) {
  *
  * @since  1.1.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @param  {string}  controlId The control id
  * @return {boolean}
@@ -142,6 +160,8 @@ const _optionsApiRegex = new RegExp(api.constants['OPTIONS_PREFIX'] + '\\[.*\\]'
  *
  * @since  1.0.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @param  {string}  controlId The control id
  * @return {boolean}
@@ -157,6 +177,8 @@ export function _isThemeModsApi (controlId) {
  *
  * @since  1.0.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @param  {string}  controlId The control id
  * @return {boolean}
@@ -170,6 +192,8 @@ export function _isOptionsApi (controlId) {
  *
  * @since  1.0.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @param  {string} nodeId
  * @return {?HTMLElement}
@@ -192,6 +216,8 @@ export function _getStylesheetById (nodeId) {
  *
  * @since  1.0.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @param  {HTMLElement} stylesheet
  * @param  {string} selector
@@ -219,6 +245,8 @@ export function _getRulesFromStylesheet (stylesheet, selector) {
  *
  * @since  1.0.0
  * @memberof core.utils
+ * @access package
+ * @ignore
  *
  * @param  {string} rules
  * @param  {string} selector

@@ -14,40 +14,54 @@ import { $document, body, $readyDOM } from './globals';
  */
 class Tooltips {
 
+  /**
+   *
+   * @memberof core.tooltips
+   * @access package
+   * @ignore
+   *
+   * @type {string}
+   */
+  _BASE_CLASS = '.kkcpui-tooltip';
+
+  /**
+   *
+   * @memberof core.tooltips
+   * @access package
+   * @ignore
+   *
+   * @type {Array<Object<string, string>>}
+   */
+  _ALLOWED_POSITIONS = [{
+    _name: 'top',
+    _container: $document,
+    _position: {
+      my: 'center bottom-2',
+      at: 'center top-5'
+    }
+  }, {
+    _name: 'bottom',
+    _container: $(body),
+    _position: {
+      my: 'center top+2',
+      at: 'center bottom+5'
+    }
+  }];
+
+  /**
+   *
+   * @memberof core.tooltips
+   * @access package
+   * @ignore
+   *
+   * @type {Object<string,boolean|string>}
+   */
+  _DEFAULT_OPTIONS = {
+    show: false,
+    hide: false
+  };
+
   constructor () {
-
-    /**
-     * @type {string}
-     */
-    this._BASE_CLASS = '.kkcpui-tooltip';
-
-    /**
-     * @type {Array<Object<string, string>>}
-     */
-    this._ALLOWED_POSITIONS = [{
-      _name: 'top',
-      _container: $document,
-      _position: {
-        my: 'center bottom-2',
-        at: 'center top-5'
-      }
-    }, {
-      _name: 'bottom',
-      _container: $(body),
-      _position: {
-        my: 'center top+2',
-        at: 'center bottom+5'
-      }
-    }];
-
-    /**
-     * @type {Object<string,boolean|string>}
-     */
-    this._DEFAULT_OPTIONS = {
-      show: false,
-      hide: false
-    };
-
     // bootstraps on DOM ready
     $readyDOM.then(this._$onReady.bind(this));
   }
@@ -56,6 +70,10 @@ class Tooltips {
    * On DOM ready
    *
    * Init tooltips for each allowed position
+   *
+   * @memberof core.tooltips
+   * @access package
+   * @ignore
    */
   _$onReady () {
     for (let i = this._ALLOWED_POSITIONS.length - 1; i >= 0; i--) {
@@ -87,6 +105,7 @@ class Tooltips {
  * @member {Object} tooltips
  * @memberof core
  * @description  Instance of {@linkcode Tooltips}
+ * @ignore
  */
 const tooltips = new Tooltips();
 
