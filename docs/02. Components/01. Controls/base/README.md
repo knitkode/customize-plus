@@ -1,5 +1,6 @@
 ---
 title: Base
+description: The base Customize Plus control
 ---
 
 # Base

@@ -1,6 +1,5 @@
 ---
 title: Introduction
-description: Official documentation
 ---
 
 > This document is a draft currently under improvement

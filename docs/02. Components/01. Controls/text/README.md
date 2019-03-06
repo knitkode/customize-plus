@@ -1,5 +1,7 @@
 ---
 title: Text
+image: ./screencast.gif
+<!-- image: ./screenshot.png -->
 ---
 
 # Text
@@ -14,11 +16,6 @@ title: Text
 
 ## Examples
 
-some `content`
-
-```js
-yes
-```
 
 ## Screenshots
 
