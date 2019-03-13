@@ -21,7 +21,7 @@
       "jsdocsDest": "../knitkode.com/build/docs/customize-plus/advanced/javascript-api/jsdoc",
       "esdocDest": "../knitkode.com/build/docs/customize-plus/advanced/javascript-api/esdoc",
       "documentationDest": "../knitkode.com/build/docs/customize-plus/advanced/javascript-api/documentation-js",
-      "documentationMarkdownDest": "../knitkode.com/packages/root/content/docs/customize-plus"
+      "documentationMarkdownDest": "../knitkode.com/packages/www/content/docs/customize-plus"
     },
     "commitizen": {
       "path": "cz-conventional-changelog"
