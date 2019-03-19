@@ -1,8 +1,7 @@
+// @flow
 /**
  * @file An helper class containing helper methods. This has its PHP
  * equivalent in `class-helper.php`
- *
- * @flow
  *
  * @module helper
  * @memberof core
