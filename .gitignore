@@ -1,30 +1,57 @@
-# Project specific
-build
-vendor
-.env*
-!.env.example
+# Project specific ignores
+# ----------------------
 
-# Frontend
-node_modules
+# Build (on its own branch)
+build
+
+# Docs (on its own branch)
+docs
+
+# Vendor
+vendor
+
+
+### Generic
+# ----------------------
+
+# Private config
+.env.json
+
+# Minified assets
 *.min.js
 *.min.css
+
+# Front-end and packages folders
+node_modules
+bower_components
+.sass-cache
+.tmp
+.publish
 composer.lock
 phpdoc-cache*
-*.sublime-project
-*.sublime-workspace
 
 # OS and other
 .DS_Store
-.fuse_hidden*
+/.project
 *.scssc
+.fuse_hidden*
 
 # Logs and temporary files
 logs
 *.log
 *.tmp
-.tmp
 
-# WordPress http://git.io/vZ05Z
+# GitEye
+/.project
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+
+### WordPress
+# @link(http://git.io/vZ05Z)
+# ----------------------
 *.log
 .htaccess
 sitemap.xml
@@ -39,5 +66,7 @@ wp-content/upgrade/
 wp-content/uploads/
 wp-content/wp-cache-config.php
 wp-content/plugins/hello.php
+
 /readme.html
+
 wp-config-local.php
